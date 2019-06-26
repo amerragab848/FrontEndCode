@@ -56,7 +56,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require("lodash");
 
@@ -70,7 +70,7 @@ class materialRequestAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -113,7 +113,7 @@ class materialRequestAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"number"
+                type: "number"
             }, {
                 key: "details",
                 name: Resources["details"][currentLanguage],
@@ -123,7 +123,7 @@ class materialRequestAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "quantity",
                 name: Resources["quantity"][currentLanguage],
@@ -135,7 +135,7 @@ class materialRequestAddEdit extends Component {
                 sortDescendingFirst: true,
                 formatter: editQuantity,
                 editable: true,
-                type:"number"
+                type: "number"
             }, {
                 key: "stock",
                 name: Resources["stock"][currentLanguage],
@@ -147,7 +147,7 @@ class materialRequestAddEdit extends Component {
                 sortDescendingFirst: true,
                 formatter: editStock,
                 editable: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "unit",
                 name: Resources["unit"][currentLanguage],
@@ -157,7 +157,7 @@ class materialRequestAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "days",
                 name: Resources["days"][currentLanguage],
@@ -167,7 +167,7 @@ class materialRequestAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"number"
+                type: "number"
             }, {
                 key: "resourceCode",
                 name: Resources["resourceCode"][currentLanguage],
@@ -177,7 +177,7 @@ class materialRequestAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -187,7 +187,7 @@ class materialRequestAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }
         ];
 
@@ -212,7 +212,7 @@ class materialRequestAddEdit extends Component {
             showModal: false,
             showContractModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -262,9 +262,9 @@ class materialRequestAddEdit extends Component {
         };
         if (!Config.IsAllow(116) && !Config.IsAllow(117) && !Config.IsAllow(118)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
     }
 
@@ -371,10 +371,11 @@ class materialRequestAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id != this.props.document.id) {
-            let docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
-            let requiredDate = nextProps.document.requiredDate != null ? moment(nextProps.document.requiredDate).format("DD/MM/YYYY") : moment();
+            let doc = nextProps.document
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+            doc.requiredDate = doc.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(doc.requiredDate).format('YYYY-MM-DD')
             this.setState({
-                document: { ...nextProps.document, docDate, requiredDate },
+                document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
@@ -660,8 +661,8 @@ class materialRequestAddEdit extends Component {
     editMaterialRequest(event) {
         this.setState({ isLoading: true });
         let saveDocument = { ...this.state.document };
-        saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         saveDocument.boqId = this.state.boqLog.value;
         saveDocument.companyId = this.state.fromCompany.value;
         saveDocument.area = this.state.area.label;
@@ -670,7 +671,7 @@ class materialRequestAddEdit extends Component {
         saveDocument.buildingNoId = this.state.buildingNumber.value;
         saveDocument.apartmentNoId = this.state.apartmentNo.value;
         saveDocument.companyName = this.state.fromCompany.value;
-        saveDocument.id = this.state.docId; 
+        saveDocument.id = this.state.docId;
         dataservice.addObject("EditContractsSiteRequest", saveDocument).then(result => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
             let CurrStep = this.state.CurrStep + 1
@@ -685,8 +686,8 @@ class materialRequestAddEdit extends Component {
         if (this.state.items.length > 0) {
             this.setState({ isLoading: true });
             let saveDocument = { ...this.state.document };
-            saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            saveDocument.requiredDate = moment(saveDocument.requiredDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             saveDocument.boqId = this.state.boqLog.value;
             saveDocument.companyId = this.state.fromCompany.value;
             saveDocument.companyName = this.state.fromCompany.value;
@@ -761,14 +762,14 @@ class materialRequestAddEdit extends Component {
                 currentTitle: item.title,
                 showModal: true
             })
-            this.simpleDialog.show() 
+            this.simpleDialog.show()
         }
     };
 
     actionsChange(event) {
         switch (event.value) {
             case 1:
-                this.setState({isLoading:true})
+                this.setState({ isLoading: true })
                 Api.post('AddNewBoq?id=' + this.state.docId).then(() => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                     this.props.history.push({ pathname: '/siteRequest/' + this.state.projectId })
@@ -840,7 +841,7 @@ class materialRequestAddEdit extends Component {
                     }
                 })
             }
-        }) 
+        })
     }
     addChild = () => {
         let length = this.state.updatedchilderns.length
@@ -867,7 +868,7 @@ class materialRequestAddEdit extends Component {
                     }
                 })
             }
-        }) 
+        })
     }
 
     onCloseModal() {
@@ -952,8 +953,8 @@ class materialRequestAddEdit extends Component {
     addContract(values) {
         this.setState({ contractLoading: true })
         let contract = {
-            completionDate: moment(values.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            docDate: moment(values.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            completionDate: moment(values.completionDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            docDate: moment(values.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             subject: values.subject,
             refDoc: values.reference,
             status: values.status,
@@ -971,8 +972,8 @@ class materialRequestAddEdit extends Component {
     addPurchaseOrder(values) {
         this.setState({ contractLoading: true })
         let contract = {
-            completionDate: moment(values.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            docDate: moment(values.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            completionDate: moment(values.completionDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            docDate: moment(values.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             subject: values.subject,
             refDoc: values.reference,
             advancePaymentPercent: values.advancePayment,
@@ -989,7 +990,7 @@ class materialRequestAddEdit extends Component {
     }
     addMR(values) {
         let MR = {
-            docDate: moment(values.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            docDate: moment(values.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             subject: values.subject,
             status: values.status,
             siteRequestId: this.state.M_siteRequest.value,
@@ -1001,7 +1002,7 @@ class materialRequestAddEdit extends Component {
             requestId: this.state.docId,
             projectId: this.state.projectId,
             arrange: this.state.M_arrange,
-            docCloseDate: moment(values.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            docCloseDate: moment(values.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         }
         this.setState({ contractLoading: true })
         Api.post('AddLogsMaterialRelease', MR).then((res) => {
@@ -1013,7 +1014,7 @@ class materialRequestAddEdit extends Component {
                 })
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
-        }); 
+        });
     }
     handleChangeDropDown(event) {
         this.setState({ isLoading: true })
@@ -1045,21 +1046,21 @@ class materialRequestAddEdit extends Component {
     }
 
     StepOneLink = () => {
-        if ( this.state.docId !== 0) {
+        if (this.state.docId !== 0) {
             this.setState({
                 firstComplete: true,
                 secondComplete: false,
-                CurrStep: 1  
+                CurrStep: 1
             })
         }
     }
 
     StepTwoLink = () => {
-        if ( this.state.docId !== 0) {
+        if (this.state.docId !== 0) {
             this.setState({
                 firstComplete: true,
                 secondComplete: true,
-                CurrStep: 2 
+                CurrStep: 2
 
             })
         }
@@ -1096,7 +1097,7 @@ class materialRequestAddEdit extends Component {
                             }, {
                                 Header: Resources.itemCode[currentLanguage],
                                 accessor: 'itemCode'
-                            } ]  }
+                            }]}
                         defaultPageSize={5}
                         className="-striped -highlight"
                     />
@@ -1146,7 +1147,7 @@ class materialRequestAddEdit extends Component {
                     }, {
                         Header: Resources.requestedVariance[currentLanguage],
                         accessor: 'requestedVariance',
-                        Cell: (value, row) => { 
+                        Cell: (value, row) => {
                             return (<span  >  {value.original.quantity != null ? value.original.quantity - value.original.stock : 0}</span>)
                         }
                     }, {
@@ -1159,7 +1160,7 @@ class materialRequestAddEdit extends Component {
                 defaultPageSize={5}
                 className="-striped -highlight"
             />
-       
+
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
@@ -1533,16 +1534,9 @@ class materialRequestAddEdit extends Component {
                                     <label>{Resources.closed[currentLanguage]}</label>
                                 </div>
                             </div>
-                            <DatePicker title='docDate'
-                                format={'DD/MM/YYYY'}
-                                name="documentDate"
-                                startDate={values.docDate}
-                                handleChange={e => setFieldValue('docDate', e)}
-                            />
-                            <DatePicker title='completionDate'
-                                format={'DD/MM/YYYY'}
-                                name="completionDate"
-                                startDate={values.completionDate}
+                            <DatePicker title='docDate' name="documentDate" startDate={values.docDate}
+                                handleChange={e => setFieldValue('docDate', e)} />
+                            <DatePicker title='completionDate' name="completionDate" startDate={values.completionDate}
                                 handleChange={e => setFieldValue('completionDate', e)} />
                             <div className="fillter-item-c">
                                 <label className="control-label">{Resources.reference[currentLanguage]}</label>
@@ -1620,12 +1614,10 @@ class materialRequestAddEdit extends Component {
                             </div>
 
                             <DatePicker title='completionDate'
-                                format={'DD/MM/YYYY'}
                                 name="completionDate"
                                 startDate={values.completionDate}
                                 handleChange={e => setFieldValue('completionDate', e)} />
                             <DatePicker title='docDate'
-                                format={'DD/MM/YYYY'}
                                 name="documentDate"
                                 startDate={values.docDate}
                                 handleChange={e => setFieldValue('docDate', e)}
@@ -1713,7 +1705,6 @@ class materialRequestAddEdit extends Component {
                                 </div>
                             </div>
                             <DatePicker title='docDate'
-                                format={'DD/MM/YYYY'}
                                 name="docDate"
                                 startDate={values.docDate}
                                 handleChange={e => setFieldValue('docDate', e)} />

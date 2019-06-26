@@ -44,10 +44,10 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
-let specsId="";
-let boqId="";
+let specsId = "";
+let boqId = "";
 const _ = require("lodash");
 
 const ValidtionSchemaForTermsPurchaseOrder = Yup.object().shape({
@@ -63,7 +63,7 @@ const ValidtionSchemaForNewItems = Yup.object().shape({
   itemCode: Yup.string().required(Resources["itemCode"][currentLanguage])
 });
 
-const ValidtionSchemaForEditItems = Yup.object().shape({ 
+const ValidtionSchemaForEditItems = Yup.object().shape({
   details: Yup.string().required(Resources["descriptionRequired"][currentLanguage]),
   unit: Yup.string().required(Resources["unit"][currentLanguage]),
   unitPrice: Yup.number().required(Resources["unitPriceRequired"][currentLanguage]).typeError(Resources["onlyNumbers"][currentLanguage]),
@@ -111,7 +111,7 @@ class PurchaseOrderAddEdit extends Component {
           projectName = obj.projectName;
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
-          perviousRoute=obj.perviousRoute;
+          perviousRoute = obj.perviousRoute;
           arrange = obj.arrange;
         } catch {
           this.props.history.goBack();
@@ -132,7 +132,7 @@ class PurchaseOrderAddEdit extends Component {
         accessor: "id",
         Cell: ({ row }) => {
           return (
-            <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.ViewEditItems(row,2)}>
+            <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.ViewEditItems(row, 2)}>
               <i style={{ fontSize: "1.6em" }} className="fa fa-pencil-square-o" />
             </div>
           );
@@ -192,13 +192,13 @@ class PurchaseOrderAddEdit extends Component {
         sortabel: true
       }
     ];
- 
+
     this.state = {
       currentId: 0,
       purchaseOrderDataItems: [],
       termPurchaseOrderData: [],
       BoqData: [],
-      moduleTitle: "", 
+      moduleTitle: "",
       viewDisription: 0,
       FirstStep: true,
       SecondStep: false,
@@ -225,7 +225,7 @@ class PurchaseOrderAddEdit extends Component {
       showModalForEdit: false,
       isViewMode: false,
       isApproveMode: isApproveMode,
-      perviousRoute:perviousRoute,
+      perviousRoute: perviousRoute,
       docId: docId,
       docTypeId: 70,
       projectId: projectId,
@@ -255,7 +255,7 @@ class PurchaseOrderAddEdit extends Component {
         itemCode: ""
       },
       purchaseOrderTerms: { details: "", arrange: 1 },
-      IsLoadingCheckCode: false, 
+      IsLoadingCheckCode: false,
       companies: [],
       contacts: [],
       message: "",
@@ -286,10 +286,10 @@ class PurchaseOrderAddEdit extends Component {
       selectedEquipment: { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
       units: [],
       Boq: [],
-      itemBoq:[],
+      itemBoq: [],
       selectedBoq: { label: Resources.selectBOQCostCoding[currentLanguage], value: "0" },
       selectedUnit: { label: Resources.unitSelection[currentLanguage], value: "0" },
-      activePopUpItems:0
+      activePopUpItems: 0
     };
 
     if (!Config.IsAllow(175) && !Config.IsAllow(176) && !Config.IsAllow(178)) {
@@ -308,7 +308,7 @@ class PurchaseOrderAddEdit extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.hasWorkflow !== prevProps.hasWorkflow ||this.props.changeStatus !== prevProps.changeStatus) {
+    if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
       this.checkDocumentIsView();
     }
 
@@ -377,16 +377,14 @@ class PurchaseOrderAddEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
- 
+
     if (nextProps.document.id) {
-      let mainDocument = nextProps.document;
-
-      mainDocument.docDate = mainDocument.docDate != null? moment(mainDocument.docDate).format("DD/MM/YYYY"): moment();
-      mainDocument.completionDate = mainDocument.completionDate != null? moment(mainDocument.completionDate).format("DD/MM/YYYY"): moment();
-
+      let doc = nextProps.document
+      doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+      doc.completionDate = doc.completionDate === null ? moment().format('YYYY-MM-DD') : moment(doc.completionDate).format('YYYY-MM-DD')
       this.setState({
-        message: mainDocument.details,
-        document: mainDocument,
+        message: doc.details,
+        document: doc,
         IsEditMode: true,
         hasWorkflow: nextProps.hasWorkflow
       });
@@ -404,22 +402,22 @@ class PurchaseOrderAddEdit extends Component {
     if (docId > 0) {
       let url = "GetContractsPurchaseOrdersForEdit?id=" + this.state.docId;
       this.props.actions.documentForEdit(url, this.state.docTypeId, "purchaseOrder").then(res => {
-          this.setState({
-            isLoading: false
-          });
+        this.setState({
+          isLoading: false
         });
+      });
 
-      dataservice.GetDataGrid("GetContractsOrdersItemsExcutionPosByPurchaseId?purchaseId=" +this.state.docId).then(result => {
-          this.setState({
-            purchaseOrderDataItems: result
-          });
+      dataservice.GetDataGrid("GetContractsOrdersItemsExcutionPosByPurchaseId?purchaseId=" + this.state.docId).then(result => {
+        this.setState({
+          purchaseOrderDataItems: result
         });
+      });
 
-      dataservice.GetDataGrid("GetContractsPurchaseOrderTermssByProjectId?projectId=" +this.state.docId).then(result => {
-          this.setState({
-            termPurchaseOrderData: result
-          });
+      dataservice.GetDataGrid("GetContractsPurchaseOrderTermssByProjectId?projectId=" + this.state.docId).then(result => {
+        this.setState({
+          termPurchaseOrderData: result
         });
+      });
     } else {
       let mainDocument = {
         projectId: projectId,
@@ -466,7 +464,7 @@ class PurchaseOrderAddEdit extends Component {
     }
   };
 
-  handleChangeDropDown( event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource ) {
+  handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
     if (event == null) return;
     let original_document = { ...this.state.document };
     let updated_document = {};
@@ -507,7 +505,7 @@ class PurchaseOrderAddEdit extends Component {
     });
   }
 
-  handleChangeDropDownTerms(event,field,isSubscrib,targetState,url,param,selectedValue,subDatasource) {
+  handleChangeDropDownTerms(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
     if (event == null) return;
     let original_document = { ...this.state.purchaseOrderTerms };
     let updated_document = {};
@@ -523,7 +521,7 @@ class PurchaseOrderAddEdit extends Component {
     });
   }
 
-  handleChangeDropDownItems(event,field,isSubscrib,targetState,url,param,selectedValue,subDatasource) {
+  handleChangeDropDownItems(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
     if (event == null) return;
 
     let original_document = { ...this.state.purchaseOrderItems };
@@ -544,30 +542,29 @@ class PurchaseOrderAddEdit extends Component {
     });
   }
 
-  handleChangeDropDownItemsForBoq(event,field,isSubscrib,targetState,url,param,selectedValue,subDatasource) {
-    if (event == null) return; 
-  
-    if(field === "specsId")
-    {
-        specsId = event.value;
-    }else if(field === "boqId"){
-       boqId = event.value;
+  handleChangeDropDownItemsForBoq(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+    if (event == null) return;
+
+    if (field === "specsId") {
+      specsId = event.value;
+    } else if (field === "boqId") {
+      boqId = event.value;
     }
 
-    if(boqId != "" && specsId != ""){
-        dataservice.GetDataGrid("GetContractsBoqItemsBySpecsId?boqId="+boqId+"&specsId="+specsId).then(result => {
-            result.map(item => {
-                item.orderType = "PurchaseOrder";
-                return null;
-            })
+    if (boqId != "" && specsId != "") {
+      dataservice.GetDataGrid("GetContractsBoqItemsBySpecsId?boqId=" + boqId + "&specsId=" + specsId).then(result => {
+        result.map(item => {
+          item.orderType = "PurchaseOrder";
+          return null;
+        })
 
-            this.setState({
-                BoqData : result
-            });
+        this.setState({
+          BoqData: result
         });
+      });
     }
 
-    this.setState({ 
+    this.setState({
       [selectedValue]: event
     });
   }
@@ -629,78 +626,78 @@ class PurchaseOrderAddEdit extends Component {
   }
 
   FillDropDowns = isEdit => {
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId,"companyName","companyId").then(result => {
-        this.setState({
-          companies: result,
-          isLoading: false
-        });
-
-        if (isEdit === true) {
-          
-            let fromCompanyId = this.state.document.companyId;
-          
-          let toCompanyId = this.state.document.toCompanyId;
-          
-          let selectedFromCompany = _.find(result, function(i) {
-            return i.value == fromCompanyId;
-          });
-          
-          let selectedToCompany = _.find(result, function(i) {
-            return i.value == toCompanyId;
-          });
-          
-          this.setState({
-            selectedFromCompany: selectedFromCompany,
-            selectedToCompany: selectedToCompany
-          });
-
-          this.fillSubDropDownInEdit("GetContactsByCompanyId","companyId",fromCompanyId,"toContactId","selectedToContact","contacts");
-        }
+    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+      this.setState({
+        companies: result,
+        isLoading: false
       });
 
-    dataservice.GetDataList("GetDescriptionForDrop?projectId=" + projectId,"description","id").then(result => {
-        this.setState({
-          descriptions: result
-        });
-      });
+      if (isEdit === true) {
 
-    dataservice.GetDataList("GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000","title","action").then(result => {
-        this.setState({
-          itemType: result
-        });
-      });
+        let fromCompanyId = this.state.document.companyId;
 
-    dataservice.GetDataList("GetAccountsDefaultList?listType=specssection&pageNumber=0&pageSize=10000","title","id").then(result => {
-        this.setState({
-          specssectionType: result
-        });
-      });
+        let toCompanyId = this.state.document.toCompanyId;
 
-    dataservice.GetDataList("GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000","title","id").then(result => {
-        this.setState({
-          equipmentType: result
+        let selectedFromCompany = _.find(result, function (i) {
+          return i.value == fromCompanyId;
         });
-      });
 
-    dataservice.GetDataList("GetAccountsDefaultList?listType=unit&pageNumber=0&pageSize=10000","title","id").then(result => {
-        this.setState({
-          units: result
+        let selectedToCompany = _.find(result, function (i) {
+          return i.value == toCompanyId;
         });
-      });
 
-    dataservice.GetDataListWithNewVersion("GetContractsBoq?projectId=" +projectId +"&pageNumber=0&pageSize=1000000000","subject","id").then(result => {
         this.setState({
-          Boq: result
+          selectedFromCompany: selectedFromCompany,
+          selectedToCompany: selectedToCompany
         });
+
+        this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", fromCompanyId, "toContactId", "selectedToContact", "contacts");
+      }
+    });
+
+    dataservice.GetDataList("GetDescriptionForDrop?projectId=" + projectId, "description", "id").then(result => {
+      this.setState({
+        descriptions: result
       });
+    });
+
+    dataservice.GetDataList("GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000", "title", "action").then(result => {
+      this.setState({
+        itemType: result
+      });
+    });
+
+    dataservice.GetDataList("GetAccountsDefaultList?listType=specssection&pageNumber=0&pageSize=10000", "title", "id").then(result => {
+      this.setState({
+        specssectionType: result
+      });
+    });
+
+    dataservice.GetDataList("GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000", "title", "id").then(result => {
+      this.setState({
+        equipmentType: result
+      });
+    });
+
+    dataservice.GetDataList("GetAccountsDefaultList?listType=unit&pageNumber=0&pageSize=10000", "title", "id").then(result => {
+      this.setState({
+        units: result
+      });
+    });
+
+    dataservice.GetDataListWithNewVersion("GetContractsBoq?projectId=" + projectId + "&pageNumber=0&pageSize=1000000000", "subject", "id").then(result => {
+      this.setState({
+        Boq: result
+      });
+    });
   };
 
-  fillSubDropDownInEdit(url,param,value,subField, subSelectedValue, subDatasource ) {
+  fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
     let action = url + "?" + param + "=" + value;
     dataservice.GetDataList(action, "contactName", "id").then(result => {
       if (this.props.changeStatus === true) {
         let toSubField = this.state.document[subField];
-        let targetFieldSelected = _.find(result, function(i) {
+        let targetFieldSelected = _.find(result, function (i) {
           return i.value == toSubField;
         });
 
@@ -734,11 +731,8 @@ class PurchaseOrderAddEdit extends Component {
       });
 
       let objDocument = this.state.document;
-      objDocument.docDate = moment(objDocument.docDate, "DD/MM/YYYY").format( "YYYY-MM-DD[T]HH:mm:ss.SSS" );
-      objDocument.completionDate = moment(
-        objDocument.completionDate,
-        "DD/MM/YYYY"
-      ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+      objDocument.docDate = moment(objDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+      objDocument.completionDate = moment( objDocument.completionDate, 'YYYY-MM-DD' ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
       if (this.props.changeStatus) {
         dataservice
@@ -904,24 +898,24 @@ class PurchaseOrderAddEdit extends Component {
 
   ViewEditItems = (obj, activePopUpItems) => {
 
-    let getEquipment =this.state.equipmentType.find(x=>x.value === obj._original.equipmenttypeId);
-    let getSpecsSection = this.state.specssectionType.find(x=>x.value === obj._original.specsSectionId);
+    let getEquipment = this.state.equipmentType.find(x => x.value === obj._original.equipmenttypeId);
+    let getSpecsSection = this.state.specssectionType.find(x => x.value === obj._original.specsSectionId);
 
     obj.equipmenttypeId = obj._original.equipmenttypeId;
     obj.specsSectionId = obj._original.specsSectionId;
     obj.days = obj._original.days;
-    obj.dueBack =obj._original.dueBack != null ? moment(obj._original.dueBack).format("DD/MM/YYYY") : moment();
+    obj.dueBack = obj._original.dueBack != null ? moment(obj._original.dueBack).format('YYYY-MM-DD') : moment();
     obj.itemType = obj._original.itemType;
     obj.itemId = obj._original.itemId;
     obj.orderType = "PurchaseOrder";
     obj.purchaseId = this.state.docId;
 
     this.setState({
-      activePopUpItems:activePopUpItems,
+      activePopUpItems: activePopUpItems,
       purchaseOrderItems: obj,
-      showModalForEdit: true ,
-      selectedEquipmentType : getEquipment != null ? {label : getEquipment.label , value:obj.equipmenttypeId} : {label: Resources.equipmentTypeSelection[currentLanguage],value: "0"},
-      selectedSpecssection :  getSpecsSection != null ? {label : getSpecsSection.label , value:obj.specsSectionId} :{label: Resources.specsSectionSelection[currentLanguage],value: "0"}
+      showModalForEdit: true,
+      selectedEquipmentType: getEquipment != null ? { label: getEquipment.label, value: obj.equipmenttypeId } : { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
+      selectedSpecssection: getSpecsSection != null ? { label: getSpecsSection.label, value: obj.specsSectionId } : { label: Resources.specsSectionSelection[currentLanguage], value: "0" }
     });
 
     this.simpleDialog.show();
@@ -1038,7 +1032,7 @@ class PurchaseOrderAddEdit extends Component {
         FivethStepComplate: true,
         ThirdStepComplate: true,
         SecondStepComplate: true,
-        FourthStepComplate: true, 
+        FourthStepComplate: true,
         SecondStep: false,
         ThirdStep: false,
         FirstStep: false,
@@ -1075,7 +1069,7 @@ class PurchaseOrderAddEdit extends Component {
     dataservice
       .GetDataGrid(
         "GetContractsOrdersItemsExcutionPosByPurchaseId?purchaseId=" +
-          this.state.docId
+        this.state.docId
       )
       .then(result => {
         this.setState({
@@ -1086,7 +1080,7 @@ class PurchaseOrderAddEdit extends Component {
       });
   }
 
-  renderNormalItems = (errors,touched,values,handleBlur,handleChange,setFieldValue,setFieldTouched) => {
+  renderNormalItems = (errors, touched, values, handleBlur, handleChange, setFieldValue, setFieldTouched) => {
     return (
       <div className="proForm datepickerContainer letterFullWidth">
         <div className="proForm datepickerContainer letterFullWidth">
@@ -1099,7 +1093,7 @@ class PurchaseOrderAddEdit extends Component {
                     data={this.state.descriptions}
                     selectedValue={this.state.selectedDescription}
                     handleChange={event => {
-                      this.handleChangeDropDownItems(event,"details",false,"","","","selectedDescription","");
+                      this.handleChangeDropDownItems(event, "details", false, "", "", "", "selectedDescription", "");
                     }}
                     onChange={setFieldValue}
                     onBlur={setFieldTouched}
@@ -1152,8 +1146,8 @@ class PurchaseOrderAddEdit extends Component {
                     (errors.quantity && touched.quantity
                       ? " has-error"
                       : !errors.quantity && touched.quantity
-                      ? " has-success"
-                      : " ")
+                        ? " has-success"
+                        : " ")
                   }
                 >
                   <input
@@ -1185,8 +1179,8 @@ class PurchaseOrderAddEdit extends Component {
                     (errors.unitPrice && touched.unitPrice
                       ? " has-error"
                       : !errors.unitPrice && touched.unitPrice
-                      ? " has-success"
-                      : " ")
+                        ? " has-success"
+                        : " ")
                   }
                 >
                   <input
@@ -1248,8 +1242,8 @@ class PurchaseOrderAddEdit extends Component {
                         (errors.days && touched.days
                           ? " has-error"
                           : !errors.days && touched.days
-                          ? " has-success"
-                          : " ")
+                            ? " has-success"
+                            : " ")
                       }
                     >
                       <input
@@ -1276,7 +1270,7 @@ class PurchaseOrderAddEdit extends Component {
                       data={this.state.equipmentType}
                       selectedValue={this.state.selectedEquipmentType}
                       handleChange={event => {
-                        this.handleChangeDropDownItems(event,"equipmenttypeId",false,"","","","selectedEquipmentType","");
+                        this.handleChangeDropDownItems(event, "equipmenttypeId", false, "", "", "", "selectedEquipmentType", "");
                       }}
                       onChange={setFieldValue}
                       onBlur={setFieldTouched}
@@ -1299,8 +1293,8 @@ class PurchaseOrderAddEdit extends Component {
                         (errors.days && touched.days
                           ? " has-error"
                           : !errors.days && touched.days
-                          ? " has-success"
-                          : " ")
+                            ? " has-success"
+                            : " ")
                       }
                     >
                       <input
@@ -1323,8 +1317,8 @@ class PurchaseOrderAddEdit extends Component {
                   </div>
                 </Fragment>
               ) : (
-                ""
-              )}
+                    ""
+                  )}
 
               <div className="proForm datepickerContainer letterFullWidth">
                 <div className="linebylineInput valid-input">
@@ -1364,8 +1358,8 @@ class PurchaseOrderAddEdit extends Component {
                     (errors.itemCode && touched.itemCode
                       ? " has-error"
                       : !errors.itemCode && touched.itemCode
-                      ? " has-success"
-                      : " ")
+                        ? " has-success"
+                        : " ")
                   }
                 >
                   <input
@@ -1388,380 +1382,380 @@ class PurchaseOrderAddEdit extends Component {
               </div>
             </Fragment>
           ) : (
-            <Fragment>
-              <div className="proForm datepickerContainer letterFullWidth">
+              <Fragment>
                 <div className="proForm datepickerContainer letterFullWidth">
-                  <div className="linebylineInput fullInputWidth">
+                  <div className="proForm datepickerContainer letterFullWidth">
+                    <div className="linebylineInput fullInputWidth">
+                      <label className="control-label">
+                        {Resources.details[currentLanguage]}
+                      </label>
+                      <div
+                        className={
+                          "inputDev ui input " +
+                          (errors.details
+                            ? "has-error"
+                            : !errors.details && touched.details
+                              ? " has-success"
+                              : " ")
+                        }
+                      >
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="details"
+                          value={this.state.purchaseOrderItems.details}
+                          placeholder={Resources.details[currentLanguage]}
+                          onChange={e => this.handleChangeItems(e, "details")}
+                          onBlur={e => {
+                            handleChange(e);
+                            handleBlur(e);
+                          }}
+                          name="details"
+                        />
+                        {errors.details ? (
+                          <em className="pError">{errors.details}</em>
+                        ) : null}
+                      </div>
+                    </div>
+                    <button
+                      className="primaryBtn-1 btn "
+                      type="submit"
+                      onClick={e =>
+                        this.renderFromInventory(this.state.viewDisription)
+                      }
+                    >
+                      {Resources["fromInventory"][currentLanguage]}
+                    </button>
+                  </div>
+                  <div className="linebylineInput valid-input">
                     <label className="control-label">
-                      {Resources.details[currentLanguage]}
+                      {Resources.arrange[currentLanguage]}
+                    </label>
+                    <div className="ui input inputDev">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="arrange"
+                        readOnly
+                        value={this.state.purchaseOrderItems.arrange}
+                        placeholder={Resources.arrange[currentLanguage]}
+                        onChange={e => this.handleChangeItems(e, "arrange")}
+                        onBlur={e => {
+                          handleChange(e);
+                          handleBlur(e);
+                        }}
+                        name="arrange"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="linebylineInput valid-input">
+                    <label className="control-label">
+                      {Resources.quantity[currentLanguage]}
                     </label>
                     <div
                       className={
-                        "inputDev ui input " +
-                        (errors.details
-                          ? "has-error"
-                          : !errors.details && touched.details
-                          ? " has-success"
-                          : " ")
+                        "inputDev ui input" +
+                        (errors.quantity && touched.quantity
+                          ? " has-error"
+                          : !errors.quantity && touched.quantity
+                            ? " has-success"
+                            : " ")
                       }
                     >
                       <input
                         type="text"
                         className="form-control"
-                        id="details"
-                        value={this.state.purchaseOrderItems.details}
-                        placeholder={Resources.details[currentLanguage]}
-                        onChange={e => this.handleChangeItems(e, "details")}
+                        id="quantity"
+                        value={this.state.purchaseOrderItems.quantity}
+                        placeholder={Resources.quantity[currentLanguage]}
+                        onChange={e => this.handleChangeItems(e, "quantity")}
                         onBlur={e => {
                           handleChange(e);
                           handleBlur(e);
                         }}
-                        name="details"
+                        name="quantity"
                       />
-                      {errors.details ? (
-                        <em className="pError">{errors.details}</em>
+                      {errors.quantity && touched.quantity ? (
+                        <em className="pError">{errors.quantity}</em>
                       ) : null}
                     </div>
                   </div>
-                  <button
-                    className="primaryBtn-1 btn "
-                    type="submit"
-                    onClick={e =>
-                      this.renderFromInventory(this.state.viewDisription)
-                    }
-                  >
-                    {Resources["fromInventory"][currentLanguage]}
-                  </button>
-                </div>
-                <div className="linebylineInput valid-input">
-                  <label className="control-label">
-                    {Resources.arrange[currentLanguage]}
-                  </label>
-                  <div className="ui input inputDev">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="arrange"
-                      readOnly
-                      value={this.state.purchaseOrderItems.arrange}
-                      placeholder={Resources.arrange[currentLanguage]}
-                      onChange={e => this.handleChangeItems(e, "arrange")}
-                      onBlur={e => {
-                        handleChange(e);
-                        handleBlur(e);
+
+                  <div className="linebylineInput valid-input">
+                    <Dropdown
+                      title="unit"
+                      data={this.state.units}
+                      selectedValue={this.state.selectedUnit}
+                      handleChange={event => {
+                        this.handleChangeDropDownItems(
+                          event,
+                          "unit",
+                          false,
+                          "",
+                          "",
+                          "",
+                          "selectedUnit",
+                          ""
+                        );
                       }}
-                      name="arrange"
+                      onChange={setFieldValue}
+                      onBlur={setFieldTouched}
+                      error={errors.unit}
+                      touched={touched.unit}
+                      name="unit"
+                      index="unit"
                     />
                   </div>
-                </div>
 
-                <div className="linebylineInput valid-input">
-                  <label className="control-label">
-                    {Resources.quantity[currentLanguage]}
-                  </label>
-                  <div
-                    className={
-                      "inputDev ui input" +
-                      (errors.quantity && touched.quantity
-                        ? " has-error"
-                        : !errors.quantity && touched.quantity
-                        ? " has-success"
-                        : " ")
-                    }
-                  >
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="quantity"
-                      value={this.state.purchaseOrderItems.quantity}
-                      placeholder={Resources.quantity[currentLanguage]}
-                      onChange={e => this.handleChangeItems(e, "quantity")}
-                      onBlur={e => {
-                        handleChange(e);
-                        handleBlur(e);
-                      }}
-                      name="quantity"
-                    />
-                    {errors.quantity && touched.quantity ? (
-                      <em className="pError">{errors.quantity}</em>
-                    ) : null}
-                  </div>
-                </div>
-
-                <div className="linebylineInput valid-input">
-                  <Dropdown
-                    title="unit"
-                    data={this.state.units}
-                    selectedValue={this.state.selectedUnit}
-                    handleChange={event => {
-                      this.handleChangeDropDownItems(
-                        event,
-                        "unit",
-                        false,
-                        "",
-                        "",
-                        "",
-                        "selectedUnit",
-                        ""
-                      );
-                    }}
-                    onChange={setFieldValue}
-                    onBlur={setFieldTouched}
-                    error={errors.unit}
-                    touched={touched.unit}
-                    name="unit"
-                    index="unit"
-                  />
-                </div>
-
-                <div className="linebylineInput valid-input">
-                  <label className="control-label">
-                    {Resources.unitPrice[currentLanguage]}
-                  </label>
-                  <div
-                    className={
-                      "inputDev ui input" +
-                      (errors.unitPrice && touched.unitPrice
-                        ? " has-error"
-                        : !errors.unitPrice && touched.unitPrice
-                        ? " has-success"
-                        : " ")
-                    }
-                  >
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="unitPrice"
-                      value={this.state.purchaseOrderItems.unitPrice}
-                      placeholder={Resources.unitPrice[currentLanguage]}
-                      onChange={e => this.handleChangeItems(e, "unitPrice")}
-                      onBlur={e => {
-                        handleChange(e);
-                        handleBlur(e);
-                      }}
-                      name="unitPrice"
-                    />
-                    {errors.unitPrice && touched.unitPrice ? (
-                      <em className="pError">{errors.unitPrice}</em>
-                    ) : null}
-                  </div>
-                </div>
-
-                <div className="linebylineInput valid-input">
-                  <label className="control-label">
-                    {Resources.resourceCode[currentLanguage]}
-                  </label>
-                  <div
-                    className={
-                      "inputDev ui input" +
-                      (errors.resourceCode && touched.resourceCode
-                        ? " has-error"
-                        : !errors.resourceCode && touched.resourceCode
-                        ? " has-success"
-                        : " ")
-                    }
-                  >
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="resourceCode"
-                      value={this.state.purchaseOrderItems.resourceCode}
-                      placeholder={Resources.resourceCode[currentLanguage]}
-                      onChange={e => this.handleChangeItems(e, "resourceCode")}
-                      onBlur={e => {
-                        handleChange(e);
-                        handleBlur(e);
-                      }}
-                      name="resourceCode"
-                    />
-                    {errors.resourceCode && touched.resourceCode ? (
-                      <em className="pError">{errors.resourceCode}</em>
-                    ) : null}
-                  </div>
-                </div>
-                <div className="linebylineInput valid-input">
-                  <Dropdown
-                    title="itemType"
-                    data={this.state.itemType}
-                    selectedValue={this.state.selectedItemType}
-                    handleChange={event => {
-                      this.handleChangeDropDownItems(
-                        event,
-                        "itemType",
-                        false,
-                        "",
-                        "",
-                        "",
-                        "selectedItemType",
-                        ""
-                      );
-                    }}
-                    onChange={setFieldValue}
-                    onBlur={setFieldTouched}
-                    error={errors.itemType}
-                    touched={touched.itemType}
-                    name="itemType"
-                    index="itemType"
-                  />
-                </div>
-                {this.state.selectedItemType.value === 3 ? (
-                  <Fragment>
-                    <div className="linebylineInput valid-input">
-                      <label className="control-label">
-                        {Resources.days[currentLanguage]}
-                      </label>
-                      <div
-                        className={
-                          "inputDev ui input" +
-                          (errors.days && touched.days
-                            ? " has-error"
-                            : !errors.days && touched.days
+                  <div className="linebylineInput valid-input">
+                    <label className="control-label">
+                      {Resources.unitPrice[currentLanguage]}
+                    </label>
+                    <div
+                      className={
+                        "inputDev ui input" +
+                        (errors.unitPrice && touched.unitPrice
+                          ? " has-error"
+                          : !errors.unitPrice && touched.unitPrice
                             ? " has-success"
                             : " ")
-                        }
-                      >
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="days"
-                          value={this.state.purchaseOrderItems.days}
-                          placeholder={Resources.days[currentLanguage]}
-                          onChange={e => this.handleChangeItems(e, "days")}
-                          onBlur={e => {
-                            handleChange(e);
-                            handleBlur(e);
-                          }}
-                          name="days"
-                        />
-                        {errors.days && touched.days ? (
-                          <em className="pError">{errors.days}</em>
-                        ) : null}
-                      </div>
-                    </div>
-                    <div className="linebylineInput valid-input">
-                      <Dropdown
-                        title="equipmentType"
-                        data={this.state.equipmentType}
-                        selectedValue={this.state.selectedEquipmentType}
-                        handleChange={event => {
-                          this.handleChangeDropDownItems(
-                            event,
-                            "equipmenttypeId",
-                            false,
-                            "",
-                            "",
-                            "",
-                            "selectedEquipmentType",
-                            ""
-                          );
+                      }
+                    >
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="unitPrice"
+                        value={this.state.purchaseOrderItems.unitPrice}
+                        placeholder={Resources.unitPrice[currentLanguage]}
+                        onChange={e => this.handleChangeItems(e, "unitPrice")}
+                        onBlur={e => {
+                          handleChange(e);
+                          handleBlur(e);
                         }}
-                        onChange={setFieldValue}
-                        onBlur={setFieldTouched}
-                        error={errors.equipmentType}
-                        touched={touched.equipmentType}
-                        name="equipmentType"
-                        index="equipmentType"
+                        name="unitPrice"
                       />
+                      {errors.unitPrice && touched.unitPrice ? (
+                        <em className="pError">{errors.unitPrice}</em>
+                      ) : null}
                     </div>
-                  </Fragment>
-                ) : this.state.selectedItemType.value === 2 ? (
-                  <Fragment>
-                    <div className="linebylineInput valid-input">
-                      <label className="control-label">
-                        {Resources.days[currentLanguage]}
-                      </label>
-                      <div
-                        className={
-                          "inputDev ui input" +
-                          (errors.days && touched.days
-                            ? " has-error"
-                            : !errors.days && touched.days
+                  </div>
+
+                  <div className="linebylineInput valid-input">
+                    <label className="control-label">
+                      {Resources.resourceCode[currentLanguage]}
+                    </label>
+                    <div
+                      className={
+                        "inputDev ui input" +
+                        (errors.resourceCode && touched.resourceCode
+                          ? " has-error"
+                          : !errors.resourceCode && touched.resourceCode
                             ? " has-success"
                             : " ")
-                        }
-                      >
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="itemCode"
-                          value={this.state.purchaseOrderItems.days}
-                          placeholder={Resources.days[currentLanguage]}
-                          onChange={e => this.handleChangeItems(e, "days")}
-                          onBlur={e => {
-                            handleChange(e);
-                            handleBlur(e);
-                          }}
-                          name="days"
-                        />
-                        {errors.days && touched.days ? (
-                          <em className="pError">{errors.days}</em>
-                        ) : null}
-                      </div>
+                      }
+                    >
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="resourceCode"
+                        value={this.state.purchaseOrderItems.resourceCode}
+                        placeholder={Resources.resourceCode[currentLanguage]}
+                        onChange={e => this.handleChangeItems(e, "resourceCode")}
+                        onBlur={e => {
+                          handleChange(e);
+                          handleBlur(e);
+                        }}
+                        name="resourceCode"
+                      />
+                      {errors.resourceCode && touched.resourceCode ? (
+                        <em className="pError">{errors.resourceCode}</em>
+                      ) : null}
                     </div>
-                  </Fragment>
-                ) : (
-                  ""
-                )}
-                <div className="linebylineInput valid-input">
-                  <Dropdown
-                    title="specsSection"
-                    data={this.state.specssectionType}
-                    selectedValue={this.state.selectedSpecssection}
-                    handleChange={event => {
-                      this.handleChangeDropDownItems(
-                        event,
-                        "specsSectionId",
-                        false,
-                        "",
-                        "",
-                        "",
-                        "selectedSpecssection",
-                        ""
-                      );
-                    }}
-                    onChange={setFieldValue}
-                    onBlur={setFieldTouched}
-                    error={errors.specsSectionId}
-                    touched={touched.specsSectionId}
-                    name="specsSectionId"
-                    index="specsSectionId"
-                  />
-                </div>
-                <div className="linebylineInput valid-input">
-                  <label className="control-label">
-                    {Resources.itemCode[currentLanguage]}
-                  </label>
-                  <div
-                    className={
-                      "inputDev ui input" +
-                      (errors.itemCode && touched.itemCode
-                        ? " has-error"
-                        : !errors.itemCode && touched.itemCode
-                        ? " has-success"
-                        : " ")
-                    }
-                  >
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="itemCode"
-                      value={this.state.purchaseOrderItems.itemCode}
-                      placeholder={Resources.itemCode[currentLanguage]}
-                      onChange={e => this.handleChangeItems(e, "itemCode")}
-                      onBlur={e => {
-                        handleChange(e);
-                        handleBlur(e);
+                  </div>
+                  <div className="linebylineInput valid-input">
+                    <Dropdown
+                      title="itemType"
+                      data={this.state.itemType}
+                      selectedValue={this.state.selectedItemType}
+                      handleChange={event => {
+                        this.handleChangeDropDownItems(
+                          event,
+                          "itemType",
+                          false,
+                          "",
+                          "",
+                          "",
+                          "selectedItemType",
+                          ""
+                        );
                       }}
-                      name="itemCode"
+                      onChange={setFieldValue}
+                      onBlur={setFieldTouched}
+                      error={errors.itemType}
+                      touched={touched.itemType}
+                      name="itemType"
+                      index="itemType"
                     />
-                    {errors.itemCode && touched.itemCode ? (
-                      <em className="pError">{errors.itemCode}</em>
-                    ) : null}
+                  </div>
+                  {this.state.selectedItemType.value === 3 ? (
+                    <Fragment>
+                      <div className="linebylineInput valid-input">
+                        <label className="control-label">
+                          {Resources.days[currentLanguage]}
+                        </label>
+                        <div
+                          className={
+                            "inputDev ui input" +
+                            (errors.days && touched.days
+                              ? " has-error"
+                              : !errors.days && touched.days
+                                ? " has-success"
+                                : " ")
+                          }
+                        >
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="days"
+                            value={this.state.purchaseOrderItems.days}
+                            placeholder={Resources.days[currentLanguage]}
+                            onChange={e => this.handleChangeItems(e, "days")}
+                            onBlur={e => {
+                              handleChange(e);
+                              handleBlur(e);
+                            }}
+                            name="days"
+                          />
+                          {errors.days && touched.days ? (
+                            <em className="pError">{errors.days}</em>
+                          ) : null}
+                        </div>
+                      </div>
+                      <div className="linebylineInput valid-input">
+                        <Dropdown
+                          title="equipmentType"
+                          data={this.state.equipmentType}
+                          selectedValue={this.state.selectedEquipmentType}
+                          handleChange={event => {
+                            this.handleChangeDropDownItems(
+                              event,
+                              "equipmenttypeId",
+                              false,
+                              "",
+                              "",
+                              "",
+                              "selectedEquipmentType",
+                              ""
+                            );
+                          }}
+                          onChange={setFieldValue}
+                          onBlur={setFieldTouched}
+                          error={errors.equipmentType}
+                          touched={touched.equipmentType}
+                          name="equipmentType"
+                          index="equipmentType"
+                        />
+                      </div>
+                    </Fragment>
+                  ) : this.state.selectedItemType.value === 2 ? (
+                    <Fragment>
+                      <div className="linebylineInput valid-input">
+                        <label className="control-label">
+                          {Resources.days[currentLanguage]}
+                        </label>
+                        <div
+                          className={
+                            "inputDev ui input" +
+                            (errors.days && touched.days
+                              ? " has-error"
+                              : !errors.days && touched.days
+                                ? " has-success"
+                                : " ")
+                          }
+                        >
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="itemCode"
+                            value={this.state.purchaseOrderItems.days}
+                            placeholder={Resources.days[currentLanguage]}
+                            onChange={e => this.handleChangeItems(e, "days")}
+                            onBlur={e => {
+                              handleChange(e);
+                              handleBlur(e);
+                            }}
+                            name="days"
+                          />
+                          {errors.days && touched.days ? (
+                            <em className="pError">{errors.days}</em>
+                          ) : null}
+                        </div>
+                      </div>
+                    </Fragment>
+                  ) : (
+                        ""
+                      )}
+                  <div className="linebylineInput valid-input">
+                    <Dropdown
+                      title="specsSection"
+                      data={this.state.specssectionType}
+                      selectedValue={this.state.selectedSpecssection}
+                      handleChange={event => {
+                        this.handleChangeDropDownItems(
+                          event,
+                          "specsSectionId",
+                          false,
+                          "",
+                          "",
+                          "",
+                          "selectedSpecssection",
+                          ""
+                        );
+                      }}
+                      onChange={setFieldValue}
+                      onBlur={setFieldTouched}
+                      error={errors.specsSectionId}
+                      touched={touched.specsSectionId}
+                      name="specsSectionId"
+                      index="specsSectionId"
+                    />
+                  </div>
+                  <div className="linebylineInput valid-input">
+                    <label className="control-label">
+                      {Resources.itemCode[currentLanguage]}
+                    </label>
+                    <div
+                      className={
+                        "inputDev ui input" +
+                        (errors.itemCode && touched.itemCode
+                          ? " has-error"
+                          : !errors.itemCode && touched.itemCode
+                            ? " has-success"
+                            : " ")
+                      }
+                    >
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="itemCode"
+                        value={this.state.purchaseOrderItems.itemCode}
+                        placeholder={Resources.itemCode[currentLanguage]}
+                        onChange={e => this.handleChangeItems(e, "itemCode")}
+                        onBlur={e => {
+                          handleChange(e);
+                          handleBlur(e);
+                        }}
+                        name="itemCode"
+                      />
+                      {errors.itemCode && touched.itemCode ? (
+                        <em className="pError">{errors.itemCode}</em>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Fragment>
-          )}
+              </Fragment>
+            )}
 
           <div className="step-content">
             <XSLfile
@@ -1779,7 +1773,7 @@ class PurchaseOrderAddEdit extends Component {
     );
   };
 
-  renderBOQItems = (errors,touched,values,handleBlur,handleChange,setFieldValue,setFieldTouched) => {
+  renderBOQItems = (errors, touched, values, handleBlur, handleChange, setFieldValue, setFieldTouched) => {
     return (
       <div className="proForm datepickerContainer letterFullWidth">
         <div className="proForm datepickerContainer letterFullWidth">
@@ -1789,8 +1783,8 @@ class PurchaseOrderAddEdit extends Component {
               data={this.state.Boq}
               selectedValue={this.state.selectedBoq}
               handleChange={event => {
-                        this.handleChangeDropDownItemsForBoq(event,"boqId",false,"","","","selectedBoq","");
-                      }}
+                this.handleChangeDropDownItemsForBoq(event, "boqId", false, "", "", "", "selectedBoq", "");
+              }}
               onChange={setFieldValue}
               onBlur={setFieldTouched}
               error={errors.fromContract}
@@ -1805,12 +1799,12 @@ class PurchaseOrderAddEdit extends Component {
             </label>
             <div className="ui input inputDev">
               <input type="text" className="form-control" id="arrange" readOnly
-                     value={this.state.document.arrange} placeholder={Resources.arrange[currentLanguage]}
-                     onChange={e => this.handleChange(e, "arrange")}
-                     onBlur={e => {
-                     handleChange(e);
-                     handleBlur(e);
-                 }} name="arrange" />
+                value={this.state.document.arrange} placeholder={Resources.arrange[currentLanguage]}
+                onChange={e => this.handleChange(e, "arrange")}
+                onBlur={e => {
+                  handleChange(e);
+                  handleBlur(e);
+                }} name="arrange" />
             </div>
           </div>
         </div>
@@ -1820,8 +1814,8 @@ class PurchaseOrderAddEdit extends Component {
             data={this.state.specssectionType}
             selectedValue={this.state.selectedSpecssection}
             handleChange={event => {
-                        this.handleChangeDropDownItemsForBoq(event,"specsId",false,"","","","selectedSpecssection","");
-                      }}
+              this.handleChangeDropDownItemsForBoq(event, "specsId", false, "", "", "", "selectedSpecssection", "");
+            }}
             onChange={setFieldValue}
             onBlur={setFieldTouched}
             error={errors.fromContract}
@@ -1844,16 +1838,16 @@ class PurchaseOrderAddEdit extends Component {
   AddContractsOrderForPo = () => {
     this.setState({ isLoading: true });
 
-    if(this.state.activeItems === 0) {
+    if (this.state.activeItems === 0) {
 
-    let mainDoc = this.state.purchaseOrderItems;
+      let mainDoc = this.state.purchaseOrderItems;
 
-    mainDoc.docId = this.state.docId;
-    mainDoc.projectId = projectId;
-    mainDoc.purchaseId = this.state.docId;
+      mainDoc.docId = this.state.docId;
+      mainDoc.projectId = projectId;
+      mainDoc.purchaseId = this.state.docId;
 
-    dataservice.addObject("AddContractsOrderForPo", mainDoc).then(result => {
-        
+      dataservice.addObject("AddContractsOrderForPo", mainDoc).then(result => {
+
         let purchaseOrderItems = {
           specsSectionId: "",
           quantity: 1,
@@ -1878,11 +1872,11 @@ class PurchaseOrderAddEdit extends Component {
           isLoading: false,
           purchaseOrderDataItems: result != null ? result : [],
           purchaseOrderItems: purchaseOrderItems,
-          selectedDescription: {label: Resources.descriptionRequired[currentLanguage],value: "0"},
-          selectedSpecssection: {label: Resources.specsSectionSelection[currentLanguage],value: "0"},
-          selectedEquipmentType: {label: Resources.equipmentTypeSelection[currentLanguage],value: "0"},
-          selectedItemType: {label: Resources.itemTypeSelection[currentLanguage],value: "0"},
-          selectedUnit: {label: Resources.unitSelection[currentLanguage],value: "0"}
+          selectedDescription: { label: Resources.descriptionRequired[currentLanguage], value: "0" },
+          selectedSpecssection: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
+          selectedEquipmentType: { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
+          selectedItemType: { label: Resources.itemTypeSelection[currentLanguage], value: "0" },
+          selectedUnit: { label: Resources.unitSelection[currentLanguage], value: "0" }
         });
 
         toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -1894,23 +1888,23 @@ class PurchaseOrderAddEdit extends Component {
           Resources["operationCanceled"][currentLanguage].successTitle
         );
       });
-    }else{
+    } else {
 
-        dataservice.addObject("AddMultipleContractsOrderForPo?docId="+this.state.docId, this.state.itemBoq).then(result => {
-         
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.setState({
-                purchaseOrderDataItems:result,
-                isLoading:false
-            });
-          }).catch(ex => {
-            this.setState({
-              isLoading: false
-            });
-            toast.error(
-              Resources["operationCanceled"][currentLanguage].successTitle
-            );
-          });
+      dataservice.addObject("AddMultipleContractsOrderForPo?docId=" + this.state.docId, this.state.itemBoq).then(result => {
+
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+        this.setState({
+          purchaseOrderDataItems: result,
+          isLoading: false
+        });
+      }).catch(ex => {
+        this.setState({
+          isLoading: false
+        });
+        toast.error(
+          Resources["operationCanceled"][currentLanguage].successTitle
+        );
+      });
     }
   };
 
@@ -1918,34 +1912,34 @@ class PurchaseOrderAddEdit extends Component {
     let id = this.state.currentId;
 
     if (this.state.moduleTitle === "Items") {
-      
-        dataservice.GetDataGrid("ContractsOrdersItemsExcutionPoDelete?id=" +this.state.currentId +"&orderType=PurchaseOrder").then(result => {
- 
-          this.setState({
-            purchaseOrderDataItems: result,
-            showDeleteModal: false
-          });
-        }).catch(ex => {
-          toast.error(Resources["operationCanceled"][currentLanguage].successTitle);
+
+      dataservice.GetDataGrid("ContractsOrdersItemsExcutionPoDelete?id=" + this.state.currentId + "&orderType=PurchaseOrder").then(result => {
+
+        this.setState({
+          purchaseOrderDataItems: result,
+          showDeleteModal: false
         });
+      }).catch(ex => {
+        toast.error(Resources["operationCanceled"][currentLanguage].successTitle);
+      });
     } else {
       dataservice.addObject("DeleteContractsPurchaseOrderTermsById?id=" + this.state.currentId).then(result => {
 
-          let originalData = this.state.termPurchaseOrderData;
+        let originalData = this.state.termPurchaseOrderData;
 
-          let setIndex = originalData.findIndex(x => x.id === id);
+        let setIndex = originalData.findIndex(x => x.id === id);
 
-          originalData.splice(setIndex, 1);
+        originalData.splice(setIndex, 1);
 
-          this.setState({
-            termPurchaseOrderData: originalData,
-            showDeleteModal: false
-          });
-        }).catch(ex => {
-          toast.error(
-            Resources["operationCanceled"][currentLanguage].successTitle
-          );
+        this.setState({
+          termPurchaseOrderData: originalData,
+          showDeleteModal: false
         });
+      }).catch(ex => {
+        toast.error(
+          Resources["operationCanceled"][currentLanguage].successTitle
+        );
+      });
     }
   };
 
@@ -1958,284 +1952,285 @@ class PurchaseOrderAddEdit extends Component {
 
     dataservice.addObject("AddContractsPurchaseOrderTerms", mainDoc).then(result => {
 
-        toast.success(Resources["operationSuccess"][currentLanguage]);
+      toast.success(Resources["operationSuccess"][currentLanguage]);
 
-        let main = { details: "", arrange: mainDoc.arrange + 1 };
+      let main = { details: "", arrange: mainDoc.arrange + 1 };
 
-        this.setState({
-          purchaseOrderTerms: main,
-          isLoading: false,
-          termPurchaseOrderData: result != null ? result : [],
-          selectedDescription: {
-            label: Resources.descriptionRequired[currentLanguage],
-            value: "0"
-          }
-        });
+      this.setState({
+        purchaseOrderTerms: main,
+        isLoading: false,
+        termPurchaseOrderData: result != null ? result : [],
+        selectedDescription: {
+          label: Resources.descriptionRequired[currentLanguage],
+          value: "0"
+        }
       });
+    });
   };
-  
-  editItems= () => {
- 
+
+  editItems = () => {
+
     this.setState({
-        isLoading : true
+      isLoading: true
     });
 
-        if(this.state.activePopUpItems === 2){
-    
-        let itemDocument = this.state.purchaseOrderItems;
+    if (this.state.activePopUpItems === 2) {
 
-        itemDocument.dueBack=moment(itemDocument.dueBack, "DD/MM/YYYY").format( "YYYY-MM-DD[T]HH:mm:ss.SSS" );
+      let itemDocument = this.state.purchaseOrderItems;
 
-        dataservice.addObject("EditContractsOrdersItemsExcutionPos",itemDocument).then(result => {
+      itemDocument.dueBack = moment(itemDocument.dueBack, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+
+      dataservice.addObject("EditContractsOrdersItemsExcutionPos", itemDocument).then(result => {
 
 
-            this.setState({
-                isLoading: false,
-                showModalForEdit:false,
-                purchaseOrderDataItems:result
-            });
-
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-
+        this.setState({
+          isLoading: false,
+          showModalForEdit: false,
+          purchaseOrderDataItems: result
         });
-    }else{
-        let mainDoc = this.state.purchaseOrderItems;
 
-        mainDoc.docId = this.state.docId;
-        mainDoc.projectId = projectId;
-        mainDoc.purchaseId = this.state.docId;
-    
-        dataservice.addObject("AddContractsOrderForPo", mainDoc).then(result => {
-            
-            let purchaseOrderItems = {
-              specsSectionId: "",
-              quantity: 1,
-              poQuantity: 0,
-              unit: "",
-              unitPrice: 1,
-              details: "",
-              arrange: mainDoc.arrange + 1,
-              resourceCode: "",
-              itemType: "",
-              equipmenttypeId: "",
-              orderType: "PurchaseOrder",
-              docId: "",
-              itemId: "",
-              action: "",
-              dueBack: moment(),
-              days: 1,
-              itemCode: ""
-            };
-    
-            this.setState({
-              purchaseOrderDataItems:result,
-              isLoading: false,
-              showModalForEdit:false,
-              purchaseOrderDataItems: result != null ? result : [],
-              purchaseOrderItems: purchaseOrderItems,
-              selectedDescription: {label: Resources.descriptionRequired[currentLanguage],value: "0"},
-              selectedSpecssection: {label: Resources.specsSectionSelection[currentLanguage],value: "0"},
-              selectedEquipmentType: {label: Resources.equipmentTypeSelection[currentLanguage],value: "0"},
-              selectedItemType: {label: Resources.itemTypeSelection[currentLanguage],value: "0"},
-              selectedUnit: {label: Resources.unitSelection[currentLanguage],value: "0"}
-            });
-    
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-          }).catch(ex => {
-            this.setState({
-              isLoading: false
-            });
-            toast.error(
-              Resources["operationCanceled"][currentLanguage].successTitle
-            );
-          });
-       }
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+
+      });
+    } else {
+      let mainDoc = this.state.purchaseOrderItems;
+
+      mainDoc.docId = this.state.docId;
+      mainDoc.projectId = projectId;
+      mainDoc.purchaseId = this.state.docId;
+
+      dataservice.addObject("AddContractsOrderForPo", mainDoc).then(result => {
+
+        let purchaseOrderItems = {
+          specsSectionId: "",
+          quantity: 1,
+          poQuantity: 0,
+          unit: "",
+          unitPrice: 1,
+          details: "",
+          arrange: mainDoc.arrange + 1,
+          resourceCode: "",
+          itemType: "",
+          equipmenttypeId: "",
+          orderType: "PurchaseOrder",
+          docId: "",
+          itemId: "",
+          action: "",
+          dueBack: moment(),
+          days: 1,
+          itemCode: ""
+        };
+
+        this.setState({
+          purchaseOrderDataItems: result,
+          isLoading: false,
+          showModalForEdit: false,
+          purchaseOrderDataItems: result != null ? result : [],
+          purchaseOrderItems: purchaseOrderItems,
+          selectedDescription: { label: Resources.descriptionRequired[currentLanguage], value: "0" },
+          selectedSpecssection: { label: Resources.specsSectionSelection[currentLanguage], value: "0" },
+          selectedEquipmentType: { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
+          selectedItemType: { label: Resources.itemTypeSelection[currentLanguage], value: "0" },
+          selectedUnit: { label: Resources.unitSelection[currentLanguage], value: "0" }
+        });
+
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+      }).catch(ex => {
+        this.setState({
+          isLoading: false
+        });
+        toast.error(
+          Resources["operationCanceled"][currentLanguage].successTitle
+        );
+      });
+    }
   }
- 
+
   _component = () => {
     return (
-        <div  className="ui modal largeModal ">
-       <Formik initialValues={{ ...this.state.purchaseOrderItems }}
-                    enableReinitialize={true}
-                    validationSchema={ValidtionSchemaForEditItems}
-                    onSubmit={values => { this.editItems(); }}>
-                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                      <Form className="dropWrapper" onSubmit={handleSubmit}>
-                        <div className=" proForm customProform">
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources["description"][currentLanguage]}
-                            </label>
-                            <div className={"inputDev ui input " + (errors.details ? 'has-error' : !errors.details && touched.details ? (" has-success") : " ")}>
-                              <input name="details" className="form-control fsadfsadsa" id="details" placeholder={Resources.description[currentLanguage]}
-                                autoComplete="off" value={this.state.purchaseOrderItems.details}
-                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                onChange={e => this.handleChangeItems(e, "details")} />
-                              {errors.details && touched.details ? (<em className="pError">{errors.details}</em>) : null}
-                            </div>
-                          </div>
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                            {Resources.arrange[currentLanguage]}
-                            </label>
-                            <div className="ui input inputDev">
-                            <input type="text" className="form-control" id="arrange" readOnly
-                                   value={this.state.document.arrange}
-                                   placeholder={Resources.arrange[currentLanguage]}
-                                   onChange={e => this.handleChangeItems(e, "arrange")}
-                                   onBlur={e => {
-                                   handleChange(e);
-                                   handleBlur(e);
-                                }} name="arrange" />
-                            </div>
-                        </div>
+      <div className="ui modal largeModal ">
+        <Formik initialValues={{ ...this.state.purchaseOrderItems }}
+          enableReinitialize={true}
+          validationSchema={ValidtionSchemaForEditItems}
+          onSubmit={values => { this.editItems(); }}>
+          {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+            <Form className="dropWrapper" onSubmit={handleSubmit}>
+              <div className=" proForm customProform">
+                <div className="fillter-status fillter-item-c">
+                  <label className="control-label">
+                    {Resources["description"][currentLanguage]}
+                  </label>
+                  <div className={"inputDev ui input " + (errors.details ? 'has-error' : !errors.details && touched.details ? (" has-success") : " ")}>
+                    <input name="details" className="form-control fsadfsadsa" id="details" placeholder={Resources.description[currentLanguage]}
+                      autoComplete="off" value={this.state.purchaseOrderItems.details}
+                      onBlur={e => { handleBlur(e); handleChange(e); }}
+                      onChange={e => this.handleChangeItems(e, "details")} />
+                    {errors.details && touched.details ? (<em className="pError">{errors.details}</em>) : null}
+                  </div>
+                </div>
+                <div className="fillter-status fillter-item-c">
+                  <label className="control-label">
+                    {Resources.arrange[currentLanguage]}
+                  </label>
+                  <div className="ui input inputDev">
+                    <input type="text" className="form-control" id="arrange" readOnly
+                      value={this.state.document.arrange}
+                      placeholder={Resources.arrange[currentLanguage]}
+                      onChange={e => this.handleChangeItems(e, "arrange")}
+                      onBlur={e => {
+                        handleChange(e);
+                        handleBlur(e);
+                      }} name="arrange" />
+                  </div>
+                </div>
 
-                        <Dropdown title="specsSection" data={this.state.specssectionType} selectedValue={this.state.selectedSpecssection}
-                                  handleChange={event => {
-                                  this.handleChangeDropDownItems(event,"specsSectionId",false,"","","","selectedSpecssection",""); }}
-                                  onChange={setFieldValue}
-                                  onBlur={setFieldTouched}
-                                  error={errors.specsSectionId}
-                                  touched={touched.specsSectionId}
-                                  name="specsSectionId"
-                                  index="specsSectionId" />
+                <Dropdown title="specsSection" data={this.state.specssectionType} selectedValue={this.state.selectedSpecssection}
+                  handleChange={event => {
+                    this.handleChangeDropDownItems(event, "specsSectionId", false, "", "", "", "selectedSpecssection", "");
+                  }}
+                  onChange={setFieldValue}
+                  onBlur={setFieldTouched}
+                  error={errors.specsSectionId}
+                  touched={touched.specsSectionId}
+                  name="specsSectionId"
+                  index="specsSectionId" />
 
-                        <div className="fillter-status fillter-item-c">
-                                    <label className="control-label">
-                                     {Resources.unit[currentLanguage]}
-                                    </label>
-                                    <div className={"inputDev ui input " + (errors.unit ? 'has-error' : !errors.unit && touched.unit ? (" has-success") : " ")}>
-                                    <input type="text" className="form-control" id="unit" 
-                                        value={this.state.purchaseOrderItems.unit}
-                                        placeholder={Resources.unit[currentLanguage]}
-                                        onChange={e => this.handleChangeItems(e, "unit")}
-                                        onBlur={e => {
-                                        handleChange(e);
-                                        handleBlur(e);
-                                        }} name="unit" />
-                                    {errors.unit && touched.unit ? (<em className="pError">{errors.unit}</em>) : null}
-                                    </div>
-                        </div>
+                <div className="fillter-status fillter-item-c">
+                  <label className="control-label">
+                    {Resources.unit[currentLanguage]}
+                  </label>
+                  <div className={"inputDev ui input " + (errors.unit ? 'has-error' : !errors.unit && touched.unit ? (" has-success") : " ")}>
+                    <input type="text" className="form-control" id="unit"
+                      value={this.state.purchaseOrderItems.unit}
+                      placeholder={Resources.unit[currentLanguage]}
+                      onChange={e => this.handleChangeItems(e, "unit")}
+                      onBlur={e => {
+                        handleChange(e);
+                        handleBlur(e);
+                      }} name="unit" />
+                    {errors.unit && touched.unit ? (<em className="pError">{errors.unit}</em>) : null}
+                  </div>
+                </div>
 
-                        <div className="fillter-status fillter-item-c">
-                                    <label className="control-label">
-                                    {Resources.resourceCode[currentLanguage]}
-                                    </label>
-                                    <div className={"inputDev ui input " + (errors.resourceCode ? 'has-error' : !errors.resourceCode && touched.resourceCode ? (" has-success") : " ")}>
-                                    <input type="text" className="form-control" id="resourceCode" 
-                                        value={this.state.purchaseOrderItems.resourceCode}
-                                        placeholder={Resources.resourceCode[currentLanguage]}
-                                        onChange={e => this.handleChangeItems(e, "resourceCode")}
-                                        onBlur={e => {
-                                        handleChange(e);
-                                        handleBlur(e);
-                                        }} name="resourceCode" />
-                                           {errors.resourceCode && touched.resourceCode ? (<em className="pError">{errors.resourceCode}</em>) : null}
-                                    </div>
-                        </div>
+                <div className="fillter-status fillter-item-c">
+                  <label className="control-label">
+                    {Resources.resourceCode[currentLanguage]}
+                  </label>
+                  <div className={"inputDev ui input " + (errors.resourceCode ? 'has-error' : !errors.resourceCode && touched.resourceCode ? (" has-success") : " ")}>
+                    <input type="text" className="form-control" id="resourceCode"
+                      value={this.state.purchaseOrderItems.resourceCode}
+                      placeholder={Resources.resourceCode[currentLanguage]}
+                      onChange={e => this.handleChangeItems(e, "resourceCode")}
+                      onBlur={e => {
+                        handleChange(e);
+                        handleBlur(e);
+                      }} name="resourceCode" />
+                    {errors.resourceCode && touched.resourceCode ? (<em className="pError">{errors.resourceCode}</em>) : null}
+                  </div>
+                </div>
 
-                            <Dropdown
-                                title="equipmentType"
-                                data={this.state.equipmentType}
-                                selectedValue={this.state.selectedEquipmentType}
-                                handleChange={event => {
-                                  this.handleChangeDropDownItems(event,"equipmenttypeId",false,"","","","selectedEquipmentType","");
-                                }}
-                                onChange={setFieldValue}
-                                onBlur={setFieldTouched}
-                                error={errors.equipmentType}
-                                touched={touched.equipmentType}
-                                name="equipmentType"
-                                index="equipmentType"
-                            />
+                <Dropdown
+                  title="equipmentType"
+                  data={this.state.equipmentType}
+                  selectedValue={this.state.selectedEquipmentType}
+                  handleChange={event => {
+                    this.handleChangeDropDownItems(event, "equipmenttypeId", false, "", "", "", "selectedEquipmentType", "");
+                  }}
+                  onChange={setFieldValue}
+                  onBlur={setFieldTouched}
+                  error={errors.equipmentType}
+                  touched={touched.equipmentType}
+                  name="equipmentType"
+                  index="equipmentType"
+                />
 
-                        <div className="fillter-status fillter-item-c">
-                                <label className="control-label">
-                                {Resources.quantity[currentLanguage]}
-                                </label>
-                                <div className={"inputDev ui input " + (errors.quantity ? 'has-error' : !errors.quantity && touched.quantity ? (" has-success") : " ")}>
-                                <input type="text" className="form-control" id="quantity" 
-                                    value={this.state.purchaseOrderItems.quantity}
-                                    placeholder={Resources.quantity[currentLanguage]}
-                                    onChange={e => this.handleChangeItems(e, "quantity")}
-                                    onBlur={e => {
-                                    handleChange(e);
-                                    handleBlur(e);
-                                    }} name="quantity" />
-                                  {errors.quantity && touched.quantity ? (<em className="pError">{errors.quantity}</em>) : null}
-                                </div>
-                        </div>
-                      
-                        <div className="fillter-status fillter-item-c">
-                                <label className="control-label">
-                                {Resources.unitPrice[currentLanguage]}
-                                </label>
-                                <div className={"inputDev ui input " + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
-                                <input type="text" className="form-control" id="unitPrice" 
-                                    value={this.state.purchaseOrderItems.unitPrice}
-                                    placeholder={Resources.unitPrice[currentLanguage]}
-                                    onChange={e => this.handleChangeItems(e, "unitPrice")}
-                                    onBlur={e => {
-                                    handleChange(e);
-                                    handleBlur(e);
-                                    }} name="unitPrice" />
-                                    {errors.unitPrice && touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
-                                </div>
-                        </div>
-                 
-                        <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                            {Resources.days[currentLanguage]}
-                            </label>
-                          <div className="ui input inputDev">
-                            <input type="text" className="form-control" id="days" 
-                                value={this.state.purchaseOrderItems.days}
-                                placeholder={Resources.days[currentLanguage]}
-                                onChange={e => this.handleChangeItems(e, "days")}
-                                onBlur={e => {
-                                handleChange(e);
-                                handleBlur(e);
-                                }} name="days" />
-                         </div>
-                        </div>
-                            <DatePicker title="dueBack" startDate={this.state.purchaseOrderItems.dueBack}
-                                handleChange={e => this.handleChangeDate(e, "dueBack")}/>
-                            
-                          <div className="slider-Btns fullWidthWrapper">
-                            {this.state.isLoading === false ? (
-                              <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                                {Resources["goEdit"][currentLanguage]}
-                              </button>
-                            ) :
-                              (<button className="primaryBtn-1 btn disabled">
-                                <div className="spinner">
-                                  <div className="bounce1" />
-                                  <div className="bounce2" />
-                                  <div className="bounce3" />
-                                </div>
-                              </button>
-                              )}
-                          </div>
-                        </div>
-                      </Form>
+                <div className="fillter-status fillter-item-c">
+                  <label className="control-label">
+                    {Resources.quantity[currentLanguage]}
+                  </label>
+                  <div className={"inputDev ui input " + (errors.quantity ? 'has-error' : !errors.quantity && touched.quantity ? (" has-success") : " ")}>
+                    <input type="text" className="form-control" id="quantity"
+                      value={this.state.purchaseOrderItems.quantity}
+                      placeholder={Resources.quantity[currentLanguage]}
+                      onChange={e => this.handleChangeItems(e, "quantity")}
+                      onBlur={e => {
+                        handleChange(e);
+                        handleBlur(e);
+                      }} name="quantity" />
+                    {errors.quantity && touched.quantity ? (<em className="pError">{errors.quantity}</em>) : null}
+                  </div>
+                </div>
+
+                <div className="fillter-status fillter-item-c">
+                  <label className="control-label">
+                    {Resources.unitPrice[currentLanguage]}
+                  </label>
+                  <div className={"inputDev ui input " + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
+                    <input type="text" className="form-control" id="unitPrice"
+                      value={this.state.purchaseOrderItems.unitPrice}
+                      placeholder={Resources.unitPrice[currentLanguage]}
+                      onChange={e => this.handleChangeItems(e, "unitPrice")}
+                      onBlur={e => {
+                        handleChange(e);
+                        handleBlur(e);
+                      }} name="unitPrice" />
+                    {errors.unitPrice && touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                  </div>
+                </div>
+
+                <div className="fillter-status fillter-item-c">
+                  <label className="control-label">
+                    {Resources.days[currentLanguage]}
+                  </label>
+                  <div className="ui input inputDev">
+                    <input type="text" className="form-control" id="days"
+                      value={this.state.purchaseOrderItems.days}
+                      placeholder={Resources.days[currentLanguage]}
+                      onChange={e => this.handleChangeItems(e, "days")}
+                      onBlur={e => {
+                        handleChange(e);
+                        handleBlur(e);
+                      }} name="days" />
+                  </div>
+                </div>
+                <DatePicker title="dueBack" startDate={this.state.purchaseOrderItems.dueBack}
+                  handleChange={e => this.handleChangeDate(e, "dueBack")} />
+
+                <div className="slider-Btns fullWidthWrapper">
+                  {this.state.isLoading === false ? (
+                    <button className="primaryBtn-1 btn meduimBtn" type="submit">
+                      {Resources["goEdit"][currentLanguage]}
+                    </button>
+                  ) :
+                    (<button className="primaryBtn-1 btn disabled">
+                      <div className="spinner">
+                        <div className="bounce1" />
+                        <div className="bounce2" />
+                        <div className="bounce3" />
+                      </div>
+                    </button>
                     )}
-                  </Formik>
-        </div >
+                </div>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div >
     )
-}
+  }
 
-renderEditable(cellInfo) {
+  renderEditable(cellInfo) {
     return (
-      <div 
-       style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer' }}
-                contentEditable
-                suppressContentEditableWarning
+      <div
+        style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer' }}
+        contentEditable
+        suppressContentEditableWarning
         onBlur={e => {
           const item = this.state.itemBoq;
           const BoqData = [...this.state.BoqData];
           BoqData[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
           item.push(BoqData[cellInfo.index]);
-          this.setState({ BoqData ,itemBoq:item});
+          this.setState({ BoqData, itemBoq: item });
         }}
         dangerouslySetInnerHTML={{
           __html: this.state.BoqData[cellInfo.index][cellInfo.column.id]
@@ -2253,7 +2248,7 @@ renderEditable(cellInfo) {
       },
       {
         title: "sendToWorkFlow",
-        value: ( <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> ),
+        value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
         label: Resources["sendToWorkFlow"][currentLanguage]
       },
       {
@@ -2266,137 +2261,137 @@ renderEditable(cellInfo) {
     ];
 
     let columnsItemView = [
-        {
-          Header: Resources["numberAbb"][currentLanguage],
-          accessor: "arrange",
-          sortabel: true,
-          width: 80
-        } ,
-        {
-          Header: Resources["description"][currentLanguage],
-          accessor: "details",
-          width: 200,
-          sortabel: true
-        },
-        {
-          Header: Resources["unit"][currentLanguage],
-          accessor: "unit",
-          width: 200
-        },
-        {
-          Header: Resources["quantity"][currentLanguage],
-          accessor: "quantity",
-          width: 200
-        },
-        {
-          Header: Resources["unitPrice"][currentLanguage],
-          accessor: "unitPrice",
-          width: 200,
-          sortabel: true
-        },
-        {
-          Header: Resources["total"][currentLanguage],
-          accessor: "total",
-          width: 200,
-          sortabel: true
-        },
-        {
-          Header: Resources["resourceCode"][currentLanguage],
-          accessor: "resourceCode",
-          width: 200,
-          sortabel: true
-        },
-        {
-          Header: Resources["itemCode"][currentLanguage],
-          accessor: "itemCode",
-          width: 200,
-          sortabel: true
-        }
-      ];
-      
+      {
+        Header: Resources["numberAbb"][currentLanguage],
+        accessor: "arrange",
+        sortabel: true,
+        width: 80
+      },
+      {
+        Header: Resources["description"][currentLanguage],
+        accessor: "details",
+        width: 200,
+        sortabel: true
+      },
+      {
+        Header: Resources["unit"][currentLanguage],
+        accessor: "unit",
+        width: 200
+      },
+      {
+        Header: Resources["quantity"][currentLanguage],
+        accessor: "quantity",
+        width: 200
+      },
+      {
+        Header: Resources["unitPrice"][currentLanguage],
+        accessor: "unitPrice",
+        width: 200,
+        sortabel: true
+      },
+      {
+        Header: Resources["total"][currentLanguage],
+        accessor: "total",
+        width: 200,
+        sortabel: true
+      },
+      {
+        Header: Resources["resourceCode"][currentLanguage],
+        accessor: "resourceCode",
+        width: 200,
+        sortabel: true
+      },
+      {
+        Header: Resources["itemCode"][currentLanguage],
+        accessor: "itemCode",
+        width: 200,
+        sortabel: true
+      }
+    ];
+
     let columnsBoq = [
-        {
-          Header: Resources["goEdit"][currentLanguage],
-          accessor: "id",
-          Cell: ({ row }) => {
-            return (
-              <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.ViewEditItems(row,1)}>
-                <i style={{ fontSize: "1.6em" }} className="fa fa-pencil-square-o" />
-              </div>
-            );
-          },
-          width: 70
-        },{
-          Header: Resources["numberAbb"][currentLanguage],
-          accessor: "arrange",
-          sortabel: true,
-          width: 80
+      {
+        Header: Resources["goEdit"][currentLanguage],
+        accessor: "id",
+        Cell: ({ row }) => {
+          return (
+            <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.ViewEditItems(row, 1)}>
+              <i style={{ fontSize: "1.6em" }} className="fa fa-pencil-square-o" />
+            </div>
+          );
         },
-        
-        {
-          Header: Resources["description"][currentLanguage],
-          accessor: "details",
-          width: 200,
-          sortabel: true
-        }, 
-        {
-          Header: Resources["quantity"][currentLanguage],
-          accessor: "quantity",
-          width: 100
-        },
-        
-        {
-          Header: Resources["unitPrice"][currentLanguage],
-          accessor: "unitPrice",
-          width: 100,
-          sortabel: true
-        }, 
-        {
-          Header: Resources["resourceCode"][currentLanguage],
-          accessor: "resourceCode",
-          width: 200,
-          sortabel: true
-        },{
-          Header: Resources["poQuantity"][currentLanguage],
-          accessor: "poQuantity",
-          width: 100,
-          Cell: this.renderEditable.bind(this)
-        },
-        {
-          Header: Resources["itemCode"][currentLanguage],
-          accessor: "itemCode",
-          width: 200,
-          sortabel: true
-        }
-      ];
- 
+        width: 70
+      }, {
+        Header: Resources["numberAbb"][currentLanguage],
+        accessor: "arrange",
+        sortabel: true,
+        width: 80
+      },
+
+      {
+        Header: Resources["description"][currentLanguage],
+        accessor: "details",
+        width: 200,
+        sortabel: true
+      },
+      {
+        Header: Resources["quantity"][currentLanguage],
+        accessor: "quantity",
+        width: 100
+      },
+
+      {
+        Header: Resources["unitPrice"][currentLanguage],
+        accessor: "unitPrice",
+        width: 100,
+        sortabel: true
+      },
+      {
+        Header: Resources["resourceCode"][currentLanguage],
+        accessor: "resourceCode",
+        width: 200,
+        sortabel: true
+      }, {
+        Header: Resources["poQuantity"][currentLanguage],
+        accessor: "poQuantity",
+        width: 100,
+        Cell: this.renderEditable.bind(this)
+      },
+      {
+        Header: Resources["itemCode"][currentLanguage],
+        accessor: "itemCode",
+        width: 200,
+        sortabel: true
+      }
+    ];
+
     let columnsTerms = [
-        {
-          Header: Resources["arrange"][currentLanguage],
-          accessor: "arrange",
-          sortabel: true,
-          width: 80
+      {
+        Header: Resources["arrange"][currentLanguage],
+        accessor: "arrange",
+        sortabel: true,
+        width: 80
+      },
+      {
+        Header: Resources["delete"][currentLanguage],
+        accessor: "id",
+        Cell: ({ row }) => {
+          return (
+            <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.ConfirmDelete(row.id, "terms")}>
+              <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
+            </div>
+          );
         },
-        {
-          Header: Resources["delete"][currentLanguage],
-          accessor: "id",
-          Cell: ({ row }) => {
-            return (
-              <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.ConfirmDelete(row.id, "terms")}>
-                <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
-              </div>
-            );
-          },
-          width: 70
-        },
-        {
-          Header: Resources["description"][currentLanguage],
-          accessor: "details",
-          width: 200,
-          sortabel: true
-        }
-      ];
-  
+        width: 70
+      },
+      {
+        Header: Resources["description"][currentLanguage],
+        accessor: "details",
+        width: 200,
+        sortabel: true
+      }
+    ];
+
     let FirstStepMainDocument = () => {
       return (
         <Fragment>
@@ -2416,7 +2411,7 @@ renderEditable(cellInfo) {
                       <label className="control-label">
                         {Resources.subject[currentLanguage]}
                       </label>
-                      <div className={ "inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ") } >
+                      <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")} >
                         <input
                           name="subject"
                           className="form-control fsadfsadsa"
@@ -2484,8 +2479,8 @@ renderEditable(cellInfo) {
                           (errors.refDoc && touched.refDoc
                             ? " has-error"
                             : !errors.refDoc && touched.refDoc
-                            ? " has-success"
-                            : " ")
+                              ? " has-success"
+                              : " ")
                         }
                       >
                         <input
@@ -2537,12 +2532,12 @@ renderEditable(cellInfo) {
                         className={
                           "inputDev ui input" +
                           (errors.advancePaymentPercent &&
-                          touched.advancePaymentPercent
+                            touched.advancePaymentPercent
                             ? " has-error"
                             : !errors.advancePaymentPercent &&
                               touched.advancePaymentPercent
-                            ? " has-success"
-                            : " ")
+                              ? " has-success"
+                              : " ")
                         }
                       >
                         <input
@@ -2563,11 +2558,11 @@ renderEditable(cellInfo) {
                           name="advancePaymentPercent"
                         />
                         {errors.advancePaymentPercent &&
-                        touched.advancePaymentPercent ? (
-                          <em className="pError">
-                            {errors.advancePaymentPercent}
-                          </em>
-                        ) : null}
+                          touched.advancePaymentPercent ? (
+                            <em className="pError">
+                              {errors.advancePaymentPercent}
+                            </em>
+                          ) : null}
                       </div>
                     </div>
 
@@ -2690,45 +2685,45 @@ renderEditable(cellInfo) {
                     {this.state.isLoading === false ? (
                       this.showBtnsSaving()
                     ) : (
-                      <button className="primaryBtn-1 btn disabled">
-                        <div className="spinner">
-                          <div className="bounce1" />
-                          <div className="bounce2" />
-                          <div className="bounce3" />
-                        </div>
-                      </button>
-                    )}
+                        <button className="primaryBtn-1 btn disabled">
+                          <div className="spinner">
+                            <div className="bounce1" />
+                            <div className="bounce2" />
+                            <div className="bounce3" />
+                          </div>
+                        </button>
+                      )}
                   </div>
                 </div>
 
                 {
-              this.props.changeStatus === true ?   <Fragment>
-                        <ReactTable
-                            data={this.state.purchaseOrderDataItems}
-                                columns={ columnsItemView}
-                                defaultPageSize={5}
-                                noDataText={Resources["noData"][currentLanguage]}
-                                className="-striped -highlight"
-                        />
-<div className="document-fields">
-                        <header className="main__header">
-                            <div className="main__header--div">
-                            <h2 className="zero">
-                                {Resources["docDetails"][currentLanguage]}
-                            </h2>
-                            </div>
-                        </header> 
-<div className="proForm datepickerContainer">
+                  this.props.changeStatus === true ? <Fragment>
+                    <ReactTable
+                      data={this.state.purchaseOrderDataItems}
+                      columns={columnsItemView}
+                      defaultPageSize={5}
+                      noDataText={Resources["noData"][currentLanguage]}
+                      className="-striped -highlight"
+                    />
+                    <div className="document-fields">
+                      <header className="main__header">
+                        <div className="main__header--div">
+                          <h2 className="zero">
+                            {Resources["docDetails"][currentLanguage]}
+                          </h2>
+                        </div>
+                      </header>
+                      <div className="proForm datepickerContainer">
                         <div className="linebylineInput valid-input">
                           <label className="control-label">
                             {Resources.originalPurchaseOrderSum[currentLanguage]}
                           </label>
                           <div className="ui input inputDev">
-                            <input type="text" className="form-control" id="originalContractSum" readOnly 
-                                  defaultValue={this.state.document.originalContractSum }
-                                  name="originalContractSum" placeholder={ Resources.originalContractSum[currentLanguage]}/>
+                            <input type="text" className="form-control" id="originalContractSum" readOnly
+                              defaultValue={this.state.document.originalContractSum}
+                              name="originalContractSum" placeholder={Resources.originalContractSum[currentLanguage]} />
                           </div>
-                        </div>  
+                        </div>
 
                         <div className="linebylineInput valid-input">
                           <label className="control-label">
@@ -2736,10 +2731,10 @@ renderEditable(cellInfo) {
                           </label>
                           <div className="ui input inputDev">
                             <input type="text" className="form-control" id="revisedContractSumToDate" readOnly
-                                  defaultValue={this.state.document.revisedContractSumToDate }
-                                  name="revisedContractSumToDate" placeholder={ Resources.revisedContractSumToDate[currentLanguage]}/>
+                              defaultValue={this.state.document.revisedContractSumToDate}
+                              name="revisedContractSumToDate" placeholder={Resources.revisedContractSumToDate[currentLanguage]} />
                           </div>
-                        </div>  
+                        </div>
 
                         <div className="linebylineInput valid-input">
                           <label className="control-label">
@@ -2747,44 +2742,44 @@ renderEditable(cellInfo) {
                           </label>
                           <div className="ui input inputDev">
                             <input type="text" className="form-control" id="contractExecutedToDate" readOnly
-                              
-                                  defaultValue={this.state.document.contractExecutedToDate }
-                                  name="contractExecutedToDate" placeholder={ Resources.contractExecutedToDate[currentLanguage]}/>
+
+                              defaultValue={this.state.document.contractExecutedToDate}
+                              name="contractExecutedToDate" placeholder={Resources.contractExecutedToDate[currentLanguage]} />
                           </div>
-                        </div>  
-                     
+                        </div>
+
                         <div className="linebylineInput valid-input">
                           <label className="control-label">
                             {Resources.balance[currentLanguage]}
                           </label>
                           <div className="ui input inputDev">
                             <input type="text" className="form-control" id="balance" readOnly
-                              
-                                  defaultValue={this.state.document.balanceToFinish }
-                                  name="balance" placeholder={ Resources.balance[currentLanguage]}/>
+
+                              defaultValue={this.state.document.balanceToFinish}
+                              name="balance" placeholder={Resources.balance[currentLanguage]} />
                           </div>
-                        </div>  
                         </div>
-                        </div>
-                      </Fragment>
-                       : null
-          }
+                      </div>
+                    </div>
+                  </Fragment>
+                    : null
+                }
                 <div className="doc-pre-cycle letterFullWidth">
                   <div>
                     {this.state.docId > 0 &&
-                    this.state.isViewMode === false &&
-                    this.state.CurrStep === 1 ? (
-                      <UploadAttachment
-                        changeStatus={this.props.changeStatus}
-                        AddAttachments={883}
-                        EditAttachments={3261}
-                        ShowDropBox={3581}
-                        ShowGoogleDrive={3582}
-                        docTypeId={this.state.docTypeId}
-                        docId={this.state.docId}
-                        projectId={this.state.projectId}
-                      />
-                    ) : null}
+                      this.state.isViewMode === false &&
+                      this.state.CurrStep === 1 ? (
+                        <UploadAttachment
+                          changeStatus={this.props.changeStatus}
+                          AddAttachments={883}
+                          EditAttachments={3261}
+                          ShowDropBox={3581}
+                          ShowGoogleDrive={3582}
+                          docTypeId={this.state.docTypeId}
+                          docId={this.state.docId}
+                          projectId={this.state.projectId}
+                        />
+                      ) : null}
                     {this.state.CurrStep === 1 ? this.viewAttachments() : null}
                     {this.props.changeStatus === true ? (
                       <ViewWorkFlow
@@ -2797,9 +2792,9 @@ renderEditable(cellInfo) {
                 </div>
               </Form>
             )}
-          </Formik> 
-      
-                     
+          </Formik>
+
+
         </Fragment>
       );
     };
@@ -2809,7 +2804,7 @@ renderEditable(cellInfo) {
         <Fragment>
           <div className="document-fields">
             <Formik enableReinitialize={true} initialValues={{ ...this.state.purchaseOrderItems }}
-              validationSchema={ this.state.activeItems == 0 ? this.state.viewDisription === 0 ? ValidtionSchemaForNewItems : ValidtionSchemaForInventoryItems : "" }
+              validationSchema={this.state.activeItems == 0 ? this.state.viewDisription === 0 ? ValidtionSchemaForNewItems : ValidtionSchemaForInventoryItems : ""}
               onSubmit={values => { this.AddContractsOrderForPo(); }}>
               {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange, values }) => (
                 <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate">
@@ -2849,8 +2844,8 @@ renderEditable(cellInfo) {
                     </div>
                   </div>
                   {this.state.activeItems == 0
-                    ? this.renderNormalItems(errors,touched,values,handleBlur,handleChange,setFieldValue,setFieldTouched)
-                    : this.renderBOQItems(errors,touched,values,handleBlur,handleChange,setFieldValue,setFieldTouched)}
+                    ? this.renderNormalItems(errors, touched, values, handleBlur, handleChange, setFieldValue, setFieldTouched)
+                    : this.renderBOQItems(errors, touched, values, handleBlur, handleChange, setFieldValue, setFieldTouched)}
                   {this.state.activeItems == 1 ? (
                     <Fragment>
                       <header className="main__header">
@@ -2887,18 +2882,18 @@ renderEditable(cellInfo) {
                   </Fragment>
                   <div className={"slider-Btns fullWidthWrapper textLeft "}>
                     {this.state.isLoading === false ? (
-                      <button className={ "primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "")} type="submit" disabled={this.state.isViewMode}>
+                      <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "")} type="submit" disabled={this.state.isViewMode}>
                         {Resources["add"][currentLanguage]}
                       </button>
                     ) : (
-                      <button className="primaryBtn-1 btn  disabled" disabled="disabled">
-                        <div className="spinner">
-                          <div className="bounce1" />
-                          <div className="bounce2" />
-                          <div className="bounce3" />
-                        </div>
-                      </button>
-                    )}
+                        <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                          <div className="spinner">
+                            <div className="bounce1" />
+                            <div className="bounce2" />
+                            <div className="bounce3" />
+                          </div>
+                        </button>
+                      )}
                   </div>
                 </Form>
               )}
@@ -2931,181 +2926,181 @@ renderEditable(cellInfo) {
                 handleChange,
                 values
               }) => (
-                <Form
-                  id="signupForm1"
-                  className="proForm datepickerContainer customProform"
-                  noValidate="novalidate"
-                >
-                  <header className="main__header">
-                    <div className="main__header--div">
-                      <h2 className="zero">
-                        {Resources["termsOfPurchaseOrder"][currentLanguage]}
-                      </h2>
-                    </div>
-                  </header>
-                  <div className="proForm first-proform letterFullWidth radio__only">
-                    <div className="linebylineInput valid-input">
-                      <div className="ui checkbox radio radioBoxBlue">
-                        <input
-                          type="radio"
-                          name="statusTermsPO"
-                          defaultChecked={
-                            values.statusTermsPO === false ? null : "checked"
-                          }
-                          value="true"
-                          onChange={e => this.setState({ activeTermsPO: 0 })}
-                        />
-                        <label>{Resources.newTerm[currentLanguage]}</label>
+                  <Form
+                    id="signupForm1"
+                    className="proForm datepickerContainer customProform"
+                    noValidate="novalidate"
+                  >
+                    <header className="main__header">
+                      <div className="main__header--div">
+                        <h2 className="zero">
+                          {Resources["termsOfPurchaseOrder"][currentLanguage]}
+                        </h2>
                       </div>
-                      <div className="ui checkbox radio radioBoxBlue">
-                        <input
-                          type="radio"
-                          name="statusTermsPO"
-                          defaultChecked={
-                            values.statusTermsPO === false ? "checked" : null
-                          }
-                          value="false"
-                          onChange={e => this.setState({ activeTermsPO: 1 })}
-                        />
-                        <label>{Resources.templateTerm[currentLanguage]}</label>
-                      </div>
-                    </div>
-                  </div>
-                  {this.state.activeTermsPO == 0 ? (
-                    <div className="proForm datepickerContainer letterFullWidth">
+                    </header>
+                    <div className="proForm first-proform letterFullWidth radio__only">
                       <div className="linebylineInput valid-input">
-                        <label className="control-label">
-                          {Resources.newTerm[currentLanguage]}
-                        </label>
-                        <div
-                          className={
-                            "inputDev ui input" +
-                            (errors.details && touched.details
-                              ? " has-error"
-                              : !errors.details && touched.details
-                              ? " has-success"
-                              : " ")
-                          }
-                        >
+                        <div className="ui checkbox radio radioBoxBlue">
                           <input
-                            name="details"
-                            className="form-control fsadfsadsa"
-                            id="details"
-                            placeholder={Resources.newTerm[currentLanguage]}
-                            value={this.state.purchaseOrderTerms.details}
-                            autoComplete="off"
-                            onChange={e => this.handleChangeTerms(e, "details")}
-                            onBlur={e => {
-                              handleBlur(e);
-                              handleChange(e);
-                            }}
+                            type="radio"
+                            name="statusTermsPO"
+                            defaultChecked={
+                              values.statusTermsPO === false ? null : "checked"
+                            }
+                            value="true"
+                            onChange={e => this.setState({ activeTermsPO: 0 })}
                           />
-                          {touched.details ? (
-                            <em className="pError">{errors.details}</em>
-                          ) : null}
+                          <label>{Resources.newTerm[currentLanguage]}</label>
+                        </div>
+                        <div className="ui checkbox radio radioBoxBlue">
+                          <input
+                            type="radio"
+                            name="statusTermsPO"
+                            defaultChecked={
+                              values.statusTermsPO === false ? "checked" : null
+                            }
+                            value="false"
+                            onChange={e => this.setState({ activeTermsPO: 1 })}
+                          />
+                          <label>{Resources.templateTerm[currentLanguage]}</label>
                         </div>
                       </div>
+                    </div>
+                    {this.state.activeTermsPO == 0 ? (
+                      <div className="proForm datepickerContainer letterFullWidth">
+                        <div className="linebylineInput valid-input">
+                          <label className="control-label">
+                            {Resources.newTerm[currentLanguage]}
+                          </label>
+                          <div
+                            className={
+                              "inputDev ui input" +
+                              (errors.details && touched.details
+                                ? " has-error"
+                                : !errors.details && touched.details
+                                  ? " has-success"
+                                  : " ")
+                            }
+                          >
+                            <input
+                              name="details"
+                              className="form-control fsadfsadsa"
+                              id="details"
+                              placeholder={Resources.newTerm[currentLanguage]}
+                              value={this.state.purchaseOrderTerms.details}
+                              autoComplete="off"
+                              onChange={e => this.handleChangeTerms(e, "details")}
+                              onBlur={e => {
+                                handleBlur(e);
+                                handleChange(e);
+                              }}
+                            />
+                            {touched.details ? (
+                              <em className="pError">{errors.details}</em>
+                            ) : null}
+                          </div>
+                        </div>
 
-                      <div className="linebylineInput valid-input">
-                        <label className="control-label">
-                          {Resources.arrange[currentLanguage]}
-                        </label>
-                        <div className="ui input inputDev">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="arrange"
-                            readOnly
-                            value={this.state.purchaseOrderTerms.arrange}
-                            placeholder={Resources.arrange[currentLanguage]}
-                            onChange={e => this.handleChangeTerms(e, "arrange")}
-                            onBlur={e => {
-                              handleChange(e);
-                              handleBlur(e);
-                            }}
-                            name="arrange"
-                          />
+                        <div className="linebylineInput valid-input">
+                          <label className="control-label">
+                            {Resources.arrange[currentLanguage]}
+                          </label>
+                          <div className="ui input inputDev">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="arrange"
+                              readOnly
+                              value={this.state.purchaseOrderTerms.arrange}
+                              placeholder={Resources.arrange[currentLanguage]}
+                              onChange={e => this.handleChangeTerms(e, "arrange")}
+                              onBlur={e => {
+                                handleChange(e);
+                                handleBlur(e);
+                              }}
+                              name="arrange"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="proForm datepickerContainer letterFullWidth">
-                      <div className="linebylineInput valid-input">
-                        <Dropdown
-                          title="terms"
-                          data={this.state.descriptions}
-                          selectedValue={this.state.selectedDescription}
-                          handleChange={event => {
-                            this.handleChangeDropDownTerms(
-                              event,
-                              "details",
-                              false,
-                              "",
-                              "",
-                              "",
-                              "selectedDescription",
-                              ""
-                            );
-                          }}
-                          onChange={setFieldValue}
-                          onBlur={setFieldTouched}
-                          error={errors.details}
-                          touched={touched.details}
-                          name="details"
-                          index="details"
-                        />
-                      </div>
-
-                      <div className="linebylineInput valid-input">
-                        <label className="control-label">
-                          {Resources.arrange[currentLanguage]}
-                        </label>
-                        <div className="ui input inputDev">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="arrange"
-                            readOnly
-                            value={this.state.purchaseOrderTerms.arrange}
-                            placeholder={Resources.arrange[currentLanguage]}
-                            onChange={e => this.handleChangeTerms(e, "arrange")}
-                            onBlur={e => {
-                              handleChange(e);
-                              handleBlur(e);
-                            }}
-                            name="arrange"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  <div className={"slider-Btns fullWidthWrapper textLeft "}>
-                    {this.state.isLoading === false ? (
-                      <button
-                        className={
-                          "primaryBtn-1 btn " +
-                          (this.props.isViewMode === true ? "disNone" : "")
-                        }
-                        type="submit"
-                        disabled={this.state.isViewMode}
-                      >
-                        {Resources["add"][currentLanguage]}
-                      </button>
                     ) : (
-                      <button
-                        className="primaryBtn-1 btn  disabled"
-                        disabled="disabled"
-                      >
-                        <div className="spinner">
-                          <div className="bounce1" />
-                          <div className="bounce2" />
-                          <div className="bounce3" />
+                        <div className="proForm datepickerContainer letterFullWidth">
+                          <div className="linebylineInput valid-input">
+                            <Dropdown
+                              title="terms"
+                              data={this.state.descriptions}
+                              selectedValue={this.state.selectedDescription}
+                              handleChange={event => {
+                                this.handleChangeDropDownTerms(
+                                  event,
+                                  "details",
+                                  false,
+                                  "",
+                                  "",
+                                  "",
+                                  "selectedDescription",
+                                  ""
+                                );
+                              }}
+                              onChange={setFieldValue}
+                              onBlur={setFieldTouched}
+                              error={errors.details}
+                              touched={touched.details}
+                              name="details"
+                              index="details"
+                            />
+                          </div>
+
+                          <div className="linebylineInput valid-input">
+                            <label className="control-label">
+                              {Resources.arrange[currentLanguage]}
+                            </label>
+                            <div className="ui input inputDev">
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="arrange"
+                                readOnly
+                                value={this.state.purchaseOrderTerms.arrange}
+                                placeholder={Resources.arrange[currentLanguage]}
+                                onChange={e => this.handleChangeTerms(e, "arrange")}
+                                onBlur={e => {
+                                  handleChange(e);
+                                  handleBlur(e);
+                                }}
+                                name="arrange"
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </button>
-                    )}
-                  </div>
-                </Form>
-              )}
+                      )}
+                    <div className={"slider-Btns fullWidthWrapper textLeft "}>
+                      {this.state.isLoading === false ? (
+                        <button
+                          className={
+                            "primaryBtn-1 btn " +
+                            (this.props.isViewMode === true ? "disNone" : "")
+                          }
+                          type="submit"
+                          disabled={this.state.isViewMode}
+                        >
+                          {Resources["add"][currentLanguage]}
+                        </button>
+                      ) : (
+                          <button
+                            className="primaryBtn-1 btn  disabled"
+                            disabled="disabled"
+                          >
+                            <div className="spinner">
+                              <div className="bounce1" />
+                              <div className="bounce2" />
+                              <div className="bounce3" />
+                            </div>
+                          </button>
+                        )}
+                    </div>
+                  </Form>
+                )}
             </Formik>
 
             <header className="main__header">
@@ -3130,7 +3125,7 @@ renderEditable(cellInfo) {
     let FouthStepSchedule = () => {
       return (
         <Schedule
-          ApiGet={"GetContractsPurchaseOrderScheduleItemssByPurchaseId?projectId="+this.state.docId}
+          ApiGet={"GetContractsPurchaseOrderScheduleItemssByPurchaseId?projectId=" + this.state.docId}
           Api="AddContractsPurchaseOrderScheduleItemss"
           ApiDelete="DeleteContractsPurchaseOrderScheduleItemsById?id="
           contractId={this.state.docId}
@@ -3194,27 +3189,27 @@ renderEditable(cellInfo) {
       <div className="mainContainer">
         {this.state.IsLoadingCheckCode ? <LoadingSection /> : null}
 
-        <div className={ this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step" }>
+        <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
           <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.purchaseOrder[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
           <div className="doc-container">
             <div className="step-content">
               {this.state.FirstStep ? (
                 <Fragment>{FirstStepMainDocument()}</Fragment>
               ) : (
-                <Fragment>
-                  {this.state.SecondStep
-                    ? SecondStepItems()
-                    : this.state.ThirdStep
-                    ? ThirdStepTerms()
-                    : this.state.FourthStep
-                    ? FouthStepSchedule()
-                    : this.state.FivethStep
-                    ? FivethStepInsurance()
-                    : this.state.SixthStep
-                    ? SixthStepSubPurchaseOrders()
-                    : SeventhStepSubContracts()}
-                </Fragment>
-              )}
+                  <Fragment>
+                    {this.state.SecondStep
+                      ? SecondStepItems()
+                      : this.state.ThirdStep
+                        ? ThirdStepTerms()
+                        : this.state.FourthStep
+                          ? FouthStepSchedule()
+                          : this.state.FivethStep
+                            ? FivethStepInsurance()
+                            : this.state.SixthStep
+                              ? SixthStepSubPurchaseOrders()
+                              : SeventhStepSubContracts()}
+                  </Fragment>
+                )}
 
               {this.state.FirstStep === false ? (
                 <div className="doc-pre-cycle">
@@ -3288,8 +3283,8 @@ renderEditable(cellInfo) {
                       (this.state.ThirdStepComplate
                         ? "active"
                         : this.state.SecondStepComplate
-                        ? "current__step"
-                        : "")
+                          ? "current__step"
+                          : "")
                     }
                   >
                     <div className="steps-timeline">
@@ -3308,8 +3303,8 @@ renderEditable(cellInfo) {
                       (this.state.FourthStepComplate
                         ? "active"
                         : this.state.ThirdStepComplate
-                        ? "current__step"
-                        : "")
+                          ? "current__step"
+                          : "")
                     }
                   >
                     <div className="steps-timeline">
@@ -3330,8 +3325,8 @@ renderEditable(cellInfo) {
                       (this.state.FivethStepComplate
                         ? "active"
                         : this.state.FourthStepComplate
-                        ? "current__step"
-                        : "")
+                          ? "current__step"
+                          : "")
                     }
                   >
                     <div className="steps-timeline">
@@ -3350,8 +3345,8 @@ renderEditable(cellInfo) {
                       (this.state.SixthStepComplate
                         ? "active"
                         : this.state.FivethStepComplate
-                        ? "current__step"
-                        : "")
+                          ? "current__step"
+                          : "")
                     }
                   >
                     <div className="steps-timeline">
@@ -3370,8 +3365,8 @@ renderEditable(cellInfo) {
                       (this.state.SeventhStepComplate
                         ? "active"
                         : this.state.SixthStepComplate
-                        ? "current__step"
-                        : "")
+                          ? "current__step"
+                          : "")
                     }
                   >
                     <div className="steps-timeline">
@@ -3436,7 +3431,7 @@ renderEditable(cellInfo) {
                   </button>
                   <span className="border" />
                   <div className="document__action--menu">
-                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>
+                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                   </div>
                 </div>
               </div>
@@ -3446,7 +3441,7 @@ renderEditable(cellInfo) {
                 {this.state.currentComponent}
               </SkyLight>
             </div>
-          
+
             <div className="largePopup largeModal " style={{ display: this.state.showModalForEdit ? "block" : "none" }}>
               <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)}>
                 {this._component()}
@@ -3477,4 +3472,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(PurchaseOrderAddEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PurchaseOrderAddEdit));

@@ -56,7 +56,7 @@ class ProposalAddEdit extends Component {
           projectName = obj.projectName;
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
-          perviousRoute= obj.perviousRoute;
+          perviousRoute = obj.perviousRoute;
           arrange = obj.arrange;
 
         } catch {
@@ -104,7 +104,7 @@ class ProposalAddEdit extends Component {
 
     if (!Config.IsAllow(66) && !Config.IsAllow(67) && !Config.IsAllow(69)) {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
-      this.props.history.push( 
+      this.props.history.push(
         this.state.perviousRoute
       );
     }
@@ -125,8 +125,7 @@ class ProposalAddEdit extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.document.id) {
-
-      nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
+      nextProps.document.docDate = nextProps.document.docDate === null ? moment().format('YYYY-MM-DD') : moment(nextProps.document.docDate).format('YYYY-MM-DD')
 
       this.setState({
         document: nextProps.document,
@@ -339,8 +338,7 @@ class ProposalAddEdit extends Component {
     });
 
     let saveDocument = { ...this.state.document };
-
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditCommunicationProposal", saveDocument).then(result => {
 
@@ -363,7 +361,7 @@ class ProposalAddEdit extends Component {
     });
     let saveDocument = { ...this.state.document };
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("AddCommunicationProposal", saveDocument).then(result => {
       this.setState({

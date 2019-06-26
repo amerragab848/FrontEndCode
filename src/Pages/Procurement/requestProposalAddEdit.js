@@ -127,9 +127,7 @@ class RequestProposalAddEdit extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.document.id) {
-
-      nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
-
+      nextProps.document.docDate = nextProps.document.docDate === null ? moment().format('YYYY-MM-DD') : moment(nextProps.document.docDate).format('YYYY-MM-DD')
       this.setState({
         document: nextProps.document,
         hasWorkflow: nextProps.hasWorkflow,
@@ -341,7 +339,7 @@ class RequestProposalAddEdit extends Component {
 
     let saveDocument = { ...this.state.document };
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditRequestProposalById", saveDocument).then(result => {
 
@@ -364,7 +362,7 @@ class RequestProposalAddEdit extends Component {
     });
     let saveDocument = { ...this.state.document };
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("AddRequestProposal", saveDocument).then(result => {
       this.setState({

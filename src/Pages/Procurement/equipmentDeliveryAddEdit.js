@@ -37,7 +37,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -77,7 +77,7 @@ class equipmentDeliveryAddEdit extends Component {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -100,7 +100,7 @@ class equipmentDeliveryAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -149,9 +149,9 @@ class equipmentDeliveryAddEdit extends Component {
 
         if (!Config.IsAllow(256) && !Config.IsAllow(257) && !Config.IsAllow(259)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
     }
 
@@ -188,9 +188,12 @@ class equipmentDeliveryAddEdit extends Component {
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document.id) {
             let doc = nextProps.document
-            doc.docDate = doc.docDate != null ? moment(doc.docDate).format("DD/MM/YYYY") : moment();
-            doc.ticketDate = doc.ticketDate != null ? moment(doc.ticketDate).format("DD/MM/YYYY") : moment();
-            doc.deliveryDate = doc.deliveryDate != null ? moment(doc.deliveryDate).format("DD/MM/YYYY") : moment();
+
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+            doc.ticketDate = doc.ticketDate === null ? moment().format('YYYY-MM-DD') : moment(doc.ticketDate).format('YYYY-MM-DD')
+            doc.deliveryDate = doc.deliveryDate === null ? moment().format('YYYY-MM-DD') : moment(doc.deliveryDate).format('YYYY-MM-DD')
+
+
             this.setState({ isEdit: true, document: doc, hasWorkflow: this.props.hasWorkflow })
             let isEdit = nextProps.document.id > 0 ? true : false
             this.fillDropDowns(isEdit);
@@ -457,9 +460,9 @@ class equipmentDeliveryAddEdit extends Component {
             // console.log(projectIds)
             let doc = { ...this.state.document };
             doc.selectedProjects = ProjectIds
-            doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.ticketDate = moment(doc.ticketDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.deliveryDate = moment(doc.deliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.docDate = moment(doc.docDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.ticketDate = moment(doc.ticketDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.deliveryDate = moment(doc.deliveryDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             dataservice.addObject('EditLogsEquipmentsDelivery', doc).then(result => {
 
                 this.setState({ isLoading: false })
@@ -473,9 +476,9 @@ class equipmentDeliveryAddEdit extends Component {
         } else {
 
             let doc = { ...this.state.document };
-            doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.ticketDate = moment(doc.ticketDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.deliveryDate = moment(doc.deliveryDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.docDate = moment(doc.docDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.ticketDate = moment(doc.ticketDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.deliveryDate = moment(doc.deliveryDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             doc.selectedProjects = ProjectIds
             //doc.docId =this.state.
             dataservice.addObject('AddLogsEquipmentsDelivery', doc).then(result => {
@@ -547,12 +550,12 @@ class equipmentDeliveryAddEdit extends Component {
         this.setState({ isLoading: true })
         let obj = {
             equipmentDeliveryId: this.state.docId,
-            receivedDate: moment(this.state.receivedDateItem, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+            receivedDate: moment(this.state.receivedDateItem,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
             deliveryTime: '',
             quantity: this.state.seletedItem.quantity,
             description: this.state.seletedItem.details,
             remarks: this.state.remarks,
-            nextDeliveryDate: moment(this.state.dueBackItem, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+            nextDeliveryDate: moment(this.state.dueBackItem, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
             resourceCode: this.state.seletedItem.resourceCode,
             itemId: this.state.seletedItem.id,
             arrange: this.state.arrangeItem,
