@@ -1,18 +1,15 @@
 import React, { Component } from "react";
 import Api from "../../../../api";
 import LoadingSection from "../../../../Componants/publicComponants/LoadingSection";
-import Export from "../../../OptionsPanels/Export";
-// import "../../../../Styles/css/semantic.min.css";
-// import "../../../../Styles/scss/en-us/layout.css";
+import Export from "../../../OptionsPanels/Export"; 
 import ConfirmationModal from "../../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../../Pages/Communication/GridSetup";
-import CryptoJS from 'crypto-js';
+import GridSetup from "../../../../Pages/Communication/GridSetup"; 
 import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
-let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-const _ = require('lodash')
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"); 
+
 class permissionsGroups extends Component {
     constructor(props) {
         super(props);
@@ -99,8 +96,7 @@ class permissionsGroups extends Component {
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false, showResetPasswordModal: false });
     };
-
-
+ 
     ConfirmdeleteAccount = () => {
         if (this.state.rowId[0] != null) {
             this.setState({ isLoading: true , showDeleteModal: false })
@@ -148,9 +144,7 @@ class permissionsGroups extends Component {
             });
         }
 
-    }
-
-  
+    } 
 
     render() {
         const dataGrid =

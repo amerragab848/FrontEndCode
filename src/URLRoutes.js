@@ -1167,19 +1167,6 @@ var routes = [
     }
   },
   {
-    route: "Risk",
-    moduleId: "commonLogs",
-    title: "risk",
-    nav: true,
-    hash: "#Risk",
-    settings: {
-      Contracts: true,
-      permission: 88,
-      caption: "procoor-icon-transmittals",
-      order: 3
-    }
-  },
-  {
     route:
       "transmittalAddEdit/:Id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
     moduleId: "communication/transmittalAddEdit",
@@ -2129,11 +2116,24 @@ var routes = [
     settings: { Reports: true, permission: 418, order: 8 }
   },
   {
+    route: "Risk",
+    moduleId: "commonLogs",
+    title: "risk",
+    nav: true,
+    hash: "#Risk",
+    settings: {
+      CostControl: true,
+      permission: 10004,
+      caption: "procoor-icon-transmittals",
+      order: 1
+    }
+  },
+  {
     route: "budgetCashFlowReport",
     moduleId: "reports/budgetCashFlowReport",
     title: "budgetCashFlowReport",
     nav: true,
-    settings: { CostControl: true, permission: 3186, order: 14 }
+    settings: { CostControl: true, permission: 3186, order: 2 }
   },
   {
     route: "subContractor",

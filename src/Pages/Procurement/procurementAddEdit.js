@@ -179,7 +179,7 @@ class procurementAddEdit extends Component {
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document.id) {
             let doc = nextProps.document
-            doc.docDate = doc.docDate != null ? moment(doc.docDate).format("DD/MM/YYYY") : moment();
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
             this.setState({ isEdit: true, document: doc, hasWorkflow: this.props.hasWorkflow })
             let isEdit = nextProps.document.id > 0 ? true : false
             this.fillDropDowns(isEdit);
@@ -544,7 +544,7 @@ class procurementAddEdit extends Component {
         this.setState({ isLoading: true, IsAddMood: false })
         if (Mood === 'EditMood') {
             let doc = { ...this.state.document };
-            doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             dataservice.addObject('EditContractsProcurement', doc).then(result => {
                 this.setState({ isLoading: false, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])
@@ -554,7 +554,7 @@ class procurementAddEdit extends Component {
             })
         } else {
             let doc = { ...this.state.document };
-            doc.docDate = moment(doc.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             dataservice.addObject('AddContractsProcurement', doc).then(result => {
                 this.setState({ isLoading: false, docId: result.id, IsAddMood: true })
                 toast.success(Resources["operationSuccess"][currentLanguage])

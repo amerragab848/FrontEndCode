@@ -109,7 +109,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 class materialInspectionRequestAddEdit extends Component {
@@ -124,7 +124,7 @@ class materialInspectionRequestAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -149,7 +149,7 @@ class materialInspectionRequestAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -193,9 +193,9 @@ class materialInspectionRequestAddEdit extends Component {
 
         if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
 
         this.newCycle = this.newCycle.bind(this);
@@ -226,9 +226,9 @@ class materialInspectionRequestAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let serverInspectionRequest = { ...nextProps.document };
-            serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');
-            serverInspectionRequest.requiredDate = moment(serverInspectionRequest.requiredDate).format('DD/MM/YYYY');
-            serverInspectionRequest.resultDate = moment(serverInspectionRequest.resultDate).format('DD/MM/YYYY');
+            serverInspectionRequest.docDate = serverInspectionRequest.docDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.docDate).format('YYYY-MM-DD')
+            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD')
+            serverInspectionRequest.resultDate = serverInspectionRequest.resultDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.resultDate).format('YYYY-MM-DD')
 
             this.setState({
                 document: { ...serverInspectionRequest },
@@ -597,9 +597,9 @@ class materialInspectionRequestAddEdit extends Component {
         });
 
         let saveDocument = this.state.document;
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.resultDate = moment(saveDocument.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('EditMaterialRequestOnly', saveDocument).then(result => {
             this.setState({
@@ -618,9 +618,9 @@ class materialInspectionRequestAddEdit extends Component {
             DocLoading: true
         });
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.resultDate = moment(saveDocument.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         saveDocument.projectId = this.state.projectId;
 
@@ -675,7 +675,8 @@ class materialInspectionRequestAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -1073,7 +1074,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                     enableReinitialize={this.props.changeStatus}
                                                     onSubmit={(values) => {
                                                         if (this.props.showModal) { return; }
-        
+
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveInspectionRequest();
                                                         } else {
@@ -1121,7 +1122,6 @@ class materialInspectionRequestAddEdit extends Component {
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='docDate'
-                                                                        format={'DD/MM/YYYY'}
                                                                         onChange={e => setFieldValue('docDate', e)}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.docDate}
@@ -1166,7 +1166,6 @@ class materialInspectionRequestAddEdit extends Component {
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='requiredDateLog'
-                                                                        format={'DD/MM/YYYY'}
                                                                         onChange={e => setFieldValue('requiredDate', e)}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.requiredDate}
@@ -1178,7 +1177,6 @@ class materialInspectionRequestAddEdit extends Component {
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='resultDate'
-                                                                        date={'DD/MM/YYYY'}
                                                                         onChange={e => setFieldValue('resultDate', e)}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.resultDate}

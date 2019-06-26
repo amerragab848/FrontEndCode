@@ -10,10 +10,8 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ReactTable from "react-table";
-
 import { withRouter } from "react-router-dom";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
-
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -216,10 +214,9 @@ class inspectionRequestAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let serverInspectionRequest = { ...nextProps.document };
-
-            serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');
-            serverInspectionRequest.requiredDate = moment(serverInspectionRequest.requiredDate).format('DD/MM/YYYY');
-            serverInspectionRequest.resultDate = moment(serverInspectionRequest.resultDate).format('DD/MM/YYYY');
+            serverInspectionRequest.docDate = serverInspectionRequest.docDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.docDate).format('YYYY-MM-DD')
+            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD')
+            serverInspectionRequest.resultDate = serverInspectionRequest.resultDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.resultDate).format('YYYY-MM-DD')
 
             this.setState({
                 document: { ...serverInspectionRequest },
@@ -593,9 +590,9 @@ class inspectionRequestAddEdit extends Component {
         });
 
         let saveDocument = this.state.document;
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.resultDate = moment(saveDocument.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('EditInspectionRequestOnly', saveDocument).then(result => {
             this.setState({
@@ -613,9 +610,11 @@ class inspectionRequestAddEdit extends Component {
         this.setState({
             DocLoading: true
         });
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.resultDate = moment(saveDocument.resultDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
+        
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         saveDocument.projectId = this.state.projectId;
 
@@ -1116,7 +1115,6 @@ class inspectionRequestAddEdit extends Component {
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='docDate'
-                                                                        format={'DD/MM/YYYY'}
                                                                         onChange={e => setFieldValue('docDate', e)}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.docDate}
@@ -1161,7 +1159,6 @@ class inspectionRequestAddEdit extends Component {
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='requiredDateLog'
-                                                                        format={'DD/MM/YYYY'}
                                                                         onChange={e => setFieldValue('requiredDate', e)}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.requiredDate}
@@ -1173,7 +1170,6 @@ class inspectionRequestAddEdit extends Component {
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='resultDate'
-                                                                        date={'DD/MM/YYYY'}
                                                                         onChange={e => setFieldValue('resultDate', e)}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.resultDate}
