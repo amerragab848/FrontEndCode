@@ -28,20 +28,19 @@ class ContractorsPerformance extends Component {
                 pathname: "/"
             });
         }
-
     }
 
 
     getChartData = () => {
         let reportobj = {
-            fromDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            toDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            fromDate: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            toDate: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
         }
         let noClicks = this.state.noClicks;
 
         this.setState({ isLoading: true })
         Api.post('GetContractorsPerformance', reportobj).then(res => {
-            this.setState({ isLoading: false ,showChart:true})
+            this.setState({ isLoading: false, showChart: true })
             if (res.length > 0) {
                 let _catag = []
                 let series = []
@@ -49,26 +48,19 @@ class ContractorsPerformance extends Component {
                     _catag.push(item.companyName);
 
                 })
-                 let listCount = []
-                // res.map((item, index) => {
-                //     listCount = []
-                //     item.listCounts.map((element, index) => {
-                //         listCount.push(element.count)
-                //     })
-                //     series.push({ name: item.epsName, value: listCount })
-                // })
+                let listCount = []
 
                 res.map((item) => {
                     item.listCounts.map((obj) => {
                         listCount.push({ stack: item.epsName, value: obj["count"], name: obj["companyName"] })
                         return null;
                     })
-          
+
                     return null;
                 });
 
                 let xAxis = { categories: _catag }
-                this.setState({ series:listCount, noClicks: noClicks + 1, showChart: true });
+                this.setState({ series: listCount, noClicks: noClicks + 1, showChart: true });
             }
         })
     }
@@ -86,7 +78,7 @@ class ContractorsPerformance extends Component {
                 multiSeries="no"
                 series={this.state.series}
                 xAxis={this.state.xAxis}
-                title={Resources['contractorsPerformance'][currentLanguage]} yTitle={Resources['count'][currentLanguage]} />):null
+                title={Resources['contractorsPerformance'][currentLanguage]} yTitle={Resources['count'][currentLanguage]} />) : null
 
         return (
             <div className="reports__content">

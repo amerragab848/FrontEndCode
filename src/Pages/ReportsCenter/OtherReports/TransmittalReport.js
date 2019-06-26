@@ -169,13 +169,6 @@ class TransmittalReport extends Component {
                 formatter: dateFormate
             }
         ];
-
-    }
-
-    componentDidMount() {
-    }
-    componentWillMount() {
-
     }
 
     subjectLink = ({ value, row }) => {
@@ -202,16 +195,14 @@ class TransmittalReport extends Component {
         this.setState({ isLoading: true })
         let reportobj = {
             status: this.state.status,
-            startDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            finishDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            startDate: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            finishDate: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
         }
         Api.post('GetTransmittalReports', reportobj).then((res) => {
             this.setState({ rows: res, isLoading: false })
         }).catch(() => {
             this.setState({ isLoading: false })
         })
-
-
     }
 
     handleChange = (name, value) => {
@@ -229,8 +220,6 @@ class TransmittalReport extends Component {
             : null
 
         return (
-
-
             <div className="reports__content">
                 <header>
                     <h2 className="zero">{Resources.transmittalReport[currentLanguage]}</h2>
