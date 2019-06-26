@@ -309,11 +309,11 @@ class projectEstimateAddEdit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
-            let ProjectEstiDoc = nextProps.document
-            ProjectEstiDoc.docDate = moment(ProjectEstiDoc.docDate).format('DD/MM/YYYY')
-            ProjectEstiDoc.dueDate = moment(ProjectEstiDoc.dueDate).format('DD/MM/YYYY')
+            let doc = nextProps.document
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+            doc.dueDate = doc.dueDate === null ? moment().format('YYYY-MM-DD') : moment(doc.dueDate).format('YYYY-MM-DD')
             this.setState({
-                document: ProjectEstiDoc,
+                document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
             });
             this.checkDocumentIsView();
@@ -593,8 +593,8 @@ class projectEstimateAddEdit extends Component {
             })
 
             let ProjectEstiDoc = { ...this.state.document }
-            ProjectEstiDoc.docDate = moment(ProjectEstiDoc.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-            ProjectEstiDoc.dueDate = moment(ProjectEstiDoc.dueDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            ProjectEstiDoc.docDate = moment(ProjectEstiDoc.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            ProjectEstiDoc.dueDate = moment(ProjectEstiDoc.dueDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
 
             if (this.state.docId > 0) {
                 dataservice.addObject('EditProjectEstimate', ProjectEstiDoc).then(
