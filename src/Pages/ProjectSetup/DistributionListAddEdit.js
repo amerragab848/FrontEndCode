@@ -133,7 +133,7 @@ class TaskGroupsAddEdit extends Component {
             docTypeId: 89,
             projectId: projectId,
             docApprovalId: docApprovalId,
-            DocumentDate: moment().format("DD-MM-YYYY"),
+            DocumentDate: moment(),
             Status: 'true',
             CompanyData: [],
             ContactData: [],
@@ -254,7 +254,6 @@ class TaskGroupsAddEdit extends Component {
             Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
                 res => {
                     MaxArrange = res
-                    this.setState({ DocumentDate: moment().format("DD:MM:YYYY") })
                 }
             )
             this.props.actions.documentForAdding()
@@ -329,18 +328,14 @@ class TaskGroupsAddEdit extends Component {
 
     componentWillReceiveProps(props, state) {
         if (props.document.id) {
-          
+            let date =  props.document.docDate = props.document.docDate === null ? moment().format('YYYY-MM-DD') : moment(props.document.docDate).format('YYYY-MM-DD')
             this.setState({
                 IsEditMode: true,
                 Dis_ListData: props.document,
-              //  DocumentDate: date,
+               DocumentDate: date,
                 isLoading: false
             });
             this.checkDocumentIsView();
-        }
-        if (props.document.docDate) {
-            let date = moment(props.document.docDate).format("DD/MM/YYYY")
-            this.setState({DocumentDate:date})
         }
 
     }
@@ -439,7 +434,7 @@ class TaskGroupsAddEdit extends Component {
 
     AddEditDis_List = (values, actions) => {
 
-        let Date = moment(this.state.DocumentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let Date = moment(this.state.DocumentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         if (this.state.IsEditMode) {
 
@@ -450,9 +445,6 @@ class TaskGroupsAddEdit extends Component {
             }
             dataservice.addObject('EditProjectDistributionList', saveDoc).then(
                 res => {
-                    this.setState({
-                        Dis_ListData: res
-                    })
                     toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
                     this.NextStep()
                 }).catch(ex => {

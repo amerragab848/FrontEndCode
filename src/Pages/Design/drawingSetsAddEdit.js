@@ -10,7 +10,7 @@ import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import ModernDatepicker from "react-modern-datepicker";
+import ModernDatepicker from "../../Componants/OptionsPanels/DatePicker";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -24,10 +24,6 @@ import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import Rodal from "../../Styles/js/rodal";
-import "../../Styles/css/rodal.css";
-import { MapsTransferWithinAStation } from "material-ui/svg-icons";
-import save from "material-ui/svg-icons/content/save";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
 const _ = require("lodash");
@@ -54,7 +50,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 
 class DrawingSetsAddEdit extends Component {
@@ -76,7 +72,7 @@ class DrawingSetsAddEdit extends Component {
           projectName = obj.projectName;
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
-          perviousRoute=obj.perviousRoute;
+          perviousRoute = obj.perviousRoute;
           arrange = obj.arrange;
 
         } catch {
@@ -94,7 +90,7 @@ class DrawingSetsAddEdit extends Component {
       showDeleteModal: false,
       isLoading: false,
       isEdit: false,
-      perviousRoute:perviousRoute,
+      perviousRoute: perviousRoute,
       currentTitle: "sendToWorkFlow",
       showModal: false,
       isViewMode: false,
@@ -142,7 +138,7 @@ class DrawingSetsAddEdit extends Component {
 
       toast.success(Resources["missingPermissions"][currentLanguage]);
 
-      this.props.history.push( 
+      this.props.history.push(
         this.state.perviousRoute
       );
     }
@@ -165,15 +161,15 @@ class DrawingSetsAddEdit extends Component {
   componentWillReceiveProps(nextProps, prevProps) {
 
     if (nextProps.document.id) {
-
-      nextProps.document.docDate = moment(nextProps.document.docDate).format('DD/MM/YYYY');
+      let doc = nextProps.document
+      doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
 
       dataservice.GetRowById("GetLogsDrawingsSetsDocsByProjectId?drawingSetId=" + docId).then(result => {
 
         this.setState({
           listDrawing: [...result],
           isEdit: true,
-          document: this.props.document,
+          document: doc,
           hasWorkflow: this.props.hasWorkflow
         });
         let data = { items: result };
@@ -485,7 +481,7 @@ class DrawingSetsAddEdit extends Component {
 
     let saveDocument = this.state.document;
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditLogsDrawingsSets", saveDocument).then(result => {
 
@@ -506,7 +502,7 @@ class DrawingSetsAddEdit extends Component {
 
       let saveDocument = { ...this.state.document };
 
-      saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+      saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
       dataservice.addObject("AddLogsDrawingsSets", saveDocument).then(result => {
 
@@ -793,9 +789,9 @@ class DrawingSetsAddEdit extends Component {
                         validationSchema={validationSchema}
                         enableReinitialize={this.props.changeStatus}
                         onSubmit={values => {
-                          
+
                           if (this.props.showModal) { return; }
-        
+
                           if (this.props.changeStatus === true && this.state.docId > 0) {
                             this.editDrawing();
                           } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -846,21 +842,10 @@ class DrawingSetsAddEdit extends Component {
                               </div>
                             </div>
                             <div className="proForm datepickerContainer">
-                              <div className="linebylineInput valid-input">
+                              <div className="linebylineInput">
                                 <div className="inputDev ui input input-group date NormalInputDate">
-                                  <div className="customDatepicker fillter-status fillter-item-c ">
-                                    <div className="proForm datepickerContainer">
-                                      <label className="control-label">
-                                        {Resources.docDate[currentLanguage]}
-                                      </label>
-                                      <div className="linebylineInput">
-                                        <div className="inputDev ui input input-group date NormalInputDate">
-                                          <ModernDatepicker date={this.state.document.docDate} format={"DD/MM/YYYY"} showBorder
-                                            onChange={e => this.handleChangeDate(e, "docDate")} placeholder={"Select a date"} />
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
+                                  <ModernDatepicker startDate={this.state.document.docDate} title='docDate'
+                                    handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                 </div>
                               </div>
                               <div className="linebylineInput valid-input">
