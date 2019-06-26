@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
+import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import ModernDatepicker from 'react-modern-datepicker';
+import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { withRouter } from "react-router-dom";
-import TextEditor from '../../Componants/OptionsPanels/TextEditor'
+import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
@@ -23,7 +23,7 @@ import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { toast } from "react-toastify";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -39,7 +39,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 
 const _ = require('lodash');
@@ -55,11 +55,13 @@ class TransmittalAddEdit extends Component {
         let index = 0;
 
         for (let param of query.entries()) {
+
             if (index == 0) {
+
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -80,7 +82,7 @@ class TransmittalAddEdit extends Component {
             isViewMode: false,
             viewModel: false,
             isApproveMode: isApproveMode,
-            perviousRoute:perviousRoute,
+            perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
             docTypeId: 28,
@@ -120,9 +122,9 @@ class TransmittalAddEdit extends Component {
 
         if (!Config.IsAllow(84) && !Config.IsAllow(85) && !Config.IsAllow(87)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
     }
 
@@ -142,18 +144,19 @@ class TransmittalAddEdit extends Component {
 
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
-        
+
         this.setState({
             docId: 0
         });
     }
 
     componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id) { 
+        if (nextProps.document.id) {
 
             let serverInspectionRequest = { ...nextProps.document };
-            serverInspectionRequest.docDate = moment(serverInspectionRequest.docDate).format('DD/MM/YYYY');
-            serverInspectionRequest.requiredDate = moment(serverInspectionRequest.requiredDate).format('DD/MM/YYYY'); 
+
+            serverInspectionRequest.docDate = serverInspectionRequest.docDate != null ? moment(serverInspectionRequest.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate != null ? moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
 
             this.setState({
                 document: serverInspectionRequest,
@@ -164,18 +167,18 @@ class TransmittalAddEdit extends Component {
             this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
-        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+
         if (this.state.showModal != nextProps.showModal) {
             this.setState({ showModal: nextProps.showModal });
         }
     };
-    
+
     componentDidUpdate(prevProps) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
     }
- 
+
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!(Config.IsAllow(85))) {
@@ -203,7 +206,7 @@ class TransmittalAddEdit extends Component {
 
             let url = "GetCommunicationTransmittalForEdit?id=" + this.state.docId;
 
-            this.props.actions.documentForEdit(url,this.state.docTypeId,'transmittal').catch(ex => toast.error(Resources["failError"][currentLanguage]));;
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'transmittal').catch(ex => toast.error(Resources["failError"][currentLanguage]));;
         } else {
             const transmittalDocument = {
                 //field
@@ -403,16 +406,14 @@ class TransmittalAddEdit extends Component {
 
     onChangeMessage = (value) => {
         if (value != null) {
-
             this.setState({ message: value });
-                let original_document = { ...this.state.document };
-                let updated_document = {};
-                updated_document.description = value;
-                updated_document = Object.assign(original_document, updated_document);
-                this.setState({
-                    document: updated_document
-                });
-            
+            let original_document = { ...this.state.document };
+            let updated_document = {};
+            updated_document.description = value;
+            updated_document = Object.assign(original_document, updated_document);
+            this.setState({
+                document: updated_document
+            });
         }
     };
 
@@ -487,8 +488,8 @@ class TransmittalAddEdit extends Component {
 
         let saveDocument = this.state.document;
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('EditCommunicationTransmittal', saveDocument).then(result => {
             this.setState({
@@ -497,18 +498,18 @@ class TransmittalAddEdit extends Component {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
-                this.props.history.push( 
+                this.props.history.push(
                     this.state.perviousRoute
-                  );
-            } 
+                );
+            }
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
     saveTransmittal(event) {
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('AddCommunicationTransmittal', saveDocument).then(result => {
 
@@ -542,10 +543,11 @@ class TransmittalAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -561,20 +563,14 @@ class TransmittalAddEdit extends Component {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }];
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
+        ];
 
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                
-                <HeaderDocument projectName={projectName} perviousRoute={this.state.perviousRoute} isViewMode={this.state.isViewMode} docTitle={Resources.transmittal[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
-                    
+                    <HeaderDocument projectName={projectName} perviousRoute={this.state.perviousRoute} isViewMode={this.state.isViewMode} docTitle={Resources.transmittal[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -632,40 +628,17 @@ class TransmittalAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="proForm datepickerContainer">
-                                                        <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input input-group date NormalInputDate">
-                                                                <div className="customDatepicker fillter-status fillter-item-c ">
-                                                                    <div className="proForm datepickerContainer">
-                                                                        <label className="control-label">{Resources.docDate[currentLanguage]}</label>
-                                                                        <div className="linebylineInput" >
-                                                                            <div className="inputDev ui input input-group date NormalInputDate">
-                                                                                <ModernDatepicker date={this.state.document.docDate}
-                                                                                    format={'DD/MM/YYYY'}
-                                                                                    showBorder
-                                                                                    onChange={e => this.handleChangeDate(e, 'docDate')}
-                                                                                    placeholder={'Select a date'} />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+
+                                                        <div className="linebylineInput valid-input alternativeDate">
+                                                            <DatePicker title='docDate'
+                                                                startDate={this.state.document.docDate}
+                                                                handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
-                                                            <div className="inputDev ui input input-group date NormalInputDate">
-                                                                <div className="customDatepicker fillter-status fillter-item-c ">
-                                                                    <div className="proForm datepickerContainer">
-                                                                        <label className="control-label">{Resources.requiredDate[currentLanguage]}</label>
-                                                                        <div className="linebylineInput" >
-                                                                            <div className="inputDev ui input input-group date NormalInputDate">
-                                                                                <ModernDatepicker date={this.state.document.requiredDate}
-                                                                                    format={'DD/MM/YYYY'} showBorder
-                                                                                    onChange={e => this.handleChangeDate(e, 'requiredDate')}
-                                                                                    placeholder={'Select a date'} />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+
+                                                        <div className="linebylineInput valid-input alternativeDate">
+                                                            <DatePicker title='requiredDate'
+                                                                startDate={this.state.document.requiredDate}
+                                                                handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
@@ -694,7 +667,7 @@ class TransmittalAddEdit extends Component {
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                               <Dropdown data={this.state.companies} isMulti={false}
+                                                                    <Dropdown data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => { this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact') }}
                                                                         onChange={setFieldValue}
@@ -705,7 +678,7 @@ class TransmittalAddEdit extends Component {
                                                                         id="fromCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown isMulti={false} data={this.state.fromContacts}
+                                                                    <Dropdown isMulti={false} data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
                                                                         onChange={setFieldValue}
@@ -721,7 +694,7 @@ class TransmittalAddEdit extends Component {
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                             <Dropdown isMulti={false} data={this.state.companies}
+                                                                    <Dropdown isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
                                                                         onChange={setFieldValue}
@@ -732,7 +705,7 @@ class TransmittalAddEdit extends Component {
                                                                         id="toCompanyId" />
                                                                 </div>
                                                                 <div className="super_company">
-                                                                <Dropdown isMulti={false} data={this.state.ToContacts}
+                                                                    <Dropdown isMulti={false} data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
                                                                         onChange={setFieldValue}
@@ -822,7 +795,7 @@ class TransmittalAddEdit extends Component {
                                                         </div>
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.description[currentLanguage]}</label>
-                                                               <div className="inputDev ui input">
+                                                            <div className="inputDev ui input">
                                                                 <TextEditor
                                                                     value={this.state.message}
                                                                     onChange={this.onChangeMessage} />
@@ -862,11 +835,11 @@ class TransmittalAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 && this.state.isViewMode === false? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={823} EditAttachments={3233} ShowDropBox={3627} ShowGoogleDrive={3628} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={823} EditAttachments={3233} ShowDropBox={3627} ShowGoogleDrive={3628} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ?
-                                              <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            : null}
+                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                : null}
                                         </div>
                                     </div>
                                 </div>
