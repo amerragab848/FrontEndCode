@@ -8,7 +8,7 @@ import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import ModernDatepicker from "react-modern-datepicker";
+import ModernDatepicker from "../../Componants/OptionsPanels/DatePicker";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -67,7 +67,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 
 const _ = require("lodash");
@@ -91,7 +91,7 @@ class ProjectTaskAddEdit extends Component {
           projectName = obj.projectName;
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
-          perviousRoute =obj.perviousRoute ;
+          perviousRoute = obj.perviousRoute;
           arrange = obj.arrange;
         } catch {
           this.props.history.goBack();
@@ -110,7 +110,7 @@ class ProjectTaskAddEdit extends Component {
       docTypeId: 17,
       projectId: projectId,
       docApprovalId: docApprovalId,
-      perviousRoute:perviousRoute,
+      perviousRoute: perviousRoute,
       arrange: arrange,
       document: this.props.document ? Object.assign({}, this.props.document) : {},
       cycleDocument: null,
@@ -142,7 +142,7 @@ class ProjectTaskAddEdit extends Component {
 
     if (!Config.IsAllow(357) && !Config.IsAllow(358) && !Config.IsAllow(360)) {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
-      this.props.history.push( 
+      this.props.history.push(
         this.state.perviousRoute
       );
     }
@@ -472,10 +472,10 @@ class ProjectTaskAddEdit extends Component {
 
       toast.success(Resources["operationSuccess"][currentLanguage]);
       if (this.state.isApproveMode === false) {
-        this.props.history.push( 
-            this.state.perviousRoute
-          );
-    } 
+        this.props.history.push(
+          this.state.perviousRoute
+        );
+      }
     });
   }
 
@@ -539,7 +539,8 @@ class ProjectTaskAddEdit extends Component {
   }
 
   handleShowAction = item => {
-    if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+    if (item.value != "0") {
+      this.props.actions.showOptionPanel(false);
       this.setState({
         currentComponent: item.value,
         currentTitle: item.title,
@@ -577,11 +578,11 @@ class ProjectTaskAddEdit extends Component {
 
     let saveDocument = { ...this.state.cycleDocument };
 
-    saveDocument.docDate = moment(saveDocument.docDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    saveDocument.startDate = moment(saveDocument.startDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.startDate = moment(saveDocument.startDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    saveDocument.finishDate = moment(saveDocument.finishDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.finishDate = moment(saveDocument.finishDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     if (saveDocument.finishDate >= saveDocument.startDate) {
 
@@ -630,12 +631,12 @@ class ProjectTaskAddEdit extends Component {
       },
       {
         title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId}  previousRoute={this.state.perviousRoute}  approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
+        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
         label: Resources["documentApproval"][currentLanguage]
       },
       {
         title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId}  previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
+        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
         label: Resources["documentApproval"][currentLanguage]
       }
     ];
@@ -643,7 +644,7 @@ class ProjectTaskAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-          <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode}  perviousRoute={this.state.perviousRoute}  docTitle={Resources.projectTask[currentLanguage]}
+          <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.projectTask[currentLanguage]}
             moduleTitle={Resources['timeCoordination'][currentLanguage]} />
 
 
@@ -719,23 +720,13 @@ class ProjectTaskAddEdit extends Component {
                             </div>
                           </div>
                           <div className="proForm datepickerContainer">
-                            <div className="linebylineInput valid-input">
+
+                            <div className="linebylineInput">
                               <div className="inputDev ui input input-group date NormalInputDate">
-                                <div className="customDatepicker fillter-status fillter-item-c ">
-                                  <div className="proForm datepickerContainer">
-                                    <label className="control-label">
-                                      {Resources.docDate[currentLanguage]}
-                                    </label>
-                                    <div className="linebylineInput">
-                                      <div className="inputDev ui input input-group date NormalInputDate">
-                                        <ModernDatepicker date={this.state.document.docDate}
-                                          onChange={e => this.handleChangeDate(e, "docDate")} placeholder={"Select a date"} />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+                                <ModernDatepicker startDate={this.state.document.docDate} handleChange={e => this.handleChangeDate(e, "docDate")} title='docDate' />
                               </div>
                             </div>
+
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
                                 {Resources.arrange[currentLanguage]}
@@ -753,7 +744,7 @@ class ProjectTaskAddEdit extends Component {
                               </label>
                               <div className="supervisor__company">
                                 <div className="super_name">
-                                     <Dropdown data={this.state.companies} isMulti={false}
+                                  <Dropdown data={this.state.companies} isMulti={false}
                                     selectedValue={this.state.selectedFromCompany}
                                     handleChange={event => { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
                                     onChange={setFieldValue} onBlur={setFieldTouched}
@@ -761,7 +752,7 @@ class ProjectTaskAddEdit extends Component {
                                     name="fromCompanyId" id="fromCompanyId" />
                                 </div>
                                 <div className="super_company">
-                                <Dropdown isMulti={false} data={this.state.fromContacts}
+                                  <Dropdown isMulti={false} data={this.state.fromContacts}
                                     selectedValue={this.state.selectedFromContact}
                                     handleChange={event => this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromContactId} touched={touched.fromContactId}
@@ -776,7 +767,7 @@ class ProjectTaskAddEdit extends Component {
                               </label>
                               <div className="supervisor__company">
                                 <div className="super_name">
-                                <Dropdown isMulti={false} data={this.state.companies}
+                                  <Dropdown isMulti={false} data={this.state.companies}
                                     selectedValue={this.state.selectedBicCompany}
                                     handleChange={event => this.handleChangeDropDown(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompany", "selectedToContact")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
@@ -790,42 +781,19 @@ class ProjectTaskAddEdit extends Component {
                                 </div>
                               </div>
                             </div>
-                            <div className="linebylineInput valid-input">
+
+                            <div className="linebylineInput">
                               <div className="inputDev ui input input-group date NormalInputDate">
-                                <div className="customDatepicker fillter-status fillter-item-c ">
-                                  <div className="proForm datepickerContainer">
-                                    <label className="control-label">
-                                      {Resources.startDate[currentLanguage]}
-                                    </label>
-                                    <div className="linebylineInput">
-                                      <div className="inputDev ui input input-group date NormalInputDate">
-                                        <ModernDatepicker date={this.state.document.startDate} onChange={e => this.handleChangeDate(e, "startDate")}
-                                          placeholder={"Select a date"}
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+                                <ModernDatepicker startDate={this.state.document.startDate} handleChange={e => this.handleChangeDate(e, "startDate")} title='startDate' />
                               </div>
                             </div>
-                            <div className="linebylineInput valid-input">
+
+                            <div className="linebylineInput">
                               <div className="inputDev ui input input-group date NormalInputDate">
-                                <div className="customDatepicker fillter-status fillter-item-c ">
-                                  <div className="proForm datepickerContainer">
-                                    <label className="control-label">
-                                      {Resources.finishDate[currentLanguage]}
-                                    </label>
-                                    <div className="linebylineInput">
-                                      <div className="inputDev ui input input-group date NormalInputDate">
-                                        <ModernDatepicker date={this.state.document.finishDate} format={"DD/MM/YYYY"}
-                                          showBorder onChange={e => this.handleChangeDate(e, "finishDate")}
-                                          placeholder={"Select a date"} />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+                                <ModernDatepicker startDate={this.state.document.finishDate} handleChange={e => this.handleChangeDate(e, "finishDate")} title='finishDate' />
                               </div>
                             </div>
+
                             <div className="linebylineInput valid-input">
                               <label className="control-label">
                                 {Resources.estimateTime[currentLanguage]}
@@ -921,7 +889,7 @@ class ProjectTaskAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={867} EditAttachments={3251} ShowDropBox={3559} ShowGoogleDrive={3560} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                      {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={867} EditAttachments={3251} ShowDropBox={3559} ShowGoogleDrive={3560} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                       {this.viewAttachments()}
                       {this.props.changeStatus === true ? (
                         <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -947,6 +915,7 @@ class ProjectTaskAddEdit extends Component {
                   <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                     <div className="dropWrapper">
                       <form id="signupForm1" className="proForm customProform ">
+
                         <div className="fillter-status fillter-item-c">
                           <label className="control-label">
                             {Resources.subject[currentLanguage]}
@@ -969,7 +938,8 @@ class ProjectTaskAddEdit extends Component {
                             ) : null}
                           </div>
                         </div>
-                        <div className="fillter-status fillter-item-c linebylineInput valid-input">
+
+                        <div className="fillter-status fillter-item-c">
                           <label className="control-label">
                             {Resources.status[currentLanguage]}
                           </label>
@@ -988,22 +958,14 @@ class ProjectTaskAddEdit extends Component {
                             </label>
                           </div>
                         </div>
-                        <div className="customDatepicker fillter-status fillter-item-c ">
-                          <div className="proForm datepickerContainer">
-                            <label className="control-label">
-                              {Resources.docDate[currentLanguage]}
-                            </label>
-                            <div className="linebylineInput">
-                              <div className="inputDev ui input input-group date NormalInputDate">
-                                <ModernDatepicker date={this.state.cycleDocument.docDate} format={"DD/MM/YYYY"}
-                                  showBorder onChange={e => this.handleChangeDateCycle(e, "docDate")}
-                                  placeholder={"Select a date"}
-                                />
-                              </div>
-                            </div>
+
+                        <div className="fillter-status fillter-item-c">
+                          <div className="inputDev ui input input-group date NormalInputDate">
+                            <ModernDatepicker startDate={this.state.cycleDocument.docDate} handleChange={e => this.handleChangeDateCycle(e, "docDate")} title='docDate' />
                           </div>
                         </div>
-                        <div className="valid-input fillter-status fillter-item-c">
+
+                        <div className="fillter-status fillter-item-c">
                           <label className="control-label">
                             {Resources.arrange[currentLanguage]}
                           </label>
@@ -1016,19 +978,19 @@ class ProjectTaskAddEdit extends Component {
                           </div>
                         </div>
 
-                        <div className="valid-input mix_dropdown">
+                        <div className="mix_dropdown">
                           <label className="control-label">
                             {Resources.ContactName[currentLanguage]}
                           </label>
                           <div className="supervisor__company">
                             <div className="super_name">
-                           <Dropdown data={this.state.companies} isMulti={false}
+                              <Dropdown data={this.state.companies} isMulti={false}
                                 selectedValue={this.state.selectedBicCompanyCycle}
                                 handleChange={event => { this.handleChangeDropDownCycle(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompanyCycle", "selectedFromContact"); }}
                                 name="bicCompanyId" id="bicCompanyId" />
                             </div>
                             <div className="super_company">
-                            <Dropdown isMulti={false} data={this.state.ToContacts}
+                              <Dropdown isMulti={false} data={this.state.ToContacts}
                                 selectedValue={this.state.selectedToContactCycle}
                                 handleChange={event => this.handleChangeDropDownCycle(event, "bicContactId", false, "", "", "", "selectedToContactCycle")}
                                 onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId}
@@ -1039,36 +1001,19 @@ class ProjectTaskAddEdit extends Component {
                           </div>
                         </div>
 
-                        <div className="customDatepicker fillter-status fillter-item-c">
-                          <div className="proForm datepickerContainer">
-                            <label className="control-label">
-                              {Resources.startDate[currentLanguage]}
-                            </label>
-                            <div className="linebylineInput">
-                              <div className="inputDev ui input input-group date NormalInputDate">
-                                <ModernDatepicker date={this.state.cycleDocument.startDate} format={"DD/MM/YYYY"}
-                                  showBorder onChange={e => this.handleChangeDateCycle(e, "startDate")}
-                                  placeholder={"Select a date"}
-                                />
-                              </div>
-                            </div>
+                        <div className="fillter-status fillter-item-c">
+                          <div className="inputDev ui input input-group date NormalInputDate">
+                            <ModernDatepicker startDate={this.state.cycleDocument.startDate} handleChange={e => this.handleChangeDateCycle(e, "startDate")} title='startDate' />
                           </div>
                         </div>
-                        <div className="customDatepicker fillter-status fillter-item-c ">
-                          <div className="proForm datepickerContainer">
-                            <label className="control-label">
-                              {Resources.finishDate[currentLanguage]}
-                            </label>
-                            <div className="linebylineInput">
-                              <div className="inputDev ui input input-group date NormalInputDate">
-                                <ModernDatepicker date={this.state.cycleDocument.finishDate} format={"DD/MM/YYYY"}
-                                  showBorder onChange={e => this.handleChangeDateCycle(e, "finishDate")}
-                                  placeholder={"Select a date"} />
-                              </div>
-                            </div>
+
+                        <div className="fillter-status fillter-item-c">
+                          <div className="inputDev ui input input-group date NormalInputDate">
+                            <ModernDatepicker startDate={this.state.cycleDocument.finishDate} handleChange={e => this.handleChangeDateCycle(e, "finishDate")} title='finishDate' />
                           </div>
                         </div>
-                        <div className="valid-input fillter-status fillter-item-c">
+
+                        <div className="fillter-status fillter-item-c">
                           <label className="control-label">
                             {Resources.estimateTime[currentLanguage]}
                           </label>
@@ -1080,11 +1025,11 @@ class ProjectTaskAddEdit extends Component {
                               onChange={e => this.handleChangeCycle(e, "estimatedTime")} />
                           </div>
                         </div>
-                        <div className="valid-input fillter-status fillter-item-c">
-                          <Dropdown title="priority" data={this.state.priority} selectedValue={this.state.selectedPriorityCycle}
-                            handleChange={event => this.handleChangeDropDownCycle(event, "priorityId", false, "", "", "", "selectedPriorityCycle", "")} />
-                        </div>
-                        <div className="valid-input fillter-status fillter-item-c">
+
+                        <Dropdown title="priority" data={this.state.priority} selectedValue={this.state.selectedPriorityCycle}
+                          handleChange={event => this.handleChangeDropDownCycle(event, "priorityId", false, "", "", "", "selectedPriorityCycle", "")} />
+
+                        <div className="fillter-status fillter-item-c">
                           <label className="control-label">
                             {Resources.description[currentLanguage]}
                           </label>
@@ -1098,7 +1043,8 @@ class ProjectTaskAddEdit extends Component {
                             </div>
                           </div>
                         </div>
-                        <div className="valid-input fillter-status fillter-item-c">
+
+                        <div className="fillter-status fillter-item-c">
                           <label className="control-label">
                             {Resources.taskActivity[currentLanguage]}
                           </label>
@@ -1117,6 +1063,7 @@ class ProjectTaskAddEdit extends Component {
                             </label>
                           </div>
                         </div>
+
                         <div className="fullWidthWrapper">
                           {
                             this.state.isLoading === false ?
@@ -1130,6 +1077,7 @@ class ProjectTaskAddEdit extends Component {
                               </button>)
                           }
                         </div>
+
                       </form>
                     </div>
                   </Form>
