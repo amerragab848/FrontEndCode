@@ -47,9 +47,9 @@ const documentCycleValidationSchema = Yup.object().shape({
 })
 
 const documentProposedValidationSchema = Yup.object().shape({
-    proposeMitigation: Yup.string()
+    subject: Yup.string()
         .required(Resources['subjectRequired'][currentLanguage]).nullable(true),
-    post_mitigationType: Yup.string()
+        mitigationType: Yup.string()
         .required(Resources['mitigationType'][currentLanguage]).nullable(true),
     actionProgress: Yup.string()
         .required(Resources['actionProgress'][currentLanguage]).nullable(true),
@@ -1093,26 +1093,25 @@ class riskAddEdit extends Component {
                         onSubmit={(values) => {
                             this.saveMitigationRequest(false)
                         }}>
-
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="RiskRequestCycleFormPost" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                 <Fragment>
                                     <div className="proForm datepickerContainer">
                                         <div className="fullInputWidth letterFullWidth">
                                             <label className="control-label">{Resources.proposeMitigation[currentLanguage]}</label>
-                                            <div className={"inputDev ui input" + (errors.proposeMitigation && touched.proposeMitigation ? (" has-error") : !errors.proposeMitigation && touched.proposeMitigation ? (" has-success") : " ")} >
-                                                <input name='proposeMitigation' id="proposeMitigation" className="form-control fsadfsadsa"
+                                            <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                                <input name='subject' id="subject" className="form-control fsadfsadsa"
                                                     placeholder={Resources.proposeMitigation[currentLanguage]}
                                                     autoComplete='off'
                                                     value={this.state.documentCycle.subject}
                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                     onChange={(e) => this.handleChangeCycle(e, 'subject')} />
-                                                {errors.proposeMitigation && touched.proposeMitigation ? (<em className="pError">{errors.proposeMitigation}</em>) : null}
-                                                {/* {<em className="pError">{JSON.stringify(errors.proposeMitigation)}</em>} */}
+                                                {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                              
                                             </div>
                                         </div>
                                     </div>
+                                
                                     <div className="proForm datepickerContainer">
                                         <div className="linebylineInput valid-input">
                                             <Dropdown title="mitigationType"
@@ -1138,7 +1137,6 @@ class riskAddEdit extends Component {
                                                         <div className="linebylineInput" >
                                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                                 <ModernDatepicker date={this.state.documentCycle.docDate}
-                                                                    format={'DD/MM/YYYY'}
                                                                     showBorder
                                                                     onChange={e => this.handleChangeDateCycle(e, 'docDate')}
                                                                     placeholder={'Select a date'} />
@@ -1217,7 +1215,6 @@ class riskAddEdit extends Component {
                             </Form>
                         )}
                     </Formik>
-
                     <div className="doc-pre-cycle">
                         <header>
                             <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
@@ -1273,7 +1270,6 @@ class riskAddEdit extends Component {
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         )
@@ -1829,7 +1825,7 @@ class riskAddEdit extends Component {
     }
 
     StepOneLink = () => {
-        if (this.state.docId !== 0)  {
+        if (this.state.docId !== 0) {
             this.setState({
                 FirstStep: true,
                 SecondStep: false,
@@ -1848,7 +1844,7 @@ class riskAddEdit extends Component {
     };
 
     StepTwoLink = () => {
-        if (this.state.docId !== 0)  {
+        if (this.state.docId !== 0) {
             this.setState({
                 FirstStep: false,
                 SecondStep: true,
@@ -1867,7 +1863,7 @@ class riskAddEdit extends Component {
     };
 
     StepThreeLink = () => {
-        if (this.state.docId !== 0)  {
+        if (this.state.docId !== 0) {
             this.setState({
                 ThirdStep: true,
                 SecondStepComplate: true,
@@ -1888,7 +1884,7 @@ class riskAddEdit extends Component {
     };
 
     StepFourLink = () => {
-        if (this.state.docId !== 0)  {
+        if (this.state.docId !== 0) {
             this.setState({
                 FourthStep: true,
                 FourthStepComplate: true,
@@ -1909,7 +1905,7 @@ class riskAddEdit extends Component {
     };
 
     StepFiveLink = () => {
-        if (this.state.docId !== 0)  {
+        if (this.state.docId !== 0) {
             this.setState({
                 FourthStep: false,
                 FivethStep: true,
@@ -1930,7 +1926,7 @@ class riskAddEdit extends Component {
     };
 
     StepSixLink = () => {
-        if (this.state.docId !== 0)  {
+        if (this.state.docId !== 0) {
             this.setState({
                 SixthStep: true,
                 FourthStep: false,
@@ -1951,7 +1947,7 @@ class riskAddEdit extends Component {
     };
 
     StepSevenLink = () => {
-        if (this.state.docId !== 0)  {
+        if (this.state.docId !== 0) {
             this.setState({
                 FourthStep: false,
                 FivethStepComplate: true,
@@ -2178,7 +2174,6 @@ class riskAddEdit extends Component {
                                 <Fragment>
                                     {this.state.SecondStep ?
                                         <div className="subiTabsContent feilds__top">
-
                                             {this.CurrentMit()}
                                             {/* {this.ProposedMit(true)} */}
                                             <div className="doc-pre-cycle">
@@ -2282,7 +2277,6 @@ class riskAddEdit extends Component {
                                                                     <span>{this.state.totalResidualRisk > this.state.totalPretRiskEmv ? 'Cost Effective' : 'Not Cost Effective'}</span>
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                         :
                                                         <Fragment>
@@ -2293,7 +2287,6 @@ class riskAddEdit extends Component {
                                                                 <div className="slider-Btns">
                                                                     <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
                                                                 </div>
-
                                                             </div>
                                                         </Fragment>
                                     }
@@ -2321,16 +2314,16 @@ class riskAddEdit extends Component {
                                                 {Resources.information[currentLanguage]}
                                             </h6>
                                         </div>
-                                    </div> 
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={ "step-slider-item " + (this.state.ThirdStepComplate ? "active" : this.state.SecondStepComplate ? "current__step" : "") }>
+                                    </div>
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={"step-slider-item " + (this.state.ThirdStepComplate ? "active" : this.state.SecondStepComplate ? "current__step" : "")}>
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>
                                         <div className="steps-info">
                                             <h6>{Resources["mitigation"][currentLanguage]}</h6>
                                         </div>
-                                    </div> 
-                                    <div onClick={this.StepThreeLink} data-id="step3" className={ "step-slider-item " + (this.state.FourthStepComplate ? "active" : this.state.ThirdStepComplate ? "current__step" : "")}>
+                                    </div>
+                                    <div onClick={this.StepThreeLink} data-id="step3" className={"step-slider-item " + (this.state.FourthStepComplate ? "active" : this.state.ThirdStepComplate ? "current__step" : "")}>
                                         <div className="steps-timeline">
                                             <span>3</span>
                                         </div>
