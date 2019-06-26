@@ -24,18 +24,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     callTime: Yup.number().required(Resources['callTime'][currentLanguage]).min(0),
     fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
-    toContact: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
-
-
+    toContact: Yup.string().required(Resources['toContactRequired'][currentLanguage])
 });
 
 let docId = 0;
@@ -45,17 +42,21 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 let actions = [];
-let perviousRoute=0;
+let perviousRoute = 0;
 class phoneAddEdit extends Component {
     constructor(props) {
+
         super(props)
+
         const query = new URLSearchParams(this.props.location.search);
+
         let index = 0;
+
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -74,7 +75,7 @@ class phoneAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -99,9 +100,7 @@ class phoneAddEdit extends Component {
 
         if (!Config.IsAllow(89) && !Config.IsAllow(90) && !Config.IsAllow(92)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
-                this.props.history.push( 
-                    this.state.perviousRoute
-                  ); 
+            this.props.history.push(this.state.perviousRoute);
         }
     }
 
@@ -156,7 +155,6 @@ class phoneAddEdit extends Component {
     }
 
     handleChange = (key, value) => {
-        console.log(this.state.phone);
 
         switch (key) {
             case 'fromCompany':
@@ -215,20 +213,22 @@ class phoneAddEdit extends Component {
                         selectedToCompany: { ...selectedTocCompany }
                     });
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'toContactName', 'selectedToContact', 'toContactNameData');
-
                 }
             }
         })
-
     }
 
     componentWillMount() {
         if (this.state.docId > 0) {
+
             this.props.actions.documentForEdit('GetPhoneById?id=' + this.state.docId, this.state.docTypeId, "phoneTitle")
+
             this.checkDocumentIsView();
 
         } else {
+
             this.fillDropDowns(false);
+
             let phone = {
                 projectId: projectId,
                 subject: '',
@@ -261,7 +261,7 @@ class phoneAddEdit extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
+
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
@@ -271,9 +271,13 @@ class phoneAddEdit extends Component {
     }
 
     componentWillReceiveProps(props, state) {
+
         if (props.document && props.document.id > 0) {
+
             let document = props.document;
-            document.docDate = moment(document.docDate).format('DD/MM/YYYY');
+
+            document.docDate = document.docDate != null ? moment(document.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+
             this.setState({
                 phone: { ...document },
                 isLoading: false
@@ -283,36 +287,42 @@ class phoneAddEdit extends Component {
 
             this.fillDropDowns(true);
         }
-        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+
         if (this.state.showModal != props.showModal) {
             this.setState({ showModal: props.showModal });
         }
     }
 
     editPhone = () => {
+
         this.setState({
             isLoading: true
         });
 
         let phoneObj = { ...this.state.phone };
-        phoneObj.docDate = moment(phoneObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
+        phoneObj.docDate = moment(phoneObj.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
         Api.post('EditPhoneById', phoneObj).then(result => {
             this.setState({
                 isLoading: true
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
-                this.props.history.push( 
+                this.props.history.push(
                     this.state.perviousRoute
-                  );
+                );
             }
         });
     }
 
     save = () => {
+
         this.setState({ isLoading: true })
+
         let phoneObj = { ...this.state.phone };
-        phoneObj.docDate = moment(phoneObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
+        phoneObj.docDate = moment(phoneObj.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         DataService.addObject('AddPhone', phoneObj).then(result => {
             this.setState({
@@ -321,18 +331,16 @@ class phoneAddEdit extends Component {
             })
             toast.success(Resources["operationSuccess"][currentLanguage]);
         })
-
     }
 
     saveAndExit(event) {
-        this.props.history.push({
-            pathname: "/Phone/" + this.state.projectId
-        });
+        this.props.history.push({ pathname: "/Phone/" + this.state.projectId });
     }
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -343,27 +351,15 @@ class phoneAddEdit extends Component {
     }
 
     viewAttachments() {
-        return (
-            this.state.docId > 0 ? (
-                Config.IsAllow(3320) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={834} />
-                    : null)
-                : null
-        )
+        return (this.state.docId > 0 ? (Config.IsAllow(3320) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={834} /> : null) : null)
     }
 
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ];
         return (
             <div className="mainContainer">
@@ -405,7 +401,7 @@ class phoneAddEdit extends Component {
                                             } else {
                                                 this.saveAndExit();
                                             }
-                                        }} >
+                                        }}>
                                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue }) => (
                                             <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
                                                 <div className="proForm first-proform fullWidth_form">
@@ -470,8 +466,7 @@ class phoneAddEdit extends Component {
                                                                 data={this.state.CompanyData}
                                                                 handleChange={e => this.handleChange('fromCompany', e)}
                                                                 placeholder='fromCompany'
-                                                                selectedValue={this.state.selectedFromCompany}
-                                                            />
+                                                                selectedValue={this.state.selectedFromCompany} />
                                                         </div>
                                                         <div className="super_company">
                                                             <DropdownMelcous
@@ -485,8 +480,7 @@ class phoneAddEdit extends Component {
                                                                 error={errors.fromContact}
                                                                 touched={touched.fromContact}
                                                                 index="fromContact"
-                                                                id="fromContact"
-                                                            />
+                                                                id="fromContact" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -520,8 +514,7 @@ class phoneAddEdit extends Component {
                                                     <div className={'ui input inputDev '}>
                                                         <input name='details' className="form-control" placeholder={Resources['descriptionCall'][currentLanguage]} autoComplete='off'
                                                             defaultValue={this.state.phone.details}
-                                                            onChange={e => this.handleChange('details', e.target.value)}
-                                                        />
+                                                            onChange={e => this.handleChange('details', e.target.value)} />
                                                     </div>
                                                 </div>
                                                 <div className={"linebylineInput valid-input "}  >
@@ -529,10 +522,7 @@ class phoneAddEdit extends Component {
                                                     <div className={'inputDev ui input ' + (errors.callTime && touched.callTime ? 'has-error' : !errors.callTime && touched.callTime ? (" has-success") : " ")} >
                                                         <input name='callTime' className="form-control" id="callTime" placeholder={Resources['callTime'][currentLanguage]} autoComplete='off'
                                                             defaultValue={this.state.phone.callTime} onBlur={handleBlur}
-                                                            onChange={e => {
-                                                                handleChange(e)
-                                                                this.handleChange('callTime', e.target.value)
-                                                            }} />
+                                                            onChange={e => { handleChange(e); this.handleChange('callTime', e.target.value) }} />
                                                         {touched.callTime ? (<em className="pError">{errors.callTime}</em>) : null}
                                                     </div>
                                                 </div>
@@ -552,7 +542,7 @@ class phoneAddEdit extends Component {
                                                             <div className="approveDocumentBTNS">
                                                                 <button type="submit" className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
                                                                 {this.state.isApproveMode === true ?
-                                                                    <div >
+                                                                    <div>
                                                                         <button type="button" className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
                                                                         <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                                                     </div>
@@ -584,7 +574,6 @@ class phoneAddEdit extends Component {
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
@@ -615,4 +604,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )(withRouter(phoneAddEdit))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(phoneAddEdit))

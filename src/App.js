@@ -32,7 +32,7 @@ class App extends Component {
     if (currentLanguage == null)
       localStorage.getItem('lang', 'en')
 
-    if (currentLanguage == "ar") {
+    if (currentLanguage == "ar") { 
       require("./Styles/scss/ar-eg/layout-ar.css");
       require("./Styles/scss/ar-eg/ReactCss-ar.css");
     } else {
