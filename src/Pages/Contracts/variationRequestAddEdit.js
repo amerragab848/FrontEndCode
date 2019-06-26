@@ -285,12 +285,9 @@ class VariationRequestAdd extends Component {
                     this.setState({
                         selectedContractSubject: contractSubject
                     })
-                }
-
-            }
-
-        });
-
+                } 
+            } 
+        }); 
     }
 
     onChangeMessage = (value) => {
@@ -311,10 +308,8 @@ class VariationRequestAdd extends Component {
                 this.setState({
                     document: updated_document
                 });
-            }
-
-        }
-
+            } 
+        } 
     };
 
     handleChange(e, field) {
@@ -374,7 +369,11 @@ class VariationRequestAdd extends Component {
             isLoading: true
         });
 
-        dataservice.addObject('EditContractsVariationRequest', this.state.document).then(result => {
+        let saveDocument = { ...this.state.document }; 
+
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
+        dataservice.addObject('EditContractsVariationRequest', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -389,9 +388,10 @@ class VariationRequestAdd extends Component {
     }
 
     saveRequest(event) {
-        let saveDocument = { ...this.state.document };
+        let saveDocument = { ...this.state.document }; 
 
-        saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
 
         dataservice.addObject('AddContractsVariationRequest', saveDocument).then(result => {
             this.setState({

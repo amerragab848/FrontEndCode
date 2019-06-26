@@ -74,16 +74,15 @@ class approvalDocument extends Component {
             this.setState({ isLoading: true })
             let reportobj = {
                 projectId: this.state.project.value,
-                fromDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-                toDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                fromDate: moment(this.state.startDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                toDate: moment(this.state.finishDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             }
             Api.post('GetApproveDocument', reportobj).then(res => {
                 this.setState({ reportData: res, isLoading: false })
             })
-        }
-
-
+        } 
     }
+    
     handleChange = (name, value) => {
         this.setState({ [name]: value })
     }
