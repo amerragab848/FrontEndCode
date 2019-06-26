@@ -7570,3 +7570,8 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 }
 
 /* calender */
+
+  .attachmentTable__fixedWidth.attachmentTable tbody tr td:first-child, .attachmentTable__fixedWidth.attachmentTable thead tr th:first-child {
+      width: auto
+  }
+  
