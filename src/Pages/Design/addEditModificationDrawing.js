@@ -43,6 +43,8 @@ const validationSchema = Yup.object().shape({
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
 
+    refDoc: Yup.string().required(Resources['selectRefNo'][currentLanguage]),
+
     disciplineId: Yup.string()
         .required(Resources['disciplineRequired'][currentLanguage]),
 
@@ -686,7 +688,7 @@ class addEditModificationDrawing extends Component {
                                     <div className="document-fields">
                                         <Formik
                                             initialValues={{ ...this.state.document }}
-                                            validationSchema={validationSchema}
+                                            // validationSchema={validationSchema}
                                             enableReinitialize={this.props.changeStatus}
                                             onSubmit={(values) => {
                                                 if (this.props.showModal) { return; }
@@ -804,11 +806,9 @@ class addEditModificationDrawing extends Component {
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
-                                                                        isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedFromContact')}
-
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
@@ -899,7 +899,7 @@ class addEditModificationDrawing extends Component {
                                                                 <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                                                 <div className={"inputDev ui input" + (errors.subjectCycle && touched.subjectCycle ? (" has-error") : !errors.subjectCycle && touched.subjectCycle ? (" has-success") : " ")} >
                                                                     <input name='subjectCycle' className="form-control fsadfsadsa"
-                                                                        id="subjectCycle"
+                                                                        id="subjectCycle" name='subjectCycle'
                                                                         placeholder={Resources.subject[currentLanguage]}
                                                                         autoComplete='off'
                                                                         value={this.state.drawingCycle.subject}
@@ -987,8 +987,6 @@ class addEditModificationDrawing extends Component {
                                                                     onBlur={setFieldTouched}
                                                                     error={errors.approvalStatusId}
                                                                     touched={touched.approvalStatusId}
-
-                                                                    isClear={false}
                                                                     index="approvalStatusId"
                                                                     name="approvalStatusId"
                                                                     id="approvalStatusId" />

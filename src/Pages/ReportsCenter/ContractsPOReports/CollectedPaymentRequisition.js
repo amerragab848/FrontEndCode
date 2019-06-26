@@ -82,8 +82,8 @@ class CollectedPaymentRequisition extends Component {
         this.setState({ isLoading: true })
         let reportobj = {
             projectId: this.state.selectedProject.value,
-            startDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            endDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            startDate: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            endDate: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
         }
         Api.post('GetContractsRequestPaymentsReport', reportobj).then(
             res => {

@@ -106,8 +106,8 @@ class expensesDetailsOnProjectsReport extends Component {
             projectIds: this.state.projectIds,
             companyId: this.state.selectedCompany.value == -1 ? undefined : this.state.selectedCompany.value,
             contactId: this.state.selectedUser.value == -1 ? undefined : this.state.selectedUser.value,
-            start: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            finish: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            start: moment(this.state.startDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            finish: moment(this.state.finishDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
         }
         this.setState({ isLoading: true })
         Api.post('ExpensesDetailsOnProjectReport', reportobj).then(res => {

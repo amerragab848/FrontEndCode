@@ -151,8 +151,8 @@ class ProjectsList extends Component {
         this.setState({ isLoading: true })
         let reportobj = {
             projectTypeId: this.state.selectedProject.value === '' ? '' : this.state.selectedProject.value,
-            startDate: moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            finishDate: moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            startDate: moment(this.state.startDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            finishDate: moment(this.state.finishDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             status: this.state.selectedStatus.value,
             pageNumber: undefined, pageSize: 200,
 
