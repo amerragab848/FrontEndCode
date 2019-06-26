@@ -504,7 +504,7 @@ class requestPaymentsAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let serverChangeOrder = { ...nextProps.document };
-            serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format('DD/MM/YYYY');
+            serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format('YYYY-MM-DD');
             serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0;
             serverChangeOrder.tax = serverChangeOrder.tax != null ? serverChangeOrder.tax : 0;
             serverChangeOrder.vat = serverChangeOrder.vat != null ? serverChangeOrder.vat : 0;
@@ -610,8 +610,7 @@ class requestPaymentsAddEdit extends Component {
                 useQuantity: false,
                 percentComplete: "",
                 quantityComplete: "",
-                paymentPercent: ""
-
+                paymentPercent: "" 
             };
 
             this.setState({
@@ -765,7 +764,7 @@ class requestPaymentsAddEdit extends Component {
 
         let saveDocument = this.state.document;
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('EditContractsRequestPayments', saveDocument).then(result => {
             this.setState({
@@ -787,7 +786,7 @@ class requestPaymentsAddEdit extends Component {
         });
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         saveDocument.projectId = this.state.projectId;
 
@@ -931,8 +930,7 @@ class requestPaymentsAddEdit extends Component {
                 this.setState({
                     currentAndPreviousTotal: result,
                     isLoading: false
-                });
-
+                }); 
             });
         }
         let approvedInvoicesChilds = [...this.state.approvedInvoicesChilds];
@@ -1733,7 +1731,7 @@ class requestPaymentsAddEdit extends Component {
                 objTree.value = 0;
                 objTree.percentageId = 1;
                 objTree.qtyCompelete = this.state.quantityComplete;
-                objTree.date = moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+                objTree.date = moment(this.state.document.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
                 if (this.props.changeStatus) {
 
@@ -2052,7 +2050,7 @@ class requestPaymentsAddEdit extends Component {
                                     <td ><div className="contentCell">{i.completedQnty}</div> </td>
                                     <td ><div className="contentCell">{i.paymentPercent}</div> </td>
                                     <td ><div className="contentCell">{i.addedByName}</div> </td>
-                                    <td ><div className="contentCell">{moment(i.addedDate).format('DD/MM/YYYY')}</div> </td>
+                                    <td ><div className="contentCell">{moment(i.addedDate).format('YYYY-MM-DD')}</div> </td>
                                     <td ><div className="contentCell">{i.comment}</div> </td>
                                 </Fragment>
 
@@ -2163,8 +2161,7 @@ class requestPaymentsAddEdit extends Component {
                                                             <div className="proForm datepickerContainer">
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
-                                                                    <DatePicker title='docDate'
-                                                                        format={'DD/MM/YYYY'}
+                                                                    <DatePicker title='docDate' 
                                                                         onChange={e => setFieldValue('docDate', e)}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.docDate}

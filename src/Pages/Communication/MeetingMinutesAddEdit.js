@@ -604,7 +604,7 @@ class MeetingMinutesAddEdit extends Component {
                 firstComplete: true,
                 secondComplete: false,
                 CurrStep: 1,
-                thirdComplete: false,
+                thirdComplete: false
             })
         }
     }
@@ -615,8 +615,7 @@ class MeetingMinutesAddEdit extends Component {
                 firstComplete: true,
                 secondComplete: true,
                 CurrStep: 2,
-                thirdComplete: false,
-
+                thirdComplete: false
             })
         }
     }
@@ -630,8 +629,7 @@ class MeetingMinutesAddEdit extends Component {
                 secondComplete: true,
             })
         }
-    }
-
+    } 
 
     render() {
         let actions = [

@@ -27,7 +27,6 @@ import * as communicationActions from '../../store/actions/communication';
 import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription'
 import EditItemDescription from '../../Componants/OptionsPanels/editItemDescription'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-// import 'react-table/react-table.css'
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
@@ -39,17 +38,6 @@ const poqSchema = Yup.object().shape({
     fromCompany: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]),
     discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
 });
-
-// const itemsValidationSchema = Yup.object().shape({
-//     description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
-//     unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
-//     itemCode: Yup.string().required(Resources['itemCodeRequired'][currentLanguage]),
-//     resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
-//     itemType: Yup.string().required(Resources['itemTypeSelection'][currentLanguage]),
-//     days: Yup.number().required(Resources['daysRequired'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
-//     quantity: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
-//     unitPrice: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage]),
-// });
 
 const contractSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
@@ -129,7 +117,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"number"
+                type: "number"
 
             }, {
                 key: "boqType",
@@ -140,7 +128,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "boqTypeChild",
                 name: Resources["boqTypeChild"][currentLanguage],
@@ -150,7 +138,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: false,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "boqSubType",
                 name: Resources["boqSubType"][currentLanguage],
@@ -160,7 +148,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -170,7 +158,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "description",
                 name: Resources["details"][currentLanguage],
@@ -180,7 +168,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "quantity",
                 name: Resources["quantity"][currentLanguage],
@@ -190,7 +178,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"number"
+                type: "number"
             }, {
                 key: "revisedQuntitty",
                 name: Resources["receivedQuantity"][currentLanguage],
@@ -200,7 +188,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: false,
                 sortDescendingFirst: true,
-                type:"number"
+                type: "number"
             }, {
                 key: "unit",
                 name: Resources["unit"][currentLanguage],
@@ -210,7 +198,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: false,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "unitPrice",
                 name: Resources["unitPrice"][currentLanguage],
@@ -222,7 +210,7 @@ class bogAddEdit extends Component {
                 filterable: false,
                 sortDescendingFirst: true,
                 formatter: editUnitPrice,
-                type:"number"
+                type: "number"
             }, {
                 key: "total",
                 name: Resources["total"][currentLanguage],
@@ -232,7 +220,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: false,
                 sortDescendingFirst: true,
-                type:"number"
+                type: "number"
             }, {
                 key: "resourceCode",
                 name: Resources["resourceCode"][currentLanguage],
@@ -242,7 +230,7 @@ class bogAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }
         ];
 
@@ -406,8 +394,7 @@ class bogAddEdit extends Component {
         })
         DataService.GetDataList('GetAccountsDefaultList?listType=currency&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
             this.setState({ currency: [...res], isLoading: false })
-        })
-
+        }) 
     }
 
     fillSubDropDown(url, param, value, subField_lbl, subField_value, subDatasource, subDatasource_2) {
@@ -423,8 +410,17 @@ class bogAddEdit extends Component {
     }
 
     componentDidMount() {
-
-    }
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+        for (var i = 0; i < links.length; i++) {
+            if ((i + 1) % 2 == 0) {
+                links[i].classList.add('even');
+            }
+            else {
+                links[i].classList.add('odd');
+            }
+        }
+        this.checkDocumentIsView();
+    };
 
     getNextArrange = (event) => {
         this.setState({ selectedFromCompany: event })
@@ -452,7 +448,7 @@ class bogAddEdit extends Component {
             let document = {
                 id: 0,
                 project: this.state.projectId,
-                documentDate: moment().format('DD/MM/YYYY'),
+                documentDate: moment(),
                 company: '',
                 discipline: '',
                 status: true,
@@ -504,12 +500,9 @@ class bogAddEdit extends Component {
             })
             this.setState({ rows: Table })
             this.props.actions.ExportingData(data);
-            //this.props.actions.setItemDescriptions(Table);
 
             setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
-        })
-
-
+        }) 
     }
 
     componentDidUpdate(prevProps) {
@@ -553,10 +546,12 @@ class bogAddEdit extends Component {
     }
 
     addPoq = (values) => {
+     
         this.setState({ isLoading: true })
+     
         let documentObj = {
             project: this.state.projectId,
-            documentDate: moment(values.documentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            documentDate: moment(values.documentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             company: this.state.selectedFromCompany.value,
             discipline: this.state.selectedDiscipline.value,
             status: values.status,
@@ -566,6 +561,7 @@ class bogAddEdit extends Component {
             showInSiteRequest: values.showInSiteRequest,
             showOptimization: values.showOptimization
         };
+
         DataService.addObject('AddBoq', documentObj).then(result => {
             this.props.actions.setDocId(result.id)
             this.setState({
@@ -581,20 +577,22 @@ class bogAddEdit extends Component {
     }
 
     editBoq = (values) => {
+       
         if (this.state.isViewMode) {
             this.NextStep()
-
         }
         else {
+            
             this.setState({
                 isLoading: true,
                 firstComplete: true
             });
+            
             let documentObj = {
                 project: this.state.projectId,
                 id: this.state.docId,
                 arrange: this.state.document.arrange,
-                DocumentDate: moment(values.documentDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                DocumentDate: moment(values.documentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
                 Company: Config.getPayload().cmi,
                 Discipline: this.state.selectedDiscipline.value,
                 Status: values.status,
@@ -603,6 +601,7 @@ class bogAddEdit extends Component {
                 ShowInSiteRequest: values.showInSiteRequest,
                 ShowOptimization: values.showOptimization
             };
+
             Api.post('EditBoq', documentObj).then(result => {
                 this.setState({
                     isLoading: false,
@@ -613,8 +612,7 @@ class bogAddEdit extends Component {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({ isLoading: false })
             })
-        }
-
+        } 
     }
 
     addEditItems = () => {
@@ -685,8 +683,7 @@ class bogAddEdit extends Component {
                 BoqSubTypes: [],
                 isLoading: false,
                 showPopUp: false,
-                btnText: 'add'
-
+                btnText: 'add' 
             });
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -846,7 +843,6 @@ class bogAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
             this.setState({ showBoqModal: false, isLoading: false })
         })
-
     }
 
     _executeBeforeModalClose = () => {
@@ -881,9 +877,9 @@ class bogAddEdit extends Component {
                 boqId: this.state.docId,
                 subject: values.subject,
                 companyId: Config.getPayload().cmi,
-                completionDate: moment(values.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                completionDate: moment(values.completionDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
                 status: values.status == undefined ? this.props.document.status : values.status,
-                docDate: moment(values.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                docDate: moment(values.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
                 reference: values.reference,
                 currencyAction: this.state.selectedCurrency != undefined ? this.state.selectedCurrency.value : 0,
                 tax: values.tax,
@@ -919,11 +915,11 @@ class bogAddEdit extends Component {
                 boqId: this.state.docId,
                 subject: values.subject,
                 companyId: Config.getPayload().cmi,
-                completionDate: moment(values.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                completionDate: moment(values.completionDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
                 status: values.status,
                 useRevised: values.useRevised,
                 useItemization: values.useItemization,
-                docDate: moment(values.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                docDate: moment(values.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
                 refDoc: values.reference,
                 actionCurrency: this.state.selectedCurrency != undefined ? this.state.selectedCurrency.value : 0,
                 advancePaymentPercent: values.advancedPaymentPercent,
@@ -1032,14 +1028,13 @@ class bogAddEdit extends Component {
                 clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                 onRowsSelected={this.onRowsSelected}
                 onRowsDeselected={this.onRowsDeselected}
-                onGridRowsUpdated={this._onGridRowsUpdated}
-
+                onGridRowsUpdated={this._onGridRowsUpdated} 
                 assign={true}
                 assignFn={() => this.assign()}
                 key='items'
             />) : <LoadingSection />;
 
-        const contractContent = <React.Fragment>
+        const contractContent = <Fragment>
             <div className="document-fields">
                 <Formik
                     enableReinitialize={true}
@@ -1049,16 +1044,11 @@ class bogAddEdit extends Component {
                         completionDate: moment(),
                         docDate: this.props.changeStatus ? this.props.document.documentDate : moment(),
                         status: this.props.document.status ? this.props.document.status : true
-
                     }}
                     validationSchema={contractSchema}
-                    onSubmit={(values) => {
-                        this.addContract(values)
-                    }}
-                >
+                    onSubmit={(values) => { this.addContract(values) }}>
                     {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange, values }) => (
-                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
-
+                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate">
                             <div className="proForm first-proform letterFullWidth">
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources['subject'][currentLanguage]} </label>
@@ -1096,14 +1086,12 @@ class bogAddEdit extends Component {
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <DatePicker title='completionDate'
-                                        format={'DD/MM/YYYY'}
                                         name="completionDate"
                                         startDate={values.completionDate}
                                         handleChange={e => setFieldValue('completionDate', e)} />
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <DatePicker title='docDate'
-                                        format={'DD/MM/YYYY'}
                                         name="documentDate"
                                         startDate={values.docDate}
                                         handleChange={e => setFieldValue('docDate', e)}
@@ -1212,16 +1200,14 @@ class bogAddEdit extends Component {
                                             </button>
                                         )}
                                 </div>
-                            </div>
-
+                            </div> 
                         </Form>
                     )}
                 </Formik>
-            </div>
+            </div> 
+        </Fragment>
 
-        </React.Fragment >
-
-        const purchaseOrderContent = <React.Fragment>
+        const purchaseOrderContent = <Fragment>
             <div className="document-fields">
                 <Formik
                     enableReinitialize={true}
@@ -1241,8 +1227,7 @@ class bogAddEdit extends Component {
                     }}
                 >
                     {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange, values }) => (
-                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
-
+                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate">
                             <div className="proForm first-proform letterFullWidth">
                                 <div className="linebylineInput valid-input">
                                     <label className="control-label">{Resources['subject'][currentLanguage]} </label>
@@ -1281,14 +1266,12 @@ class bogAddEdit extends Component {
 
                                 <div className="linebylineInput valid-input">
                                     <DatePicker title='completionDate'
-                                        format={'DD/MM/YYYY'}
                                         name="completionDate"
                                         startDate={values.completionDate}
                                         handleChange={e => setFieldValue('completionDate', e)} />
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <DatePicker title='docDate'
-                                        format={'DD/MM/YYYY'}
                                         name="documentDate"
                                         startDate={this.state.document.documentDate}
                                         handleChange={e => setFieldValue('documentDate', e)} />
@@ -1365,9 +1348,9 @@ class bogAddEdit extends Component {
                     )}
                 </Formik>
             </div>
-        </React.Fragment >
+        </Fragment>
 
-        const addItemContent = <React.Fragment>
+        const addItemContent = <Fragment>
             <div className="document-fields">
                 {this.state.isLoading ? <LoadingSection /> : null}
                 <AddItemDescription docLink="/Downloads/Excel/BOQ.xlsx"
@@ -1379,9 +1362,9 @@ class bogAddEdit extends Component {
                     showBoqType={true} />
 
             </div>
-        </React.Fragment >
+        </Fragment>
 
-        const itemsContent = <React.Fragment>
+        const itemsContent = <Fragment>
             <div className=" proForm datepickerContainer customProform document-fields" key='editItem'>
                 <EditItemDescription
                     showImportExcel={false} docType="boq"
@@ -1392,9 +1375,9 @@ class bogAddEdit extends Component {
                     item={this.state.selectedRow}
                     onSave={e => this._executeBeforeModalClose()} />
             </div>
-        </React.Fragment >
+        </Fragment>
 
-        const BoqTypeContent = <React.Fragment>
+        const BoqTypeContent = <Fragment>
             <div className="dropWrapper">
                 {this.state.isLoading ? <LoadingSection /> : null}
                 <Formik
@@ -1466,7 +1449,7 @@ class bogAddEdit extends Component {
                     )}
                 </Formik>
             </div>
-        </React.Fragment >
+        </Fragment>
 
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -1480,7 +1463,7 @@ class bogAddEdit extends Component {
             }
         ];
 
-        let Step_1 = <React.Fragment>
+        let Step_1 = <Fragment>
             <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
                     <div className="document-fields">
@@ -1549,7 +1532,6 @@ class bogAddEdit extends Component {
                                         </div>
                                         <div className="linebylineInput valid-input">
                                             <DatePicker title='docDate'
-                                                format={'DD/MM/YYYY'}
                                                 name="documentDate"
                                                 startDate={values.documentDate}
                                                 handleChange={e => { handleChange(e); setFieldValue('documentDate', e) }} />
@@ -1641,9 +1623,9 @@ class bogAddEdit extends Component {
                 </div>
             </div>
 
-        </React.Fragment>
+        </Fragment>
 
-        let Step_2 = <React.Fragment>
+        let Step_2 = <Fragment>
             {addItemContent}
             <Fragment>
                 <XSLfile key='boqImport' docId={this.state.docId} docType='boq' link={IPConfig.downloads + '/Downloads/Excel/BOQ.xlsx'} header='addManyItems'
@@ -1665,9 +1647,9 @@ class bogAddEdit extends Component {
                     </div>
                 </div>
             </div>
-        </React.Fragment>
+        </Fragment>
 
-        let Step_3 = <React.Fragment>
+        let Step_3 = <Fragment>
             {this.state.loadingContractPurchase ? <LoadingSection /> : null}
             <div className="company__total proForm">
                 <div className="form-group linebylineInput ">
@@ -1683,7 +1665,7 @@ class bogAddEdit extends Component {
                     <li className={"data__tabs--list " + (this.state.activeTab == 'purchase' ? "active" : '')} onClick={() => this.changeTab('purchase')}>{Resources.po[currentLanguage]}</li>
                 </ul>
             </div>
-            {this.state.activeTab == 'purchase' ? <React.Fragment>{purchaseOrderContent}</React.Fragment> : (this.state.activeTab == 'contract' ? <React.Fragment>{contractContent}</React.Fragment> : null)}
+            {this.state.activeTab == 'purchase' ? <Fragment>{purchaseOrderContent}</Fragment> : (this.state.activeTab == 'contract' ? <Fragment>{contractContent}</Fragment> : null)}
             <div className="doc-pre-cycle letterFullWidth">
                 <div className='precycle-grid'>
                     <div className="slider-Btns">
@@ -1691,9 +1673,9 @@ class bogAddEdit extends Component {
                     </div>
                 </div>
             </div>
-        </React.Fragment>
+        </Fragment>
         return (
-            <React.Fragment>
+            <Fragment>
                 <div className="mainContainer">
                     <div className={this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
                         : "documents-stepper noTabs__document one__tab one_step"}>
@@ -1811,7 +1793,7 @@ class bogAddEdit extends Component {
                         </SkyLight>
                     </div>
                 </div>
-            </React.Fragment>
+            </Fragment>
         )
     }
 }

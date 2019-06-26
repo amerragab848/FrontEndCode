@@ -169,12 +169,7 @@ class ContractInfoAddEdit extends Component {
       changeOrderSum: 0,
       viewItemPopUp: false,
       objItems: {},
-      showSubPurchaseOrders: false
-      // details:"",
-      // originalQuantity:"",
-      // arrange:"",
-      // unit:"",
-      // unitPrice:""
+      showSubPurchaseOrders: false 
     };
 
     columnsGrid = [
@@ -451,10 +446,10 @@ class ContractInfoAddEdit extends Component {
         subject: "",
         status: true,
         project: this.state.projectId,
-        docDate: moment().format('DD/MM/YYYY'),
+        docDate: moment().format('YYYY-MM-DD'),
         arrange: 0,
         refDoc: "",
-        completionDate: moment().format('DD/MM/YYYY'),
+        completionDate: moment().format('YYYY-MM-DD'),
         companyId: "",
         toCompanyId: "",
         toContactId: "",
@@ -485,8 +480,8 @@ class ContractInfoAddEdit extends Component {
 
     if (props.document && props.document.id > 0) {
 
-      props.document.docDate = props.document.docDate != null ? moment(props.document.docDate).format("DD/MM/YYYY") : moment();
-      props.document.completionDate = props.document.completionDate != null ? moment(props.document.completionDate).format("DD/MM/YYYY") : moment();
+      props.document.docDate = props.document.docDate != null ? moment(props.document.docDate).format('YYYY-MM-DD') : moment();
+      props.document.completionDate = props.document.completionDate != null ? moment(props.document.completionDate).format('YYYY-MM-DD') : moment();
 
       this.setState({ document: props.document });
 
@@ -534,10 +529,10 @@ class ContractInfoAddEdit extends Component {
       projectId: projectId,
       subject: values.subject,
       status: values.status != undefined ? values.status : true,
-      docDate: moment(values.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+      docDate: moment(values.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
       arrange: this.state.document.arrange,
       refDoc: values.refDoc,
-      completionDate: moment(values.completionDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+      completionDate: moment(values.completionDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
       companyId: this.state.selectedFromCompany.value,
       toCompanyId: this.state.selectedContract.value,
       toContactId: this.state.selectedContractWithContact.value,
@@ -576,10 +571,10 @@ class ContractInfoAddEdit extends Component {
         projectId: projectId,
         subject: values.subject,
         status: values.status != undefined ? values.status : true,
-        docDate: moment(values.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+        docDate: moment(values.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
         arrange: this.state.document.arrange,
         refDoc: values.refDoc,
-        completionDate: moment(values.completionDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+        completionDate: moment(values.completionDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
         companyId: this.state.selectedFromCompany.value,
         toCompanyId: this.state.selectedContract.value,
         toContactId: this.state.selectedContractWithContact.value,
@@ -682,26 +677,20 @@ class ContractInfoAddEdit extends Component {
     }
   };
 
-  clickHandlerDeleteRowsMain = selectedRows => {
-
-    selectedRow = selectedRows;
-
+  clickHandlerDeleteRowsMain = selectedRows => { 
+    selectedRow = selectedRows; 
     this.setState({
       showDeleteModal: true
-    });
-
+    }); 
   };
 
-  changeTab = tabName => {
-
+  changeTab = tabName => { 
     this.setState({ activeTab: tabName });
   };
 
   _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    this.setState({ isLoading: true });
-
-    let updateRow = this.state.rows[fromRow];
-
+    this.setState({ isLoading: true }); 
+    let updateRow = this.state.rows[fromRow]; 
     this.setState(
       state => {
         const rows = state.rows.slice();
@@ -1159,8 +1148,8 @@ class ContractInfoAddEdit extends Component {
                 insurance: this.props.changeStatus ? this.props.document.insurance : "",
                 advancedPayment: this.props.changeStatus ? this.props.document.advancedPayment : "",
                 advancedPaymentAmount: this.props.changeStatus ? this.props.document.advancedPaymentAmount : "",
-                docDate: moment(),
-                completionDate: moment()
+                docDate: this.props.changeStatus ? this.props.document.docDate : moment(),
+                completionDate:this.props.changeStatus ? this.props.document.completionDate : moment()
               }}
                 validationSchema={contractInfoSchema}
                 enableReinitialize={this.props.changeStatus}
@@ -1204,7 +1193,7 @@ class ContractInfoAddEdit extends Component {
                     </div>
                     <div className="letterFullWidth">
                       <div className="linebylineInput valid-input">
-                        <DatePicker title="docDate" format={"DD/MM/YYYY"} name="docDate"
+                        <DatePicker title="docDate" name="docDate"
                           startDate={values.docDate} handleChange={e => { handleChange(e); setFieldValue("docDate", e); }} />
                       </div>
                     </div>
@@ -1232,7 +1221,7 @@ class ContractInfoAddEdit extends Component {
                       </div>
                       <div className="letterFullWidth">
                         <div className="linebylineInput valid-input">
-                          <DatePicker title="completionDate" format={"DD/MM/YYYY"} name="completionDate"
+                          <DatePicker title="completionDate"  name="completionDate"
                             startDate={values.completionDate} handleChange={e => { handleChange(e); setFieldValue("completionDate", e); }} />
                         </div>
                       </div>
@@ -1246,8 +1235,7 @@ class ContractInfoAddEdit extends Component {
                           error={errors.fromCompany}
                           touched={touched.fromCompany}
                           name="fromCompany" id="fromCompany" />
-                      </div>
-
+                      </div> 
                       <div className="linebylineInput valid-input">
                         <Dropdown title="contractTo" data={this.state.Companies} selectedValue={this.state.selectedContract}
                           handleChange={event => { this.setState({ selectedContract: event }); }}
@@ -1477,8 +1465,8 @@ class ContractInfoAddEdit extends Component {
           {this.state.activeTab == "schedule" ? (<Schedule type="contractId" contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} ApiGet={"GetScheduleItemsByContractId?contractId="+this.state.docId} Api='AddScheduleItem' ApiDelete='DeleteContractsScheduleById?id='/>) : null}
           {this.state.activeTab == "insurance" ? (<ContractInsurance contractId={this.state.docId} Api='AddInurance' type="contractId" ApiDelete="DeleteContractsInsuranceById?id=" ApiGet="GetInsuranceItemsByContractId?contractId=" projectId={projectId} isViewMode={this.state.isViewMode}/>):null}
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode}/>) : null}
-          {this.state.activeTab == "subContracts" ? (<SubContract type='Contract' ApiGet={'GetSubContractsByContractId?contractId='+this.state.docId} contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}
-          {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog ApiGet={"GetSubPOsByContractId?contractId="+docId} type="Contract"  docId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} />) : null}
+          {this.state.activeTab == "subContracts" ? (<SubContract type='Contract' ApiGet={'GetSubContractsByContractId?contractId='+this.state.docId} contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} items={this.state.rows.length > 0 ?this.state.rows : []} />) : null}
+          {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog ApiGet={"GetSubPOsByContractId?contractId="+docId} type="Contract"  docId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject}items={this.state.rows.length > 0 ?this.state.rows : []} />) : null}
         </Fragment>
         <div className="doc-pre-cycle letterFullWidth">
           <div className="precycle-grid">
