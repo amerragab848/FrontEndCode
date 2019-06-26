@@ -7425,9 +7425,14 @@ div#markup-panel {
     border-bottom: 1px solid #DADEE6;
  }
 
- .filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5 {
+ .filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5,   .filter__input-wrapper .letterFullWidth .customD_Menu .css-1hwfws3 {
     min-height: 36px;
     /* height: 40px; */
+  }
+
+  .filter__input-wrapper .letterFullWidth .multiChoice .css-1hwfws3 {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
   }
   
   .filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c {
@@ -7437,4 +7442,6 @@ div#markup-panel {
     display: none;
   }
 
-  
+  .filter__warrper{
+      z-index: 19;
+  }

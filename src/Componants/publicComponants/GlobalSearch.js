@@ -7,6 +7,8 @@ import Resources from "../../resources.json"
 import LoadingSection from '../publicComponants/LoadingSection'
 import Calendar from "react-calendar";
 import Dropdown from '../OptionsPanels/DropdownMelcous'
+import dataService from '../../Dataservice'
+import { serialize } from 'cookie';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let subject = "test"
 let formatDate = function (date) {
@@ -89,11 +91,11 @@ class GlobalSearch extends Component {
         ];
         this.statusData = [
             {
-                label: Resources.oppened[currentLanguage], value: 0
+                label: Resources.oppened[currentLanguage], value: 1
             }, {
-                label: Resources.closed[currentLanguage], value: 1
+                label: Resources.closed[currentLanguage], value: 0
             }, {
-                label: Resources.all[currentLanguage], value: 2
+                label: Resources.all[currentLanguage], value: null
             },
 
         ]
@@ -101,37 +103,47 @@ class GlobalSearch extends Component {
         this.state = {
             subject: subject,
             searchResult: [],
+            pageSize: 50,
+            pageNumber: 0,
+            totalRows: 200,
             isLoading: true,
             showDate: false,
-            filterDate: moment().format("DD/MM/YYYY"), 
-            selectedStatus: this.statusData[2]
+            filterDate: moment().format("DD/MM/YYYY"),
+            selectedStatus: this.statusData[2],
+            docsType: [],
+            selectedDocs: []
         }
 
 
-    
+
     }
     componentWillMount() {
         let searchOptions = {
             subject: this.state.subject,
-            fromDate: moment().add(-15, 'Y').format('YYYY/MM/DD'),
+            fromDate: moment().add(-1, 'Y').format('YYYY/MM/DD'),
             toDate: moment().format('YYYY/MM/DD'),
             docs: [],
             status: null,
             pageNumber: 0
         }
+        this.setState({ isLoading: true })
         Api.post("GetDataForSearchInApp", searchOptions).then(searchResult => {
             if (searchResult) {
                 let data = []
-                if (searchResult.length > 0)
-                    searchResult.forEach((item, i) => {
+                if (searchResult.searchList.length > 0)
+                    searchResult.searchList.forEach((item, i) => {
                         item.index = i + 1;
                         data.push(item)
                     })
-                this.setState({ isLoading: false, searchResult: data })
+                this.setState({ searchResult: data, totalRows: searchResult.total })
             }
             else
-                this.setState({ isLoading: false, searchResult: [] })
+                this.setState({ searchResult: [], totalRows: searchResult.total })
+            dataService.GetDataList("GetAccountsDocTypeForDrop", "docType", "refCode").then(result => {
+                this.setState({ isLoading: false, docsType: result })
+            })
         })
+
     }
     changeDate() {
         let showDate = !this.state.showDate
@@ -142,9 +154,54 @@ class GlobalSearch extends Component {
         this.setState({ showDate: false });
     }
     onChange = (date) => {
-        let filterDate = date != null ? moment(date[0]).format("DD/MM/YYYY") + "-" + moment(date[1]).format("DD/MM/YYYY") : "";
+        let filterDate = date != null ? moment(date[0]).format("YYYY/MM/DD") + " - " + moment(date[1]).format("YYYY/MM/DD") : "";
         this.setState({ filterDate, showDate: false });
     };
+    search = (flag) => {
+        let docs = []
+        this.state.selectedDocs.forEach(item => {
+            docs.push(item.value)
+        })
+        let fromDate = '';
+        let toDate = '';
+        let pageNumber = this.state.pageNumber
+        if (flag != 0)
+            pageNumber = this.state.pageNumber + flag 
+        else
+            pageNumber = 0
+        this.setState({ pageNumber })
+
+        if (this.state.filterDate.split("-")[0] == this.state.filterDate) {
+            fromDate = moment().add(-1, 'Y').format('YYYY/MM/DD')
+            toDate = moment().format('YYYY/MM/DD')
+        }
+        else {
+            fromDate = moment(this.state.filterDate.split("-")[0]).format('YYYY/MM/DD');
+            toDate = moment(this.state.filterDate.split("-")[1]).format('YYYY/MM/DD');
+        }
+        let searchOptions = {
+            subject: this.state.subject,
+            fromDate: fromDate,
+            toDate: toDate,
+            docs: docs,
+            status: this.state.selectedStatus.value,
+            pageNumber: pageNumber
+        }
+        this.setState({ isLoading: true })
+        Api.post("GetDataForSearchInApp", searchOptions).then(searchResult => {
+            if (searchResult) {
+                let data = []
+                if (searchResult.searchList.length > 0)
+                    searchResult.searchList.forEach((item, i) => {
+                        item.index = i + 1;
+                        data.push(item)
+                    })
+                this.setState({ searchResult: data, isLoading: false, totalRows: searchResult.total })
+            }
+            else
+                this.setState({ searchResult: [], isLoading: false, totalRows: searchResult.total })
+        })
+    }
     render() {
         const searchGrid = this.state.isLoading === false ? (
             <GridSetup
@@ -156,63 +213,86 @@ class GlobalSearch extends Component {
             />) : <LoadingSection />;
 
         return (
-            <div className="main__withouttabs mainContainer">
-                <div className="doc-pre-cycle">
-                    <header className="doc-pre-btn">
-                        <h2 className="zero">{Resources.subContractsList[currentLanguage]}</h2>
-                    </header>
-                    <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
-                        <div className="filter__more" style={{ padding: 0 }}>
-                            <span>5 filters applied</span>
+            <div className="main__withouttabs mainContainer" >
+                <div className="submittalFilter">
+                    <div className="subFilter">
+                        <h3 className="zero">Search Result</h3>
+                        <span>{this.state.totalRows}</span>
+                    </div>
+                    <div className="filterBTNS">
+                        <button className="defaultBtn btn" onClick={() => this.search(0)} type="button">Search</button>
+                    </div>
+                    <div className="rowsPaginations">
+                        <div className="rowsPagiRange">
+                            <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -{" "}
+                            <span>
+                                {this.state.pageSize * this.state.pageNumber +
+                                    this.state.pageSize}
+                            </span>{" "}
+                            of
+                            <span> {this.state.totalRows}</span>
                         </div>
-                        <div className="filter__input-wrapper" onMouseLeave={this.resetDate}>
-                            <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
-                                {/* "small__input--width " */}
-                                <div className="form-group linebylineInput medium__input--width">
-                                    <label className="control-label"> {Resources.subject[currentLanguage]}   </label>
-                                    <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} >
-                                        <input type="text" autoComplete="off" placeholder="Subject" />
-                                    </div>
-                                </div>
-                                <div className={"form-group linebylineInput medium__input--width "}  >
-                                    <label className="control-label" >
-                                        {Resources.docDate[currentLanguage]}
-                                    </label>
-                                    <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }}  >
-                                        <input type="text" autoComplete="off" placeholder={Resources.docDate[currentLanguage]} value={this.state.filterDate}
-                                            onClick={() => this.changeDate()} />
+                        <button
+                            className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.state.pageNumber != 0 ? this.search(-1) : null} >
+                            <i className="angle left icon" />
+                        </button>
+                        <button className={this.state.totalRows > this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "" : "rowunActive"}
+                            onClick={() => this.state.totalRows > this.state.pageSize * this.state.pageNumber + this.state.pageSize ? this.search(1) : null}>
+                            <i className="angle right icon" />
+                        </button>
+                    </div>
+                </div>
 
-                                        {this.state.showDate ?
-                                            <div className="viewCalender"   >
-                                                <Calendar onChange={date => this.onChange(date)} selectRange={true} />
-                                            </div> :
-                                            null}
-                                    </div>
-                                </div>
-                                <div className="form-group linebylineInput medium__input--width">
-                                    <label className="control-label"> {Resources.status[currentLanguage]}   </label>
-                                        <Dropdown
-                                            data={this.statusData}
-                                            isMulti={false}
-                                            selectedValue={this.state.selectedStatus}
-                                            handleChange={event => this.setState({ selectedStatus: event })}
-                                            name="status" />
-                                </div>
-                                <div className="form-group linebylineInput medium__input--width">
+                <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
+                    <div className="filter__more" style={{ padding: 0 }}>
+                        <span>4 filters applied</span>
+                    </div>
+                    <div className="filter__input-wrapper" onMouseLeave={this.resetDate}>
+                        <div id="signupForm1" className="proForm" >
+                            <div className="letterFullWidth">
+                                <div className="form-group linebylineInput  multiChoice" style={{ maxWidth: '660px', marginBottom: '16px' }}>
                                     <label className="control-label"> {Resources.docType[currentLanguage]}   </label>
-                                        <Dropdown
-                                            data={this.state.docTypeData}
-                                            isMulti={false}
-                                            selectedValue={this.state.docType}
-                                            handleChange={event => this.setState({ docType: event })}
-                                            name="docType" />
-                                </div> 
-                                <button className="defaultBtn btn">Search</button>
-                            </form>
+                                    <Dropdown
+                                        data={this.state.docsType}
+                                        isMulti={true}
+                                        selectedValue={this.state.selectedDocs}
+                                        handleChange={event => this.setState({ selectedDocs: event })}
+                                        name="docType" />
+                                </div>
+                            </div>
+                            <div className="form-group linebylineInput medium__input--width">
+                                <label className="control-label"> {Resources.subject[currentLanguage]}   </label>
+                                <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }} >
+                                    <input type="text" autoComplete="off" placeholder="Subject" defaultValue={this.state.subject} onChange={(event) => this.setState({ subject: event.target.value })} />
+                                </div>
+                            </div>
+                            <div className={"form-group linebylineInput medium__input--width "}  >
+                                <label className="control-label" >
+                                    {Resources.docDate[currentLanguage]}
+                                </label>
+                                <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }}  >
+                                    <input type="text" autoComplete="off" placeholder={Resources.docDate[currentLanguage]} value={this.state.filterDate}
+                                        onClick={() => this.changeDate()} />
+                                    {this.state.showDate ?
+                                        <div className="viewCalender"   >
+                                            <Calendar onChange={date => this.onChange(date)} selectRange={true} />
+                                        </div> :
+                                        null}
+                                </div>
+                            </div>
+                            <div className="form-group linebylineInput medium__input--width">
+                                <label className="control-label"> {Resources.status[currentLanguage]}   </label>
+                                <Dropdown
+                                    data={this.statusData}
+                                    isMulti={false}
+                                    selectedValue={this.state.selectedStatus}
+                                    handleChange={event => this.setState({ selectedStatus: event })}
+                                    name="status" />
+                            </div>
                         </div>
                     </div>
-                    {searchGrid}
                 </div>
+                {searchGrid}
             </div>
         );
     }
