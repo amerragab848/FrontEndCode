@@ -189,6 +189,7 @@ class SubmittalAddEdit extends Component {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push("/submittal/" + this.state.projectId);
     }
+   
   }
 
   componentDidMount() {
@@ -206,7 +207,7 @@ class SubmittalAddEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.document.id) {
+    if (nextProps.document.id!== this.props.document.id) {
 
       let doc =nextProps.document
 
@@ -217,7 +218,7 @@ class SubmittalAddEdit extends Component {
 
       this.setState({
     
-        selectedSubmittalType: nextProps.document.submittalType != "" ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
+        selectedSubmittalType: nextProps.document.submittalType !=null  && nextProps.document.submittalType?  { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
         isEdit: true, 
            document: doc,
         hasWorkflow: nextProps.hasWorkflow
@@ -260,7 +261,7 @@ class SubmittalAddEdit extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+    if (this.props.hasWorkflow !== prevProps.hasWorkflow|| this.props.changeStatus !== prevProps.changeStatus) {
       this.checkDocumentIsView();
     }
   }

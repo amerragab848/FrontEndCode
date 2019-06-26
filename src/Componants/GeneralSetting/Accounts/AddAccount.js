@@ -13,6 +13,8 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../publicComponants/LoadingSection';
 import Eyepw from '../../../Styles/images/eyepw.svg';
+import { toast } from "react-toastify";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const publicConfiguarion = config.getPayload();
 const getPublicConfiguartion = config.getPublicConfiguartion();
@@ -143,7 +145,7 @@ class AddAccount extends Component {
     }
 
     SupervisorNamehandleChange = (e) => {
-        this.setState({ SupervisorId: e})
+        this.setState({ SupervisorId: e })
     }
 
     ContactNamehandleChange = (e) => {
@@ -151,7 +153,7 @@ class AddAccount extends Component {
     }
 
     GroupNameData = (e) => {
-        this.setState({ GroupNameId: e})
+        this.setState({ GroupNameId: e })
     }
 
     UserNameChangeHandler = (e) => {
@@ -218,7 +220,8 @@ class AddAccount extends Component {
     }
 
     AddAccount = () => {
-            Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password + '&companyId=' + this.state.CompanyId + '', null, 'POST').then(
+        Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password + '&companyId=' + this.state.CompanyId.value + '', null, 'POST').then(res => {
+            if (res !== "Email already exists.") {
                 Api.post('AddAccount',
                     {
                         'userName': this.state.UserName,
@@ -255,12 +258,18 @@ class AddAccount extends Component {
                             pathname: '/TemplatesSettings',
                         })
                     )
-            ).catch(ex => {
-                this.props.history.push({
-                    pathname: '/TemplatesSettings',
-                })
+            }
+            else
+                toast.warn(res)
+        }
+
+
+        ).catch(ex => {
+            this.props.history.push({
+                pathname: '/TemplatesSettings',
             })
-        
+        })
+
     }
 
     render() {
@@ -370,7 +379,7 @@ class AddAccount extends Component {
                                                         </em>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div className="linebylineInput valid-input">
                                                     <Fragment>
                                                         <label className="control-label">{Resources['employeeCode'][currentLanguage]} </label>

@@ -2337,20 +2337,20 @@ class riskAddEdit extends Component {
 
                                                             <div className="Risk__input">
                                                                 <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">{Resources['totalMedigationCost'][currentLanguage]}</label>
+                                                                    <label className="control-label">{'Total Of (Total Mitigation Cost + Residual Risk)'}</label>
                                                                     <div className='ui input inputDev '>
                                                                         <input autoComplete="off" readOnly
-                                                                            value={this.state.totalMedigationCostPost == null ? 0 : (this.state.totalMedigationCostPost).toFixed(2)}
+                                                                            value={this.state.totalResidualRisk == null ? 0 : (this.state.totalResidualRisk).toFixed(2)}
                                                                             type="number"
                                                                             className="form-control" name="totalMedigationCostPost"
                                                                             placeholder={Resources['totalMedigationCost'][currentLanguage]} />
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">{Resources['totalRESIDUALRisk'][currentLanguage]}</label>
+                                                                    <label className="control-label">{'Since Total Pre Metigation EMV '}</label>
                                                                     <div className='ui input inputDev '>
                                                                         <input autoComplete="off" readOnly
-                                                                            value={this.state.totalResidualRisk == null ? 0 : (this.state.totalResidualRisk).toFixed(0)}
+                                                                            value={this.state.totalPretRiskEmv == null ? 0 : (this.state.totalPretRiskEmv).toFixed(0)}
                                                                             type="number"
                                                                             className="form-control" name="preMedigationCostEMV"
                                                                             placeholder={Resources['totalRESIDUALRisk'][currentLanguage]} />
