@@ -239,9 +239,9 @@ class SubContract extends Component {
                         subject: values.subject,
                         arrange: res,
                         reference: values.refDoc,
-                        docDate: moment(values.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                        docDate: moment(values.docDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
                         status: values.status == undefined ? true : values.status,
-                        completionDate: moment(values.completionDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                        completionDate: moment(values.completionDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
                         actualExceuted: 0,
                         originalContactSum: 0,
                         parentId:this.props.docId,
@@ -388,15 +388,13 @@ class SubContract extends Component {
                                     </div>
                                     <div className="proForm datepickerContainer">
                                         <div className="linebylineInput valid-input">
-                                            <DatePicker title='docDate'
-                                                format={'DD/MM/YYYY'}
+                                            <DatePicker title='docDate' 
                                                 name="docDate"
                                                 startDate={values.docDate}
                                                 handleChange={e => { handleChange(e); setFieldValue('docDate', e) }} />
                                         </div>
                                         <div className="linebylineInput valid-input">
-                                            <DatePicker title='completionDate'
-                                                format={'DD/MM/YYYY'}
+                                            <DatePicker title='completionDate' 
                                                 name="completionDate"
                                                 startDate={values.completionDate}
                                                 handleChange={e => { handleChange(e); setFieldValue('completionDate', e) }} />

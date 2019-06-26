@@ -4891,6 +4891,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
 
 .reports__proForm .linebylineInput .fillter-status.fillter-item-c {
     width: 100%;
+    margin: 0;
 }
 
 .settings-container .setting-tabs-contant .reports__proForm .linebylineInput {

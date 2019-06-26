@@ -12,13 +12,13 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-  };
-  
+};
+
 class SubContractLog extends Component {
-   
+
     constructor(props) {
         super(props)
-      
+
         this.itemsColumns = [
             {
                 key: "arrange",
@@ -29,7 +29,7 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"number"
+                type: "number"
             }, {
                 key: "subject",
                 name: Resources["subject"][currentLanguage],
@@ -39,7 +39,7 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "companyName",
                 name: Resources["CompanyName"][currentLanguage],
@@ -49,7 +49,7 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "toCompanyName",
                 name: Resources["contractTo"][currentLanguage],
@@ -59,7 +59,7 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "toContactName",
                 name: Resources["ToContact"][currentLanguage],
@@ -69,7 +69,7 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"string"
+                type: "string"
             }, {
                 key: "docDate",
                 name: Resources["docDate"][currentLanguage],
@@ -79,8 +79,8 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter:dateFormate,
-                type:"date"
+                formatter: dateFormate,
+                type: "date"
             }, {
                 key: "completionDate",
                 name: Resources["completionDate"][currentLanguage],
@@ -90,8 +90,8 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter:dateFormate,
-                type:"date"
+                formatter: dateFormate,
+                type: "date"
             }, {
                 key: "actualExceuted",
                 name: Resources["actualExecuted"][currentLanguage],
@@ -101,7 +101,7 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                type:"number"
+                type: "number"
             }, {
                 key: "docCloseDate",
                 name: Resources["closeDate"][currentLanguage],
@@ -111,19 +111,19 @@ class SubContractLog extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter:dateFormate,
-                type:"date"
+                formatter: dateFormate,
+                type: "date"
             }
         ];
-     
+
         this.state = {
-            ApiGet:this.props.ApiGet,
+            ApiGet: this.props.ApiGet,
             rows: [],
             isLoading: true,
             docId: this.props.docId,
-            viewModel : false,
-            projectId:this.props.projectId,
-            isViewMode:this.props.isViewMode
+            viewModel: false,
+            projectId: this.props.projectId,
+            isViewMode: this.props.isViewMode
         }
     }
 
@@ -135,41 +135,41 @@ class SubContractLog extends Component {
         });
     }
 
-    viewSubContract=()=>{
-        this.setState({viewModel:true});
+    viewSubContract = () => {
+        this.setState({ viewModel: true });
     }
 
-    FillTable=()=>{
+    FillTable = () => {
 
         Api.get(this.state.ApiGet).then(result => {
-            this.setState({ 
+            this.setState({
                 isLoading: false,
                 rows: result,
-                viewModel:false
-             })
+                viewModel: false
+            })
         }).catch(() => {
             this.setState({ isLoading: false, rows: [] })
         });
     }
 
     render() {
-        const dataGrid = this.state.isLoading === false ? 
-        (<GridSetupWithFilter rows={this.state.rows} showCheckbox={false} columns={this.itemsColumns} key='items' />) : <LoadingSection />;
+        const dataGrid = this.state.isLoading === false ?
+            (<GridSetupWithFilter rows={this.state.rows} showCheckbox={false} columns={this.itemsColumns} key='items' />) : <LoadingSection />;
         return (
             <Fragment>
-            {this.state.viewModel === false ? 
-            <div className="doc-pre-cycle">
-                <header className="doc-pre-btn">
-                    <h2 className="zero">{Resources.subContractsList[currentLanguage]}</h2>
-                    <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? 'disNone' : '')} disabled={this.state.isViewMode} onClick={this.viewSubContract}><i className="fa fa-file-text"></i></button>
-                </header>
-                {dataGrid}
-            </div>
-            :
-            <SubContract projectId={this.state.projectId} type={this.props.type} items={this.props.items} docId={this.state.docId} FillTable={this.FillTable}  />
-            }
-        </Fragment>
-             )
+                {this.state.viewModel === false ?
+                    <div className="doc-pre-cycle">
+                        <header className="doc-pre-btn">
+                            <h2 className="zero">{Resources.subContractsList[currentLanguage]}</h2>
+                            <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? 'disNone' : '')} disabled={this.state.isViewMode} onClick={this.viewSubContract}><i className="fa fa-file-text"></i></button>
+                        </header>
+                        {dataGrid}
+                    </div>
+                    :
+                    <SubContract projectId={this.state.projectId} type={this.props.type} items={this.props.items} docId={this.state.docId} FillTable={this.FillTable} />
+                }
+            </Fragment>
+        )
     }
 }
 export default withRouter(SubContractLog)

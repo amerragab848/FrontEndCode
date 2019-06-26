@@ -108,8 +108,8 @@ class BudgetCashFlowAll extends Component {
     getGridRows = () => {
         this.setState({ isLoading: true })
         let obj = {
-            startDate: moment(this.state.startDate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            finishDate: moment(this.state.finishDate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            startDate: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            finishDate: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         }
         Api.post('GetBudgetCashFlowAll', obj).then(res => {
             this.setState({showChart:true});
@@ -128,12 +128,7 @@ class BudgetCashFlowAll extends Component {
             let series = [];
 
             let stacks = ["Actual In","Actual Out","Estimated In","Estimated Out"];
-
-            // series.push({ name: 'Actual', data: actualIn, color: '#90ED7D' });
-            // series.push({ name: 'Actual', data: actualOut, color: '#f45b4f' });
-            // series.push({ name: 'Estimate', data: estimatedIn, color: '#95ceff' });
-            // series.push({ name: 'Estimate', data: estimatedOut, color: '#90000f' });
-
+ 
             let xAxis = { categories: categories }
             let noClicks = this.state.noClicks
 
@@ -187,8 +182,8 @@ class BudgetCashFlowAll extends Component {
                 this.setState({ isLoading: true })
                 
                 let obj = {
-                    startDate: moment(this.state.startDate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-                    finishDate: moment(this.state.finishDate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+                    startDate: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                    finishDate: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
                 }
 
                 Api.post('GetActualTotalIn', obj).then(
@@ -207,8 +202,8 @@ class BudgetCashFlowAll extends Component {
             if (rowData.totalOut !== 0) {
                 this.setState({ isLoading: true })
                 let obj = {
-                    startDate: moment(this.state.startDate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-                    finishDate: moment(this.state.finishDate, 'DD-MM-YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+                    startDate: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                    finishDate: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
                 }
                 Api.post('GetActualTotalOut', obj).then(
                     res => {

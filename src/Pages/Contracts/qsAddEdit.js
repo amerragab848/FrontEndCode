@@ -10,7 +10,7 @@ import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import ModernDatepicker from "react-modern-datepicker";
+import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -58,7 +58,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 
 class QsAddEdit extends Component {
@@ -82,7 +82,7 @@ class QsAddEdit extends Component {
           projectName = obj.projectName;
           isApproveMode = obj.isApproveMode;
           docApprovalId = obj.docApprovalId;
-          perviousRoute = obj.perviousRoute; 
+          perviousRoute = obj.perviousRoute;
           arrange = obj.arrange;
 
         } catch {
@@ -109,7 +109,7 @@ class QsAddEdit extends Component {
       docTypeId: 98,
       projectId: projectId,
       docApprovalId: docApprovalId,
-      perviousRoute:perviousRoute,
+      perviousRoute: perviousRoute,
       arrange: arrange,
       document: this.props.document ? Object.assign({}, this.props.document) : {},
       itemDocument: {},
@@ -140,7 +140,7 @@ class QsAddEdit extends Component {
     if (!Config.IsAllow(765) && !Config.IsAllow(766) && !Config.IsAllow(768)) {
 
       toast.warn(Resources["missingPermissions"][currentLanguage]);
-      this.props.history.push( 
+      this.props.history.push(
         this.state.perviousRoute
       );
     }
@@ -164,11 +164,11 @@ class QsAddEdit extends Component {
   componentWillReceiveProps(nextProps, prevProps) {
     if (nextProps.document.id) {
 
-      nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format("DD/MM/YYYY") : moment();
+      nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format('YYYY-MM-DD') : moment();
 
       this.setState({
         isEdit: true,
-        document: this.props.document,
+        document: nextProps.document,
         hasWorkflow: this.props.hasWorkflow
       });
 
@@ -440,7 +440,7 @@ class QsAddEdit extends Component {
 
     let saveDocument = this.state.document;
 
-    saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditContractsQs", saveDocument).then(result => {
       this.setState({
@@ -461,7 +461,7 @@ class QsAddEdit extends Component {
 
       let saveDocument = { ...this.state.document };
 
-      saveDocument.docDate = moment(saveDocument.docDate, "DD/MM/YYYY").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+      saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
       dataservice.addObject("AddContractsQs", saveDocument).then(result => {
 
@@ -522,7 +522,8 @@ class QsAddEdit extends Component {
   }
 
   handleShowAction = item => {
-    if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+    if (item.value != "0") {
+      this.props.actions.showOptionPanel(false);
       this.setState({
         currentComponent: item.value,
         currentTitle: item.title,
@@ -856,7 +857,7 @@ class QsAddEdit extends Component {
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document one__tab one_step">
-        <HeaderDocument projectName={projectName} perviousRoute={this.state.perviousRoute}  isViewMode={this.state.isViewMode} docTitle={Resources.contractsQs[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+          <HeaderDocument projectName={projectName} perviousRoute={this.state.perviousRoute} isViewMode={this.state.isViewMode} docTitle={Resources.contractsQs[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
           <div className="doc-container">
             {/* Right Menu */}
             <div className="step-content">
@@ -915,23 +916,22 @@ class QsAddEdit extends Component {
                               </div>
                             </div>
                             <div className="proForm datepickerContainer">
+ 
+
                               <div className="linebylineInput valid-input">
                                 <div className="inputDev ui input input-group date NormalInputDate">
                                   <div className="customDatepicker fillter-status fillter-item-c ">
                                     <div className="proForm datepickerContainer">
-                                      <label className="control-label">
-                                        {Resources.docDate[currentLanguage]}
-                                      </label>
-                                      <div className="linebylineInput">
-                                        <div className="inputDev ui input input-group date NormalInputDate">
-                                          <ModernDatepicker date={this.state.document.docDate} format={"DD/MM/YYYY"} showBorder
-                                            onChange={e => this.handleChangeDate(e, "docDate")} placeholder={"Select a date"} />
-                                        </div>
+                                      <div className="linebylineInput valid-input alternativeDate">
+                                        <DatePicker title='docDate'
+                                          startDate={this.state.document.docDate}
+                                          handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
+
                               <div className="linebylineInput valid-input">
                                 <label className="control-label">
                                   {Resources.arrange[currentLanguage]}
@@ -1054,7 +1054,7 @@ class QsAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 && this.state.isViewMode === false && this.state.CurrentStep === 1 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={853} EditAttachments={3255} ShowDropBox={3567} ShowGoogleDrive={3568} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                      {this.state.docId > 0 && this.state.isViewMode === false && this.state.CurrentStep === 1 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={853} EditAttachments={3255} ShowDropBox={3567} ShowGoogleDrive={3568} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                       {this.state.CurrentStep === 1 ? this.viewAttachments() : null}
                       {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>
@@ -1088,7 +1088,7 @@ class QsAddEdit extends Component {
                 </div>
               </div>
             ) : null}
-            
+
             {/* step document */}
             <div className="docstepper-levels">
               <div className="step-content-foot">
@@ -1099,14 +1099,14 @@ class QsAddEdit extends Component {
                 </span>
                 <span
                   onClick={this.NextStep.bind(this)}
-                  className={ this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
+                  className={this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
                   Next
                   <i className="fa fa-caret-right" aria-hidden="true" />
                 </span>
               </div>
               <div className="workflow-sliderSteps">
                 <div className="step-slider">
-                <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                  <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
                     <div className="steps-timeline">
                       <span>1</span>
                     </div>
@@ -1127,7 +1127,7 @@ class QsAddEdit extends Component {
                 </div>
               </div>
             </div>
-         
+
           </div>
         </div>
         <div>
