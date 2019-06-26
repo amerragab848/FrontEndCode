@@ -161,7 +161,6 @@ class ProjectInvoices extends Component {
 
                         this.getGridRows()
                     }}>
-                    >
                     {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
                             <div className="linebylineInput valid-input">
