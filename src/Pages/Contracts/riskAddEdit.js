@@ -1339,7 +1339,7 @@ class riskAddEdit extends Component {
                                         <td>
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.mitigationTypeText}</div>
                                         </td>
-                                        <td>
+                                        <td style={{ width: 'auto'}}>
                                             <div className="contentCell tableCell-2" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.actionOwnerContactName}</div>
                                         </td>
                                         <td>
