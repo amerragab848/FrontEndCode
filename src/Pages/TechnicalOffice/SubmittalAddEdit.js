@@ -189,7 +189,7 @@ class SubmittalAddEdit extends Component {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push("/submittal/" + this.state.projectId);
     }
-   
+
   }
 
   componentDidMount() {
@@ -207,20 +207,20 @@ class SubmittalAddEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.document.id!== this.props.document.id) {
+    if (nextProps.document.id !== this.props.document.id) {
 
-      let doc =nextProps.document
+      let doc = nextProps.document
 
-     doc.docDate =doc.docDate !== null ? moment(doc.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+      doc.docDate = doc.docDate !== null ? moment(doc.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
       doc.forwardToDate !== null ? moment(doc.forwardToDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
 
       let obj = this.state.SubmittalTypes.find(o => o.label === nextProps.document.submittalType);
 
       this.setState({
-    
-        selectedSubmittalType: nextProps.document.submittalType !=null  && nextProps.document.submittalType?  { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
-        isEdit: true, 
-           document: doc,
+
+        selectedSubmittalType: nextProps.document.submittalType != null && nextProps.document.submittalType ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
+        isEdit: true,
+        document: doc,
         hasWorkflow: nextProps.hasWorkflow
       });
 
@@ -261,7 +261,7 @@ class SubmittalAddEdit extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.hasWorkflow !== prevProps.hasWorkflow|| this.props.changeStatus !== prevProps.changeStatus) {
+    if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
       this.checkDocumentIsView();
     }
   }
@@ -473,7 +473,7 @@ class SubmittalAddEdit extends Component {
 
         if (locationId) {
 
-          let locationName = result.find(i => i.value === parseInt(locationId));
+          let locationName = result.find(i => i.label ===  locationId );
 
           if (locationName) {
 
@@ -501,7 +501,7 @@ class SubmittalAddEdit extends Component {
 
         if (areaId) {
 
-          areaIdName = result.find(i => i.value === parseInt(areaId));
+          areaIdName = result.find(i => i.label ===  areaId);
 
           if (areaIdName) {
 
@@ -872,9 +872,10 @@ class SubmittalAddEdit extends Component {
     let saveDocument = this.state.document;
 
 
-    saveDocument.docDate = moment(saveDocument.docDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocument.forwardToDate = moment(saveDocument.forwardToDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-
+    saveDocument.area = this.state.selectedArea.label;
+    saveDocument.location=this.state.selectedLocation.label;
     dataservice.addObject("EditLogSubmittal", saveDocument).then(result => {
 
       this.setState({
@@ -966,9 +967,10 @@ class SubmittalAddEdit extends Component {
       });
 
       let saveDocument = { ...this.state.document };
-
-      saveDocument.docDate = moment(saveDocument.docDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-      saveDocument.forwardToDate = moment(saveDocument.forwardToDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+      saveDocument.area = this.state.selectedArea.label;
+      saveDocument.location=this.state.selectedLocation.label;
+      saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+      saveDocument.forwardToDate = moment(saveDocument.forwardToDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
       dataservice.addObject("AddLogsSubmittal", saveDocument).then(result => {
         toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -988,11 +990,11 @@ class SubmittalAddEdit extends Component {
 
         toast.error(Resources["failError"][currentLanguage]);
       });
-    } else { 
+    } else {
       this.setState({
         Stepes: this.state.Stepes + 1
       });
-    } 
+    }
   }
 
   saveAndExit(event) {
@@ -1142,7 +1144,7 @@ class SubmittalAddEdit extends Component {
 
     let saveDocument = { ...this.state.itemsDocumentSubmital };
 
-    saveDocument.submitalDate = moment(saveDocument.submitalDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocument.submitalDate = moment(saveDocument.submitalDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocument.submittalId = this.state.docId;
 
     dataservice.addObject("AddLogSubmittalItems", saveDocument).then(data => {
@@ -1343,7 +1345,7 @@ class SubmittalAddEdit extends Component {
 
     let EditData = this.state.itemsDocumentSubmital;
 
-    EditData.submitalDate = moment(EditData.submitalDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    EditData.submitalDate = moment(EditData.submitalDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditLogSubmittalItems", EditData).then(data => {
 
@@ -1426,7 +1428,7 @@ class SubmittalAddEdit extends Component {
 
     let saveCycle = this.state.addCycleSubmital;
 
-   saveCycle.docDate = moment(saveCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveCycle.docDate = moment(saveCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     dataservice.addObject("AddLogSubmittalCycles", saveCycle).then(result => {
 
       let originalData = this.state.submittalItemData;
@@ -1724,18 +1726,18 @@ class SubmittalAddEdit extends Component {
                               </div>
                             </div>
                             <div className="proForm datepickerContainer">
-                                      <div className="linebylineInput">
-                                        <div className="inputDev ui input input-group date NormalInputDate">
-                                          <ModernDatepicker startDate={this.state.document.docDate} title='docDate'
-                                            handleChange={e => this.handleChangeDate(e, "docDate")} />
-                                        </div>
-                                      </div>
-                                      <div className="linebylineInput">
-                                        <div className="inputDev ui input input-group date NormalInputDate">
-                                          <ModernDatepicker startDate={this.state.document.forwardToDate} title="forwardToDate"
-                                            handleChange={e => this.handleChangeDate(e, "forwardToDate")} />
-                                        </div>
-                                      </div>
+                              <div className="linebylineInput">
+                                <div className="inputDev ui input input-group date NormalInputDate">
+                                  <ModernDatepicker startDate={this.state.document.docDate} title='docDate'
+                                    handleChange={e => this.handleChangeDate(e, "docDate")} />
+                                </div>
+                              </div>
+                              <div className="linebylineInput">
+                                <div className="inputDev ui input input-group date NormalInputDate">
+                                  <ModernDatepicker startDate={this.state.document.forwardToDate} title="forwardToDate"
+                                    handleChange={e => this.handleChangeDate(e, "forwardToDate")} />
+                                </div>
+                              </div>
                               <div className="linebylineInput valid-input">
                                 <label className="control-label">
                                   {Resources.arrange[currentLanguage]}
@@ -1982,12 +1984,12 @@ class SubmittalAddEdit extends Component {
                                       </div>
                                     </div>
                                     <div className="proForm datepickerContainer">
-                                              <div className="linebylineInput">
-                                                <div className="inputDev ui input input-group date NormalInputDate">
-                                                  <ModernDatepicker startDate={this.state.documentCycle.docDate} title="cycleDate"
-                                                    handleChange={e => this.handleChangeDateCycles(e, "docDate")} />
-                                                </div>
-                                          </div>
+                                      <div className="linebylineInput">
+                                        <div className="inputDev ui input input-group date NormalInputDate">
+                                          <ModernDatepicker startDate={this.state.documentCycle.docDate} title="cycleDate"
+                                            handleChange={e => this.handleChangeDateCycles(e, "docDate")} />
+                                        </div>
+                                      </div>
                                       <div className="linebylineInput valid-input">
                                         <label className="control-label">
                                           {Resources.arrange[currentLanguage]}
@@ -2036,13 +2038,13 @@ class SubmittalAddEdit extends Component {
                                           </div>
                                         </div>
                                       </div>
-   
-                                              <div className="linebylineInput">
-                                                <div className="inputDev ui input input-group date NormalInputDate">
-                                                  <ModernDatepicker startDate={this.state.documentCycle.approvedDate} title="dateApproved"
-                                                    handleChange={e => this.handleChangeDateCycles(e, "approvedDate")} />
-                                                </div>
-                                              </div>
+
+                                      <div className="linebylineInput">
+                                        <div className="inputDev ui input input-group date NormalInputDate">
+                                          <ModernDatepicker startDate={this.state.documentCycle.approvedDate} title="dateApproved"
+                                            handleChange={e => this.handleChangeDateCycles(e, "approvedDate")} />
+                                        </div>
+                                      </div>
                                     </div>
                                     <div className="slider-Btns">
                                       {this.state.isViewMode === false ?
@@ -2118,13 +2120,13 @@ class SubmittalAddEdit extends Component {
                                           name="reviewResult" id="reviewResult"
                                           handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")} />
                                       </div>
-                                              <div className="linebylineInput">
-                                                <div className="inputDev ui input input-group date NormalInputDate">
-                                                  <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
-                                                    handleChange={e => this.handleChangeDateItems(e, "submitalDate")}
-                                                     />
-                                                </div>
-                                              </div>
+                                      <div className="linebylineInput">
+                                        <div className="inputDev ui input input-group date NormalInputDate">
+                                          <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
+                                            handleChange={e => this.handleChangeDateItems(e, "submitalDate")}
+                                          />
+                                        </div>
+                                      </div>
                                       <div className="linebylineInput valid-input">
                                         <label className="control-label">
                                           {Resources.arrange[currentLanguage]}
@@ -2557,4 +2559,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SubmittalAddEdit));
-  
