@@ -1627,7 +1627,7 @@ class riskAddEdit extends Component {
                                                 }}>
 
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                                                    <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                                                    <Form id="rfiForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
                                                         <div className="proForm first-proform">
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.generalListTitle[currentLanguage]}</label>

@@ -43,10 +43,10 @@ class App extends Component {
 
   render() {
     const showComp = IsAuthorize ?
-       <div>
-          <Menu />
-          {Route}
-        </div>
+      <div>
+        <Menu />
+        {Route}
+      </div>
       : <Login />
     return (
       <Provider store={store}>

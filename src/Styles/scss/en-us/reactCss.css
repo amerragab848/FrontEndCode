@@ -3513,8 +3513,8 @@ button.companies_icon {
     min-height: 50px;
     border-bottom: 1px solid rgba(34, 36, 38, .1);
     padding-left: 10px;
-    text-overflow: ellipsis;
-    white-space: pre-wrap;
+    /* text-overflow: ellipsis;
+    white-space: pre-wrap; */
     overflow: visible;
 }
 
@@ -5068,6 +5068,7 @@ path.highcharts-label-box.highcharts-tooltip-box+text tspan {
     width: 232px;
     position: sticky;
     top: 72px;
+    z-index: 2;
 }
 
 .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
@@ -7435,9 +7436,13 @@ div#markup-panel {
      flex-flow: column;
  }
 
- /* .datepickerContainer.proForm .letterFullWidth >*{
+ .datepickerContainer.proForm .datepickerContainer.proForm.letterFullWidth {
+    flex-flow: row;
+ }
+
+ .letterFullWidth > .document-fields {
      width: 100%
- } */
+ }
 
  .datepickerContainer.proForm .letterFullWidth .ui.input.inputDev {
      width: 100%;
@@ -7558,6 +7563,10 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 
 .header__search input {
     border-color: transparent !important;
+}
+
+.one__tab.one_step .doc-container .step-content .main__header {
+    margin-bottom: 10px;
 }
 
 /* calender */

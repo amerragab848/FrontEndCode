@@ -8025,6 +8025,10 @@ button.react-calendar__navigation__label {
  color: #252833;
 }
 
+.letterFullWidth > .document-fields {
+  width: 100%
+}
+
 button.react-calendar__tile.react-calendar__month-view__days__day {
  width: 50px !important;
  height: 40px;
