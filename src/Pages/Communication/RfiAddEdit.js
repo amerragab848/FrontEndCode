@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -8,7 +8,6 @@ import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import ModernDatepicker from 'react-modern-datepicker';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -21,8 +20,7 @@ import * as communicationActions from '../../store/actions/communication';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-import TextEditor from '../../Componants/OptionsPanels/TextEditor'
-
+import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { toast } from "react-toastify";
 
@@ -96,13 +94,13 @@ class RfiAddEdit extends Component {
             areas: [],
             locations: [],
             permission: [{ name: 'sendByEmail', code: 81 },
-            { name: 'sendByInbox', code: 80 },
-            { name: 'sendTask', code: 1 },
-            { name: 'distributionList', code: 963 },
-            { name: 'createTransmittal', code: 3049 },
-            { name: 'sendToWorkFlow', code: 713 },
-            { name: 'viewAttachments', code: 3318 },
-            { name: 'deleteAttachments', code: 828 }],
+                        { name: 'sendByInbox', code: 80 },
+                        { name: 'sendTask', code: 1 },
+                        { name: 'distributionList', code: 963 },
+                        { name: 'createTransmittal', code: 3049 },
+                        { name: 'sendToWorkFlow', code: 713 },
+                        { name: 'viewAttachments', code: 3318 },
+                        { name: 'deleteAttachments', code: 828 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -139,8 +137,8 @@ class RfiAddEdit extends Component {
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document.id) {
 
-            nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format('DD/MM/YYYY') : moment();
-            nextProps.document.requiredDate = nextProps.document.requiredDate != null ? moment(nextProps.document.requiredDate).format('DD/MM/YYYY') : moment();
+            nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+            nextProps.document.requiredDate = nextProps.document.requiredDate != null ? moment(nextProps.document.requiredDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
 
             this.setState({
                 document: nextProps.document,
@@ -151,8 +149,7 @@ class RfiAddEdit extends Component {
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
-        }
-        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+        } 
         if (this.state.showModal != nextProps.showModal) {
             this.setState({ showModal: nextProps.showModal });
         }
@@ -191,8 +188,6 @@ class RfiAddEdit extends Component {
             let url = "GetCommunicationRfiForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'RFI');
 
-            if (Config.IsAllow(75) || Config.IsAllow(76) || Config.IsAllow(78)) {
-            }
         } else {
             const rfiDocument = {
                 //field
@@ -230,12 +225,17 @@ class RfiAddEdit extends Component {
     }
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
+
         let action = url + "?" + param + "=" + value
+
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+
             if (this.props.changeStatus === true) {
+
                 let toSubField = this.state.document[subField];
+
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -435,8 +435,8 @@ class RfiAddEdit extends Component {
 
         let saveDocument = this.state.document;
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('EditCommunicationRfi', saveDocument).then(result => {
             this.setState({
@@ -458,14 +458,13 @@ class RfiAddEdit extends Component {
     }
 
     saveRfi(event) {
-
         this.setState({
             isLoading: true
         });
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('AddCommunicationRfi', saveDocument).then(result => {
             this.setState({
@@ -518,20 +517,14 @@ class RfiAddEdit extends Component {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }];
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
+        ];
 
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.communicationRFI[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
-
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -595,7 +588,6 @@ class RfiAddEdit extends Component {
                                                                     <div className="proForm datepickerContainer">
                                                                         <div className="linebylineInput valid-input alternativeDate">
                                                                             <DatePicker title='docDate'
-                                                                                format={'DD/MM/YYYY'}
                                                                                 startDate={this.state.document.docDate}
                                                                                 handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                                         </div>
@@ -609,7 +601,6 @@ class RfiAddEdit extends Component {
                                                                     <div className="proForm datepickerContainer">
                                                                         <div className="linebylineInput valid-input alternativeDate">
                                                                             <DatePicker title='requiredDate'
-                                                                                format={'DD/MM/YYYY'}
                                                                                 startDate={this.state.document.requiredDate}
                                                                                 handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
                                                                         </div>
@@ -731,7 +722,6 @@ class RfiAddEdit extends Component {
                                                                 selectedValue={this.state.selectedDiscpline}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')} />
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
@@ -751,7 +741,6 @@ class RfiAddEdit extends Component {
                                                                     value={this.state.message}
                                                                     onChange={this.onChangeMessageRfi} />
                                                             </div>
-
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
@@ -760,7 +749,6 @@ class RfiAddEdit extends Component {
                                                                     value={this.state.replyMessage}
                                                                     onChange={this.onChangeMessageAnswer} />
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                     <div className="slider-Btns">
@@ -789,11 +777,12 @@ class RfiAddEdit extends Component {
                                                                         </button> :
                                                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
                                                                     }
-                                                                    {this.state.isApproveMode === true ?
-                                                                        <div >
-                                                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                                                        </div> : null
+                                                                    {
+                                                                        this.state.isApproveMode === true ?
+                                                                            <div >
+                                                                                <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
+                                                                                <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
+                                                                            </div> : null
                                                                     }
                                                                     <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
                                                                     <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
@@ -812,9 +801,7 @@ class RfiAddEdit extends Component {
                                         <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={827} EditAttachments={3224} ShowDropBox={3609} ShowGoogleDrive={3610} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
-                                            {this.props.changeStatus === true ?
-                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null}
+                                            {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>
                                     </div>
                                 </div>

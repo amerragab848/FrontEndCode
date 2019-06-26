@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -11,38 +10,26 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
-
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-
 import SkyLight from 'react-skylight';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
-
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
-        .nullable(true),
-
-    toContactId: Yup.string()
-        .required(Resources['toContactRequired'][currentLanguage])
-
+    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage])
 })
 
 let docId = 0;
@@ -50,9 +37,10 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute=''; 
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
+
 class LettersAddEdit extends Component {
 
     constructor(props) {
@@ -65,13 +53,13 @@ class LettersAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
-                    perviousRoute = obj.perviousRoute; 
+                    perviousRoute = obj.perviousRoute;
                 }
                 catch{
                     this.props.history.goBack();
@@ -84,8 +72,8 @@ class LettersAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
-            perviousRoute: perviousRoute,  
+            isApproveMode: isApproveMode,
+            perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
             docTypeId: 19,
@@ -113,9 +101,9 @@ class LettersAddEdit extends Component {
 
         if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
     }
     componentDidMount() {
@@ -132,7 +120,7 @@ class LettersAddEdit extends Component {
 
     };
 
-    componentWillReceiveProps(nextProps) { 
+    componentWillReceiveProps(nextProps) {
         if (nextProps.document.id !== this.props.document.id) {
             this.setState({
                 document: nextProps.document,
@@ -161,7 +149,6 @@ class LettersAddEdit extends Component {
         this.setState({
             docId: 0
         });
-
     }
 
     componentDidUpdate(prevProps) {
@@ -386,12 +373,10 @@ class LettersAddEdit extends Component {
             this.setState({
                 isLoading: false
             });
-            toast.success(Resources["operationSuccess"][currentLanguage]); 
-             if (this.state.isApproveMode === false) {
-                this.props.history.push( 
-                    this.state.perviousRoute
-                  );
-            } 
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+            if (this.state.isApproveMode === false) {
+                this.props.history.push(this.state.perviousRoute);
+            }
 
         });
     }
@@ -414,9 +399,9 @@ class LettersAddEdit extends Component {
     }
 
     saveAndExit(event) {
-        this.props.history.push( 
+        this.props.history.push(
             this.state.perviousRoute
-          );
+        );
     }
 
     showBtnsSaving() {
@@ -463,18 +448,12 @@ class LettersAddEdit extends Component {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ];
+
         return (
             <div className="mainContainer" id={'mainContainer'}>
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.lettertitle[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
@@ -494,14 +473,9 @@ class LettersAddEdit extends Component {
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
-                                        <Formik
-                                            initialValues={{ ...this.state.document }}
-                                            validationSchema={validationSchema}
-                                            enableReinitialize={this.props.changeStatus}
+                                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema} enableReinitialize={this.props.changeStatus}
                                             onSubmit={(values) => {
                                                 if (this.props.showModal) { return; }
-
-
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -509,13 +483,10 @@ class LettersAddEdit extends Component {
                                                 } else {
                                                     this.saveAndExit();
                                                 }
-                                            }}  >
-
+                                            }}>
                                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                 <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                                     <div className="proForm first-proform">
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -529,10 +500,8 @@ class LettersAddEdit extends Component {
                                                                     }}
                                                                     onChange={(e) => this.handleChange(e, 'subject')} />
                                                                 {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-
                                                             </div>
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                             <div className="ui checkbox radio radioBoxBlue">
@@ -544,21 +513,16 @@ class LettersAddEdit extends Component {
                                                                 <label>{Resources.closed[currentLanguage]}</label>
                                                             </div>
                                                         </div>
-
                                                     </div>
-
                                                     <div className="proForm datepickerContainer">
-
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='docDate'
                                                                 startDate={this.state.document.docDate}
                                                                 handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
-                                                            <div className="ui input inputDev"  >
-
+                                                            <div className="ui input inputDev">
                                                                 <input type="text" className="form-control" id="arrange" readOnly
                                                                     value={this.state.document.arrange}
                                                                     name="arrange"
@@ -570,10 +534,9 @@ class LettersAddEdit extends Component {
                                                                     onChange={(e) => this.handleChange(e, 'arrange')} />
                                                             </div>
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
-                                                            <div className="ui input inputDev"  >
+                                                            <div className="ui input inputDev">
                                                                 <input type="text" className="form-control" id="refDoc"
                                                                     value={this.state.document.refDoc}
                                                                     name="refDoc"
@@ -581,7 +544,6 @@ class LettersAddEdit extends Component {
                                                                     onChange={(e) => this.handleChange(e, 'refDoc')} />
                                                             </div>
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
@@ -595,16 +557,11 @@ class LettersAddEdit extends Component {
                                                                 <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
                                                             </div>
                                                         </div>
-
-
                                                         <div className="linebylineInput valid-input mix_dropdown">
-
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-                                                                    <Dropdown
-                                                                        data={this.state.companies}
-                                                                        isMulti={false}
+                                                                    <Dropdown data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
                                                                             this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
@@ -613,7 +570,6 @@ class LettersAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromCompanyId}
                                                                         touched={touched.fromCompanyId}
-
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
                                                                         id="fromCompanyId" />
@@ -624,7 +580,6 @@ class LettersAddEdit extends Component {
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
@@ -637,7 +592,6 @@ class LettersAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input mix_dropdown">
-
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
@@ -663,30 +617,24 @@ class LettersAddEdit extends Component {
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}
                                                                         touched={touched.toContactId}
-
                                                                         index="letter-toContactId"
                                                                         name="toContactId"
                                                                         id="toContactId" />
-
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
                                                                 title="discipline"
                                                                 data={this.state.discplines}
                                                                 selectedValue={this.state.selectedDiscpline}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
-                                                                index="letter-discipline"
-                                                            />
-                                                        </div>
-
+                                                                index="letter-discipline" />
+                                                        </div> 
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
                                                                 title="replyletter"
@@ -694,8 +642,7 @@ class LettersAddEdit extends Component {
                                                                 selectedValue={this.state.selectedReplyLetter}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'replyId', false, '', '', '', 'selectedReplyLetter')}
                                                                 index="letter-replyId" />
-                                                        </div>
-
+                                                        </div> 
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
@@ -703,8 +650,7 @@ class LettersAddEdit extends Component {
                                                                     value={this.state.message}
                                                                     onChange={this.onChangeMessage} />
                                                             </div>
-                                                        </div>
-
+                                                        </div> 
                                                     </div>
                                                     <div className="slider-Btns">
                                                         {this.state.isLoading ?
@@ -730,10 +676,10 @@ class LettersAddEdit extends Component {
                                                                             </div>
                                                                         </button> :
                                                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
-                                                                    }
-
-                                                                    {this.state.isApproveMode === true ?
-                                                                        <div >
+                                                                    } 
+                                                                    {
+                                                                        this.state.isApproveMode === true ?
+                                                                        <div>
                                                                             <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
                                                                             <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                                                         </div>
@@ -754,35 +700,29 @@ class LettersAddEdit extends Component {
                                         </Formik>
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
-                                        <div>
-
-                                            {this.state.docId > 0 ? this.props.changeStatus === false ?
+                                        <div> 
+                                            {
+                                                this.state.docId > 0 ? this.props.changeStatus === false ?
                                                 (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
                                                 (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
-                                            }
-
-                                            {this.viewAttachments()}
-
-                                            {this.props.changeStatus === true ?
-
-                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
+                                            } 
+                                            {this.viewAttachments()} 
+                                            {
+                                                this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null
                                             }
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                    </div> 
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }} key="opActionsLetter">
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]} beforeClose={() => { this.executeBeforeModalClose() }}>
                         {this.state.currentComponantDocument}
                     </SkyLight>
                 </div>
-            </div>
-
+            </div> 
         );
     }
 }
@@ -804,7 +744,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(LettersAddEdit))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LettersAddEdit))

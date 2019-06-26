@@ -1,22 +1,22 @@
 import React, { Component, Fragment } from 'react';
 import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous';
-import Api from '../../api'
-import DatePicker from '../../Componants/OptionsPanels/DatePicker'
-import moment from 'moment'
+import Api from '../../api';
+import DatePicker from '../../Componants/OptionsPanels/DatePicker';
+import moment from 'moment';
 import Resources from '../../resources.json';
 import _ from "lodash";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import DataService from '../../Dataservice'
+import DataService from '../../Dataservice';
 import CryptoJS from 'crypto-js';
 import { toast } from "react-toastify";
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
+import Distribution from '../../Componants/OptionsPanels/DistributionList';
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
+import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
+import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import Config from "../../Services/Config.js";
@@ -24,13 +24,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-import Recycle from '../../Styles/images/attacheRecycle.png'
-import 'react-table/react-table.css'
-import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
-
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import Recycle from '../../Styles/images/attacheRecycle.png';
+import 'react-table/react-table.css';
+import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
@@ -38,31 +38,40 @@ const validationSchema = Yup.object().shape({
     facilitatorContact: Yup.string().required(Resources['facilitatorContactReuired'][currentLanguage]),
     noteTakerContact: Yup.string().required(Resources['noteTakerContactRequired'][currentLanguage]),
 });
+
 const attendeesValidationSchema = Yup.object().shape({
     attendeesContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
 });
+
 const topicsValidationSchema = Yup.object().shape({
     description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
     topicContact: Yup.string().required(Resources['calledByContactRequired'][currentLanguage])
 
 });
+
 let docId = 0;
 let projectId = 0;
 let projectName = "";
 let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
-let perviousRoute=0;
+let perviousRoute = 0;
+let link = 0;
+
 class MeetingMinutesAddEdit extends Component {
     constructor(props) {
+
         super(props)
+
         const query = new URLSearchParams(this.props.location.search);
+
         let index = 0;
+
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -77,6 +86,9 @@ class MeetingMinutesAddEdit extends Component {
             index++;
         }
 
+
+        link = perviousRoute.split('/')[1];
+
         this.state = {
             btnTxt: 'save',
             CurrStep: 1,
@@ -89,7 +101,7 @@ class MeetingMinutesAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -108,12 +120,10 @@ class MeetingMinutesAddEdit extends Component {
             topicContacts: [],
             selectedTopicContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
             selectedTopicCompany: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
-
             attendees: [],
             attendencesContacts: [],
             selectedAttendencesContact: { label: Resources.calledByContactRequired[currentLanguage], value: "0" },
             selectedAttendencesCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedCalledByCompany: { label: Resources.calledByCompanyRequired[currentLanguage], value: "0" },
@@ -123,22 +133,18 @@ class MeetingMinutesAddEdit extends Component {
             selectedNoteTakerCompany: { label: Resources.noteTakerCompanyReuired[currentLanguage], value: "0" },
             selectedNoteTakerContact: { label: Resources.noteTakerContactRequired[currentLanguage], value: "0" },
             requiredDate: moment(),
-
             isLoading: true,
             permission: [{ name: 'sendByEmail', code: 113 }, { name: 'sendByInbox', code: 112 },
             { name: 'sendTask', code: 0 }, { name: 'distributionList', code: 967 },
             { name: 'createTransmittal', code: 3053 }, { name: 'sendToWorkFlow', code: 717 },
             { name: 'viewAttachments', code: 3325 }, { name: 'deleteAttachments', code: 838364 }],
-
             document: {},
             attendence: {},
             topics: [],
         }
         if (!Config.IsAllow(504) && !Config.IsAllow(505) && !Config.IsAllow(507)) {
-            toast.warning(Resources['missingPermissions'][currentLanguage]) 
-                this.props.history.push( 
-                    this.state.perviousRoute
-                  ); 
+            toast.warning(Resources['missingPermissions'][currentLanguage])
+            this.props.history.push(this.state.perviousRoute);
         }
     }
 
@@ -147,7 +153,6 @@ class MeetingMinutesAddEdit extends Component {
             if (!Config.IsAllow(507)) {
                 this.setState({ isViewMode: true });
             }
-
             if (this.state.isApproveMode != true && Config.IsAllow(507)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(507)) {
                     if (this.props.document.status !== false && Config.IsAllow(507)) {
@@ -200,7 +205,6 @@ class MeetingMinutesAddEdit extends Component {
             }
             this.setState({ CompanyData: [...res], isLoading: false })
         })
-
     }
 
     componentWillUnmount() {
@@ -215,7 +219,6 @@ class MeetingMinutesAddEdit extends Component {
                 this.getTabelData()
                 this.checkDocumentIsView();
             })
-
         } else {
             this.props.actions.documentForAdding()
             this.fillDropDowns(false);
@@ -299,27 +302,34 @@ class MeetingMinutesAddEdit extends Component {
             this.setState({
                 document: { ...props.document }
             }, function () {
-                let docDate = moment(this.state.document.docDate).format('DD/MM/YYYY')
+
+                let docDate = this.state.document.docDate != null ? moment(this.state.document.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')
+
                 this.setState({ document: { ...this.state.document, docDate: docDate } });
             });
+
             this.fillDropDowns(true);
+
             this.checkDocumentIsView();
         }
-        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+
         if (this.state.showModal != props.showModal) {
             this.setState({ showModal: props.showModal });
         }
     }
     //#region  editting
     editMeeting = () => {
-        
         this.setState({
             isLoading: true,
             firstComplete: true
         });
 
-        let docDate = moment(this.state.document.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        let docDate = moment(this.state.document.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+
         let document = Object.assign(this.state.document, { docDate: docDate })
+
+        document.docLocationId = link === "InternalMeetingMinutes" ? 0 : 1
+
         Api.post('EditCommunicationMeetingMinutes', document).then(result => {
             this.setState({
                 isLoading: false,
@@ -341,9 +351,13 @@ class MeetingMinutesAddEdit extends Component {
     //#region    adding
     addMeeting = () => {
         this.setState({ isLoading: true })
+        
         let documentObj = { ...this.state.document };
-        documentObj.docDate = moment(documentObj.docDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        documentObj.docLocationId = 0
+        
+        documentObj.docDate = moment(documentObj.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+
+        documentObj.docLocationId = link === "InternalMeetingMinutes" ? 0 : 1
+        
         DataService.addObject('AddCommunicationMeetingMinutes', documentObj).then(result => {
             this.setState({
                 meetingId: result.id,
@@ -404,7 +418,7 @@ class MeetingMinutesAddEdit extends Component {
 
         let topic = {
             meetingId: this.state.docId,
-            requiredDate: moment(this.state.requiredDate, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            requiredDate: moment(this.state.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             itemDescription: values.description,
             action: values.action,
             arrange: values.arrange,
@@ -516,7 +530,9 @@ class MeetingMinutesAddEdit extends Component {
     }
 
     NextStep = (next) => {
+
         window.scrollTo(0, 0)
+
         switch (this.state.CurrStep) {
             case 1:
                 if (next == true) {
@@ -539,7 +555,7 @@ class MeetingMinutesAddEdit extends Component {
                 this.setState({ CurrStep: this.state.CurrStep + 1, secondComplete: true })
                 break;
             case 3:
-                this.props.history.push({ pathname: '/InternalMeetingMinutes/' + this.state.projectId })
+                this.props.history.push({ pathname: this.state.perviousRoute })
                 break;
         }
     }
@@ -569,7 +585,8 @@ class MeetingMinutesAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
         console.log(item);
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -620,15 +637,10 @@ class MeetingMinutesAddEdit extends Component {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ];
+
         let Step_1 = <React.Fragment>
             <div className="document-fields">
                 {this.state.isLoading ? <LoadingSection /> : null}
@@ -648,7 +660,7 @@ class MeetingMinutesAddEdit extends Component {
                         if (this.props.changeStatus === false && this.state.docId === 0) {
                             this.addMeeting()
                         } else {
-                            this.NextStep(true)
+                            this.NextStep(this.props.changeStatus)
                         }
                     }} >
                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue }) => (
