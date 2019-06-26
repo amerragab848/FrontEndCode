@@ -113,7 +113,7 @@ class AccountsEPSPermissions extends Component {
                                                 <div className="letterFullWidth">
                                                     <DropdownMelcous title='chooseEPS' data={this.state.EPSData}
                                                         selectedValue={this.state.EPSDefaultData}
-                                                        handleChange={this.EPShandleChange} placeholder='chooseEPS' isMulti={true} />
+                                                        handleChange={this.EPShandleChange} placeholder='chooseEPS' isMulti={true} closeMenuOnSelect={false} />
                                                 </div>
                                                 <div className="dropBtn">
                                                     <button className="primaryBtn-2 btn smallBtn" onClick={this.goBack}>Back</button>

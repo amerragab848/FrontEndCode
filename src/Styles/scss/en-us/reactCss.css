@@ -1955,23 +1955,8 @@ tfoot tr td p {
     flex-flow: column;
 }
 
-/* .dropdownMulti .fillter-status.fillter-item-c .spanValidation {
-    width: 130px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-right: 15px;
-} */
-
-.document-fields.userProject .proForm.datepickerContainer .dropdownMulti .fillter-status.fillter-item-c .spanValidation {
-    width: auto;
-    display: block
-}
-
-.document-fields.userProject .proForm.datepickerContainer .dropdownMulti .fillter-status.fillter-item-c {
-    display: flex;
-    flex-flow: column;
+.userProject .dropdownMulti.letterFullWidth .fillter-status.fillter-item-c {
+    width: 100%;
 }
 
 .dropdownMulti .fillter-status.fillter-item-c>div:last-of-type {
@@ -1986,11 +1971,9 @@ tfoot tr td p {
     width: 100%;
 }
 
-
-/* .spanValidation {
-  margin-bottom: 10px;
-} */
-
+.filter__warrper .proForm .linebylineInput label {
+    padding: 0;
+}
 
 /* noTabs */
 
@@ -7585,5 +7568,9 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 
   .attachmentTable__fixedWidth.attachmentTable tbody tr td:first-child, .attachmentTable__fixedWidth.attachmentTable thead tr th:first-child {
       width: auto
+  }
+
+  .letterFullWidth .textarea-group {
+      width: 100%;
   }
   

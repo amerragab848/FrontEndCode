@@ -6062,10 +6062,7 @@ line.horizontal-grid-line {
 
 .filter__warrper {
   min-height: 124px;
-  border-radius: 2px;
-  background-color: #fafbfc;
-  padding-bottom: 31px;
-  padding-top: 16px;
+  height: auto;
 }
 
 .filter__warrper .proForm {
@@ -8056,7 +8053,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
   transition: all 0.4s ease-in-out
 }
 
-.header__search.active {
+.header__search:hover {
   border-bottom: 2px solid #E9ECF0;
 }
 
@@ -8065,7 +8062,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
   transition: all 0.4s ease-in-out
 }
 
-.header__search.active .ui.input {
+.header__search:hover .ui.input {
   width: 220px;
   transition: all 0.4s ease-in-out
 }
@@ -8073,5 +8070,4 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 .header__search input {
   border-color: transparent !important;
 }
-
 /* new rtl css */

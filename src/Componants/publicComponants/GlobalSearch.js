@@ -242,7 +242,7 @@ class GlobalSearch extends Component {
                 </div>
 
                 <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
-                    <div className="filter__more" style={{ padding: 0 }}>
+                    <div className="filter__more" style={{ padding: 0, margin: '10px' }}>
                         <span>4 filters applied</span>
                     </div>
                     <div className="filter__input-wrapper" onMouseLeave={this.resetDate}>
@@ -253,6 +253,7 @@ class GlobalSearch extends Component {
                                     <Dropdown
                                         data={this.state.docsType}
                                         isMulti={true}
+                                        closeMenuOnSelect={false}
                                         selectedValue={this.state.selectedDocs}
                                         handleChange={event => this.setState({ selectedDocs: event })}
                                         name="docType" />

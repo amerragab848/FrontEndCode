@@ -732,7 +732,7 @@ class PurchaseOrderAddEdit extends Component {
 
       let objDocument = this.state.document;
       objDocument.docDate = moment(objDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-      objDocument.completionDate = moment( objDocument.completionDate, 'YYYY-MM-DD' ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+      objDocument.completionDate = moment(objDocument.completionDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
       if (this.props.changeStatus) {
         dataservice
@@ -1082,7 +1082,7 @@ class PurchaseOrderAddEdit extends Component {
 
   renderNormalItems = (errors, touched, values, handleBlur, handleChange, setFieldValue, setFieldTouched) => {
     return (
-      <div className="proForm datepickerContainer letterFullWidth">
+      
         <div className="proForm datepickerContainer letterFullWidth">
           {this.state.viewDisription === 0 ? (
             <Fragment>
@@ -1202,7 +1202,6 @@ class PurchaseOrderAddEdit extends Component {
                 </div>
               </div>
 
-              <div className="proForm datepickerContainer letterFullWidth">
                 <div className="linebylineInput valid-input">
                   <Dropdown
                     title="itemType"
@@ -1228,7 +1227,6 @@ class PurchaseOrderAddEdit extends Component {
                     index="itemType"
                   />
                 </div>
-              </div>
 
               {this.state.selectedItemType.value === 3 ? (
                 <Fragment>
@@ -1320,7 +1318,6 @@ class PurchaseOrderAddEdit extends Component {
                     ""
                   )}
 
-              <div className="proForm datepickerContainer letterFullWidth">
                 <div className="linebylineInput valid-input">
                   <Dropdown
                     title="specsSection"
@@ -1346,7 +1343,6 @@ class PurchaseOrderAddEdit extends Component {
                     index="specsSectionId"
                   />
                 </div>
-              </div>
 
               <div className="linebylineInput valid-input">
                 <label className="control-label">
@@ -1574,7 +1570,7 @@ class PurchaseOrderAddEdit extends Component {
                       ) : null}
                     </div>
                   </div>
-                  
+
                   <div className="linebylineInput valid-input">
                     <Dropdown
                       title="itemType"
@@ -1771,13 +1767,13 @@ class PurchaseOrderAddEdit extends Component {
             />
           </div>
         </div>
-      </div>
     );
   };
 
   renderBOQItems = (errors, touched, values, handleBlur, handleChange, setFieldValue, setFieldTouched) => {
     return (
       <div className="proForm datepickerContainer letterFullWidth">
+        
         <div className="proForm datepickerContainer letterFullWidth">
           <div className="linebylineInput valid-input">
             <Dropdown
@@ -1810,6 +1806,7 @@ class PurchaseOrderAddEdit extends Component {
             </div>
           </div>
         </div>
+        
         <div className="linebylineInput valid-input">
           <Dropdown
             title={"specsSection"}
@@ -1826,6 +1823,7 @@ class PurchaseOrderAddEdit extends Component {
             index="fromContract"
           />
         </div>
+        
       </div>
     );
   };
@@ -3154,19 +3152,21 @@ class PurchaseOrderAddEdit extends Component {
 
     let SixthStepSubPurchaseOrders = () => {
       return (
-        <SubPurchaseOrderLog
-          type="PurchaseOrder"
-          items={this.state.purchaseOrderDataItems}
-          ApiGet={
-            "GetContractsPurchaseOrderSubPos?projectId=" +
-            docId +
-            "&parentType=PurchaseOrder"
-          }
-          docId={this.state.docId}
-          projectId={projectId}
-          isViewMode={this.state.isViewMode}
-          subject={this.state.document.subject}
-        />
+        <div className="doc-pre-cycle">
+          <SubPurchaseOrderLog
+            type="PurchaseOrder"
+            items={this.state.purchaseOrderDataItems}
+            ApiGet={
+              "GetContractsPurchaseOrderSubPos?projectId=" +
+              docId +
+              "&parentType=PurchaseOrder"
+            }
+            docId={this.state.docId}
+            projectId={projectId}
+            isViewMode={this.state.isViewMode}
+            subject={this.state.document.subject}
+          />
+        </div>
       );
     };
 
