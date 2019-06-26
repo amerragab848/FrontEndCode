@@ -4710,8 +4710,6 @@ ul {
       width: 100%; }
       .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .selection .text {
         background: none; }
-  .documents-stepper .doc-container .step-content .doc-pre-cycle {
-    padding: 0 80px; }
     .documents-stepper .doc-container .step-content .doc-pre-cycle header {
       padding: 40px; }
       .documents-stepper .doc-container .step-content .doc-pre-cycle header h2 {
@@ -5055,8 +5053,6 @@ ul {
               padding: 0; }
               .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
                 width: 100%; }
-    .one__tab .doc-container .doc-pre-cycle {
-      padding: 0; }
       .one__tab .doc-container .doc-pre-cycle header {
         padding: 40px 0; }
         .one__tab .doc-container .doc-pre-cycle header h2 {
@@ -5141,13 +5137,6 @@ ul {
         @media screen and (max-width: 1200px) {
           .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
             width: 360px; } }
-    .one__tab.one_step .doc-container .step-content .doc-pre-cycle {
-      padding-left: 110px;
-      padding-right: 80px; }
-      @media screen and (max-width: 1300px) {
-        .one__tab.one_step .doc-container .step-content .doc-pre-cycle {
-          padding-left: 35px;
-          padding-right: 20px; } }
 
 .dashboard-container {
   padding-top: 90px; }

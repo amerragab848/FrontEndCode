@@ -1082,11 +1082,12 @@ class PurchaseOrderAddEdit extends Component {
 
   renderNormalItems = (errors, touched, values, handleBlur, handleChange, setFieldValue, setFieldTouched) => {
     return (
+      <Fragment>
       <div className="proForm datepickerContainer letterFullWidth">
-        <div className="proForm datepickerContainer letterFullWidth">
           {this.state.viewDisription === 0 ? (
             <Fragment>
               <div className="proForm datepickerContainer letterFullWidth">
+                
                 <div className="linebylineInput valid-input">
                   <Dropdown
                     title="description"
@@ -1119,8 +1120,7 @@ class PurchaseOrderAddEdit extends Component {
                   {Resources.arrange[currentLanguage]}
                 </label>
                 <div className="ui input inputDev">
-                  <input
-                    type="text"
+                  <input type="text"
                     className="form-control"
                     id="arrange"
                     readOnly
@@ -1202,7 +1202,7 @@ class PurchaseOrderAddEdit extends Component {
                 </div>
               </div>
 
-              <div className="proForm datepickerContainer letterFullWidth">
+              {/* <div className="proForm datepickerContainer letterFullWidth"> */}
                 <div className="linebylineInput valid-input">
                   <Dropdown
                     title="itemType"
@@ -1228,7 +1228,7 @@ class PurchaseOrderAddEdit extends Component {
                     index="itemType"
                   />
                 </div>
-              </div>
+              {/* </div> */}
 
               {this.state.selectedItemType.value === 3 ? (
                 <Fragment>
@@ -1264,6 +1264,7 @@ class PurchaseOrderAddEdit extends Component {
                       ) : null}
                     </div>
                   </div>
+
                   <div className="linebylineInput valid-input">
                     <Dropdown
                       title="equipmentType"
@@ -1280,6 +1281,7 @@ class PurchaseOrderAddEdit extends Component {
                       index="equipmentType"
                     />
                   </div>
+
                 </Fragment>
               ) : this.state.selectedItemType.value === 2 ? (
                 <Fragment>
@@ -1320,7 +1322,7 @@ class PurchaseOrderAddEdit extends Component {
                     ""
                   )}
 
-              <div className="proForm datepickerContainer letterFullWidth">
+              {/* <div className="proForm datepickerContainer letterFullWidth"> */}
                 <div className="linebylineInput valid-input">
                   <Dropdown
                     title="specsSection"
@@ -1346,12 +1348,13 @@ class PurchaseOrderAddEdit extends Component {
                     index="specsSectionId"
                   />
                 </div>
-              </div>
+              {/* </div> */}
 
               <div className="linebylineInput valid-input">
                 <label className="control-label">
                   {Resources.itemCode[currentLanguage]}
                 </label>
+<<<<<<< HEAD
                 <div
                   className={
                     "inputDev ui input" +
@@ -1375,6 +1378,11 @@ class PurchaseOrderAddEdit extends Component {
                     }}
                     name="itemCode"
                   />
+=======
+                <div className={ "inputDev ui input" + (errors.itemCode && touched.itemCode  ? " has-error" : !errors.itemCode && touched.itemCode ? " has-success"  : " ") } >
+                  <input  type="text" className="form-control" id="itemCode" value={this.state.purchaseOrderItems.itemCode} placeholder={Resources.itemCode[currentLanguage]}  onChange={e => this.handleChangeItems(e, "itemCode")}
+                    onBlur={e => {handleChange(e); handleBlur(e);}} name="itemCode" />
+>>>>>>> f6eff418b8c1a0b7c6e7ad6f48c18bfe01e6bbce
                   {errors.itemCode && touched.itemCode ? (
                     <em className="pError">{errors.itemCode}</em>
                   ) : null}
@@ -1382,6 +1390,7 @@ class PurchaseOrderAddEdit extends Component {
               </div>
             </Fragment>
           ) : (
+<<<<<<< HEAD
               <Fragment>
                 <div className="proForm datepickerContainer letterFullWidth">
                   <div className="proForm datepickerContainer letterFullWidth">
@@ -1506,8 +1515,47 @@ class PurchaseOrderAddEdit extends Component {
                       name="unit"
                       index="unit"
                     />
+=======
+            <Fragment>
+              <div className="proForm datepickerContainer letterFullWidth">
+                
+                <div className="proForm datepickerContainer letterFullWidth">
+                  <div className="linebylineInput fullInputWidth">
+                    <label className="control-label">{Resources.details[currentLanguage]}</label>
+                    <div className={"inputDev ui input " + (errors.details ? "has-error" : !errors.details && touched.details ? " has-success"  : " ") }>
+                      <input type="text" className="form-control" id="details" value={this.state.purchaseOrderItems.details} placeholder={Resources.details[currentLanguage]}
+                        onChange={e => this.handleChangeItems(e, "details")} onBlur={e => { handleChange(e); handleBlur(e);}}  name="details" />
+                      {errors.details ? (
+                        <em className="pError">{errors.details}</em>
+                      ) : null}
+                    </div>
+                  </div>
+                  <button className="primaryBtn-1 btn " type="submit" onClick={e => this.renderFromInventory(this.state.viewDisription)}>
+                    {Resources["fromInventory"][currentLanguage]}
+                  </button>
+                </div>
+
+                <div className="linebylineInput valid-input">
+                  <label className="control-label">{Resources.arrange[currentLanguage]}</label>
+                  <div className="ui input inputDev">
+                    <input type="text" className="form-control" id="arrange" readOnly value={this.state.purchaseOrderItems.arrange} placeholder={Resources.arrange[currentLanguage]}
+                      onChange={e => this.handleChangeItems(e, "arrange")}
+                      onBlur={e => {handleChange(e); handleBlur(e);}} name="arrange" />
+                  </div>
+                </div>
+
+                <div className="linebylineInput valid-input">
+                  <label className="control-label">{Resources.quantity[currentLanguage]}</label>
+                  <div className={"inputDev ui input" + (errors.quantity && touched.quantity ? " has-error" : !errors.quantity && touched.quantity ? " has-success" : " ")}>
+                    <input type="text" className="form-control" id="quantity" value={this.state.purchaseOrderItems.quantity} placeholder={Resources.quantity[currentLanguage]}
+                      onChange={e => this.handleChangeItems(e, "quantity")}  onBlur={e => { handleChange(e);  handleBlur(e);  }}  name="quantity"  />
+                    {errors.quantity && touched.quantity ? (
+                      <em className="pError">{errors.quantity}</em>
+                    ) : null}
+>>>>>>> f6eff418b8c1a0b7c6e7ad6f48c18bfe01e6bbce
                   </div>
 
+<<<<<<< HEAD
                   <div className="linebylineInput valid-input">
                     <label className="control-label">
                       {Resources.unitPrice[currentLanguage]}
@@ -1747,17 +1795,200 @@ class PurchaseOrderAddEdit extends Component {
                           handleBlur(e);
                         }}
                         name="itemCode"
+=======
+                <div className="linebylineInput valid-input">
+                  <Dropdown
+                    title="unit"
+                    data={this.state.units}
+                    selectedValue={this.state.selectedUnit}
+                    handleChange={event => {this.handleChangeDropDownItems(event, "unit", false,  "",  "",  "", "selectedUnit", "" ); }}
+                    onChange={setFieldValue}
+                    onBlur={setFieldTouched}
+                    error={errors.unit}
+                    touched={touched.unit}
+                    name="unit"
+                    index="unit"
+                  />
+                </div>
+
+                <div className="linebylineInput valid-input">
+                  <label className="control-label">{Resources.unitPrice[currentLanguage]}</label>
+                  <div className={ "inputDev ui input" + (errors.unitPrice && touched.unitPrice ? " has-error" : !errors.unitPrice && touched.unitPrice ? " has-success" : " ") }>
+                    <input type="text" className="form-control" id="unitPrice" value={this.state.purchaseOrderItems.unitPrice} placeholder={Resources.unitPrice[currentLanguage]}
+                      onChange={e => this.handleChangeItems(e, "unitPrice")} onBlur={e => { handleChange(e); handleBlur(e); }} name="unitPrice"  />
+                    {errors.unitPrice && touched.unitPrice ? (
+                      <em className="pError">{errors.unitPrice}</em>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="linebylineInput valid-input">
+                  <label className="control-label">{Resources.resourceCode[currentLanguage]}</label>
+                  <div className={"inputDev ui input" +(errors.resourceCode && touched.resourceCode ? " has-error" : !errors.resourceCode && touched.resourceCode ? " has-success" : " ")}>
+                    <input type="text" className="form-control" id="resourceCode"  value={this.state.purchaseOrderItems.resourceCode} placeholder={Resources.resourceCode[currentLanguage]}
+                      onChange={e => this.handleChangeItems(e, "resourceCode")} onBlur={e => { handleChange(e); handleBlur(e);}} name="resourceCode" />
+                    {errors.resourceCode && touched.resourceCode ? (
+                      <em className="pError">{errors.resourceCode}</em>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="linebylineInput valid-input">
+                  <Dropdown
+                    title="itemType"
+                    data={this.state.itemType}
+                    selectedValue={this.state.selectedItemType}
+                    handleChange={event => { this.handleChangeDropDownItems( event, "itemType", false, "", "", "", "selectedItemType", "");}}
+                    onChange={setFieldValue}
+                    onBlur={setFieldTouched}
+                    error={errors.itemType}
+                    touched={touched.itemType}
+                    name="itemType"
+                    index="itemType"
+                  />
+                </div>
+
+                {this.state.selectedItemType.value === 3 ? (
+                  <Fragment>
+                    <div className="linebylineInput valid-input">
+                      <label className="control-label">{Resources.days[currentLanguage]}</label>
+                      <div className={"inputDev ui input" + (errors.days && touched.days ? " has-error" : !errors.days && touched.days ? " has-success" : " ")}>
+                        <input type="text" className="form-control" id="days" value={this.state.purchaseOrderItems.days} placeholder={Resources.days[currentLanguage]}
+                          onChange={e => this.handleChangeItems(e, "days")} onBlur={e => {handleChange(e);handleBlur(e);}} name="days"/>
+                        {errors.days && touched.days ? (
+                          <em className="pError">{errors.days}</em>
+                        ) : null}
+                      </div>
+                    </div>
+                    <div className="linebylineInput valid-input">
+                      <Dropdown
+                        title="equipmentType"
+                        data={this.state.equipmentType}
+                        selectedValue={this.state.selectedEquipmentType}
+                        handleChange={event => { this.handleChangeDropDownItems( event, "equipmenttypeId",false, "", "", "", "selectedEquipmentType","");}}
+                        onChange={setFieldValue}
+                        onBlur={setFieldTouched}
+                        error={errors.equipmentType}
+                        touched={touched.equipmentType}
+                        name="equipmentType"
+                        index="equipmentType"
+>>>>>>> f6eff418b8c1a0b7c6e7ad6f48c18bfe01e6bbce
                       />
                       {errors.itemCode && touched.itemCode ? (
                         <em className="pError">{errors.itemCode}</em>
                       ) : null}
                     </div>
+<<<<<<< HEAD
                   </div>
                 </div>
               </Fragment>
             )}
 
           <div className="step-content">
+=======
+                  </Fragment>
+                ) : this.state.selectedItemType.value === 2 ? (
+                  <Fragment>
+                    <div className="linebylineInput valid-input">
+                      <label className="control-label">
+                        {Resources.days[currentLanguage]}
+                      </label>
+                      <div
+                        className={
+                          "inputDev ui input" +
+                          (errors.days && touched.days
+                            ? " has-error"
+                            : !errors.days && touched.days
+                            ? " has-success"
+                            : " ")
+                        }
+                      >
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="itemCode"
+                          value={this.state.purchaseOrderItems.days}
+                          placeholder={Resources.days[currentLanguage]}
+                          onChange={e => this.handleChangeItems(e, "days")}
+                          onBlur={e => {
+                            handleChange(e);
+                            handleBlur(e);
+                          }}
+                          name="days"
+                        />
+                        {errors.days && touched.days ? (
+                          <em className="pError">{errors.days}</em>
+                        ) : null}
+                      </div>
+                    </div>
+                  </Fragment>
+                ) : (
+                  ""
+                )}
+                <div className="linebylineInput valid-input">
+                  <Dropdown
+                    title="specsSection"
+                    data={this.state.specssectionType}
+                    selectedValue={this.state.selectedSpecssection}
+                    handleChange={event => {
+                      this.handleChangeDropDownItems(
+                        event,
+                        "specsSectionId",
+                        false,
+                        "",
+                        "",
+                        "",
+                        "selectedSpecssection",
+                        ""
+                      );
+                    }}
+                    onChange={setFieldValue}
+                    onBlur={setFieldTouched}
+                    error={errors.specsSectionId}
+                    touched={touched.specsSectionId}
+                    name="specsSectionId"
+                    index="specsSectionId"
+                  />
+                </div>
+
+                <div className="linebylineInput valid-input">
+                  <label className="control-label">
+                    {Resources.itemCode[currentLanguage]}
+                  </label>
+                  <div
+                    className={
+                      "inputDev ui input" +
+                      (errors.itemCode && touched.itemCode
+                        ? " has-error"
+                        : !errors.itemCode && touched.itemCode
+                        ? " has-success"
+                        : " ")
+                    }
+                  >
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="itemCode"
+                      value={this.state.purchaseOrderItems.itemCode}
+                      placeholder={Resources.itemCode[currentLanguage]}
+                      onChange={e => this.handleChangeItems(e, "itemCode")}
+                      onBlur={e => {
+                        handleChange(e);
+                        handleBlur(e);
+                      }}
+                      name="itemCode"
+                    />
+                    {errors.itemCode && touched.itemCode ? (
+                      <em className="pError">{errors.itemCode}</em>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            </Fragment>
+          )}
+        </div>
+          <div className="doc-pre-cycle">
+>>>>>>> f6eff418b8c1a0b7c6e7ad6f48c18bfe01e6bbce
             <XSLfile
               key="POImport"
               docId={this.state.docId}
@@ -1768,8 +1999,7 @@ class PurchaseOrderAddEdit extends Component {
               afterUpload={() => this.getTabelData()}
             />
           </div>
-        </div>
-      </div>
+          </Fragment>
     );
   };
 
@@ -2807,7 +3037,7 @@ class PurchaseOrderAddEdit extends Component {
               validationSchema={this.state.activeItems == 0 ? this.state.viewDisription === 0 ? ValidtionSchemaForNewItems : ValidtionSchemaForInventoryItems : ""}
               onSubmit={values => { this.AddContractsOrderForPo(); }}>
               {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange, values }) => (
-                <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate">
+                <Form id="signupForm1" className="proForm" noValidate="novalidate">
                   <header className="main__header">
                     <div className="main__header--div">
                       <h2 className="zero">
@@ -2880,7 +3110,7 @@ class PurchaseOrderAddEdit extends Component {
                       className="-striped -highlight"
                     />
                   </Fragment>
-                  <div className={"slider-Btns fullWidthWrapper textLeft "}>
+                  <div className={"slider-Btns"}>
                     {this.state.isLoading === false ? (
                       <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? "disNone" : "")} type="submit" disabled={this.state.isViewMode}>
                         {Resources["add"][currentLanguage]}
@@ -3152,6 +3382,7 @@ class PurchaseOrderAddEdit extends Component {
 
     let SixthStepSubPurchaseOrders = () => {
       return (
+        <div className="doc-pre-cycle">
         <SubPurchaseOrderLog
           type="PurchaseOrder"
           items={this.state.purchaseOrderDataItems}
@@ -3165,6 +3396,7 @@ class PurchaseOrderAddEdit extends Component {
           isViewMode={this.state.isViewMode}
           subject={this.state.document.subject}
         />
+        </div>
       );
     };
 

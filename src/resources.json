@@ -1325,9 +1325,13 @@
         "en": "Title",
         "ar": "العنوان"
     },
-    "proposeMitigation": {
+    "currentMitigation": {
         "en": "Current Mitigation",
         "ar": "Current Mitigation"
+    },
+    "proposeMitigation": {
+        "en": "Proposed Mit",
+        "ar": "Proposed Mit"
     },
     "empTitle": {
         "en": "Title",
@@ -2255,6 +2259,10 @@
         "en": "General Contractor",
         "ar": "المقاول العام"
     },
+    "ownerRisk": {
+        "en": "Owner Risk",
+        "ar": "Owner Risk"
+    },
     "pleaseSelectGeneralContractor": {
         "en": "Please Select a General Contractor",
         "ar": "من فضلك اختر المقاول العام"
@@ -2493,6 +2501,10 @@
     },
     "docDate": {
         "en": "Document Date",
+        "ar": "تاريخ المستند"
+    },
+    "deadLineDate": {
+        "en": "Deadline ",
         "ar": "تاريخ المستند"
     },
     "formDate": {
@@ -7822,7 +7834,7 @@
         "ar": "هذا العقد موجود  مسبقا"
     },
     "responsibleCompanyName": {
-        "en": "Responsible Company",
+        "en": "Action Owner",
         "ar": " الشركه المسئوله"
     },
     "responsibleContactName": {
@@ -7858,8 +7870,8 @@
         "ar": "Post-mitigation "
     },
     "mitigation": {
-        "en": "Mitigation ",
-        "ar": "Mitigation "
+        "en": "Current Mit.",
+        "ar": "Current Mit."
     },
     "descriptionMitigation": {
         "en": "Description Mitigation ",
