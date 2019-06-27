@@ -7,8 +7,15 @@ import Resources from "../../resources.json"
 import LoadingSection from '../publicComponants/LoadingSection'
 import Calendar from "react-calendar";
 import Dropdown from '../OptionsPanels/DropdownMelcous'
-import dataService from '../../Dataservice' 
+import dataService from '../../Dataservice'
 import CryptoJS from "crypto-js";
+  
+import { connect } from 'react-redux';
+import {
+    bindActionCreators
+} from 'redux';
+
+import * as dashboardComponantActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let subject = "test"
@@ -17,25 +24,25 @@ let formatDate = function (date) {
         return moment(date).format("DD/MM/YYYY");
     return "No Date"
 }
- 
+
 
 class GlobalSearch extends Component {
     constructor(props) {
         super(props)
-            const query = new URLSearchParams(this.props.location.search);
-            let index = 0;
-            for (let param of query.entries()) {
-                if (index == 0) {
-                    try {
-                        let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                        subject = obj.subject; 
-                    }
-                    catch{
-                        this.props.history.goBack();
-                    }
+        const query = new URLSearchParams(this.props.location.search);
+        let index = 0;
+        for (let param of query.entries()) {
+            if (index == 0) {
+                try {
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+                    subject = obj.subject;
                 }
-                index++;
+                catch{
+                    this.props.history.goBack();
+                }
             }
+            index++;
+        }
         this.searchColumns = [
             {
                 key: "index",
@@ -111,11 +118,14 @@ class GlobalSearch extends Component {
             docsType: [],
             selectedDocs: []
         }
-
-
-
     }
+
     componentWillMount() {
+
+        var e = { label: this.props.projectName, value: this.props.projectId };
+
+        this.props.actions.RouteToMainDashboard(e);
+
         let searchOptions = {
             subject: this.state.subject,
             fromDate: moment().add(-1, 'Y').format('YYYY/MM/DD'),
@@ -124,7 +134,9 @@ class GlobalSearch extends Component {
             status: null,
             pageNumber: 0
         }
+
         this.setState({ isLoading: true })
+
         Api.post("GetDataForSearchInApp", searchOptions).then(searchResult => {
             if (searchResult) {
                 let data = []
@@ -137,12 +149,14 @@ class GlobalSearch extends Component {
             }
             else
                 this.setState({ searchResult: [], totalRows: searchResult.total })
+
             dataService.GetDataList("GetAccountsDocTypeForDrop", "docType", "refCode").then(result => {
                 this.setState({ isLoading: false, docsType: result })
             })
         })
 
     }
+
     changeDate() {
         let showDate = !this.state.showDate
         this.setState({ showDate });
@@ -151,20 +165,25 @@ class GlobalSearch extends Component {
     resetDate = () => {
         this.setState({ showDate: false });
     }
+
     onChange = (date) => {
         let filterDate = date != null ? moment(date[0]).format("YYYY/MM/DD") + " - " + moment(date[1]).format("YYYY/MM/DD") : "";
         this.setState({ filterDate, showDate: false });
     };
+
     search = (flag) => {
+
         let docs = []
         this.state.selectedDocs.forEach(item => {
             docs.push(item.value)
         })
+
         let fromDate = '';
         let toDate = '';
         let pageNumber = this.state.pageNumber
+
         if (flag != 0)
-            pageNumber = this.state.pageNumber + flag 
+            pageNumber = this.state.pageNumber + flag
         else
             pageNumber = 0
         this.setState({ pageNumber })
@@ -177,6 +196,7 @@ class GlobalSearch extends Component {
             fromDate = moment(this.state.filterDate.split("-")[0]).format('YYYY/MM/DD');
             toDate = moment(this.state.filterDate.split("-")[1]).format('YYYY/MM/DD');
         }
+
         let searchOptions = {
             subject: this.state.subject,
             fromDate: fromDate,
@@ -185,7 +205,9 @@ class GlobalSearch extends Component {
             status: this.state.selectedStatus.value,
             pageNumber: pageNumber
         }
+
         this.setState({ isLoading: true })
+
         Api.post("GetDataForSearchInApp", searchOptions).then(searchResult => {
             if (searchResult) {
                 let data = []
@@ -199,8 +221,10 @@ class GlobalSearch extends Component {
             else
                 this.setState({ searchResult: [], isLoading: false, totalRows: searchResult.total })
         })
+
     }
     render() {
+
         const searchGrid = this.state.isLoading === false ? (
             <GridSetup
                 rows={this.state.searchResult}
@@ -295,4 +319,22 @@ class GlobalSearch extends Component {
         );
     }
 }
-export default withRouter(GlobalSearch);
+
+
+function mapStateToProps(state, ownProps) {
+    return {
+        showLeftMenu: state.communication.showLeftMenu,
+        showSelectProject: state.communication.showSelectProject
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(dashboardComponantActions, dispatch)
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(GlobalSearch));

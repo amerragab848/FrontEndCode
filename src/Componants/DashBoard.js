@@ -1299,6 +1299,7 @@ class DashBoard extends Component {
       </div>
     );
   }
+  
 }
 
 export default DashBoard;
