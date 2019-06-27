@@ -525,9 +525,7 @@ class ProjectSetup extends Component {
                                                             }
 
                                                         </div>
-                                                    </div>
-
-
+                                                    </div> 
                                                     {this.state.title === 'Area' ? null
                                                         : <div className="linebylineInput valid-input">
                                                             <DropdownMelcous title={this.state.DropName} data={this.state.DropData} name='DropName'
@@ -537,12 +535,7 @@ class ProjectSetup extends Component {
                                                                 error={errors.DropName}
                                                                 touched={touched.DropName}
                                                                 value={values.DropName} />
-                                                        </div>}
-
-
-
-
-
+                                                        </div>}  
                                                 </div>
 
                                                 <div className="slider-Btns">

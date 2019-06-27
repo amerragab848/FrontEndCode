@@ -5,8 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Styles/css/rodal.css";
 import "./Styles/css/semantic.min.css";
 
-// import "./Styles/scss/en-us/layout.css";
-// import "./Styles/scss/en-us/reactCss.css";
+import "./Styles/scss/en-us/layout.css";
+import "./Styles/scss/en-us/reactCss.css";
 
 import Menu from "./Pages/Menu/Menu";
 import Login from './Componants/Layouts/Login'
@@ -23,27 +23,27 @@ const store = configureStore();
 
 const IsAuthorize = api.IsAuthorized()
 
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class App extends Component {
 
-  componentWillMount() {
-    let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-    if (currentLanguage == null)
-      localStorage.getItem('lang', 'en')
+  //componentWillMount() {
+    // let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+    // if (currentLanguage == null)
+    //   localStorage.getItem('lang', 'en')
 
-    if (currentLanguage == "ar") { 
-      require("./Styles/scss/ar-eg/layout-ar.css");
-      require("./Styles/scss/ar-eg/ReactCss-ar.css");
-    } else {
-      require("./Styles/scss/en-us/layout.css");
-      require("./Styles/scss/en-us/reactCss.css")
-    }
-  }
+    // if (currentLanguage == "ar") {
+    //   require("./Styles/scss/ar-eg/layout-ar.css");
+    //   require("./Styles/scss/ar-eg/ReactCss-ar.css");
+    // } else {
+    //   require("./Styles/scss/en-us/layout.css");
+    //   require("./Styles/scss/en-us/reactCss.css")
+    // }
+
+  //}
 
   render() {
     const showComp = IsAuthorize ?
-      <div>
+      <div id="direction_warrper" >
         <Menu />
         {Route}
       </div>
@@ -61,6 +61,7 @@ class App extends Component {
     );
   }
 }
+
 class ErrorHandler extends React.Component {
   constructor(props) {
     super(props);
@@ -108,4 +109,5 @@ class ErrorHandler extends React.Component {
     return this.props.children;
   }
 }
+
 export default App;

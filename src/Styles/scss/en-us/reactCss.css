@@ -7371,7 +7371,8 @@ div#markup-panel {
 }
 
 .attachmentTableAuto.attachmentTable thead tr th:nth-child(2) , .attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
-    width: 50px;
+    width: auto;
+    padding-right: 11px !important;
 }
 
 .attachmentTableAuto.attachmentTable tbody tr td:nth-child(3) {

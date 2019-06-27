@@ -116,6 +116,32 @@ class LettersAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
+        if (this.state.docId > 0) {
+            let url = "GetLettersById?id=" + this.state.docId
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'lettertitle');
+
+        } else {
+            let letter = {
+                subject: '',
+                id: 0,
+                projectId: this.state.projectId,
+                arrange: '',
+                fromCompanyId: '',
+                fromContactId: '',
+                toCompanyId: '',
+                toContactId: '',
+                replayId: '',
+                docDate: moment(),
+                status: false,
+                disciplineId: '',
+                refDoc: '',
+                sharedSettings: '',
+                message: ''
+            };
+            this.setState({ document: letter });
+            this.fillDropDowns(false);
+            this.props.actions.documentForAdding();
+        }
         this.checkDocumentIsView();
 
     };
@@ -181,32 +207,7 @@ class LettersAddEdit extends Component {
     }
 
     componentWillMount() {
-        if (this.state.docId > 0) {
-            let url = "GetLettersById?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'lettertitle');
-
-        } else {
-            let letter = {
-                subject: '',
-                id: 0,
-                projectId: this.state.projectId,
-                arrange: '',
-                fromCompanyId: '',
-                fromContactId: '',
-                toCompanyId: '',
-                toContactId: '',
-                replayId: '',
-                docDate: moment(),
-                status: false,
-                disciplineId: '',
-                refDoc: '',
-                sharedSettings: '',
-                message: ''
-            };
-            this.setState({ document: letter });
-            this.fillDropDowns(false);
-            this.props.actions.documentForAdding();
-        }
+     
     };
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
