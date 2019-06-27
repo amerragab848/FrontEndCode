@@ -3,14 +3,11 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../../publicComponants/ConfirmationModal";
 import GridSetup from "../../../../Pages/Communication/GridSetup";
-import Export from "../../../../Componants/OptionsPanels/Export";
-import { Formik, Form, validateYupSchema } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
-import Api from '../../../../api';
 import dataservice from "../../../../Dataservice";
-import DropDown from '../../../OptionsPanels/DropdownMelcous'
 import DatePicker from '../../../OptionsPanels/DatePicker'
 import moment from 'moment';
 import { SkyLightStateless } from 'react-skylight';
@@ -125,22 +122,19 @@ class ExpensesWorkFlowAddEdit extends Component {
             ProjectList: [],
             CompanyData: [],
             ContactData: [],
-            FirstStep: true,
-            SecondStep: false,
-            ThirdStep: false,
-
-            SecondStepComplate: false,
-            ThirdStepComplate: false,
+            CurrStep: 1,
+            firstComplete: false,
+            secondComplete: false,
+            thirdComplete: false,
             rows: [],
             selectedRows: [],
             isLoading: true,
             MultiApprovalData: [],
-            CurrStep: 1,
             showPopUp: false,
             ExpensesWorkFlowDataForEdit: {},
             ContactName: '',
             IsEditMode: false,
-            DocumentDate: moment().format('DD:MM:YYYY'),
+            DocumentDate: moment(),
             Status: 'true',
             selectedProject: '',
             selectedMultiApproval: '',
@@ -153,7 +147,8 @@ class ExpensesWorkFlowAddEdit extends Component {
             SelectedCompanyForEdit: '',
             SelectedContactForEdit: '',
             selectedRows: [],
-            showDeleteModal: false
+            showDeleteModal: false,
+            MoveSteps: false
         }
 
     }
@@ -166,36 +161,6 @@ class ExpensesWorkFlowAddEdit extends Component {
 
     componentWillReceiveProps() {
         console.log(this.props.ProjectReducer.expensesWorkFlowData)
-
-    }
-
-    NextStep = () => {
-
-        if (this.state.CurrStep === 1) {
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: false,
-                CurrStep: this.state.CurrStep + 1,
-                ThirdStep: false
-            })
-        }
-        else {
-            if (this.state.CurrStep === 2) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: false,
-                    SecondStep: false,
-                    ThirdStep: true,
-                    CurrStep: this.state.CurrStep + 1,
-                    ThirdStepComplate: true
-                })
-
-            }
-        }
-
     }
 
     onCloseModal = () => {
@@ -217,7 +182,7 @@ class ExpensesWorkFlowAddEdit extends Component {
         this.setState({
             isLoading: true
         })
-        Api.post('ExpensesWorkFlowItemsMultipleDelete', this.state.selectedRows).then(
+        dataservice.addObject('ExpensesWorkFlowItemsMultipleDelete', this.state.selectedRows).then(
             res => {
                 let originalRows = this.state.rows
 
@@ -240,31 +205,36 @@ class ExpensesWorkFlowAddEdit extends Component {
         });
     }
 
-    PreviousStep = () => {
-        if (idEdit !== 0) {
-            if (this.state.CurrStep === 3) {
-                window.scrollTo(0, 0)
+    NextStep = () => {
+        window.scrollTo(0, 0)
+        switch (this.state.CurrStep) {
+            case 1:
                 this.setState({
-                    FirstStep: false,
-                    SecondStep: true,
-                    ThirdStep: false,
-                    CurrStep: this.state.CurrStep - 1,
-                    ThirdStepComplate: false,
-                    SecondStepComplate: true
+                    CurrStep: this.state.CurrStep + 1,
+                    firstComplete: true
                 })
-            }
-            else {
-                if (this.state.CurrStep === 2) {
-                    window.scrollTo(0, 0)
-                    this.setState({
-                        FirstStep: true,
-                        SecondStep: false,
-                        SecondStepComplate: false,
-                        ThirdStep: false,
-                        CurrStep: this.state.CurrStep - 1
-                    })
-                }
-            }
+                break;
+            case 2:
+
+                this.setState({
+                    CurrStep: this.state.CurrStep + 1, secondComplete: true,
+                })
+                break;
+            case 3:
+                this.props.history.push({ pathname: '/TemplatesSettings/' + this.state.projectId })
+                break;
+        }
+    }
+
+    PreviousStep = () => {
+        window.scrollTo(0, 0)
+        switch (this.state.CurrStep) {
+            case 2:
+                this.setState({ CurrStep: this.state.CurrStep - 1, secondComplete: false })
+                break;
+            case 3:
+                this.setState({ CurrStep: this.state.CurrStep - 1, thirdComplete: false })
+                break;
         }
     }
 
@@ -291,11 +261,12 @@ class ExpensesWorkFlowAddEdit extends Component {
                 })
                 let DataDrop = res;
                 if (idEdit !== 0) {
-                    Api.get('GetExpensesWorkFlowForEdit?id=' + idEdit + '').then(
+                    dataservice.GetRowById('GetExpensesWorkFlowForEdit?id=' + idEdit + '').then(
                         res => {
                             let selectDrop = _.find(DataDrop, function (i) { return i.value == res.projectId });
                             this.setState({
                                 ExpensesWorkFlowDataForEdit: res,
+                                DocumentDate: res.docDate = res.docDate === null ? moment().format('YYYY-MM-DD') : moment(res.docDate).format('YYYY-MM-DD'),
                                 selectedProject: selectDrop,
                             })
                         }
@@ -317,20 +288,13 @@ class ExpensesWorkFlowAddEdit extends Component {
                 this.setState({
                     CompanyData: res,
                 })
-            }
-        )
-
-
+            })
 
         if (idEdit !== 0) {
-
-            Api.get('getExpensesWorkFlowItemsByWorkFlowId?WorkFlowId=' + idEdit + '').then(
+            dataservice.GetDataGrid('getExpensesWorkFlowItemsByWorkFlowId?WorkFlowId=' + idEdit + '').then(
                 res => {
-                    this.setState({
-                        rows: res,
-                        isLoading: false
-                    })
-                    Api.get('GetExpensesWorkFlowItemsByWorkFlowIdLevel?workFlow=' + idEdit + '').then(
+                    this.setState({ rows: res, isLoading: false, MoveSteps: true })
+                    dataservice.GetDataGrid('GetExpensesWorkFlowItemsByWorkFlowIdLevel?workFlow=' + idEdit + '').then(
                         res => {
                             this.setState({
                                 MultiApprovalData: res,
@@ -341,7 +305,6 @@ class ExpensesWorkFlowAddEdit extends Component {
                 }
             )
         }
-
     }
 
     AddContact = (values, actions) => {
@@ -354,44 +317,33 @@ class ExpensesWorkFlowAddEdit extends Component {
                 isLoading: true
             })
             let contactData = this.state.rows
-            let ValidLeaveAndContactId = contactData.filter(s => s.contactId === values.ContactName.value
-                && s.arrange === parseInt(values.ArrangeContact))
-
+            let ValidLeaveAndContactId = contactData.filter(s => s.contactId === values.ContactName.value && s.arrange === parseInt(values.ArrangeContact))
             if (!ValidLeaveAndContactId.length) {
-                Api.post('AddExpensesWorkFlowItem',
-                    {
-                        id: 1,
-                        arrange: values.ArrangeContact,
-                        companyId: values.Company.value,
-                        contactId: values.ContactName.value,
-                        Description: values.Description,
-                        workFlowId: idEdit !== 0 ? idEdit : this.state.ExpensesWorkFlowDataForEdit.id,
-                        multiApproval: false,
-                    }
-                ).then(
-                    res => {
-                        values.ArrangeContact = Math.max.apply(Math, res.map(function (o) { return o.arrange + 1 }))
-                        this.setState({
-                            rows: res,
-                            isLoading: false,
-                        })
-                        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-                    }
-                )
+                let obj = {
+                    id: 1, arrange: values.ArrangeContact, companyId: values.Company.value,
+                    contactId: values.ContactName.value, Description: values.Description,
+                    workFlowId: idEdit !== 0 ? idEdit : this.state.ExpensesWorkFlowDataForEdit.id, multiApproval: false,
+                }
+                dataservice.addObject('AddExpensesWorkFlowItem', obj).then(res => {
+                    values.ArrangeContact = Math.max.apply(Math, res.map(function (o) { return o.arrange + 1 }))
+                    this.setState({ rows: res, isLoading: false, })
+                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                }).catch(ex => {
+                    this.setState({ isLoading: false })
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
             }
-            else {
 
+            else {
                 setTimeout(() => {
-                    this.setState({
-                        isLoading: false,
-                    })
+                    this.setState({ isLoading: false })
                 }, 300);
                 toast.error('This Contact Already Exist in Same Level ....')
             }
             values.Company = ''
             values.ContactName = ''
             values.Description = ''
-            Api.get('GetExpensesWorkFlowItemsByWorkFlowIdLevel?workFlow=' + this.state.ExpensesWorkFlowDataForEdit.id + '').then(
+            dataservice.GetDataGrid('GetExpensesWorkFlowItemsByWorkFlowIdLevel?workFlow=' + this.state.ExpensesWorkFlowDataForEdit.id + '').then(
                 res => {
                     this.setState({
                         MultiApprovalData: res,
@@ -407,34 +359,22 @@ class ExpensesWorkFlowAddEdit extends Component {
             toast.warn(Resources['missingPermissions'][currentLanguage])
         }
         else {
-            this.setState({
-                isLoading: true
-            })
+            this.setState({ isLoading: true })
             let contactData = this.state.rows
-            let ValidLeaveAndContactId = contactData.filter(s => s.contactId === values.ContactNameForEdit.value
-                && s.arrange === parseInt(values.ArrangeContactForEdit))
-
+            let ValidLeaveAndContactId = contactData.filter(s => s.contactId === values.ContactNameForEdit.value && s.arrange === parseInt(values.ArrangeContactForEdit))
             if (!ValidLeaveAndContactId.length) {
-                Api.post('EditExpensesWorkFlowItems',
-                    {
-                        id: 1,
-                        arrange: values.ArrangeContactForEdit,
-                        companyId: values.CompanyForEdit.value,
-                        contactId: values.ContactNameForEdit.value,
-                        Description: values.DescriptionForEdit,
-                        workFlowId: idEdit !== 0 ? idEdit : this.state.ExpensesWorkFlowDataForEdit.id,
-                        multiApproval: false,
-                    }
-                ).then(
-                    res => {
-                        this.setState({
-                            rows: res,
-                            isLoading: false,
-                            showPopUp: false,
-                        })
-                        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-                    }
-                )
+                let obj = {
+                    id: 1, arrange: values.ArrangeContactForEdit, Description: values.DescriptionForEdit,
+                    companyId: values.CompanyForEdit.value, contactId: values.ContactNameForEdit.value,
+                    workFlowId: idEdit !== 0 ? idEdit : this.state.ExpensesWorkFlowDataForEdit.id, multiApproval: false,
+                }
+                dataservice.addObject('EditExpensesWorkFlowItems', obj).then(res => {
+                    this.setState({ rows: res, isLoading: false, showPopUp: false, })
+                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                }).catch(ex => {
+                    this.setState({ isLoading: false })
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
             }
             else {
                 values.Company = ''
@@ -502,7 +442,6 @@ class ExpensesWorkFlowAddEdit extends Component {
                     )
                 }
                 break;
-
             default:
                 break;
         }
@@ -510,40 +449,38 @@ class ExpensesWorkFlowAddEdit extends Component {
 
     AddEditWorkFlow = (values, actions) => {
         if (this.state.IsEditMode) {
-            Api.post('EditExpensesWorkFlow',
-                {
-                    id: idEdit,
-                    projectId: values.ProjectName.value,
-                    arrange: parseInt(values.ArrangeExpensesWorkFlow),
-                    subject: values.Subject,
-                    status: this.state.Status,
-                    creationDate: this.state.DocumentDate
-                })
+            let doc = {
+                id: idEdit, projectId: values.ProjectName.value, status: this.state.Status,
+                arrange: parseInt(values.ArrangeExpensesWorkFlow), subject: values.Subject,
+                creationDate: moment(this.state.DocumentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            }
+            dataservice.addObject('EditExpensesWorkFlow', doc).then(result => {
+                this.setState({ isLoading: false, MoveSteps: true })
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                this.NextStep()
+            }).catch(ex => {
+                this.setState({ isLoading: false })
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+            });
+
         }
         else {
 
-            Api.post('AddExpensesWorkFlow',
-                {
-                    projectId: values.ProjectName.value,
-                    arrange: values.ArrangeExpensesWorkFlow,
-                    subject: values.Subject,
-                    status: this.state.Status,
-                    creationDate: this.state.DocumentDate
-                }).then(
-                    res => {
-                        this.setState({
-                            ExpensesWorkFlowDataForEdit: res
-                        })
+            let doc = {
+                projectId: values.ProjectName.value,
+                arrange: values.ArrangeExpensesWorkFlow, subject: values.Subject, status: this.state.Status,
+                creationDate: moment(this.state.DocumentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            }
+            dataservice.addObject('AddExpensesWorkFlow', doc).then(result => {
+                this.setState({ isLoading: false, ExpensesWorkFlowDataForEdit: result, MoveSteps: true })
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                this.NextStep()
+            }).catch(ex => {
+                this.setState({ isLoading: false })
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+            });
 
-                    }
-                )
         }
-        this.setState({
-            isLoading: false
-        })
-        toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-        this.NextStep()
-
     }
 
     ShowPopUp = (obj) => {
@@ -551,7 +488,7 @@ class ExpensesWorkFlowAddEdit extends Component {
             toast.warn(Resources['missingPermissions'][currentLanguage])
         }
         else {
-            Api.get('GetExpensesWorkFlowItemsById?id=' + obj.id + '').then(
+            dataservice.GetRowById('GetExpensesWorkFlowItemsById?id=' + obj.id + '').then(
                 res => {
 
                     this.setState({ showPopUp: true, IsEditExpensesWorkFlowItem: true })
@@ -609,13 +546,46 @@ class ExpensesWorkFlowAddEdit extends Component {
     }
 
     SaveMultiApproval = () => {
-        Api.post('UpdateMultiApproval', this.state.NewMultiApprovalData).then(
+        dataservice.addObject('UpdateMultiApproval', this.state.NewMultiApprovalData).then(
             toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
 
         )
         this.props.history.push({
             pathname: '/TemplatesSettings',
         })
+    }
+
+    StepOneLink = () => {
+        if (idEdit !== 0) {
+            this.setState({
+                firstComplete: true,
+                secondComplete: false,
+                CurrStep: 1,
+                thirdComplete: false,
+            })
+        }
+    }
+
+    StepTwoLink = () => {
+        if (idEdit !== 0) {
+            this.setState({
+                firstComplete: true,
+                secondComplete: true,
+                CurrStep: 2,
+                thirdComplete: false,
+            })
+        }
+    }
+
+    StepThreeLink = () => {
+        if (idEdit !== 0) {
+            this.setState({
+                thirdComplete: true,
+                CurrStep: 3,
+                firstComplete: true,
+                secondComplete: true,
+            })
+        }
     }
 
     render() {
@@ -646,18 +616,15 @@ class ExpensesWorkFlowAddEdit extends Component {
                         </td>
                         {() => this.setState({ MultiApproval: item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false } })}
                         <td>
-                            <div className="contentCell tableCell-2">
-                                <Select options={[{ label: 'Multi', value: true }, { label: 'Single', value: false }]}
-                                    onChange={e => this.MultiApprovalhandleChange(item.workFlowItemId, e)}
-                                    onBlur={() => this.handleBlurmultiApproval(item.workFlowItemId)}
-                                    defaultValue={item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false }}
-                                />
-                            </div>
+                            <Select options={[{ label: 'Multi', value: true }, { label: 'Single', value: false }]}
+                                onChange={e => this.MultiApprovalhandleChange(item.workFlowItemId, e)}
+                                onBlur={() => this.handleBlurmultiApproval(item.workFlowItemId)}
+                                defaultValue={item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false }}
+                            />
                         </td>
                     </tr>
                 )
             })
-
 
         const AddContact = () => {
             return (
@@ -672,9 +639,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                         }}
 
                         enableReinitialize={true}
-
                         validationSchema={ValidtionSchema}
-
                         onSubmit={(values, actions) => {
                             this.AddContact(values, actions)
                         }}>
@@ -719,8 +684,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                                                     onBlur={(e) => { handleBlur(e) }}
                                                     onChange={(e) => {
                                                         handleChange(e)
-                                                    }}
-                                                    placeholder={Resources['numberAbb'][currentLanguage]} />
+                                                    }} placeholder={Resources['numberAbb'][currentLanguage]} />
                                                 {errors.ArrangeContact && touched.ArrangeContact ? (<em className="pError">{errors.ArrangeContact}</em>) : null}
                                             </div>
                                         </div>
@@ -872,7 +836,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                         </div>
                         {/* Render Steps */}
                         <div className="step-content">
-                            {this.state.FirstStep ?
+                            {this.state.CurrStep === 1 ?
                                 //  First Step 
                                 <Fragment>
                                     <Formik
@@ -983,7 +947,7 @@ class ExpensesWorkFlowAddEdit extends Component {
 
                                 :
                                 <Fragment>
-                                    {this.state.SecondStep ?
+                                    {this.state.CurrStep === 2 ?
                                         //Second Step
                                         <div className="subiTabsContent feilds__top">
 
@@ -1044,43 +1008,42 @@ class ExpensesWorkFlowAddEdit extends Component {
                                 </Fragment>}
                         </div>
 
+
                         {/* Right Menu */}
                         <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && idEdit !== 0 ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
 
-                                <span onClick={this.NextStep} className={!this.state.ThirdStepComplate && idEdit !== 0 ? "step-content-btn-prev "
+                            <div className="step-content-foot">
+                                <span onClick={this.PreviousStep} className={(idEdit !== 0 && this.state.CurrStep > 1) ? "step-content-btn-prev " :
+                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
+                                <span onClick={this.NextStep} className={this.state.MoveSteps ? "step-content-btn-prev "
                                     : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
                                 </span>
                             </div>
-                            {/* Steps Active  */}
+
                             <div className="workflow-sliderSteps">
                                 <div className="step-slider">
-                                    <div data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
                                         <div className="steps-timeline">
                                             <span>1</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>Expenses WorkFlow</h6>
+                                            <h6>{Resources.expensesWorkFlow[currentLanguage]}</h6>
                                         </div>
                                     </div>
-
-                                    <div data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
                                         <div className="steps-timeline">
                                             <span>2</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6 >Contacts</h6>
+                                            <h6 >{Resources.contacts[currentLanguage]}</h6>
                                         </div>
                                     </div>
-                                    <div data-id="step3" className={this.state.ThirdStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
+                                    <div onClick={this.StepThreeLink} data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
                                         <div className="steps-timeline">
                                             <span>3</span>
                                         </div>
                                         <div className="steps-info">
-                                            <h6>Multi Approval</h6>
+                                            <h6>{Resources.multiApproval[currentLanguage]}</h6>
                                         </div>
                                     </div>
                                 </div>

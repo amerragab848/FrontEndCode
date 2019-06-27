@@ -60,6 +60,7 @@ class rptCostCodingTree extends Component {
       { key: 'totalMaterialRelease', name: Resources['materialRequestcount'][currentLanguage] },
       { key: 'expenses', name: Resources['expensesTotal'][currentLanguage] },
     ]
+
     let rows = []
     rows.push(this.state.NodeData)
     return (

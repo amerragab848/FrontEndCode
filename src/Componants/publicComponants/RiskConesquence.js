@@ -77,13 +77,13 @@ class RiskConesquence extends Component {
                 conesquenceId: item.id,
                 comment: '',
                 addedDate: moment().format('MM/DD/YYYY'),
-                
+
             }
             this.setState({ isLoading: true })
             dataservice.addObject('AddConesquence', conesquenceObj).then(result => {
                 let conesquenceItems = this.state.conesquenceItems;
                 let conesquenceItem = result;
-                if (result.id > 0) { 
+                if (result.id > 0) {
                     conesquenceItems.push(conesquenceItem);
                     this.setState({ conesquenceItems, isLoading: false, [item.id]: false })
                 }
@@ -107,59 +107,21 @@ class RiskConesquence extends Component {
         })
     }
 
-    render() {
-        let checkBoxs = this.state.conesquenceList.map(item => {
-            return (
-                <div className="riskCon " key={item.id} >
-                    <div id="allSelected" className={"ui checkbox checkBoxGray300  " + (this.state[item.id] ? (this.state[item.id] == true ? "checked" : '') : null)}
-                        onClick={e => this.chooseConesquence(item)} >
-                        <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={this.state[item.id] ? (this.state[item.id] == true ? "checked" : null) : null}
-                        />
-                        <label>{item.title}</label>
-                    </div>
-                </div>
-            )
+    updateComment(e, index) {
+        const conesquenceItems = [...this.state.conesquenceItems];
+
+        conesquenceItems[index].comment = e.target.innerHTML;
+
+        this.setState({ isLoading: true })
+        Api.post('EditConesquence', conesquenceItems[index]).then(() => {
+            this.setState({
+                conesquenceItems,
+                isLoading: false
+            });
         })
-        let table = <ReactTable
-            data={this.state.conesquenceItems}
-            columns={[
-                {
-                    Cell: props => {
-                        return (
-                            <img src={Recycle} alt="delete" onClick={e => this.deleteConesquence(props.original.id)} />
-                        )
-                    }, width: 30
-                },
-                {
-                    Header: Resources.numberAbb[currentLanguage],
-                    accessor: 'id',
-                    show: false,
-                }, {
-                    Header: "riskId",
-                    accessor: 'riskId',
-                    show: false,
-                }, {
-                    Header: 'conesquenceId',
-                    accessor: 'conesquenceId',
-                    show: false,
-                }, {
-                    Header: Resources.conesquenceName[currentLanguage],
-                    accessor: 'consequenceName'
-                }, {
-                    Header: Resources.comment[currentLanguage],
-                    accessor: 'comment',
-                    Cell: this.renderEditable
-                }, {
-                    Header: Resources.addedDate[currentLanguage],
-                    accessor: 'addedDate',
-                    Cell: props => {
-                        return (<span>{props.original.addedDate != null ? moment(props.original.addedDate).format('DD/MM/YYYY') : 'No Date'}</span>)
-                    } 
-                }
-            ]}
-            defaultPageSize={5}
-            className="-striped -highlight"
-        />
+    }
+
+    render() {
         return (
             <div className="doc-pre-cycle letterFullWidth">
                 <div className="document-fields">
@@ -169,10 +131,62 @@ class RiskConesquence extends Component {
                     <div className="riskConContainer">
                         {this.state.isLoading == true ? <LoadingSection /> :
                             <React.Fragment>
-                                {checkBoxs}
+                                {/* {checkBoxs} */}
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div className='document-fields'>
-                                        {table}
+                                        <table className="attachmentTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div className="headCell tableCell-1">{Resources['delete'][currentLanguage]}</div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="headCell"> {Resources.conesquenceName[currentLanguage]}</div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="headCell"> {Resources.comment[currentLanguage]}</div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="headCell"> {Resources.addedDate[currentLanguage]}</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {this.state.conesquenceItems.map((item, index) => {
+                                                    return (
+                                                        <tr key={item.id + '-' + index}>
+                                                            <td className="removeTr">
+                                                                <div className="contentCell tableCell-1">
+                                                                    <span className="pdfImage" onClick={(e) => this.DeleteItem(item.id)} >
+                                                                        <img src={Recycle} alt="Delete" />
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.consequenceName}</div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="contentCell tableCell-3" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}>
+                                                                    <div
+                                                                        style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer', width: '100%' }}
+                                                                        contentEditable
+                                                                        suppressContentEditableWarning
+                                                                        onBlur={e => this.updateComment(e, index)}
+                                                                        dangerouslySetInnerHTML={{
+                                                                            __html: this.state.conesquenceItems[index][item.id]
+                                                                        }}
+                                                                    /></div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.addedDate != null ? moment(item.addedDate).format('DD/MM/YYYY') : 'No Date'}</div>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                                }
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </React.Fragment>

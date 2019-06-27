@@ -140,7 +140,7 @@ class RiskCause extends Component {
                     : <LoadingSection />)
         })
 
-        return (
+        return ( 
             <div className="doc-pre-cycle letterFullWidth">
                 <div className="document-fields">
                     <header style={{ paddingTop: '0' }}>

@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import Resources from "../../resources.json";
 import Api from "../../api";
 
+import numeral from 'numeral'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class Widgets extends Component {
@@ -15,7 +16,7 @@ class Widgets extends Component {
     };
   }
 
-  componentDidMount() { 
+  componentDidMount() {
 
     Api.get(this.props.props.api).then(result => {
       if (result) {
@@ -50,7 +51,8 @@ class Widgets extends Component {
         <div className="summerisItem__number">
           <div className="content__number">
             <p className="number" onClick={this.onOpenModal.bind(this)}>
-              {this.state.value}
+              {this.state.value != null ? numeral(this.state.value).format('0a') : 0}
+
             </p>
             <h4 className="title">
               {Resources[this.props.title][currentLanguage]}
