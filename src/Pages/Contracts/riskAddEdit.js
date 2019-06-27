@@ -1692,14 +1692,14 @@ class riskAddEdit extends Component {
                                             data={this.state.likelihoods}
                                             handleChange={e => this.actionHandler(original.id, original.likelihoodScore, e, original, false, 2)}
                                             selectedValue={original.SelectedLikelihood}
-                                            index={original.id} /> 
+                                            index={original.id} />
                                     </div>
                                 </td>
                                 <td>
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskRanking}</div>
                                 </td>
                                 <td>
-                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> { original.riskEMV != null ? numeral(original.riskEMV).format('0,0') : 0 }</div>
+                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskEMV != null ? numeral(original.riskEMV).format('0,0') : 0}</div>
                                 </td>
                             </tr>
                         })}
@@ -1792,12 +1792,12 @@ class riskAddEdit extends Component {
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskRanking}</div>
                                 </td>
                                 <td>
-                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> { original.riskEMV != null ? numeral(original.riskEMV).format('0,0') : 0 }</div>
+                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskEMV != null ? numeral(original.riskEMV).format('0,0') : 0}</div>
                                 </td>
                             </tr>
                         })}
                     </tbody>
-                </table> 
+                </table>
                 <header>
                     <h2 className="zero">{Resources['postMedigationRiskQuantification'][currentLanguage]}</h2>
                 </header>
@@ -1884,6 +1884,11 @@ class riskAddEdit extends Component {
                 SixthStepComplate: false,
                 SeventhStepComplate: false
             });
+
+            let consequenceData = this.state.consequenceData;
+            if (consequenceData.length == 0) {
+                this.fillConsequence();
+            }
         }
     };
 
@@ -1926,6 +1931,11 @@ class riskAddEdit extends Component {
                 SixthStepComplate: false,
                 SeventhStepComplate: false
             });
+
+            let consequenceData = this.state.consequenceData;
+            if (consequenceData.length == 0) {
+                this.fillConsequence();
+            }
         }
     };
 
@@ -2261,7 +2271,7 @@ class riskAddEdit extends Component {
                                                                     <label className="control-label">{'Total Of (Total Mitigation Cost + Residual Risk)'}</label>
                                                                     <div className='ui input inputDev '>
                                                                         <input autoComplete="off" readOnly
-                                                                            value={this.state.totalResidualRisk == null ? 0 : numeral(this.state.totalResidualRisk).format('0,0') }
+                                                                            value={this.state.totalResidualRisk == null ? 0 : numeral(this.state.totalResidualRisk).format('0,0')}
                                                                             type="text"
                                                                             className="form-control" name="totalMedigationCostPost"
                                                                             placeholder={Resources['totalMedigationCost'][currentLanguage]} />
@@ -2271,7 +2281,7 @@ class riskAddEdit extends Component {
                                                                     <label className="control-label">{'Since Total Pre Metigation EMV '}</label>
                                                                     <div className='ui input inputDev '>
                                                                         <input autoComplete="off" readOnly
-                                                                            value={this.state.totalPretRiskEmv == null ? 0 :  numeral(this.state.totalPretRiskEmv).format('0,0')}
+                                                                            value={this.state.totalPretRiskEmv == null ? 0 : numeral(this.state.totalPretRiskEmv).format('0,0')}
                                                                             type="text"
                                                                             className="form-control" name="preMedigationCostEMV"
                                                                             placeholder={Resources['totalRESIDUALRisk'][currentLanguage]} />
