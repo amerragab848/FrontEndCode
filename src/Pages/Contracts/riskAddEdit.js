@@ -742,7 +742,8 @@ class riskAddEdit extends Component {
                 addDocStepComplate: false,
                 FourthStepComplate: false
             })
-        } else if (this.state.CurrentStep === 6) {
+        }
+        else if (this.state.CurrentStep === 6) {
 
             window.scrollTo(0, 0)
             this.setState({
@@ -758,7 +759,8 @@ class riskAddEdit extends Component {
                 addDocStepComplate: false,
 
             })
-        } else {
+        } 
+        else {
             this.props.history.push({
                 pathname: "/Risk/" + projectId
             });
@@ -2169,10 +2171,8 @@ class riskAddEdit extends Component {
                                                         </div>
                                                     </Form>
                                                 )}
-                                            </Formik>
-
+                                            </Formik> 
                                         </div>
-
                                         <div className="doc-pre-cycle letterFullWidth">
                                             <div>
                                                 {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={10012} EditAttachments={10013} ShowDropBox={10016} ShowGoogleDrive={10017} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
@@ -2287,7 +2287,7 @@ class riskAddEdit extends Component {
                                                                             placeholder={Resources['totalRESIDUALRisk'][currentLanguage]} />
                                                                     </div>
                                                                 </div>
-                                                                <div class="ui left pointing label labelWithArrowBorder basic">
+                                                                <div className="ui left pointing label labelWithArrowBorder basic">
                                                                     <span>{this.state.totalResidualRisk > this.state.totalPretRiskEmv ? 'Cost Effective' : 'Not Cost Effective'}</span>
                                                                 </div>
                                                             </div>
