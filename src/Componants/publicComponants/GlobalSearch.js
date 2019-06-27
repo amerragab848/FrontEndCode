@@ -57,7 +57,7 @@ class GlobalSearch extends Component {
             }, {
                 key: "subject",
                 name: Resources["subject"][currentLanguage],
-                width: 300,
+                width: 250,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -66,13 +66,22 @@ class GlobalSearch extends Component {
             }, {
                 key: "statusText",
                 name: Resources["status"][currentLanguage],
-                width: 200,
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: false,
                 sortDescendingFirst: true,
                 //  formatter:formatStatus
+            },{
+                key: "docTypeName",
+                name: Resources["docName"][currentLanguage],
+                width: 250,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
             }, {
                 key: "docDate",
                 name: Resources["docDate"][currentLanguage],
@@ -83,7 +92,7 @@ class GlobalSearch extends Component {
                 filterable: true,
                 sortDescendingFirst: true,
                 formatter: formatDate
-            }, {
+            } ,{
                 key: "projectName",
                 name: Resources["projectName"][currentLanguage],
                 width: 250,
@@ -223,6 +232,28 @@ class GlobalSearch extends Component {
         })
 
     }
+    cellClick=(rowId, colID)=>{
+        if (colID != 0  ) {
+            let rowData = this.state.searchResult[rowId];
+            let obj = {
+              docId: rowData.docId,
+              projectId: rowData.projectId,
+              projectName: rowData.projectName,
+              arrange: 0,
+              docApprovalId: 0,
+              isApproveMode: false,
+              perviousRoute: window.location.pathname + window.location.search
+            };
+    
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+  
+            this.props.history.push({
+              pathname: rowData.docLink,
+              search: "?id=" + encodedPaylod
+            });
+          }
+    }
     render() {
 
         const searchGrid = this.state.isLoading === false ? (
@@ -231,6 +262,7 @@ class GlobalSearch extends Component {
                 showCheckbox={false}
                 pageSize={this.state.pageSize}
                 columns={this.searchColumns}
+                cellClick={this.cellClick}
                 key='searchGrid'
             />) : <LoadingSection />;
 
@@ -266,9 +298,7 @@ class GlobalSearch extends Component {
                 </div>
 
                 <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
-                    <div className="filter__more" style={{ padding: 0 }}>
-                        <span>4 filters applied</span>
-                    </div>
+                
                     <div className="filter__input-wrapper" onMouseLeave={this.resetDate}>
                         <div id="signupForm1" className="proForm" >
                             <div className="letterFullWidth">

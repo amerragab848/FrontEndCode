@@ -21,9 +21,19 @@ class RiskConesquence extends Component {
 
     componentWillMount() {
         if (this.state.riskId) {
+
             dataservice.GetDataGrid("GetAllConesquencesByRiskId?riskId=" + this.state.riskId).then(result => {
+
+                let selected = this.state.selected;
+
+                result.forEach(item => {
+                    selected[item.id] = item.isChecked;
+                });
+
                 this.setState({
-                    conesquenceItems: result, isLoading: false
+                    conesquenceItems: result, 
+                    isLoading: false,
+                    selected:selected
                 });
             }).catch(() => {
                 this.setState({
@@ -107,10 +117,10 @@ class RiskConesquence extends Component {
         })
     }
 
-    toggleRow(obj,index) {
-        
+    toggleRow(obj, index) {
+
         this.setState({ isLoading: true })
- 
+
         const newSelected = Object.assign({}, this.state.selected);
 
         newSelected[obj.id] = !this.state.selected[obj.id];
@@ -118,13 +128,13 @@ class RiskConesquence extends Component {
         const conesquenceItems = [...this.state.conesquenceItems];
 
         conesquenceItems[index].isChecked = newSelected[obj.id];
- 
+
         Api.post('EditConesquence', conesquenceItems[index]).then(() => {
             this.setState({
                 selected: newSelected,
                 isLoading: false
             });
-        })  
+        })
     }
 
     render() {
@@ -163,7 +173,7 @@ class RiskConesquence extends Component {
                                                         <tr key={item.id + '-' + index}>
                                                             <td className="removeTr">
                                                                 <div className="ui checked checkbox  checkBoxGray300 ">
-                                                                    <input type="checkbox" className="checkbox" checked={this.state.selected[item.id] === true} onChange={() => this.toggleRow(item,index)} />
+                                                                    <input type="checkbox" className="checkbox" checked={this.state.selected[item.id] === true} onChange={() => this.toggleRow(item, index)} />
                                                                     <label />
                                                                 </div>
                                                             </td>
