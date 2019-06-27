@@ -278,29 +278,9 @@ table edition
     padding: 0;
 }
 
-/* .mainContainer .customD_Menu>div>div>div {
-    padding: 0;
-}
-
-.mainContainer .customD_Menu>div>div>div>div {
-    white-space: nowrap;
-} */
-
 .mainContainer .customD_Menu {
     width: 100%;
 }
-
-/* .mainContainer .customD_Menu>div {
-    border-color: hsl(0, 0%, 80%) !important;
-    outline: 0;
-    box-shadow: none !important
-}
-
-.mainContainer .customD_Menu div:hover {
-    border-color: hsl(0, 0%, 80%) !important;
-    box-shadow: none;
-    outline: 0;
-} */
 
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
     display: block;
@@ -575,10 +555,7 @@ table edition
 }
 
 .ReactTable .rt-tbody {
-    flex: 99999 1 auto;
-    display: flex;
     align-items: center;
-    flex-flow: column;
     justify-content: center;
     position: relative;
     z-index: 1;
@@ -588,10 +565,6 @@ table edition
 .ReactTable .rt-table {
     overflow: visible !important;
 }
-
-/* .ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td {
-    border-right: transparent !important;
-} */
 
 .uploadForm.dragHover {
     border-color: #83B4FC;
@@ -1515,11 +1488,6 @@ tfoot tr td p {
     margin: 0;
 }
 
-
-/* .dashboard__Project .dash__content .project__content li.secondTabs{
-  width: 50%;
-} */
-
 .dashboard__Project .dash__content .project__content .secondTabs .thirdTabs {
     position: absolute;
     right: 0;
@@ -1529,10 +1497,6 @@ tfoot tr td p {
     overflow-y: auto;
     height: 400px;
 }
-
-/* ul.project__content div:first-of-type {
-  position: unset !important;
-} */
 
 .halfWidth {
     width: 100%;
@@ -1629,11 +1593,6 @@ tfoot tr td p {
 .table__inputs .halfWindow .proForm .inputDev input {
     width: 100%;
 }
-
-/* .table__inputs .halfWindow label {
-    margin-bottom: 10px;
-    display: block;
-} */
 
 .taskAdminTable {
     border-spacing: 0;
@@ -1791,11 +1750,6 @@ tfoot tr td p {
     margin-right: 8px;
 }
 
-
-/* .SummeriesContainer .SummeriesContainerContent .summerisItem:last-child:after {
-
-} */
-
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number {
     cursor: pointer;
     font-size: 56px;
@@ -1915,7 +1869,6 @@ tfoot tr td p {
 
 .settings-container .settings-tabs-items ul li.react-tabs__tab--selected .subUlTitle {
     color: #2557cc;
-    /* font-size: 14px */
 }
 
 .settings-container .settings-tabs-items {
@@ -1983,12 +1936,11 @@ tfoot tr td p {
     z-index: 2;
 }
 
-.noTabs__document .doc-container {
+/* .noTabs__document .doc-container {
     background: #fff;
     flex-flow: column;
-}
+} */
 
-.noTabs__document .doc-container .main__header,
 .main__header {
     width: 100%;
     padding: 0;
@@ -2161,18 +2113,6 @@ tfoot tr td p {
 
 /* new css notabs */
 
-/* .noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c label {
-    width: auto;
-    text-align: left;
-    margin-right: 32px;
-    font-family: 'Open Sans';  font-weight: 600;   font-style: normal;   font-stretch: normal;
-    font-size: 14px;
-    line-height: 1.43;
-    letter-spacing: -0.2px;
-    color: #252833;
-    margin-bottom: 4px;
-} */
-
 .noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
     width: 360px;
 }
@@ -2195,39 +2135,6 @@ tfoot tr td p {
 
 /* new css notabs */
 /* noTabs */
-
-/* .document__action--menu .customD_Menu .css-vj8t7z,
-.document__action--menu .customD_Menu .css-2o5izw {
-    background: #E9ECF0;
-    border: 1px solid #E9ECF0;
-    height: 40px;
-    min-width: 184px;
-    box-shadow: none;
-}
-
-.document__action--menu .customD_Menu .css-vj8t7z,
-.document__action--menu .customD_Menu .css-2o5izw {
-    background: #E9ECF0;
-    border: 1px solid #E9ECF0 !important;
-    height: 40px;
-    min-width: 184px;
-    box-shadow: none;
-}
-
-.document__action--menu .customD_Menu .css-1hwfws3 {
-    min-width: 135px;
-    text-align: center;
-}
-
-.document__action--menu .customD_Menu .css-xp4uvy {
-    color: #5E6475;
-    font-size: 15px;
-    font-weight: 800;
-    max-width: calc(100% - 8px);
-    width: 100%;
-    text-transform: uppercase;
-}
-*/
 .document__action--menu .customD_Menu .css-10nd86i .css-15k3avv {
     height: 145px;
     overflow-y: auto;
@@ -3496,14 +3403,18 @@ button.companies_icon {
     min-height: 50px;
     border-bottom: 1px solid rgba(34, 36, 38, .1);
     padding-left: 10px;
-    /* text-overflow: ellipsis;
-    white-space: pre-wrap; */
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
     overflow: visible;
 }
 
-.ReactTable .rt-tbody .rt-td .btn {
+
+.ReactTable .rt-tbody .rt-td .btn, .ReactTable .rt-tbody .rt-td >* {
     padding: 0 5px;
     margin-left: 0 !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%
 }
 
 .ReactTable .rt-tr {
@@ -6223,7 +6134,7 @@ body.noScrolling {
 
 .default__dropdown .css-10nd86i .css-2o5izw {
     background-color: rgba(255, 255, 255, 0);
-    /* border-color: transparent; */
+   min-height: 36px !important;
     border: solid 1px #5f98fa !important;
     border-width: 0;
     border-radius: 4px;
@@ -6373,7 +6284,7 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 }
 
 .ck.ck-toolbar {
-    height: 40px !important;
+    height: 50px !important;
     border-top-right-radius: 4px !important;
     border-top-left-radius: 4px !important;
     background-color: #ffffff !important;
@@ -7049,10 +6960,6 @@ div#markup-panel {
     display: flex;
 }
 
-.ck.ck-editor {
-    margin-top: 14px !important;
-}
-
 .checkbox-align {
     text-align: center;
     /* padding: 0 10px; */
@@ -7543,7 +7450,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     transition: all 0.4s ease-in-out
 }
 
-.header__search:hover {
+.header__search:hover, .header__search.active  {
     border-bottom: 2px solid #E9ECF0;
 }
 
@@ -7552,7 +7459,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     transition: all 0.4s ease-in-out
 }
 
-.header__search:hover .ui.input {
+.header__search:hover .ui.input, .header__search.active .ui.input {
     width: 220px;
     transition: all 0.4s ease-in-out
 }
@@ -7575,3 +7482,10 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
       width: 100%;
   }
   
+.ck-blurred.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline,.ck.ck-toolbar {
+    border: 2px solid #E9ECF0;
+}
+
+.ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+    border: solid 2px #83B4FC;
+}

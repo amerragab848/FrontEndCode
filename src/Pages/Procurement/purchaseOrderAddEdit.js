@@ -1380,46 +1380,22 @@ class PurchaseOrderAddEdit extends Component {
           ) : (
               <Fragment>
                 <div className="proForm datepickerContainer letterFullWidth">
+                  
                   <div className="proForm datepickerContainer letterFullWidth">
                     <div className="linebylineInput fullInputWidth">
                       <label className="control-label">
                         {Resources.details[currentLanguage]}
                       </label>
-                      <div
-                        className={
-                          "inputDev ui input " +
-                          (errors.details
-                            ? "has-error"
-                            : !errors.details && touched.details
-                              ? " has-success"
-                              : " ")
-                        }
-                      >
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="details"
-                          value={this.state.purchaseOrderItems.details}
-                          placeholder={Resources.details[currentLanguage]}
-                          onChange={e => this.handleChangeItems(e, "details")}
-                          onBlur={e => {
-                            handleChange(e);
-                            handleBlur(e);
-                          }}
-                          name="details"
-                        />
+                      <div className={"inputDev ui input " + (errors.details ? "has-error" : !errors.details && touched.details ? " has-success" : " ")}>
+                        <input type="text" className="form-control" id="details" value={this.state.purchaseOrderItems.details}
+                          placeholder={Resources.details[currentLanguage]} onChange={e => this.handleChangeItems(e, "details")}
+                          onBlur={e => { handleChange(e); handleBlur(e); }}name="details"/>
                         {errors.details ? (
                           <em className="pError">{errors.details}</em>
                         ) : null}
                       </div>
                     </div>
-                    <button
-                      className="primaryBtn-1 btn "
-                      type="submit"
-                      onClick={e =>
-                        this.renderFromInventory(this.state.viewDisription)
-                      }
-                    >
+                    <button className="primaryBtn-1 btn " type="submit" onClick={e => this.renderFromInventory(this.state.viewDisription)}>
                       {Resources["fromInventory"][currentLanguage]}
                     </button>
                   </div>
@@ -1823,7 +1799,7 @@ class PurchaseOrderAddEdit extends Component {
             index="fromContract"
           />
         </div>
-        
+
       </div>
     );
   };

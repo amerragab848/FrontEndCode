@@ -6411,7 +6411,7 @@ body.noScrolling {
 
 .default__dropdown .css-10nd86i .css-2o5izw {
   background-color: rgba(255, 255, 255, 0);
-  /* border-color: transparent; */
+  min-height: 36px;
   border: solid 1px #5f98fa !important;
   border-width: 0;
   border-radius: 4px;
@@ -6440,7 +6440,6 @@ body.noScrolling {
   font-size: 13px !important;
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
   background-color: #ffffff;
-  /* border: solid 1px #4382f9 !important; */
   margin: 0;
   border-top: 2px;
   border-radius: 4px;
@@ -6474,11 +6473,6 @@ body.noScrolling {
 .britechart-tooltip {
   z-index: 9999;
 }
-
-/* 
-.britechart-tooltip {
-z-index: 9999;
-}*/
 
 .filterModal__container {
   position: fixed;
@@ -6559,7 +6553,7 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 }
 
 .ck.ck-toolbar {
-  height: 40px !important;
+  height: 50px !important;
   border-top-left-radius: 4px !important;
   border-top-right-radius: 4px !important;
   background-color: #ffffff !important;
@@ -7357,10 +7351,6 @@ div#markup-panel {
   padding: 0;
 }
 
-.ck.ck-editor {
-  margin-top: 14px !important;
-}
-
 .checkbox-align {
   text-align: center;
   /* padding: 0 10px; */
@@ -8069,5 +8059,13 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 
 .header__search input {
   border-color: transparent !important;
+}
+
+.ck-blurred.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline , .ck.ck-toolbar {
+  border: 2px solid #E9ECF0;
+}
+
+.ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+  border: solid 2px #83B4FC;
 }
 /* new rtl css */

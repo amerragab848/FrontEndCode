@@ -4945,22 +4945,6 @@ ul {
     width: 100%;
     padding: 0;
     border-bottom: 1px solid #e9ecf0; }
-    .noTabs__document .doc-container .main__header .main__header--div {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: space-between;
-      width: 61%;
-      margin: 0 auto;
-      height: 72px; }
-      @media screen and (max-width: 1200px) {
-        .noTabs__document .doc-container .main__header .main__header--div {
-          width: 68%; } }
     .noTabs__document .doc-container .main__header h2 {
       font-family: font-b;
       font-size: 20px;
