@@ -18,7 +18,7 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
-
+  
 import * as communicationActions from '../../store/actions/communication';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
@@ -70,7 +70,7 @@ let perviousRoute = '';
 let arrange = 0;
 
 const _ = require('lodash');
-
+ 
 class riskAddEdit extends Component {
 
     constructor(props) {
