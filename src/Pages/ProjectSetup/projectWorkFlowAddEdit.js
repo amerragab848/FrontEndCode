@@ -305,9 +305,7 @@ class projectWorkFlowAddEdit extends Component {
         if (nextProps.document.id) {
             let doc = nextProps.document
             doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
-
             doc.code = doc.code === null ? '' : doc.code
-
             this.setState({
                 document: doc,
                 IsEditMode: true,
