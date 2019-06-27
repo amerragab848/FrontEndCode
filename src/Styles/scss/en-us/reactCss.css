@@ -7490,3 +7490,8 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
     border: solid 2px #83B4FC;
 }
+
+.react-grid-Row:hover , .react-grid-Cell:hover, .react-grid-Row:hover .react-grid-Cell {
+ background: #edf0f2 !important;
+ transition: all 0.3s ease-in-out;
+}
