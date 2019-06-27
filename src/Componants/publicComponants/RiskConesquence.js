@@ -1,12 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import Resources from "../../resources.json";
 import Api from "../../api";
 import dataservice from "../../Dataservice";
 import { toast } from "react-toastify";
-import ReactTable from "react-table";
 import moment from "moment";
 import LoadingSection from './LoadingSection'
-import Recycle from '../../Styles/images/attacheRecycle.png'
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class RiskConesquence extends Component {
@@ -16,28 +14,26 @@ class RiskConesquence extends Component {
             conesquenceList: [],
             conesquenceItems: [],
             isLoading: true,
-            riskId: this.props.riskId
-
+            riskId: this.props.riskId,
+            selected: {}
         }
     }
 
     componentWillMount() {
-        dataservice.GetDataGrid("GetaccountsDefaultListForList?listType=ConsequencesFactosrs").then(result => {
-            if (result) {
-                this.setState({
-                    conesquenceList: result, isLoading: false
-                });
-            }
-            else
-                this.setState({
-                    conesquenceList: [], isLoading: false
-                });
-        });
-
         if (this.state.riskId) {
+
             dataservice.GetDataGrid("GetAllConesquencesByRiskId?riskId=" + this.state.riskId).then(result => {
+
+                let selected = this.state.selected;
+
+                result.forEach(item => {
+                    selected[item.id] = item.isChecked;
+                });
+
                 this.setState({
-                    conesquenceItems: result, isLoading: false
+                    conesquenceItems: result, 
+                    isLoading: false,
+                    selected:selected
                 });
             }).catch(() => {
                 this.setState({
@@ -49,8 +45,7 @@ class RiskConesquence extends Component {
 
     renderEditable = (cellInfo) => {
         return (
-            <div
-                style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer', width: '100%' }}
+            <div style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer', width: '100%' }}
                 contentEditable
                 suppressContentEditableWarning
                 onBlur={e => {
@@ -108,6 +103,7 @@ class RiskConesquence extends Component {
     }
 
     updateComment(e, index) {
+
         const conesquenceItems = [...this.state.conesquenceItems];
 
         conesquenceItems[index].comment = e.target.innerHTML;
@@ -116,6 +112,26 @@ class RiskConesquence extends Component {
         Api.post('EditConesquence', conesquenceItems[index]).then(() => {
             this.setState({
                 conesquenceItems,
+                isLoading: false
+            });
+        })
+    }
+
+    toggleRow(obj, index) {
+
+        this.setState({ isLoading: true })
+
+        const newSelected = Object.assign({}, this.state.selected);
+
+        newSelected[obj.id] = !this.state.selected[obj.id];
+
+        const conesquenceItems = [...this.state.conesquenceItems];
+
+        conesquenceItems[index].isChecked = newSelected[obj.id];
+
+        Api.post('EditConesquence', conesquenceItems[index]).then(() => {
+            this.setState({
+                selected: newSelected,
                 isLoading: false
             });
         })
@@ -130,7 +146,7 @@ class RiskConesquence extends Component {
                     </header>
                     <div className="riskConContainer">
                         {this.state.isLoading == true ? <LoadingSection /> :
-                            <React.Fragment>
+                            <Fragment>
                                 {/* {checkBoxs} */}
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div className='document-fields'>
@@ -138,7 +154,7 @@ class RiskConesquence extends Component {
                                             <thead>
                                                 <tr>
                                                     <th>
-                                                        <div className="headCell tableCell-1">{Resources['delete'][currentLanguage]}</div>
+                                                        <div className="headCell tableCell-1">{Resources['checkList'][currentLanguage]}</div>
                                                     </th>
                                                     <th>
                                                         <div className="headCell"> {Resources.conesquenceName[currentLanguage]}</div>
@@ -151,16 +167,14 @@ class RiskConesquence extends Component {
                                                     </th>
                                                 </tr>
                                             </thead>
-
                                             <tbody>
                                                 {this.state.conesquenceItems.map((item, index) => {
                                                     return (
                                                         <tr key={item.id + '-' + index}>
                                                             <td className="removeTr">
-                                                                <div className="contentCell tableCell-1">
-                                                                    <span className="pdfImage" onClick={(e) => this.DeleteItem(item.id)} >
-                                                                        <img src={Recycle} alt="Delete" />
-                                                                    </span>
+                                                                <div className="ui checked checkbox  checkBoxGray300 ">
+                                                                    <input type="checkbox" className="checkbox" checked={this.state.selected[item.id] === true} onChange={() => this.toggleRow(item, index)} />
+                                                                    <label />
                                                                 </div>
                                                             </td>
                                                             <td>
@@ -168,28 +182,28 @@ class RiskConesquence extends Component {
                                                             </td>
                                                             <td>
                                                                 <div className="contentCell tableCell-3" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}>
-                                                                    <div
-                                                                        style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer', width: '100%' }}
-                                                                        contentEditable
-                                                                        suppressContentEditableWarning
-                                                                        onBlur={e => this.updateComment(e, index)}
-                                                                        dangerouslySetInnerHTML={{
-                                                                            __html: this.state.conesquenceItems[index][item.id]
-                                                                        }}
-                                                                    /></div>
+                                                                    {
+                                                                        this.state.selected[item.id] === true ?
+                                                                            <div style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer', width: '100%' }}
+                                                                                contentEditable
+                                                                                suppressContentEditableWarning
+                                                                                onBlur={e => this.updateComment(e, index)}
+                                                                                dangerouslySetInnerHTML={{
+                                                                                    __html: item.comment
+                                                                                }} /> : <div>{item.comment}</div>}
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.addedDate != null ? moment(item.addedDate).format('DD/MM/YYYY') : 'No Date'}</div>
                                                             </td>
                                                         </tr>
                                                     )
-                                                })
-                                                }
+                                                })}
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                            </React.Fragment>
+                            </Fragment>
                         }
                     </div>
                 </div>
@@ -197,4 +211,5 @@ class RiskConesquence extends Component {
         );
     }
 }
+
 export default RiskConesquence

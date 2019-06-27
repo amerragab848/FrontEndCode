@@ -610,7 +610,7 @@ class requestPaymentsAddEdit extends Component {
                 useQuantity: false,
                 percentComplete: "",
                 quantityComplete: "",
-                paymentPercent: "" 
+                paymentPercent: ""
             };
 
             this.setState({
@@ -729,7 +729,7 @@ class requestPaymentsAddEdit extends Component {
             });
 
             this.buildColumns(this.props.changeStatus);
-            dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                 this.setState({
                     paymentsItems: result,
                     isLoading: false
@@ -926,11 +926,11 @@ class requestPaymentsAddEdit extends Component {
             this.setState({
                 isLoading: true
             });
-            dataservice.GetDataGridPost("/GetTotalForReqPay?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
+            dataservice.GetDataGridPost("GetTotalForReqPay?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
                 this.setState({
                     currentAndPreviousTotal: result,
                     isLoading: false
-                }); 
+                });
             });
         }
         let approvedInvoicesChilds = [...this.state.approvedInvoicesChilds];
@@ -939,10 +939,10 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true
             });
             let rowTotal = 0;
-            dataservice.GetDataGridPost("/GetApprovedInvoicesParent?contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
+            dataservice.GetDataGridPost("GetApprovedInvoicesParent?contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
                 var obj = {};
                 var conditionString = "";
-                dataservice.GetDataGridPost("/GetApprovedInvoicesChilds?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(res => {
+                dataservice.GetDataGridPost("GetApprovedInvoicesChilds?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(res => {
                     let approvedInvoicesParent = [];
 
                     result.map(parent => {
@@ -1071,7 +1071,8 @@ class requestPaymentsAddEdit extends Component {
 
     onRowClick = (value, index, column) => {
 
-        if (!column.key === "actions") {
+        if (column.key != "BtnActions" && column.key != "actions") {
+
             let userType = Config.getPayload();
 
             if (userType.uty != "user") {
@@ -1103,7 +1104,7 @@ class requestPaymentsAddEdit extends Component {
                     }
                 }
             }
-        } else {
+        } else if (column.key === "actions") {
             dataservice.GetDataGrid("GetReqPayCostCodingByRequestItemId?requestId=" + this.state.docId + "&reqItemId=" + value.id).then(result => {
 
                 this.setState({
@@ -1622,8 +1623,8 @@ class requestPaymentsAddEdit extends Component {
             });
         } else {
 
-            if(this.props.changeStatus){
-                dataservice.GetDataGrid("DeleteDistributionItems?id="+this.state.currentId).then(result => {
+            if (this.props.changeStatus) {
+                dataservice.GetDataGrid("DeleteDistributionItems?id=" + this.state.currentId).then(result => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 });
             }
@@ -1735,7 +1736,7 @@ class requestPaymentsAddEdit extends Component {
 
                 if (this.props.changeStatus) {
 
-                    let lastCodingItems = this.state.trees; 
+                    let lastCodingItems = this.state.trees;
 
                     dataservice.addObject("AddDistributionQuantityForEdit", objTree).then(result => {
                         lastCodingItems.push(objTree);
@@ -1823,6 +1824,61 @@ class requestPaymentsAddEdit extends Component {
         } else {
             toast.success("Please Add CostCodingTree");
         }
+    }
+
+    GetPrevoiusData() {
+
+        let pageNumber = this.state.pageNumber - 1;
+
+        if (pageNumber >= 0) {
+            this.setState({
+                isLoading: true,
+                pageNumber: pageNumber
+            });
+
+            let oldRows = [...this.state.paymentsItems];
+
+            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+
+                const newRows = [...this.state.paymentsItems, ...result];
+
+                this.setState({
+                    paymentsItems: newRows,
+                    isLoading: false
+                });
+            }).catch(ex => {
+                this.setState({
+                    paymentsItems: oldRows,
+                    isLoading: false
+                });
+            });
+        }
+    }
+
+    GetNextData() {
+        let pageNumber = this.state.pageNumber + 1;
+
+        this.setState({
+            isLoading: true,
+            pageNumber: pageNumber
+        });
+
+        let oldRows = [...this.state.paymentsItems];
+
+        dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+
+            const newRows = [...this.state.paymentsItems, ...result];
+
+            this.setState({
+                paymentsItems: newRows,
+                isLoading: false
+            });
+        }).catch(ex => {
+            this.setState({
+                paymentsItems: oldRows,
+                isLoading: false
+            });
+        });
     }
 
     render() {
@@ -2161,7 +2217,7 @@ class requestPaymentsAddEdit extends Component {
                                                             <div className="proForm datepickerContainer">
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
-                                                                    <DatePicker title='docDate' 
+                                                                    <DatePicker title='docDate'
                                                                         onChange={e => setFieldValue('docDate', e)}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.docDate}
@@ -2433,9 +2489,6 @@ class requestPaymentsAddEdit extends Component {
                                                 </div>}
                                         </div> : ""}
                                         <div className="doc-pre-cycle">
-                                            <header>
-                                                <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
-                                            </header>
                                             {this.state.editRows.length > 0 ?
                                                 <div className="doc-pre-cycle">
                                                     <div className="slider-Btns editableRows">
@@ -2444,20 +2497,35 @@ class requestPaymentsAddEdit extends Component {
                                                     </div>
                                                 </div>
                                                 : null}
-                                            <div className="default__dropdown--custom">
-                                                <div className="default__dropdown">
-                                                    <Dropdown
-                                                        data={this.state.fillDropDownExport}
-                                                        selectedValue={this.state.selectedDropDownExport}
-                                                        handleChange={event => this.handleDropActionForExportFile(event)}
-                                                        index="contractId"
-                                                        name="contractId" />
-                                                    <div style={{ display: 'none' }}>
-                                                        {this.state.exportFile}
+                                            <div class="submittalFilter">
+                                                <div class="subFilter">
+                                                    <h3 class="zero"> {Resources['AddedItems'][currentLanguage]}</h3>
+                                                    <span>{this.state.paymentsItems.length}</span>
+                                                </div>
+                                                <div class="filterBTNS">
+                                                    <div className="default__dropdown--custom" style={{ marginBottom: '0' }}>
+                                                        <div className="default__dropdown">
+                                                            <Dropdown
+                                                                data={this.state.fillDropDownExport}
+                                                                selectedValue={this.state.selectedDropDownExport}
+                                                                handleChange={event => this.handleDropActionForExportFile(event)}
+                                                                index="contractId"
+                                                                name="contractId" />
+                                                            <div style={{ display: 'none' }}>
+                                                                {this.state.exportFile}
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <div className="rowsPaginations">
+                                                    <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
+                                                        <i className="angle left icon" />
+                                                    </button>
+                                                    <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
+                                                        <i className="angle right icon" />
+                                                    </button>
+                                                </div>
                                             </div>
-
                                             {ItemsGrid}
                                         </div>
                                     </div>
@@ -2512,7 +2580,6 @@ class requestPaymentsAddEdit extends Component {
                                 </Fragment>
                                 : null
                             }
-
                             {this.state.FourthStep ?
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
@@ -2667,19 +2734,16 @@ class requestPaymentsAddEdit extends Component {
                         }
                     </div>
                 </div>
-
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                         {this.state.currentComponent}
                     </SkyLight>
                 </div>
-
                 <div className="largePopup largeModal " style={{ display: this.state.showBoqModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.boqTypeModal = ref} title={Resources.boqType[currentLanguage]}>
                         {BoqTypeContent}
                     </SkyLight>
                 </div>
-
                 <div className="largePopup largeModal " style={{ display: this.state.showCommentModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.addCommentModal = ref} title={Resources.comments[currentLanguage]}>
                         <div className="proForm datepickerContainer">
@@ -2698,7 +2762,6 @@ class requestPaymentsAddEdit extends Component {
                         <button className="primaryBtn-1 btn " onClick={(e) => this.addCommentClick(e)} >{Resources.save[currentLanguage]}</button>
                     </SkyLight>
                 </div>
-
                 <div className="largePopup largeModal " style={{ display: this.state.showCostCodingTree ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.costCodingTree = ref} title={Resources.comments[currentLanguage]}>
                         <div className="dropWrapper proForm">
@@ -2741,7 +2804,6 @@ class requestPaymentsAddEdit extends Component {
 
                     </SkyLight>
                 </div>
-
                 <div className="largePopup largeModal " style={{ display: this.state.viewPopUpRows ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.addCommentModal = ref}>
                         <Formik initialValues={{ ...this.state.document }}
@@ -2829,7 +2891,6 @@ class requestPaymentsAddEdit extends Component {
                         </Formik>
                     </SkyLight>
                 </div>
-
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}

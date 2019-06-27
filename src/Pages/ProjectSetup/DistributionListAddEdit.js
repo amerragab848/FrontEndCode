@@ -432,7 +432,7 @@ class TaskGroupsAddEdit extends Component {
 
     }
 
-    AddEditDis_List = (values, actions) => {
+    AddEditDis_List = (values, actions) => { 
 
         let Date = moment(this.state.DocumentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 

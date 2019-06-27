@@ -25,7 +25,7 @@ const validationSchema = Yup.object().shape({
     englishTitle: Yup.string().required(Resources['titleEnValid'][currentLanguage]),
     arabicTitle: Yup.string().required(Resources['titleArValid'][currentLanguage])
 
-});
+}); 
 class EpsPermission extends Component {
 
     constructor(props) {
