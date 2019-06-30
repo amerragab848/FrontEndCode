@@ -39,10 +39,12 @@ const validationSchema = Yup.object().shape({
     fromCompany: Yup.string().required(Resources["fromCompanyRequired"][currentLanguage]).nullable(true),
     discipline: Yup.string().required(Resources["disciplineRequired"][currentLanguage]).nullable(true),
 });
+
 const contractSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
 
 });
+
 const materialSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
     M_contact: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
@@ -51,6 +53,7 @@ const materialSchema = Yup.object().shape({
     M_releaseType: Yup.string().required(Resources["materialReleaseTypeSelection"][currentLanguage]).nullable(true),
     M_contractBoq: Yup.string().required(Resources["boqLog"][currentLanguage]).nullable(true),
 });
+
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
@@ -192,6 +195,8 @@ class materialRequestAddEdit extends Component {
         ];
 
         this.state = {
+            pageNumber: 0,
+            pageSize: 500,
             updatedItems: [],
             updatedchilderns: [],
             selectedRows: [],
@@ -356,6 +361,7 @@ class materialRequestAddEdit extends Component {
             />
         );
     }
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
 
@@ -428,7 +434,7 @@ class materialRequestAddEdit extends Component {
         if (this.state.docId > 0) {
             let url = "GetContractsSiteRequestForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, "procurement");
-            Api.get('GetContractsSiteRequestItemsByRequestId?requestId=' + this.state.docId).then(res => {
+            Api.get('GetContractsSiteRequestItemsByRequestIdUsingPaging?requestId=' + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(res => {
                 if (res) {
                     this.setState({ _items: res })
                 }
@@ -822,6 +828,7 @@ class materialRequestAddEdit extends Component {
                 break;
         }
     }
+
     addItem = () => {
         let length = this.state.updatedItems.length
         this.state.updatedItems.forEach((item, index) => {
@@ -843,6 +850,7 @@ class materialRequestAddEdit extends Component {
             }
         })
     }
+
     addChild = () => {
         let length = this.state.updatedchilderns.length
         this.state.updatedchilderns.forEach((item, index) => {
@@ -988,6 +996,7 @@ class materialRequestAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
+
     addMR(values) {
         let MR = {
             docDate: moment(values.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
@@ -1016,6 +1025,7 @@ class materialRequestAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
+
     handleChangeDropDown(event) {
         this.setState({ isLoading: true })
         dataservice.GetDataList('GetContactsByCompanyId?companyId=' + event.value, 'contactName', 'id').then(res => {
@@ -1023,10 +1033,12 @@ class materialRequestAddEdit extends Component {
                 this.setState({ isLoading: false, contacts: res, M_fromCompany: event })
         })
     }
+
     showChildern(childerns) {
         this.setState({ showChildren: true, childerns })
         this.simpleDialog4.show()
     }
+
     executeBeforeModalClose = (e) => {
         this.setState({ showModal: false });
     }
@@ -1066,6 +1078,61 @@ class materialRequestAddEdit extends Component {
         }
     }
 
+    GetPrevoiusData() {
+
+        let pageNumber = this.state.pageNumber - 1;
+
+        if (pageNumber >= 0) {
+            this.setState({
+                isLoading: true,
+                pageNumber: pageNumber
+            });
+
+            let oldRows = [...this.state._items];
+
+            dataservice.GetDataGrid('GetContractsSiteRequestItemsByRequestIdUsingPaging?requestId=' + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+
+                const newRows = [...this.state._items, ...result];
+
+                this.setState({
+                    _items: newRows,
+                    isLoading: false
+                });
+            }).catch(ex => {
+                this.setState({
+                    _items: oldRows,
+                    isLoading: false
+                });
+            });
+        }
+    }
+
+    GetNextData() {
+        let pageNumber = this.state.pageNumber + 1;
+
+        this.setState({
+            isLoading: true,
+            pageNumber: pageNumber
+        });
+
+        let oldRows = [...this.state._items];
+
+        dataservice.GetDataGrid('GetContractsSiteRequestItemsByRequestIdUsingPaging?requestId=' + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+
+            const newRows = [...this.state._items, ...result];
+
+            this.setState({
+                _items: newRows,
+                isLoading: false
+            });
+        }).catch(ex => {
+            this.setState({
+                _items: oldRows,
+                isLoading: false
+            });
+        });
+    }
+
     render() {
         const childerns =
             this.state.isLoading == false ?
@@ -1073,7 +1140,6 @@ class materialRequestAddEdit extends Component {
                     <ReactTable
                         data={this.state.childerns}
                         columns={[
-
                             {
                                 Header: Resources.numberAbb[currentLanguage],
                                 accessor: 'arrange'
@@ -1475,20 +1541,34 @@ class materialRequestAddEdit extends Component {
             </div>
             <XSLfile key='boqImport' docId={this.state.docId} docType='siteRequest' link={IPConfig.downloads + '/Downloads/Excel/SiteRequest.xlsx'} header='addManyItems'
                 disabled={this.state.isViewMode} afterUpload={() => this.GetBoqItemsStracture()} />
-            <div className="header__dropdown">
-                <header><h2 className="zero">{Resources.AddedItems[currentLanguage]}</h2></header>
-                {this.state.isViewMode == true ? null :
-                    <div className="default__dropdown">
-                        <Dropdown
-                            title=""
-                            data={this.state.materialTypes}
-                            selectedValue={this.state.materialType}
-                            handleChange={event => {
-                                this.setState({ materialType: event })
-                                this.actionsChange(event)
-                            }}
-                        />
-                    </div>}
+            <div class="submittalFilter">
+                <div class="subFilter">
+                    <h3 class="zero"> {Resources['AddedItems'][currentLanguage]}</h3>
+                    <span>{this.state._items.length}</span>
+                </div>
+                <div class="filterBTNS">
+                    <div className="default__dropdown--custom" style={{ marginBottom: '0' }}>
+                        {this.state.isViewMode == true ? null :
+                            <div className="default__dropdown">
+                                <Dropdown
+                                    title=""
+                                    data={this.state.materialTypes}
+                                    selectedValue={this.state.materialType}
+                                    handleChange={event => {
+                                        this.setState({ materialType: event })
+                                        this.actionsChange(event)
+                                    }}
+                                />
+                            </div>}
+                    </div> </div>
+                <div className="rowsPaginations">
+                    <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
+                        <i className="angle left icon" />
+                    </button>
+                    <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
+                        <i className="angle right icon" />
+                    </button>
+                </div>
             </div>
             {ItemsGrid}
         </React.Fragment>
