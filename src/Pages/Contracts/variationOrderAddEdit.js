@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -164,6 +163,9 @@ class variationOrderAddEdit extends Component {
 
 
     this.state = {
+      items: this.props.items,
+      pageNumber: 0,
+      pageSize: 500,
       itemsColumns: itemsColumns,
       FirstStep: true,
       SecondStep: false,
@@ -454,7 +456,8 @@ class variationOrderAddEdit extends Component {
 
     dataservice.addObject("EditContractsChangeOrder", saveDocument).then(result => {
       this.setState({
-        isLoading: true
+        isLoading: true,
+        items: this.props.items
       });
 
       toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -549,7 +552,8 @@ class variationOrderAddEdit extends Component {
         SecondStepComplate: true,
         ThirdStepComplate: false,
         CurrentStep: this.state.CurrentStep + 1,
-        ThirdStep: false
+        ThirdStep: false,
+        items: this.props.items,
       });
     } else if (this.state.CurrentStep === 2) {
       window.scrollTo(0, 0);
@@ -575,7 +579,8 @@ class variationOrderAddEdit extends Component {
         SecondStep: true,
         SecondStepComplate: true,
         CurrentStep: this.state.CurrentStep + 1,
-        ThirdStep: false
+        ThirdStep: false,
+        items: this.props.items
       });
     } else if (this.state.CurrentStep === 2) {
       this.props.history.push({
@@ -681,10 +686,66 @@ class variationOrderAddEdit extends Component {
         FirstStep: false,
         SecondStep: true,
         SecondStepComplate: true,
-        CurrentStep: 2
+        CurrentStep: 2,
+        items: this.props.items
       });
     }
   };
+
+  GetPrevoiusData() {
+
+    let pageNumber = this.state.pageNumber - 1;
+
+    if (pageNumber >= 0) {
+      this.setState({
+        isLoading: true,
+        pageNumber: pageNumber
+      });
+
+      let oldRows = [...this.state.paymentsItems];
+
+      dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+
+        const newRows = [...this.state.paymentsItems, ...result];
+
+        this.setState({
+          paymentsItems: newRows,
+          isLoading: false
+        });
+      }).catch(ex => {
+        this.setState({
+          paymentsItems: oldRows,
+          isLoading: false
+        });
+      });
+    }
+  }
+
+  GetNextData() {
+    let pageNumber = this.state.pageNumber + 1;
+
+    this.setState({
+      isLoading: true,
+      pageNumber: pageNumber
+    });
+
+    let oldRows = [...this.state.paymentsItems];
+
+    dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+
+      const newRows = [...this.state.paymentsItems, ...result];
+
+      this.setState({
+        paymentsItems: newRows,
+        isLoading: false
+      });
+    }).catch(ex => {
+      this.setState({
+        paymentsItems: oldRows,
+        isLoading: false
+      });
+    });
+  }
 
   render() {
     let actions = [
@@ -827,7 +888,7 @@ class variationOrderAddEdit extends Component {
                               <div className="proForm datepickerContainer">
                                 <div className="linebylineInput valid-input alternativeDate">
                                   <DatePicker
-                                    title="docDate" 
+                                    title="docDate"
                                     onChange={e => setFieldValue("docDate", e)}
                                     onBlur={setFieldTouched}
                                     error={errors.docDate}
@@ -842,7 +903,7 @@ class variationOrderAddEdit extends Component {
 
                                 <div className="linebylineInput valid-input alternativeDate">
                                   <DatePicker
-                                    title="dateApproved" 
+                                    title="dateApproved"
                                     onChange={e =>
                                       setFieldValue("dateApproved", e)
                                     }
@@ -1130,7 +1191,7 @@ class variationOrderAddEdit extends Component {
                                 </div>
                               </div>
                               <div className="slider-Btns">
-                                {this.showBtnsSaving()} 
+                                {this.showBtnsSaving()}
                               </div>
                             </Form>
                           )}
@@ -1179,14 +1240,8 @@ class variationOrderAddEdit extends Component {
                       showItemType={false}
                     />
                     <div className="doc-pre-cycle">
-                      <header>
-                        <h2 className="zero">
-                          {Resources["AddedItems"][currentLanguage]}
-                        </h2>
-                      </header>
-
                       <GridSetupWithFilter
-                        rows={this.props.items}
+                        rows={this.state.items}
                         pageSize={10}
                         columns={this.state.itemsColumns}
                         key='items'
@@ -1246,18 +1301,7 @@ class variationOrderAddEdit extends Component {
                     </div>
                   </div>
 
-                  <div
-                    onClick={this.StepTwoLink}
-                    data-id="step2 "
-                    className={
-                      "step-slider-item " +
-                      (this.state.ThirdStepComplate
-                        ? "active"
-                        : this.state.SecondStepComplate
-                          ? "current__step"
-                          : "")
-                    }
-                  >
+                  <div onClick={this.StepTwoLink} data-id="step2 " className={"step-slider-item " + (this.state.ThirdStepComplate ? "active" : this.state.SecondStepComplate ? "current__step" : "")}>
                     <div className="steps-timeline">
                       <span>2</span>
                     </div>
