@@ -279,6 +279,7 @@ class GridSetup extends Component {
 
     });
     document.getElementById('empty__div--scroll').style.width = document.getElementById('scrollWidthDiv').style.width;
+
     document.getElementById('bottom__scroll').querySelector('.react-grid-Canvas').addEventListener('scroll', function () {
       if (document.getElementById('top__scroll') != null) {
         document.getElementById('top__scroll').scrollLeft = this.scrollLeft;
@@ -286,9 +287,7 @@ class GridSetup extends Component {
     });
   }
 
-  onOrderColumn = (source, target) => {
-    //console.log(source, target);
-
+  onOrderColumn = (source, target) => { 
     const stateCopy = Object.assign({}, this.state);
     const columnSourceIndex = this.state.columns.findIndex(i => i.key === source);
 

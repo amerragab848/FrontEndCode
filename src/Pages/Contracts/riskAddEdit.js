@@ -18,7 +18,7 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
-  
+
 import * as communicationActions from '../../store/actions/communication';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
@@ -70,7 +70,7 @@ let perviousRoute = '';
 let arrange = 0;
 
 const _ = require('lodash');
- 
+
 class riskAddEdit extends Component {
 
     constructor(props) {
@@ -108,6 +108,7 @@ class riskAddEdit extends Component {
             statusNumbers: true,
             consequenceData: [],
             consequenceDataPost: [],
+            currency: [],
             updateConsequence: false,
             FirstStep: true,
             SecondStep: false,
@@ -202,7 +203,13 @@ class riskAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
+
         this.checkDocumentIsView();
+
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=currency", 'title', 'id').then(result => {
+            this.setState({ currency: result })
+        })
+
     };
 
     componentWillUnmount() {
@@ -483,16 +490,9 @@ class riskAddEdit extends Component {
         });
     }
 
-    handleChangeStatusNumbers(e, field) {
-        let statusNumbers = this.state.statusNumbers
-        let riskEMV = 0;
-        if (e.targetState.value) {
-            // riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)));
-        } else {
-            // riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)) / 1000);
-        }
+    handleChangeStatusNumbers(value) {
         this.setState({
-            statusNumbers: e.targetState.value
+            statusNumbers: value
         });
     }
 
@@ -759,7 +759,7 @@ class riskAddEdit extends Component {
                 addDocStepComplate: false,
 
             })
-        } 
+        }
         else {
             this.props.history.push({
                 pathname: "/Risk/" + projectId
@@ -1674,6 +1674,7 @@ class riskAddEdit extends Component {
 
                     <tbody>
                         {this.state.consequenceData.map((original, index) => {
+                            let riskEMV = original.riskEMV != null ? numeral((this.state.statusNumbers == false ? original.riskEMV / 1000 : original.riskEMV)).format('0,0') : 0
                             return <tr key={original.id + '-' + index}>
                                 <td className="removeTr">
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
@@ -1701,7 +1702,7 @@ class riskAddEdit extends Component {
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskRanking}</div>
                                 </td>
                                 <td>
-                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskEMV != null ? numeral(original.riskEMV).format('0,0') : 0}</div>
+                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {riskEMV} </div>
                                 </td>
                             </tr>
                         })}
@@ -1765,6 +1766,7 @@ class riskAddEdit extends Component {
 
                     <tbody>
                         {this.state.consequenceDataPost.map((original, index) => {
+                            let riskEMV = original.riskEMV != null ? numeral((this.state.statusNumbers == false ? original.riskEMV / 1000 : original.riskEMV)).format('0,0') : 0
                             return <tr key={original.id + '-' + index}>
                                 <td className="removeTr">
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
@@ -1794,7 +1796,7 @@ class riskAddEdit extends Component {
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskRanking}</div>
                                 </td>
                                 <td>
-                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskEMV != null ? numeral(original.riskEMV).format('0,0') : 0}</div>
+                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {riskEMV}</div>
                                 </td>
                             </tr>
                         })}
@@ -1991,7 +1993,26 @@ class riskAddEdit extends Component {
         ];
 
         let comCause = <RiskCause riskId={this.state.docId} />
+        let numberFormats =
 
+            <div className="proForm datepickerContainer ">
+                <div className="linebylineInput linebylineInput__checkbox ">
+                    <label className="control-label">Number Format</label>
+                    <div className="ui checkbox radio radioBoxBlue">
+                        <input type="radio" name="risk-statusNumbers" defaultChecked={this.state.statusNumbers === false ? null : 'checked'} value="true" onChange={e => { this.handleChangeStatusNumbers(true); this.handleChange(e, 'statusNumbers') }} />
+                        <label>{Resources.normal[currentLanguage]}</label>
+                    </div>
+                    <div className="ui checkbox radio radioBoxBlue">
+                        <input type="radio" name="risk-statusNumbers" defaultChecked={this.state.statusNumbers === false ? 'checked' : null} value="false" onChange={e => { this.handleChangeStatusNumbers(false); this.handleChange(e, 'statusNumbers') }} />
+                        <label>{Resources.thousand[currentLanguage]}</label>
+                    </div>
+                </div>
+                <div className="linebylineInput valid-input">
+                    <Dropdown title="currencyRates" data={this.state.currency}
+                        selectedValue={this.state.selectedCurrency}
+                        handleChange={event => this.handleChangeDropDown(event, 'currencyId', false, '', '', '', 'selectedCurrency')} />
+                </div>
+            </div>
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
@@ -2171,7 +2192,7 @@ class riskAddEdit extends Component {
                                                         </div>
                                                     </Form>
                                                 )}
-                                            </Formik> 
+                                            </Formik>
                                         </div>
                                         <div className="doc-pre-cycle letterFullWidth">
                                             <div>
@@ -2200,20 +2221,10 @@ class riskAddEdit extends Component {
                                         this.state.ThirdStep ?
                                             <Fragment>
                                                 <div className="subiTabsContent feilds__top">
-                                                    <div className="proForm datepickerContainer">
-
-                                                        <div className="linebylineInput linebylineInput__checkbox">
-                                                            <label className="control-label">{Resources.status[currentLanguage]}</label>
-                                                            <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="risk-statusNumbers" defaultChecked={this.state.statusNumbers === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'statusNumbers')} />
-                                                                <label>{Resources.normal[currentLanguage]}</label>
-                                                            </div>
-                                                            <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="risk-statusNumbers" defaultChecked={this.state.statusNumbers === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'statusNumbers')} />
-                                                                <label>{Resources.thousand[currentLanguage]}</label>
-                                                            </div>
-                                                        </div>
+                                                    <div className="document-fields">
+                                                        {numberFormats}
                                                     </div>
+
                                                     <div className="doc-pre-cycle">
                                                         <header>
                                                             <h2 className="zero">{Resources['preMedigationRiskQuantitfaction'][currentLanguage]}</h2>
@@ -2244,6 +2255,9 @@ class riskAddEdit extends Component {
                                                 :
                                                 this.state.FivethStep ?
                                                     <div className="subiTabsContent feilds__top">
+                                                        <div className="document-fields">
+                                                            {numberFormats}
+                                                        </div>
                                                         <div className="doc-pre-cycle">
                                                             <header>
                                                                 <h2 className="zero">{Resources['postMedigationRiskQuantitfaction'][currentLanguage]}</h2>
@@ -2350,16 +2364,7 @@ class riskAddEdit extends Component {
 
                                     <div
                                         onClick={this.StepFourLink}
-                                        data-id="step4"
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.FivethStepComplate
-                                                ? "active"
-                                                : this.state.FourthStepComplate
-                                                    ? "current__step"
-                                                    : "")
-                                        }
-                                    >
+                                        data-id="step4" className={"step-slider-item " + (this.state.FivethStepComplate ? "active" : this.state.FourthStepComplate ? "current__step" : "")}>
                                         <div className="steps-timeline">
                                             <span>4</span>
                                         </div>
