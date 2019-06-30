@@ -108,6 +108,7 @@ class riskAddEdit extends Component {
             statusNumbers: true,
             consequenceData: [],
             consequenceDataPost: [],
+            currency:[],
             updateConsequence: false,
             FirstStep: true,
             SecondStep: false,
@@ -203,6 +204,9 @@ class riskAddEdit extends Component {
             }
         }
         this.checkDocumentIsView();
+        dataservice.GetDataList('GetAllCurrencyRatio','currencyName','id').then(result=>{
+            this.setState({currency:result})
+        })
     };
 
     componentWillUnmount() {
@@ -2008,9 +2012,9 @@ class riskAddEdit extends Component {
                     </div>
                 </div>
                 <div className="linebylineInput valid-input">
-                    <Dropdown title="priority" data={this.state.priority}
-                        selectedValue={this.state.selectedPriorityId}
-                        handleChange={event => this.handleChangeDropDown(event, 'priorityId', false, '', '', '', 'selectedPriorityId')} />
+                    <Dropdown title="currencyRates" data={this.state.currency}
+                        selectedValue={this.state.selectedCurrency}
+                        handleChange={event => this.handleChangeDropDown(event, 'priorityId', false, '', '', '', 'selectedCurrency')} />
                 </div>
             </div>
         return (
