@@ -782,8 +782,7 @@ class bogAddEdit extends Component {
         }
     }
 
-    onRowClick = (value, index, column) => {
-        console.log('column.key', column.key)
+    onRowClick = (value, index, column) => { 
         if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
         }
