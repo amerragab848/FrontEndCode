@@ -394,7 +394,7 @@ class bogAddEdit extends Component {
         })
         DataService.GetDataList('GetAccountsDefaultList?listType=currency&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
             this.setState({ currency: [...res], isLoading: false })
-        }) 
+        })
     }
 
     fillSubDropDown(url, param, value, subField_lbl, subField_value, subDatasource, subDatasource_2) {
@@ -498,11 +498,10 @@ class bogAddEdit extends Component {
                     resourceCode: element.resourceCode
                 })
             })
-            this.setState({ rows: Table })
+            this.setState({ _items: Table })
             this.props.actions.ExportingData(data);
-
             setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
-        }) 
+        })
     }
 
     componentDidUpdate(prevProps) {
@@ -524,8 +523,8 @@ class bogAddEdit extends Component {
             this.fillDropDowns(true);
             this.checkDocumentIsView();
         }
-        let _items = props.items
-        if (_items) {
+        let _items = props.items ? props.items : []
+        if (JSON.stringify(this.state._items.length) != JSON.stringify(_items)) {
             this.setState({ isLoading: true })
             this.setState({ _items }, () => this.setState({ isLoading: false }));
         }
@@ -534,6 +533,8 @@ class bogAddEdit extends Component {
             this.setState({ showModal: props.showModal });
         }
     }
+
+
 
     viewAttachments() {
         return (
@@ -546,9 +547,9 @@ class bogAddEdit extends Component {
     }
 
     addPoq = (values) => {
-     
+
         this.setState({ isLoading: true })
-     
+
         let documentObj = {
             project: this.state.projectId,
             documentDate: moment(values.documentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
@@ -577,17 +578,17 @@ class bogAddEdit extends Component {
     }
 
     editBoq = (values) => {
-       
+
         if (this.state.isViewMode) {
             this.NextStep()
         }
         else {
-            
+
             this.setState({
                 isLoading: true,
                 firstComplete: true
             });
-            
+
             let documentObj = {
                 project: this.state.projectId,
                 id: this.state.docId,
@@ -612,84 +613,9 @@ class bogAddEdit extends Component {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({ isLoading: false })
             })
-        } 
+        }
     }
 
-    addEditItems = () => {
-        this.setState({ isLoading: true })
-        let item = {
-            id: this.state.items.id,
-            boqId: this.state.docId,
-            parentId: '',
-            description: this.state.items.description,
-            quantity: this.state.items.quantity,
-            arrange: this.state.items.arrange,
-            unit: this.state.selectedUnit.value,
-            unitLabel: this.state.selectedUnit.label,
-            unitPrice: this.state.items.unitPrice,
-            revisedQuantity: 0,
-            resourceCode: this.state.items.resourceCode,
-            itemCode: this.state.items.itemCode,
-            itemType: this.state.selectedItemType.value == '0' ? null : this.state.selectedItemType.value,
-            itemTypeLabel: this.state.selectedItemType.label,
-            days: this.state.items.days,
-            equipmentType: this.state.selectedequipmentType.value > 0 ? this.state.selectedequipmentType.value : '',
-            equipmentTypeLabel: this.state.selectedequipmentType.value > 0 ? this.state.selectedequipmentType.label : '',
-            editable: true,
-            boqSubTypeId: this.state.selectedBoqSubType.value == '0' ? null : this.state.selectedBoqSubType.value,
-            boqSubType: this.state.selectedBoqSubType.label,
-            boqTypeId: this.state.selectedBoqType.value == '0' ? null : this.state.selectedBoqType.value,
-            boqType: this.state.selectedBoqType.label,
-            boqChildTypeId: this.state.selectedBoqTypeChild.value == '0' ? null : this.state.selectedBoqTypeChild.value,
-            boqTypeChild: this.state.selectedBoqTypeChild.label,
-        }
-        let url = this.state.showPopUp ? 'EditBoqItem' : 'AddBoqItem'
-        Api.post(url, item).then((res) => {
-            if (this.state.showPopUp) {
-                let items = Object.assign(this.state.rows)
-                this.state.rows.forEach((element, index) => {
-                    if (element.id == this.state.items.id) {
-                        item.id = this.state.items.id;
-                        items[index] = item
-                        this.setState({ rows: items, isLoading: false }, function () {
-                            toast.success(Resources["operationSuccess"][currentLanguage]);
-                        })
-                    }
-                })
-            }
-            else {
-                if (this.state.items.itemCode != null) {
-                    let data = [...this.state.rows];
-                    item.id = res.id;
-                    data.push({
-                        ...item
-                    })
-                    this.setState({
-                        rows: data,
-                        items: { ...this.state.items, arrange: res.arrange + 1, description: '', quantity: '', itemCode: '', resourceCode: '', unitPrice: '', days: 1 }
-                    }, function () {
-                        toast.success(Resources["operationSuccess"][currentLanguage]);
-                    })
-                }
-            }
-            this.setState({
-                selectedUnit: { label: Resources.unitSelection[currentLanguage], value: "0" },
-                selectedBoqType: { label: Resources.boqType[currentLanguage], value: "0" },
-                selectedBoqTypeChild: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
-                selectedBoqSubType: { label: Resources.boqSubType[currentLanguage], value: "0" },
-                selectedItemType: { label: Resources.itemTypeSelection[currentLanguage], value: "0" },
-                selectedequipmentType: { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
-                BoqTypeChilds: [],
-                BoqSubTypes: [],
-                isLoading: false,
-                showPopUp: false,
-                btnText: 'add' 
-            });
-        }).catch(() => {
-            toast.error(Resources["operationCanceled"][currentLanguage]);
-            this.setState({ isLoading: false })
-        })
-    }
 
     checkItemCode = (code) => {
         Api.get('GetItemCode?itemCode=' + code + '&projectId=' + this.state.projectId).then(res => {
@@ -712,15 +638,14 @@ class bogAddEdit extends Component {
         this.setState({ isLoading: true })
         if (this.state.CurrStep == 2) {
             Api.post('ContractsBoqItemsMultipleDelete?', this.state.selectedRow).then((res) => {
-                let data = [...this.state.rows]
-                let length = data.length
-                data.forEach((element, index) => {
-                    data = data.filter(item => { return item.id != element.id });
-                    if (index == length - 1) {
-                        this.setState({ rows: data, showDeleteModal: false, isLoading: false });
-                        toast.success(Resources["operationSuccess"][currentLanguage]);
-                    }
+                let data = []
+                console.log(this.state.selectedRow)
+                this.state.selectedRow.forEach((element, index) => {
+                    data = this.state._items.filter(item => { return item.id != element });
                 })
+                this.props.actions.resetItems(data);
+                this.setState({ _items: data, showDeleteModal: false, isLoading: false });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({ showDeleteModal: false, isLoading: false });
@@ -958,19 +883,19 @@ class bogAddEdit extends Component {
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
         this.setState({ isLoading: true })
 
-        let updateRow = this.state.rows[fromRow];
+        let updateRow = this.state._items[fromRow];
 
         this.setState(state => {
-            const rows = state.rows.slice();
+            const _items = state._items.slice();
             for (let i = fromRow; i <= toRow; i++) {
-                rows[i] = { ...rows[i], ...updated };
+                _items[i] = { ..._items[i], ...updated };
             }
-            return { rows };
+            return { _items };
         }, function () {
             if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
 
                 updateRow[Object.keys(updated)[0]] = updated[Object.keys(updated)[0]];
-                Api.post('EditBoqItemUnitPrice?id=' + this.state.rows[fromRow].id + '&unitPrice=' + updated.unitPrice)
+                Api.post('EditBoqItemUnitPrice?id=' + this.state._items[fromRow].id + '&unitPrice=' + updated.unitPrice)
                     .then(() => {
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                         this.setState({ isLoading: false })
@@ -1028,7 +953,7 @@ class bogAddEdit extends Component {
                 clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                 onRowsSelected={this.onRowsSelected}
                 onRowsDeselected={this.onRowsDeselected}
-                onGridRowsUpdated={this._onGridRowsUpdated} 
+                onGridRowsUpdated={this._onGridRowsUpdated}
                 assign={true}
                 assignFn={() => this.assign()}
                 key='items'
@@ -1200,11 +1125,11 @@ class bogAddEdit extends Component {
                                             </button>
                                         )}
                                 </div>
-                            </div> 
+                            </div>
                         </Form>
                     )}
                 </Formik>
-            </div> 
+            </div>
         </Fragment>
 
         const purchaseOrderContent = <Fragment>

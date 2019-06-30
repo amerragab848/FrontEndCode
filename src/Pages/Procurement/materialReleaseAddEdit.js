@@ -36,6 +36,7 @@ let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
+let perviousRoute = '';
 const _ = require('lodash')
 
 let selectedRows = [];
@@ -99,6 +100,7 @@ class materialReleaseAddEdit extends Component {
                     isApproveMode = obj.isApproveMode;
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
+                    perviousRoute = obj.perviousRoute;
                 } catch { this.props.history.goBack(); }
             }
             index++;
@@ -112,6 +114,7 @@ class materialReleaseAddEdit extends Component {
             showDeleteModal: false,
             isLoading: false,
             isEdit: false,
+            perviousRoute: perviousRoute,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
@@ -174,7 +177,9 @@ class materialReleaseAddEdit extends Component {
 
         if (!Config.IsAllow(247) && !Config.IsAllow(248) && !Config.IsAllow(250)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push("/materialRelease/" + this.state.projectId);
+            this.props.history.push(
+                this.state.perviousRoute
+            );
         }
     }
 
@@ -708,14 +713,9 @@ class materialReleaseAddEdit extends Component {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
+        
         ]
 
         let StepOne = () => {
@@ -1270,7 +1270,7 @@ class materialReleaseAddEdit extends Component {
                 </div>
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialRelease[currentLanguage]} moduleTitle={Resources['procurement'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.materialRelease[currentLanguage]} perviousRoute={this.state.perviousRoute} moduleTitle={Resources['procurement'][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">

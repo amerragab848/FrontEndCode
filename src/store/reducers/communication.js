@@ -16,9 +16,9 @@ export default function (state = initialState.app.communication, action) {
 
         case types.Export_Document:
             console.log('Export_Document....',action.items)
+            let _items=state.items.length>0?this.state.items:action.items.length>0?action.items:[]
             return {
-                ...state,
-                items: action.items ? action.items : []
+                ...state, items: _items 
             }
 
         case types.Document_for_Edit: 
@@ -80,6 +80,13 @@ export default function (state = initialState.app.communication, action) {
                 docId,
                 items: [...state.items, ...action.item]
             };
+
+            case types.reset_items: 
+                return {
+                    ...state, 
+                    items: action.data
+                };
+
         case types.edit_item:
             let updateRow = action.item;
             let items = []

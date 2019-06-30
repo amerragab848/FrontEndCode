@@ -364,7 +364,7 @@ class projectWorkFlowAddEdit extends Component {
                 }
             )
 
-            dataservice.GetDataGrid('GetWorkFlowDocumentsByWorkFlowId?workFlow=' + this.state.docId).then(
+            dataservice.GetDataGrid('GetWorkFlowDocumentsByWorkFlowId?workFlow=530').then(
                 res => {
                     this.setState({
                         WorkFlowDocumentData: res,
