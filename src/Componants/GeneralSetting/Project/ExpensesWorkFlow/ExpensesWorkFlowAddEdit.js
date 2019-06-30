@@ -12,12 +12,12 @@ import DatePicker from '../../../OptionsPanels/DatePicker'
 import moment from 'moment';
 import { SkyLightStateless } from 'react-skylight';
 import { connect } from "react-redux";
-import * as ProjectActions from "../../../../store/actions/ProjectActions";
 import { bindActionCreators } from "redux";
 import DropdownMelcous from '../../../OptionsPanels/DropdownMelcous';
 import _ from "lodash";
 import Select from 'react-select';
 import { toast } from "react-toastify";
+import * as AdminstrationActions from '../../../../store/actions/Adminstration'
 const publicConfiguarion = config.getPayload();
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProject = localStorage.getItem('lastSelectedprojectName')
@@ -221,7 +221,8 @@ class ExpensesWorkFlowAddEdit extends Component {
                 })
                 break;
             case 3:
-                this.props.history.push({ pathname: '/TemplatesSettings/' + this.state.projectId })
+                    this.props.actions.routeToTabIndex(3)
+                    this.props.history.push({ pathname: '/TemplatesSettings' })
                 break;
         }
     }
@@ -550,9 +551,8 @@ class ExpensesWorkFlowAddEdit extends Component {
             toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
 
         )
-        this.props.history.push({
-            pathname: '/TemplatesSettings',
-        })
+        this.props.actions.routeToTabIndex(3)
+        this.props.history.push({ pathname: '/TemplatesSettings' })
     }
 
     StepOneLink = () => {
@@ -1072,7 +1072,7 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(ProjectActions, dispatch)
+        actions: bindActionCreators(AdminstrationActions, dispatch)
     };
 }
 

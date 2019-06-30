@@ -25,7 +25,9 @@ const validationSchema = Yup.object().shape({
     englishTitle: Yup.string().required(Resources['titleEnValid'][currentLanguage]),
     arabicTitle: Yup.string().required(Resources['titleArValid'][currentLanguage])
 
-}); 
+});
+
+var treeContainer = []
 class EpsPermission extends Component {
 
     constructor(props) {
@@ -88,8 +90,7 @@ class EpsPermission extends Component {
                 this.setState({ isLoading: true })
                 Api.post("AddEps", Eps).then((res) => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
-                    this.setState({ isLoading: false, showModal: false, type: '' })
-                    // this.addRecord(res)
+                    this.setState({ isLoading: false, showModal: false, type: '',eps:res })
                 }).catch(res => {
                     this.setState({ isLoading: false, showModal: false })
 
@@ -114,23 +115,7 @@ class EpsPermission extends Component {
         })
         this.getData()
     }
-    // addRecord(recod) {
-    //     let table = this.state.eps;
-    //     table.push(recod);
-    //     this.setState({ esp: table })
-    // }
-    // EditRecord(recod) {
-    //     let table = this.state.eps;
-    //     table.forEach((element, Index) => {
-    //         if (element.id == recod.id) {
-    //             table[Index] = recod
-    //             return
-    //         }
-    //     }, function () {
-    //         this.setState({ esp: table })
-    //     })
-
-    // }
+  
     deleteRecord(recod) {
         if (!Config.IsAllow(1264)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
@@ -144,6 +129,7 @@ class EpsPermission extends Component {
             })
         }
     }
+
     onCloseModal() {
         this.setState({ showDeleteModal: false });
     }
@@ -207,10 +193,11 @@ class EpsPermission extends Component {
             setTimeout(() => this.simpleDialog.show(), 300)
         }
         else {
-            this.setState({ showModal: true })
+            this.setState({ showModal: true, values: { ...this.state.values, englishTitle: '', arabicTitle: '', showInReport: '' }, })
             this.simpleDialog.show()
         }
     }
+
     routeProjects = (event) => {
         if (!Config.IsAllow(1265)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
@@ -234,13 +221,11 @@ class EpsPermission extends Component {
     search(id, trees, updateTrees, parentId) {
 
         trees.map(item => {
-            if (id == item.id) {
-                item.collapse = !item.collapse;
-            } else {
-                //item.collapse = item.id != parentId ? true : item.collapse; 
-            }
             updateTrees.push(item);
             if (item.epses.length > 0) {
+                let state = this.state;
+                state['_' + item.id] = state['_' + item.id] ? state['_' + item.id] : false;
+                this.setState({ state });
                 this.search(id, item.epses, updateTrees, parentId);
             }
         });
@@ -250,12 +235,23 @@ class EpsPermission extends Component {
 
     viewChild(item) {
 
-        this.setState({
-            isLoadingEps: true
-        });
+
+        // let trees = [...this.state.trees];
+        // let state = this.state;
+        // state['_' + item.id] = !state['_' + item.id];
+        // this.search(item.id, trees, [], item.parentId);
+        // this.setState({
+        //   trees, state
+        // });
+
+        // this.setState({
+        //     isLoadingEps: true
+        // });
 
         let eps = [...this.state.eps];
 
+        let state = this.state;
+        state['_' + item.id] = !state['_' + item.id];
         this.search(item.id, eps, [], item.parentId);
         this.setState({
             eps,
@@ -268,14 +264,18 @@ class EpsPermission extends Component {
             children.map((item, i) => {
                 return (
                     <Fragment>
-                        <div className={"epsTitle" + (item.collapse === false ? ' active' : ' ')} key={item.id} onClick={() => this.viewChild(item)} >
+                        <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === true ? 'epsTitle active' : 'epsTitle'} key={item.id} onClick={() => this.viewChild(item)}
+                            style={{ display: this.state[item.id] == -1 ? 'none' : '' }} >
                             <div className="listTitle">
 
                                 <span className="dropArrow" style={{ visibility: (item.epses.length > 0 ? '' : 'hidden') }}>
                                     <i className="dropdown icon" />
                                 </span>
-                                <span className="accordionTitle">{item['titleEn']}</span>
+
+                                <span className="accordionTitle">{this.state[item.id] ? this.state[item.id].titleEn : item.titleEn}
+                                </span>
                             </div>
+
                             <div className="Project__num">
                                 <div className="eps__actions">
                                     <a className="editIcon" onClick={() => { this.setState({ item: item, isEdit: true, type: 'child' }, function () { this.openModal(item, true); }) }}>
@@ -302,8 +302,20 @@ class EpsPermission extends Component {
         )
     }
 
+    clear = () => {
+        let treeDocument = {
+            parentId: "",
+            titleEn: "",
+            showInReport: "",
+            titleAr: "",
+            parentId: ""
+        };
+        this.setState({ document: treeDocument })
+    }
+
     render() {
-        let Eps = <React.Fragment>
+
+        let RenderAddEditEps = <Fragment>
             <div>
                 {this.state.isLoading ? <LoadingSection /> : null}
                 <Formik
@@ -364,68 +376,78 @@ class EpsPermission extends Component {
                     )}
                 </Formik>
             </div>
+        </Fragment>
 
-        </React.Fragment>
         return (
             <div className="mainContainer">
-                <Dropdown
-                    title="chooseProject"
-                    data={this.state.projects}
-                    selectedValue={this.state.selectedProject}
-                    handleChange={event => this.routeProjects(event)}
-                    name="Project"
-                    index="Project"
-                />
+                <Dropdown title="chooseProject" handleChange={event => this.routeProjects(event)}
+                    data={this.state.projects} selectedValue={this.state.selectedProject} />
+
                 {this.state.isLoadingEps == true ? <LoadingSection /> :
-                    <React.Fragment>
+
+                    <Fragment>
                         <div className="tree__header" >
                             <h2 className="zero"></h2>
-                            <button className="primaryBtn-1 btn" onClick={() => this.openModal()}>{Resources.addNew[currentLanguage]}</button>
+                            <button className="primaryBtn-1 btn" onClick={() => { this.setState({ isEdit: false, type: 'parent' }, function () { this.openModal('', false); }) }}>{Resources.addNew[currentLanguage]}</button>
                         </div>
+
                         <div className="documents-stepper noTabs__document">
                             <div className="tree__header">
                                 <h2 className="zero">{Resources.EPS[currentLanguage]}</h2>
                             </div>
+
                             <div className="Eps__list">
-                                {
-                                    this.state.eps.map((item, i) => {
-                                        return (
-                                            <Fragment>
-                                                <div className="epsTitle active" key={item.id}>
-                                                    <div className="listTitle">
-                                                        <span className="dropArrow">
-                                                            <i className="dropdown icon" />
-                                                        </span>
-                                                        <span className="accordionTitle">{item['titleEn']}</span>
-                                                    </div>
-                                                    <div className="Project__num">
-                                                        <div className="eps__actions">
-                                                            <a className="editIcon" onClick={() => { this.setState({ item: item, isEdit: true, type: 'child' }, function () { this.openModal(item, true); }) }}>
-                                                                <img src={Edit} alt="Edit" />
-                                                            </a>
-                                                            <a className="plusIcon" onClick={() => { this.setState({ item: item, isEdit: false, type: 'child' }, function () { this.openModal(item, false); }) }}>
-                                                                <img src={Plus} alt="Add" />
-                                                            </a>
-                                                            <a className="deleteIcon" onClick={() => this.setState({ item, item, showDeleteModal: true })}>
-                                                                <img src={Delete} alt="Delete" />
-                                                            </a>
-                                                            <a className="fourth_epsIcon" onClick={() => this.view(item)}>
-                                                                <img src={EyeShow} alt="pend" width="100%" height="100%" />
-                                                            </a>
-                                                        </div>
+                                {this.state.eps.map((item, i) => {
+                                    if (treeContainer != null)
+                                        treeContainer[item.id] = item
+                                    return (
+                                        <Fragment>
+                                            <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === true ? 'epsTitle active' : 'epsTitle'} key={item.id}
+                                                style={{ display: this.state[item.id] == -1 ? 'none' : '' }} onClick={() => this.viewChild(item)} >
+                                                <div className="listTitle">
+                                                    <span className="dropArrow" style={{ visibility: (item.epses.length > 0 ? '' : 'hidden') }}>
+                                                        <i className="dropdown icon" />
+                                                    </span>
+
+                                                    <span className="accordionTitle" >{this.state[item.id] ? this.state[item.id].titleEn : item.titleEn}
+                                                    </span>
+                                                </div>
+
+                                                <div className="Project__num">
+                                                    <div className="eps__actions">
+                                                        <a className="editIcon" onClick={() => { this.setState({ item: item, isEdit: true, type: 'child' }, function () { this.openModal(item, true); }) }}>
+                                                            <img src={Edit} alt="Edit" />
+                                                        </a>
+                                                        <a className="plusIcon" onClick={() => { this.setState({ item: item, isEdit: false, type: 'child' }, function () { this.openModal(item, false); }) }}>
+                                                            <img src={Plus} alt="Add" />
+                                                        </a>
+                                                        <a className="deleteIcon" onClick={() => this.setState({ item, item, showDeleteModal: true })}>
+                                                            <img src={Delete} alt="Delete" />
+                                                        </a>
+                                                        <a className="fourth_epsIcon" onClick={() => this.view(item)}>
+                                                            <img src={EyeShow} alt="pend" width="100%" height="100%" />
+                                                        </a>
                                                     </div>
                                                 </div>
-                                                <div className="epsContent">
-                                                    {item.epses.length > 0 ? this.printChild(item.epses) : null}
-                                                </div>
-                                            </Fragment>
-                                        )
-                                    })
+                                            </div>
+                                            <div className="epsContent">
+                                                {item.epses.length > 0 ? this.printChild(item.epses) : null}
+                                            </div>
+                                        </Fragment>
+                                    )
+                                })
                                 }
                             </div>
                         </div>
-                    </React.Fragment>
+                    </Fragment>
                 }
+
+
+
+
+
+
+
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources['smartDeleteMessage'][currentLanguage].content}
@@ -435,9 +457,11 @@ class EpsPermission extends Component {
                         buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
                     />
                 ) : null}
+
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources['editEPS'][currentLanguage]}>
-                        {Eps}
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref}
+                        title={this.state.isEdit ? Resources['editEPS'][currentLanguage] : Resources['addEPS'][currentLanguage]}>
+                        {RenderAddEditEps}
                     </SkyLight>
                 </div>
             </div>
