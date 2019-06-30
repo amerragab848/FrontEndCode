@@ -8,6 +8,9 @@ import "./Styles/css/semantic.min.css";
 import "./Styles/scss/en-us/layout.css";
 import "./Styles/scss/en-us/reactCss.css";
 
+// import "./Styles/scss/ar-eg/layout-ar.css";
+// import "./Styles/scss/ar-eg/ReactCss-ar.css";
+
 import Menu from "./Pages/Menu/Menu";
 import Login from './Componants/Layouts/Login'
 import Route from './router';
@@ -19,29 +22,15 @@ import {
 import configureStore from './store/configureStore';
 import { ToastContainer } from "react-toastify";
 
+//import layout ,{reactCss} from "./CurrentLang";
+ 
+
 const store = configureStore();
 
-const IsAuthorize = api.IsAuthorized()
+const IsAuthorize = api.IsAuthorized() 
+class App extends Component { 
 
-
-class App extends Component {
-
-  //componentWillMount() {
-    // let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-    // if (currentLanguage == null)
-    //   localStorage.getItem('lang', 'en')
-
-    // if (currentLanguage == "ar") {
-    //   require("./Styles/scss/ar-eg/layout-ar.css");
-    //   require("./Styles/scss/ar-eg/ReactCss-ar.css");
-    // } else {
-    //   require("./Styles/scss/en-us/layout.css");
-    //   require("./Styles/scss/en-us/reactCss.css")
-    // }
-
-  //}
-
-  render() {
+  render() { 
     const showComp = IsAuthorize ?
       <div id="direction_warrper" >
         <Menu />
