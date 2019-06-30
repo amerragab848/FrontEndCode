@@ -4,20 +4,12 @@ import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
-import GridSetup from "../../Pages/Communication/GridSetup";
-// import {  Filters } from "react-data-grid-addons";
+import GridSetup from "../../Pages/Communication/GridSetup"; 
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-// const {
-//   NumericFilter,
-//   AutoCompleteFilter,
-//   MultiSelectFilter,
-//   SingleSelectFilter
-// } = Filters;
-
+ 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
@@ -490,19 +482,12 @@ class DocApprovalDetails extends Component {
                     </g>
                   </g>
                 </svg>
-              </span>
+              </span> 
 
-              {this.state.viewfilter === false ? (
-                <span className="text active">
-                  <span className="show-fillter">{Resources["showFillter"][currentLanguage]}</span>
-                  <span className="hide-fillter">{Resources["hideFillter"][currentLanguage]}</span>
+              <span className={"text " + (this.state.viewfilter === false ? " " : " active")}>
+                  <span className="show-fillter">Show Fillter</span>
+                  <span className="hide-fillter">Hide Fillter</span>
                 </span>
-              ) : (
-                  <span className="text">
-                    <span className="show-fillter">{Resources["showFillter"][currentLanguage]}</span>
-                    <span className="hide-fillter">{Resources["hideFillter"][currentLanguage]}</span>
-                  </span>
-                )}
             </div>
           </div>
           <div className="filterBTNS">
