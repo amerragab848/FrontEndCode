@@ -7492,6 +7492,10 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 }
 
 .react-grid-Row:hover , .react-grid-Cell:hover, .react-grid-Row:hover .react-grid-Cell {
- background: #edf0f2 !important;
- transition: all 0.3s ease-in-out;
+    background: #edf0f2 !important;
+    transition: all 0.3s ease-in-out;
+}
+
+.react-grid-Row.row-selected .react-grid-Cell, .react-grid-Row.row-selected, .react-grid-Row .row-selected {
+    background-color: #f5f6f7 !important;;
 }
