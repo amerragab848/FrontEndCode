@@ -19,6 +19,7 @@ import * as Yup from 'yup';
 import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous'
+import Dataservice from '../../Dataservice';
 const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const validationSchema = Yup.object().shape({
@@ -62,10 +63,9 @@ class EpsPermission extends Component {
             else {
                 this.setState({ isLoading: true })
                 let item = Object.assign(this.state.item, { title: this.state.values.englishTitle }, { titleAr: this.state.values.arabicTitle }, { titleEn: this.state.values.englishTitle })
-                Api.post("EditEpsById", item).then((res) => {
+                Dataservice.addObject("EditEpsById", item).then((res) => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                     this.setState({ isLoading: false, showModal: false, type: '' })
-                    //   this.EditRecord(res)
                 }).catch(res => {
                     this.setState({ isLoading: false, showModal: false })
 
@@ -88,7 +88,7 @@ class EpsPermission extends Component {
                     showInReport: this.state.values.showInReport
                 }
                 this.setState({ isLoading: true })
-                Api.post("AddEps", Eps).then((res) => {
+                Dataservice.addObject("AddEps", Eps).then((res) => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                     this.setState({ isLoading: false, showModal: false, type: '',eps:res })
                 }).catch(res => {

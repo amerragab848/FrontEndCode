@@ -24,7 +24,7 @@ class HeaderMenu extends Component {
     super(props);
 
     this.state = {
-      subjectText:'',
+      subjectText: '',
       tabIndex: 0,
       projects: [],
       contactName: this.props.contactName,
@@ -1007,17 +1007,18 @@ class HeaderMenu extends Component {
 
 
   searchClick = ( ) => {
+    if (this.state.subjectText) {
+      let obj = {
+        subject: this.state.subjectText
+      };
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
 
-    let obj = {
-      subject:this.state.subjectText   
-    }; 
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
-    this.props.history.push({
-      pathname: "/GlobalSearch" ,
-      search: "?id=" + encodedPaylod
-    });
+      this.props.history.push({
+        pathname: "/GlobalSearch",
+        search: "?id=" + encodedPaylod
+      });
+    }
   }
 
   render() {
@@ -1070,7 +1071,8 @@ class HeaderMenu extends Component {
                         </svg>
                       </span>
                       <div className="ui input ">
-                        <input type="text" placeholder={Resources["search"][currentLanguage]} onChange={e=>this.setState({subjectText:e.target.value})} />
+                        <input type="text" placeholder={Resources["search"][currentLanguage]} onChange={e => this.setState({ subjectText: e.target.value })} 
+                        onKeyUp={e=>e.keyCode === 13?this.searchClick():null} />
                       </div>
                     </div>
                   </a>
