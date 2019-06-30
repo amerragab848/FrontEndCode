@@ -165,7 +165,7 @@ import materialReleaseAddEdit from "./Pages/Procurement/materialReleaseAddEdit";
 import procurementAddEdit from "./Pages/Procurement/procurementAddEdit"; 
 import RiskConesquence from "./Componants/publicComponants/RiskConesquence"; 
 import GlobalSearch from "./Componants/publicComponants/GlobalSearch"; 
-
+import currencyExchangeRates from './Componants/GeneralSetting/Administrations/currencyExchangeRates';
 
 import RiskCause from './Componants/OptionsPanels/RiskCause';
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -348,6 +348,7 @@ let originalRoutes = [
     , <Route path="/autoDeskViewer" component={autoDeskViewer} /> 
     , <Route path="/RiskConesquence" component={RiskConesquence} /> 
     , <Route path="/GlobalSearch" component={GlobalSearch} /> 
+    , <Route path="/currencyExchangeRates" component={currencyExchangeRates} /> 
 ];
     
 originalRoutes = [...originalRoutes, ...setupRoutes]
