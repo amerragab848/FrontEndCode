@@ -8,8 +8,7 @@ import Dropdown from "../OptionsPanels/DropdownMelcous";
 import moment from "moment";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
-import { truncateSync } from "fs";
-import fastForward from "material-ui/svg-icons/av/fast-forward";
+
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -32,7 +31,7 @@ export default class MonthlyTasksDetails extends Component {
         resizable: true,
         sortDescendingFirst: true,
         formatter: dateFormate
-      }, 
+      },
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
@@ -40,7 +39,7 @@ export default class MonthlyTasksDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        sortDescendingFirst: true 
+        sortDescendingFirst: true
       },
       {
         key: "projectName",
@@ -103,7 +102,6 @@ export default class MonthlyTasksDetails extends Component {
     ];
 
     this.state = {
-      renderGrid: false,
       startDate: moment(),
       finishDate: moment(),
       contactId: "",
@@ -139,14 +137,10 @@ export default class MonthlyTasksDetails extends Component {
     if (this.state.ContactIsEmpty === false) {
       this.setState({
         btnisLoading: true,
-        Loading: true
+        isLoading: true
       });
 
-      Api.post("GetMonthlyTaskDetailsByContactId", {
-        startDate: this.state.startDate,
-        finishDate: this.state.finishDate,
-        contactId: this.state.contactId
-      }).then(result => {
+      Api.post("GetMonthlyTaskDetailsByContactId", { startDate: this.state.startDate, finishDate: this.state.finishDate, contactId: this.state.contactId }).then(result => {
         this.setState({
           rows: result != null ? result : [],
           isLoading: false,
@@ -154,7 +148,7 @@ export default class MonthlyTasksDetails extends Component {
           Loading: false,
           totalRows: result.length
         });
-      }, this.setState({ isLoading: true }));
+      });
     } else {
       this.setState({
         valid: true
@@ -165,8 +159,7 @@ export default class MonthlyTasksDetails extends Component {
   componentDidMount = () => {
     Api.get("GetMonthlyTaskDetails").then(result => {
       this.setState({
-        renderGrid: true,
-        rows: result != null ? result : [],
+        rows: result != null ? result : [], isLoading: false
       });
     });
     this.GetData("GetAllContactsWithUser", "contactName", "id", "Contacts");
@@ -180,12 +173,15 @@ export default class MonthlyTasksDetails extends Component {
         fileName={Resources["monthlyTasks"][currentLanguage]}
       />
     );
+    const gridSetup = this.state.isLoading ?
+      <LoadingSection />
+      : (<GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />)
     return (
       <div className="mainContainer">
         <div className="resetPassword">
           <div className="submittalFilter">
             <div className="subFilter">
-              <h3 className="zero"> 
+              <h3 className="zero">
                 {Resources["monthlyTasks"][currentLanguage]}
               </h3>
               <span>{this.state.rows.length}</span>
@@ -260,26 +256,20 @@ export default class MonthlyTasksDetails extends Component {
                     {Resources["View"][currentLanguage]}
                   </button>
                 ) : (
-                  <button className="primaryBtn-1 btn smallBtn">
-                    <div className="spinner">
-                      <div className="bounce1" />
-                      <div className="bounce2" />
-                      <div className="bounce3" />
-                    </div>
-                  </button>
-                )}
+                    <button className="primaryBtn-1 btn smallBtn">
+                      <div className="spinner">
+                        <div className="bounce1" />
+                        <div className="bounce2" />
+                        <div className="bounce3" />
+                      </div>
+                    </button>
+                  )}
               </div>
             </div>
           </div>
 
           <div>
-            {this.state.renderGrid ? (
-              <GridSetup
-                rows={this.state.rows}
-                columns={this.state.columns}
-                showCheckbox={false}
-              />
-            ) : null}
+            {gridSetup}
           </div>
         </div>
       </div>
@@ -300,6 +290,6 @@ export default class MonthlyTasksDetails extends Component {
           [currState]: [...Data]
         });
       })
-      .catch(ex => {});
+      .catch(ex => { });
   };
 }

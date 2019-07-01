@@ -26,9 +26,9 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const documentItemValidationSchema = Yup.object().shape({
     description: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     itemCode: Yup.string().required(Resources['itemCode'][currentLanguage]),
-    unitPrice: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    days: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
-    quantity: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+    unitPrice: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
+    days: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
+    quantity:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
 })
 class addItemDescription extends Component {
 
