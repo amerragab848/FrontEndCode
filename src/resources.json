@@ -6509,7 +6509,7 @@
         "ar": "تاريح الرفع "
     },
     "dropFiles": {
-        "en": "Drop Files",
+        "en": "Drop your files here!",
         "ar": "إسحب الملفات "
     },
     "dropOrClick": {
@@ -7980,5 +7980,17 @@
     "conesquenceName": {
         "en": "Consequence Name",
         "ar": "consequence Name"
-    }
+    },
+    "closeDocument": {
+        "en": "Sorry, You can't edit this document",
+        "ar": "عفوا لايمكن التعديل على هذا الملف"
+    },
+    "uploadFrom": {
+        "en": "Upload From",
+        "ar": "التحميل من"
+    },
+    "openMyFolders": {
+        "en": "Open my folders",
+        "ar": "فتح المجلد "
+    } 
 }

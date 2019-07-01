@@ -180,7 +180,7 @@ class bogAddEdit extends Component {
                 sortDescendingFirst: true,
                 type: "number"
             }, {
-                key: "revisedQuntitty",
+                key: "revisedQuantity",
                 name: Resources["receivedQuantity"][currentLanguage],
                 width: 100,
                 draggable: true,
@@ -526,9 +526,13 @@ class bogAddEdit extends Component {
             this.checkDocumentIsView();
         }
         let _items = props.items
+        
         if (_items) {
-            this.setState({ isLoading: true })
+
+            this.setState({ isLoading: true }) 
+        
             this.setState({ _items }, () => this.setState({ isLoading: false }));
+            
         }
 
         if (this.state.showModal != props.showModal) {
