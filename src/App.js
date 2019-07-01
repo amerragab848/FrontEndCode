@@ -26,20 +26,20 @@ const IsAuthorize = api.IsAuthorized()
 
 class App extends Component {
 
-  //componentWillMount() {
-    // let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-    // if (currentLanguage == null)
-    //   localStorage.getItem('lang', 'en')
+  // componentWillMount() {
+  //   let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+  //   if (currentLanguage == null)
+  //     localStorage.getItem('lang', 'en')
 
-    // if (currentLanguage == "ar") {
-    //   require("./Styles/scss/ar-eg/layout-ar.css");
-    //   require("./Styles/scss/ar-eg/ReactCss-ar.css");
-    // } else {
-    //   require("./Styles/scss/en-us/layout.css");
-    //   require("./Styles/scss/en-us/reactCss.css")
-    // }
+  //   if (currentLanguage == "ar") {
+  //     require("./Styles/scss/ar-eg/layout-ar.css");
+  //     require("./Styles/scss/ar-eg/ReactCss-ar.css");
+  //   } else {
+  //     require("./Styles/scss/en-us/layout.css");
+  //     require("./Styles/scss/en-us/reactCss.css")
+  //   }
 
-  //}
+  // }
 
   render() {
     const showComp = IsAuthorize ?

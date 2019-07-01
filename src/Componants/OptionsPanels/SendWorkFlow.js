@@ -83,7 +83,7 @@ class SendWorkFlow extends Component {
 
     render() {
         return (
-            <div className="dropWrapper">
+            <div className="dropWrapper proForm">
                 <Dropdown title="workFlow"
                     data={this.state.WorkFlowData}
                     handleChange={this.workFlowhandelChange}

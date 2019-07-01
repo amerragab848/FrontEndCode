@@ -2006,6 +2006,7 @@ ul {
           display: inline-block; }
         .mainSide .mainSideNav .mainSidenavContent.hover .ProjectsUlList li a p {
           display: inline-block; }
+
 .datepickerContainer.proForm .input-group-addon {
   width: 100%;
   height: 48px;
@@ -2019,8 +2020,7 @@ ul {
     left: 8px;
     top: 16px; }
 .datepickerContainer.proForm .ui.input.inputDev {
-  display: block;
-  padding: 0; }
+  display: block; }
   .datepickerContainer.proForm .ui.input.inputDev.linebylineInput {
     display: flex; }
     .datepickerContainer.proForm .ui.input.inputDev.linebylineInput:first-child {
@@ -2035,9 +2035,6 @@ ul {
     text-align: right; }
 .datepickerContainer.proForm .input-daterange {
   display: flex; }
-
-.proForm.datepickerContainer .linebylineInput .ui.input.inputDev {
-  padding: 0; }
 
 .datepicker {
   font-family: font-opensb;
@@ -2866,9 +2863,9 @@ ul {
 .approveDocument {
   position: fixed;
   bottom: 0;
-  right: 40px;
-  left: 130px;
-  z-index: 19;
+  left: 40px;
+  right: 130px;
+  z-index: 1000;
   height: 64px;
   border-radius: 3px;
   box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
@@ -2880,7 +2877,7 @@ ul {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  z-index: 99; }
+  z-index: 999; }
   .approveDocument h2 {
     flex: 0.5;
     line-height: 1.17;
@@ -2897,11 +2894,11 @@ ul {
     .approveDocument .approveDocumentBTNS .border {
       display: block;
       width: 1px;
-      height: 40px;
+      height: 36px;
       background-color: #e9ecf0;
       margin: 0 32px; }
     .approveDocument .approveDocumentBTNS .middle__btn {
-      margin: 0 8px; }
+      margin: 0 6px; }
 
 /**/
 .modalContainerSS {
@@ -3366,22 +3363,13 @@ ul {
   align-items: center;
   padding: 25px 16px 14px 24px;
   background-color: #fafbfc;
-  border-bottom: 0; }
-  .gridfillter-container .control-label {
-    margin-bottom: 4px;
-    letter-spacing: -0.2px;
-    display: block;
-    font-family: Muli;
-    font-weight: bold;
-    font-size: 13px;
-    color: #5E6475; }
+  border-bottom: 0;
+  transition: all 0.4s ease-in-out;
+  padding-top: 12px; }
   .gridfillter-container .fillter-status-container {
     width: 100%;
     display: flex;
     align-items: center;
-        /*
-        justify-content: space-between;
-*/
     flex-wrap: wrap; }
     @media screen and (max-width: 1200px) {
       .gridfillter-container .fillter-status-container {
@@ -3398,7 +3386,14 @@ ul {
       .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev {
         padding: 0; }
         .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input {
-          height: 40px; }
+          height: 36px;
+          border: solid 2px;
+          transition: all 0.5s ease-in-out;
+          border-color: #E9ECF0; }
+          .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:hover {
+            border-color: #A8B0BF; }
+          .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:focus {
+            border: solid 2px #83B4FC; }
       .gridfillter-container .fillter-status-container .fillterinput .form-group {
         padding: 0;
         margin: 0; }
@@ -3420,7 +3415,9 @@ ul {
       display: flex;
       margin-left: 8px; }
       .gridfillter-container .fillter-status-container .datepickerContainer.proForm .control-label {
-        margin-bottom: 4px; }
+        margin-bottom: 4px;
+        margin-left: 0;
+        z-index: 0; }
       .gridfillter-container .fillter-status-container .datepickerContainer.proForm .linebylineInput {
         margin: 0;
         padding: 0;
@@ -3431,7 +3428,7 @@ ul {
         .gridfillter-container .fillter-status-container .datepickerContainer.proForm .linebylineInput .ui.input.inputDev input {
           width: 136px; }
     .gridfillter-container .fillter-status-container .fillter-item-c {
-      margin-bottom: 20px !important; }
+      margin-bottom: 0px !important; }
     .gridfillter-container .fillter-status-container .form-control::placeholder {
       line-height: 1.71;
       letter-spacing: -0.2px;
@@ -4100,230 +4097,6 @@ ul {
 .main-header.setting-header.general__header {
   padding-left: 0; }
 
-.settings-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
-  .settings-container .settings-tabs-items {
-    width: 256px;
-    background-color: #FAFBFC;
-    position: relative;
-    z-index: 1;
-    height: calc(100vh - 72px);
-    border-left: 1px solid #E9ECF0; }
-    .settings-container .settings-tabs-items h3 {
-      height: 72px;
-      padding-right: 40px;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      line-height: 1.4;
-      letter-spacing: -0.2px;
-      text-align: center;
-      color: #252833;
-      font-family: font-b;
-      font-size: 20px;
-      border-bottom: 1px solid #E9ECF0;
-      background: #f2f8fc;
-      margin-bottom: 16px; }
-    .settings-container .settings-tabs-items ul li {
-      padding-right: 40px;
-      height: 52px;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-      -ms-flex-flow: column;
-      flex-flow: column;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.4s ease; }
-      .settings-container .settings-tabs-items ul li.title {
-        cursor: inherit;
-        padding-right: 0;
-        height: 40px;
-        margin-top: 28px; }
-        .settings-container .settings-tabs-items ul li.title h4 {
-          padding-right: 40px;
-          font-family: font-b;
-          font-size: 12px;
-          color: #a8b0bf;
-          line-height: 1.33;
-          letter-spacing: 1px;
-          text-transform: uppercase; }
-        .settings-container .settings-tabs-items ul li.title::after {
-          content: "";
-          position: absolute;
-          top: -11px;
-          width: 100%;
-          height: 1px;
-          background-color: #E9ECF0;
-          left: 0; }
-        .settings-container .settings-tabs-items ul li.title:first-child {
-          margin-top: 24px; }
-          .settings-container .settings-tabs-items ul li.title:first-child::after {
-            display: none; }
-        .settings-container .settings-tabs-items ul li.title:hover {
-          background-color: transparent; }
-      .settings-container .settings-tabs-items ul li .subUlTitle {
-        line-height: 1.5;
-        letter-spacing: -0.2px;
-        color: #5E6475;
-        font-size: 13px;
-        font-family: font-sb; }
-      .settings-container .settings-tabs-items ul li .subUlsubT {
-        line-height: 1.33;
-        letter-spacing: -0.2px;
-        color: #A8B0BF;
-        font-size: 12px; }
-      .settings-container .settings-tabs-items ul li .activeArrow {
-        position: absolute;
-        left: 15px;
-        display: none;
-        top: 40%; }
-      .settings-container .settings-tabs-items ul li:hover {
-        background-color: #edf6ff;
-        border-top-left-radius: 86px;
-        border-bottom-left-radius: 86px; }
-      .settings-container .settings-tabs-items ul li.active {
-        background-color: #cce6ff;
-        border-top-left-radius: 86px;
-        border-bottom-left-radius: 86px; }
-        .settings-container .settings-tabs-items ul li.active .subUlTitle {
-          color: #2557cc; }
-  .settings-container .setting-tabs-contant {
-    width: calc(100% - 256px);
-    background: #fff; }
-    .settings-container .setting-tabs-contant .tab .minisettings-header {
-      height: 72px;
-      border-bottom: 1px solid #E9ECF0;
-      width: 100%;
-      background-color: #ffffff;
-      display: flex;
-      align-items: center;
-      padding: 0 46px 0 64px; }
-      .settings-container .setting-tabs-contant .tab .minisettings-header .title {
-        flex: 1; }
-        .settings-container .setting-tabs-contant .tab .minisettings-header .title h2 {
-          line-height: 1.4;
-          letter-spacing: -0.2px;
-          color: #252833;
-          font-family: font-b;
-          font-size: 20px; }
-      .settings-container .setting-tabs-contant .tab .minisettings-header .action {
-        flex: 1;
-        display: flex;
-        justify-content: flex-end; }
-    .settings-container .setting-tabs-contant .tab .has-tabs-in {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      height: calc(100vh - 144px);
-      background-color: #ffffff; }
-      .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs {
-        flex: 1.51;
-        border-left: 1px solid #E9ECF0;
-        min-width: 320px;
-        overflow: auto; }
-        .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs::-webkit-scrollbar {
-          width: 0px; }
-        .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li {
-          padding: 0px 40px;
-          cursor: pointer; }
-          .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li.active {
-            background-color: #f2f5f7; }
-          .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div {
-            display: flex;
-            position: relative;
-            border-bottom: 1px solid #E9ECF0;
-            padding: 11px 0; }
-            .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-image {
-              width: 40px;
-              height: 40px;
-              margin-left: 16px; }
-              .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-image img {
-                width: 100%;
-                height: 100%;
-                border-radius: 50%; }
-            .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .name {
-              line-height: 1.5;
-              letter-spacing: -0.2px;
-              color: #252833;
-              font-family: font-b;
-              font-size: 16px; }
-            .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .job-title {
-              line-height: 1.43;
-              letter-spacing: -0.2px;
-              color: #858d9e;
-              font-size: 14px;
-              font-family: font-r;
-              margin-bottom: 4px; }
-            .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .status {
-              line-height: 1.33;
-              letter-spacing: -0.2px;
-              color: #3e4352;
-              font-family: font-opens;
-              font-size: 12px; }
-            .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .date {
-              line-height: 1.33;
-              letter-spacing: -0.2px;
-              color: #858d9e;
-              position: absolute;
-              left: 0;
-              bottom: 12px; }
-      .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content {
-        flex: 2; }
-        .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab {
-          padding: 30px 46px 30px 56px; }
-          .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content {
-            display: flex;
-            position: relative;
-            align-items: center;
-            margin-bottom: 40px; }
-            .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-image {
-              width: 112px;
-              height: 112px;
-              margin-left: 16px; }
-              .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-image img {
-                width: 100%;
-                height: 100%;
-                border-radius: 50%; }
-            .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .name {
-              line-height: 1.5;
-              letter-spacing: -0.2px;
-              color: #252833;
-              font-family: font-b;
-              font-size: 20px; }
-            .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .job-title {
-              line-height: 1.43;
-              letter-spacing: -0.2px;
-              color: #858d9e;
-              font-size: 14px;
-              font-family: font-r;
-              margin-bottom: 9px; }
-            .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .status {
-              line-height: 1.33;
-              letter-spacing: -0.2px;
-              color: #3e4352;
-              font-family: font-opens;
-              font-size: 12px; }
-            .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .date {
-              line-height: 1.33;
-              letter-spacing: -0.2px;
-              color: #858d9e;
-              position: absolute;
-              left: 0;
-              bottom: 12px; }
-          .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .bottom-content {
-            padding-top: 40px; }
-
 .documents-temp .doc-container .subitTabs header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -4332,91 +4105,81 @@ ul {
   -ms-flex-pack: center;
   justify-content: center;
   border-bottom: 1px solid #e9ecf0; }
-.documents-temp .doc-container .subiTabContainer {
-  width: 50%; }
-  .documents-temp .doc-container .subiTabContainer .subiTabsContent {
+.documents-temp .doc-container .subiTabContainer .subiTabsContent {
+  width: 100%;
+  background-color: #fff;
+  min-height: 100vh; }
+  .documents-temp .doc-container .subiTabContainer .subiTabsContent > header {
+    height: 72px;
+    border-bottom: 1px solid #e9ecf0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center; }
+  .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .doc-infohead {
+    font-family: font-opens;
+    font-size: 12px;
+    line-height: 1.33;
+    letter-spacing: -0.2px;
+    color: #a8b0bf;
     width: 100%;
-    background-color: #fff;
-    min-height: 100vh; }
-    .documents-temp .doc-container .subiTabContainer .subiTabsContent > header {
-      height: 72px;
-      border-bottom: 1px solid #e9ecf0;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center; }
-    .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields {
-      padding: 14px; }
-      .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .doc-infohead {
+    text-align: left; }
+  .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm .linebylineInput .radioBoxBlue label {
+    padding-right: 35px;
+    padding-left: 15px; }
+  .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm.datepickerContainer .selection {
+    max-width: 360px;
+    width: 100%; }
+    .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm.datepickerContainer .selection .text {
+      background: none; }
+  .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle header {
+    padding: 40px; }
+    .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle header h2 {
+      border-bottom: 1px solid #e1e3e8;
+      width: 100%;
+      padding-bottom: 12px;
+      padding-right: 100px;
+      font-family: font-r;
+      font-size: 20px;
+      line-height: 1.4;
+      letter-spacing: -0.2px;
+      color: #252833; }
+  .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid {
+    padding: 8px; }
+    .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table {
+      border-left: 0;
+      border-right: 0;
+      /**/ }
+      .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th {
+        font-family: font-b;
+        font-size: 14px;
+        line-height: 1.43;
+        letter-spacing: -0.2px;
+        color: #a8b0bf; }
+        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(1) {
+          padding: 0 13px;
+          width: 40px; }
+        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(2) {
+          border-right: 1px solid #e9ecf0; }
+        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
+          padding-left: 30px; }
+      .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td {
         font-family: font-opens;
-        font-size: 12px;
-        line-height: 1.33;
+        font-size: 14px;
+        line-height: 1.71;
         letter-spacing: -0.2px;
-        color: #a8b0bf;
-        width: 100%;
-        text-align: left; }
-      .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm .linebylineInput {
-        margin-bottom: 28px; }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm .linebylineInput .ui.input.inputDev {
-          padding: 0; }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm .linebylineInput .radioBoxBlue label {
-          padding-right: 35px;
-          padding-left: 15px; }
-      .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm.datepickerContainer .control-label {
-        padding-left: 0; }
-      .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm.datepickerContainer .selection {
-        max-width: 360px;
-        width: 100%; }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .proForm.datepickerContainer .selection .text {
-          background: none; }
-    .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle header {
-      padding: 40px; }
-      .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle header h2 {
-        border-bottom: 1px solid #e1e3e8;
-        width: 100%;
-        padding-bottom: 12px;
-        padding-right: 100px;
-        font-family: font-r;
-        font-size: 20px;
-        line-height: 1.4;
-        letter-spacing: -0.2px;
-        color: #252833; }
-    .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid {
-      padding: 8px; }
-      .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table {
-        border-left: 0;
-        border-right: 0;
-        /**/ }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th {
-          font-family: font-b;
-          font-size: 14px;
-          line-height: 1.43;
-          letter-spacing: -0.2px;
-          color: #a8b0bf; }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(1) {
-            padding: 0 13px;
-            width: 40px; }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(2) {
-            border-right: 1px solid #e9ecf0; }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
-            padding-left: 30px; }
-        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td {
-          font-family: font-opens;
-          font-size: 14px;
-          line-height: 1.71;
-          letter-spacing: -0.2px;
-          color: #3e4352; }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:nth-child(2) {
-            border-right: 1px solid #e9ecf0; }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:nth-child(3) {
-            padding-left: 30px; }
-          .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:last-child {
-            text-align: right; }
+        color: #3e4352; }
+        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:nth-child(2) {
+          border-right: 1px solid #e9ecf0; }
+        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:nth-child(3) {
+          padding-left: 30px; }
+        .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:last-child {
+          text-align: right; }
 .documents-temp .doc-container .submittalActions.doc-submitt {
   width: 25%;
   border-right: 1px solid #e9ecf0;
@@ -4440,15 +4203,10 @@ ul {
     padding: 20px;
     padding-top: 30px; }
 
-.documents-stepper .submittalHead {
-  justify-content: flex-start;
-  padding-right: 175px;
-  z-index: 2; }
 .documents-stepper .doc-container .subiTabsContent {
   width: 100%; }
   .documents-stepper .doc-container .subiTabsContent > header {
     height: 72px;
-    padding: 0 80px 0 175px;
     border-bottom: 1px solid #e9ecf0;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -4459,14 +4217,6 @@ ul {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center; }
-    .documents-stepper .doc-container .subiTabsContent > header .doc-infohead {
-      font-family: font-opens;
-      font-size: 12px;
-      line-height: 1.33;
-      letter-spacing: -0.2px;
-      color: #a8b0bf;
-      width: 100%;
-      text-align: left; }
     .documents-stepper .doc-container .subiTabsContent > header h2 {
       font-family: font-b;
       font-size: 20px;
@@ -4474,166 +4224,141 @@ ul {
       letter-spacing: -0.2px;
       color: #252833; }
 .documents-stepper .doc-container {
-  border-radius: 4px;
-  border: solid 1px #e9ecf0;
-  position: relative;
-  display: flex;
   /**/ }
-  .documents-stepper .doc-container .step-content .document-fields {
-    padding: 14px; }
-    .documents-stepper .doc-container .step-content .document-fields .doc-infohead {
-      font-family: font-opens;
-      font-size: 12px;
-      line-height: 1.33;
-      letter-spacing: -0.2px;
-      color: #a8b0bf;
-      width: 100%;
-      text-align: left; }
-    .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput {
-      margin-bottom: 28px; }
-      .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
-        padding: 0; }
-      .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .radioBoxBlue label {
-        padding-right: 35px;
-        padding-left: 15px; }
-    .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .selection {
-      max-width: 360px;
-      width: 100%; }
-      .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .selection .text {
-        background: none; }
-  .documents-stepper .doc-container .step-content .doc-pre-cycle {
-    padding: 0 80px; }
-    .documents-stepper .doc-container .step-content .doc-pre-cycle header {
-      padding: 40px; }
-      .documents-stepper .doc-container .step-content .doc-pre-cycle header h2 {
-        border-bottom: 1px solid #e1e3e8;
-        width: 100%;
-        padding-bottom: 12px;
-        padding-right: 100px;
-        font-family: font-r;
-        font-size: 20px;
-        line-height: 1.4;
+  .documents-stepper .doc-container .step-content .document-fields .doc-infohead {
+    font-family: font-opens;
+    font-size: 12px;
+    line-height: 1.33;
+    letter-spacing: -0.2px;
+    color: #a8b0bf;
+    width: 100%;
+    text-align: left; }
+  .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+    padding: 0; }
+  .documents-stepper .doc-container .step-content .document-fields .proForm .linebylineInput .radioBoxBlue label {
+    padding-right: 35px;
+    padding-left: 15px; }
+  .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .selection {
+    max-width: 360px;
+    width: 100%; }
+    .documents-stepper .doc-container .step-content .document-fields .proForm.datepickerContainer .selection .text {
+      background: none; }
+  .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid {
+    padding: 8px; }
+    .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table {
+      border-left: 0;
+      border-right: 0;
+      /**/ }
+      .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th {
+        font-family: font-b;
+        font-size: 14px;
+        line-height: 1.43;
         letter-spacing: -0.2px;
-        color: #252833; }
-    .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid {
-      padding: 8px; }
-      .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table {
-        border-left: 0;
-        border-right: 0;
-        /**/ }
-        .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th {
-          font-family: font-b;
-          font-size: 14px;
-          line-height: 1.43;
-          letter-spacing: -0.2px;
-          color: #a8b0bf; }
-          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(1) {
-            padding: 0 13px;
-            width: 40px; }
-          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(2) {
-            border-right: 1px solid #e9ecf0; }
-          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
-            padding-left: 30px; }
-        .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
-          font-family: font-opens;
-          font-size: 14px;
-          line-height: 1.71;
-          letter-spacing: -0.2px;
-          color: #3e4352; }
-          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:nth-child(2) {
-            border-right: 1px solid #e9ecf0; }
-          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:nth-child(3) {
-            padding-left: 30px; }
-          .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:last-child {
-            text-align: right; }
-    .documents-stepper .doc-container .step-content .doc-pre-cycle .slider-Btns {
-      padding-top: 55px;
-      padding-left: 64px; }
-  .documents-stepper .doc-container .docstepper-levels {
-    width: 347px;
-    position: relative; }
-    .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
-      position: relative;
-      padding-top: 42px;
-      border-radius: 3px;
-      right: -25px;
-      display: flex;
-      align-items: center; }
-      .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider {
-        display: -webkit-inline-box;
-        display: -ms-inline-flexbox;
-        display: inline-flex;
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-flow: column;
-        flex-flow: column; }
-        .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item {
-          display: flex; }
-          .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-timeline {
-            position: relative;
-            margin-bottom: 15px;
-            width: 48px;
-            min-width: 48px;
-            height: 48px;
+        color: #a8b0bf; }
+        .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(1) {
+          padding: 0 13px;
+          width: 40px; }
+        .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(2) {
+          border-right: 1px solid #e9ecf0; }
+        .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
+          padding-left: 30px; }
+      .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
+        font-family: font-opens;
+        font-size: 14px;
+        line-height: 1.71;
+        letter-spacing: -0.2px;
+        color: #3e4352; }
+        .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:nth-child(2) {
+          border-right: 1px solid #e9ecf0; }
+        .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:nth-child(3) {
+          padding-left: 30px; }
+        .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:last-child {
+          text-align: right; }
+  .documents-stepper .doc-container .step-content .doc-pre-cycle .slider-Btns {
+    padding-top: 55px;
+    padding-left: 64px; }
+  .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps {
+    position: relative;
+    padding-top: 42px;
+    border-radius: 3px;
+    right: -25px;
+    display: flex;
+    align-items: center; }
+    .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider {
+      display: -webkit-inline-box;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      -webkit-box-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+      flex-flow: column; }
+      .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item {
+        display: flex; }
+        .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-timeline {
+          position: relative;
+          margin-bottom: 15px;
+          width: 48px;
+          min-width: 48px;
+          height: 48px;
+          background-color: #e9ecf0;
+          border-radius: 50%;
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 64px; }
+          .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-timeline::after {
+            content: "";
+            height: 64px;
+            width: 2px;
             background-color: #e9ecf0;
-            border-radius: 50%;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 64px; }
-            .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-timeline::after {
-              content: "";
-              height: 64px;
-              width: 2px;
-              background-color: #e9ecf0;
-              position: absolute;
-              top: 48px; }
-            .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-timeline > span {
-              font-size: 20px;
-              font-family: font-b;
-              line-height: 1.4;
-              letter-spacing: -0.2px;
-              color: #ccd2db; }
-          .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-info {
-            padding-right: 16px;
-            padding-left: 10px;
-            padding-top: 14px; }
-            .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-info h6 {
-              margin: 0;
-              line-height: 1.5;
-              letter-spacing: -0.2px;
-              color: #252833;
-              font-size: 16px;
-              font-family: font-b; }
-            .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-info p {
-              line-height: 1.33;
-              letter-spacing: -0.2px;
-              color: #a8b0bf;
-              font-size: 12px;
-              font-family: font-opens; }
-          .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active {
-            /*
-            background-color: #5fd45f;
-            */ }
-            .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active .steps-timeline > span {
-              display: none; }
-            .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active .steps-timeline::before {
-              position: absolute;
-              content: "";
-              background-image: url(../../images/approval.png);
-              top: 0;
-              bottom: 0;
-              width: 100%;
-              background-repeat: no-repeat;
-              background-size: contain;
-              border-radius: 50%; }
-            .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active .steps-timeline::after {
-              background-color: #5fd45f; }
-          .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item:last-child .steps-timeline::after {
-            height: 0; }
+            position: absolute;
+            top: 48px; }
+          .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-timeline > span {
+            font-size: 20px;
+            font-family: font-b;
+            line-height: 1.4;
+            letter-spacing: -0.2px;
+            color: #ccd2db; }
+        .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-info {
+          padding-right: 16px;
+          padding-left: 10px;
+          padding-top: 14px; }
+          .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-info h6 {
+            margin: 0;
+            line-height: 1.5;
+            letter-spacing: -0.2px;
+            color: #252833;
+            font-size: 16px;
+            font-family: font-b; }
+          .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-info p {
+            line-height: 1.33;
+            letter-spacing: -0.2px;
+            color: #a8b0bf;
+            font-size: 12px;
+            font-family: font-opens; }
+        .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active {
+          /*
+          background-color: #5fd45f;
+          */ }
+          .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active .steps-timeline > span {
+            display: none; }
+          .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active .steps-timeline::before {
+            position: absolute;
+            content: "";
+            background-image: url(../../images/approval.png);
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-size: contain;
+            border-radius: 50%; }
+          .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active .steps-timeline::after {
+            background-color: #5fd45f; }
+        .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item:last-child .steps-timeline::after {
+          height: 0; }
   .documents-stepper .doc-container .step-content-foot {
     position: relative;
     height: 72px;
@@ -4733,27 +4458,16 @@ ul {
 .noTabs__document .doc-container {
   background: #fff;
   flex-flow: column;
-  display: flex; }
+  display: flex;
+  border-radius: 4px;
+  border: solid 1px #e9ecf0;
+  position: relative;
+  border-top-color: transparent;
+  min-height: 71vh; }
   .noTabs__document .doc-container .main__header {
     width: 100%;
     padding: 0;
     border-bottom: 1px solid #e9ecf0; }
-    .noTabs__document .doc-container .main__header .main__header--div {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: space-between;
-      width: 61%;
-      margin: 0 auto;
-      height: 72px; }
-      @media screen and (max-width: 1200px) {
-        .noTabs__document .doc-container .main__header .main__header--div {
-          width: 68%; } }
     .noTabs__document .doc-container .main__header h2 {
       font-family: font-b;
       font-size: 20px;
@@ -4794,15 +4508,8 @@ ul {
 
 .one__tab {
   padding-bottom: 90px; }
-  .one__tab .submittalHead {
-    justify-content: center;
-    padding-right: 0;
-    z-index: 2; }
   .one__tab .doc-container {
-    background: #fff;
     flex-flow: row; }
-    .one__tab .doc-container .docstepper-levels {
-      border-left: 1px solid #eef5ff; }
     .one__tab .doc-container .subiTabsContent > header.main__header {
       padding: 0; }
       .one__tab .doc-container .subiTabsContent > header.main__header .main__header--div {
@@ -4842,8 +4549,7 @@ ul {
           .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput {
             margin-right: 0; }
             .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
-              width: 100%;
-              padding: 0; }
+              width: 100%; }
               .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
                 width: 100%; }
     .one__tab .doc-container .doc-pre-cycle {
@@ -4863,82 +4569,21 @@ ul {
       .one__tab .doc-container .doc-pre-cycle .slider-Btns {
         padding-top: 55px;
         padding-right: 0; }
-  .one__tab .approveDocument {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 19;
-    height: 72px;
-    border-radius: 3px;
-    box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
-    padding: 0 40px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center; }
-    .one__tab .approveDocument h2 {
-      flex: 0.5;
-      line-height: 1.17;
-      letter-spacing: -0.5px;
-      color: #252833;
-      opacity: 0.3;
-      font-family: font-b; }
-    .one__tab .approveDocument .approveDocumentBTNS {
-      flex: 1.5;
-      display: flex;
-      justify-content: flex-end; }
-      .one__tab .approveDocument .approveDocumentBTNS .border {
-        display: block;
-        width: 1px;
-        height: 40px;
-        background-color: #e9ecf0;
-        margin: 0 24px; }
-      .one__tab .approveDocument .approveDocumentBTNS .middle__btn {
-        margin: 0 6px; }
-  .one__tab.one_step .doc-container .step-content {
-    width: calc(100% - 347px); }
-    .one__tab.one_step .doc-container .step-content .main__header {
-      padding-right: 110px;
-      padding-left: 80px; }
-      @media screen and (max-width: 1300px) {
-        .one__tab.one_step .doc-container .step-content .main__header {
-          padding-right: 35px;
-          padding-left: 20px; } }
-    .one__tab.one_step .doc-container .step-content .document-fields {
-      padding-right: 110px;
-      padding-left: 80px; }
-      @media screen and (max-width: 1300px) {
-        .one__tab.one_step .doc-container .step-content .document-fields {
-          padding-right: 35px;
-          padding-left: 20px; } }
-      .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput {
-        margin-right: 0; }
-        @media screen and (max-width: 1200px) {
-          .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput input {
-            width: 100%; } }
-      @media screen and (max-width: 1200px) {
-        .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform {
-          flex-flow: column;
-          align-items: flex-start; } }
-      @media screen and (max-width: 1200px) {
-        .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput {
-          width: 77%; } }
+  @media screen and (max-width: 1200px) {
+    .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput input {
+      width: 100%; } }
+  @media screen and (max-width: 1200px) {
+    .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform {
+      flex-flow: column;
+      align-items: flex-start; } }
+  @media screen and (max-width: 1200px) {
+    .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput {
+      width: 77%; } }
+  .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
+    width: 300px; }
+    @media screen and (max-width: 1200px) {
       .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
-        width: 300px; }
-        @media screen and (max-width: 1200px) {
-          .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
-            width: 360px; } }
-    .one__tab.one_step .doc-container .step-content .doc-pre-cycle {
-      padding-right: 110px;
-      padding-left: 80px; }
-      @media screen and (max-width: 1300px) {
-        .one__tab.one_step .doc-container .step-content .doc-pre-cycle {
-          padding-right: 35px;
-          padding-left: 20px; } }
+        width: 360px; } }
 
 .dashboard-container {
   padding-top: 90px; }
@@ -5403,7 +5048,6 @@ ul {
   font-size: 28px;
   font-family: font-b;
   padding-right: 90px;
-  padding-bottom: 58px;
   margin: 0; }
 .SummeriesContainer .SummeriesContainerContent {
   border-bottom: 1px solid #E9ECF0;
@@ -5413,122 +5057,108 @@ ul {
   padding: 0;
   justify-content: center;
   flex-wrap: wrap; }
-  .SummeriesContainer .SummeriesContainerContent .summerisItem {
+  .SummeriesContainer .SummeriesContainerContent .summerisItem:last-child:after {
+    width: 0; }
+  .SummeriesContainer .SummeriesContainerContent .summerisItem .content {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 257px;
+    padding: 0 20px;
     position: relative;
-    padding: 45px 0;
-    margin-bottom: 20px; }
-    .SummeriesContainer .SummeriesContainerContent .summerisItem:last-child:after {
-      width: 0; }
-    .SummeriesContainer .SummeriesContainerContent .summerisItem::after {
-      position: absolute;
-      content: "";
-      right: 0;
-      top: 60px;
-      height: 100px;
-      width: 1px;
-      background-color: #E9ECF0;
-      z-index: 2; }
-    .SummeriesContainer .SummeriesContainerContent .summerisItem .content {
+    z-index: 9; }
+    .SummeriesContainer .SummeriesContainerContent .summerisItem .content .title {
+      font-size: 12px;
+      letter-spacing: 0.2px;
+      color: #858D9E;
+      font-family: font-xb;
+      text-transform: capitalize;
+      transition: all 0.3s ease-in-out;
+      height: 50px;
       display: flex;
-      flex-flow: column;
       align-items: center;
-      padding: 0 17px;
-      width: 277px;
+      overflow: hidden; }
+    .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number {
+      cursor: pointer;
+      font-size: 56px;
+      line-height: 1.14;
+      letter-spacing: -1.1px;
+      font-family: font-b;
+      color: #252833;
+      margin: 0;
+      overflow: hidden;
+      width: 100%;
+      transition: all 0.3s ease-in-out;
+      text-align: center;
       position: relative;
-      z-index: 9; }
-      .SummeriesContainer .SummeriesContainerContent .summerisItem .content .title {
-        font-size: 12px;
-        letter-spacing: 0.2px;
-        color: #858D9E;
-        font-family: font-xb;
-        text-transform: capitalize;
-        transition: all 0.3s ease-in-out;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        overflow: hidden; }
-      .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number {
-        font-size: 45px;
-        font-family: font-b;
-        color: #252833;
-        margin: 0;
-        overflow: hidden;
-        width: 100%;
-        transition: all 0.3s ease-in-out;
-        text-align: center;
-        position: relative;
-        padding: 0 5px 12px 0; }
-        .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
-          position: absolute;
-          bottom: 0;
-          right: 12px;
-          font-size: 12px; }
-      .SummeriesContainer .SummeriesContainerContent .summerisItem .content .status {
-        color: #adbccc;
-        letter-spacing: -0.2px;
-        font-size: 14px;
-        margin: 0;
-        font-family: font-b;
-        transition: all 0.3s ease-in-out; }
-      .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL {
-        display: flex;
-        height: 4px;
-        border-radius: 5px;
-        overflow: hidden;
-        width: 128px;
+      padding: 0 5px 12px 0; }
+      .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
+        position: absolute;
+        bottom: 0;
+        right: 12px;
+        font-size: 12px; }
+    .SummeriesContainer .SummeriesContainerContent .summerisItem .content .status {
+      color: #adbccc;
+      letter-spacing: -0.2px;
+      font-size: 14px;
+      margin: 0;
+      font-family: font-b;
+      transition: all 0.3s ease-in-out; }
+    .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL {
+      display: flex;
+      height: 4px;
+      border-radius: 5px;
+      overflow: hidden;
+      width: 128px;
+      position: relative; }
+      .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL li {
         position: relative; }
-        .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL li {
-          position: relative; }
-        .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL .num-1 {
-          width: 35%;
-          background: #39bd3d;
-          z-index: 3; }
-        .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL .num-2 {
-          width: 45%;
-          background: #7cdb79;
-          z-index: 2; }
-        .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL .num-3 {
-          width: 20%;
-          background: #e9fce3;
-          z-index: 1; }
-      .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList {
-        display: flex;
-        justify-content: center;
-        width: 100%; }
-        .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div {
-          font-family: font-b;
-          font-size: 12px;
-          letter-spacing: -0.2px;
-          color: #ccd2db; }
-          .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div span {
-            font-size: 12px;
-            color: #858d9e;
-            transition: all 0.3s ease-in-out; }
-        .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList .first {
-          margin-left: 14px; }
-    .SummeriesContainer .SummeriesContainerContent .summerisItem:before {
-      transform: scale(0);
-      transition: all 0.4s ease-in-out;
-      position: absolute;
-      content: "";
-      left: -10px;
-      right: -10px;
-      background: #47cc4a;
-      bottom: -15px;
-      top: -3px;
-      z-index: 3; }
-    .SummeriesContainer .SummeriesContainerContent .summerisItem:hover:before {
-      transform: scale(1); }
-    .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .title,
-    .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .number,
-    .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .status,
-    .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .summerisList {
+      .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL .num-1 {
+        width: 35%;
+        background: #39bd3d;
+        z-index: 3; }
+      .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL .num-2 {
+        width: 45%;
+        background: #7cdb79;
+        z-index: 2; }
+      .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL .num-3 {
+        width: 20%;
+        background: #e9fce3;
+        z-index: 1; }
+    .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList {
+      display: flex;
+      justify-content: center;
+      width: 100%; }
+      .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div {
+        font-family: font-b;
+        font-size: 12px;
+        letter-spacing: -0.2px;
+        color: #ccd2db; }
+        .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div span {
+          color: #858d9e; }
+  .SummeriesContainer .SummeriesContainerContent .summerisItem:before {
+    transform: scale(0);
+    transition: all 0.6s ease-in-out;
+    position: absolute;
+    content: "";
+    left: -10px;
+    right: -10px;
+    background: #47cc4a;
+    bottom: -35px;
+    top: -15px;
+    z-index: 3; }
+  .SummeriesContainer .SummeriesContainerContent .summerisItem:hover:before {
+    transform: scale(1); }
+  .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .title,
+  .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .number,
+  .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .status,
+  .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .summerisList {
+    color: #fff; }
+    .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .title > div span,
+    .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .number > div span,
+    .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .status > div span,
+    .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .summerisList > div span {
       color: #fff; }
-      .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .title > div span,
-      .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .number > div span,
-      .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .status > div span,
-      .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .summerisList > div span {
-        color: #fff; }
 .SummeriesContainer.numbersOnly .SummeriesContainerContent {
   background: transparent; }
   .SummeriesContainer.numbersOnly .SummeriesContainerContent .summerisItem {
@@ -5620,11 +5250,8 @@ ul {
     .dashboard__Project .dash__content.smallTabs {
       width: 100%; }
     .dashboard__Project .dash__content .project__content {
-      width: 48%;
-      display: flex;
-      flex-wrap: wrap; }
+      width: 48%; }
       .dashboard__Project .dash__content .project__content .project__select {
-        width: 50%;
         height: 64px;
         display: flex;
         align-items: center;
@@ -5653,15 +5280,12 @@ ul {
           width: 24px;
           height: 24px;
           margin-left: 8px; }
-        .dashboard__Project .dash__content .project__content .project__select .project__title {
-          flex: 1 0;
-          text-align: center; }
-          .dashboard__Project .dash__content .project__content .project__select .project__title h3 {
-            font-family: font-r;
-            font-size: 14px;
-            line-height: 1.43;
-            letter-spacing: -0.2px;
-            color: #252833; }
+        .dashboard__Project .dash__content .project__content .project__select .project__title h3 {
+          font-family: font-r;
+          font-size: 14px;
+          line-height: 1.43;
+          letter-spacing: -0.2px;
+          color: #252833; }
 
 .bulkTabs {
   width: 100%; }
@@ -6027,7 +5651,6 @@ ul {
   align-items: center; }
 
 .notifiBar {
-  width: 330px;
   border: 1px solid #CCD2DB;
   border-radius: 3px;
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
@@ -6035,7 +5658,12 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative; }
+  position: relative;
+  position: absolute;
+  top: 150%;
+  z-index: 999;
+  width: 345px;
+  right: -162px; }
   .notifiBar::after {
     content: ' ';
     position: absolute;
@@ -6056,6 +5684,7 @@ ul {
     min-height: 200px;
     max-height: 490px;
     overflow: auto;
+    overflow-x: hidden;
     width: 100%; }
     .notifiBar .smallNotifiBar.noNotification {
       justify-content: center; }
@@ -6112,13 +5741,20 @@ ul {
           line-height: 1.33;
           letter-spacing: -0.2px;
           color: #858d9e;
-          font-family: font-r; }
+          font-family: font-r;
+          display: flex; }
           .notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow a {
             font-size: 12px;
             color: #5E6475;
             font-weight: 600;
             font-family: font-sb;
-            transition: all 0.2s; }
+            transition: all 0.2s;
+            white-space: nowrap;
+            max-width: 240px;
+            overflow: hidden;
+            display: inline-block;
+            text-overflow: ellipsis;
+            margin-left: 3px; }
             .notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow a:hover {
               color: #3570e6;
               text-decoration: underline; }
@@ -6840,201 +6476,282 @@ ul {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
-  .settings-container .setting-tabs-contant .tab__header {
-    border: 1px solid #e9ecf0;
-    border-right: 0;
-    border-left: 0;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    padding: 0 40px; }
-    .settings-container .setting-tabs-contant .tab__header p {
-      font-family: font-b;
-      font-size: 20px;
-      line-height: 1.4;
-      letter-spacing: -0.2px;
-      color: #252833; }
-  .settings-container .setting-tabs-contant .company__logo {
-    display: flex;
-    align-items: center;
-    margin-bottom: 41px; }
-    .settings-container .setting-tabs-contant .company__logo span {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      padding: 30px;
-      border: solid 1px #eceff1;
-      background-color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 16px; }
-      .settings-container .setting-tabs-contant .company__logo span img {
-        max-width: 100%;
-        max-height: 100%; }
-    .settings-container .setting-tabs-contant .company__logo .company__logo--change h3 {
-      font-family: font-b;
-      font-size: 14px;
-      line-height: 1.43;
-      letter-spacing: -0.2px;
-      color: #252833; }
-    .settings-container .setting-tabs-contant .company__logo .company__logo--change form {
-      display: inline-block; }
-      .settings-container .setting-tabs-contant .company__logo .company__logo--change form input {
-        width: 0.1px;
-        height: 0.1px;
-        opacity: 0;
-        overflow: hidden;
-        position: absolute;
-        z-index: -1; }
-      .settings-container .setting-tabs-contant .company__logo .company__logo--change form label {
-        display: flex;
-        width: 88px;
-        align-items: center; }
-  .settings-container .setting-tabs-contant .owner__info p {
-    opacity: 0.4;
-    font-family: font-r;
-    font-size: 16px;
-    line-height: 1.5;
-    letter-spacing: -0.2px;
-    color: #252833;
-    padding-right: 16px; }
-  .settings-container .setting-tabs-contant .proForm .admin_form button {
-    margin-right: 16px; }
-  .settings-container .setting-tabs-contant .proForm .admin__checkbox {
-    padding: 4px 16px; }
-    .settings-container .setting-tabs-contant .proForm .admin__checkbox .ui.checkbox label {
-      color: #3e4352; }
-  .settings-container .setting-tabs-contant .proForm .sub__admin .input__btns {
-    display: flex;
-    flex-wrap: wrap; }
-  .settings-container .setting-tabs-contant .proForm .sub__admin button {
-    background: transparent;
-    border: none;
-    cursor: pointer; }
-    .settings-container .setting-tabs-contant .proForm .sub__admin button span {
-      display: flex;
-      align-items: center;
-      font-family: font-b;
-      font-size: 14px;
-      line-height: 1.43;
-      letter-spacing: -0.2px;
-      text-align: center;
-      color: #858d9e; }
-      .settings-container .setting-tabs-contant .proForm .sub__admin button span img {
-        margin-left: 4px; }
-  .settings-container .setting-tabs-contant .proForm .add__new--admin button {
-    margin-top: 8px; }
-  .settings-container .setting-tabs-contant .proForm.flex__proform {
-    display: flex;
-    flex-flow: column; }
-    .settings-container .setting-tabs-contant .proForm.flex__proform .form-group .ui.selection.dropdown.singleDropDown {
-      max-width: 360px; }
-    .settings-container .setting-tabs-contant .proForm.flex__proform .datepickerContainer .form-group .ui.selection.dropdown.singleDropDown {
-      max-width: 192px; }
-  .settings-container .setting-tabs-contant .delete__admin {
-    margin-top: 68px;
-    padding: 0 16px; }
-    .settings-container .setting-tabs-contant .delete__admin button {
-      background: transparent;
-      border: none;
-      height: 40px;
-      font-family: font-b;
-      font-size: 13px;
-      line-height: 1.54;
-      letter-spacing: 0.4px;
-      color: #858d9e;
-      cursor: pointer; }
-  .settings-container .setting-tabs-contant .overview__info .overview__info--content {
-    display: flex;
-    align-items: center;
-    margin-bottom: 37px; }
-    .settings-container .setting-tabs-contant .overview__info .overview__info--content p {
-      font-family: font-b;
-      font-size: 16px;
-      line-height: 1.5;
-      letter-spacing: -0.2px;
-      color: #252833;
-      margin-left: 12px;
-      min-width: 70px; }
-    .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects {
-      display: flex;
-      align-items: center; }
-      .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        margin: 0 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: font-xb;
-        font-size: 18px;
-        line-height: 1.11;
-        letter-spacing: -0.7px;
-        color: #ffffff; }
-        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.pm {
-          background-color: #4382f9; }
-        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.hr {
-          background-color: #e74c3c; }
-        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.fm {
-          background-color: #39bd3d; }
-        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.number_span {
-          border: solid 1px #ccd2db;
-          background-color: rgba(67, 130, 249, 0);
-          font-family: font-b;
-          font-size: 24px;
-          line-height: 1.17;
-          letter-spacing: -0.5px;
-          color: #252833; }
-      .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.text_span {
-        font-family: font-opens;
-        font-size: 14px;
-        line-height: 1.71;
-        letter-spacing: -0.2px;
-        color: #3e4352; }
 
-.two__content--style {
-  display: flex;
-  padding-top: 26px;
-  padding-right: 40px;
-  padding-left: 68px;
-  padding-left: 40px;
+.settings-container .settings-tabs-items {
+  width: 256px;
+  background-color: #FAFBFC;
   position: relative;
-  padding-bottom: 32px;
-  margin-bottom: 20px; }
-  @media screen and (max-width: 1200px) {
-    .two__content--style {
-      padding-left: 0; } }
-  .two__content--style::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    right: 40px;
-    left: 68px;
-    height: 1px;
-    background-color: #e1e3e8; }
-  .two__content--style .left__column {
-    width: 234px; }
-    @media screen and (max-width: 1200px) {
-      .two__content--style .left__column {
-        width: 110px; } }
-    .two__content--style .left__column h2 {
-      font-family: font-r;
-      font-size: 20px;
-      line-height: 1.4;
-      letter-spacing: -0.2px;
-      color: #252833; }
-      @media screen and (max-width: 1200px) {
-        .two__content--style .left__column h2 {
-          font-size: 14px; } }
-  .two__content--style .right__column {
-    width: calc(100% - 234px); }
-    @media screen and (max-width: 1200px) {
-      .two__content--style .right__column {
-        width: calc(100% - 110px); } }
-  .two__content--style:last-of-type::after {
-    display: none; }
+  z-index: 1;
+  border-right: 1px solid #E9ECF0; }
+
+.settings-container .settings-tabs-items h3 {
+  height: 72px;
+  padding-left: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  text-align: center;
+  color: #252833;
+  font-family: 'Muli';
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 20px;
+  border-bottom: 1px solid #E9ECF0;
+  position: sticky;
+  top: 72px;
+  z-index: 11;
+  background: #FAFBFC; }
+
+.settings-container .settings-tabs-items ul {
+  position: sticky !important;
+  top: 144px; }
+
+.settings-container .settings-tabs-items ul li {
+  padding-right: 40px;
+  height: 52px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-flow: column;
+  flex-flow: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  border-top-left-radius: 86px;
+  border-bottom-left-radius: 86px; }
+
+.settings-container .settings-tabs-items ul li.title {
+  cursor: inherit;
+  padding-left: 0;
+  width: 100%; }
+
+.settings-container .settings-tabs-items ul li.title h4 {
+  margin: 25px 0;
+  padding-left: 40px;
+  font-family: 'Muli';
+  font-weight: 800;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 12px;
+  color: #a8b0bf;
+  line-height: 1.33;
+  letter-spacing: 1px;
+  text-transform: uppercase; }
+
+.settings-container .settings-tabs-items ul li.title::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 84%;
+  height: 1px;
+  background-color: #E9ECF0;
+  left: 24px; }
+
+.settings-container .settings-tabs-items ul li .subUlTitle {
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: #252833;
+  font-weight: bold;
+  font-family: 'Muli';
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 13px !important; }
+
+.settings-container .settings-tabs-items ul li .subUlsubT {
+  line-height: 1.33;
+  letter-spacing: -0.2px;
+  color: #A8B0BF;
+  font-size: 12px; }
+
+.settings-container .settings-tabs-items ul li .activeArrow {
+  position: absolute;
+  right: 15px;
+  display: none;
+  top: 40%; }
+
+.settings-container .settings-tabs-items ul li.active, .settings-container .settings-tabs-items ul li.active:hover {
+  background-color: #cce6ff; }
+
+.settings-container .settings-tabs-items ul li.active .subUlTitle {
+  color: #2557cc; }
+
+.settings-container .setting-tabs-contant {
+  width: calc(100% - 256px);
+  padding: 0 40px; }
+
+.settings-container .setting-tabs-contant .tab .minisettings-header {
+  height: 72px;
+  border-bottom: 1px solid #E9ECF0;
+  width: 100%;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0 46px 0 64px; }
+
+.settings-container .setting-tabs-contant .tab .minisettings-header .title {
+  flex: 1; }
+
+.settings-container .setting-tabs-contant .tab .minisettings-header .title h2 {
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  color: #252833;
+  font-family: 'Muli';
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 20px; }
+
+.settings-container .setting-tabs-contant .tab .minisettings-header .action {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: calc(100vh - 144px);
+  background-color: #ffffff; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs {
+  flex: 1.51;
+  border-right: 1px solid #E9ECF0;
+  min-width: 320px;
+  overflow: auto; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs::-webkit-scrollbar {
+  width: 0px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li {
+  padding: 0px 40px;
+  cursor: pointer; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li.active {
+  background-color: #f2f5f7; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div {
+  display: flex;
+  position: relative;
+  border-bottom: 1px solid #E9ECF0;
+  padding: 11px 0; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 16px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .name {
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: #252833;
+  font-family: 'Muli';
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 16px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .job-title {
+  line-height: 1.43;
+  letter-spacing: -0.2px;
+  color: #858d9e;
+  font-size: 14px;
+  font-family: 'Muli';
+  font-weight: normal;
+  margin-bottom: 4px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .status {
+  line-height: 1.33;
+  letter-spacing: -0.2px;
+  color: #3e4352;
+  font-family: 'Open Sans';
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 12px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .date {
+  line-height: 1.33;
+  letter-spacing: -0.2px;
+  color: #858d9e;
+  position: absolute;
+  right: 0;
+  bottom: 12px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content {
+  flex: 2; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab {
+  padding: 30px 46px 30px 56px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content {
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-bottom: 40px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-image {
+  width: 112px;
+  height: 112px;
+  margin-right: 16px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .name {
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: #252833;
+  font-family: 'Muli';
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 20px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .job-title {
+  line-height: 1.43;
+  letter-spacing: -0.2px;
+  color: #858d9e;
+  font-size: 14px;
+  font-family: font-r;
+  margin-bottom: 9px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .status {
+  line-height: 1.33;
+  letter-spacing: -0.2px;
+  color: #3e4352;
+  font-family: 'Open Sans';
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 12px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .date {
+  line-height: 1.33;
+  letter-spacing: -0.2px;
+  color: #858d9e;
+  position: absolute;
+  right: 0;
+  bottom: 12px; }
+
+.settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .bottom-content {
+  padding-top: 40px; }
 
 .admin__avatar {
   display: flex;
@@ -7162,12 +6879,6 @@ ul {
     float: left; }
 
 /* template document setting */
-.settings-container .settings-tabs-items ul li.active {
-  border-right: 6px solid #4382f9;
-  border-left: 0; }
-  .settings-container .settings-tabs-items ul li.active::after {
-    transform: rotate(180deg); }
-
 .mini-tabs-content .tab .bottom-content img.ui.wireframe.image {
   transform: rotateY(180deg); }
 
@@ -7264,14 +6975,10 @@ ul {
   border: 1px solid transparent;
   padding: 0 16px;
   cursor: pointer;
-  text-transform: lowercase;
+  text-transform: capitalize;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
   height: 36px;
   font-size: 14px; }
-
-/* .btn::first-letter,
-.button::first-letter {
-  text-transform: uppercase !important; } */
 
 /*Base Hover Press */
 .primaryBtn-2 {
@@ -9446,14 +9153,14 @@ ul {
   font-weight: bold;
   font-size: 20px;
   position: relative;
-  padding-left: 23px; }
+  padding-right: 23px; }
   .inputsStates:after {
     content: "";
     width: 20px;
     height: 20px;
     background-color: #252833;
     position: absolute;
-    right: -20px;
+    left: -20px;
     top: 0;
     -webkit-clip-path: polygon(0 0, 0% 100%, 98% 0);
     clip-path: polygon(0 0, 0% 100%, 98% 0); }
@@ -9463,7 +9170,7 @@ ul {
     height: 20px;
     background-color: #252833;
     position: absolute;
-    right: -20px;
+    left: -20px;
     bottom: 0;
     -webkit-clip-path: polygon(100% 100%, 0 100%, 0 0);
     clip-path: polygon(100% 100%, 0 100%, 0 0); }
@@ -9485,13 +9192,13 @@ ul {
       letter-spacing: -0.2px;
       color: #A8B0BF; }
     .proForm .form-group .ui.left input:focus {
-      border-top-left-radius: 0 !important;
-      border-bottom-left-radius: 0 !important;
-      border-left-color: transparent !important; }
-    .proForm .form-group .ui.right input:focus {
       border-top-right-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
       border-right-color: transparent !important; }
+    .proForm .form-group .ui.right input:focus {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+      border-left-color: transparent !important; }
   .proForm .formInputP {
     letter-spacing: -0.2px;
     color: #A8B0BF;
@@ -9520,7 +9227,7 @@ ul {
         font-size: 14px;
         line-height: 1.43;
         letter-spacing: -0.2px;
-        text-align: right;
+        text-align: left;
         color: #26344c; }
       .proForm .linebylineInput.sameLineInput .ui.input.inputDev {
         -webkit-border-radius: 4px;
@@ -9544,7 +9251,8 @@ ul {
     color: #3E4352;
     background-color: #ffffff;
     font-size: 14px;
-    text-align: right; }
+    text-align: right;
+    font-family: 'Muli'; }
     .proForm .labeledInput input:hover {
       border-color: #A8B0BF; }
     .proForm .labeledInput input:focus {
@@ -9563,8 +9271,8 @@ ul {
     align-items: center;
     justify-content: center;
     min-width: 88px;
-    padding-left: 12px;
-    padding-right: 7px;
+    padding-right: 12px;
+    padding-left: 7px;
     background-color: #fafbfc !important; }
   .proForm .labeledInput .label__text {
     display: flex;
@@ -9620,10 +9328,9 @@ ul {
     width: 40px;
     position: absolute; }
   .proForm .ui.input .svgInput {
-    padding-left: 35px; }
+    padding-right: 35px; }
   .proForm .ui.input.inputDev {
     position: relative;
-    padding-bottom: 5px;
     display: inline-block;
     transition: .5s ease;
     border-radius: 4px; }
@@ -9656,7 +9363,7 @@ ul {
     .proForm .ui.input.inputDev .inputsideNote {
       position: absolute;
       top: -9px;
-      right: 8px;
+      left: 8px;
       letter-spacing: -0.2px;
       color: #a8b0bf;
       font-family: font-opens;
@@ -9712,7 +9419,7 @@ ul {
     -ms-user-select: none;
     user-select: none; }
     .proForm .showPasswordArea .togglePW svg {
-      margin-right: 2px; }
+      margin-left: 2px; }
     .proForm .showPasswordArea .togglePW span {
       font-family: font-opens;
       font-weight: 400;
@@ -9735,16 +9442,16 @@ ul {
   .proForm .inputXmark {
     position: absolute;
     top: 0;
-    right: 5px;
+    left: 5px;
     height: 48px;
     display: flex;
     align-items: center; }
   .proForm .popUp {
     position: absolute;
     top: 0;
-    left: 100%;
+    right: 100%;
     display: none;
-    margin-left: 10px; }
+    margin-right: 10px; }
   .proForm .inputPassContainer {
     display: flex; }
     .proForm .inputPassContainer .inputDev {
@@ -10535,11 +10242,14 @@ ul {
   padding-top: 0; }
 
 .filter__warrper {
-  height: 124px;
+  min-height: 124px;
   border-radius: 2px;
   background-color: #fafbfc;
   padding-bottom: 31px;
-  padding-top: 16px; }
+  padding-top: 16px;
+  position: relative;
+  z-index: 100;
+  height: auto; }
 
 .filter__warrper .proForm {
   display: flex;
@@ -10552,7 +10262,7 @@ ul {
   margin: 0 4px; }
 
 .filter__warrper .proForm .linebylineInput label {
-  margin: 0;
+  margin: 0 !important;
   background: transparent; }
 
 .filter__warrper .proForm .linebylineInput .ui.input.inputDev input {
@@ -10571,7 +10281,10 @@ ul {
   width: 240px !important; }
 
 .filter__more .filter__more--btn {
-  font-family: Muli;
+  font-family: 'Muli';
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
   font-size: 12px;
   font-weight: bold;
   font-style: normal;
@@ -10590,15 +10303,14 @@ ul {
   display: flex;
   justify-content: flex-end;
   position: relative;
-  padding-right: 7px; }
+  padding-right: 7px;
+  margin-bottom: 10px; }
 
-/* .filter__more>* {
-    flex-basis: 50%;
-    display: flex;
-    justify-content: flex-end;
-} */
 .filter__more span {
-  font-family: Muli;
+  font-family: 'Muli';
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
   font-size: 11px;
   font-weight: bold;
   font-style: normal;
@@ -10618,27 +10330,8 @@ ul {
   margin-bottom: 5px;
   margin-left: 8px; }
 
-.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon {
-  width: 100%;
-  height: 36px;
-  border: none;
-  background-color: transparent;
-  position: absolute;
-  left: 0;
-  z-index: 9;
-  text-align: right; }
-
-.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon svg {
-  position: absolute;
-  right: 8px;
-  top: 11px;
-  background: #fff; }
-
 .filter__input-wrapper .linebylineInput .proForm.datepickerContainer {
   margin-top: 0; }
-
-.filter__warrper .linebylineInput input::placeholder {
-  opacity: 0.4; }
 
 /* filter component popUp */
 .filterModal {
@@ -10657,17 +10350,11 @@ ul {
   padding-bottom: 19px;
   position: relative; }
 
-/* .filterModal .header-filter::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 0.5px;
-    background: #ccd2db
-} */
 .filterModal .header-filter h2 {
-  font-family: Muli;
+  font-family: 'Muli';
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
   font-size: 28px;
   font-weight: bold;
   font-style: normal;
@@ -10679,7 +10366,10 @@ ul {
   margin-bottom: 10px; }
 
 .filterModal .header-filter span {
-  font-family: Muli;
+  font-family: 'Muli';
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
   font-size: 20px;
   font-weight: normal;
   font-style: normal;
@@ -10720,7 +10410,10 @@ ul {
   color: #3570e6;
   text-decoration: underline;
   height: auto;
-  font-family: Muli;
+  font-family: 'Muli';
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
   font-size: 14px;
   font-weight: bold;
   font-style: normal;
@@ -10736,7 +10429,28 @@ ul {
   right: 44px;
   bottom: 21px; }
 
-/* filter component popUp */
+.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon {
+  width: 100%;
+  height: 36px;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  left: 0;
+  z-index: 9;
+  text-align: right; }
+
+.linebylineInput .proForm.datepickerContainer .linebylineInput .inputDev .input-group-addon svg {
+  position: absolute;
+  right: 8px;
+  top: 11px;
+  background: #fff; }
+
+.filter__warrper .linebylineInput input::placeholder {
+  opacity: 0.4; }
+
+.filterModal .filter__warrper .filter__input-wrapper .linebylineInput {
+  margin-bottom: 20px !important; }
+
 /*Done*/
 .zero {
   margin: 0;
