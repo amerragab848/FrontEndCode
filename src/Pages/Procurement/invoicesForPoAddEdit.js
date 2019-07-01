@@ -43,34 +43,32 @@ const documentItemValidationSchema = Yup.object().shape({
 
     resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
 
-    unitPrice: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+    unitPrice:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['unitSelection'][currentLanguage]),
 
     unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
 
     itemType: Yup.string().required(Resources['itemTypeSelection'][currentLanguage]),
 
-    days: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    days:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
 })
 
 const validationDeductionSchema = Yup.object().shape({
     description: Yup.string().required(Resources['description'][currentLanguage]),
     value: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['requiredField'][currentLanguage])
-
-
 })
 
 const documentItemValidationSchemaEdit = Yup.object().shape({
 
     details: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
 
-    quantity: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+    quantity:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['quantityRequired'][currentLanguage]),
 
     resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
 
-    unitPrice: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+    unitPrice:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['unitSelection'][currentLanguage]),
 
     unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
