@@ -183,7 +183,7 @@ class RequestProposalAddEdit extends Component {
     }
     else {
       let doc = {
-        subject: "", id: 0, status: false, docDate: moment(),
+        subject: "", id: 0, status: true, docDate: moment(),
         projectId: this.state.projectId, arrange: 1, fromCompanyId: "",
         fromContactId: "", toCompanyId: "", toContactId: "", refDoc: "", message: ""
       };
