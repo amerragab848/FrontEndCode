@@ -42,6 +42,7 @@ let arrange = 0;
 const _ = require("lodash");
 
 class RequestProposalAddEdit extends Component {
+
   constructor(props) {
     super(props);
     const query = new URLSearchParams(this.props.location.search);
@@ -111,21 +112,16 @@ class RequestProposalAddEdit extends Component {
     }
   }
 
-  componentDidMount() {
-    var links = document.querySelectorAll(
-      ".noTabs__document .doc-container .linebylineInput"
-    );
+  componentDidMount = () => {
+    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
     for (var i = 0; i < links.length; i++) {
-      if ((i + 1) % 2 == 0) {
-        links[i].classList.add("even");
-      } else {
-        links[i].classList.add("odd");
-      }
+      if ((i + 1) % 2 == 0) { links[i].classList.add("even"); }
+      else { links[i].classList.add("odd"); }
     }
     this.checkDocumentIsView();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.document.id) {
       nextProps.document.docDate = nextProps.document.docDate === null ? moment().format('YYYY-MM-DD') : moment(nextProps.document.docDate).format('YYYY-MM-DD')
       this.setState({
@@ -142,14 +138,12 @@ class RequestProposalAddEdit extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     this.props.actions.clearCashDocument();
-    this.setState({
-      docId: 0
-    });
+    this.setState({ docId: 0 });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate = (prevProps) => {
     // Typical usage (don't forget to compare props):
     if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
       this.checkDocumentIsView();
@@ -183,170 +177,102 @@ class RequestProposalAddEdit extends Component {
 
   componentWillMount() {
     if (this.state.docId > 0) {
-
       let url = "GetRequestProposalById?id=" + this.state.docId;
       this.props.actions.documentForEdit(url, this.state.docTypeId, "procurement");
-      this.setState({
-        isEdit: true
-      });
-    } else {
-      let letter = {
-        subject: "",
-        id: 0,
-        projectId: this.state.projectId,
-        arrange: 1,
-        fromCompanyId: "",
-        fromContactId: "",
-        toCompanyId: "",
-        toContactId: "",
-        docDate: moment(),
-        status: false,
-        refDoc: "",
-        message: ""
+      this.setState({ isEdit: true });
+    }
+    else {
+      let doc = {
+        subject: "", id: 0, status: false, docDate: moment(),
+        projectId: this.state.projectId, arrange: 1, fromCompanyId: "",
+        fromContactId: "", toCompanyId: "", toContactId: "", refDoc: "", message: ""
       };
-      this.setState({ document: letter });
+      this.setState({ document: doc });
       this.fillDropDowns(false);
       this.props.actions.documentForAdding();
     }
   }
 
   fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
-
     let action = url + "?" + param + "=" + value;
-
     dataservice.GetDataList(action, "contactName", "id").then(result => {
       if (this.props.changeStatus === true) {
         let toSubField = this.state.document[subField];
         let targetFieldSelected = _.find(result, function (i) {
           return i.value == toSubField;
         });
-        console.log(targetFieldSelected);
-        this.setState({
-          [subSelectedValue]: targetFieldSelected,
-          [subDatasource]: result
-        });
+        this.setState({ [subSelectedValue]: targetFieldSelected, [subDatasource]: result });
       }
     });
   }
 
   fillDropDowns(isEdit) {
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId").then(result => {
 
+    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId").then(result => {
       if (isEdit) {
         let companyId = this.props.document.fromCompanyId;
         if (companyId) {
-          this.setState({
-            selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
-          });
+          this.setState({ selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId } });
           this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "fromContactId", "selectedFromContact", "fromContacts");
         }
-
         let toCompanyId = this.props.document.toCompanyId;
-
         if (toCompanyId) {
-          this.setState({
-            selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
-          });
-
+          this.setState({ selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId } });
           this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts");
         }
       }
-      this.setState({
-        companies: [...result]
-      });
+      this.setState({ companies: [...result] });
     });
   }
 
   onChangeMessage = value => {
     if (value != null) {
-
       this.setState({ message: value });
-
       let original_document = { ...this.state.document };
-
       let updated_document = {};
-
       updated_document.message = value;
-
       updated_document = Object.assign(original_document, updated_document);
-
-      this.setState({
-        document: updated_document
-      });
+      this.setState({ document: updated_document });
     }
-  };
+  }
 
   handleChange(e, field) {
-
     let original_document = { ...this.state.document };
-
     let updated_document = {};
-
     updated_document[field] = e.target.value;
-
     updated_document = Object.assign(original_document, updated_document);
-
-    this.setState({
-      document: updated_document
-    });
+    this.setState({ document: updated_document });
   }
 
   handleChangeDate(e, field) {
     let original_document = { ...this.state.document };
-
     let updated_document = {};
-
     updated_document[field] = e;
-
     updated_document = Object.assign(original_document, updated_document);
-
-    this.setState({
-      document: updated_document
-    });
+    this.setState({ document: updated_document });
   }
 
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
-
     if (event == null) return;
-
     let original_document = { ...this.state.document };
-
     let updated_document = {};
-
     updated_document[field] = event.value;
-
     updated_document = Object.assign(original_document, updated_document);
-
-    this.setState({
-      document: updated_document,
-      [selectedValue]: event
-    });
-
+    this.setState({ document: updated_document, [selectedValue]: event });
     if (isSubscrib) {
       let action = url + "?" + param + "=" + event.value;
       dataservice.GetDataList(action, "contactName", "id").then(result => {
-        this.setState({
-          [targetState]: result
-        });
+        this.setState({ [targetState]: result });
       });
     }
   }
 
   editProposal(event) {
-    this.setState({
-      isLoading: true
-    });
-
+    this.setState({ isLoading: true });
     let saveDocument = { ...this.state.document };
-
     saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-
     dataservice.addObject("EditRequestProposalById", saveDocument).then(result => {
-
-      this.setState({
-        isLoading: false
-      });
-
+      this.setState({ isLoading: false });
       toast.success(Resources["operationSuccess"][currentLanguage]);
       if (this.state.isApproveMode === false) {
         this.props.history.push(
@@ -357,64 +283,39 @@ class RequestProposalAddEdit extends Component {
   }
 
   saveProposal(event) {
-    this.setState({
-      isLoading: true
-    });
+    this.setState({ isLoading: true });
     let saveDocument = { ...this.state.document };
-
     saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-
     dataservice.addObject("AddRequestProposal", saveDocument).then(result => {
-      this.setState({
-        docId: result.id,
-        isLoading: false
-      });
+      this.setState({ docId: result.id, isLoading: false });
       toast.success(Resources["operationSuccess"][currentLanguage]);
     });
   }
 
   saveAndExit(event) {
-    this.props.history.push({
-      pathname: "/RequestProposal/" + this.state.projectId
-    });
+    this.props.history.push({ pathname: "/RequestProposal/" + this.state.projectId });
   }
 
   showBtnsSaving() {
     let btn = null;
-
     if (this.state.docId === 0) {
-      btn = (
-        <button className="primaryBtn-1 btn meduimBtn" type="submit">
-          {Resources.save[currentLanguage]}
-        </button>
-      );
+      btn = <button className="primaryBtn-1 btn meduimBtn" type="submit"> {Resources.save[currentLanguage]}</button>
     } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-      btn = (
-        <button className="primaryBtn-1 btn mediumBtn" type="submit">
-          {Resources.saveAndExit[currentLanguage]}
-        </button>
-      );
+      btn = <button className="primaryBtn-1 btn mediumBtn" type="submit">{Resources.saveAndExit[currentLanguage]}</button>
     }
     return btn;
   }
 
   viewAttachments() {
     return this.state.docId > 0 ? (
-      Config.IsAllow(3288) === true ? (
-        <ViewAttachment
-          docTypeId={this.state.docTypeId}
-          docId={this.state.docId}
-          projectId={this.state.projectId}
-          deleteAttachments={830}
-        />
-      ) : null
+      Config.IsAllow(3288) === true ?
+        (<ViewAttachment docTypeId={this.state.docTypeId}
+          docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={830} />) : null
     ) : null;
   }
 
   handleShowAction = item => {
-    if (item.title == "sendToWorkFlow") {
-      this.props.actions.SendingWorkFlow(true);
-    }
+    if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true) }
     if (item.value != "0") {
       this.props.actions.showOptionPanel(false);
       this.setState({
@@ -427,6 +328,7 @@ class RequestProposalAddEdit extends Component {
   };
 
   render() {
+
     let actions = [
       {
         title: "distributionList",
