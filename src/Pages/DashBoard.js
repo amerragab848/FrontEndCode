@@ -27,6 +27,7 @@ class DashBoard extends Component {
   }
 
 }
+
 function mapStateToProps(state, ownProps) {
   return {
     showLeftMenu: state.communication.showLeftMenu,

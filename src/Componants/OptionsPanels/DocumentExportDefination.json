@@ -2173,5 +2173,137 @@
             "ContactName",
             "description"
         ]
+    },
+    "9": {
+        "fields": [
+            {
+                "name": "number",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "description",
+                "value": "details",
+                "type": "S"
+            },
+            {
+                "name": "resourceCode",
+                "value": "resourceCode",
+                "type": "S"
+            },
+            {
+                "name": "boqType",
+                "value": "boqType",
+                "type": "S"
+            },
+            {
+                "name": "boqTypeChild",
+                "value": "boqTypeChild",
+                "type": "S"
+            },
+            {
+                "name": "boqSubType",
+                "value": "boqSubType",
+                "type": "S"
+            },
+            {
+                "name": "itemCode",
+                "value": "itemCode",
+                "type": "S"
+            },
+            {
+                "name": "unitPrice",
+                "value": "unitPrice",
+                "type": "S"
+            },
+            {
+                "name": "originalQuantity",
+                "value": "originalQuantity",
+                "type": "S"
+            },
+            {
+                "name": "revQuantity",
+                "value": "revisedQuantity",
+                "type": "S"
+            },
+            {
+                "name": "total",
+                "value": "total",
+                "type": "S"
+            } 
+        ],
+        "columnsItems": [ "details", "boqType", "boqTypeChild", "boqSubType", "originalQuantity", "quantity", "unit", "originalUnitPrice", "total", "resourceCode", "itemCode", "specsSectionName", "reviceQuantity"],
+        "friendlyNames": ["description","boqType","boqTypeChild","boqSubType","originalQuantity","remainingQuantity","unit","unitPrice","total","resourceCode","itemCode","specsSection","revQuantity"]
+    },
+     "88": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "requiredDateLog",
+                "value": "requiredDate",
+                "type": "D"
+            },
+            {
+                "name": "CompanyName",
+                "value": "companyName",
+                "type": "S"
+            },
+            {
+                "name": "area",
+                "value": "area",
+                "type": "S"
+            },
+            {
+                "name": "location",
+                "value": "location",
+                "type": "S"
+            },
+            {
+                "name": "disciplineTitle",
+                "value": "disciplineName",
+                "type": "S"
+            },
+            {
+                "name": "revQuantity",
+                "value": "quantityRevisedStatus",
+                "type": "S"
+            },
+            {
+                "name": "buildingNumber",
+                "value": "buildingNo",
+                "type": "S"
+            } ,
+            {
+                "name": "apartmentNumber",
+                "value": "apartmentNo",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            } 
+        ],
+        "columnsItems": [ "arrange", "details", "quantity", "unit", "days", "resourceCode", "stock"],
+        "friendlyNames": ["numberAbb","description","quantity","unit","days","resourceCode","stock"]
     }
 }

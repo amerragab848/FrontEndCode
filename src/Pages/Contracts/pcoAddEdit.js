@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"; 
+import React, { Component, Fragment } from "react";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -143,7 +143,8 @@ class pcoAddEdit extends Component {
             ThirdStep: false,
             SecondStepComplate: false,
             ThirdStepComplate: false,
-
+            pageSize: 500,
+            pageNumber: 0,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
@@ -159,19 +160,16 @@ class pcoAddEdit extends Component {
             selectedCVR: { label: Resources.cvr[currentLanguage], value: "0" },
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedApprovalStatusId: { label: Resources.approvalStatus[currentLanguage], value: "0" },
-
             selectedUnit: { label: Resources.unit[currentLanguage], value: "0" },
             selectedBoqType: { label: Resources.boqType[currentLanguage], value: "0" },
             selectedBoqTypeChild: { label: Resources.boqType[currentLanguage], value: "0" },
             selectedBoqSubType: { label: Resources.boqType[currentLanguage], value: "0" },
             selectedEquipmenttypeId: { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
-
             docId: docId,
             docTypeId: 65,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
-
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             voItem: {
                 description: '',
@@ -187,7 +185,6 @@ class pcoAddEdit extends Component {
                 equipmenttypeId: '',
                 dueBack: moment()
             },
-
             permission: [{ name: 'sendByEmail', code: 154 }, { name: 'sendByInbox', code: 153 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 976 },
             { name: 'createTransmittal', code: 3062 }, { name: 'sendToWorkFlow', code: 724 },
@@ -273,7 +270,7 @@ class pcoAddEdit extends Component {
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsPcoForEdit?id=" + this.state.docId, this.state.docTypeId, 'pco');
 
-            dataservice.GetDataGrid("GetContractsPcoItemsByProposalId?proposalId=" + this.state.docId).then(result => {
+            dataservice.GetDataGrid("GetContractsPcoItemsByProposalIdUsingPaging?proposalId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                 let data = { items: result };
                 this.props.actions.ExportingData(data);
                 this.setState({
@@ -908,6 +905,62 @@ class pcoAddEdit extends Component {
         }
     }
 
+
+    GetPrevoiusData() {
+
+        let pageNumber = this.state.pageNumber - 1;
+
+        if (pageNumber >= 0) {
+            this.setState({
+                isLoading: true,
+                pageNumber: pageNumber
+            });
+
+            let oldRows = [...this.state.voItems];
+
+            dataservice.GetDataGrid("GetContractsPcoItemsByProposalIdUsingPaging?proposalId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+
+                const newRows = [...this.state.voItems, ...result];
+
+                this.setState({
+                    voItems: newRows,
+                    isLoading: false
+                });
+            }).catch(ex => {
+                this.setState({
+                    voItems: oldRows,
+                    isLoading: false
+                });
+            });
+        }
+    }
+
+    GetNextData() {
+        let pageNumber = this.state.pageNumber + 1;
+
+        this.setState({
+            isLoading: true,
+            pageNumber: pageNumber
+        });
+
+        let oldRows = [...this.state.voItems];
+
+        dataservice.GetDataGrid("GetContractsPcoItemsByProposalIdUsingPaging?proposalId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+
+            const newRows = [...this.state.voItems, ...result];
+
+            this.setState({
+                voItems: newRows,
+                isLoading: false
+            });
+        }).catch(ex => {
+            this.setState({
+                voItems: oldRows,
+                isLoading: false
+            });
+        });
+    }
+
     render() {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
@@ -1215,19 +1268,22 @@ class pcoAddEdit extends Component {
                                         {this.addVariationDraw()}
 
                                         <div className="doc-pre-cycle">
-                                            <header>
-                                                <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
-                                            </header>
-                                            <ReactTable
-                                                ref={(r) => {
-                                                    this.selectTable = r;
-                                                }}
-                                                data={this.state.voItems}
-                                                columns={columns}
-                                                defaultPageSize={10}
-                                                minRows={2}
-                                                noDataText={Resources['noData'][currentLanguage]}
-                                            />
+                                            <div class="submittalFilter">
+                                                <div class="subFilter">
+                                                    <h3 class="zero"> {Resources['AddedItems'][currentLanguage]}</h3>
+                                                    <span>{this.state.voItems.length}</span>
+                                                </div>
+                                                <div className="rowsPaginations">
+                                                    <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
+                                                        <i className="angle left icon" />
+                                                    </button>
+                                                    <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
+                                                        <i className="angle right icon" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <ReactTable ref={(r) => { this.selectTable = r; }} data={this.state.voItems}
+                                                columns={columns} defaultPageSize={10} minRows={2} noDataText={Resources['noData'][currentLanguage]} />
                                         </div>
                                         <div className="doc-pre-cycle">
                                             <div className="slider-Btns">
