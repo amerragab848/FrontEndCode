@@ -18253,7 +18253,7 @@
       {
         "field": "subject",
         "friendlyName": "subject",
-        "minWidth": 200,
+        "minWidth": 250,
         "width": "20%",
         "dataType": "string",
         "isDate": false,
@@ -18272,35 +18272,11 @@
         "cellTemplate": "",
         "isCustom": true,
         "exportDataType": "s"
-      },
-      {
-        "field": "fromCompanyName",
-        "friendlyName": "fromCompany",
-        "minWidth": 150,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "cellTemplate": "",
-        "isCustom": true,
-        "exportDataType": "s"
-      },
-      {
-        "field": "fromContactName",
-        "friendlyName": "fromContact",
-        "minWidth": 150,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "cellTemplate": "",
-        "isCustom": true,
-        "exportDataType": "s"
-      },
+      }, 
       {
         "field": "toCompanyName",
         "friendlyName": "responsibleCompanyName",
-        "minWidth": 150,
+        "minWidth": 180,
         "width": "15%",
         "dataType": "string",
         "isDate": false,
@@ -18312,7 +18288,7 @@
       {
         "field": "toContactName",
         "friendlyName": "responsibleContactName",
-        "minWidth": 150,
+        "minWidth": 180,
         "width": "15%",
         "dataType": "string",
         "isDate": false,
@@ -18324,7 +18300,7 @@
       {
         "field": "docDate",
         "friendlyName": "docDate",
-        "minWidth": 85,
+        "minWidth": 120,
         "width": "15%",
         "dataType": "date",
         "isDate": true,
@@ -18336,7 +18312,7 @@
       {
         "field": "requiredDate",
         "friendlyName": "requiredDate",
-        "minWidth": 85,
+        "minWidth": 120,
         "width": "15%",
         "dataType": "date",
         "isDate": true,
@@ -18348,7 +18324,7 @@
       {
         "field": "emv",
         "friendlyName": "EMV",
-        "minWidth": 85,
+        "minWidth": 100,
         "width": "15%",
         "dataType": "string",
         "isDate": true,
@@ -18360,7 +18336,7 @@
       {
         "field": "riskRanking",
         "friendlyName": "riskRanking10",
-        "minWidth": 85,
+        "minWidth": 100,
         "width": "15%",
         "dataType": "string",
         "isDate": true,
