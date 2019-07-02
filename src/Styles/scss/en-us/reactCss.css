@@ -4401,7 +4401,7 @@ button.companies_icon {
 .Risk__input {
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-end;
+    align-items: center;
     margin: 30px 0
 }
 
@@ -4420,6 +4420,7 @@ line.horizontal-grid-line {
   stroke-width: 1;
   stroke-dasharray: 4,4;
 }
+
 .bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .horizontal-grid-line, .bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .vertical-grid-line {
   stroke: #dfe2e6;
   shape-rendering: crispEdges;
@@ -4435,9 +4436,11 @@ line.horizontal-grid-line {
 .donut-text {
   display: none;
 }
+
 #legenbd__teext {
   overflow: hidden;
 }
+
 #legenbd__teext .chartName {
   font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
   font-size: 16px;
@@ -4446,6 +4449,7 @@ line.horizontal-grid-line {
   color: #39bd3d;
   display: block;
 }
+
 #legenbd__teext .percentage {
   font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
   font-size: 56px;
@@ -4454,6 +4458,7 @@ line.horizontal-grid-line {
   color: #252833;
   display: block;
 }
+
 #legenbd__teext .totalAmount {
   font-family: 'Muli';   font-weight: bold; font-style: normal; font-stretch: normal;;
   font-size: 16px;
@@ -4462,19 +4467,24 @@ line.horizontal-grid-line {
   color: #252833;
   display: block;
 }
+
 .group__charts .y-axis-group path.domain {
   display: block;
   stroke: #ccd2db;
 }
+
 .y-axis-group path.domain {
   display: none;
 }
+
 .y-axis-group .tick line {
   stroke: none
 }
+
 .x-axis-group path.domain {
   stroke: #ccd2db;
 }
+
 .doc-pre-cycle .linebylineInput.pre-radioBtn{
   display:flex;
   justify-content: space-between;
@@ -4489,8 +4499,8 @@ line.horizontal-grid-line {
 
 .doc-pre-cycle .linebylineInput.pre-radioBtn>div {
     width: 50%
-
 }
+
 .chart-group .bar {
   max-width: 46px !important;
 }
@@ -5983,12 +5993,8 @@ div#markup-panel {
     flex-flow: row;
  }
 
- .letterFullWidth > .document-fields {
+ .letterFullWidth > .document-fields, .datepickerContainer.proForm .letterFullWidth .ui.input.inputDev  {
      width: 100%
- }
-
- .datepickerContainer.proForm .letterFullWidth .ui.input.inputDev {
-     width: 100%;
  }
 
 .linebylineInput__checkbox {

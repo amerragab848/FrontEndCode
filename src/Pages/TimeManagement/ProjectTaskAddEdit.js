@@ -28,8 +28,8 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 
 const validationSchema = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
-  fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
-  bicContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true)
+   fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]),
+   bicContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage])
 });
 
 const validationSchemaForCycle = Yup.object().shape({
@@ -452,12 +452,9 @@ class ProjectTaskAddEdit extends Component {
   }
 
   editTask(event) {
+    this.setState({isLoading: true});
 
-    this.setState({
-      isLoading: true
-    });
-
-    let saveDocument = this.state.document;
+    let saveDocument = { ...this.state.document };
 
     saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
@@ -668,7 +665,9 @@ class ProjectTaskAddEdit extends Component {
               <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
                   <div className="document-fields">
-                    <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema}
+                    <Formik initialValues={{ ...this.state.document }} 
+                    validationSchema={validationSchema}
+                    enableReinitialize={true}
                       onSubmit={values => {
                         if (this.props.changeStatus === true && this.state.docId > 0) {
                           this.editTask();
@@ -720,10 +719,10 @@ class ProjectTaskAddEdit extends Component {
                             </div>
                           </div>
                           <div className="proForm datepickerContainer">
-
                             <div className="linebylineInput">
                               <div className="inputDev ui input input-group date NormalInputDate">
-                                <ModernDatepicker startDate={this.state.document.docDate} handleChange={e => this.handleChangeDate(e, "docDate")} title='docDate' />
+                                <ModernDatepicker startDate={this.state.document.docDate} title='docDate'
+                                  handleChange={e => this.handleChangeDate(e, "docDate")} />
                               </div>
                             </div>
 
@@ -784,13 +783,15 @@ class ProjectTaskAddEdit extends Component {
 
                             <div className="linebylineInput">
                               <div className="inputDev ui input input-group date NormalInputDate">
-                                <ModernDatepicker startDate={this.state.document.startDate} handleChange={e => this.handleChangeDate(e, "startDate")} title='startDate' />
+                                <ModernDatepicker title='startDate' startDate={this.state.document.startDate}
+                                  handleChange={e => this.handleChangeDate(e, "startDate")}
+                                />
                               </div>
                             </div>
-
                             <div className="linebylineInput">
                               <div className="inputDev ui input input-group date NormalInputDate">
-                                <ModernDatepicker startDate={this.state.document.finishDate} handleChange={e => this.handleChangeDate(e, "finishDate")} title='finishDate' />
+                                <ModernDatepicker title='finishDate' startDate={this.state.document.finishDate}
+                                  handleChange={e => this.handleChangeDate(e, "finishDate")} />
                               </div>
                             </div>
 
@@ -865,7 +866,7 @@ class ProjectTaskAddEdit extends Component {
                                     <button className="primaryBtn-1 btn " onClick={e => this.handleShowAction(actions[2])}>
                                       {Resources.approvalModalApprove[currentLanguage]}
                                     </button>
-                                    <button className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[3])}>
+                                    <button  className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[3])}>
                                       {Resources.approvalModalReject[currentLanguage]}
                                     </button>
                                   </div>

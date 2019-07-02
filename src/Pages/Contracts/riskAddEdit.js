@@ -18,7 +18,7 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
-  
+
 import * as communicationActions from '../../store/actions/communication';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
@@ -70,7 +70,7 @@ let perviousRoute = '';
 let arrange = 0;
 
 const _ = require('lodash');
- 
+
 class riskAddEdit extends Component {
 
     constructor(props) {
@@ -108,7 +108,7 @@ class riskAddEdit extends Component {
             statusNumbers: true,
             consequenceData: [],
             consequenceDataPost: [],
-            currency:[],
+            currency: [],
             updateConsequence: false,
             FirstStep: true,
             SecondStep: false,
@@ -203,10 +203,13 @@ class riskAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
+
         this.checkDocumentIsView();
-        dataservice.GetDataList('GetAllCurrencyRatio','currencyName','id').then(result=>{
-            this.setState({currency:result})
+
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=currency", 'title', 'id').then(result => {
+            this.setState({ currency: result })
         })
+
     };
 
     componentWillUnmount() {
@@ -488,13 +491,6 @@ class riskAddEdit extends Component {
     }
 
     handleChangeStatusNumbers(value) {
-        // let statusNumbers = this.state.statusNumbers
-        // let riskEMV = 0;
-        // if (e.targetState.value) {
-        //     // riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)));
-        // } else {
-        //     // riskEMV = (Math.round(Math.pow(10, riskRanking), (-riskRanking + 1)) / 1000);
-        // }
         this.setState({
             statusNumbers: value
         });
@@ -763,7 +759,7 @@ class riskAddEdit extends Component {
                 addDocStepComplate: false,
 
             })
-        } 
+        }
         else {
             this.props.history.push({
                 pathname: "/Risk/" + projectId
@@ -2014,7 +2010,7 @@ class riskAddEdit extends Component {
                 <div className="linebylineInput valid-input">
                     <Dropdown title="currencyRates" data={this.state.currency}
                         selectedValue={this.state.selectedCurrency}
-                        handleChange={event => this.handleChangeDropDown(event, 'priorityId', false, '', '', '', 'selectedCurrency')} />
+                        handleChange={event => this.handleChangeDropDown(event, 'currencyId', false, '', '', '', 'selectedCurrency')} />
                 </div>
             </div>
         return (
@@ -2196,7 +2192,7 @@ class riskAddEdit extends Component {
                                                         </div>
                                                     </Form>
                                                 )}
-                                            </Formik> 
+                                            </Formik>
                                         </div>
                                         <div className="doc-pre-cycle letterFullWidth">
                                             <div>
@@ -2284,7 +2280,7 @@ class riskAddEdit extends Component {
                                                                 <h2 className="zero">{Resources['riskAnalysis'][currentLanguage]}</h2>
                                                             </header>
 
-                                                            <div className="Risk__input">
+                                                            <div className="Risk__input proForm">
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{'Total Of (Total Mitigation Cost + Residual Risk)'}</label>
                                                                     <div className='ui input inputDev '>
@@ -2304,7 +2300,7 @@ class riskAddEdit extends Component {
                                                                             className="form-control" name="preMedigationCostEMV"
                                                                             placeholder={Resources['totalRESIDUALRisk'][currentLanguage]} />
                                                                     </div>
-                                                                </div>
+                                                                </div> 
                                                                 <div className="ui left pointing label labelWithArrowBorder basic">
                                                                     <span>{this.state.totalResidualRisk > this.state.totalPretRiskEmv ? 'Cost Effective' : 'Not Cost Effective'}</span>
                                                                 </div>
@@ -2368,16 +2364,7 @@ class riskAddEdit extends Component {
 
                                     <div
                                         onClick={this.StepFourLink}
-                                        data-id="step4"
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.FivethStepComplate
-                                                ? "active"
-                                                : this.state.FourthStepComplate
-                                                    ? "current__step"
-                                                    : "")
-                                        }
-                                    >
+                                        data-id="step4" className={"step-slider-item " + (this.state.FivethStepComplate ? "active" : this.state.FourthStepComplate ? "current__step" : "")}>
                                         <div className="steps-timeline">
                                             <span>4</span>
                                         </div>

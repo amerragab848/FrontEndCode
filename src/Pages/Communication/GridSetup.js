@@ -44,13 +44,6 @@ class GridSetup extends Component {
 
   componentWillMount() {
     let state = {};
-
-    // this.props.columns.map((column, index) => {
-    //   if (column.type === "date") {
-    //     state[index + "-column"] = moment().format("DD/MM/YYYY");
-    //   }
-    // });
-
     let ColumnsHideShow = this.props.columns
     for (var i in ColumnsHideShow) {
       ColumnsHideShow[i].hidden = false;
@@ -234,16 +227,35 @@ class GridSetup extends Component {
     }
   };
 
-  onRowExpandToggle({ columnGroupName, name, shouldExpand }) {
-    let expandedRows = Object.assign({}, this.state.expandedRows);
-    expandedRows[columnGroupName] = Object.assign(
-      {},
-      expandedRows[columnGroupName]
-    );
-    expandedRows[columnGroupName][name] = { isExpanded: shouldExpand };
-    this.setState({ expandedRows: expandedRows });
-  }
+  onRowExpandToggle = ({ columnGroupName, name, shouldExpand }) => {
+    this.setState({
+      Loading: true
+    })
 
+    let expandedRows = Object.assign({}, this.state.expandedRows);
+    expandedRows[columnGroupName] = Object.assign({}, expandedRows[columnGroupName]);
+    expandedRows[name] = { name: name };
+    expandedRows[columnGroupName][name] = { isExpanded: shouldExpand };
+    this.setState({
+      expandedRows: expandedRows,
+      Loading: false
+    });
+  };
+
+  onRowExpandClick = ({ columnGroupName, name, shouldExpand }) => {
+    this.setState({
+      Loading: true
+    })
+
+    let expandedRows = Object.assign({}, this.state.expandedRows);
+    expandedRows[columnGroupName] = Object.assign({}, expandedRows[columnGroupName]);
+    expandedRows[name] = { name: name };
+    expandedRows[columnGroupName][name] = { isExpanded: shouldExpand };
+    this.setState({
+      expandedRows: expandedRows,
+      Loading: false
+    });
+  };
   onRowClick = (index, value, column) => {
     if (value) {
       if (this.props.onRowClick != undefined) {
@@ -279,6 +291,7 @@ class GridSetup extends Component {
 
     });
     document.getElementById('empty__div--scroll').style.width = document.getElementById('scrollWidthDiv').style.width;
+
     document.getElementById('bottom__scroll').querySelector('.react-grid-Canvas').addEventListener('scroll', function () {
       if (document.getElementById('top__scroll') != null) {
         document.getElementById('top__scroll').scrollLeft = this.scrollLeft;
@@ -287,8 +300,6 @@ class GridSetup extends Component {
   }
 
   onOrderColumn = (source, target) => {
-    //console.log(source, target);
-
     const stateCopy = Object.assign({}, this.state);
     const columnSourceIndex = this.state.columns.findIndex(i => i.key === source);
 
@@ -406,12 +417,7 @@ class GridSetup extends Component {
     return (
       <Fragment>
         <div
-          className={
-            this.state.minimizeClick
-              ? "minimizeRelative miniRows"
-              : "minimizeRelative"
-          }
-        >
+          className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
           <div className="minimizeSpan">
             <div className="V-tableSize" onClick={this.openModalColumn}>
               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
@@ -430,60 +436,65 @@ class GridSetup extends Component {
               </div>
             </div>
             <div id="bottom__scroll">
-            {this.state.Loading === false ?
-              <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
+              {this.state.Loading === false ?
+                <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
 
-                <ReactDataGrid
-                  rowKey="id"
-                  minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
-                  height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
-                  columns={this.state.columns}
+                  <ReactDataGrid
+                    rowKey="id"
+                    minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
+                    height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
+                    columns={this.state.columns}
 
-                  rowGetter={i => groupedRows[i] != null ? groupedRows[i] : ''}
-                  rowsCount={groupedRows != undefined ? groupedRows.length : 1}
+                    rowGetter={i => groupedRows[i] != null ? groupedRows[i] : ''}
+                    rowsCount={groupedRows != undefined ? groupedRows.length : 1}
 
-                  enableCellSelect={true}
-                  onGridRowsUpdated={this.onGridRowsUpdated}
-                  onCellSelected={this.onCellSelected}
-                  onColumnResize={(idx, width, event) => {
-                    this.scrolllll();
-                    //console.log(this.state.columns[idx-1]);
-                    // console.log(`Column ${idx} has been resized to ${width}`);
-                  }}
-                  onGridSort={(sortColumn, sortDirection) =>
-                    this.setState({
-                      rows: this.sortRows(this.state.rows, sortColumn, sortDirection)
-                    })
-                  }
-                  enableDragAndDrop={true}
-                  toolbar={
-                    <CustomToolbar
-                      groupBy={this.state.groupBy}
-                      onColumnGroupAdded={columnKey =>
-                        this.setState({ groupBy: this.groupColumn(columnKey) })
-                      }
-                      onColumnGroupDeleted={columnKey =>
-                        this.setState({ groupBy: this.ungroupColumn(columnKey) })
-                      }
-                    />
-                  }
-                  rowSelection={{
-                    showCheckbox: this.props.showCheckbox,
-                    defaultChecked: false,
-                    enableShiftSelect: true,
-                    onRowsSelected: this.onRowsSelected,
-                    onRowsDeselected: this.onRowsDeselected,
-                    enableRowSelect: 'single',
-                    selectBy: {
-                      indexes: this.state.selectedIndexes
+                    //onRowExpandToggle={this.onRowExpandToggle}
+                    //expandedRows={this.expandedRows}
+                    onRowExpandClick={this.onRowExpandClick}
+                    enableCellSelect={true}
+                    onGridRowsUpdated={this.onGridRowsUpdated}
+                    onCellSelected={this.onCellSelected}
+                    
+                    onColumnResize={(idx, width, event) => {
+                      this.scrolllll();
+                      //console.log(this.state.columns[idx-1]);
+                      // console.log(`Column ${idx} has been resized to ${width}`);
+                    }}
+                    onGridSort={(sortColumn, sortDirection) =>
+                      this.setState({
+                        rows: this.sortRows(this.state.rows, sortColumn, sortDirection)
+                      })
                     }
-                  }}
+                    enableDragAndDrop={true}
+                    toolbar={
+                      <CustomToolbar
+                        groupBy={this.state.groupBy}
+                        onColumnGroupAdded={columnKey =>
+                          this.setState({ groupBy: this.groupColumn(columnKey) })
+                        }
+                        onColumnGroupDeleted={columnKey =>
+                          this.setState({ groupBy: this.ungroupColumn(columnKey) })
+                        }
+                      />
+                    }
+                    rowSelection={{
+                      showCheckbox: this.props.showCheckbox,
+                      defaultChecked: false,
+                      enableShiftSelect: true,
+                      onRowsSelected: this.onRowsSelected,
+                      onRowsDeselected: this.onRowsDeselected,
+                      enableRowSelect: 'single',
+                      selectBy: {
+                        indexes: this.state.selectedIndexes,
+                        keys: { rowKey: 'id', values: this.state.selectedIndexes }
+                      }
+                    }}
 
-                  onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
-                  getCellActions={this.props.getCellActions}
-                />
-              </DraggableContainer >
-                 : <LoadingSection />}
+                    onRowClick={(index, value, column) => this.onRowClick(index, value, column)}
+                    getCellActions={this.props.getCellActions}
+                  />
+                </DraggableContainer >
+                : <LoadingSection />}
             </div>
           </div>
           <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>

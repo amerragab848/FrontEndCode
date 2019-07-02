@@ -2,7 +2,11 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom"; 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import Resources from "../../resources.json";
 import * as dashboardComponantActions from "../../store/actions/communication";
+
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
 class HeaderDocument extends Component {
     constructor(props) {
         super(props);
@@ -44,7 +48,7 @@ class HeaderDocument extends Component {
 
                     <div className="edit__sign">
                         <div className="notifiError notifiActionsContainer">
-                            <span className="notfiSpan">Sorry, You can't edit this document</span>
+                            <span className="notfiSpan">{Resources.closeDocument[currentLanguage]}</span>
                         </div>
                     </div>
 

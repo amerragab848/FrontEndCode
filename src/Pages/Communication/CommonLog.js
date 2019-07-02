@@ -561,7 +561,7 @@ class CommonLog extends Component {
             <div className="filterBTNS">
               {btnExport}
               <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
-            </div>
+            </div> 
             <div className="rowsPaginations">
               <div className="rowsPagiRange">
                 <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -{" "}

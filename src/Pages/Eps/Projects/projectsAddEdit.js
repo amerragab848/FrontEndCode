@@ -63,7 +63,7 @@ class projectsAddEdit extends Component {
             copmanyRole: [],
             executiveManagerContacts: [],
             projectManagerContacts: [],
-            selectedProjectType: { label: Resources.selectProject[currentLanguage], value: "0" },
+            selectedProjectType: { label: Resources.selectProjects[currentLanguage], value: "0" },
             selectedCountry: { label: Resources.pleaseSelectCountry[currentLanguage], value: "0" },
             selectedProjectManagerContact: { label: Resources.selectContact[currentLanguage], value: "0" },
             selectedProjectManagerCompany: { label: Resources.selectCompany[currentLanguage], value: "0" },

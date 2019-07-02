@@ -11,30 +11,24 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-//import AddEditItems from '../../Componants/OptionsPanels/AddEditItems';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-
 import SkyLight from 'react-skylight';
 import Distribution from '../../Componants/OptionsPanels/DistributionList'
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import { SkyLightStateless } from 'react-skylight';
-
 import Tree from '../../Componants/OptionsPanels/Tree'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Api from "../../api";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -44,38 +38,37 @@ const validationSchema = Yup.object().shape({
 const documentItemValidationSchema = Yup.object().shape({
     description: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
 
-    quantity: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+    quantity: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['quantityRequired'][currentLanguage]),
 
     resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
 
-    unitPrice: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+    unitPrice:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['unitSelection'][currentLanguage]),
 
     unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
 
     itemType: Yup.string().required(Resources['itemTypeSelection'][currentLanguage]),
 
-    days: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    days:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
 })
 
 const validationDeductionSchema = Yup.object().shape({
     description: Yup.string().required(Resources['description'][currentLanguage]),
-    value: Yup.string().required(Resources['requiredField'][currentLanguage])
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
-
+    value: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
+        .required(Resources['requiredField'][currentLanguage])
 })
 
 const documentItemValidationSchemaEdit = Yup.object().shape({
 
     details: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
 
-    quantity: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+    quantity:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['quantityRequired'][currentLanguage]),
 
     resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
 
-    unitPrice: Yup.string().matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage])
+    unitPrice:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['unitSelection'][currentLanguage]),
 
     unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
@@ -97,7 +90,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -114,7 +107,7 @@ class invoicesForPoAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -137,7 +130,7 @@ class invoicesForPoAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -586,7 +579,8 @@ class invoicesForPoAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.setState({
                 currentComponent: item.value,
                 currentTitle: item.title,
@@ -597,7 +591,7 @@ class invoicesForPoAddEdit extends Component {
     }
 
     ShowCostTree = () => {
-        this.setState({ShowTree: true })
+        this.setState({ ShowTree: true })
     }
 
     GetNodeData = (item) => {

@@ -4568,7 +4568,7 @@ button.companies_icon {
 .Risk__input {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
   margin: 30px 0;
 }
 
@@ -6427,15 +6427,21 @@ div#markup-panel {
 }
 
 .attachmentTableAuto.attachmentTable thead tr th:nth-child(2) , .attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
-  width: 50px;
+  width: auto;
+  padding-right: 11px !important;
 }
 
-.attachmentTableAuto.attachmentTable tbody tr td:nth-child(3) {
-  width: auto;
+.attachmentTableAuto.attachmentTable tbody tr td:nth-child(3), .attachmentTable.attachmentTableAuto tbody tr .contentCell {
+  width: auto !important;
+  max-width: 100% !important;
 }
 
 .attachmentTableAuto.attachmentTable tbody tr .contentCell.tableCell-2 {
   max-width: 100%;
+}
+
+.attachmentTableAuto.attachmentTable td {
+  padding-right: 12px !important;
 }
 
 .fixedLoading .dashboardLoading {
@@ -6490,21 +6496,34 @@ div#markup-panel {
 }
 
 .linebylineInput__checkbox {
- flex-flow: row !important;
- align-items: center !important;
+  flex-flow: row !important;
+  align-items: center !important;
 }
 
 .linebylineInput__checkbox .ui.checkbox , .linebylineInput__checkbox label {
- margin: 0 !important;
-
+  margin: 0 !important;
 }
 .filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5 {
  min-height: 36px;
  /* height: 40px; */
 }
 
-.filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c {
- width: 100%;
+.datepickerContainer.proForm .ui.input.inputDev {
+  max-width: 100%;
+}
+
+.datepickerContainer.proForm .letterFullWidth, .dropWrapper .letterFullWidth {
+  display: flex;
+  align-items: flex-start;
+  flex-flow: column;
+}
+
+.datepickerContainer.proForm .datepickerContainer.proForm.letterFullWidth {
+ flex-flow: row;
+}
+
+.letterFullWidth > .document-fields, .datepickerContainer.proForm .letterFullWidth .ui.input.inputDev, .filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c  {
+  width: 100%
 }
 
 .filter__input-wrapper .linebylineInput  .fillter-status.fillter-item-c .spanValidation label::after{
@@ -6645,7 +6664,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 
 .react-grid-Cell, .react-grid-HeaderCell {
   padding-left: 0 !important;
-  padding-right: 16px;
+  padding-right: 16px !important;
 }
 
 .settings-container .settings-tabs-items ul li.title:hover {
@@ -6654,6 +6673,12 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 
 .letterFullWidth .textarea-group {
   width: 100%
+}
+
+.ui[class*="left pointing"].label:before {
+  -webkit-transform: translateX(50%) translateY(-9%) rotate(226deg);
+  transform: translateX(50%) translateY(-9%) rotate(226deg);
+  right: -1px;
 }
 /* data grid css */
 /* new rtl css */

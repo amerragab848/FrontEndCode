@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import Accounts from './Accounts/Accounts'
 import Companies from './Companies/Index';
 import PermissionsGroups from './Administrations/GroupsPermission/permissionsGroups';
+import CurrencyExchangeRates from './Administrations/currencyExchangeRates';
 import ExpensesWorkFlowLog from './Project/ExpensesWorkFlow/ExpensesWorkFlowLog'
 import GeneralConfiguration from './Project/GeneralConfiguration'
 import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList'
@@ -20,7 +21,6 @@ class TemplatesSettings extends Component {
             tabIndex: this.props.Adminstration.tabIndex,
             showNotify: false
         };
-        //
     }
     NoPermission = () => {
         this.setState({
@@ -52,6 +52,12 @@ class TemplatesSettings extends Component {
                             <Tab>
                                 <span className="subUlTitle">{Resources['Companies'][currentLanguage]}</span>
                             </Tab>
+
+                            {(config.IsAllow(3744)) ?
+                                   <Tab>
+                                   <span className="subUlTitle">{Resources['currencyExchangeRates'][currentLanguage]}</span>
+                               </Tab> : null}
+                        
 
                             <li className="title">
                                 <h4 className="zero">{Resources['Project'][currentLanguage]}</h4>
@@ -97,7 +103,11 @@ class TemplatesSettings extends Component {
                                 <Companies />
                             </TabPanel>
                             : null}
-
+                        {(config.IsAllow(3744)) ?
+                            <TabPanel>
+                                <CurrencyExchangeRates />
+                            </TabPanel>
+                            : null}
 
                         {(config.IsAllow(1001105)) ?
                             <TabPanel>

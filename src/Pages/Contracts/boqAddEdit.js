@@ -180,7 +180,7 @@ class bogAddEdit extends Component {
                 sortDescendingFirst: true,
                 type: "number"
             }, {
-                key: "revisedQuntitty",
+                key: "revisedQuantity",
                 name: Resources["receivedQuantity"][currentLanguage],
                 width: 100,
                 draggable: true,
@@ -243,7 +243,8 @@ class bogAddEdit extends Component {
             LoadingPage: false,
             docTypeId: 64,
             selectedRow: {},
-            pageSize: 50,
+            pageNumber: 0,
+            pageSize: 2000,
             CurrStep: 1,
             firstComplete: false,
             secondComplete: false,
@@ -394,7 +395,7 @@ class bogAddEdit extends Component {
         })
         DataService.GetDataList('GetAccountsDefaultList?listType=currency&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
             this.setState({ currency: [...res], isLoading: false })
-        }) 
+        })
     }
 
     fillSubDropDown(url, param, value, subField_lbl, subField_value, subDatasource, subDatasource_2) {
@@ -467,7 +468,7 @@ class bogAddEdit extends Component {
     getTabelData() {
         let Table = []
         this.setState({ isLoading: true, LoadingPage: true })
-        Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=0&pageSize=1000').then(res => {
+        Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber='+this.state.pageNumber+'&pageSize='+this.state.pageSize).then(res => {
             let data = { items: res };
 
             res.forEach((element, index) => {
@@ -502,7 +503,7 @@ class bogAddEdit extends Component {
             this.props.actions.ExportingData(data);
 
             setTimeout(() => { this.setState({ isLoading: false, LoadingPage: false }) }, 500)
-        }) 
+        })
     }
 
     componentDidUpdate(prevProps) {
@@ -525,9 +526,13 @@ class bogAddEdit extends Component {
             this.checkDocumentIsView();
         }
         let _items = props.items
+        
         if (_items) {
-            this.setState({ isLoading: true })
+
+            this.setState({ isLoading: true }) 
+        
             this.setState({ _items }, () => this.setState({ isLoading: false }));
+            
         }
 
         if (this.state.showModal != props.showModal) {
@@ -546,9 +551,9 @@ class bogAddEdit extends Component {
     }
 
     addPoq = (values) => {
-     
+
         this.setState({ isLoading: true })
-     
+
         let documentObj = {
             project: this.state.projectId,
             documentDate: moment(values.documentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
@@ -577,17 +582,17 @@ class bogAddEdit extends Component {
     }
 
     editBoq = (values) => {
-       
+
         if (this.state.isViewMode) {
             this.NextStep()
         }
         else {
-            
+
             this.setState({
                 isLoading: true,
                 firstComplete: true
             });
-            
+
             let documentObj = {
                 project: this.state.projectId,
                 id: this.state.docId,
@@ -612,7 +617,7 @@ class bogAddEdit extends Component {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({ isLoading: false })
             })
-        } 
+        }
     }
 
     addEditItems = () => {
@@ -683,7 +688,7 @@ class bogAddEdit extends Component {
                 BoqSubTypes: [],
                 isLoading: false,
                 showPopUp: false,
-                btnText: 'add' 
+                btnText: 'add'
             });
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -782,8 +787,7 @@ class bogAddEdit extends Component {
         }
     }
 
-    onRowClick = (value, index, column) => {
-        console.log('column.key', column.key)
+    onRowClick = (value, index, column) => { 
         if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
         }
@@ -1017,6 +1021,61 @@ class bogAddEdit extends Component {
         }
     }
 
+    GetPrevoiusData() {
+
+        let pageNumber = this.state.pageNumber - 1;
+
+        if (pageNumber >= 0) {
+            this.setState({
+                isLoading: true,
+                pageNumber: pageNumber
+            });
+
+            let oldRows = [...this.state._items];
+
+            Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber='+pageNumber+'&pageSize='+this.state.pageSize).then(result => {
+
+                const newRows = [...this.state._items, ...result];
+
+                this.setState({
+                    _items: newRows,
+                    isLoading: false
+                });
+            }).catch(ex => {
+                this.setState({
+                    _items: oldRows,
+                    isLoading: false
+                });
+            });
+        }
+    }
+
+    GetNextData() {
+        let pageNumber = this.state.pageNumber + 1;
+
+        this.setState({
+            isLoading: true,
+            pageNumber: pageNumber
+        });
+
+        let oldRows = [...this.state._items];
+
+        Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber='+pageNumber+'&pageSize='+this.state.pageSize).then(result => {
+
+            const newRows = [...this.state._items, ...result];
+
+            this.setState({
+                _items: newRows,
+                isLoading: false
+            });
+        }).catch(ex => {
+            this.setState({
+                _items: oldRows,
+                isLoading: false
+            });
+        });
+    }
+
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
             <GridSetupWithFilter
@@ -1028,7 +1087,7 @@ class bogAddEdit extends Component {
                 clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                 onRowsSelected={this.onRowsSelected}
                 onRowsDeselected={this.onRowsDeselected}
-                onGridRowsUpdated={this._onGridRowsUpdated} 
+                onGridRowsUpdated={this._onGridRowsUpdated}
                 assign={true}
                 assignFn={() => this.assign()}
                 key='items'
@@ -1200,11 +1259,11 @@ class bogAddEdit extends Component {
                                             </button>
                                         )}
                                 </div>
-                            </div> 
+                            </div>
                         </Form>
                     )}
                 </Formik>
-            </div> 
+            </div>
         </Fragment>
 
         const purchaseOrderContent = <Fragment>
@@ -1454,13 +1513,8 @@ class bogAddEdit extends Component {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ];
 
         let Step_1 = <Fragment>
@@ -1640,6 +1694,20 @@ class bogAddEdit extends Component {
                 <header><h2 className="zero">{Resources.itemList[currentLanguage]}</h2></header>
                 <div className='precycle-grid'>
                     <div className="grid-container">
+                        <div class="submittalFilter">
+                            <div class="subFilter">
+                                <h3 class="zero"> {Resources['items'][currentLanguage]}</h3>
+                                <span>{this.state._items.length}</span>
+                            </div>
+                            <div className="rowsPaginations">
+                                <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
+                                    <i className="angle left icon" />
+                                </button>
+                                <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
+                                    <i className="angle right icon" />
+                                </button>
+                            </div>
+                        </div>
                         {ItemsGrid}
                     </div>
                     <div className="slider-Btns">
@@ -1677,9 +1745,7 @@ class bogAddEdit extends Component {
         return (
             <Fragment>
                 <div className="mainContainer">
-                    <div className={this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
-                        : "documents-stepper noTabs__document one__tab one_step"}>
-
+                    <div className={this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                         <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.boq[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                         <div className="doc-container">
                             <div className="step-content">
@@ -1797,6 +1863,7 @@ class bogAddEdit extends Component {
         )
     }
 }
+
 function mapStateToProps(state, ownProps) {
     return {
         document: state.communication.document,
@@ -1816,7 +1883,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(bogAddEdit))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(bogAddEdit))
