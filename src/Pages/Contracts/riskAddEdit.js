@@ -10,13 +10,13 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
 import { withRouter } from "react-router-dom";
-import TextEditor from '../../Componants/OptionsPanels/TextEditor' ;
+import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import SkyLight from 'react-skylight'; 
+import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
 import Distribution from '../../Componants/OptionsPanels/DistributionList';
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
@@ -46,7 +46,7 @@ const documentProposedValidationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     mitigationType: Yup.string().required(Resources['mitigationType'][currentLanguage]).nullable(true),
     actionProgress: Yup.string().required(Resources['actionProgress'][currentLanguage]).nullable(true),
-    medigationCost: Yup.string().required(Resources['medigationCost'][currentLanguage]).nullable(true),
+    medigationCost: Yup.number().required(Resources['medigationCost'][currentLanguage]),
     actionOwnerContactId: Yup.string().required(Resources['ownerRisk'][currentLanguage]).nullable(true)
 })
 
@@ -761,7 +761,6 @@ class riskAddEdit extends Component {
         }
     }
 
-
     NextTopStep = () => {
         if (this.state.CurrentStep === 1) {
             window.scrollTo(0, 0);
@@ -823,7 +822,6 @@ class riskAddEdit extends Component {
             this.fillConsequence();
         }
     };
-
 
     PreviousStep = () => {
         if (this.state.docId !== 0) {
