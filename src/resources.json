@@ -1201,7 +1201,7 @@
         "en": "Invoices Red Alerts",
         "ar": "التنبيه الاحمر للفواتير"
     },
-    "invoicesYellowAlerts": {
+    "inaicesYellowAlerts": {
         "en": "Invoices Yellow Alerts",
         "ar": "التنبيه الاصفر للفواتير"
     },
@@ -7980,6 +7980,10 @@
     "conesquenceName": {
         "en": "Consequence Name",
         "ar": "consequence Name"
+    },
+    "variationOrderItems": {
+        "en": "Variation Orders Items",
+        "ar": "قائمة طلبات التغيير المقترح"
     },
     "closeDocument": {
         "en": "Sorry, You can't edit this document",

@@ -4,23 +4,21 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
+import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ModernDatepicker from 'react-modern-datepicker';
 import { withRouter } from "react-router-dom";
-import TextEditor from '../../Componants/OptionsPanels/TextEditor'
-
+import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
-
 import * as communicationActions from '../../store/actions/communication';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
+import Distribution from '../../Componants/OptionsPanels/DistributionList';
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
 import RiskCause from '../../Componants/OptionsPanels/RiskCause';
@@ -28,11 +26,9 @@ import RiskConesquence from '../../Componants/publicComponants/RiskConesquence';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { toast } from "react-toastify";
 import ReactTable from "react-table";
-
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-
-import numeral from 'numeral'
+import numeral from 'numeral';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -41,26 +37,19 @@ const validationSchema = Yup.object().shape({
 });
 
 const documentCycleValidationSchema = Yup.object().shape({
-    subject: Yup.string()
-        .required(Resources['subjectRequired'][currentLanguage]).nullable(true),
-    mitigationType: Yup.string()
-        .required(Resources['mitigationType'][currentLanguage]).nullable(true)
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    mitigationType: Yup.string().required(Resources['mitigationType'][currentLanguage]).nullable(true)
 
 })
 
 const documentProposedValidationSchema = Yup.object().shape({
-    subject: Yup.string()
-        .required(Resources['subjectRequired'][currentLanguage]).nullable(true),
-    mitigationType: Yup.string()
-        .required(Resources['mitigationType'][currentLanguage]).nullable(true),
-    actionProgress: Yup.string()
-        .required(Resources['actionProgress'][currentLanguage]).nullable(true),
-    medigationCost: Yup.string()
-        .required(Resources['medigationCost'][currentLanguage]).nullable(true),
-    actionOwnerContactId: Yup.string()
-        .required(Resources['ownerRisk'][currentLanguage]).nullable(true)
-
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    mitigationType: Yup.string().required(Resources['mitigationType'][currentLanguage]).nullable(true),
+    actionProgress: Yup.string().required(Resources['actionProgress'][currentLanguage]).nullable(true),
+    medigationCost: Yup.number().required(Resources['medigationCost'][currentLanguage]),
+    actionOwnerContactId: Yup.string().required(Resources['ownerRisk'][currentLanguage]).nullable(true)
 })
+
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
@@ -222,8 +211,8 @@ class riskAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id !== this.props.document.id) {
             let sarverObject = nextProps.document;
-            sarverObject.docDate = sarverObject.docDate !== null ? moment(sarverObject.docDate).format('DD/MM/YYYY') : moment();
-            sarverObject.requiredDate = sarverObject.requiredDate !== null ? moment(sarverObject.requiredDate).format('DD/MM/YYYY') : moment();
+            sarverObject.docDate = sarverObject.docDate !== null ? moment(sarverObject.docDate).format('YYYY-MM-DD') : moment();
+            sarverObject.requiredDate = sarverObject.requiredDate !== null ? moment(sarverObject.requiredDate).format('YYYY-MM-DD') : moment();
 
             this.setState({
                 document: sarverObject,
@@ -772,7 +761,6 @@ class riskAddEdit extends Component {
         }
     }
 
-
     NextTopStep = () => {
         if (this.state.CurrentStep === 1) {
             window.scrollTo(0, 0);
@@ -834,7 +822,6 @@ class riskAddEdit extends Component {
             this.fillConsequence();
         }
     };
-
 
     PreviousStep = () => {
         if (this.state.docId !== 0) {
@@ -932,53 +919,56 @@ class riskAddEdit extends Component {
             CycleEditLoading: true
         });
 
-        dataservice.addObject(api, saveDocument)
-            .then(result => {
-                if (result) {
-                    let cycle = {
-                        subject: '',
-                        docDate: moment(),
-                        actionOwnerId: null,
-                        actionOwnerContactId: null,
-                        actionProgress: '',
-                        mitigationType: 1,
-                        mitigationCost: 0,
-                        riskId: this.state.docId,
-                        id: null
-                    };
-                    let IRCyclesPre = [];
-                    let IRCyclesPost = [];
-                    let totalProposedMit = 0;
-                    result.map(i => {
-                        if (i.isActive == true) {
-                            IRCyclesPre.push(i)
-                        } else {
-                            IRCyclesPost.push(i)
-                            totalProposedMit = totalProposedMit + (i.mitigationCost == null ? 0 : i.mitigationCost);
-                        }
-                    })
-                    if (isActive === false) {
-                        let totalPostRiskEmv = this.state.totalPostRiskEmv;
-                        let totalResidualRisk = (totalPostRiskEmv == null ? 0 : totalPostRiskEmv) + totalProposedMit;
-                        this.setState({
-                            totalProposedMit: totalProposedMit,
-                            totalResidualRisk: totalResidualRisk
-                        });
+        dataservice.addObject(api, saveDocument).then(result => {
+
+            if (result) {
+
+                let cycle = {
+                    subject: '',
+                    docDate: moment(),
+                    actionOwnerId: '',
+                    actionOwnerContactId: '',
+                    actionProgress: '',
+                    mitigationType: 0,
+                    mitigationCost: 0,
+                    riskId: this.state.docId,
+                    id: null
+                };
+
+                let IRCyclesPre = [];
+                let IRCyclesPost = [];
+                let totalProposedMit = 0;
+                result.map(i => {
+                    if (i.isActive == true) {
+                        IRCyclesPre.push(i)
+                    } else {
+                        IRCyclesPost.push(i)
+                        totalProposedMit = totalProposedMit + (i.mitigationCost == null ? 0 : i.mitigationCost);
                     }
+                })
+                if (isActive === false) {
+                    let totalPostRiskEmv = this.state.totalPostRiskEmv;
+                    let totalResidualRisk = (totalPostRiskEmv == null ? 0 : totalPostRiskEmv) + totalProposedMit;
                     this.setState({
-                        IRCyclesPre: IRCyclesPre,
-                        IRCyclesPost: IRCyclesPost,
-                        documentCycle: cycle,
-                        CycleEditLoading: false
+                        totalProposedMit: totalProposedMit,
+                        totalResidualRisk: totalResidualRisk
                     });
-                    toast.success(Resources["operationSuccess"][currentLanguage]);
                 }
-            }).catch(res => {
                 this.setState({
-                    CycleEditLoading: false
+                    IRCyclesPre: IRCyclesPre,
+                    IRCyclesPost: IRCyclesPost,
+                    documentCycle: cycle,
+                    CycleEditLoading: false,
+                    selectedMitigationTypes: { label: Resources.mitigationType[currentLanguage], value: "0" }
                 });
-                toast.error(Resources["operationCanceled"][currentLanguage]);
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }
+        }).catch(res => {
+            this.setState({
+                CycleEditLoading: false
             });
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
     }
 
     CurrentMit() {
@@ -991,14 +981,13 @@ class riskAddEdit extends Component {
                 </header>
                 <div className='document-fields'>
                     <Formik
-                        initialValues={{ ...this.state.documentCycle }}
+                        initialValues={{ subject: '', mitigationType: '' }}
                         validationSchema={documentCycleValidationSchema}
                         enableReinitialize={true}
                         onSubmit={(values) => {
                             this.saveMitigationRequest(true)
                         }}>
-
-                        {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                        {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                             <Form id="InspectionRequestCycleForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                 <div className="proForm datepickerContainer">
                                     <div className="fullInputWidth letterFullWidth">
@@ -1017,21 +1006,18 @@ class riskAddEdit extends Component {
                                 <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input">
                                         <Dropdown title="mitigationType"
-                                            isMulti={false}
-                                            isClear={false}
                                             data={this.state.mitigationTypes}
-                                            selectedValue={this.state.selectedMitigationType}
-                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationType')}
+                                            selectedValue={this.state.selectedMitigationTypes}
+                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationTypes')}
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
-                                            error={errors.notes}
-                                            touched={touched.notes}
-                                            index="notes"
-                                            name="notes"
-                                            id="notes" />
+                                            error={errors.mitigationType}
+                                            touched={touched.mitigationType}
+                                            index="mitigationType"
+                                            name="mitigationType"
+                                            id="mitigationType" />
                                     </div>
                                 </div>
-
                                 <div className="slider-Btns">
                                     {this.state.CycleEditLoading ?
                                         <button className="primaryBtn-1 btn disabled">
@@ -1044,11 +1030,9 @@ class riskAddEdit extends Component {
                                         : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['goAdd'][currentLanguage]}</button>
                                     }
                                 </div>
-
                             </Form>
                         )}
                     </Formik>
-
                     <div className="doc-pre-cycle">
                         <header>
                             <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
@@ -1095,8 +1079,13 @@ class riskAddEdit extends Component {
                     </div>
                 </header>
                 <div className='document-fields'>
-                    <Formik
-                        initialValues={{ ...this.state.documentCycle }}
+                    <Formik initialValues={{
+                        subject: '',
+                        mitigationType: '',
+                        actionProgress: '',
+                        medigationCost: '',
+                        actionOwnerContactId: null
+                    }}
                         validationSchema={documentProposedValidationSchema}
                         enableReinitialize={true}
                         onSubmit={(values) => {
@@ -1116,28 +1105,23 @@ class riskAddEdit extends Component {
                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                     onChange={(e) => this.handleChangeCycle(e, 'subject')} />
                                                 {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-
                                             </div>
                                         </div>
                                     </div>
-
                                     <div className="proForm datepickerContainer">
                                         <div className="linebylineInput valid-input">
                                             <Dropdown title="mitigationType"
-                                                isMulti={false}
-                                                isClear={false}
                                                 data={this.state.mitigationTypes}
-                                                selectedValue={this.state.selectedMitigationType}
-                                                handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationType')}
+                                                selectedValue={this.state.selectedMitigationTypes}
+                                                handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationTypes')}
                                                 onChange={setFieldValue}
                                                 onBlur={setFieldTouched}
-                                                error={errors.post_mitigationType}
-                                                touched={touched.post_mitigationType}
-                                                index="post_mitigationType"
-                                                name="post_mitigationType"
-                                                id="post_mitigationType" />
+                                                error={errors.mitigationType}
+                                                touched={touched.mitigationType}
+                                                index="mitigationType"
+                                                name="mitigationType"
+                                                id="mitigationType" />
                                         </div>
-
                                         <div className="linebylineInput valid-input">
                                             <div className="inputDev ui input input-group date NormalInputDate">
                                                 <div className="customDatepicker fillter-status fillter-item-c ">
@@ -1158,13 +1142,14 @@ class riskAddEdit extends Component {
 
                                         <div className="letterFullWidth fullInputWidth">
                                             <label className="control-label">{Resources['actionProgress'][currentLanguage]}</label>
-                                            <div className='ui input inputDev'>
+                                            <div className={"inputDev ui input" + (errors.actionProgress && touched.actionProgress ? (" has-error") : !errors.actionProgress && touched.actionProgress ? (" has-success") : " ")} >
                                                 <input autoComplete="off" name="actionProgress" id="actionProgress"
                                                     value={this.state.documentCycle.actionProgress}
                                                     className="form-control" name="actionProgress"
                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                     onChange={(e) => { this.handleChangeCycle(e, 'actionProgress') }}
                                                     placeholder={Resources['actionProgress'][currentLanguage]} />
+                                                {errors.actionProgress && touched.actionProgress ? (<em className="pError">{errors.actionProgress}</em>) : null}
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input">
@@ -2050,7 +2035,6 @@ class riskAddEdit extends Component {
                                                                     <label>{Resources.closed[currentLanguage]}</label>
                                                                 </div>
                                                             </div>
-
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                                 <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? (" has-error") : " ")}>
@@ -2062,7 +2046,6 @@ class riskAddEdit extends Component {
                                                                         onChange={(e) => this.handleChange(e, 'arrange')} />
                                                                 </div>
                                                             </div>
-
                                                             <div className="linebylineInput valid-input">
                                                                 <div className="inputDev ui input input-group date NormalInputDate">
                                                                     <div className="customDatepicker fillter-status fillter-item-c ">
@@ -2098,7 +2081,6 @@ class riskAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                         <div className="proForm first-proform">
                                                             <div className="linebylineInput valid-input">
@@ -2114,7 +2096,6 @@ class riskAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                         <div className="proForm datepickerContainer">
                                                             <div className="letterFullWidth">
                                                                 <label className="control-label">{Resources.description[currentLanguage]}</label>
@@ -2122,7 +2103,6 @@ class riskAddEdit extends Component {
                                                                     <TextEditor value={this.state.description} onChange={event => this.onChangeMessage(event, 'description')} />
                                                                 </div>
                                                             </div>
-
                                                             <div className="linebylineInput valid-input">
                                                                 <Dropdown title="priority" data={this.state.priority}
                                                                     selectedValue={this.state.selectedPriorityId}
@@ -2141,7 +2121,6 @@ class riskAddEdit extends Component {
                                                                     name="riskType"
                                                                     id="riskType" />
                                                             </div>
-
                                                             <div className="linebylineInput valid-input mix_dropdown">
                                                                 <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
@@ -2170,7 +2149,6 @@ class riskAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                         {this.state.docId > 0 ?
                                                             <Fragment>
                                                                 {comCause}
@@ -2178,7 +2156,6 @@ class riskAddEdit extends Component {
                                                             </Fragment>
                                                             : null
                                                         }
-
                                                         <div className="slider-Btns">
                                                             {this.state.isLoading ?
                                                                 <button className="primaryBtn-1 btn disabled">
@@ -2198,9 +2175,7 @@ class riskAddEdit extends Component {
                                             <div>
                                                 {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={10012} EditAttachments={10013} ShowDropBox={10016} ShowGoogleDrive={10017} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                 {this.viewAttachments()}
-                                                {this.props.changeStatus === true ?
-                                                    <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                    : null}
+                                                {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                             </div>
                                         </div>
                                     </div>

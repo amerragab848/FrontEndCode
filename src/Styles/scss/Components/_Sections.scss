@@ -1,21 +1,26 @@
 .Submittal-container {
     padding: 20px;
+
     .submittalHead {
         margin-top: 50px;
         margin-bottom: 50px;
     }
 
     .horizSubActions {}
+
     .horizSubActions-container {
         width: 732px;
     }
+
     .sadasdsadas {
-//        float: left;
+        //        float: left;
         width: calc(100% - 324px);
     }
+
     .submittalFilter {
         clear: both;
     }
+
     .submiModalBig,
     .subiModalNoTabs {
         margin: 0 auto;
@@ -26,7 +31,9 @@
     width: 100%;
     height: 108px;
     background-color: $white;
-    @include box-shadow (0 2px 4px 0 rgba(0, 0, 0, 0.2));
+
+    @include box-shadow(0 2px 4px 0 rgba(0, 0, 0, 0.2));
+
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -38,12 +45,14 @@
     justify-content: center;
     text-align: center;
     position: relative;
+
     h2 {
         color: $grey-900;
         line-height: 1.18;
         letter-spacing: -1.1px;
         font-family: $muli-b;
         font-size: 34px;
+
         span {
             color: $grey-600;
             line-height: 1.43;
@@ -54,6 +63,7 @@
             margin-top: 5px;
         }
     }
+
     .SubmittalHeadClose {
         position: absolute;
         top: 25px;
@@ -66,6 +76,7 @@
                 -webkit-transition: 0.3s ease;
                 transition: 0.3s ease;
             }
+
             path {
                 fill: $grey-900;
                 -webkit-transition: 0.3s ease;
@@ -84,6 +95,7 @@
 
     .title {
         padding: 0 40px;
+
         > h2 {
             line-height: 1.4;
             letter-spacing: -0.2px;
@@ -93,17 +105,20 @@
             text-align: center;
             font-size: $heading3-font;
         }
+
         > .mediumBtn {
             width: 100%;
             margin-bottom: 18px;
         }
+
         hr {
-            border: .5px solid $grey-100;
+            border: 0.5px solid $grey-100;
             width: 100%;
             margin-top: 12px;
             margin-bottom: 12px;
         }
     }
+
     .docsubmitt-group {
         .mediumBtn {
             margin-bottom: 18px;
@@ -115,6 +130,7 @@
         flex-flow: column;
         align-items: flex-start;
         width: 100%;
+
         li {
             padding: 0 40px;
             display: -webkit-box;
@@ -130,18 +146,20 @@
             &:hover {
                 background-color: $grey-100;
                 background-color: #f5f5f6;
+
                 a {
                     color: $grey-700;
+
                     .svg {
                         background-color: $blue-100;
                     }
-
                 }
-
             }
+
             &:last-child {
                 margin-bottom: 0;
             }
+
             a {
                 height: 56px;
                 width: 100%;
@@ -152,6 +170,7 @@
                 color: #858d9e;
                 font-family: $muli-b;
                 text-transform: uppercase;
+
                 .svg {
                     width: 40px;
                     height: 40px;
@@ -162,9 +181,7 @@
                     margin-#{$right}: 16px;
                     -webkit-transition: 0.3s;
                     transition: 0.3s;
-
                 }
-
             }
 
             /*  &:nth-child(2) {
@@ -173,8 +190,9 @@
                 }
             }*/
         }
+
         hr {
-            border: .5px solid $grey-100;
+            border: 0.5px solid $grey-100;
             margin-top: 12px;
             margin-bottom: 12px;
             width: 100%;
@@ -182,13 +200,14 @@
     }
 }
 
-
 .horizSubActions {
     width: 100%;
     min-width: 732px;
     height: 72px;
     background-color: $white;
-    @include box-shadow (0 2px 3px 0 rgba(0, 0, 0, 0.2));
+
+    @include box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.2));
+
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -196,22 +215,25 @@
     -ms-flex-align: center;
     align-items: center;
     padding: 12px;
+
     .SubAccloseIcon {
         flex: 0.1;
         height: 50px;
         cursor: pointer;
+
         svg {
             &:hover {
                 circle {
                     fill: $grey-200;
                 }
+
                 path {
                     fill: #000;
                 }
             }
         }
-
     }
+
     .horizSubUlContainer {
         flex: 0.9;
         display: -webkit-box;
@@ -223,19 +245,23 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
+
         .btn {
             margin-#{$right}: 32px;
         }
+
         .SubmittalUL {
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
+
             li {
                 width: 66px;
 
                 &:nth-child(4) {
                     width: 72px;
                 }
+
                 &:nth-child(5) {
                     width: 72px;
                 }
@@ -267,21 +293,23 @@
                         border-radius: 50%;
                         -webkit-transition: 0.3s;
                         transition: 0.3s;
-
-
                     }
+
                     &:hover {
                         .svg {
                             background-color: $blue-100;
                         }
+
                         color: $blue-600;
                         text-decoration: underline;
                         font-size: $heading7-font;
                     }
                 }
+
                 &:nth-child(3) {
                     position: relative;
                     margin-right: 30px;
+
                     &:after {
                         content: "";
                         height: 41px;
@@ -292,9 +320,11 @@
                         right: -15px;
                     }
                 }
+
                 &:nth-child(5) {
                     position: relative;
                     margin-right: 16px;
+
                     &:after {
                         content: "";
                         height: 41px;
@@ -305,18 +335,13 @@
                         right: -15px;
                     }
                 }
+
                 &:nth-child(6) {
                     margin-left: 16px;
-
                 }
             }
-
-
-
         }
-
     }
-
 }
 
 .submittalFilter {
@@ -324,6 +349,7 @@
     display: flex;
     align-items: center;
     margin: 40px 0;
+
     .subFilter {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -332,6 +358,7 @@
         -ms-flex-align: center;
         align-items: center;
         flex: 1;
+
         > h3 {
             font-size: $heading3-font;
             line-height: 1.4;
@@ -341,6 +368,7 @@
             text-transform: uppercase;
             margin-#{$right}: 8px;
         }
+
         > span {
             font-family: $muli-sb;
             font-size: $heading3-font;
@@ -348,8 +376,8 @@
             letter-spacing: 0.6px;
             color: $grey-500;
             margin-#{$right}: 24px;
-
         }
+
         .text {
             font-family: $muli-b;
             font-size: $heading6-font;
@@ -358,6 +386,7 @@
             color: $grey-600;
             text-transform: uppercase;
         }
+
         .dropdown {
             padding-top: 5px;
             display: -webkit-box;
@@ -366,37 +395,39 @@
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
+
             .text {
                 margin-#{$left}: 8px;
-
             }
         }
-
     }
+
     .filterBTNS {
         .btn {
             &:first-child {
-                margin-#{$right}: 16px;
+                margin-#{$right}: 6px;
             }
         }
     }
 
     .fillter-button {
         position: relative;
+
         &::after,
         &::before {
             content: '';
             position: absolute;
-    left: -7px;
-    top: -12px;
-    display: inline-block;
-    height: 35px;
-    width: 120%;
+            left: -7px;
+            top: -12px;
+            display: inline-block;
+            height: 35px;
+            width: 120%;
             margin-top: 10px;
             opacity: 0;
             -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
             transition: opacity 0.35s, transform 0.35s;
         }
+
         &::before {
             border-left: 1px solid $grey-600;
             border-right: 1px solid $grey-600;
@@ -410,16 +441,44 @@
             -webkit-transform: scale(0, 1);
             transform: scale(0, 1);
         }
+
         .text {
-            .show-fillter {
-                display: none;
-            }
-            &.active {
-                .hide-fillter {
+            span {
+                font-family: font-b;
+                font-size: 12px;
+                font-weight: bold;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.67;
+                letter-spacing: 0.2px;
+                transition: all 0.3s ease-in-out;
+
+                &.show-fillter {
+                    color: #858d9e;
+                }
+
+                &.hide-fillter {
+                    color: #5e6475;
                     display: none;
                 }
-                .show-fillter {
+            }
+
+            &.active {
+                .hide-fillter {
                     display: block;
+                }
+
+                .show-fillter {
+                    display: none;
+                }
+            }
+        }
+
+        svg {
+            g {
+                path {
+                    fill: #858d9e;
+                    transition: all 0.3s ease;
                 }
             }
         }
@@ -431,14 +490,52 @@
                 -webkit-transform: scale(1);
                 transform: scale(1);
             }
+
+            .text {
+                span {
+                    &.show-fillter {
+                        color: #787f8f;
+                    }
+
+                    &.hide-fillter {
+                        color: #1e2029;
+                    }
+                }
+            }
+
+            svg {
+                g {
+                    path {
+                        fill: #787f8f;
+                    }
+                }
+            }
+        }
+
+        &.active {
+            svg {
+                g {
+                    path {
+                        fill: #5e6475;
+                    }
+                }
+            }
+
+            &:hover {
+                svg {
+                    g {
+                        path {
+                            fill: #1e2029;
+                        }
+                    }
+                }
+            }
         }
     }
-
 }
 
 .modals.dimmer .ui.scrolling.modal.submiModalBig {
     margin: 0 !important;
-
 }
 
 .submiModalBig {
@@ -456,6 +553,7 @@
     .dimmer {
         align-items: flex-end;
     }
+
     &.ui.modal {
         border-radius: 0;
         width: 100%;
@@ -465,6 +563,7 @@
         right: 0;
         left: initial;
         top: 0px;
+
         .close {
             position: absolute;
             top: 10px;
@@ -475,13 +574,13 @@
             z-index: 99;
         }
     }
-
 }
 
 .subiTabContainer {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+
     .subiTabsContent {
         width: calc(100% - 289px);
     }
@@ -492,6 +591,7 @@
     background-color: $grey-50;
     position: relative;
     z-index: 1;
+
     h3 {
         height: 72px;
         margin-#{$left}: 40px;
@@ -508,6 +608,7 @@
         font-family: $muli-b;
         font-size: $heading2-font;
     }
+
     ul {
         li {
             padding-#{$left}: 40px;
@@ -525,6 +626,7 @@
             align-items: flex-start;
             cursor: pointer;
             position: relative;
+
             &::after {
                 content: "";
                 position: absolute;
@@ -534,6 +636,7 @@
                 background-color: $grey-100;
                 left: 24px;
             }
+
             .subUlTitle {
                 line-height: 1.5;
                 letter-spacing: -0.2px;
@@ -541,16 +644,19 @@
                 font-size: $heading4-font;
                 font-family: $muli-b;
             }
+
             .subUlsubT {
                 line-height: 1.33;
                 letter-spacing: -0.2px;
                 color: $grey-500;
                 font-size: $heading6-font;
             }
+
             &.active {
                 border-#{$left}: 6px solid $Primary-2;
                 background-color: $grey-100;
                 padding-#{$left}: 34px;
+
                 &:after {
                     position: absolute;
                     content: "";
@@ -563,6 +669,7 @@
                     top: 40%;
                 }
             }
+
             &:hover {
                 -webkit-transition: 0.3s;
                 transition: 0.3s;
@@ -575,12 +682,14 @@
 .subiTabsContent {
     width: 100%;
     padding-bottom: 40px;
+
     .subiConHead {
         height: 72px;
         border-bottom: 1px solid $grey-100;
         display: flex;
         align-items: center;
         padding: 0 80px;
+
         h3 {
             line-height: 1.4;
             letter-spacing: -0.2px;
@@ -594,6 +703,7 @@
 
 .subiGrid {
     padding: 0 80px;
+
     .subiTaskTitle {
         width: 100%;
         display: -webkit-box;
@@ -602,12 +712,15 @@
         align-items: flex-start;
         padding-top: 26px;
         padding-bottom: 32px;
+
         > span {
             margin-#{$right}: 16px;
             margin-top: 6px;
         }
+
         .divhead {
             width: 100%;
+
             h3 {
                 line-height: 1.5;
                 letter-spacing: -0.2px;
@@ -616,6 +729,7 @@
                 font-size: $heading4-font;
                 padding-bottom: 9px;
             }
+
             .divspans {
                 display: -webkit-box;
                 display: -ms-flexbox;
@@ -624,6 +738,7 @@
                 letter-spacing: -0.2px;
                 color: #a8b0bf;
                 font-size: $heading5-font;
+
                 div {
                     &:nth-child(2) {
                         display: -webkit-box;
@@ -636,6 +751,7 @@
                         -ms-flex: 1;
                         flex: 1;
                         padding-top: 5px;
+
                         .subiStatus {
                             margin-#{$right}: 48px;
                             line-height: 1.33;
@@ -644,6 +760,7 @@
                             font-size: $heading6-font;
                             font-family: $sans-r;
                         }
+
                         .subiPriority {
                             line-height: 1.33;
                             letter-spacing: -0.3px;
@@ -664,6 +781,7 @@
                                     background-color: red;
                                 }
                             }
+
                             &.greensSpan {
                                 &::before {
                                     content: "";
@@ -681,17 +799,19 @@
                 }
             }
         }
-
     }
+
     .subiTable {
         margin-bottom: 28px;
         padding-bottom: 15px;
         border-bottom: 1px solid $grey-100;
+
         .ui.header > .image:not(.icon),
         .ui.header > img {
             width: 16px;
             height: 16px;
         }
+
         td {
             padding-bottom: 24px;
             padding-#{$right}: 16px;
@@ -699,6 +819,7 @@
             color: $grey-800;
             font-size: $heading5-font;
             font-family: $sans-r;
+
             h4 {
                 display: flex;
             }
@@ -708,15 +829,18 @@
             }
         }
     }
+
     .subiRefContainer {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
         padding-bottom: 65px;
+
         div {
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
+
             h4 {
                 margin-#{$right}: 8px;
                 line-height: 1.43;
@@ -725,6 +849,7 @@
                 font-size: $heading5-font;
                 font-family: $sans-sb;
             }
+
             span {
                 line-height: 1.71;
                 letter-spacing: -0.2px;
@@ -736,17 +861,20 @@
 
         .subiRefNo {
             margin-#{$right}: 56px;
+
             h4 {
                 margin-#{$right}: 32px;
             }
         }
     }
+
     .subiItems {
         h3 {
             border-bottom: 1px solid $grey-100;
             padding-bottom: 8px;
             margin-bottom: 20px;
         }
+
         ol {
             li {
                 margin-bottom: 16px;
@@ -762,7 +890,6 @@
 
 .modals.dimmer .ui.scrolling.modal.subiModalNoTabs {
     margin: 0 !important;
-
 }
 
 .subiModalNoTabs {
@@ -775,6 +902,7 @@
     .dimmer {
         align-items: flex-end;
     }
+
     &.ui.modal {
         border-radius: 0;
         width: 732px;
@@ -783,6 +911,7 @@
         right: 0;
         left: initial;
         top: 0px;
+
         .close {
             position: absolute;
             top: 10px;
@@ -791,15 +920,66 @@
             right: initial;
             height: 50px;
         }
-
     }
+
     .subiTabsContent {
         padding: 0;
     }
+
     .subiGrid {
         padding: 40px 80px;
+
         .subiTaskTitle {
             padding-top: 0;
+        }
+    }
+}
+
+.approveDocument {
+    position: fixed;
+    bottom: 0;
+    #{$right}: 40px;
+    #{$left}: 130px;
+    z-index: 1000;
+    height: 64px;
+    border-radius: 3px;
+    box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 0 40px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    z-index: 999;
+
+    h2 {
+        flex: 0.5;
+        line-height: 1.17;
+        letter-spacing: -0.5px;
+        color: #252833;
+        opacity: 0.3;
+        font-family: $muli-b;
+        font-size: 24px;
+        text-transform: capitalize;
+    }
+
+    .approveDocumentBTNS {
+        flex: 1.5;
+        display: flex;
+        justify-content: flex-end;
+
+        .border {
+            display: block;
+            width: 1px;
+            height: 36px;
+            background-color: #e9ecf0;
+            margin: 0 32px;
+        }
+
+        .middle__btn {
+            margin: 0 6px;
         }
     }
 }

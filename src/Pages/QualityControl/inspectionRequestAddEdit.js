@@ -235,7 +235,7 @@ class inspectionRequestAddEdit extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow  || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -294,7 +294,7 @@ class inspectionRequestAddEdit extends Component {
                 toContactId: '',
                 replayId: '',
                 docDate: moment(),
-                status: 'false',
+                status: 'true ',
                 disciplineId: '',
                 refDoc: '',
                 sharedSettings: '',

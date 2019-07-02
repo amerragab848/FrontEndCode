@@ -4,37 +4,21 @@
         padding-#{$left}: 0;
         z-index: 2;
     }
-
     .doc-container {
         background: #fff;
         flex-flow: column;
-
+        display: flex;
+        border-radius: 4px;
+        border: solid 1px #e9ecf0;
+        position: relative;
+        border-top-color: transparent;
+        min-height: 71vh;
         .main__header {
             width: 100%;
             padding: 0;
             border-bottom: 1px solid #e9ecf0;
-
-            .main__header--div {
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                -webkit-box-pack: center;
-                -ms-flex-pack: center;
-                justify-content: space-between;
-                width: 61%;
-                margin: 0 auto;
-                height: 72px;
-
-                @include max1200 {
-                    width: 68%;
-                }
-            }
-
             h2 {
-                font-family: font-b;
+                font-family: $muli-b;
                 font-size: 20px;
                 line-height: 1.4;
                 letter-spacing: -0.2px;
@@ -42,34 +26,17 @@
             }
 
             p {
-                font-family: font-opens;
+                font-family: $sans-r;
                 font-size: 12px;
                 line-height: 1.33;
                 letter-spacing: -0.2px;
                 color: #a8b0bf;
-
-                /* width: 100%; */
                 text-align: #{$right};
             }
         }
 
         .step-content {
-            width: 61%;
-            border-#{$right}: 0;
-            background-color: #ffffff;
-            margin: auto;
-            display: block;
-            margin: 0 auto;
-            padding-bottom: 70px;
-
-            @include max1200 {
-                width: 68%;
-            }
-
-
             .document-fields {
-                padding: 14px 0;
-
                 .proForm {
                     &.datepickerContainer {
                         display: flex;
@@ -78,43 +45,10 @@
                     }
 
                     &.first-proform {
-                        display: flex;
-                        justify-content: space-between;
-                        padding-#{$right}: 0;
-                        flex-wrap: wrap;
-                        align-items: center;
-
                         .linebylineInput {
                             &:last-of-type {
                                 flex-flow: row;
                                 margin-bottom: 0;
-                            }
-                        }
-                    }
-
-                    .linebylineInput {
-                        margin-bottom: 16px;
-                        width: 43%;
-                        margin-#{$right}: 50px;
-                        flex-shrink: 0;
-                        flex-flow: column;
-                        align-items: flex-start;
-
-                        > label {
-                            width: auto;
-                            text-align: left;
-                            margin-#{$right}: 32px;
-                            font-family: font-opensb;
-                            font-size: 14px;
-                            line-height: 1.43;
-                            letter-spacing: -0.2px;
-                            color: #252833;
-                            margin-bottom: 4px;
-                        }
-
-                        @include max1200 {
-                            &.even {
-                                margin-#{$right}: 0;
                             }
                         }
                     }
@@ -123,7 +57,6 @@
 
             .doc-pre-cycle {
                 padding: 0;
-
                 header {
                     padding: 40px 0;
 
@@ -132,7 +65,7 @@
                         width: 100%;
                         padding-bottom: 12px;
                         padding-#{$left}: 0;
-                        font-family: font-r;
+                        font-family: $muli-r;
                         font-size: 20px;
                         line-height: 1.4;
                         letter-spacing: -0.2px;
@@ -147,73 +80,12 @@
             }
         }
     }
-
-    .approveDocument {
-        //        border-bottom-left-radius: 4px;
-        //        border-bottom-right-radius: 4px;
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        width: 100%;
-        z-index: 19;
-        height: 72px;
-        border-radius: 3px;
-        box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
-        background-color: #ffffff;
-        padding: 0 40px;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-
-        h2 {
-            flex: 0.5;
-            line-height: 1.17;
-            letter-spacing: -0.5px;
-            color: #252833;
-            opacity: 0.3;
-            font-family: font-b;
-        }
-
-        .approveDocumentBTNS {
-            flex: 1.5;
-            display: flex;
-            justify-content: flex-end;
-
-            .border {
-                display: block;
-                width: 1px;
-                height: 40px;
-                background-color: #e9ecf0;
-                margin: 0 24px;
-            }
-
-            .middle__btn {
-                margin: 0 6px;
-            }
-        }
-    }
 }
 
 .one__tab {
     padding-bottom: 90px;
-
-    .submittalHead {
-        justify-content: center;
-        padding-#{$left}: 0;
-        z-index: 2;
-    }
-
     .doc-container {
-        background: #fff;
         flex-flow: row;
-
-        .docstepper-levels {
-            border-left: 1px solid #eef5ff;
-        }
 
         .subiTabsContent {
             > header {
@@ -254,7 +126,7 @@
                 }
 
                 .doc-infohead {
-                    font-family: font-opens;
+                    font-family: $sans-r;
                     font-size: 12px;
                     line-height: 1.33;
                     letter-spacing: -0.2px;
@@ -269,7 +141,7 @@
                     .subitTabs {
                         width: 24%;
                         height: 100vh;
-                        border-right: 1px solid #e9ecf0;
+                        border-#{$right}: 1px solid #e9ecf0;
                     }
 
                     .proForm {
@@ -279,9 +151,7 @@
                             .ui {
                                 &.input {
                                     &.inputDev {
-                                        width: 100%;
-                                        padding: 0;
-
+                                        width: 100%; 
                                         input {
                                             width: 100%;
                                         }
@@ -290,52 +160,6 @@
                             }
                         }
                     }
-
-                    //                    .proForm {
-                    //                        &.datepickerContainer {
-                    //                            display: flex;
-                    //                            flex-wrap: wrap;
-                    //                            justify-content: space-between;
-                    //                        }
-                    //                        &.first-proform {
-                    //                            display: flex;
-                    //                            justify-content: space-between;
-                    //                            padding-#{$right}: 0;
-                    //                            flex-wrap: wrap;
-                    //                            align-items: center;
-                    //                            .linebylineInput {
-                    //                                &:last-of-type {
-                    //                                    flex-flow: row;
-                    //                                    margin-bottom: 0;
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                        .linebylineInput {
-                    //                            margin-bottom: 16px;
-                    //                            width: 43%;
-                    //                            margin-right: 50px;
-                    //                            flex-shrink: 0;
-                    //                            flex-flow: column;
-                    //                            align-items: flex-start;
-                    //                            > label {
-                    //                                width: auto;
-                    //                                text-align: left;
-                    //                                margin-#{$right}: 32px;
-                    //                                font-family: font-opensb;
-                    //                                font-size: 14px;
-                    //                                line-height: 1.43;
-                    //                                letter-spacing: -0.2px;
-                    //                                color: #252833;
-                    //                                margin-bottom: 4px;
-                    //                            }
-                    //                            @include max1200 {
-                    //                                &.even {
-                    //                                    margin-#{$right}: 0;
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                    }
-               
                 }
             }
         }
@@ -351,7 +175,7 @@
                     width: 100%;
                     padding-bottom: 12px;
                     padding-#{$left}: 0;
-                    font-family: font-r;
+                    font-family: $muli-r;
                     font-size: 20px;
                     line-height: 1.4;
                     letter-spacing: -0.2px;
@@ -366,84 +190,12 @@
         }
     }
 
-    .approveDocument {
-        //      border-bottom-left-radius: 4px;
-        //      border-bottom-right-radius: 4px;
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        width: 100%;
-        z-index: 19;
-        height: 72px;
-        border-radius: 3px;
-        box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);
-        background-color: #ffffff;
-        padding: 0 40px;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-
-        h2 {
-            flex: 0.5;
-            line-height: 1.17;
-            letter-spacing: -0.5px;
-            color: #252833;
-            opacity: 0.3;
-            font-family: font-b;
-        }
-
-        .approveDocumentBTNS {
-            flex: 1.5;
-            display: flex;
-            justify-content: flex-end;
-
-            .border {
-                display: block;
-                width: 1px;
-                height: 40px;
-                background-color: #e9ecf0;
-                margin: 0 24px;
-            }
-
-            .middle__btn {
-                margin: 0 6px;
-            }
-        }
-    }
-
     &.one_step {
         .doc-container {
             .step-content {
-                width: calc(100% - 347px);
-
-                .main__header {
-                    padding-#{$left}: 110px;
-                    padding-#{$right}: 80px;
-
-                    @include max1366 {
-                        padding-#{$left}: 35px;
-                        padding-#{$right}: 20px;
-                    }
-                }
-
                 .document-fields {
-                    padding-#{$left}: 110px;
-                    padding-#{$right}: 80px;
-
-                    @include max1366 {
-                        padding-#{$left}: 35px;
-                        padding-#{$right}: 20px;
-                    }
-
-
                     .proForm {
                         .linebylineInput {
-                            margin-right: 0;
-
                             input {
                                 @include max1200 {
                                     width: 100%;
@@ -466,23 +218,12 @@
 
                                 input {
                                     width: 300px;
-
                                     @include max1200 {
                                         width: 360px;
                                     }
                                 }
                             }
                         }
-                    }
-                }
-
-                .doc-pre-cycle {
-                    padding-#{$left}: 110px;
-                    padding-#{$right}: 80px;
-
-                    @include max1366 {
-                        padding-#{$left}: 35px;
-                        padding-#{$right}: 20px;
                     }
                 }
             }

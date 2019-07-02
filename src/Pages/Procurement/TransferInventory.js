@@ -351,7 +351,7 @@ class TransferInventory extends Component {
         return (
             <div className="mainContainer">
                 <div className="documents-stepper noTabs__document">
-                    <HeaderDocument projectName={projectName} isViewMode={false} docTitle={Resources.transferToProject[currentLanguage]} moduleTitle={Resources["procurement"][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={false} docTitle={Resources.transferToProject[currentLanguage]} perviousRoute={this.state.perviousRoute} moduleTitle={Resources["procurement"][currentLanguage]} />
                     <div className="doc-container">
 
                         <div className="step-content">

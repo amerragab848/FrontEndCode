@@ -29,8 +29,7 @@ import 'react-table/react-table.css'
 import IPConfig from '../../IP_Configrations'
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
-import Recycle from '../../Styles/images/attacheRecycle.png'
+import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal' 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
@@ -99,12 +98,7 @@ class materialRequestAddEdit extends Component {
             }
             return 0;
         };
-        let editRequestQty = ({ value, row }) => {
-            if (row) {
-                return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.requestedQuantity != null ? row.requestedQuantity : 0}</span></a>;
-            }
-            return 0;
-        };
+      
 
         this.itemsColumns = [
             {
@@ -437,6 +431,7 @@ class materialRequestAddEdit extends Component {
             Api.get('GetContractsSiteRequestItemsByRequestIdUsingPaging?requestId=' + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(res => {
                 if (res) {
                     this.setState({ _items: res })
+                    this.props.actions.ExportingData({ items: res });
                 }
             })
             this.setState({ isEdit: true });
@@ -839,6 +834,7 @@ class materialRequestAddEdit extends Component {
                     const _items = this.state._items;
                     _items.push(item);
                     this.setState({ _items, isLoading: false, updatedItems: [], showChildren: false })
+                    this.props.actions.resetItems(_items)
                     if (index == length - 1) {
                         let items = []
                         this.state.items.forEach(element => {
@@ -862,6 +858,7 @@ class materialRequestAddEdit extends Component {
                     const _items = this.state._items;
                     _items.push(updatedItem);
                     this.setState({ _items, isLoading: false })
+                    this.props.actions.resetItems(_items)
                     if (index == length - 1) {
                         let items = this.state.items
                         for (var i = 0; i < items.length; i++)
@@ -890,11 +887,11 @@ class materialRequestAddEdit extends Component {
     ConfirmDelete = () => {
         this.setState({ isLoading: true })
         Api.post('DeleteMultipleContractsSiteRequestItems', this.state.selectedRows).then((res) => {
-            let _items = [...this.state._items]
-            let length = _items.length
+            let _items = [...this.state._items] 
             this.state.selectedRows.forEach((element, index) => {
                 _items = _items.filter(item => { return item.id != element });
             })
+            this.props.actions.resetItems(_items)
             this.setState({ _items, showDeleteModal: false, isLoading: false });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(() => {
@@ -917,6 +914,7 @@ class materialRequestAddEdit extends Component {
             for (let i = fromRow; i <= toRow; i++) {
                 _items[i] = { ..._items[i], ...updated };
             }
+            this.props.actions.resetItems(_items)
             return { _items };
         }, function () {
             if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]] && Object.keys(updated)[0] == 'quantity') {
@@ -926,6 +924,7 @@ class materialRequestAddEdit extends Component {
                     .then(() => {
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                         this.setState({ isLoading: false })
+                       
                     })
                     .catch(() => {
                         toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -938,7 +937,7 @@ class materialRequestAddEdit extends Component {
                 Api.post('UpdateQuantitySiteRequestItems?id=' + this.state._items[fromRow].id + '&stock=' + updated.stock)
                     .then(() => {
                         toast.success(Resources["operationSuccess"][currentLanguage]);
-                        this.setState({ isLoading: false })
+                        this.setState({ isLoading: false }) 
                     })
                     .catch(() => {
                         toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -946,6 +945,7 @@ class materialRequestAddEdit extends Component {
                     })
             }
         });
+        
     };
 
     onRowClick = (value, index, column) => {
@@ -1098,6 +1098,7 @@ class materialRequestAddEdit extends Component {
                     _items: newRows,
                     isLoading: false
                 });
+                this.props.actions.resetItems(newRows)
             }).catch(ex => {
                 this.setState({
                     _items: oldRows,
@@ -1125,6 +1126,7 @@ class materialRequestAddEdit extends Component {
                 _items: newRows,
                 isLoading: false
             });
+            this.props.actions.resetItems(newRows)
         }).catch(ex => {
             this.setState({
                 _items: oldRows,

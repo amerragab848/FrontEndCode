@@ -417,6 +417,7 @@ class ContractInfoAddEdit extends Component {
         this.setState({
           rows: [...result]
         });
+        this.props.actions.ExportingData({ items: result });
       });
 
       DataService.GetDataGrid("GetContractsChangeOrderByContractId?contractId=" + this.state.docId).then(result => {
@@ -469,7 +470,7 @@ class ContractInfoAddEdit extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+    if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
       this.checkDocumentIsView();
     }
     if (prevProps.showModal != this.props.showModal) {
@@ -508,7 +509,11 @@ class ContractInfoAddEdit extends Component {
       this.fillDropDowns(true);
       this.checkDocumentIsView();
     }
-
+    let _items = props.items ? props.items : []
+    if (JSON.stringify(this.state.rows.length) != JSON.stringify(_items)) {
+      this.setState({ isLoading: true })
+      this.setState({ rows: _items }, () => this.setState({ isLoading: false }));
+    }
     if (this.state.showModal != props.showModal) {
       this.setState({ showModal: props.showModal });
     }
@@ -714,6 +719,7 @@ class ContractInfoAddEdit extends Component {
           Api.post("EditRevisedQuantity", obj).then(() => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
             this.setState({ isLoading: false });
+
           })
             .catch(() => {
               toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -829,7 +835,7 @@ class ContractInfoAddEdit extends Component {
 
           originalData.splice(getIndex, 1);
         });
-
+        this.props.actions.resetItems(originalData)
         this.setState({
           showPopUp: false,
           isLoading: false,
@@ -878,8 +884,9 @@ class ContractInfoAddEdit extends Component {
   editItems = () => {
 
     this.setState({ viewItemPopUp: false });
-
-    DataService.addObject("EditContracOrdertById", this.state.objItems).then(result => {
+    let objItems = this.state.objItems;
+    objItems.docId = this.state.docId;
+    DataService.addObject("EditContracOrdertById", objItems).then(result => {
 
       let originalData = this.state.rows;
 
@@ -892,6 +899,7 @@ class ContractInfoAddEdit extends Component {
       this.setState({
         rows: originalData
       });
+      this.props.actions.resetItems(originalData)
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(() => {
       toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -1075,8 +1083,20 @@ class ContractInfoAddEdit extends Component {
 
     const ItemsGrid =
       this.state.isLoading === false ? (
-        <Fragment> 
-          <GridSetup rows={this.state.rows} showCheckbox={this.state.isViewMode === false ? true : false} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain.bind(this)}
+        <Fragment>
+          <GridSetup rows={this.state.rows} showCheckbox={this.state.isViewMode === false ? true : false}
+            clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain.bind(this)}
+            pageSize={this.state.pageSize} onRowClick={this.onRowClick} columns={columnsGrid}
+            onGridRowsUpdated={this._onGridRowsUpdated} key='rows' />
+        </Fragment>
+      ) : (
+          <LoadingSection />
+        );
+    const voItemsGrid =
+      this.state.isLoading === false ? (
+        <Fragment>
+          <GridSetup rows={this.state.rows} showCheckbox={this.state.isViewMode === false ? true : false}
+            clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain.bind(this)}
             pageSize={this.state.pageSize} onRowClick={this.onRowClick} columns={columnsGrid}
             onGridRowsUpdated={this._onGridRowsUpdated} key='rows' />
         </Fragment>
@@ -1102,6 +1122,28 @@ class ContractInfoAddEdit extends Component {
             </div>
           </div>
           {ItemsGrid}
+        </div>
+      </Fragment>
+    );
+
+    const voiContent = (
+      <Fragment>
+        <div className="document-fields">
+          <div class="submittalFilter">
+            <div class="subFilter">
+              <h3 class="zero"> {Resources['items'][currentLanguage]}</h3>
+              <span>{this.state.rows.length}</span>
+            </div>
+            <div className="rowsPaginations">
+              <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
+                <i className="angle left icon" />
+              </button>
+              <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
+                <i className="angle right icon" />
+              </button>
+            </div>
+          </div>
+          {voItemsGrid}
         </div>
       </Fragment>
     );
@@ -1519,6 +1561,9 @@ class ContractInfoAddEdit extends Component {
             <li className={"data__tabs--list " + (this.state.activeTab == "subPOs" ? "active" : "")} onClick={() => this.changeTab("subPOs")}>
               {Resources.subPOs[currentLanguage]}
             </li>
+            <li className={"data__tabs--list " + (this.state.activeTab == "voi" ? "active" : "")} onClick={() => this.changeTab("voi")}>
+              {Resources.variationOrderItems[currentLanguage]}
+            </li>
           </ul>
         </div>
         <Fragment>
@@ -1532,6 +1577,8 @@ class ContractInfoAddEdit extends Component {
           {this.state.activeTab == "amendment" ? (<AmendmentList contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} />) : null}
           {this.state.activeTab == "subContracts" ? (<SubContract type='Contract' ApiGet={'GetSubContractsByContractId?contractId=' + this.state.docId} contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
           {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog ApiGet={"GetSubPOsByContractId?contractId=" + docId} type="Contract" docId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
+          {this.state.activeTab == "voi" ? (<Fragment>{voiContent}</Fragment>) : null}
+       
         </Fragment>
         <div className="doc-pre-cycle letterFullWidth">
           <div className="precycle-grid">

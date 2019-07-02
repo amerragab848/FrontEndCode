@@ -9,6 +9,7 @@ import DashBoard from "./DashBoard";
 import _ from "lodash";
 import language from "../resources.json";
 import Api from "../api";
+import Config from "../Services/Config";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class Index extends Component {
@@ -79,44 +80,40 @@ class Index extends Component {
 
   renderCharts() {
     let chartWidgets = this.state.chartData.map((item) => {
-      if (item.type === "pie") {
-        return (
-          <div className="col-lg-4 col-md-6" key={item.id}>
-            <PieChartComp
-              api={item.props.api}
-              name={item.props.name}
-              y={item.props.y}
-              title={language[item.title][currentLanguage]}
-              seriesName={language[item.seriesName][currentLanguage]}
-            />
-          </div>
-        );
+      if (Config.IsAllow(item.permission) === true) {
+
+        if (item.type === "pie") {
+          return (
+            <div className="col-lg-4 col-md-6" key={item.id}>
+              <PieChartComp api={item.props.api} y={item.props.y}
+                name={item.props.name} title={language[item.title][currentLanguage]}
+                seriesName={language[item.seriesName][currentLanguage]} />
+            </div>
+          );
+        }
+
+        else if (item.type === "line") {
+          return (
+            <Britecharts api={item.props.api} topicName={item.topicNames}
+              title={language[item.title][currentLanguage]} />
+          );
+        }
+
+        else {
+          return (
+            <BarChartComp api={item.props.api} ukey={item.id} catagName={item.catagName}
+              name={item.props.name} y={item.props.data}
+              title={language[item.title][currentLanguage]} stack={item.stack}
+              yTitle={language[item.yTitle][currentLanguage]} multiSeries={item.multiSeries}
+              barContent={item.barContent ? item.barContent : []} />
+          );
+        }
       }
-      else if (item.type === "line") {
-        return (
-          <Britecharts
-            api={item.props.api}
-            title={language[item.title][currentLanguage]}
-            topicName={item.topicNames}
-          />
-        );
-      }
+
       else {
-        return (
-          <BarChartComp
-            api={item.props.api}
-            ukey={item.id}
-            name={item.props.name}
-            y={item.props.data}
-            title={language[item.title][currentLanguage]}
-            stack={item.stack}
-            yTitle={language[item.yTitle][currentLanguage]}
-            catagName={item.catagName}
-            multiSeries={item.multiSeries}
-            barContent={item.barContent ? item.barContent : []}
-          />
-        );
+        return null;
       }
+
     });
 
     return chartWidgets;
@@ -163,41 +160,48 @@ class Index extends Component {
                             return (<Widgets key={panel.key} title={panel.title} {...panel} />);
                           }
                           else if (panel.type === "pie") {
+
                             return (
-                              <div className="col-lg-4 col-md-6" key={panel.id}>
-                                <PieChartComp
-                                  api={panel.props.api}
-                                  name={panel.props.name}
-                                  y={panel.props.y}
-                                  title={language[panel.title][currentLanguage]}
-                                  seriesName={panel.seriesName} />
-                              </div>
+                              Config.IsAllow(panel.permission) === true ?
+                                <div className="col-lg-4 col-md-6" key={panel.id}>
+                                  <PieChartComp
+                                    api={panel.props.api}
+                                    name={panel.props.name}
+                                    y={panel.props.y}
+                                    title={language[panel.title][currentLanguage]}
+                                    seriesName={panel.seriesName} />
+                                </div>
+                                : null
                             );
                           }
                           else if (panel.type === "line") {
                             return (
-                              <Fragment key={panel.id}>
-                                <Britecharts
-                                  api={panel.props.api}
-                                  title={language[panel.title][currentLanguage]}
-                                  topicName={panel.topicNames} />
-                              </Fragment>
+                              Config.IsAllow(panel.permission) === true ?
+                                <Fragment key={panel.id}>
+                                  <Britecharts
+                                    api={panel.props.api}
+                                    title={language[panel.title][currentLanguage]}
+                                    topicName={panel.topicNames} />
+                                </Fragment>
+                                : null
                             );
                           } else {
                             return (
-
-                              <BarChartComp
-                                api={panel.props.api}
-                                ukey={panel.id}
-                                name={panel.props.name}
-                                y={panel.props.data}
-                                title={language[panel.title][currentLanguage]}
-                                stack={panel.stack}
-                                yTitle={panel.yTitle}
-                                catagName={panel.catagName}
-                                multiSeries={panel.multiSeries}
-                                barContent={panel.barContent ? panel.barContent : []}
-                              />);
+                              Config.IsAllow(panel.permission) === true ?
+                                <BarChartComp
+                                  api={panel.props.api}
+                                  ukey={panel.id}
+                                  name={panel.props.name}
+                                  y={panel.props.data}
+                                  title={language[panel.title][currentLanguage]}
+                                  stack={panel.stack}
+                                  yTitle={panel.yTitle}
+                                  catagName={panel.catagName}
+                                  multiSeries={panel.multiSeries}
+                                  barContent={panel.barContent ? panel.barContent : []}
+                                />
+                                : null
+                            );
                           }
                         }
                       })
@@ -240,41 +244,47 @@ class Index extends Component {
                         }
                         else if (panel.type === "pie") {
                           return (
-                            <div className="col-lg-4 col-md-6" key={panel.id}>
-                              <PieChartComp
-                                api={panel.props.api}
-                                name={panel.props.name}
-                                y={panel.props.y}
-                                title={language[panel.title][currentLanguage]}
-                                seriesName={panel.seriesName}
-                              />
-                            </div>
+                            Config.IsAllow(panel.permission) === true ?
+                              <div className="col-lg-4 col-md-6" key={panel.id}>
+                                <PieChartComp
+                                  api={panel.props.api}
+                                  name={panel.props.name}
+                                  y={panel.props.y}
+                                  title={language[panel.title][currentLanguage]}
+                                  seriesName={panel.seriesName}
+                                />
+                              </div>
+                              : null
                           );
                         }
                         else if (panel.type === "line") {
                           return (
-                            <Fragment key={panel.id}>
-                              <Britecharts
-                                api={panel.props.api}
-                                title={language[panel.title][currentLanguage]}
-                                topicName={panel.topicNames} />
-                            </Fragment>
+                            Config.IsAllow(panel.permission) === true ?
+                              <Fragment key={panel.id}>
+                                <Britecharts
+                                  api={panel.props.api}
+                                  title={language[panel.title][currentLanguage]}
+                                  topicName={panel.topicNames} />
+                              </Fragment>
+                              : null
                           );
                         }
                         else {
                           return (
-                            <BarChartComp
-                              ukey={panel.id}
-                              api={panel.props.api}
-                              name={panel.props.name}
-                              y={panel.props.data}
-                              title={language[panel.title][currentLanguage]}
-                              stack={panel.stack}
-                              yTitle={panel.yTitle}
-                              catagName={panel.catagName}
-                              multiSeries={panel.multiSeries}
-                              barContent={panel.barContent ? panel.barContent : []}
-                            />
+                            Config.IsAllow(panel.permission) === true ?
+                              <BarChartComp
+                                ukey={panel.id}
+                                api={panel.props.api}
+                                name={panel.props.name}
+                                y={panel.props.data}
+                                title={language[panel.title][currentLanguage]}
+                                stack={panel.stack}
+                                yTitle={panel.yTitle}
+                                catagName={panel.catagName}
+                                multiSeries={panel.multiSeries}
+                                barContent={panel.barContent ? panel.barContent : []}
+                              />
+                              : null
                           );
                         }
                       }) : null}
@@ -315,19 +325,22 @@ class Index extends Component {
                       }
                       else if (panel.type === "pie") {
                         return (
-                          <div className="col-lg-4 col-md-6" key={panel.id}>
-                            <PieChartComp
-                              api={panel.props.api}
-                              name={panel.props.name}
-                              y={panel.props.y}
-                              title={language[panel.title][currentLanguage]}
-                              seriesName={panel.seriesName}
-                            />
-                          </div>
+                          Config.IsAllow(panel.permission) === true ?
+                            <div className="col-lg-4 col-md-6" key={panel.id}>
+                              <PieChartComp
+                                api={panel.props.api}
+                                name={panel.props.name}
+                                y={panel.props.y}
+                                title={language[panel.title][currentLanguage]}
+                                seriesName={panel.seriesName}
+                              />
+                            </div>
+                            : null
                         );
                       }
                       else if (panel.type === "line") {
                         return (
+                          Config.IsAllow(panel.permission) === true?
                           <Fragment key={panel.id}>
                             <Britecharts
                               api={panel.props.api}
@@ -335,9 +348,11 @@ class Index extends Component {
                               title={language[panel.title][currentLanguage]}
                             />
                           </Fragment>
+                          :null
                         );
                       } else {
                         return (
+                          Config.IsAllow(panel.permission) === true?
                           <BarChartComp
                             ukey={panel.id}
                             api={panel.props.api}
@@ -350,6 +365,7 @@ class Index extends Component {
                             multiSeries={panel.multiSeries}
                             barContent={panel.barContent ? panel.barContent : []}
                           />
+                          :null
                         );
                       }
                     }) : null}

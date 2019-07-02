@@ -15454,11 +15454,14 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 .letterFullWidth .textarea-group {
   width: 100%; }
 
-.ck-blurred.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline, .ck.ck-toolbar {
+.ck-blurred.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline, .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar {
   border: 2px solid #E9ECF0; }
 
+.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar {
+  border-bottom: none; }
+
 .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
-  border: solid 2px #83B4FC; }
+  border: solid 2px #83B4FC !important; }
 
 .react-grid-Row:hover,
 .react-grid-Cell:hover,
