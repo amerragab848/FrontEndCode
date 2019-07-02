@@ -11114,7 +11114,7 @@
             "en": "Over Time Report",
             "ar": "تقرير الوقت الاضافى"
           },
-          "id": 4001,
+          "id": 40010,
           "permissions": [
             {
               "code": 3492,
@@ -13052,7 +13052,7 @@
             "en": "Custom Site Instruction",
             "ar": "تقرير عدم المطابقه"
           },
-          "id": 4001,
+          "id": 40011,
           "permissions": [
             {
               "code": 3396,
