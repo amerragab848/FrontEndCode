@@ -27,6 +27,7 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import Rodal from "../../Styles/js/rodal";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { MapsTransferWithinAStation } from "material-ui/svg-icons";
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 
 const _ = require("lodash");
 
@@ -121,6 +122,7 @@ class SubmittalAddEdit extends Component {
       SecondStepComplate: false,
       ThirdStepComplate: false,
       FourthStepComplate: false,
+      FivethStepComplate: false,
       addNewCycle: false,
       document: this.props.document ? Object.assign({}, this.props.document) : {},
       documentCycle: this.props.documentCycle ? Object.assign({}, this.props.documentCycle) : {},
@@ -189,7 +191,6 @@ class SubmittalAddEdit extends Component {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push("/submittal/" + this.state.projectId);
     }
-
   }
 
   componentDidMount() {
@@ -473,7 +474,7 @@ class SubmittalAddEdit extends Component {
 
         if (locationId) {
 
-          let locationName = result.find(i => i.label ===  locationId );
+          let locationName = result.find(i => i.label === locationId);
 
           if (locationName) {
 
@@ -501,7 +502,7 @@ class SubmittalAddEdit extends Component {
 
         if (areaId) {
 
-          areaIdName = result.find(i => i.label ===  areaId);
+          areaIdName = result.find(i => i.label === areaId);
 
           if (areaIdName) {
 
@@ -875,7 +876,7 @@ class SubmittalAddEdit extends Component {
     saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocument.forwardToDate = moment(saveDocument.forwardToDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocument.area = this.state.selectedArea.label;
-    saveDocument.location=this.state.selectedLocation.label;
+    saveDocument.location = this.state.selectedLocation.label;
     dataservice.addObject("EditLogSubmittal", saveDocument).then(result => {
 
       this.setState({
@@ -883,7 +884,8 @@ class SubmittalAddEdit extends Component {
         Stepes: this.state.Stepes + 1,
         SecondStepComplate: true,
         ThirdStepComplate: false,
-        FourthStepComplate: false
+        FourthStepComplate: false,
+        FivethStepComplate: false
       });
 
       toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -968,7 +970,7 @@ class SubmittalAddEdit extends Component {
 
       let saveDocument = { ...this.state.document };
       saveDocument.area = this.state.selectedArea.label;
-      saveDocument.location=this.state.selectedLocation.label;
+      saveDocument.location = this.state.selectedLocation.label;
       saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
       saveDocument.forwardToDate = moment(saveDocument.forwardToDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
@@ -981,7 +983,8 @@ class SubmittalAddEdit extends Component {
           //Stepes: this.state.Stepes + 1,
           SecondStepComplate: true,
           ThirdStepComplate: false,
-          FourthStepComplate: false
+          FourthStepComplate: false,
+          FivethStepComplate: false
         });
       }).catch(ex => {
         this.setState({
@@ -1084,7 +1087,8 @@ class SubmittalAddEdit extends Component {
         Stepes: this.state.Stepes + 1,
         SecondStepComplate: true,
         ThirdStepComplate: false,
-        FourthStepComplate: false
+        FourthStepComplate: false,
+        FivethStepComplate: false
       });
     }
     else if (this.state.Stepes === 2) {
@@ -1109,10 +1113,20 @@ class SubmittalAddEdit extends Component {
           Stepes: this.state.Stepes + 1,
           SecondStepComplate: true,
           ThirdStepComplate: true,
-          FourthStepComplate: false
+          FourthStepComplate: false,
+          FivethStepComplate: false
         });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     } else if (this.state.Stepes === 3) {
+      this.setState({
+        Stepes: this.state.Stepes + 1,
+        SecondStepComplate: true,
+        ThirdStepComplate: true,
+        FourthStepComplate: true,
+        FivethStepComplate: false
+      });
+    }else if(this.state.Stepes === 4)
+    {
       this.props.history.push("/submittal/" + this.state.projectId);
     }
   }
@@ -1123,7 +1137,8 @@ class SubmittalAddEdit extends Component {
         Stepes: this.state.Stepes - 1,
         SecondStepComplate: false,
         ThirdStepComplate: false,
-        FourthStepComplate: false
+        FourthStepComplate: false,
+        FivethStepComplate: false
       });
     }
     else if (this.state.Stepes === 3) {
@@ -1131,7 +1146,17 @@ class SubmittalAddEdit extends Component {
         Stepes: this.state.Stepes - 1,
         SecondStepComplate: true,
         ThirdStepComplate: false,
-        FourthStepComplate: false
+        FourthStepComplate: false,
+        FivethStepComplate: false
+      });
+    }
+    else if (this.state.Stepes === 4) {
+      this.setState({
+        Stepes: this.state.Stepes - 1,
+        SecondStepComplate: true,
+        ThirdStepComplate: false,
+        FourthStepComplate: false,
+        FivethStepComplate: false
       });
     }
   }
@@ -1201,14 +1226,15 @@ class SubmittalAddEdit extends Component {
   }
 
   nextSteps() {
-    if (this.state.Stepes === 3) {
+    if (this.state.Stepes === 4) {
       this.props.history.push("/submittal/" + this.state.projectId);
     } else {
       this.setState({
         Stepes: this.state.Stepes + 1,
         SecondStepComplate: true,
         ThirdStepComplate: true,
-        FourthStepComplate: false
+        FourthStepComplate: false,
+        FivethStepComplate: false
       });
     }
   }
@@ -1478,6 +1504,14 @@ class SubmittalAddEdit extends Component {
           Stepes: step
         });
       }
+      if (step === 4) {
+        this.setState({
+          ThirdStepComplate: false,
+          SecondStepComplate: false,
+          FivethStepComplate: true,
+          Stepes: step
+        });
+      }
     }
   }
 
@@ -1488,6 +1522,8 @@ class SubmittalAddEdit extends Component {
         SecondStep: false,
         SecondStepComplate: false,
         ThirdStepComplate: false,
+        FourthStepComplate: false,
+        FivethStepComplate: false,
         Stepes: 1,
       })
     }
@@ -1500,6 +1536,8 @@ class SubmittalAddEdit extends Component {
         SecondStep: true,
         SecondStepComplate: true,
         ThirdStepComplate: false,
+        FourthStepComplate: false,
+        FivethStepComplate: false,
         Stepes: 2,
       })
     }
@@ -1514,16 +1552,32 @@ class SubmittalAddEdit extends Component {
       submittalItem.reviewResult = "";
       submittalItem.submitalDate = moment();
       submittalItem.refDoc = "";
-      submittalItem.arrange = maxArrange.arrange != null ? maxArrange.arrange + 1 : 1;
+      submittalItem.arrange = maxArrange != undefined ? (maxArrange.arrange != null ? maxArrange.arrange + 1 : 1) : 1;
 
       this.setState({
         itemsDocumentSubmital: submittalItem,
         ThirdStep: true,
         SecondStepComplate: true,
         ThirdStepComplate: true,
+        FourthStepComplate:false,
+        FivethStepComplate:false,
         Stepes: 3,
         //FirstStep: false,
         SecondStep: false,
+      })
+    }
+  }
+
+  StepFourLink = () => {
+    if (docId !== 0) {
+      this.setState({
+        ThirdStep: false,
+        SecondStepComplate: true,
+        ThirdStepComplate: true,
+        Stepes: 4,
+        SecondStep: false,
+        FivethStepComplate: false,
+        FourthStepComplate: true
       })
     }
   }
@@ -1923,303 +1977,317 @@ class SubmittalAddEdit extends Component {
                       <br />
                     </div>
                     :
-                    (
-                      <Fragment>
-                        {this.state.Stepes === 2 ?
-                          <Fragment>
-                            <div className="document-fields">
-                              <Formik initialValues={this.state.documentCycle}
-                                validationSchema={validationCycleSubmital}
-                                enableReinitialize={this.props.changeStatus}
-                                onSubmit={values => {
-                                  if (this.props.changeStatus === true) {
-                                    this.editSubmittalCycle();
-                                  } else {
-                                    this.addSubmittalCycle();
-                                  }
-                                }}>
-                                {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                                  <Form id="submittalForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                                    <div className="doc-pre-cycle fullWidthWrappertextLeft cycleInsideForm">
-                                      <header>
-                                        <h2 className="zero">
-                                          {Resources["CycleDetails"][currentLanguage]}
-                                        </h2>
-                                      </header>
-                                    </div>
-                                    <div className="proForm first-proform">
-                                      <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                          {Resources.subject[currentLanguage]}
-                                        </label>
-                                        <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")} >
-                                          <input name="subject" className="form-control fsadfsadsa"
-                                            placeholder={Resources.subject[currentLanguage]} autoComplete="off"
-                                            value={this.state.documentCycle.subject}
-                                            onBlur={e => { handleBlur(e); handleChange(e); }}
-                                            onChange={e => this.handleChangeCycles(e, "subject")} />
-                                          {errors.subject && touched.subject ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                                            !errors.subject && touched.subject ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
-                                          {errors.subject && touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
-                                        </div>
-                                      </div>
-                                      <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                          {Resources.status[currentLanguage]}
-                                        </label>
-                                        <div className="ui checkbox radio radioBoxBlue">
-                                          <input type="radio" name="cycleStatus" defaultChecked={this.state.documentCycle.CycleStatus === false ? null : "checked"}
-                                            value="true" onChange={e => this.handleChangeCycles(e, "CycleStatus")} />
-                                          <label>
-                                            {Resources.oppened[currentLanguage]}
-                                          </label>
-                                        </div>
-                                        <div className="ui checkbox radio radioBoxBlue">
-                                          <input type="radio" name="cycleStatus" defaultChecked={this.state.documentCycle.CycleStatus === false ? "checked" : null}
-                                            value="false" onChange={e => this.handleChangeCycles(e, "CycleStatus")} />
-                                          <label>
-                                            {Resources.closed[currentLanguage]}
-                                          </label>
-                                        </div>
+                    (<Fragment>
+                      {this.state.Stepes === 2 ?
+                        <Fragment>
+                          <div className="document-fields">
+                            <Formik initialValues={this.state.documentCycle} validationSchema={validationCycleSubmital} enableReinitialize={this.props.changeStatus}
+                              onSubmit={values => {
+                                if (this.props.changeStatus === true) {
+                                  this.editSubmittalCycle();
+                                } else {
+                                  this.addSubmittalCycle();
+                                }
+                              }}>
+                              {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                <Form id="submittalForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                                  <div className="doc-pre-cycle fullWidthWrappertextLeft cycleInsideForm">
+                                    <header>
+                                      <h2 className="zero">
+                                        {Resources["CycleDetails"][currentLanguage]}
+                                      </h2>
+                                    </header>
+                                  </div>
+                                  <div className="proForm first-proform">
+                                    <div className="linebylineInput valid-input">
+                                      <label className="control-label">
+                                        {Resources.subject[currentLanguage]}
+                                      </label>
+                                      <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")} >
+                                        <input name="subject" className="form-control fsadfsadsa"
+                                          placeholder={Resources.subject[currentLanguage]} autoComplete="off"
+                                          value={this.state.documentCycle.subject}
+                                          onBlur={e => { handleBlur(e); handleChange(e); }}
+                                          onChange={e => this.handleChangeCycles(e, "subject")} />
+                                        {errors.subject && touched.subject ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
+                                          !errors.subject && touched.subject ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+                                        {errors.subject && touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
                                       </div>
                                     </div>
-                                    <div className="proForm datepickerContainer">
-                                      <div className="linebylineInput">
-                                        <div className="inputDev ui input input-group date NormalInputDate">
-                                          <ModernDatepicker startDate={this.state.documentCycle.docDate} title="cycleDate"
-                                            handleChange={e => this.handleChangeDateCycles(e, "docDate")} />
-                                        </div>
-                                      </div>
-                                      <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                          {Resources.arrange[currentLanguage]}
+                                    <div className="linebylineInput valid-input">
+                                      <label className="control-label">
+                                        {Resources.status[currentLanguage]}
+                                      </label>
+                                      <div className="ui checkbox radio radioBoxBlue">
+                                        <input type="radio" name="cycleStatus" defaultChecked={this.state.documentCycle.CycleStatus === false ? null : "checked"}
+                                          value="true" onChange={e => this.handleChangeCycles(e, "CycleStatus")} />
+                                        <label>
+                                          {Resources.oppened[currentLanguage]}
                                         </label>
-                                        <div className={"ui input inputDev fillter-item-c " + (errors.arrangeCycle && touched.arrangeCycle ? "has-error" : !errors.arrangeCycle && touched.arrangeCycle ? "has-success" : "")}>
-                                          <input type="text" className="form-control" readOnly value={this.state.documentCycle.arrange} name="arrangeCycle"
-                                            placeholder={Resources.arrange[currentLanguage]}
-                                            onBlur={e => { handleChange(e); handleBlur(e); }}
-                                            onChange={e => this.handleChangeCycles(e, "arrange")} />
-                                          {errors.arrangeCycle && touched.arrangeCycle ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                                            !errors.arrangeCycle && touched.arrangeCycle ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
-                                          {errors.arrangeCycle && touched.arrangeCycle ? (<em className="pError"> {errors.arrangeCycle} </em>) : null}
-                                        </div>
                                       </div>
-                                      <div className="linebylineInput valid-input">
-                                        <Dropdown title="approvalStatus" data={this.state.approvales}
-                                          selectedValue={this.state.selectedApprovalStatus}
-                                          handleChange={event => this.handleChangeDropDownCycles(event, "approvalStatusId", false, "", "", "", "selectedApprovalStatus")}
-                                          onChange={setFieldValue}
-                                          onBlur={setFieldTouched}
-                                          error={errors.approvalStatusId}
-                                          touched={touched.approvalStatusId}
-                                          name="approvalStatusId"
-                                          id="approvalStatusId" />
-                                      </div>
-                                      <div className="linebylineInput valid-input mix_dropdown">
-                                        <label className="control-label">
-                                          {Resources.toCompany[currentLanguage]}
+                                      <div className="ui checkbox radio radioBoxBlue">
+                                        <input type="radio" name="cycleStatus" defaultChecked={this.state.documentCycle.CycleStatus === false ? "checked" : null}
+                                          value="false" onChange={e => this.handleChangeCycles(e, "CycleStatus")} />
+                                        <label>
+                                          {Resources.closed[currentLanguage]}
                                         </label>
-                                        <div className="supervisor__company">
-                                          <div className="super_name">
-                                            <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompanyCycles}
-                                              handleChange={event => { this.handleChangeDropDownCycles(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedFromCompanyCycles", "selectedFromContact"); }}
-                                              id="fromCompanyIdCycle" />
-                                          </div>
-                                          <div className="super_company">
-                                            <Dropdown data={this.state.fromContactsCycles}
-                                              selectedValue={this.state.selectedFromContactCycles}
-                                              handleChange={event => this.handleChangeDropDownCycles(event, "flowContactId", false, "", "", "", "selectedFromContactCycles")}
-                                              onChange={setFieldValue}
-                                              onBlur={setFieldTouched}
-                                              error={errors.flowContactId}
-                                              touched={touched.flowContactId}
-                                              name="flowContactId"
-                                              id="flowContactId" />
-                                          </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="proForm datepickerContainer">
+                                    <div className="linebylineInput">
+                                      <div className="inputDev ui input input-group date NormalInputDate">
+                                        <ModernDatepicker startDate={this.state.documentCycle.docDate} title="cycleDate"
+                                          handleChange={e => this.handleChangeDateCycles(e, "docDate")} />
+                                      </div>
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                      <label className="control-label">
+                                        {Resources.arrange[currentLanguage]}
+                                      </label>
+                                      <div className={"ui input inputDev fillter-item-c " + (errors.arrangeCycle && touched.arrangeCycle ? "has-error" : !errors.arrangeCycle && touched.arrangeCycle ? "has-success" : "")}>
+                                        <input type="text" className="form-control" readOnly value={this.state.documentCycle.arrange} name="arrangeCycle"
+                                          placeholder={Resources.arrange[currentLanguage]}
+                                          onBlur={e => { handleChange(e); handleBlur(e); }}
+                                          onChange={e => this.handleChangeCycles(e, "arrange")} />
+                                        {errors.arrangeCycle && touched.arrangeCycle ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
+                                          !errors.arrangeCycle && touched.arrangeCycle ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+                                        {errors.arrangeCycle && touched.arrangeCycle ? (<em className="pError"> {errors.arrangeCycle} </em>) : null}
+                                      </div>
+                                    </div>
+                                    <div className="linebylineInput valid-input">
+                                      <Dropdown title="approvalStatus" data={this.state.approvales}
+                                        selectedValue={this.state.selectedApprovalStatus}
+                                        handleChange={event => this.handleChangeDropDownCycles(event, "approvalStatusId", false, "", "", "", "selectedApprovalStatus")}
+                                        onChange={setFieldValue}
+                                        onBlur={setFieldTouched}
+                                        error={errors.approvalStatusId}
+                                        touched={touched.approvalStatusId}
+                                        name="approvalStatusId"
+                                        id="approvalStatusId" />
+                                    </div>
+                                    <div className="linebylineInput valid-input mix_dropdown">
+                                      <label className="control-label">
+                                        {Resources.toCompany[currentLanguage]}
+                                      </label>
+                                      <div className="supervisor__company">
+                                        <div className="super_name">
+                                          <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompanyCycles}
+                                            handleChange={event => { this.handleChangeDropDownCycles(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedFromCompanyCycles", "selectedFromContact"); }}
+                                            id="fromCompanyIdCycle" />
+                                        </div>
+                                        <div className="super_company">
+                                          <Dropdown data={this.state.fromContactsCycles}
+                                            selectedValue={this.state.selectedFromContactCycles}
+                                            handleChange={event => this.handleChangeDropDownCycles(event, "flowContactId", false, "", "", "", "selectedFromContactCycles")}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.flowContactId}
+                                            touched={touched.flowContactId}
+                                            name="flowContactId"
+                                            id="flowContactId" />
                                         </div>
                                       </div>
+                                    </div>
 
-                                      <div className="linebylineInput">
-                                        <div className="inputDev ui input input-group date NormalInputDate">
-                                          <ModernDatepicker startDate={this.state.documentCycle.approvedDate} title="dateApproved"
-                                            handleChange={e => this.handleChangeDateCycles(e, "approvedDate")} />
-                                        </div>
+                                    <div className="linebylineInput">
+                                      <div className="inputDev ui input input-group date NormalInputDate">
+                                        <ModernDatepicker startDate={this.state.documentCycle.approvedDate} title="dateApproved"
+                                          handleChange={e => this.handleChangeDateCycles(e, "approvedDate")} />
                                       </div>
                                     </div>
-                                    <div className="slider-Btns">
-                                      {this.state.isViewMode === false ?
-                                        (this.state.isLoading === false ?
-                                          <Fragment>
-                                            <button className="primaryBtn-1 btn meduimBtn" type="submit">{Resources["save"][currentLanguage]}</button>
-                                            {this.props.changeStatus === true ? <button className="primaryBtn-1 btn meduimBtn" type="button" onClick={this.addCycle.bind(this)}>{Resources["addNewCycle"][currentLanguage]}</button> : null}
-                                          </Fragment>
-                                          :
-                                          <button className="primaryBtn-1 btn disabled">
-                                            <div className="spinner">
-                                              <div className="bounce1" />
-                                              <div className="bounce2" />
-                                              <div className="bounce3" />
-                                            </div>
-                                          </button>) : null}
-                                    </div>
-                                  </Form>
-                                )}
-                              </Formik>
-                              <header className="main__header">
-                                <div className="main__header--div">
-                                  <h2 className="zero">
-                                    {Resources["previousCycle"][currentLanguage]}
-                                  </h2>
-                                </div>
-                              </header>
-                              <ReactTable data={this.state.submittalItemData}
-                                columns={columnsCycles}
-                                defaultPageSize={5}
-                                noDataText={Resources["noData"][currentLanguage]}
-                                className="-striped -highlight" />
-                            </div>
-                          </Fragment> :
-                          <Fragment>
+                                  </div>
+                                  <div className="slider-Btns">
+                                    {this.state.isViewMode === false ?
+                                      (this.state.isLoading === false ?
+                                        <Fragment>
+                                          <button className="primaryBtn-1 btn meduimBtn" type="submit">{Resources["save"][currentLanguage]}</button>
+                                          {this.props.changeStatus === true ? <button className="primaryBtn-1 btn meduimBtn" type="button" onClick={this.addCycle.bind(this)}>{Resources["addNewCycle"][currentLanguage]}</button> : null}
+                                        </Fragment>
+                                        :
+                                        <button className="primaryBtn-1 btn disabled">
+                                          <div className="spinner">
+                                            <div className="bounce1" />
+                                            <div className="bounce2" />
+                                            <div className="bounce3" />
+                                          </div>
+                                        </button>) : null}
+                                  </div>
+                                </Form>
+                              )}
+                            </Formik>
                             <header className="main__header">
                               <div className="main__header--div">
                                 <h2 className="zero">
-                                  {Resources["items"][currentLanguage]}
+                                  {Resources["previousCycle"][currentLanguage]}
                                 </h2>
                               </div>
                             </header>
-                            <div className="document-fields">
-                              <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
-                                validationSchema={validationSchemaForItem}
-                                enableReinitialize={true}
-                                onSubmit={values => { this.addSubmittalItems(); }}>
-                                {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                                  <Form onSubmit={handleSubmit}>
-                                    <div className="proForm datepickerContainer">
-                                      <div className="letterFullWidth fullInputWidth">
-                                        <label className="control-label">
-                                          {Resources["description"][currentLanguage]}
-                                        </label>
-                                        <div className={"ui input inputDev fillter-item-c " + (errors.description && touched.description ? "has-error" : !errors.description && touched.description ? "has-success" : "")}>
-                                          <input name="description" className="form-control fsadfsadsa" id="description"
-                                            placeholder={Resources.description[currentLanguage]} autoComplete="off"
-                                            value={this.state.itemsDocumentSubmital.description}
-                                            onBlur={e => { handleBlur(e); handleChange(e); }}
-                                            onChange={e => this.handleChangeItems(e, "description")} />
-                                          {errors.description && touched.description ?
-                                            (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                                            !errors.description && touched.description ?
-                                              (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
-                                          {errors.description && touched.description ? (<em className="pError"> {errors.description} </em>) : null}
+                            <ReactTable data={this.state.submittalItemData}
+                              columns={columnsCycles}
+                              defaultPageSize={5}
+                              noDataText={Resources["noData"][currentLanguage]}
+                              className="-striped -highlight" />
+                          </div>
+                        </Fragment> :
+                        <Fragment>
+                          {
+                            this.state.Stepes === 3 ? <Fragment>
+                              <header className="main__header">
+                                <div className="main__header--div">
+                                  <h2 className="zero">
+                                    {Resources["items"][currentLanguage]}
+                                  </h2>
+                                </div>
+                              </header>
+                              <div className="document-fields">
+                                <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
+                                  validationSchema={validationSchemaForItem}
+                                  enableReinitialize={true}
+                                  onSubmit={values => { this.addSubmittalItems(); }}>
+                                  {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                                    <Form onSubmit={handleSubmit}>
+                                      <div className="proForm datepickerContainer">
+                                        <div className="letterFullWidth fullInputWidth">
+                                          <label className="control-label">
+                                            {Resources["description"][currentLanguage]}
+                                          </label>
+                                          <div className={"ui input inputDev fillter-item-c " + (errors.description && touched.description ? "has-error" : !errors.description && touched.description ? "has-success" : "")}>
+                                            <input name="description" className="form-control fsadfsadsa" id="description"
+                                              placeholder={Resources.description[currentLanguage]} autoComplete="off"
+                                              value={this.state.itemsDocumentSubmital.description}
+                                              onBlur={e => { handleBlur(e); handleChange(e); }}
+                                              onChange={e => this.handleChangeItems(e, "description")} />
+                                            {errors.description && touched.description ?
+                                              (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
+                                              !errors.description && touched.description ?
+                                                (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+                                            {errors.description && touched.description ? (<em className="pError"> {errors.description} </em>) : null}
+                                          </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                          <Dropdown isMulti={false} title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
+                                            onChange={setFieldValue} onBlur={setFieldTouched}
+                                            error={errors.reviewResult}
+                                            touched={touched.reviewResult}
+                                            name="reviewResult" id="reviewResult"
+                                            handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")} />
+                                        </div>
+                                        <div className="linebylineInput">
+                                          <div className="inputDev ui input input-group date NormalInputDate">
+                                            <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
+                                              handleChange={e => this.handleChangeDateItems(e, "submitalDate")}
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                          <label className="control-label">
+                                            {Resources.arrange[currentLanguage]}
+                                          </label>
+                                          <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? " has-error" : " ")}>
+                                            <input type="text" className="form-control" id="arrange" readOnly value={this.state.itemsDocumentSubmital.arrange}
+                                              name="arrange" placeholder={Resources.arrange[currentLanguage]}
+                                              onBlur={e => { handleChange(e); handleBlur(e); }}
+                                              onChange={e => this.handleChangeDateItems(e, "arrange")} />
+                                            {errors.arrange && touched.arrange ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
+                                              !errors.arrange && touched.arrange ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+                                            {errors.arrange && touched.arrange ? (<em className="pError"> {errors.arrange} </em>) : null}
+                                          </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                          <label className="control-label">
+                                            {Resources.refDoc[currentLanguage]}
+                                          </label>
+                                          <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? " has-error" : "ui input inputDev")}>
+                                            <input type="text" className="form-control" id="refNo" value={this.state.itemsDocumentSubmital.refDoc}
+                                              name="refDoc" placeholder={Resources.refDoc[currentLanguage]}
+                                              onBlur={e => { handleChange(e); handleBlur(e); }}
+                                              onChange={e => this.handleChangeItems(e, "refDoc")} />
+                                            {errors.refDoc && touched.refDoc ?
+                                              (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
+                                              !errors.refDoc && touched.refDoc ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+                                            {errors.refDoc && touched.refDoc ? (<em className="pError"> {errors.refDoc} </em>) : null}
+                                          </div>
                                         </div>
                                       </div>
-                                      <div className="linebylineInput valid-input">
-                                        <Dropdown isMulti={false} title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
-                                          onChange={setFieldValue} onBlur={setFieldTouched}
-                                          error={errors.reviewResult}
-                                          touched={touched.reviewResult}
-                                          name="reviewResult" id="reviewResult"
-                                          handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")} />
-                                      </div>
-                                      <div className="linebylineInput">
-                                        <div className="inputDev ui input input-group date NormalInputDate">
-                                          <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
-                                            handleChange={e => this.handleChangeDateItems(e, "submitalDate")}
-                                          />
-                                        </div>
-                                      </div>
-                                      <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                          {Resources.arrange[currentLanguage]}
-                                        </label>
-                                        <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? " has-error" : " ")}>
-                                          <input type="text" className="form-control" id="arrange" readOnly value={this.state.itemsDocumentSubmital.arrange}
-                                            name="arrange" placeholder={Resources.arrange[currentLanguage]}
-                                            onBlur={e => { handleChange(e); handleBlur(e); }}
-                                            onChange={e => this.handleChangeDateItems(e, "arrange")} />
-                                          {errors.arrange && touched.arrange ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                                            !errors.arrange && touched.arrange ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
-                                          {errors.arrange && touched.arrange ? (<em className="pError"> {errors.arrange} </em>) : null}
-                                        </div>
-                                      </div>
-                                      <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                          {Resources.refDoc[currentLanguage]}
-                                        </label>
-                                        <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? " has-error" : "ui input inputDev")}>
-                                          <input type="text" className="form-control" id="refNo" value={this.state.itemsDocumentSubmital.refDoc}
-                                            name="refDoc" placeholder={Resources.refDoc[currentLanguage]}
-                                            onBlur={e => { handleChange(e); handleBlur(e); }}
-                                            onChange={e => this.handleChangeItems(e, "refDoc")} />
-                                          {errors.refDoc && touched.refDoc ?
-                                            (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                                            !errors.refDoc && touched.refDoc ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
-                                          {errors.refDoc && touched.refDoc ? (<em className="pError"> {errors.refDoc} </em>) : null}
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className="slider-Btns">
-                                      {
-                                        this.state.isViewMode === false ?
-                                          (this.state.isLoading === false ?
-                                            (<button className="primaryBtn-1 btn meduimBtn" type="submit" >
-                                              {Resources["addTitle"][currentLanguage]}
-                                            </button>
-                                            ) : (
-                                              <button className="primaryBtn-1 btn disabled">
-                                                <div className="spinner">
-                                                  <div className="bounce1" />
-                                                  <div className="bounce2" />
-                                                  <div className="bounce3" />
-                                                </div>
+                                      <div className="slider-Btns">
+                                        {
+                                          this.state.isViewMode === false ?
+                                            (this.state.isLoading === false ?
+                                              (<button className="primaryBtn-1 btn meduimBtn" type="submit" >
+                                                {Resources["addTitle"][currentLanguage]}
                                               </button>
-                                            )) : null}
-                                    </div>
-                                  </Form>
-                                )}
-                              </Formik>
-                            </div>
-                            <div className="precycle-grid">
-                              <div className="reactTableActions">
-                                {selectedRows.length > 0 ? (
-                                  <div className={"gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} >
-                                    <div className="tableselcted-items">
-                                      <span id="count-checked-checkboxes">
-                                        {selectedRows.length}
-                                      </span>
-                                      <span>Selected</span>
-                                    </div>
-                                    <div className="tableSelctedBTNs">
-                                      <button className="defaultBtn btn smallBtn" onClick={this.DeleteDocumentAttachment.bind(this)}>
-                                        {Resources["delete"][currentLanguage]}
-                                      </button>
-                                    </div>
-                                  </div>
-                                ) : null}
-                                <header className="main__header">
-                                  <div className="main__header--div">
-                                    <h2 className="zero">
-                                      {Resources["listDetails"][currentLanguage]}
-                                    </h2>
-                                  </div>
-                                </header>
-                                <ReactTable data={this.state.itemData} columns={columns} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]}
-                                  className="-striped -highlight"
-                                  getTrProps={(state, rowInfo, column, instance) => {
-                                    return { onClick: e => { this.viewModelToEdit(rowInfo.original.id, e.target.type); } };
-                                  }} />
+                                              ) : (
+                                                <button className="primaryBtn-1 btn disabled">
+                                                  <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                  </div>
+                                                </button>
+                                              )) : null}
+                                      </div>
+                                    </Form>
+                                  )}
+                                </Formik>
                               </div>
-                            </div>
+                              <div className="precycle-grid">
+                                <div className="reactTableActions">
+                                  {selectedRows.length > 0 ? (
+                                    <div className={"gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} >
+                                      <div className="tableselcted-items">
+                                        <span id="count-checked-checkboxes">
+                                          {selectedRows.length}
+                                        </span>
+                                        <span>Selected</span>
+                                      </div>
+                                      <div className="tableSelctedBTNs">
+                                        <button className="defaultBtn btn smallBtn" onClick={this.DeleteDocumentAttachment.bind(this)}>
+                                          {Resources["delete"][currentLanguage]}
+                                        </button>
+                                      </div>
+                                    </div>
+                                  ) : null}
+                                  <header className="main__header">
+                                    <div className="main__header--div">
+                                      <h2 className="zero">
+                                        {Resources["listDetails"][currentLanguage]}
+                                      </h2>
+                                    </div>
+                                  </header>
+                                  <ReactTable data={this.state.itemData} columns={columns} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]}
+                                    className="-striped -highlight"
+                                    getTrProps={(state, rowInfo, column, instance) => {
+                                      return { onClick: e => { this.viewModelToEdit(rowInfo.original.id, e.target.type); } };
+                                    }} />
+                                </div>
+                              </div>
 
-                            <div className="slider-Btns">
-                              {this.state.Stepes === 3 ? (
-                                <button className="primaryBtn-1 btn meduimBtn" onClick={this.ExistDocument.bind(this)}>
-                                  {Resources["finish"][currentLanguage]}
-                                </button>
-                              ) : null}
-                            </div>
-                          </Fragment>
-                        }
-                      </Fragment>
+                              <div className="slider-Btns">
+                                {this.state.Stepes === 3 ? (
+                                  <button className="primaryBtn-1 btn meduimBtn" onClick={this.nextSteps.bind(this)}>
+                                    {Resources["next"][currentLanguage]}
+                                  </button>
+                                ) : null}
+                              </div>
+                            </Fragment> :
+
+                              <Fragment>
+
+                                <div className="document-fields tableBTnabs">
+                                  {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                </div>
+
+                                <div className="doc-pre-cycle">
+                                  <div className="slider-Btns">
+                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.ExistDocument.bind(this)}>{Resources['next'][currentLanguage]}</button>
+                                  </div>
+                                </div>
+                              </Fragment>
+                          }
+                        </Fragment>
+                      }
+                    </Fragment>
                     )}
                   <div className="slider-Btns">
                     {this.state.Stepes === 2 && this.props.changeStatus === true ? (
@@ -2299,6 +2367,14 @@ class SubmittalAddEdit extends Component {
                     </div>
                     <div className="steps-info">
                       <h6>{Resources['items'][currentLanguage]}</h6>
+                    </div>
+                  </div>
+                  <div onClick={this.StepFourLink} data-id="step4" className={'step-slider-item ' + (this.state.FivethStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")} >
+                    <div className="steps-timeline">
+                      <span>4</span>
+                    </div>
+                    <div className="steps-info">
+                      <h6>{Resources.addDocAttachment[currentLanguage]}</h6>
                     </div>
                   </div>
                 </div>

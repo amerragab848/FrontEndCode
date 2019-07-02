@@ -27,7 +27,6 @@ import { toast } from "react-toastify";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import Rodal from "../../Styles/js/rodal";
 import "../../Styles/css/rodal.css";
-import { MapsTransferWithinAStation } from "material-ui/svg-icons";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 const _ = require("lodash");
 
@@ -50,7 +49,6 @@ const validationSchemaItems = Yup.object().shape({
   unitPrice: Yup.number().required(Resources["unitPriceRequired"][currentLanguage]),
   revQuantity: Yup.number().required(Resources["revQuantityRequired"][currentLanguage]),
   itemCode: Yup.string().required(Resources["itemCodeRequired"][currentLanguage]),
-  resourceCode: Yup.string().required(Resources["resourceCodeRequired"][currentLanguage]),
 });
 
 let docId = 0;
@@ -1255,7 +1253,6 @@ class QsAddEdit extends Component {
                                 value={this.state.addItemDocument.resourceCode}
                                 onBlur={e => { handleBlur(e); handleChange(e); }}
                                 onChange={e => this.handleChangeItems(e, "resourceCode")} />
-                              {errors.resourceCode && touched.resourceCode ? (<em className="pError">{errors.resourceCode}</em>) : null}
                             </div>
                           </div>
                           <div className="slider-Btns fullWidthWrapper">

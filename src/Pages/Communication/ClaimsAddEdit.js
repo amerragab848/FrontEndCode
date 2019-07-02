@@ -1,49 +1,35 @@
 import React, { Component } from "react";
-
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
+import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-
 import { withRouter } from "react-router-dom";
-
-import TextEditor from '../../Componants/OptionsPanels/TextEditor'
-
+import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
-
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
-import DatePicker from '../../Componants/OptionsPanels/DatePicker'
+import Distribution from '../../Componants/OptionsPanels/DistributionList';
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
+import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
+import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
-    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
-        .nullable(true),
-    toContactId: Yup.string()
-        .required(Resources['toContactRequired'][currentLanguage])
-
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]), 
+    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage])
 })
 
 let docId = 0;
@@ -51,19 +37,25 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const _ = require('lodash');
+
 class ClaimsAddEdit extends Component {
+
     constructor(props) {
+
         super(props);
+
         const query = new URLSearchParams(this.props.location.search);
+        
         let index = 0;
+
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -77,11 +69,12 @@ class ClaimsAddEdit extends Component {
             }
             index++;
         }
+
         this.state = {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -94,7 +87,7 @@ class ClaimsAddEdit extends Component {
             ToContacts: [],
             fromContacts: [],
             discplines: [],
-            letters: [],
+            contracts: [],
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
             { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
@@ -104,16 +97,18 @@ class ClaimsAddEdit extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
-            selectedReplyLetter: { label: Resources.replyletter[currentLanguage], value: "0" },
+            selectedContract: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
             message: ''
         }
+
         if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
     }
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -137,18 +132,19 @@ class ClaimsAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
-        
-        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+
         if (this.state.showModal != nextProps.showModal) {
             this.setState({ showModal: nextProps.showModal });
         }
     };
+
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
     }
+
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
@@ -159,6 +155,7 @@ class ClaimsAddEdit extends Component {
             this.setState({ showModal: this.props.showModal });
         }
     }
+
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!(Config.IsAllow(49))) {
@@ -201,7 +198,8 @@ class ClaimsAddEdit extends Component {
                 disciplineId: '',
                 refDoc: '',
                 sharedSettings: '',
-                message: ''
+                message: '',
+                contractId:''
             };
             this.setState({ document: letter });
             this.fillDropDowns(false);
@@ -266,6 +264,31 @@ class ClaimsAddEdit extends Component {
                 discplines: [...result]
             });
         });
+
+    //contractList
+    dataservice.GetDataList("GetContractByProjectId?projectId=" + projectId, "subject", "id").then(result => {
+
+        if (isEdit) {
+  
+          let contractId = this.props.document.contractId;
+    
+          if (contractId) {
+  
+            let contracts = result.find(i => i.value === contractId);
+  
+            if (contracts) {
+              this.setState({
+                selectedContract: { ...contracts }
+              });
+            }
+          }
+        }
+  
+        this.setState({
+          contracts: [...result]
+        });
+      });
+
     }
 
     onChangeMessage = (value) => {
@@ -285,7 +308,7 @@ class ClaimsAddEdit extends Component {
             });
         }
     };
-    
+
     handleChange(e, field) {
         console.log(field, e);
         let original_document = { ...this.state.document };
@@ -302,7 +325,7 @@ class ClaimsAddEdit extends Component {
     }
 
     handleChangeDate(e, field) {
-        console.log(field, e);
+
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -330,7 +353,7 @@ class ClaimsAddEdit extends Component {
 
         if (field == "fromContactId") {
             let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-             dataservice.GetNextArrangeMainDocument(url).then(res => {
+            dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
                 updated_document = Object.assign(original_document, updated_document);
 
@@ -361,9 +384,9 @@ class ClaimsAddEdit extends Component {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
-                this.props.history.push( 
+                this.props.history.push(
                     this.state.perviousRoute
-                  );
+                );
             }
         });
     }
@@ -375,7 +398,7 @@ class ClaimsAddEdit extends Component {
 
         dataservice.addObject('AddClaims', saveDocument).then(result => {
             this.setState({
-                docId: result
+                docId: result 
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
@@ -410,8 +433,9 @@ class ClaimsAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        console.log(item);
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -427,22 +451,13 @@ class ClaimsAddEdit extends Component {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ];
         return (
             <div className="mainContainer">
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.claims[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
-
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -464,8 +479,8 @@ class ClaimsAddEdit extends Component {
                                             initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
-                                            onSubmit={(values) => { 
-                                                 if (this.props.showModal) { return; }
+                                            onSubmit={(values) => {
+                                                if (this.props.showModal) { return; }
 
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
@@ -474,13 +489,10 @@ class ClaimsAddEdit extends Component {
                                                 } else {
                                                     this.saveAndExit();
                                                 }
-                                            }}  >
-
+                                            }}>
                                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                 <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                                     <div className="proForm first-proform">
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -494,10 +506,8 @@ class ClaimsAddEdit extends Component {
                                                                     }}
                                                                     onChange={(e) => this.handleChange(e, 'subject')} />
                                                                 {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-
                                                             </div>
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                             <div className="ui checkbox radio radioBoxBlue">
@@ -509,21 +519,16 @@ class ClaimsAddEdit extends Component {
                                                                 <label>{Resources.closed[currentLanguage]}</label>
                                                             </div>
                                                         </div>
-
                                                     </div>
-
                                                     <div className="proForm datepickerContainer">
-
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='docDate'
                                                                 startDate={this.state.document.docDate}
                                                                 handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
-                                                            <div className="ui input inputDev"  >
-
+                                                            <div className="ui input inputDev">
                                                                 <input type="text" className="form-control" id="arrange" readOnly
                                                                     value={this.state.document.arrange}
                                                                     name="arrange"
@@ -535,10 +540,9 @@ class ClaimsAddEdit extends Component {
                                                                     onChange={(e) => this.handleChange(e, 'arrange')} />
                                                             </div>
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
-                                                            <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
+                                                            <div className={"ui input inputDev"} >
                                                                 <input type="text" className="form-control" id="refDoc"
                                                                     value={this.state.document.refDoc}
                                                                     name="refDoc"
@@ -548,11 +552,8 @@ class ClaimsAddEdit extends Component {
                                                                         handleBlur(e)
                                                                     }}
                                                                     onChange={(e) => this.handleChange(e, 'refDoc')} />
-                                                                {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
-
                                                             </div>
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
@@ -564,13 +565,9 @@ class ClaimsAddEdit extends Component {
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
                                                                 </div>
                                                                 <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
-
                                                             </div>
                                                         </div>
-
-
                                                         <div className="linebylineInput valid-input mix_dropdown">
-
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
@@ -585,7 +582,6 @@ class ClaimsAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromCompanyId}
                                                                         touched={touched.fromCompanyId}
-
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
                                                                         id="fromCompanyId" />
@@ -596,7 +592,6 @@ class ClaimsAddEdit extends Component {
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
@@ -609,23 +604,19 @@ class ClaimsAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input mix_dropdown">
-
                                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
                                                                 <div className="super_name">
-
                                                                     <Dropdown
                                                                         isMulti={false}
                                                                         data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event =>
                                                                             this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
-
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}
                                                                         touched={touched.toCompanyId}
-
                                                                         index="letter-toCompany"
                                                                         name="toCompanyId"
                                                                         id="toCompanyId" />
@@ -636,49 +627,41 @@ class ClaimsAddEdit extends Component {
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}
                                                                         touched={touched.toContactId}
-
                                                                         index="letter-toContactId"
                                                                         name="toContactId"
                                                                         id="toContactId" />
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
                                                                 title="discipline"
                                                                 data={this.state.discplines}
                                                                 selectedValue={this.state.selectedDiscpline}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
-                                                                index="letter-discipline"
-                                                            />
+                                                                index="letter-discipline" />
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
-                                                                title="replyletter"
-                                                                data={this.state.letters}
-                                                                selectedValue={this.state.selectedReplyLetter}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'replyId', false, '', '', '', 'selectedReplyLetter')}
-                                                                index="letter-replyId"
+                                                                title="contractName"
+                                                                data={this.state.contracts}
+                                                                selectedValue={this.state.selectedContract}
+                                                                handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
+                                                                index="letter-contractId"
                                                             />
                                                         </div>
-
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
-
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
                                                                     value={this.state.message}
                                                                     onChange={this.onChangeMessage} />
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
@@ -693,8 +676,6 @@ class ClaimsAddEdit extends Component {
                                                                         <div >
                                                                             <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
                                                                             <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-
-
                                                                         </div>
                                                                         : null
                                                                     }
@@ -730,15 +711,13 @@ class ClaimsAddEdit extends Component {
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                         {this.state.currentComponent}
                     </SkyLight>
                 </div>
-            </div>
-
+            </div> 
         );
     }
 }
@@ -761,7 +740,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(ClaimsAddEdit))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ClaimsAddEdit))

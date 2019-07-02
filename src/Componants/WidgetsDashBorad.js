@@ -1,4 +1,4 @@
-var widgets = [
+var widgets = [ 
   {
     widgetCategory: "mainAlerts",
     refrence: 0,
@@ -458,7 +458,7 @@ var widgets = [
         id: 'wt-Name05',
         key: "0-3-5",
         checked: false,
-        title: 'percentOfMaterialRequestPerProject',
+        title: 'percentOfApprovedSubmittalPerProject',
         props: {
           'api': 'GetTopFiveApprovedSubmittal?status=true',
           'name': 'projectName',

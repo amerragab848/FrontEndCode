@@ -1,20 +1,19 @@
 import React, { Component, Fragment } from "react";
 import classNames from "classnames";
 import AttachUpload from "../../Styles/images/attacthUpload.png";
-import AttachDrag from "../../Styles/images/attachDraggable.png";
-
+import AttachDrag from "../../Styles/images/attachDraggable.png"; 
 import DropboxChooser from "react-dropbox-chooser";
-import GooglePicker from "react-google-picker";
-
+import GooglePicker from "react-google-picker"; 
 import Dropzone from "react-dropzone";
-import Drive from '../../Styles/images/gdrive.png'
-import dropbox from '../../Styles/images/dropbox.png'
-
+import Drive from '../../Styles/images/gdrive.png';
+import dropbox from '../../Styles/images/dropbox.png'; 
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-
+import { bindActionCreators } from "redux"; 
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config";
+import Resources from "../../resources.json";
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
 
 class UploadAttachment extends Component {
     constructor(props) {
@@ -92,8 +91,7 @@ class UploadAttachment extends Component {
                                         <div className="uploadFormDiv">
                                             <img src={AttachUpload} />
                                             <div className="dragUpload">
-                                                <p>Drag and drop your files here</p>
-
+                                            <p>{Resources.dropOrClick[currentLanguage]}</p> 
                                                 {/* <form>
                                                     <input type="file" name="file" id="file" className="inputfile" />
                                                     <label>Upload</label>
@@ -104,7 +102,7 @@ class UploadAttachment extends Component {
                                             <div id="myBar" />
                                             <img src={AttachDrag} />
                                             <div className="dragUpload">
-                                                <p>Drop your files here!</p>
+                                            <p>{Resources.dropFiles[currentLanguage]}</p>
                                             </div>
                                         </div>
                                         <div className="progressBar">
@@ -136,11 +134,11 @@ class UploadAttachment extends Component {
                                         <div className="uploadFormDiv">
                                             <img src={AttachUpload} />
                                             <div className="dragUpload">
-                                                <p>Drag and drop your files here</p>
+                                                <p>{Resources.dropOrClick[currentLanguage]}</p>
 
                                                 <form>
                                                     <input type="file" name="file" id="file" className="inputfile" />
-                                                    <label>Upload</label>
+                                                    <label>{Resources.upload[currentLanguage]}</label>
                                                 </form>
                                             </div>
                                         </div>
@@ -148,7 +146,7 @@ class UploadAttachment extends Component {
                                             <div id="myBar" />
                                             <img src={AttachDrag} />
                                             <div className="dragUpload">
-                                                <p>Drop your files here!</p>
+                                                <p>{Resources.dropFiles[currentLanguage]}</p>
                                             </div>
                                         </div>
                                         <div className="progressBar">
@@ -236,11 +234,11 @@ class UploadAttachment extends Component {
                     <div className="drives__upload">
                         <form>
                             <input type="file" name="file" id="file" className="inputfile" />
-                            <label htmlFor="file">Open my folders</label>
+                            <label htmlFor="file">{Resources.openMyFolders[currentLanguage]}</label>
                         </form>
                         <span className="upload__border"></span>
                         <div className="drive__wrapper">
-                            <h2 className="zero">Upload from</h2>
+                            <h2 className="zero">{Resources.uploadFrom[currentLanguage]}</h2>
                             {Config.IsAllow(this.props.ShowGoogleDrive)
                                 ? this.renderGoogleDrive()
                                 : null}

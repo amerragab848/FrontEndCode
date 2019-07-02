@@ -180,7 +180,7 @@ class bogAddEdit extends Component {
                 sortDescendingFirst: true,
                 type: "number"
             }, {
-                key: "revisedQuntitty",
+                key: "revisedQuantity",
                 name: Resources["receivedQuantity"][currentLanguage],
                 width: 100,
                 draggable: true,
@@ -528,6 +528,7 @@ class bogAddEdit extends Component {
         if (JSON.stringify(this.state._items.length) != JSON.stringify(_items)) {
             this.setState({ isLoading: true })
             this.setState({ _items }, () => this.setState({ isLoading: false }));
+            
         }
 
         if (this.state.showModal != props.showModal) {
@@ -708,8 +709,7 @@ class bogAddEdit extends Component {
         }
     }
 
-    onRowClick = (value, index, column) => {
-        console.log('column.key', column.key)
+    onRowClick = (value, index, column) => { 
         if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
         }

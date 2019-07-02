@@ -199,7 +199,7 @@ class ProposalAddEdit extends Component {
         toCompanyId: "",
         toContactId: "",
         docDate: moment(),
-        status: false,
+        status: true,
         refDoc: "",
         message: ""
       };
