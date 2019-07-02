@@ -178,6 +178,15 @@ export function setItemDescriptions(items, docId) {
     }
 }
 
+export function resetItems(items) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.reset_items,
+            data: items
+        });
+    }
+}
+
 export function editItemDescriptions(item) {
     return (dispatch, getState) => {
         dispatch({
@@ -417,7 +426,7 @@ function BuildWorkFlowCycleStracture(result) {
     let hasWorkFlow = poolLevels.filter((t) => t.statusVal == null).length > 0 ? true : false;
 
     returnObj.hasWorkFlow = hasWorkFlow;
-
+ 
     workFlowCycles.forEach(function (item) {
         var obj = {};
 

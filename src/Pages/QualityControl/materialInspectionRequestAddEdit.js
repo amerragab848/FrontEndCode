@@ -309,7 +309,7 @@ class materialInspectionRequestAddEdit extends Component {
                 toContactId: '',
                 replayId: '',
                 docDate: moment(),
-                status: 'false',
+                status: 'true',
                 disciplineId: '',
                 refDoc: '',
                 sharedSettings: '',

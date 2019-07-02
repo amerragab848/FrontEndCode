@@ -8,8 +8,8 @@ import "./Styles/css/semantic.min.css";
 // import "./Styles/scss/en-us/layout.css";
 // import "./Styles/scss/en-us/reactCss.css";
 
-// import "./Styles/scss/ar-eg/layout-ar.css";
-// import "./Styles/scss/ar-eg/ReactCss-ar.css";
+//  import "./Styles/scss/ar-eg/layout-ar.css";
+//  import "./Styles/scss/ar-eg/ReactCss-ar.css";
 
 import Styles from "./CurrentLang";
 

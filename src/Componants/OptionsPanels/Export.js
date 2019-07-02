@@ -18,6 +18,7 @@ class Export extends Component {
 
     tableToExcel(title) {
         if (this.state.isExport||this.state.isExportRequestPayment) {
+        
             var uri = 'data:application/vnd.ms-excel;base64,'
                 , template = '<html xmlns: o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">'
                     + '<head> '
@@ -34,7 +35,8 @@ class Export extends Component {
 
             var items = '';
             if (this.props.rows.length) { 
-                items = document.getElementById('items').innerHTML
+                items = document.getElementById('items').innerHTML;
+                
             }
             var ctx = {
                 name: this.state.fileName,
@@ -42,7 +44,7 @@ class Export extends Component {
             }
 
             var blob = new Blob([format(template, ctx)]);
-
+            this.setState({    isExpor: false , isExportRequestPayment:false }) 
             if (this.ifIE()) {
                 if (window.navigator.msSaveBlob) {
                     var blob = new Blob([format(template, ctx)], {
@@ -53,11 +55,9 @@ class Export extends Component {
             }
             else
                 return window.location.href = uri + base64(format(template, ctx))
-
-            this.setState({
-                isExpor: false
-            })
+                
         }
+        
     }
 
 
@@ -73,9 +73,11 @@ class Export extends Component {
             this.setState({ isExport: true });
             this.tableToExcel(this.props.fileName);
         }
-        if(prevState.isExportRequestPayment != nextProps.isExportRequestPayment){
-            this.setState({ isExport: true });
+        if(this.state.isExportRequestPayment != nextProps.isExportRequestPayment){
+            this.setState({ isExportRequestPayment: true });
+            setTimeout(()=>{
             this.tableToExcel(this.state.fileName);
+            },300)
         } 
     }
 
