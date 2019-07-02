@@ -646,7 +646,6 @@
             }
           ]
         },
-      
         {
           "title": {
             "en": "Building",
@@ -761,7 +760,7 @@
               "value": false
             }
           ]
-        }, 
+        },
         {
           "title": {
             "en": "General Forms",
@@ -1101,8 +1100,6 @@
             }
           ]
         },
-
-        
         {
           "title": {
             "en": "Material Transfer",
@@ -1152,10 +1149,6 @@
             }
           ]
         },
-
-
-
-
         {
           "title": {
             "en": "Material Delivery",
@@ -1308,7 +1301,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -1342,7 +1334,7 @@
               "value": false
             },
             {
-              "code":  10022,
+              "code": 10022,
               "title": {
                 "en": "View",
                 "ar": "عرض مرتجع التوريدات"
@@ -1350,7 +1342,7 @@
               "value": false
             },
             {
-              "code":  10023,
+              "code": 10023,
               "title": {
                 "en": "View All",
                 "ar": "عرض جميع مرتجع التوريدات"
@@ -1358,7 +1350,7 @@
               "value": false
             },
             {
-              "code":  10024,
+              "code": 10024,
               "title": {
                 "en": "Send By Inbox",
                 "ar": "ارسال الى البريد الداخلى"
@@ -1366,7 +1358,7 @@
               "value": false
             },
             {
-              "code":  10025,
+              "code": 10025,
               "title": {
                 "en": "Send By Mail",
                 "ar": "ارسال الى البريد الالكترونى"
@@ -1374,7 +1366,7 @@
               "value": false
             },
             {
-              "code":  10026,
+              "code": 10026,
               "title": {
                 "en": "Send To Correspondence Sent",
                 "ar": "ارسال الى صادر المراسلات"
@@ -1382,7 +1374,7 @@
               "value": false
             },
             {
-              "code":  10027,
+              "code": 10027,
               "title": {
                 "en": "Send To Correspondence Received",
                 "ar": "ارسال الى وارد المراسلات"
@@ -1390,7 +1382,7 @@
               "value": false
             },
             {
-              "code":  10028,
+              "code": 10028,
               "title": {
                 "en": "Send To WorkFlow",
                 "ar": "ارسال الى الدورة المستندية"
@@ -1398,7 +1390,7 @@
               "value": false
             },
             {
-              "code":  10029,
+              "code": 10029,
               "title": {
                 "en": "Add Attachments",
                 "ar": "اضافة مرفقات"
@@ -1406,7 +1398,7 @@
               "value": false
             },
             {
-              "code":  10030,
+              "code": 10030,
               "title": {
                 "en": "Edit Attachments",
                 "ar": "تعديل مرفقات"
@@ -1462,14 +1454,7 @@
               "value": false
             }
           ]
-
         },
-
-
-
-
-
-
         {
           "title": {
             "en": "Project Inventory",
@@ -1542,7 +1527,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -1696,7 +1680,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -1850,7 +1833,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -2626,13 +2608,13 @@
           ]
         }
       ]
-    }, 
+    },
     {
       "title": {
         "en": "Item Of Inventory",
         "ar": "تقرير المخازن"
       },
-        "id": 3,
+      "id": 3,
       "modules": [
         {
           "title": {
@@ -2650,7 +2632,7 @@
               "value": false
             }
           ]
-        }, 
+        },
         {
           "title": {
             "en": "Total Of Stock Report",
@@ -2703,13 +2685,13 @@
           ]
         }
       ]
-    }, 
+    },
     {
       "title": {
         "en": "Time Coordination",
         "ar": "ادارة الجداول الزمنية"
       },
-        "id": 4,
+      "id": 4,
       "modules": [
         {
           "title": {
@@ -3218,7 +3200,7 @@
         "en": "Contract Coordination",
         "ar": "اداره تعاقدات المشروع"
       },
-        "id": 5,
+      "id": 5,
       "modules": [
         {
           "title": {
@@ -4332,8 +4314,6 @@
             }
           ]
         },
-
-
         {
           "title": {
             "en": "Risk",
@@ -4495,7 +4475,6 @@
             }
           ]
         },
-
         {
           "title": {
             "en": "Variation Orders",
@@ -5010,7 +4989,7 @@
         "en": "Site Coordination",
         "ar": "سجلات المشروع"
       },
-        "id": 6,
+      "id": 6,
       "modules": [
         {
           "title": {
@@ -5357,7 +5336,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -5511,7 +5489,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -5826,7 +5803,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -5980,7 +5956,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -6134,7 +6109,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -6304,7 +6278,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -6780,7 +6753,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -6934,7 +6906,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -7088,7 +7059,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -7194,7 +7164,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -7300,7 +7269,6 @@
               "value": false
             }
           ]
-
         },
         {
           "title": {
@@ -7478,7 +7446,7 @@
         "en": "Communication",
         "ar": "الاتصالات"
       },
-        "id": 7,
+      "id": 7,
       "modules": [
         {
           "title": {
@@ -7568,7 +7536,7 @@
               "value": false
             },
             {
-              "code": 839, 
+              "code": 839,
               "title": {
                 "en": "Add Attachments",
                 "ar": "اضافة مرفقات"
@@ -9631,7 +9599,7 @@
         "en": "Design Coordination",
         "ar": "تنسيق التصميم"
       },
-        "id": 8,
+      "id": 8,
       "modules": [
         {
           "title": {
@@ -9792,7 +9760,6 @@
               },
               "value": false
             }
-
           ]
         },
         {
@@ -10423,7 +10390,7 @@
         "en": "Estimation",
         "ar": "تسعير المشاريع"
       },
-        "id": 9,
+      "id": 9,
       "modules": [
         {
           "title": {
@@ -10656,7 +10623,7 @@
                 "ar": "انشاء ارسالية"
               },
               "value": false
-            } 
+            }
           ]
         },
         {
@@ -10965,7 +10932,7 @@
         "en": "Report Center",
         "ar": "مركز التقارير"
       },
-        "id": 10,
+      "id": 10,
       "modules": [
         {
           "title": {
@@ -11147,7 +11114,7 @@
             "en": "Over Time Report",
             "ar": "تقرير الوقت الاضافى"
           },
-          "id": 4001,
+          "id": 40010,
           "permissions": [
             {
               "code": 3492,
@@ -12189,7 +12156,7 @@
         "en": "Default Data",
         "ar": "البيانات الرئيسية"
       },
-        "id": 11,
+      "id": 11,
       "modules": [
         {
           "title": {
@@ -12329,7 +12296,7 @@
         "en": "Administration",
         "ar": "الادارة"
       },
-        "id": 12,
+      "id": 12,
       "modules": [
         {
           "title": {
@@ -12376,7 +12343,6 @@
                 "en": "Task Admin",
                 "ar": "صلاحيات مدير مهام"
               },
-
               "value": false
             },
             {
@@ -12624,7 +12590,7 @@
         "en": "General Logs",
         "ar": "السجلات العامه"
       },
-        "id": 13,
+      "id": 13,
       "modules": [
         {
           "title": {
@@ -13086,7 +13052,7 @@
             "en": "Custom Site Instruction",
             "ar": "تقرير عدم المطابقه"
           },
-          "id": 4001,
+          "id": 40011,
           "permissions": [
             {
               "code": 3396,
@@ -14692,7 +14658,7 @@
                 "ar": "تقرير حسابات المستخدمين"
               },
               "value": false
-            }, 
+            },
             {
               "code": 4017,
               "title": {
@@ -14799,7 +14765,7 @@
               "value": false
             }
           ]
-        }, 
+        },
         {
           "title": {
             "en": "Item Of Inventory",
@@ -14864,7 +14830,7 @@
               "value": false
             }
           ]
-        }, 
+        },
         {
           "title": {
             "en": "Dashboard",
@@ -15269,6 +15235,38 @@
               "title": {
                 "en": "Summary Of Approved Invoices",
                 "ar": "تقرير  للفواتير التى تم الموافقة"
+              },
+              "value": false
+            },
+            {
+              "code": 10039,
+              "title": {
+                "en": "Submittal Status Yearly",
+                "ar": "submittal Status Yearly"
+              },
+              "value": false
+            },
+            {
+              "code": 10040,
+              "title": {
+                "en": "Transmittal Status Yearly",
+                "ar": "transmittal Status Yearly"
+              },
+              "value": false
+            },
+            {
+              "code": 10041,
+              "title": {
+                "en": "Risk Status Yearly",
+                "ar": "Risk Status Yearly"
+              },
+              "value": false
+            },
+            {
+              "code": 10042,
+              "title": {
+                "en": "Letter Status Yearly",
+                "ar": "Letter Status Yearly"
               },
               "value": false
             }
