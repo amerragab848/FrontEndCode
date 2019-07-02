@@ -1,4 +1,4 @@
-var widgets = [ 
+var widgets = [
   {
     widgetCategory: "mainAlerts",
     refrence: 0,
@@ -404,11 +404,12 @@ var widgets = [
     key: "0-3",
     canView: false,
     checked: false,
-    order: 3, 
+    order: 3,
     widgets: [
       {
         id: 'wt-Name01',
         checked: false,
+        permission: 1377,
         key: "0-3-1",
         title: 'projectStatus',
         props: {
@@ -420,6 +421,7 @@ var widgets = [
         seriesName: "projectStatus"
       }, {
         id: 'wt-Name02',
+        permission: 3500,
         key: "0-3-2",
         checked: false,
         title: 'percentageExpensesTypesOfTotal',
@@ -435,6 +437,7 @@ var widgets = [
         id: 'wt-Name03',
         key: "0-3-3",
         checked: false,
+        permission: 3507,
         title: 'expensesAllProject',
         props: {
           'api': 'GetExpensesByTypeForAllProjects',
@@ -448,16 +451,18 @@ var widgets = [
         id: 'wt-Name013',
         key: "0-3-13",
         checked: false,
+        permission: 10041,
         title: 'riskStatusYearly',
         props: {
           'api': 'GetRiskDataChartLine'
-        }, 
-        topicNames:['Opened','Closed'],
-        type: 'line' 
+        },
+        topicNames: ['Opened', 'Closed'],
+        type: 'line'
       }, {
         id: 'wt-Name05',
         key: "0-3-5",
         checked: false,
+        permission: 3498,
         title: 'percentOfApprovedSubmittalPerProject',
         props: {
           'api': 'GetTopFiveApprovedSubmittal?status=true',
@@ -473,17 +478,19 @@ var widgets = [
       }, {
         id: 'wt-Name14',
         key: "0-3-14",
+        permission: 10042,
         checked: false,
         title: 'letterStatusYearly',
         props: {
           'api': 'GetChartLineDataByDocType?docType=17'
-        }, 
-        topicNames:['Opened','Closed'],
-        type: 'line' 
+        },
+        topicNames: ['Opened', 'Closed'],
+        type: 'line'
       }, {
         id: 'wt-Name4',
         key: "0-3-4",
         checked: false,
+        permission: 3497,
         title: 'percentOfMaterialRequestPerProject',
         props: {
           'api': 'GetTopFiveRequests',
@@ -500,16 +507,18 @@ var widgets = [
         id: 'wt-Name16',
         key: "0-3-16",
         checked: false,
+        permission: 10039,
         title: 'submittalStatusYearly',
         props: {
           'api': 'GetChartLineDataByDocType?docType=42'
-        }, 
-        topicNames:['Opened','Closed'],
-        type: 'line' 
+        },
+        topicNames: ['Opened', 'Closed'],
+        type: 'line'
       }, {
         id: 'wt-Name06',
         key: "0-3-6",
         checked: false,
+        permission: 3499,
         title: 'percentOfRejectedSubmittalPerProject',
         props: {
           'api': 'GetTopFiveApprovedSubmittal?status=false',
@@ -526,6 +535,7 @@ var widgets = [
         id: 'wt-Name07',
         key: "0-3-7",
         checked: false,
+        permission: 3201,
         title: 'countinspectionApproved',
         props: {
           'api': 'GetStatusIspectionRequest?status=true',
@@ -538,10 +548,11 @@ var widgets = [
         catagName: 'projectName',
         multiSeries: 'no',
         barContent: []
-      }, { 
+      }, {
         id: 'wt-Name10',
         key: "0-3-10",
         checked: false,
+        permission: 3505,
         title: 'contractsPerProject',
         props: {
           'api': 'GetTopFiveContracts',
@@ -555,11 +566,12 @@ var widgets = [
         multiSeries: 'yes',
         barContent: [{ name: 'Contracted', value: 'percentageContract' }, { name: 'Contracts Under Review', value: 'countUnderContract' }]
 
-      }, { 
+      }, {
         id: 'wt-Name12',
         key: "0-3-12",
         checked: false,
         title: 'budgetVariance',
+        permission: 3509,
         props: {
           'api': 'GetTopFiveBudgetVariance',
           'name': 'projectName',
@@ -575,12 +587,13 @@ var widgets = [
         id: 'wt-Name15',
         key: "0-3-15",
         checked: false,
+        permission: 10040,
         title: 'transmittalStatusYearly',
         props: {
           'api': 'GetChartLineDataByDocType?docType=28'
-        }, 
-        topicNames:['Opened','Closed'],
-        type: 'line' 
+        },
+        topicNames: ['Opened', 'Closed'],
+        type: 'line'
       }
     ]
   },
@@ -649,7 +662,7 @@ var widgets = [
           key: "1-1-3"
         }
       },
-       {
+      {
         title: "monthlyPaymentRequisitions",
         permission: 0,
         key: "1-1-4",
@@ -886,7 +899,7 @@ var widgets = [
         }
       }
     ]
-  }, 
+  },
   {
     widgetCategory: "respondTime",
     refrence: 1,

@@ -79,44 +79,38 @@ class Index extends Component {
 
   renderCharts() {
     let chartWidgets = this.state.chartData.map((item) => {
-      if (item.type === "pie") {
-        return (
-          <div className="col-lg-4 col-md-6" key={item.id}>
-            <PieChartComp
-              api={item.props.api}
-              name={item.props.name}
-              y={item.props.y}
-              title={language[item.title][currentLanguage]}
-              seriesName={language[item.seriesName][currentLanguage]}
-            />
-          </div>
-        );
+      if (Api.IsAllow(item.permission) === true) {
+
+        if (item.type === "pie") {
+          return (
+            <div className="col-lg-4 col-md-6" key={item.id}>
+              <PieChartComp api={item.props.api} y={item.props.y}
+                name={item.props.name} title={language[item.title][currentLanguage]}
+                seriesName={language[item.seriesName][currentLanguage]} />
+            </div>
+          );
+        }
+
+        else if (item.type === "line") {
+          return (
+            <Britecharts api={item.props.api} topicName={item.topicNames}
+              title={language[item.title][currentLanguage]} />
+          );
+        }
+
+        else {
+          return (
+            <BarChartComp api={item.props.api} ukey={item.id} catagName={item.catagName}
+              name={item.props.name} y={item.props.data}
+              title={language[item.title][currentLanguage]} stack={item.stack}
+              yTitle={language[item.yTitle][currentLanguage]} multiSeries={item.multiSeries}
+              barContent={item.barContent ? item.barContent : []} />
+          );
+        }
       }
-      else if (item.type === "line") {
-        return (
-          <Britecharts
-            api={item.props.api}
-            title={language[item.title][currentLanguage]}
-            topicName={item.topicNames}
-          />
-        );
-      }
-      else {
-        return (
-          <BarChartComp
-            api={item.props.api}
-            ukey={item.id}
-            name={item.props.name}
-            y={item.props.data}
-            title={language[item.title][currentLanguage]}
-            stack={item.stack}
-            yTitle={language[item.yTitle][currentLanguage]}
-            catagName={item.catagName}
-            multiSeries={item.multiSeries}
-            barContent={item.barContent ? item.barContent : []}
-          />
-        );
-      }
+
+
+
     });
 
     return chartWidgets;
