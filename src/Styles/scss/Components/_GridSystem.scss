@@ -9,36 +9,12 @@
     padding: 25px 16px 14px 24px;
     background-color: #fafbfc;
     border-bottom: 0;
-
-    .control-label {
-        // font-family: font-opensb;
-        margin-bottom: 4px;
-        letter-spacing: -0.2px;
-        // color: #26344c;
-        // display: block;
-        // margin-bottom: -10px;
-        display: block;
-        // position: relative;
-        // z-index: 11;
-        font-family: Muli;
-        font-weight: bold;
-        font-size: 13px;
-        // line-height: 1.54;
-        // letter-spacing: normal;
-        color: #5E6475;
-        // background: #fafbfc;
-        // margin-left: 13px;
-        // padding: 0 5px;
-    }
-
+    transition: all 0.4s ease-in-out;
+    padding-top: 12px;
     .fillter-status-container {
         width: 100%;
         display: flex;
         align-items: center;
-
-        /*
-        justify-content: space-between;
-*/
         flex-wrap: wrap;
 
         @include max1200 {
@@ -61,7 +37,16 @@
                 padding: 0;
 
                 input {
-                    height: 40px;
+                    height: 36px;
+                    border: solid 2px;
+                    transition: all 0.5s ease-in-out;
+                    border-color: #E9ECF0 ;
+                    &:hover {
+                        border-color: #A8B0BF;
+                    }
+                    &:focus {
+                        border: solid 2px #83B4FC;
+                    }
                 }
             }
 
@@ -99,7 +84,8 @@
 
             .control-label {
                 margin-bottom: 4px;
-                // background: #fafbfc;
+                margin-left: 0;
+                z-index: 0;
             }
 
             .linebylineInput {
@@ -119,7 +105,8 @@
         }
 
         .fillter-item-c {
-            margin-bottom: 20px !important;
+            //margin-bottom: 20px !important;
+            margin-bottom: 0px !important;
         }
 
         .form-control {
@@ -206,7 +193,7 @@
             align-items: center;
             padding-#{$left}: 10px;
             color: $grey-500;
-            font-family: font-b;
+            font-family: $muli-b;
             font-size: 14px;
 
             .V-tableSize,
@@ -369,7 +356,7 @@
                 color: $grey-800;
                 letter-spacing: -0.2px;
                 font-size: 14px;
-                font-family: font-opensb;
+                font-family: $sans-sb;
                 overflow: hidden;
                 height: 20px;
                 text-align: $left;
@@ -377,7 +364,7 @@
 
             span {
                 font-size: 13px;
-                font-family: font-opens;
+                font-family: $sans-r;
                 color: $grey-500;
                 letter-spacing: -0.3px;
                 overflow: hidden;
@@ -389,7 +376,7 @@
                 color: $grey-800;
                 letter-spacing: -0.2px;
                 font-size: 14px;
-                font-family: font-opens;
+                font-family: $sans-r;
             }
         }
 
@@ -785,11 +772,8 @@
             padding: 0 10px 0 12px;
             margin-left: 6px;
             line-height: 26px;
-            font-family: Muli;
+            font-family: $muli-b;
             font-size: 12px;
-            font-weight: bold;
-            font-style: normal;
-            font-stretch: normal;
             letter-spacing: -0.2px;
             color: $grey-700;
 

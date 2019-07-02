@@ -14,7 +14,7 @@
     font-weight: bold;
     font-size: 20px;
     position: relative;
-    padding-left: 23px;
+    padding-#{$left}: 23px;
 
     &:after {
         content: "";
@@ -22,7 +22,7 @@
         height: 20px;
         background-color: #252833;
         position: absolute;
-        right: -20px;
+        #{$right}: -20px;
         top: 0;
         -webkit-clip-path: polygon(0 0, 0% 100%, 98% 0);
         clip-path: polygon(0 0, 0% 100%, 98% 0);
@@ -34,7 +34,7 @@
         height: 20px;
         background-color: #252833;
         position: absolute;
-        right: -20px;
+        #{$right}: -20px;
         bottom: 0;
         -webkit-clip-path: polygon(100% 100%, 0 100%, 0 0);
         clip-path: polygon(100% 100%, 0 100%, 0 0);
@@ -81,9 +81,9 @@
             &.left {
                 input {
                     &:focus {
-                        border-top-left-radius: 0 !important;
-                        border-bottom-left-radius: 0 !important;
-                        border-left-color: transparent !important;
+                        border-top-#{$left}-radius: 0 !important;
+                        border-bottom-#{$left}-radius: 0 !important;
+                        border-#{$left}-color: transparent !important;
                     }
                 }
             }
@@ -91,9 +91,9 @@
             &.right {
                 input {
                     &:focus {
-                        border-top-right-radius: 0 !important;
-                        border-bottom-right-radius: 0 !important;
-                        border-right-color: transparent !important;
+                        border-top-#{$right}-radius: 0 !important;
+                        border-bottom-#{$right}-radius: 0 !important;
+                        border-#{$right}-color: transparent !important;
                     }
                 }
             }
@@ -132,7 +132,7 @@
                 font-size: 14px;
                 line-height: 1.43;
                 letter-spacing: -0.2px;
-                text-align: right;
+                text-align: #{$right};
                 color: #26344c;
             }
 
@@ -167,13 +167,12 @@
             height: 48px;
             border-radius: 4px;
             border: solid 2px $grey-100;
-            font-weight: 400;
             letter-spacing: -0.2px;
             color: $grey-800;
             background-color: $white;
             font-size: $heading5-font;
             text-align: $left;
-
+            font-family: $muli-r;
             &:hover {
                 border-color: $grey-500;
             }
@@ -205,8 +204,8 @@
             align-items: center;
             justify-content: center;
             min-width: 88px;
-            padding-left: 12px;
-            padding-right: 7px;
+            padding-#{$left}: 12px;
+            padding-#{$right}: 7px;
             background-color: #fafbfc !important;
         }
 
@@ -239,8 +238,7 @@
     }
 
     .control-label {
-        font-family: Muli;
-        font-weight: bold;
+        font-family: $muli-b;
         font-size: 13px;
         line-height: 1.54;
         letter-spacing: normal;
@@ -248,7 +246,7 @@
         position: relative;
         z-index: 11;
         margin-bottom: -10px;
-        margin-left: 13px;
+        margin-#{$left}: 13px;
         padding: 0 5px;
 
         &::after {
@@ -276,13 +274,12 @@
         }
 
         .svgInput {
-            padding-left: 35px;
+            padding-#{$left}: 35px;
         }
     }
 
     .ui.input.inputDev {
         position: relative;
-        padding-bottom: 5px;
         display: inline-block;
         transition: .5s ease;
         border-radius: 4px;
@@ -324,10 +321,10 @@
         .inputsideNote {
             position: absolute;
             top: -9px;
-            right: 8px;
+            #{$right}: 8px;
             letter-spacing: -0.2px;
             color: #a8b0bf;
-            font-family: font-opens;
+            font-family: $sans-r;
             font-size: 12px;
             background: #fff;
             padding: 0 5px;
@@ -411,11 +408,11 @@
             user-select: none;
 
             svg {
-                margin-right: 2px;
+                margin-#{$right}: 2px;
             }
 
             span {
-                font-family: font-opens;
+                font-family: $sans-r;
                 font-weight: 400;
                 font-size: 12px;
                 line-height: 1.33;
@@ -456,7 +453,7 @@
     .inputXmark {
         position: absolute;
         top: 0;
-        right: 5px;
+        #{$right}: 5px;
         height: 48px;
         display: flex;
         align-items: center;
@@ -465,9 +462,9 @@
     .popUp {
         position: absolute;
         top: 0;
-        left: 100%;
+        #{$left}: 100%;
         display: none;
-        margin-left: 10px;
+        margin-#{$left}: 10px;
     }
 
     .inputPassContainer {

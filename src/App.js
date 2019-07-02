@@ -20,10 +20,10 @@ import { ToastContainer } from "react-toastify";
  
 const store = configureStore();
 
-const IsAuthorize = api.IsAuthorized() 
-class App extends Component { 
+const IsAuthorize = api.IsAuthorized()
+class App extends Component {
 
-  render() { 
+  render() {
     const showComp = IsAuthorize ?
       <div id="direction_warrper" >
         <Menu />

@@ -74,6 +74,7 @@ class DropdownMelcous extends Component {
                                 id={this.props.id ? this.props.index : this.props.id}
                                 onChange={this.handleChange}
                                 onBlur={this.handleBlur}
+                                closeMenuOnSelect={this.props.closeMenuOnSelect!==undefined? this.props.closeMenuOnSelect : true }
                                 styles={ProjectStyles} />
                             {this.props.touched && (<em className="dropdown__error">{this.props.error }</em>)}
                         </div>
