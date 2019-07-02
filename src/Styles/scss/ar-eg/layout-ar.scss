@@ -6,7 +6,7 @@ $rtl: ltr;
 
 @import "../_bootstrap";
 
-@import "../_variables.scss";
+@import "../_variables";
 @import "../_Media-Query";
 @import "../_Mixins";
 @import "../_normalize";
@@ -32,7 +32,7 @@ $rtl: ltr;
 @import "../components/_Login";
 @import "../components/_SettingsNew";
 @import "../components/_adminProfile";
-@import "../ar-edition.scss";
+@import "../ar-edition";
 
 /*Elements*/
 
