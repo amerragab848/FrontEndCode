@@ -1201,7 +1201,7 @@
         "en": "Invoices Red Alerts",
         "ar": "التنبيه الاحمر للفواتير"
     },
-    "inaicesYellowAlerts": {
+    "invoicesYellowAlerts": {
         "en": "Invoices Yellow Alerts",
         "ar": "التنبيه الاصفر للفواتير"
     },
