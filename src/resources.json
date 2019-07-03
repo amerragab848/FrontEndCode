@@ -2504,7 +2504,7 @@
         "ar": "تاريخ المستند"
     },
     "deadLineDate": {
-        "en": "Deadline ",
+        "en": "Deadline Date",
         "ar": "تاريخ المستند"
     },
     "formDate": {
@@ -7995,6 +7995,10 @@
     },
     "openMyFolders": {
         "en": "Open my folders",
+        "ar": "فتح المجلد "
+    } ,
+    "consequenceType": {
+        "en": "Consequence Type",
         "ar": "فتح المجلد "
     } 
 }

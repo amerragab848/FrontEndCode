@@ -334,7 +334,7 @@ class riskAddEdit extends Component {
 
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             original_document.arrange = res;
-           // updated_document = Object.assign(original_document, updated_document);
+            // updated_document = Object.assign(original_document, updated_document);
             this.setState({
                 document: original_document
             });
@@ -939,9 +939,6 @@ class riskAddEdit extends Component {
                         )}
                     </Formik>
                     <div className="doc-pre-cycle">
-                        <header>
-                            <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
-                        </header>
 
                         <table className="attachmentTable">
                             <thead>
@@ -1028,7 +1025,7 @@ class riskAddEdit extends Component {
                                                 id="mitigationType" />
                                         </div>
                                         <div className="linebylineInput valid-input alternativeDate">
-                                            <DatePicker title='docDate'
+                                            <DatePicker title='deadLineDate'
                                                 startDate={this.state.documentCycle.docDate}
                                                 handleChange={e => this.handleChangeDateCycle(e, 'docDate')} />
                                         </div>
@@ -1102,9 +1099,9 @@ class riskAddEdit extends Component {
                         )}
                     </Formik>
                     <div className="doc-pre-cycle">
-                        <header>
+                        {/* <header>
                             <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
-                        </header>
+                        </header> */}
 
                         <table className="attachmentTable attachmentTable__fixedWidth">
                             <thead>
@@ -1527,7 +1524,10 @@ class riskAddEdit extends Component {
                     <thead>
                         <tr>
                             <th>
-                                <div className="headCell tableCell-1">{Resources['generalListTitle'][currentLanguage]}</div>
+                                <div className="headCell tableCell-1">{Resources['consequenceType'][currentLanguage]}</div>
+                            </th>
+                            <th>
+                                <div className="headCell"> {'Likelihood Score'}</div>
                             </th>
                             <th>
                                 <div className="headCell" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {'Consequence Score'}</div>
@@ -1568,6 +1568,16 @@ class riskAddEdit extends Component {
                                             handleChange={e => this.actionHandler(original.id, original.likelihoodScore, e, original, false, 2)}
                                             selectedValue={original.SelectedLikelihood}
                                             index={original.id} />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
+                                        <Dropdown title=""
+                                            data={this.state.consequences}
+                                            handleChange={e => this.actionHandler(original.id, original.conesquenceScore, e, original, true, 1)}
+                                            selectedValue={original.SelectedConsequence}
+                                            index={original.id} />
+
                                     </div>
                                 </td>
                                 <td>
@@ -1621,13 +1631,13 @@ class riskAddEdit extends Component {
                     <thead>
                         <tr>
                             <th>
-                                <div className="headCell tableCell-1">{Resources['generalListTitle'][currentLanguage]}</div>
-                            </th>
-                            <th>
-                                <div className="headCell" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {'Consequence Score'}</div>
+                                <div className="headCell tableCell-1">{Resources['consequenceType'][currentLanguage]}</div>
                             </th>
                             <th>
                                 <div className="headCell"> {'Likelihood Score'}</div>
+                            </th>
+                            <th>
+                                <div className="headCell" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {'Consequence Score'}</div>
                             </th>
                             <th>
                                 <div className="headCell tableCell-1"> {'Risk Ranking'}</div>
@@ -1646,16 +1656,6 @@ class riskAddEdit extends Component {
                                 <td className="removeTr">
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
                                 </td>
-                                <td>
-                                    <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
-                                        <Dropdown title=""
-                                            data={this.state.consequences}
-                                            handleChange={e => this.actionHandlerPost(original.id, original.conesquenceScore, e, original, true, 1)}
-                                            selectedValue={original.SelectedConsequencePost}
-                                            index={original.id} />
-
-                                    </div>
-                                </td>
                                 <td className="removeTr">
                                     <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
                                         <Dropdown title=""
@@ -1664,6 +1664,16 @@ class riskAddEdit extends Component {
                                             selectedValue={original.SelectedLikelihoodPost}
                                             index={original.id} />
 
+
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
+                                        <Dropdown title=""
+                                            data={this.state.consequences}
+                                            handleChange={e => this.actionHandlerPost(original.id, original.conesquenceScore, e, original, true, 1)}
+                                            selectedValue={original.SelectedConsequencePost}
+                                            index={original.id} />
 
                                     </div>
                                 </td>
@@ -2120,23 +2130,23 @@ class riskAddEdit extends Component {
                                                     :
                                                     this.state.SixthStep ?
                                                         <Fragment>
-                                                            <div className="modal-header fullWidthWrapper">
+                                                            <div className="datepickerContainer proForm">
                                                                 <header>
                                                                     <h2 className="zero">{Resources['riskAnalysis'][currentLanguage]}</h2>
                                                                 </header>
 
                                                                 <div className="Risk__input">
-                                                                    <div className="linebylineInput valid-input">
+                                                                    <div className="letterFullWidth"  >
                                                                         <label className="control-label">{'Total Of (Total Mitigation Cost + Residual Risk)'}</label>
                                                                         <div className='ui input inputDev '>
-                                                                            <input autoComplete="off" readOnly
+                                                                            <input style={{minWidth : '360px'}} autoComplete="off" readOnly
                                                                                 value={this.state.totalResidualRisk == null ? 0 : numeral(this.state.totalResidualRisk).format('0,0')}
                                                                                 type="text"
                                                                                 className="form-control" name="totalMedigationCostPost"
                                                                                 placeholder={Resources['totalMedigationCost'][currentLanguage]} />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="linebylineInput valid-input">
+                                                                    <div className="linebylineInput fullInputWidth" style={{minWidth : '360px'}}>
                                                                         <label className="control-label">{'Since Total Pre Metigation EMV '}</label>
                                                                         <div className='ui input inputDev '>
                                                                             <input autoComplete="off" readOnly
