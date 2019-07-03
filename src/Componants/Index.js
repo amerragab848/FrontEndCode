@@ -80,9 +80,11 @@ class Index extends Component {
 
   renderCharts() {
     let chartWidgets = this.state.chartData.map((item) => {
+
       if (Config.IsAllow(item.permission) === true) {
 
         if (item.type === "pie") {
+          
           return (
             <div className="col-lg-4 col-md-6" key={item.id}>
               <PieChartComp api={item.props.api} y={item.props.y}
@@ -91,14 +93,12 @@ class Index extends Component {
             </div>
           );
         }
-
         else if (item.type === "line") {
           return (
             <Britecharts api={item.props.api} topicName={item.topicNames}
               title={language[item.title][currentLanguage]} />
           );
         }
-
         else {
           return (
             <BarChartComp api={item.props.api} ukey={item.id} catagName={item.catagName}
@@ -109,11 +109,9 @@ class Index extends Component {
           );
         }
       }
-
       else {
         return null;
       }
-
     });
 
     return chartWidgets;

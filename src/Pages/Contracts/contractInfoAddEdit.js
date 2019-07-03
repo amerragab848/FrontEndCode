@@ -413,7 +413,7 @@ class ContractInfoAddEdit extends Component {
         this.checkDocumentIsView();
       });
 
-      DataService.GetDataGrid("ShowContractItemsByContractIdShowChildernStracure?ContractId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+      DataService.GetDataGrid("ShowContractItemsByContractIdShowChildernStracure?ContractId=" + 84 + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
         this.setState({
           rows: [...result]
         });
