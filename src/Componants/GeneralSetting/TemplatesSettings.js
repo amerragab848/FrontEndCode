@@ -7,6 +7,7 @@ import CurrencyExchangeRates from './Administrations/currencyExchangeRates';
 import ExpensesWorkFlowLog from './Project/ExpensesWorkFlow/ExpensesWorkFlowLog'
 import GeneralConfiguration from './Project/GeneralConfiguration'
 import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList'
+import SpecSectionChild from '../GeneralSetting/MenuDefaultData/specSectionChild'
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import config from "../../Services/Config";
 import Resources from "../../resources.json";
@@ -54,10 +55,10 @@ class TemplatesSettings extends Component {
                             </Tab>
 
                             {(config.IsAllow(3744)) ?
-                                   <Tab>
-                                   <span className="subUlTitle">{Resources['currencyExchangeRates'][currentLanguage]}</span>
-                               </Tab> : null}
-                        
+                                <Tab>
+                                    <span className="subUlTitle">{Resources['currencyExchangeRates'][currentLanguage]}</span>
+                                </Tab> : null}
+
 
                             <li className="title">
                                 <h4 className="zero">{Resources['Project'][currentLanguage]}</h4>
@@ -80,7 +81,10 @@ class TemplatesSettings extends Component {
                                 <Tab>
                                     <span className="subUlTitle">{Resources['AccountsDefaultList'][currentLanguage]}</span>
                                 </Tab> : null}
-
+                            {(config.IsAllow(3342)) ?
+                                <Tab>
+                                    <span className="subUlTitle">{Resources['subSpecsSection'][currentLanguage]}</span>
+                                </Tab> : null}
 
                         </TabList>
                     </div>
@@ -124,6 +128,12 @@ class TemplatesSettings extends Component {
                         {(config.IsAllow(1179)) ?
                             <TabPanel>
                                 <GeneralList />
+                            </TabPanel>
+                            : null}
+
+                        {(config.IsAllow(3342)) ?
+                            <TabPanel>
+                                <SpecSectionChild />
                             </TabPanel>
                             : null}
                     </div>

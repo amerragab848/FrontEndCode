@@ -8,7 +8,6 @@ import "../../Styles/scss/en-us/dataGrid.css";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 import moment from "moment";
-import { relative } from "path";
 const _ = require("lodash");
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -268,7 +267,7 @@ class GridSetupWithFilter extends Component {
       let matched = 0;
 
       if (Object.keys(filters).length > 1) {
-        
+
         let Data = this.state.rows;
 
         Data.forEach(row => {
@@ -309,7 +308,7 @@ class GridSetupWithFilter extends Component {
           rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
           Loading: false
         });
-      } else { 
+      } else {
         rows.forEach(row => {
           matched = 0;
           Object.keys(filters).forEach(key => {
@@ -351,13 +350,6 @@ class GridSetupWithFilter extends Component {
       }
     }
   };
-
-  // getRowsFilter = (rows, filters) => {
-  //   let rowsList = selectors.getRows({ rows, filters });
-  //   this.setState({
-  //     rows: rowsList
-  //   })
-  // }
 
   showFilterMore = () => {
     this.setState({
@@ -436,7 +428,7 @@ class GridSetupWithFilter extends Component {
     this.setState({ ShowModelFilter: false });
   };
 
-  resetModeFilter = () => { 
+  resetModeFilter = () => {
 
     var filterArray = Array.from(document.querySelectorAll(".filterModal input"));
     filterArray.map(input => (input.value = ""));
@@ -524,7 +516,7 @@ class GridSetupWithFilter extends Component {
 
   render() {
     const { groupBy, rows } = this.state;
-    const groupedRows = Data.Selectors.getRows({ rows, groupBy }); 
+    const groupedRows = Data.Selectors.getRows({ rows, groupBy });
 
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
@@ -729,6 +721,7 @@ class GridSetupWithFilter extends Component {
             </div>
           </div>
         </div>
+        
         <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
           <div className="minimizeSpan">
             <div className="V-tableSize" onClick={this.openModalColumn}>
@@ -789,24 +782,19 @@ class GridSetupWithFilter extends Component {
             </div>
           </div>
         </div>
-
         <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
           <div className="grid__column--container">
             <button className="closeColumn" onClick={this.closeModalColumn}>X</button>
-
             <div className="grid__column--title">
               <h2>Grid Columns</h2>
             </div>
-
             <div className="grid__column--content">
               {RenderPopupShowColumns}
             </div>
-
             <div className="grid__column--footer">
               <button className="btn primaryBtn-1" onClick={this.closeModalColumn}>Close</button>
               <button className="btn primaryBtn-2" onClick={this.ResetShowHide}>Reset</button>
             </div>
-
           </div>
         </div>
       </Fragment >
