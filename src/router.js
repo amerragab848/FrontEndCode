@@ -151,21 +151,22 @@ import requestProposalAddEdit from "./Pages/Procurement/requestProposalAddEdit";
 import proposalAddEdit from "./Pages/Procurement/proposalAddEdit";
 import PaymentRequisitionList from "./Pages/Contracts/Schedule";
 import purchaseOrderAddEdit from "./Pages/Procurement/purchaseOrderAddEdit";
-import siteRequestAddEdit from "./Pages/Procurement/materialRequestAddEdit"; 
+import siteRequestAddEdit from "./Pages/Procurement/materialRequestAddEdit";
 import equipmentDeliveryAddEdit from "./Pages/Procurement/equipmentDeliveryAddEdit";
-import materialDeliveryAddEdit from "./Pages/Procurement/materialDeliveryAddEdit"; 
+import materialDeliveryAddEdit from "./Pages/Procurement/materialDeliveryAddEdit";
 // import PaymentRequisitionList from "./Pages/Contracts/Schedule";
 import materialInventoryAddEdit from './Pages/Procurement/materialInventoryAddEdit';
 import chart from './Componants/ChartsWidgets/BarChartComp';
-import requestsTransferItems from "./Pages/Procurement/requestsTransferItems"; 
-import TransferInventory from "./Pages/Procurement/TransferInventory"; 
-import materialReturnedAddEdit from "./Pages/Procurement/materialReturnedAddEdit"; 
-import autoDeskViewer from "./Componants/OptionsPanels/AutoDeskViewer"; 
-import materialReleaseAddEdit from "./Pages/Procurement/materialReleaseAddEdit"; 
-import procurementAddEdit from "./Pages/Procurement/procurementAddEdit"; 
-import RiskConesquence from "./Componants/publicComponants/RiskConesquence"; 
-import GlobalSearch from "./Componants/publicComponants/GlobalSearch"; 
+import requestsTransferItems from "./Pages/Procurement/requestsTransferItems";
+import TransferInventory from "./Pages/Procurement/TransferInventory";
+import materialReturnedAddEdit from "./Pages/Procurement/materialReturnedAddEdit";
+import autoDeskViewer from "./Componants/OptionsPanels/AutoDeskViewer";
+import materialReleaseAddEdit from "./Pages/Procurement/materialReleaseAddEdit";
+import procurementAddEdit from "./Pages/Procurement/procurementAddEdit";
+import RiskConesquence from "./Componants/publicComponants/RiskConesquence";
+import GlobalSearch from "./Componants/publicComponants/GlobalSearch";
 import currencyExchangeRates from './Componants/GeneralSetting/Administrations/currencyExchangeRates';
+import specSectionChild from './Componants/GeneralSetting/MenuDefaultData/specSectionChild';
 
 import RiskCause from './Componants/OptionsPanels/RiskCause';
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -173,7 +174,7 @@ let setupRoutes = ProjectSetupRoutes.map((item) => {
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
     return <Route path={path} component={compoenet} />
 })
-     
+
 
 let originalRoutes = [
     <Route exact path="/" component={DashBoard} />
@@ -304,12 +305,12 @@ let originalRoutes = [
     , <Route path="/BoqStractureCost" component={BoqStractureCost} />
     , <Route path="/InventoryDetails" component={InventoryDetails} />
     , <Route path="/allocationOfProjectsOnCompanies" component={allocationOfProjectsOnCompanies} />
-    , <Route path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} /> 
+    , <Route path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} />
     , <Route path="/ProjectCompanies" component={ProjectCompanies} />
     , <Route path="/permissionsGroups" component={permissionsGroups} />
     , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} />
     , <Route path="/PermissionsGroupsPermissions/:groupId" component={PermissionsGroupsPermissions} />
-    , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} /> 
+    , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} />
     , <Route path="/projectBackLog" component={ProjectBackLog} />
     , <Route path="/projectsAchievements" component={ProjectsAchievements} />
     , <Route path="/projectInvoicesCollected" component={projectInvoicesCollected} />
@@ -326,7 +327,7 @@ let originalRoutes = [
     , <Route path="/postitNotificationsDetail" component={PostitNotificationsDetail} />
     , <Route path="/taskDetails" component={taskDetails} />
     , <Route path="/myTasks" component={myTasks} />
-    , <Route path="/contractInfoAddEdit" component={contractInfoAddEdit} /> 
+    , <Route path="/contractInfoAddEdit" component={contractInfoAddEdit} />
     , <Route path="/PaymentRequisitionList" component={PaymentRequisitionList} />
     , <Route path="/SubContractLog" component={SubContractLog} />
     , <Route path="/RejectedTimesheetsDetails" component={RejectedTimesheetsDetails} />
@@ -334,23 +335,24 @@ let originalRoutes = [
     , <Route path="/requestProposalAddEdit" component={requestProposalAddEdit} />
     , <Route path="/proposalAddEdit" component={proposalAddEdit} />
     , <Route path="/purchaseOrderAddEdit" component={purchaseOrderAddEdit} />
-    , <Route path="/siteRequestAddEdit" component={siteRequestAddEdit} /> 
+    , <Route path="/siteRequestAddEdit" component={siteRequestAddEdit} />
     , <Route path="/materialDeliveryAddEdit" component={materialDeliveryAddEdit} />
     , <Route path="/BarChartComp" component={chart} />
-    , <Route path="/equipmentDeliveryAddEdit" component={equipmentDeliveryAddEdit} /> 
-    , <Route path="/TransferInventory" component={TransferInventory} /> 
-    , <Route path="/requestsTransferItems" component={requestsTransferItems} /> 
-    , <Route path="/materialReturnedAddEdit" component={materialReturnedAddEdit} /> 
-    , <Route path="/materialReleaseAddEdit" component={materialReleaseAddEdit} /> 
-    , <Route path="/procurementAddEdit" component={procurementAddEdit} /> 
-    , <Route path="/RiskCause" component={RiskCause} />  
-    , <Route path="/materialInventoryAddEdit" component={materialInventoryAddEdit} /> 
-    , <Route path="/autoDeskViewer" component={autoDeskViewer} /> 
-    , <Route path="/RiskConesquence" component={RiskConesquence} /> 
-    , <Route path="/GlobalSearch" component={GlobalSearch} /> 
-    , <Route path="/currencyExchangeRates" component={currencyExchangeRates} /> 
+    , <Route path="/equipmentDeliveryAddEdit" component={equipmentDeliveryAddEdit} />
+    , <Route path="/TransferInventory" component={TransferInventory} />
+    , <Route path="/requestsTransferItems" component={requestsTransferItems} />
+    , <Route path="/materialReturnedAddEdit" component={materialReturnedAddEdit} />
+    , <Route path="/materialReleaseAddEdit" component={materialReleaseAddEdit} />
+    , <Route path="/procurementAddEdit" component={procurementAddEdit} />
+    , <Route path="/RiskCause" component={RiskCause} />
+    , <Route path="/materialInventoryAddEdit" component={materialInventoryAddEdit} />
+    , <Route path="/autoDeskViewer" component={autoDeskViewer} />
+    , <Route path="/RiskConesquence" component={RiskConesquence} />
+    , <Route path="/GlobalSearch" component={GlobalSearch} />
+    , <Route path="/currencyExchangeRates" component={currencyExchangeRates} />
+    , <Route path="/specSectionChild" component={specSectionChild} />
 ];
-    
+
 originalRoutes = [...originalRoutes, ...setupRoutes]
 
 let routes = (

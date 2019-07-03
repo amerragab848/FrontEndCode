@@ -21,17 +21,17 @@
 
 <body>
 
-    <h1>ADD EDit Document</h1>
+    <h1>ADD EDIT DOCUMENT</h1>
 
     <div class="documents-stepper noTabs__document ">
-        
+
         <h2>IF there are steps add class
             <span style="color: red; margin: 20px 0;display: inline-block;">" one__tab one_step " to " documents-stepper noTabs__document "</span>
         </h2>
 
         <div class="submittalHead" style="position: relative;">
-            
-            <h2 class="zero" style="position: relative;">ADD EDit Document
+
+            <h2 class="zero" style="position: relative;">ADD EDIT DOCUMENT
                 <span>WIth out tabs</span>
             </h2>
 
@@ -62,6 +62,19 @@
                 <div id="step1" class="step-content-body">
                     <div class="subiTabsContent">
                         <div class="document-fields">
+
+                            <div class="reports__content">
+                                <header>
+                                    <h2 class="zero">header with button next to it</h2>
+                                    <button class="primaryBtn-2 btn mediumBtn" type="button">Export</button>
+                                </header>
+                            </div>
+
+                            <div class="header__dropdown">
+                                <h2 class="zero">header with button space between</h2>
+                                <button class="primaryBtn-2 btn mediumBtn" type="button">Export</button>
+                            </div>
+
                             <div class="proForm first-proform">
 
                                 <div class="linebylineInput">
@@ -86,7 +99,7 @@
                             </div>
 
                             <div class="proForm datepickerContainer">
-                                
+
                                 <div class="linebylineInput">
                                     <label class="control-label">arrange</label>
                                     <div class="ui input inputDev">
@@ -123,7 +136,6 @@
                                     </div>
                                 </div>
 
-
                                 <h2>input, Dropdown width equal full Width of its parent, input with normal width "fullInputWidth"
                                     on parent of input and label</h2>
                                 <div class="letterFullWidth fullInputWidth">
@@ -144,7 +156,6 @@
                                             Settings />
                                     </div>
                                 </div>
-
 
                                 <h2 style="width: 100%">CheckBox in row design</h2>
                                 <div class="linebylineInput linebylineInput__checkbox">
@@ -179,7 +190,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="linebylineInput fullInputWidth">
                                     <label class="control-label">shared Settings</label>
                                     <div class="inputDev ui input">
@@ -197,11 +207,145 @@
                                 </div>
 
                             </div>
+
+                            <div class="slider-Btns">
+                                <button class="primaryBtn-1 btn ">Save</button>
+                            </div>
+
                         </div>
-                        <div class="slider-Btns">
-                            <button class="primaryBtn-1 btn ">
-                                Save
-                            </button>
+                        <h2>Attachment Table</h2>
+
+                        <div class="doc-pre-cycle letterFullWidth">
+                            <table class="attachmentTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="headCell tableCell-1">
+                                                <span>Type</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="headCell tableCell-2">
+                                                <span>Subject</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="headCell tableCell-3">
+                                                <span>docDate</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="headCell tableCell-4">
+                                                <span>uploaded By</span>
+                                            </div>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="contentCell tableCell-1">
+                                                <span>
+                                                    <img src="Styles/images/pdfAttache.png" alt="" width="100%" height="100%" />
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="contentCell tableCell-2">
+                                                <a href class="pdfPopup various zero" data-toggle="tooltip" title="ff">pdf Subject </a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="contentCell tableCell-3">
+                                                <p class="zero status"> </p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="contentCell tableCell-4">
+                                                <p class="zero"> </p>
+                                            </div>
+                                        </td>
+                                        <td class="tdHover">
+                                            <div class="attachmentAction">
+                                                <a href={item[ 'attachFile']} download={item.fileNameDisplay} class="pdfPopup various zero attachPdf">
+                                                    <img src="Styles/images/attacthDownloadPdf.png" alt="dLoad" width="100%" height="100%" />
+                                                </a>
+                                                <a class="attachRecycle">
+                                                    <img src="Styles/images/pdfMDelete.png" alt="del" width="100%" height="100%" />
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                            <h2>Table With Fixed Width</h2>
+
+                            <table class="attachmentTable attachmentTableAuto">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="headCell tableCell-1">
+                                                <span>Type</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="headCell tableCell-2">
+                                                <span>Subject</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="headCell tableCell-3">
+                                                <span>docDate</span>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="headCell tableCell-4">
+                                                <span>uploaded By</span>
+                                            </div>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="contentCell tableCell-1">
+                                                <span>
+                                                    <img src="Styles/images/pdfAttache.png" alt="" width="100%" height="100%" />
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="contentCell tableCell-2">
+                                                <a href class="pdfPopup various zero" data-toggle="tooltip" title="ff">pdf Subject </a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="contentCell tableCell-3">
+                                                <p class="zero status"> </p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="contentCell tableCell-4">
+                                                <p class="zero"> </p>
+                                            </div>
+                                        </td>
+                                        <td class="tdHover">
+                                            <div class="attachmentAction">
+                                                <a href={item[ 'attachFile']} download={item.fileNameDisplay} class="pdfPopup various zero attachPdf">
+                                                    <img src="Styles/images/attacthDownloadPdf.png" alt="dLoad" width="100%" height="100%" />
+                                                </a>
+                                                <a class="attachRecycle">
+                                                    <img src="Styles/images/pdfMDelete.png" alt="del" width="100%" height="100%" />
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

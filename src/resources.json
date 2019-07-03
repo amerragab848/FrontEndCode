@@ -1201,7 +1201,7 @@
         "en": "Invoices Red Alerts",
         "ar": "التنبيه الاحمر للفواتير"
     },
-    "inaicesYellowAlerts": {
+    "invoicesYellowAlerts": {
         "en": "Invoices Yellow Alerts",
         "ar": "التنبيه الاصفر للفواتير"
     },
@@ -7842,7 +7842,7 @@
         "ar": " الشركه المسئوله"
     },
     "responsibleContactName": {
-        "en": "Responsible Contact",
+        "en": "Action Owner Contact",
         "ar": "الشخص المسئول"
     },
     "preMedigationCostEMV": {
@@ -7996,5 +7996,9 @@
     "openMyFolders": {
         "en": "Open my folders",
         "ar": "فتح المجلد "
+    },
+    "filter": {
+        "en": "Filter",
+        "ar": "بحث"
     } 
 }

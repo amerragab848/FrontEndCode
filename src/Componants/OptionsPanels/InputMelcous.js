@@ -9,13 +9,7 @@ class InputMelcous extends Component {
   }
   render() {
     return (
-      <div
-        className={
-          this.props.fullwidth == "true"
-            ? "letterFullWidth fullInputWidth linebylineInput"
-            : "fillter-status fillter-item-c"
-        }
-      >
+      <div className={ this.props.fullwidth == "true" ? "letterFullWidth fullInputWidth linebylineInput" : "fillter-status fillter-item-c"}>
         <label className="control-label">
           {Resources[this.props.title][currentLanguage]}
         </label>
