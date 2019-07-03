@@ -732,7 +732,7 @@ class PurchaseOrderAddEdit extends Component {
 
       let objDocument = this.state.document;
       objDocument.docDate = moment(objDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-      objDocument.completionDate = moment( objDocument.completionDate, 'YYYY-MM-DD' ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+      objDocument.completionDate = moment(objDocument.completionDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
       if (this.props.changeStatus) {
         dataservice
@@ -1082,7 +1082,7 @@ class PurchaseOrderAddEdit extends Component {
 
   renderNormalItems = (errors, touched, values, handleBlur, handleChange, setFieldValue, setFieldTouched) => {
     return (
-      <div className="proForm datepickerContainer letterFullWidth">
+      
         <div className="proForm datepickerContainer letterFullWidth">
           {this.state.viewDisription === 0 ? (
             <Fragment>
@@ -1202,7 +1202,6 @@ class PurchaseOrderAddEdit extends Component {
                 </div>
               </div>
 
-              <div className="proForm datepickerContainer letterFullWidth">
                 <div className="linebylineInput valid-input">
                   <Dropdown
                     title="itemType"
@@ -1228,7 +1227,6 @@ class PurchaseOrderAddEdit extends Component {
                     index="itemType"
                   />
                 </div>
-              </div>
 
               {this.state.selectedItemType.value === 3 ? (
                 <Fragment>
@@ -1320,7 +1318,6 @@ class PurchaseOrderAddEdit extends Component {
                     ""
                   )}
 
-              <div className="proForm datepickerContainer letterFullWidth">
                 <div className="linebylineInput valid-input">
                   <Dropdown
                     title="specsSection"
@@ -1346,7 +1343,6 @@ class PurchaseOrderAddEdit extends Component {
                     index="specsSectionId"
                   />
                 </div>
-              </div>
 
               <div className="linebylineInput valid-input">
                 <label className="control-label">
@@ -1384,49 +1380,26 @@ class PurchaseOrderAddEdit extends Component {
           ) : (
               <Fragment>
                 <div className="proForm datepickerContainer letterFullWidth">
+                  
                   <div className="proForm datepickerContainer letterFullWidth">
                     <div className="linebylineInput fullInputWidth">
                       <label className="control-label">
                         {Resources.details[currentLanguage]}
                       </label>
-                      <div
-                        className={
-                          "inputDev ui input " +
-                          (errors.details
-                            ? "has-error"
-                            : !errors.details && touched.details
-                              ? " has-success"
-                              : " ")
-                        }
-                      >
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="details"
-                          value={this.state.purchaseOrderItems.details}
-                          placeholder={Resources.details[currentLanguage]}
-                          onChange={e => this.handleChangeItems(e, "details")}
-                          onBlur={e => {
-                            handleChange(e);
-                            handleBlur(e);
-                          }}
-                          name="details"
-                        />
+                      <div className={"inputDev ui input " + (errors.details ? "has-error" : !errors.details && touched.details ? " has-success" : " ")}>
+                        <input type="text" className="form-control" id="details" value={this.state.purchaseOrderItems.details}
+                          placeholder={Resources.details[currentLanguage]} onChange={e => this.handleChangeItems(e, "details")}
+                          onBlur={e => { handleChange(e); handleBlur(e); }}name="details"/>
                         {errors.details ? (
                           <em className="pError">{errors.details}</em>
                         ) : null}
                       </div>
                     </div>
-                    <button
-                      className="primaryBtn-1 btn "
-                      type="submit"
-                      onClick={e =>
-                        this.renderFromInventory(this.state.viewDisription)
-                      }
-                    >
+                    <button className="primaryBtn-1 btn " type="submit" onClick={e => this.renderFromInventory(this.state.viewDisription)}>
                       {Resources["fromInventory"][currentLanguage]}
                     </button>
                   </div>
+
                   <div className="linebylineInput valid-input">
                     <label className="control-label">
                       {Resources.arrange[currentLanguage]}
@@ -1573,6 +1546,7 @@ class PurchaseOrderAddEdit extends Component {
                       ) : null}
                     </div>
                   </div>
+
                   <div className="linebylineInput valid-input">
                     <Dropdown
                       title="itemType"
@@ -1769,13 +1743,13 @@ class PurchaseOrderAddEdit extends Component {
             />
           </div>
         </div>
-      </div>
     );
   };
 
   renderBOQItems = (errors, touched, values, handleBlur, handleChange, setFieldValue, setFieldTouched) => {
     return (
       <div className="proForm datepickerContainer letterFullWidth">
+        
         <div className="proForm datepickerContainer letterFullWidth">
           <div className="linebylineInput valid-input">
             <Dropdown
@@ -1808,6 +1782,7 @@ class PurchaseOrderAddEdit extends Component {
             </div>
           </div>
         </div>
+        
         <div className="linebylineInput valid-input">
           <Dropdown
             title={"specsSection"}
@@ -1824,6 +1799,7 @@ class PurchaseOrderAddEdit extends Component {
             index="fromContract"
           />
         </div>
+
       </div>
     );
   };
@@ -3152,19 +3128,21 @@ class PurchaseOrderAddEdit extends Component {
 
     let SixthStepSubPurchaseOrders = () => {
       return (
-        <SubPurchaseOrderLog
-          type="PurchaseOrder"
-          items={this.state.purchaseOrderDataItems}
-          ApiGet={
-            "GetContractsPurchaseOrderSubPos?projectId=" +
-            docId +
-            "&parentType=PurchaseOrder"
-          }
-          docId={this.state.docId}
-          projectId={projectId}
-          isViewMode={this.state.isViewMode}
-          subject={this.state.document.subject}
-        />
+        <div className="doc-pre-cycle">
+          <SubPurchaseOrderLog
+            type="PurchaseOrder"
+            items={this.state.purchaseOrderDataItems}
+            ApiGet={
+              "GetContractsPurchaseOrderSubPos?projectId=" +
+              docId +
+              "&parentType=PurchaseOrder"
+            }
+            docId={this.state.docId}
+            projectId={projectId}
+            isViewMode={this.state.isViewMode}
+            subject={this.state.document.subject}
+          />
+        </div>
       );
     };
 

@@ -1,4 +1,4 @@
-$left: right;                                                            
+$left: right;
 $right: left;
 
 $ltr: rtl;
@@ -6,7 +6,7 @@ $rtl: ltr;
 
 @import "../_bootstrap";
 
-@import "../_variables.scss";
+@import "../_variables";
 @import "../_Media-Query";
 @import "../_Mixins";
 @import "../_normalize";
@@ -16,244 +16,25 @@ $rtl: ltr;
 @import "../Components/_basic-colors";
 @import "../Components/_Accordion";
 @import "../Components/_Navigation";
-@import "../Components/DatePicker";   
+@import "../Components/DatePicker";
 @import "../Components/_Sections";
 @import "../Components/_Modal";
 @import "../Components/_GridSystem";
 @import "../Components/_header";
-@import "../Components/_Settings";
+//@import "../Components/_Settings";
 @import "../Components/_Documents";
 @import "../Components/_Documents_noTabs";
 @import "../Components/_Dashboard";
-@import "../Components/_attachmentNewTable"; 
+@import "../Components/_attachmentNewTable";
 @import "../components/_NotificatioBar";
 @import "../components/_Print";
 @import "../components/_NotificatioPage";
 @import "../components/_Login";
 @import "../components/_SettingsNew";
 @import "../components/_adminProfile";
-@import "../ar-edition.scss";
-
+//@import "../components/_EpsProjects";
 /*Elements*/
-
 @import "../Components/Elements/_All-Elements";
 
-.zero {
-    margin: 0;
-    padding: 0;
-}
-body {
-    direction: $ltr;
-    min-width: 1024px;
-}
-#scroll-top {
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    color: #DDD;
-    background-color: #1c445e;
-    text-align: center;
-    position: fixed;
-    left: 15px;
-    bottom: 10px;
-    z-index: 9999;
-    display: none;
-    cursor: pointer;
-    &:hover {
-        background-color: #444;
-    }
-    i {
-        font-size: 15px;
-        line-height: 2.3;
-        color: #fff;
-    }
-}
-.mainContainer {
-    padding-right: 130px;
-    padding-left: 40px;
-}
-.mainContainerX {
-    padding: 40px;
-}
-.screen-support {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    z-index: 999999999999;
-    background-color: rgba(0,0,0,0.95);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    .screen-support-text {
-        background-image: url(../../images/logo.svg);
-        background-repeat: no-repeat;
-        background-position: top 16px left 16px;
-        background-color: $grey-100;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 30px;
-        flex-flow: column;
-        border-radius: 15px;
-        min-height: 260px;
-        @include max768 {
-            min-height: 180px;
-            padding: 0 14px;
-        }
-        p
-        {
-            &:first-child {
-                font-size: 25px;
-                color: $Primary-1;
-                @include max768 {
-                    font-size: 15px;
-                }
-            }
-            &:last-of-type
-            {
-                a {
-                    font-size: 15px;
-                    color: $grey-500;
-                    @include max768 {
-                        font-size: 11px;
-                    }
-                }
-            }
-        }
-    }
-}
-.main-header {
-    padding-right: 130px;
-    padding-left: 40px;
-    .header-content {
-        .nav-right {
-            li {
-                &.notifi-icon {
-                    img {
-                        transform: rotate(30deg);
-                    }
-                    .inboxNotif{
-                        &.smallSquare {
-                            right: -15px;
-                            left: auto;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-.mainSide {
-    float: right;
-    .mainSideNav {
-        .mainSidenavContent
-        {
-            .sidenavinner
-            {
-                .modulesMenuIcons{
-                    .MenuUl {
-                        > li
-                        {
-                            a {
-                                border-left: none;
-                                border-right: 4px solid transparent;
-                            }
-                            &.ActiveSubLi {
-                                > a {
-                                    border-left: none;
-                                    border-right: 4px solid #4382f9;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-.mainGridSystem.active
-{
-    .girdTableHeader {
-        right: 131px;
-        left: 41px;
-    }
-}
-
-.mainGridSystem {
-    .gridSystemTables {
-        .normalContent {
-            min-width: 865px;
-            @include min1440 {
-                right: 32%;
-                left: auto;
-            }
-        }
-        .girdTableHeader {
-            .thead-row {
-                @include min1440 {
-                    transform: translateX(0);
-                    left: auto;
-                    right: 32%;
-                }
-                .headCell {
-                    &.ui-resizable-resizing {
-                        left: 0 !important;
-                    }
-                }
-            }
-        }
-    }
-    .ui.dropdown.classico {
-        .menu {
-            right: 0;
-        }
-    }
-}
-.notificontainer {
-    width: 600px;
-    position: absolute;
-    top: 100px;
-    left:0;
-    display: none;
-}
-
-.ui.dropdown.classico {
-    > .menu {
-        #{$left}: auto;
-        left: 0;
-        &:after {
-            #{$left}: auto;
-            left: 15px;
-        }
-    }
-}
-@media (max-width:1024px) {
-    body {
-        overflow-y: hidden
-    }
-    .screen-support {
-        display: flex;
-    }
-}
-@media (max-width:1200px){
-    .main-header {
-        .header-content {
-            width: 100%;
-            min-width: auto;
-        }
-    }
-}
-.ui.fluid.dropdown>.dropdown.icon {
-    float: $right;
-    
-}
-.ui.selection.dropdown>.delete.icon, .ui.selection.dropdown>.dropdown.icon, .ui.selection.dropdown>.search.icon {
-    #{$right}: 1em;
-    #{$left} : auto;
-}
+@import "../components/_reactCss";
+@import "../ar-edition";

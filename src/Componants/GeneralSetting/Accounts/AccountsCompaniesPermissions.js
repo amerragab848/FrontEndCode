@@ -4,6 +4,8 @@ import config from "../../../Services/Config";
 import Resources from "../../../resources.json";
 import DropdownMelcous from '../../OptionsPanels/DropdownMelcous'
 import { withRouter } from "react-router-dom";
+import HeaderDocument from '../../OptionsPanels/HeaderDocument'
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let id = 0;
 
@@ -65,38 +67,50 @@ class AccountsCompaniesPermissions extends Component {
     }
 
     SaveCompanies = () => {
-      
-            this.state.data.forEach(function (item) {
-                var obj = {};
-                obj.accountId = parseInt(id)
-                obj.companyId = item.value
-              //  obj.deletable = true
-                Api.post("AdduserCompaniesList", obj)
-            })
-        
-   
+
+        this.state.data.forEach(function (item) {
+            var obj = {};
+            obj.accountId = parseInt(id)
+            obj.companyId = item.value
+            //  obj.deletable = true
+            Api.post("AdduserCompaniesList", obj)
+        })
+
+
     }
-    goBack=()=>{
+    goBack = () => {
         this.props.history.goBack()
     }
     render() {
         return (
 
-            <div className="mainContainer dropdownMulti">
-                <h3> {Resources['accountsCompaniesPermissions'][currentLanguage]}</h3>
-                {this.state.render === true ?
-                    <Fragment>
-                        <DropdownMelcous title='UserCompanies' data={this.state.CompaniesData}
-                            selectedValue={this.state.CompaniesDefaultData}
-                            handleChange={this.CompanieshandleChange} placeholder='UserCompanies' isMulti={true} />
+            <div className="mainContainer main__withouttabs dropdownMulti">
+                <div className="documents-stepper noTabs__document readOnly_inputs">
+                    <HeaderDocument docTitle={Resources['accountsCompaniesPermissions'][currentLanguage]} />
+                    <div className="doc-container">
+                        <div className="step-content">
+                            <div id="step1" className="step-content-body">
+                                <div className="subiTabsContent">
+                                    <div className="document-fields proForm">
+                                        {this.state.render === true ?
+                                            <Fragment>
+                                                <DropdownMelcous title='UserCompanies' data={this.state.CompaniesData}
+                                                    selectedValue={this.state.CompaniesDefaultData}
+                                                    handleChange={this.CompanieshandleChange} placeholder='UserCompanies' isMulti={true} closeMenuOnSelect={false} />
 
-                        <div className="dropBtn">
-                            <button className="primaryBtn-2 btn smallBtn" onClick={this.goBack}>Back</button>
-                            <span className="border" ></span>
-                            <button className="primaryBtn-1 btn smallBtn" onClick={this.SaveCompanies}>
-                                {Resources['save'][currentLanguage]}</button>
+                                                <div className="dropBtn">
+                                                    <button className="primaryBtn-2 btn smallBtn" onClick={this.goBack}>Back</button>
+                                                    <span className="border" ></span>
+                                                    <button className="primaryBtn-1 btn smallBtn" onClick={this.SaveCompanies}>
+                                                        {Resources['save'][currentLanguage]}</button>
+                                                </div>
+                                            </Fragment> : null}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </Fragment> : null}
+                    </div>
+                </div>
             </div>
         )
     }

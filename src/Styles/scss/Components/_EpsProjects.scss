@@ -21,8 +21,7 @@
 }
 
 .accordionTitle {
-    font-family: font-b;
-    font-family: Muli;
+    font-family: $muli-b;
     font-weight: bold;
     font-size: 16px;
     line-height: 1.5;
@@ -93,9 +92,7 @@
     display: flex;
     flex-flow: column;
     align-items: center;
-    font-family: font-r;
-    font-family: Muli;
-    font-weight: normal;
+    font-family: $muli-r;
     font-size: 12px;
     line-height: 1.33;
     letter-spacing: -0.2px;
@@ -105,8 +102,7 @@
 }
 
 .Project__num .project__num--span {
-    font-family: font-b;
-    font-family: Muli;
+    font-family: $muli-b;
     font-weight: bold;
     font-size: 16px;
     line-height: 1.5;
@@ -214,8 +210,7 @@
 }
 
 .tree__header h2 {
-    font-family: font-b;
-    font-family: Muli;
+    font-family: $muli-b;
     font-weight: bold;
     font-size: 20px;
     line-height: 1.4;
@@ -225,8 +220,7 @@
 
 .Eps__header h2 {
     font-size: 16px;
-    font-family: font-r;
-    font-family: Muli;
+    font-family: $muli-r;
     font-weight: normal;
     line-height: 1.5;
     letter-spacing: -0.2px;
