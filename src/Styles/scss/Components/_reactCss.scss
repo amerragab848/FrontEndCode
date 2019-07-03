@@ -5250,10 +5250,12 @@ body.noScrolling {
 
 .filterModal__container .filterModal {
     background: #fff;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    position: relative;
+    margin: auto;
     z-index: 99;
     border-radius: 4px;
 }

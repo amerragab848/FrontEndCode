@@ -599,7 +599,7 @@ class CommonLog extends Component {
               }
             >
               <div className="minimizeSpan">
-                <div className="H-tableSize" onClick={this.handleMinimize}>
+                <div className="H-tableSize" data-toggle="tooltip" title="Minimize Rows" onClick={this.handleMinimize}>
                   <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                     <g fill="none" fillRule="evenodd" transform="translate(5 5)">
                       <g fill="#CCD2DB" mask="url(#b)">
@@ -608,7 +608,7 @@ class CommonLog extends Component {
                     </g>
                   </svg>
                 </div>
-                <div className="V-tableSize" onClick={this.openModalColumn}>
+                <div className="V-tableSize" data-toggle="tooltip" title="Filter Columns" onClick={this.openModalColumn}>
                   <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                     <g fill="none" fillRule="evenodd" transform="translate(5 5)">
                       <g fill="#CCD2DB" mask="url(#b)">

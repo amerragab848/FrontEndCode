@@ -55,18 +55,18 @@
     background: #e9ecf0;
 }
 
-.section__tabs .section__tabs--item.active::after {
-    content: '';
-    height: 24px;
-    width: 24px;
-    background-repeat: no-repeat;
-    right: 13px;
-    left: inherit;
-    top: 20px;
-    bottom: 20px;
-    background-image: url(../../images/active-arrow.png);
-        background-position: center;
-}
+// .section__tabs .section__tabs--item.active::after {
+//     content: '';
+//     height: 24px;
+//     width: 24px;
+//     background-repeat: no-repeat;
+//     right: 13px;
+//     left: inherit;
+//     top: 20px;
+//     bottom: 20px;
+//     background-image: url(../../images/active-arrow.png);
+//         background-position: center;
+// }
 
 
 .section__tabs .section__tabs--item h3 {

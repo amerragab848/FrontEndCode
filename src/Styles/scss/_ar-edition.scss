@@ -189,6 +189,11 @@
     }
 }
 
+.dashDragCustom .react-tabs__tab--selected::after {
+    transform: rotate(180deg);
+    top: 32%;
+}
+
 /* Grid Rtl */
 
 .react-grid-Cell,
@@ -488,5 +493,10 @@ body {
     right: auto !important;
 }
 
+
+.Toastify__close-button {
+    left: auto !important;
+    right: 10px !important
+}
 /* layout -ar css */
 /* templates approval ar */
