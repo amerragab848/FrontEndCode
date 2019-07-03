@@ -7996,5 +7996,9 @@
     "openMyFolders": {
         "en": "Open my folders",
         "ar": "فتح المجلد "
+    },
+    "filter": {
+        "en": "Filter",
+        "ar": "بحث"
     } 
 }
