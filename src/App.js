@@ -4,13 +4,7 @@ import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./Styles/css/rodal.css";
 import "./Styles/css/semantic.min.css";
-
-// import "./Styles/scss/en-us/layout.css";
-// import "./Styles/scss/en-us/reactCss.css";
-
-//  import "./Styles/scss/ar-eg/layout-ar.css";
-//  import "./Styles/scss/ar-eg/ReactCss-ar.css";
-
+ 
 import Styles from "./CurrentLang";
 
 import Menu from "./Pages/Menu/Menu";
@@ -23,16 +17,13 @@ import {
 
 import configureStore from './store/configureStore';
 import { ToastContainer } from "react-toastify";
-
-
  
-
 const store = configureStore();
 
-const IsAuthorize = api.IsAuthorized() 
-class App extends Component { 
+const IsAuthorize = api.IsAuthorized()
+class App extends Component {
 
-  render() { 
+  render() {
     const showComp = IsAuthorize ?
       <div id="direction_warrper" >
         <Menu />

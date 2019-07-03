@@ -1095,7 +1095,7 @@ class riskAddEdit extends Component {
                                                 <div className="bounce3" />
                                             </div>
                                         </button>
-                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['save'][currentLanguage]}</button>
+                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['goAdd'][currentLanguage]}</button>
                                     }
                                 </div>
                             </Form>
@@ -1258,7 +1258,8 @@ class riskAddEdit extends Component {
 
                 riskEMV: riskEMV,
                 action: 0,
-                riskRanking: item['riskRanking']
+                riskRanking: item['riskRanking'],
+                isChecked: item['isChecked']
             };
 
             if (item.mitigationType == 1) {
@@ -1546,7 +1547,7 @@ class riskAddEdit extends Component {
                     <tbody>
                         {this.state.consequenceData.map((original, index) => {
                             let riskEMV = original.riskEMV != null ? numeral((this.state.statusNumbers == false ? original.riskEMV / 1000 : original.riskEMV)).format('0,0') : 0
-                            return <tr key={original.id + '-' + index}>
+                            return (original.isChecked === true ? <tr key={original.id + '-' + index}>
                                 <td className="removeTr">
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
                                 </td>
@@ -1576,6 +1577,8 @@ class riskAddEdit extends Component {
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {riskEMV} </div>
                                 </td>
                             </tr>
+                                : null
+                            )
                         })}
                     </tbody>
                 </table>
@@ -1637,8 +1640,9 @@ class riskAddEdit extends Component {
 
                     <tbody>
                         {this.state.consequenceDataPost.map((original, index) => {
+
                             let riskEMV = original.riskEMV != null ? numeral((this.state.statusNumbers == false ? original.riskEMV / 1000 : original.riskEMV)).format('0,0') : 0
-                            return <tr key={original.id + '-' + index}>
+                            return (original.isChecked === true ? <tr key={original.id + '-' + index}>
                                 <td className="removeTr">
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
                                 </td>
@@ -1670,6 +1674,9 @@ class riskAddEdit extends Component {
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {riskEMV}</div>
                                 </td>
                             </tr>
+                                : null
+                            )
+
                         })}
                     </tbody>
                 </table>

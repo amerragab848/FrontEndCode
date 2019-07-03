@@ -73,7 +73,7 @@ class GlobalSearch extends Component {
                 filterable: false,
                 sortDescendingFirst: true,
                 //  formatter:formatStatus
-            },{
+            }, {
                 key: "docTypeName",
                 name: Resources["docName"][currentLanguage],
                 width: 250,
@@ -92,7 +92,7 @@ class GlobalSearch extends Component {
                 filterable: true,
                 sortDescendingFirst: true,
                 formatter: formatDate
-            } ,{
+            }, {
                 key: "projectName",
                 name: Resources["projectName"][currentLanguage],
                 width: 250,
@@ -232,27 +232,27 @@ class GlobalSearch extends Component {
         })
 
     }
-    cellClick=(rowId, colID)=>{
-        if (colID != 0  ) {
+    cellClick = (rowId, colID) => {
+        if (colID != 0) {
             let rowData = this.state.searchResult[rowId];
             let obj = {
-              docId: rowData.docId,
-              projectId: rowData.projectId,
-              projectName: rowData.projectName,
-              arrange: 0,
-              docApprovalId: 0,
-              isApproveMode: false,
-              perviousRoute: window.location.pathname + window.location.search
+                docId: rowData.docId,
+                projectId: rowData.projectId,
+                projectName: rowData.projectName,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
             };
-    
+
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-  
+
             this.props.history.push({
-              pathname: rowData.docLink,
-              search: "?id=" + encodedPaylod
+                pathname: rowData.docLink,
+                search: "?id=" + encodedPaylod
             });
-          }
+        }
     }
     render() {
 
@@ -273,9 +273,7 @@ class GlobalSearch extends Component {
                         <h3 className="zero">Search Result</h3>
                         <span>{this.state.totalRows}</span>
                     </div>
-                    <div className="filterBTNS">
-                        <button className="defaultBtn btn" onClick={() => this.search(0)} type="button">Search</button>
-                    </div>
+
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">
                             <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -{" "}
@@ -298,7 +296,7 @@ class GlobalSearch extends Component {
                 </div>
 
                 <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
-                
+
                     <div className="filter__input-wrapper" onMouseLeave={this.resetDate}>
                         <div id="signupForm1" className="proForm" >
                             <div className="letterFullWidth">
@@ -307,6 +305,7 @@ class GlobalSearch extends Component {
                                     <Dropdown
                                         data={this.state.docsType}
                                         isMulti={true}
+                                        closeMenuOnSelect={false}
                                         selectedValue={this.state.selectedDocs}
                                         handleChange={event => this.setState({ selectedDocs: event })}
                                         name="docType" />
@@ -341,6 +340,7 @@ class GlobalSearch extends Component {
                                     handleChange={event => this.setState({ selectedStatus: event })}
                                     name="status" />
                             </div>
+                            <button className="defaultBtn btn" onClick={() => this.search(0)} type="button">Search</button>
                         </div>
                     </div>
                 </div>
