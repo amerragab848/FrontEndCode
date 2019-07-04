@@ -133,6 +133,10 @@
     font-family: $sans-sb;
 }
 
+.linebylineInput .customDatepicker .proForm .linebylineInput {
+    width: 100% !important;
+}
+
 .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
     width: 100%;
 }
@@ -145,7 +149,7 @@
     z-index: 14;
 }
 
-.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate > div::after {
+.proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate .sc-bxivhb.hPEdlB::after {
     content: '';
     position: absolute;
     background-image: url(../../images/icons/date-pickericon.svg);
@@ -1679,7 +1683,8 @@ tfoot tr td p {
     padding-#{$left}: 34px !important;
 }
 
-.settings-tabs-items .react-tabs__tab:hover, .settings-container .settings-tabs-items ul li:hover {
+.settings-tabs-items .react-tabs__tab:hover,
+.settings-container .settings-tabs-items ul li:hover {
     transition: all 0.3s ease-in-out;
     background-color: #edf6ff !important;
 }
@@ -1851,7 +1856,7 @@ tfoot tr td p {
     margin-bottom: 0 !important;
 }
 
-.noTabs__document .doc-container .step-content .document-fields .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
+.proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
     width: 192px;
 }
 
@@ -1869,7 +1874,8 @@ tfoot tr td p {
     top: 100%;
 }
 
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-vj8t7z, .document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw {
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-vj8t7z,
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw {
     height: 48px;
     border: solid 2px !important;
     transition: all 0.5s ease-in-out;
@@ -1883,7 +1889,8 @@ tfoot tr td p {
     border-color: #A8B0BF !important;
 }
 
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw, .document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw:hover {
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw,
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw:hover {
     border-color: #83B4FC !important;
 }
 
@@ -2176,7 +2183,7 @@ button.companies_icon {
     background: transparent;
     border: none;
     cursor: pointer;
-    display: flex; 
+    display: flex;
     align-items: center;
     justify-content: flex-end;
 }
@@ -2817,12 +2824,6 @@ button.companies_icon {
     }
 }
 
-.react-grid-Container .gridSystemSelected {
-    #{$left}: 58px;
-    width: calc(100% - 58px);
-    min-width: auto;
-}
-
 .css-1g6gooi {
     max-height: 30px;
     display: flex;
@@ -3153,7 +3154,7 @@ button.companies_icon {
     display: flex;
     align-items: center;
     min-width: 50px;
-    justify-content: center; 
+    justify-content: center;
     height: 48px;
     padding-#{$left}: 15px;
     padding-#{$right}: 15px;
@@ -3670,13 +3671,6 @@ button.companies_icon {
 
 .skylight-dialog .dropWrapper .letterFullWidth .fillter-item-c {
     margin-bottom: 0;
-}
-
-.react-grid-HeaderCell .react-grid-HeaderCell-sortable {
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .react-grid-checkbox:checked + .react-grid-checkbox-label:before {
@@ -4425,7 +4419,8 @@ line.horizontal-grid-line {
     stroke-dasharray: 4,4;
 }
 
-.bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .horizontal-grid-line, .bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .vertical-grid-line {
+.bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .horizontal-grid-line,
+.bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .vertical-grid-line {
     stroke: #dfe2e6;
     shape-rendering: crispEdges;
     stroke-width: 1;
@@ -4662,7 +4657,8 @@ line.horizontal-grid-line {
     color: #858d9e;
 }
 
-.pdf__popup .mgrpdf__wrapper canvas, .pdf__action--btns {
+.pdf__popup .mgrpdf__wrapper canvas,
+.pdf__action--btns {
     max-width: 891px !important;
     height: auto !important;
 }
@@ -5012,7 +5008,9 @@ line.horizontal-grid-line {
     margin-top: 15px;
 }
 
-.ReactTable .customD_Menu .css-vj8t7z, .ReactTable .customD_Menu .css-2o5izw, .ReactTable .customD_Menu .css-162g8z5 {
+.ReactTable .customD_Menu .css-vj8t7z,
+.ReactTable .customD_Menu .css-2o5izw, 
+.ReactTable .customD_Menu .css-162g8z5 {
     min-height: 38px;
 }
 
@@ -5037,7 +5035,8 @@ line.horizontal-grid-line {
     display: none;
 }
 
-.bar-container .x-axis-group .tick text, .group__charts .x-axis-group .tick text {
+.bar-container .x-axis-group .tick text,
+.group__charts .x-axis-group .tick text {
     fill: #3e4352;
 }
 
@@ -5240,6 +5239,7 @@ body.noScrolling {
 
 .filterModal__container .filterModal {
     background: #fff;
+
     // position: absolute;
     // top: 50%;
     // left: 50%;
@@ -5278,15 +5278,19 @@ body.noScrolling {
     display: block;
 }
 
-.document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
+.document__action--menu .customD_Menu .css-vj8t7z, 
+.document__action--menu .customD_Menu .css-2o5izw {
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
 }
 
-.document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z, .document__action--menu .skylight-dialog .customD_Menu .css-2o5izw {
+.document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z,
+.document__action--menu .skylight-dialog .customD_Menu .css-2o5izw {
     box-shadow: none;
 }
 
-button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button .ck-button__label, button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg, button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg {
+button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button .ck-button__label,
+button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg,
+button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg {
     display: none;
 }
 
@@ -5336,7 +5340,8 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     color: #4382F9;
 }
 
-.tooltip-background, .tooltip-text-container {
+.tooltip-background, 
+.tooltip-text-container {
     border-radius: 2px !important;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important;
     fill: #252833 !important;
@@ -5347,7 +5352,8 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     padding: 0 12px;
 }
 
-.tooltip-text .mini-tooltip-name, .tooltip-title {
+.tooltip-text .mini-tooltip-name,
+.tooltip-title {
     font-family: $muli-b !important;
     font-size: 14px  !important;
     line-height: 1.43  !important;
@@ -5356,7 +5362,11 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     padding: 4px 0;
 }
 
-.tooltip-text .mini-tooltip-value, .tooltip-body .tooltip-right-text tspan, .tooltip-body .tooltip-left-text, .tooltip-body .tooltip-left-text tspan, .tooltip-body .tooltip-right-text {
+.tooltip-text .mini-tooltip-value,
+.tooltip-body .tooltip-right-text tspan,
+.tooltip-body .tooltip-left-text,
+.tooltip-body .tooltip-left-text tspan,
+.tooltip-body .tooltip-right-text {
     font-family: $sans-r !important;
     font-size: 12px !important;
     line-height: 1.33 !important;
@@ -5393,7 +5403,8 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     stroke: transparent;
 }
 
-.js-bar-chart-container-tooltip-container, .js-grouped-bar-chart-tooltip-container {
+.js-bar-chart-container-tooltip-container,
+.js-grouped-bar-chart-tooltip-container {
     overflow: auto;
 }
 
@@ -5417,7 +5428,9 @@ div#markup-panel {
     border-radius: 5px;
 }
 
-.markup-actions button, .markup-buttons button, .panel-actions button {
+.markup-actions button,
+.markup-buttons button,
+.panel-actions button {
     font-weight: normal;
     font-size: 10px;
     padding: 5px 5px;
@@ -5438,7 +5451,8 @@ div#markup-panel {
     width: 100%;
 }
 
-.doc-input-btn input, .doc-input-btn .inputDev.ui.input {
+.doc-input-btn input,
+.doc-input-btn .inputDev.ui.input {
     width: 100%;
     margin-bottom: 0;
     padding-top: 0;
@@ -5498,7 +5512,8 @@ div#markup-panel {
     min-width: 115px;
 }
 
-.document__action--menu .css-10nd86i .css-vj8t7z, .document__action--menu .css-10nd86i .css-2o5izw {
+.document__action--menu .css-10nd86i .css-vj8t7z, 
+.document__action--menu .css-10nd86i .css-2o5izw {
     background-color: rgba(255, 255, 255, 0) !important;
     border-radius: 4px;
     min-height: 36px;
@@ -5507,7 +5522,8 @@ div#markup-panel {
     border: solid 1px #ccd2db !important;
 }
 
-.document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
+.document__action--menu .customD_Menu .css-vj8t7z,
+.document__action--menu .customD_Menu .css-2o5izw {
     min-width: 115px;
     height: 36px;
 }
@@ -5611,7 +5627,9 @@ div#markup-panel {
     min-width: 180px;
 }
 
-.linebylineInput .fillter-status.fillter-item-c.new_height, .new_height, .dropWrapper .fillter-item-c {
+.linebylineInput .fillter-status.fillter-item-c.new_height,
+.new_height,
+.dropWrapper .fillter-item-c {
     display: flex;
     flex-flow: column;
     align-items: flex-start;
@@ -5761,7 +5779,8 @@ div#markup-panel {
     fill: #4382F9;
 }
 
-.minimizeRelative .H-tableSize:hover svg g g, .minimizeRelative .V-tableSize:hover svg g g {
+.minimizeRelative .H-tableSize:hover svg g g,
+.minimizeRelative .V-tableSize:hover svg g g {
     fill: #4382F9;
     transition: all 0.3s ease-in-out;
 }
@@ -5905,17 +5924,20 @@ div#markup-panel {
     display: flex;
 }
 
-.dropdownMulti .css-1hwfws3, .multiChoice .css-1hwfws3 {
+.dropdownMulti .css-1hwfws3,
+.multiChoice .css-1hwfws3 {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
 }
 
-.attachmentTableAuto.attachmentTable thead tr th:nth-child(2), .attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
+.attachmentTableAuto.attachmentTable thead tr th:nth-child(2),
+.attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
     width: auto;
     padding-#{$right}: 11px !important;
 }
 
-.attachmentTableAuto.attachmentTable tbody tr td:nth-child(3), .attachmentTable.attachmentTableAuto tbody tr .contentCell {
+.attachmentTableAuto.attachmentTable tbody tr td:nth-child(3),
+.attachmentTable.attachmentTableAuto tbody tr .contentCell {
     width: auto !important;
     max-width: 100% !important;
 }
@@ -5972,7 +5994,10 @@ div#markup-panel {
     border-bottom: 1px solid #DADEE6;
 }
 
-.filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5, .filter__input-wrapper .letterFullWidth .customD_Menu .css-1hwfws3 {
+.filter__input-wrapper .customD_Menu .css-vj8t7z,
+.filter__input-wrapper .customD_Menu .css-2o5izw,
+.filter__input-wrapper .customD_Menu .css-162g8z5,
+.filter__input-wrapper .letterFullWidth .customD_Menu .css-1hwfws3 {
     min-height: 36px;
 }
 
@@ -5985,7 +6010,8 @@ div#markup-panel {
     max-width: 100%;
 }
 
-.datepickerContainer.proForm .letterFullWidth, .dropWrapper .letterFullWidth {
+.datepickerContainer.proForm .letterFullWidth,
+.dropWrapper .letterFullWidth {
     display: flex;
     align-items: flex-start;
     flex-flow: column;
@@ -5995,7 +6021,8 @@ div#markup-panel {
     flex-flow: row;
 }
 
-.letterFullWidth > .document-fields, .datepickerContainer.proForm .letterFullWidth .ui.input.inputDev {
+.letterFullWidth > .document-fields,
+.datepickerContainer.proForm .letterFullWidth .ui.input.inputDev {
     width: 100%;
 }
 
@@ -6004,13 +6031,17 @@ div#markup-panel {
     align-items: center !important;
 }
 
-.linebylineInput__checkbox .ui.checkbox, .linebylineInput__checkbox label {
+.linebylineInput__checkbox .ui.checkbox,
+.linebylineInput__checkbox label {
     margin: 0 !important;
 }
 
-.filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5 {
+.filter__input-wrapper .customD_Menu .css-vj8t7z,
+.filter__input-wrapper .customD_Menu .css-2o5izw,
+.filter__input-wrapper .customD_Menu .css-162g8z5 {
     height: 36px;
 }
+
 .filter__input-wrapper .customD_Menu .css-1492t68 {
     top: 44%;
 }
@@ -6046,11 +6077,13 @@ div#markup-panel {
     background: #4382f9 !important;
 }
 
-.react-calendar__tile:enabled:hover, .react-calendar__tile:enabled:focus {
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
     background-color: #edf1f5;
 }
 
-.react-calendar__tile--active abbr, button.react-calendar__tile.react-calendar__tile--now.react-calendar__tile--active.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day abbr {
+.react-calendar__tile--active abbr,
+ button.react-calendar__tile.react-calendar__tile--now.react-calendar__tile--active.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day abbr {
     color: #fff !important;
 }
 
@@ -6080,7 +6113,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     margin: 0;
 }
 
-.main-header .header-content .nav-#{$right} li:nth-child(4) {
+.main-header .header-content .nav-right li:nth-child(4) {
     margin-#{$left}: 24px;
 }
 
@@ -6101,7 +6134,8 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     transition: all 0.4s ease-in-out;
 }
 
-.header__search:hover .ui.input, .header__search.active .ui.input {
+.header__search:hover .ui.input,
+.header__search.active .ui.input {
     width: 220px;
     transition: all 0.4s ease-in-out;
 }
@@ -6120,7 +6154,8 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 
 /* calender */
 
-.attachmentTable__fixedWidth.attachmentTable tbody tr td:first-child, .attachmentTable__fixedWidth.attachmentTable thead tr th:first-child {
+.attachmentTable__fixedWidth.attachmentTable tbody tr td:first-child,
+.attachmentTable__fixedWidth.attachmentTable thead tr th:first-child {
     width: auto;
 }
 
@@ -6181,4 +6216,12 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 
 .attachmentTable.attachmentTableAuto tbody tr td {
     padding: 0 6px !important;
+}
+
+.gmTeoB {
+    z-index: 99;
+}
+
+.linebylineInput .ck.ck-button, .linebylineInput .ck.ck-dropdown {
+    margin: 0 !important;
 }

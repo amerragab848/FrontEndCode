@@ -138,7 +138,9 @@
     }
 }
 
-.ui.buttons > .ui.dropdown:last-child .menu, .ui.menu .right.dropdown.item .menu, .ui.menu .right.menu .dropdown:last-child .menu {
+.ui.buttons > .ui.dropdown:last-child .menu,
+.ui.menu .right.dropdown.item .menu,
+.ui.menu .right.menu .dropdown:last-child .menu {
     right: auto;
     left: 0;
 }
@@ -196,12 +198,6 @@
 
 /* Grid Rtl */
 
-.react-grid-Cell,
-.react-grid-HeaderCell {
-    padding-left: 0 !important;
-    padding-right: 16px !important;
-}
-
 .react-grid-HeaderRow {
     right: 0;
 }
@@ -247,6 +243,7 @@
 body {
     direction: $ltr;
     min-width: 1024px;
+    font-family: $muli-r;
 }
 
 #scroll-top {
@@ -478,7 +475,9 @@ body {
     float: $right;
 }
 
-.ui.selection.dropdown > .delete.icon, .ui.selection.dropdown > .dropdown.icon, .ui.selection.dropdown > .search.icon {
+.ui.selection.dropdown > .delete.icon,
+.ui.selection.dropdown > .dropdown.icon,
+.ui.selection.dropdown > .search.icon {
     #{$right}: 1em;
     #{$left}: auto;
 }
@@ -493,10 +492,10 @@ body {
     right: auto !important;
 }
 
-
 .Toastify__close-button {
     left: auto !important;
-    right: 10px !important
+    right: 10px !important;
 }
+
 /* layout -ar css */
 /* templates approval ar */

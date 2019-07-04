@@ -4,8 +4,8 @@ import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from "../../resources.json";
 import moment from "moment";
-import Minimize from '../../Styles/images/minimize.png';
-import plus from '../../Styles/images/plus.png';
+// import Minimize from '../../Styles/images/minimize.png';
+// import plus from '../../Styles/images/plus.png';
 import Calendar from "react-calendar";
 
 let currentLanguage =

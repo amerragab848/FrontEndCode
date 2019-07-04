@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 import ReactDataGrid from "react-data-grid";
 import { ToolsPanel, Data, Draggable } from "react-data-grid-addons";
 
-import "../../Styles/gridStyle.css";
-import "../../Styles/scss/en-us/dataGrid.css";
+// import "../../Styles/gridStyle.css";
+// import "../../Styles/scss/en-us/dataGrid.css";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";

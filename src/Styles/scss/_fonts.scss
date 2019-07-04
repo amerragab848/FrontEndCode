@@ -1,17 +1,18 @@
 // fonts
 // --------------------------------------------------
-
 /*ENglish*/
 @font-face {
     font-family: font-r;
     font-weight: normal;
     src: url("../../fonts/Muli-Regular.ttf");
 }
+
 @font-face {
     font-family: font-l;
     font-weight:300;
     src: url("../../fonts/Muli-Light.ttf");
 }
+
 @font-face {
     font-family: font-xb;
     font-weight: 800;
@@ -40,18 +41,57 @@
     src: url("../../fonts/OpenSans-Regular.ttf");
     font-weight: normal;
 }
+
 @font-face {
     font-family: font-opensb;
     font-weight: 600;
     src: url("../../fonts/OpenSans-Semibold.ttf");
 }
+
 @font-face {
     font-family: font-openb;
     src: url("../../fonts/OpenSans-Bold.ttf");
     font-weight: bold;
 }
+
 @font-face {
     font-family: roboto-M;
     src: url("../../fonts/Roboto-Medium.ttf");
     font-weight: 500;
+}
+
+
+/* Arabic */
+@font-face {
+    font-family: cairo-r;
+    src: url("../../fonts/Cairo/Cairo-Regular.ttf");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: cairo-sb;
+    font-weight: 600;
+    src: url("../../fonts/Cairo/Cairo-SemiBold.ttf");
+}
+
+@font-face {
+    font-family: cairo-b;
+    src: url("../../fonts/Cairo/Cairo-Bold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: cairo-xb;
+    src: url("../../fonts/Cairo/Cairo-Bold.ttf");
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: cairo-black;
+    src: url("../../fonts/Cairo/Cairo-Black.ttf");
+    font-weight: 900;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: $muli-r
 }

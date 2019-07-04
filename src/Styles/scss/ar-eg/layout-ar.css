@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
@@ -1066,6 +1067,30 @@ ul {
   font-family: roboto-M;
   src: url("../../fonts/Roboto-Medium.ttf");
   font-weight: 500; }
+/* Arabic */
+@font-face {
+  font-family: cairo-r;
+  src: url("../../fonts/Cairo/Cairo-Regular.ttf");
+  font-weight: normal; }
+@font-face {
+  font-family: cairo-sb;
+  font-weight: 600;
+  src: url("../../fonts/Cairo/Cairo-SemiBold.ttf"); }
+@font-face {
+  font-family: cairo-b;
+  src: url("../../fonts/Cairo/Cairo-Bold.ttf");
+  font-weight: bold; }
+@font-face {
+  font-family: cairo-xb;
+  src: url("../../fonts/Cairo/Cairo-Bold.ttf");
+  font-weight: 700; }
+@font-face {
+  font-family: cairo-black;
+  src: url("../../fonts/Cairo/Cairo-Black.ttf");
+  font-weight: 900; }
+h1, h2, h3, h4, h5 {
+  font-family: cairo-r; }
+
 .boxessss {
   margin: 0 auto;
   padding: 50px;
@@ -1106,7 +1131,7 @@ ul {
       width: 123px;
       height: 123px;
       margin-right: 28px;
-      font-family: font-openb;
+      font-family: cairo-b;
       font-size: 18px;
       text-align: center;
       color: #ffffff; }
@@ -1341,7 +1366,7 @@ ul {
       float: right; }
       .Basics-Typography .right-Side .block-blue a {
         padding-left: 40px;
-        font-family: font-b;
+        font-family: cairo-b;
         font-size: 14px;
         color: #ffffff; }
         .Basics-Typography .right-Side .block-blue a:hover {
@@ -1350,7 +1375,7 @@ ul {
         color: #ffffff;
         margin-top: 60px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading1, .Basics-Typography .right-Side .block-blue .Typography .heading2, .Basics-Typography .right-Side .block-blue .Typography .heading3, .Basics-Typography .right-Side .block-blue .Typography .heading3s, .Basics-Typography .right-Side .block-blue .Typography .heading4, .Basics-Typography .right-Side .block-blue .Typography .heading4s, .Basics-Typography .right-Side .block-blue .Typography .heading5, .Basics-Typography .right-Side .block-blue .Typography .heading6, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5s {
-          font-family: font-b;
+          font-family: cairo-b;
           font-size: 28px;
           margin: 10px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading2 {
@@ -1358,11 +1383,11 @@ ul {
         .Basics-Typography .right-Side .block-blue .Typography .heading3, .Basics-Typography .right-Side .block-blue .Typography .heading3s {
           font-size: 20px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading3s {
-          font-family: font-r; }
+          font-family: cairo-r; }
         .Basics-Typography .right-Side .block-blue .Typography .heading4, .Basics-Typography .right-Side .block-blue .Typography .heading4s {
           font-size: 16px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading4s {
-          font-family: font-r; }
+          font-family: cairo-r; }
         .Basics-Typography .right-Side .block-blue .Typography .heading5, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5s {
           font-size: 14px; }
         .Basics-Typography .right-Side .block-blue .Typography .heading6 {
@@ -1371,10 +1396,10 @@ ul {
       float: left; }
       .Basics-Typography .right-Side .links-block a {
         text-decoration: underline;
-        font-family: font-opens;
+        font-family: cairo-r;
         font-size: 14px; }
       .Basics-Typography .right-Side .links-block .lastlink {
-        font-family: font-b;
+        font-family: cairo-b;
         font-size: 14px;
         text-decoration: none;
         text-transform: uppercase; }
@@ -1382,7 +1407,7 @@ ul {
     float: left;
     width: 50%;
     max-width: 394px;
-    font-family: font-opens;
+    font-family: cairo-r;
     font-size: 14px;
     color: #3E4352; }
     .Basics-Typography .left-Side .body2 {
@@ -1395,42 +1420,42 @@ ul {
     .Basics-Typography .left-Side .Typography {
       color: #252833; }
       .Basics-Typography .left-Side .Typography .heading1, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading2, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading2, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading3, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading3, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading4, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading4, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading5s, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading6, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading6, .Basics-Typography .left-Side .Typography .heading2, .Basics-Typography .left-Side .Typography .heading3, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading3s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading3s, .Basics-Typography .left-Side .Typography .heading3s, .Basics-Typography .left-Side .Typography .heading4, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading4s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading4s, .Basics-Typography .left-Side .Typography .heading4s, .Basics-Typography .left-Side .Typography .heading5, .Basics-Typography .left-Side .Typography .heading5s, .Basics-Typography .left-Side .Typography .heading6 {
-        font-family: font-b;
+        font-family: cairo-b;
         font-size: 28px; }
       .Basics-Typography .left-Side .Typography .heading2 {
         font-size: 24px; }
       .Basics-Typography .left-Side .Typography .heading3, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading3s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading3s, .Basics-Typography .left-Side .Typography .heading3s {
         font-size: 20px; }
       .Basics-Typography .left-Side .Typography .heading3s {
-        font-family: font-r; }
+        font-family: cairo-r; }
       .Basics-Typography .left-Side .Typography .heading4, .Basics-Typography .left-Side .right-Side .block-blue .Typography .heading4s, .Basics-Typography .right-Side .block-blue .left-Side .Typography .heading4s, .Basics-Typography .left-Side .Typography .heading4s {
         font-size: 16px; }
       .Basics-Typography .left-Side .Typography .heading4s {
-        font-family: font-r; }
+        font-family: cairo-r; }
       .Basics-Typography .left-Side .Typography .heading5, .Basics-Typography .left-Side .Typography .heading5s {
         font-size: 14px; }
       .Basics-Typography .left-Side .Typography .heading5s {
-        font-family: font-r; }
+        font-family: cairo-r; }
       .Basics-Typography .left-Side .Typography .heading6 {
         font-size: 12px; }
     .Basics-Typography .left-Side .subtitles {
       margin-top: 50px;
       color: #858D9E; }
       .Basics-Typography .left-Side .subtitles p {
-        font-family: font-r; }
+        font-family: cairo-r; }
         .Basics-Typography .left-Side .subtitles p span {
-          font-family: font-l; }
+          font-family: cairo-r; }
   .Basics-Typography .Typography-bottom {
     padding-top: 100px;
     clear: both; }
     .Basics-Typography .Typography-bottom h2 {
-      font-family: font-b;
+      font-family: cairo-b;
       color: #252833; }
       .Basics-Typography .Typography-bottom h2:nth-child(1) {
         font-size: 112px; }
       .Basics-Typography .Typography-bottom h2:nth-child(2) {
         font-size: 112px;
-        font-family: font-l; }
+        font-family: cairo-r; }
       .Basics-Typography .Typography-bottom h2:nth-child(3) {
         font-size: 56px; }
       .Basics-Typography .Typography-bottom h2:nth-child(4) {
@@ -1462,7 +1487,7 @@ ul {
     -ms-flex-align: center;
     align-items: center; }
     .ui.accordion.basic > .title .accordionTitle {
-      font-family: font-b;
+      font-family: cairo-b;
       line-height: 1.5;
       letter-spacing: -0.2px;
       color: #252833;
@@ -1479,7 +1504,7 @@ ul {
   .ui.accordion.basic .content {
     padding-bottom: 10px !important; }
     .ui.accordion.basic .content a {
-      font-family: font-r;
+      font-family: cairo-r;
       font-size: 14px;
       letter-spacing: -0.2px;
       color: #858D9E;
@@ -1507,7 +1532,7 @@ ul {
         flex: 0.1;
         text-align: left;
         color: #252833;
-        font-family: font-b; }
+        font-family: cairo-b; }
     .ui.accordion.basic .content .contentDivLinks {
       display: flex;
       align-items: center;
@@ -1521,11 +1546,11 @@ ul {
         -ms-flex: 0.1;
         flex: 0.1;
         text-align: left;
-        font-family: font-b; }
+        font-family: cairo-b; }
     .ui.accordion.basic .content .content a:hover {
       background-color: #f2f6fa; }
     .ui.accordion.basic .content .content a .contentSpan {
-      font-family: font-r; }
+      font-family: cairo-r; }
   .ui.accordion.basic .accordion {
     margin: 0;
     padding-left: 35px;
@@ -1551,7 +1576,7 @@ ul {
 .basic.ui.accordion .title:not(.ui) {
   font-size: 14px;
   color: #252833;
-  font-family: font-r; }
+  font-family: cairo-r; }
 
 /**/
 /*Start Sidenav CSS*/
@@ -1592,7 +1617,7 @@ ul {
       align-items: center; }
       .mainSide .header-logo-menu .content-collapse .procoorLogo {
         font-size: 25px;
-        font-family: font-xb;
+        font-family: cairo-xb;
         -webkit-box-flex: 1;
         -ms-flex: 1;
         flex: 1;
@@ -1636,7 +1661,7 @@ ul {
           -ms-flex-align: center;
           align-items: center;
           color: #fff;
-          font-family: font-xb;
+          font-family: cairo-xb;
           font-size: 14px;
           margin-right: 10px;
           position: relative; }
@@ -1710,7 +1735,7 @@ ul {
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .ProjectsUlList ul li a:hover {
               background-color: #f5f5f6; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .ProjectsUlList ul li a p {
-              font-family: font-b;
+              font-family: cairo-b;
               font-size: 16px;
               color: #252833;
               letter-spacing: -0.2px;
@@ -1732,7 +1757,7 @@ ul {
               left: 0;
               line-height: 35px;
               margin-left: 12px;
-              font-family: font-black;
+              font-family: cairo-black;
               font-size: 18px;
               color: #fff;
               position: relative;
@@ -1765,7 +1790,7 @@ ul {
           display: none; }
           .mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .backToModules a {
             padding: 0 32px;
-            font-family: font-opens;
+            font-family: cairo-r;
             font-size: 11px;
             color: #5e6475;
             height: 56px;
@@ -1801,7 +1826,7 @@ ul {
             position: relative;
             display: block;
             padding: 13px 32px;
-            font-family: font-b;
+            font-family: cairo-b;
             cursor: pointer; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .MainProjectsMenuUL .EastWestProject .EastMainLi::after {
               content: "\f0d8";
@@ -1828,7 +1853,7 @@ ul {
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .MainProjectsMenuUL .EastWestProject ul li a {
               color: #252833;
               font-size: 16px;
-              font-family: font-b;
+              font-family: cairo-b;
               height: 56px;
               border-right: 4px solid transparent;
               padding: 0 36px;
@@ -1862,7 +1887,7 @@ ul {
           .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .backtoProjects {
             padding: 11.5px 24px;
             height: 80px;
-            font-family: font-opens;
+            font-family: cairo-r;
             font-size: 11px;
             color: #5e6475;
             display: -webkit-box;
@@ -1897,7 +1922,7 @@ ul {
               -ms-flex-align: center;
               align-items: center;
               font-size: 11px;
-              font-family: font-opens; }
+              font-family: cairo-r; }
               .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .backtoProjects .backtoProjectsOne svg {
                 height: 36px;
                 width: 36px;
@@ -1907,7 +1932,7 @@ ul {
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .backtoProjects .backToModulesName h2 {
               font-size: 16px;
               color: #252833;
-              font-family: font-b;
+              font-family: cairo-b;
               padding-left: 10px;
               display: none; }
           .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl {
@@ -1935,7 +1960,7 @@ ul {
               border-right: 4px solid transparent; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li .UlName {
               font-size: 14px;
-              font-family: font-sb;
+              font-family: cairo-sb;
               color: #858d9e;
               display: none;
               margin-right: 16px; }
@@ -1960,7 +1985,7 @@ ul {
                 display: block;
                 font-size: 14px;
                 color: #A8B0BF;
-                font-family: font-r;
+                font-family: cairo-r;
                 letter-spacing: 0.3px;
                 padding-right: 78px;
                 transition: 0.3s; }
@@ -1968,12 +1993,12 @@ ul {
                   color: #252833; }
               .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li .subBigMenuUl li.active a {
                 color: #3570E6;
-                font-family: font-b; }
+                font-family: cairo-b; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li.ActiveSubLi > a {
               border-right: 4px solid #4382f9;
               background-color: #f5f5f6; }
               .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li.ActiveSubLi > a span {
-                font-family: font-b;
+                font-family: cairo-b;
                 color: #5E6475; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li.ActiveSubLi .ULimg path {
               fill: #858D9E; }
@@ -2037,7 +2062,7 @@ ul {
   display: flex; }
 
 .datepicker {
-  font-family: font-opensb;
+  font-family: cairo-sb;
   font-size: 14px;
   color: #3e4352;
   line-height: 1.71;
@@ -2250,13 +2275,13 @@ ul {
     color: #252833;
     line-height: 1.18;
     letter-spacing: -1.1px;
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 34px; }
     .submittalHead h2 span {
       color: #858D9E;
       line-height: 1.43;
       letter-spacing: -0.2px;
-      font-family: font-opens;
+      font-family: cairo-r;
       font-size: 14px;
       display: block;
       margin-top: 5px; }
@@ -2287,7 +2312,7 @@ ul {
       letter-spacing: -0.2px;
       color: #252833;
       margin-bottom: 50px;
-      font-family: font-b;
+      font-family: cairo-b;
       text-align: center;
       font-size: 20px; }
     .submittalActions .title > .mediumBtn {
@@ -2338,7 +2363,7 @@ ul {
         line-height: 1.43;
         letter-spacing: 0.2px;
         color: #858d9e;
-        font-family: font-b;
+        font-family: cairo-b;
         text-transform: uppercase; }
         .submittalActions .SubmittalUL li a .svg {
           width: 40px;
@@ -2419,7 +2444,7 @@ ul {
           color: #A8B0BF;
           line-height: normal;
           text-align: center;
-          font-family: font-sb; }
+          font-family: cairo-sb; }
           .horizSubActions .horizSubUlContainer .SubmittalUL li a .svg {
             width: 32px;
             height: 32px;
@@ -2478,18 +2503,18 @@ ul {
       line-height: 1.4;
       letter-spacing: 0.6px;
       color: #252833;
-      font-family: font-xb;
+      font-family: cairo-xb;
       text-transform: uppercase;
       margin-left: 8px; }
     .submittalFilter .subFilter > span {
-      font-family: font-sb;
+      font-family: cairo-sb;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: 0.6px;
       color: #A8B0BF;
       margin-left: 24px; }
     .submittalFilter .subFilter .text {
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 12px;
       line-height: 1.67;
       letter-spacing: 0.2px;
@@ -2624,7 +2649,7 @@ ul {
     letter-spacing: -0.5px;
     text-align: center;
     color: #252833;
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 24px; }
   .subitTabs ul li {
     padding-right: 40px;
@@ -2655,7 +2680,7 @@ ul {
       letter-spacing: -0.2px;
       color: #252833;
       font-size: 16px;
-      font-family: font-b; }
+      font-family: cairo-b; }
     .subitTabs ul li .subUlsubT {
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -2694,7 +2719,7 @@ ul {
       letter-spacing: -0.2px;
       text-align: center;
       color: #252833;
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 20px; }
 
 .subiGrid {
@@ -2716,7 +2741,7 @@ ul {
         line-height: 1.5;
         letter-spacing: -0.2px;
         color: #252833;
-        font-family: font-b;
+        font-family: cairo-b;
         font-size: 16px;
         padding-bottom: 9px; }
       .subiGrid .subiTaskTitle .divhead .divspans {
@@ -2744,12 +2769,12 @@ ul {
             letter-spacing: -0.2px;
             color: #3E4352;
             font-size: 12px;
-            font-family: font-opens; }
+            font-family: cairo-r; }
           .subiGrid .subiTaskTitle .divhead .divspans div:nth-child(2) .subiPriority {
             line-height: 1.33;
             letter-spacing: -0.3px;
             color: #3E4352;
-            font-family: font-opensb;
+            font-family: cairo-sb;
             font-size: 12px;
             position: relative; }
             .subiGrid .subiTaskTitle .divhead .divspans div:nth-child(2) .subiPriority.redsSPan::before {
@@ -2784,11 +2809,11 @@ ul {
       letter-spacing: -0.2px;
       color: #3E4352;
       font-size: 14px;
-      font-family: font-opens; }
+      font-family: cairo-r; }
       .subiGrid .subiTable td h4 {
         display: flex; }
       .subiGrid .subiTable td span {
-        font-family: font-opensb; }
+        font-family: cairo-sb; }
   .subiGrid .subiRefContainer {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -2804,13 +2829,13 @@ ul {
         letter-spacing: -0.2px;
         color: #252833;
         font-size: 14px;
-        font-family: font-opensb; }
+        font-family: cairo-sb; }
       .subiGrid .subiRefContainer div span {
         line-height: 1.71;
         letter-spacing: -0.2px;
         color: #3E4352;
         font-size: 14px;
-        font-family: font-opens; }
+        font-family: cairo-r; }
     .subiGrid .subiRefContainer .subiRefNo {
       margin-left: 56px; }
       .subiGrid .subiRefContainer .subiRefNo h4 {
@@ -2824,7 +2849,7 @@ ul {
     line-height: 1.71;
     letter-spacing: -0.2px;
     color: #3E4352;
-    font-family: font-opens;
+    font-family: cairo-r;
     font-size: 14px; }
 
 .modals.dimmer .ui.scrolling.modal.subiModalNoTabs {
@@ -2884,7 +2909,7 @@ ul {
     letter-spacing: -0.5px;
     color: #252833;
     opacity: 0.3;
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 24px;
     text-transform: capitalize; }
   .approveDocument .approveDocumentBTNS {
@@ -2926,7 +2951,7 @@ ul {
   border-bottom: 0;
   padding: 0;
   color: #252833;
-  font-family: font-b; }
+  font-family: cairo-b; }
 
 .ui.modal > .header:not(.ui) {
   letter-spacing: -0.2px;
@@ -3075,7 +3100,7 @@ ul {
     padding-right: 15px; }
   .ui.modal.stepperModal .header h2 {
     color: #252833;
-    font-family: font-b;
+    font-family: cairo-b;
     letter-spacing: -0.2px;
     font-size: 20px; }
   .ui.modal.stepperModal .actions {
@@ -3107,7 +3132,7 @@ ul {
     padding-bottom: 17px; }
   .ui.modal.subjectModal .description .header {
     font-size: 16px;
-    font-family: font-b;
+    font-family: cairo-b;
     margin-bottom: 30px; }
   .ui.modal.subjectModal .content {
     margin-bottom: 27px; }
@@ -3144,11 +3169,11 @@ ul {
       margin-bottom: 15px; }
     .ui.modal.xLargeModal .header h3 {
       font-size: 20px;
-      font-family: font-r;
+      font-family: cairo-r;
       line-height: 1.4;
       letter-spacing: -0.2px; }
   .ui.modal.xLargeModal .content p {
-    font-family: font-opens;
+    font-family: cairo-r;
     line-height: 1.5;
     letter-spacing: -0.2px;
     font-size: 16px; }
@@ -3207,7 +3232,7 @@ ul {
           font-size: 12px;
           line-height: 1.33;
           letter-spacing: -0.3px;
-          font-family: font-opensb;
+          font-family: cairo-sb;
           margin-right: 24px; }
       .ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead {
         flex: 1;
@@ -3222,14 +3247,14 @@ ul {
         -ms-flex-align: end;
         align-items: flex-end; }
         .ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead p {
-          font-family: font-opensb;
+          font-family: cairo-sb;
           font-size: 12px;
           letter-spacing: -0.3px;
           margin-bottom: 8px; }
         .ui.modal.submiModalBig.docApproval .docApprovalContainer .subiConHead .subofSubiConHead span {
           letter-spacing: -0.2px;
           color: #A8B0BF;
-          font-family: font-opens;
+          font-family: cairo-r;
           font-size: 12px; }
     .ui.modal.submiModalBig.docApproval .docApprovalContainer .subitTabs {
       width: 355px;
@@ -3261,7 +3286,7 @@ ul {
         letter-spacing: -0.5px;
         color: #252833;
         opacity: 0.3;
-        font-family: font-b; }
+        font-family: cairo-b; }
       .ui.modal.submiModalBig.docApproval .docApprovalContainer .approveDocument .approveDocumentBTNS {
         flex: 1.5;
         display: flex;
@@ -3321,7 +3346,7 @@ ul {
         color: #ffffff;
         letter-spacing: -0.2px;
         font-size: 12px;
-        font-family: font-sb;
+        font-family: cairo-sb;
         margin: 0 15px; }
         .ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content-foot span i {
           margin: 0 5px; }
@@ -3406,7 +3431,7 @@ ul {
           letter-spacing: -0.2px;
           color: #a8b0bf;
           opacity: 0.4;
-          font-family: font-opens; }
+          font-family: cairo-r; }
       .gridfillter-container .fillter-status-container .fillter-status.status-from {
         min-width: 184px; }
     .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
@@ -3434,7 +3459,7 @@ ul {
       letter-spacing: -0.2px;
       color: #a8b0bf;
       opacity: 0.4;
-      font-family: font-opens; }
+      font-family: cairo-r; }
   .gridfillter-container .primaryBtn-2.btn.smallBtn {
     margin-right: 8px;
     margin-bottom: 8px;
@@ -3466,7 +3491,7 @@ ul {
       height: 20px;
       overflow: hidden; }
       .mainGridSystem .ui.dropdown.classico .uiDropName p {
-        font-family: font-opensb;
+        font-family: cairo-sb;
         line-height: 1.5; }
       .mainGridSystem .ui.dropdown.classico .uiDropName .dropdown.icon {
         padding-top: 2px;
@@ -3494,7 +3519,7 @@ ul {
       align-items: center;
       padding-right: 10px;
       color: #A8B0BF;
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 14px; }
       .mainGridSystem .gridSystemTables .headCell .V-tableSize,
       .mainGridSystem .gridSystemTables .headCell .H-tableSize {
@@ -3614,13 +3639,13 @@ ul {
         color: #3E4352;
         letter-spacing: -0.2px;
         font-size: 14px;
-        font-family: font-opensb;
+        font-family: cairo-sb;
         overflow: hidden;
         height: 20px;
         text-align: right; }
       .mainGridSystem .gridSystemTables .contentCell span {
         font-size: 13px;
-        font-family: font-opens;
+        font-family: cairo-r;
         color: #A8B0BF;
         letter-spacing: -0.3px;
         overflow: hidden;
@@ -3630,7 +3655,7 @@ ul {
         color: #3E4352;
         letter-spacing: -0.2px;
         font-size: 14px;
-        font-family: font-opens; }
+        font-family: cairo-r; }
     .mainGridSystem .gridSystemTables .normalContent {
       height: 60px;
       min-width: 858px;
@@ -3717,7 +3742,7 @@ ul {
       min-width: 91px;
       width: 91px; }
     .mainGridSystem .gridSystemTables .gridTableContent {
-      font-family: font-opens; }
+      font-family: cairo-r; }
       .mainGridSystem .gridSystemTables .gridTableContent .gridMainRow {
         background-color: #ffffff;
         border-bottom: 1px solid #E9ECF0;
@@ -3800,7 +3825,7 @@ ul {
       display: -ms-flexbox;
       display: flex; }
     .mainGridSystem .gridSystemSelected .tableselcted-items {
-      font-family: font-b;
+      font-family: cairo-b;
       color: #ffffff;
       line-height: 1.5;
       letter-spacing: -0.2px;
@@ -3891,7 +3916,7 @@ ul {
       letter-spacing: -0.2px;
       text-align: center;
       color: #A8B0BF;
-      font-family: font-r;
+      font-family: cairo-r;
       font-size: 14px; }
     .mainGridSystem .datagrid-grouping .drop-item {
       min-width: 77px;
@@ -3901,7 +3926,7 @@ ul {
       padding: 0 10px 0 12px;
       margin-left: 6px;
       line-height: 26px;
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 12px;
       letter-spacing: -0.2px;
       color: #5E6475; }
@@ -4034,7 +4059,7 @@ ul {
       position: relative;
       margin-right: 8px;
       color: #3e4352;
-      font-family: font-opensb;
+      font-family: cairo-sb;
       font-size: 12px;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -4043,7 +4068,7 @@ ul {
       -ms-flex-align: center;
       align-items: center; }
     .main-header .header-content .titleproject1 a {
-      font-family: font-sb;
+      font-family: cairo-sb;
       color: #858D9E;
       font-size: 14px;
       letter-spacing: -0.2px; }
@@ -4051,7 +4076,7 @@ ul {
         transition: 0.5s ease-in-out;
         color: #252833; }
     .main-header .header-content .titleproject2 {
-      font-family: font-sb;
+      font-family: cairo-sb;
       color: #adbccc;
       font-size: 14px;
       letter-spacing: -0.2px; }
@@ -4119,7 +4144,7 @@ ul {
     -ms-flex-pack: center;
     justify-content: center; }
   .documents-temp .doc-container .subiTabContainer .subiTabsContent .document-fields .doc-infohead {
-    font-family: font-opens;
+    font-family: cairo-r;
     font-size: 12px;
     line-height: 1.33;
     letter-spacing: -0.2px;
@@ -4141,7 +4166,7 @@ ul {
       width: 100%;
       padding-bottom: 12px;
       padding-right: 100px;
-      font-family: font-r;
+      font-family: cairo-r;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: -0.2px;
@@ -4153,7 +4178,7 @@ ul {
       border-right: 0;
       /**/ }
       .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th {
-        font-family: font-b;
+        font-family: cairo-b;
         font-size: 14px;
         line-height: 1.43;
         letter-spacing: -0.2px;
@@ -4166,7 +4191,7 @@ ul {
         .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
           padding-left: 30px; }
       .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td {
-        font-family: font-opens;
+        font-family: cairo-r;
         font-size: 14px;
         line-height: 1.71;
         letter-spacing: -0.2px;
@@ -4215,7 +4240,7 @@ ul {
     -ms-flex-pack: center;
     justify-content: center; }
     .documents-stepper .doc-container .subiTabsContent > header h2 {
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: -0.2px;
@@ -4223,7 +4248,7 @@ ul {
 .documents-stepper .doc-container {
   /**/ }
   .documents-stepper .doc-container .step-content .document-fields .doc-infohead {
-    font-family: font-opens;
+    font-family: cairo-r;
     font-size: 12px;
     line-height: 1.33;
     letter-spacing: -0.2px;
@@ -4247,7 +4272,7 @@ ul {
       border-right: 0;
       /**/ }
       .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th {
-        font-family: font-b;
+        font-family: cairo-b;
         font-size: 14px;
         line-height: 1.43;
         letter-spacing: -0.2px;
@@ -4260,7 +4285,7 @@ ul {
         .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
           padding-left: 30px; }
       .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
-        font-family: font-opens;
+        font-family: cairo-r;
         font-size: 14px;
         line-height: 1.71;
         letter-spacing: -0.2px;
@@ -4315,7 +4340,7 @@ ul {
             top: 48px; }
           .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-timeline > span {
             font-size: 20px;
-            font-family: font-b;
+            font-family: cairo-b;
             line-height: 1.4;
             letter-spacing: -0.2px;
             color: #ccd2db; }
@@ -4329,13 +4354,13 @@ ul {
             letter-spacing: -0.2px;
             color: #252833;
             font-size: 16px;
-            font-family: font-b; }
+            font-family: cairo-b; }
           .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item .steps-info p {
             line-height: 1.33;
             letter-spacing: -0.2px;
             color: #a8b0bf;
             font-size: 12px;
-            font-family: font-opens; }
+            font-family: cairo-r; }
         .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active {
           /*
           background-color: #5fd45f;
@@ -4380,7 +4405,7 @@ ul {
       color: #3E4352;
       letter-spacing: -0.2px;
       font-size: 12px;
-      font-family: font-opensb;
+      font-family: cairo-sb;
       margin: 0 12px; }
       .documents-stepper .doc-container .step-content-foot span i {
         margin: 0 4px; }
@@ -4392,7 +4417,7 @@ ul {
     letter-spacing: -0.2px;
     font-size: 16px;
     color: #252833;
-    font-family: font-b; }
+    font-family: cairo-b; }
   .documents-stepper .doc-container .step-content .step-content-body.out {
     display: none; }
 
@@ -4466,13 +4491,13 @@ ul {
     padding: 0;
     border-bottom: 1px solid #e9ecf0; }
     .noTabs__document .doc-container .main__header h2 {
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: -0.2px;
       color: #252833; }
     .noTabs__document .doc-container .main__header p {
-      font-family: font-opens;
+      font-family: cairo-r;
       font-size: 12px;
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -4494,7 +4519,7 @@ ul {
         width: 100%;
         padding-bottom: 12px;
         padding-right: 0;
-        font-family: font-r;
+        font-family: cairo-r;
         font-size: 20px;
         line-height: 1.4;
         letter-spacing: -0.2px;
@@ -4530,7 +4555,7 @@ ul {
         .one__tab .doc-container .subiTabContainer .step-content.activeTab {
           display: none; }
         .one__tab .doc-container .subiTabContainer .step-content .doc-infohead {
-          font-family: font-opens;
+          font-family: cairo-r;
           font-size: 12px;
           line-height: 1.33;
           letter-spacing: -0.2px;
@@ -4558,7 +4583,7 @@ ul {
           width: 100%;
           padding-bottom: 12px;
           padding-right: 0;
-          font-family: font-r;
+          font-family: cairo-r;
           font-size: 20px;
           line-height: 1.4;
           letter-spacing: -0.2px;
@@ -4586,7 +4611,7 @@ ul {
   padding-top: 90px; }
   .dashboard-container .welcome-title {
     font-size: 34px;
-    font-family: font-b;
+    font-family: cairo-b;
     line-height: 1.18;
     letter-spacing: -1.1px;
     text-align: center;
@@ -4616,7 +4641,7 @@ ul {
       -ms-flex-align: center;
       align-items: center;
       color: #A8B0BF;
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 12px;
       cursor: pointer;
       border-bottom: 2px solid transparent;
@@ -4632,7 +4657,7 @@ ul {
         border-bottom: 2px solid #4382F9; }
 
 .chart h2 {
-  font-family: font-r;
+  font-family: cairo-r;
   color: #252833;
   padding-right: 55px;
   padding-bottom: 20px;
@@ -4667,7 +4692,7 @@ ul {
     top: 15px;
     margin: 0;
     display: flex;
-    font-family: font-opens;
+    font-family: cairo-r;
     font-size: 12px; }
     .linebar .years li {
       margin: 0 10px;
@@ -4696,7 +4721,7 @@ ul {
     top: 15px;
     margin: 0;
     display: flex;
-    font-family: font-opens;
+    font-family: cairo-r;
     font-size: 12px; }
     .group-barchart .years li {
       margin: 0 10px;
@@ -4717,7 +4742,7 @@ ul {
       background-color: #CCD2DB;
       display: inline-block; }
   .group-barchart .x-axis-group .x.axis {
-    font-family: font-opens; }
+    font-family: cairo-r; }
   .group-barchart svg:not(:root) {
     overflow: visible; }
 
@@ -4834,13 +4859,13 @@ ul {
       .bar-Star .star-rating-container .ratingresult .ratingresult-numbers {
         margin-top: 33px; }
         .bar-Star .star-rating-container .ratingresult .ratingresult-numbers .below-average {
-          font-family: font-b;
+          font-family: cairo-b;
           font-size: 14px;
           line-height: 1.43;
           letter-spacing: -0.2px;
           color: #252833; }
           .bar-Star .star-rating-container .ratingresult .ratingresult-numbers .below-average span {
-            font-family: font-opens;
+            font-family: cairo-r;
             font-size: 12px;
             line-height: 1.33;
             letter-spacing: -0.2px;
@@ -4887,7 +4912,7 @@ ul {
   padding-bottom: 40px; }
   .SparkTabs .sparktab-title h2 {
     padding-right: 35px;
-    font-family: font-r;
+    font-family: cairo-r;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -4903,7 +4928,7 @@ ul {
       letter-spacing: -0.3px;
       text-align: center;
       color: #a8b0bf;
-      font-family: font-opens;
+      font-family: cairo-r;
       border-radius: 2px;
       border: solid 1px #E9ECF0;
       margin: 0 1px;
@@ -4924,7 +4949,7 @@ ul {
   align-items: center; }
   .SparkTabs .ui.tab > div .numberofSpark {
     text-align: center;
-    font-family: font-xb;
+    font-family: cairo-xb;
     line-height: 1.38;
     letter-spacing: -1.7px;
     text-align: center;
@@ -4939,7 +4964,7 @@ ul {
     -ms-flex-align: center;
     align-items: center; }
     .SparkTabs .ui.tab > div .spark-percentage .num {
-      font-family: font-opens;
+      font-family: cairo-r;
       font-size: 12px;
       font-weight: normal;
       font-style: normal;
@@ -4968,14 +4993,14 @@ ul {
       flex-flow: column;
       padding: 0 32px; }
       .SparkTabs .ui.tab > div .sparktask-count ul li .num {
-        font-family: font-b;
+        font-family: cairo-b;
         font-size: 24px;
         line-height: 1.17;
         letter-spacing: -0.5px;
         text-align: center;
         color: #252833; }
       .SparkTabs .ui.tab > div .sparktask-count ul li .text {
-        font-family: font-opens;
+        font-family: cairo-r;
         font-size: 14px;
         line-height: 1.71;
         letter-spacing: -0.2px;
@@ -5000,10 +5025,10 @@ ul {
 .dount-container .donut-text .value {
   fill: #39bd3d;
   font-size: 16px !important;
-  font-family: font-b; }
+  font-family: cairo-b; }
 .dount-container .donut-text .label {
   font-size: 56px !important;
-  font-family: font-b;
+  font-family: cairo-b;
   fill: #252833; }
   .dount-container .donut-text .label:nth-child(3) {
     font-size: 20px !important; }
@@ -5029,7 +5054,7 @@ ul {
   font-size: 14px;
   color: #a8b0bf;
   bottom: 0;
-  font-family: font-opens; }
+  font-family: cairo-r; }
 
 .linebar70-dount .card--chart {
   float: right;
@@ -5043,7 +5068,7 @@ ul {
 
 .SummeriesContainer .SummeriesTitle {
   font-size: 28px;
-  font-family: font-b;
+  font-family: cairo-b;
   padding-right: 90px;
   margin: 0; }
 .SummeriesContainer .SummeriesContainerContent {
@@ -5068,7 +5093,7 @@ ul {
       font-size: 12px;
       letter-spacing: 0.2px;
       color: #858D9E;
-      font-family: font-xb;
+      font-family: cairo-xb;
       text-transform: capitalize;
       transition: all 0.3s ease-in-out;
       height: 50px;
@@ -5080,7 +5105,7 @@ ul {
       font-size: 56px;
       line-height: 1.14;
       letter-spacing: -1.1px;
-      font-family: font-b;
+      font-family: cairo-b;
       color: #252833;
       margin: 0;
       overflow: hidden;
@@ -5099,7 +5124,7 @@ ul {
       letter-spacing: -0.2px;
       font-size: 14px;
       margin: 0;
-      font-family: font-b;
+      font-family: cairo-b;
       transition: all 0.3s ease-in-out; }
     .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL {
       display: flex;
@@ -5127,7 +5152,7 @@ ul {
       justify-content: center;
       width: 100%; }
       .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div {
-        font-family: font-b;
+        font-family: cairo-b;
         font-size: 12px;
         letter-spacing: -0.2px;
         color: #ccd2db; }
@@ -5170,13 +5195,13 @@ ul {
       background-color: #f5f5f6;
       margin: 0 4px; }
       .SummeriesContainer.numbersOnly .SummeriesContainerContent .summerisItem .content .number {
-        font-family: font-b;
+        font-family: cairo-b;
         font-size: 56px;
         line-height: 1.14;
         letter-spacing: -1.1px;
         color: #252833; }
       .SummeriesContainer.numbersOnly .SummeriesContainerContent .summerisItem .content .title {
-        font-family: font-xb;
+        font-family: cairo-xb;
         font-size: 14px;
         line-height: 1.43;
         letter-spacing: 0.2px;
@@ -5203,7 +5228,7 @@ ul {
     border-radius: 50%;
     animation: rotate 1s linear infinite; }
   .dashboard-container .dashboardLoading h3 {
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 45px;
     line-height: 1.16;
     letter-spacing: -1.1px;
@@ -5278,7 +5303,7 @@ ul {
           height: 24px;
           margin-left: 8px; }
         .dashboard__Project .dash__content .project__content .project__select .project__title h3 {
-          font-family: font-r;
+          font-family: cairo-r;
           font-size: 14px;
           line-height: 1.43;
           letter-spacing: -0.2px;
@@ -5308,7 +5333,7 @@ ul {
   justify-content: center;
   border-bottom: 1px solid #e9ecf0; }
   .modalTitle h2 {
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 24px;
     line-height: 1.17;
     letter-spacing: -0.5px;
@@ -5331,14 +5356,14 @@ ul {
     height: 144px;
     position: relative; }
     .dashboard__numbers .dashboard__numbers--info p {
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 45px;
       line-height: 1.16;
       letter-spacing: -1.1px;
       color: #252833;
       margin: 0 0 8px; }
     .dashboard__numbers .dashboard__numbers--info h6 {
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 12px;
       line-height: 1.67;
       letter-spacing: 0.2px;
@@ -5478,7 +5503,7 @@ ul {
     align-items: center;
     padding-right: 10px;
     color: #A8B0BF;
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 14px;
     max-width: 140px;
     white-space: nowrap;
@@ -5576,7 +5601,7 @@ ul {
     -ms-flex-align: center;
     align-items: center;
     padding-right: 10px;
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 14px;
     max-width: 140px; }
     @media screen and (max-width: 1300px) {
@@ -5601,12 +5626,12 @@ ul {
       text-overflow: ellipsis;
       white-space: nowrap;
       padding: 0 5px;
-      font-family: font-opens; }
+      font-family: cairo-r; }
       @media screen and (max-width: 1300px) {
         .attachmentTable tbody tr .contentCell a {
           font-size: 11px; } }
     .attachmentTable tbody tr .contentCell p {
-      font-family: font-opens;
+      font-family: cairo-r;
       font-size: 14px;
       line-height: 1.71;
       letter-spacing: -0.2px;
@@ -5695,7 +5720,7 @@ ul {
       letter-spacing: -0.2px;
       color: #A8B0BF;
       margin-top: 14px;
-      font-family: font-b; }
+      font-family: cairo-b; }
     .notifiBar .smallNotifiBar .notifiContent {
       display: flex;
       align-items: center;
@@ -5724,7 +5749,7 @@ ul {
             letter-spacing: -0.2px;
             color: #252833;
             margin: 0;
-            font-family: font-b; }
+            font-family: cairo-b; }
           .notifiBar .smallNotifiBar .notifiContent .notfiText .notifiName p {
             opacity: 0.4;
             font-size: 12px;
@@ -5732,19 +5757,19 @@ ul {
             letter-spacing: -0.2px;
             color: #858d9e;
             margin-right: 4px;
-            font-family: font-r; }
+            font-family: cairo-r; }
         .notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow {
           font-size: 12px;
           line-height: 1.33;
           letter-spacing: -0.2px;
           color: #858d9e;
-          font-family: font-r;
+          font-family: cairo-r;
           display: flex; }
           .notifiBar .smallNotifiBar .notifiContent .notfiText .notofoWorkflow a {
             font-size: 12px;
             color: #5E6475;
             font-weight: 600;
-            font-family: font-sb;
+            font-family: cairo-sb;
             transition: all 0.2s;
             white-space: nowrap;
             max-width: 240px;
@@ -5813,7 +5838,7 @@ ul {
           .notifiBar .smallNotifiBar .notifi__tabs ul li .tabNAme {
             margin-right: 16px;
             opacity: 0.6;
-            font-family: font-b;
+            font-family: cairo-b;
             font-size: 14px;
             line-height: 1.43;
             letter-spacing: normal;
@@ -5866,7 +5891,7 @@ ul {
     background-color: #E9ECF0;
     margin-left: 26px; }
   .company__name h3 {
-    font-family: font-opens;
+    font-family: cairo-r;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.4px;
@@ -5877,7 +5902,7 @@ ul {
   padding-right: 126px;
   padding-left: 35px; }
   .printGrid .printHead h3 {
-    font-family: font-openb;
+    font-family: cairo-b;
     font-size: 18px;
     letter-spacing: -0.5px;
     color: #2c2e37;
@@ -5886,7 +5911,7 @@ ul {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    font-family: font-opens;
+    font-family: cairo-r;
     font-size: 11px;
     line-height: 2.18;
     letter-spacing: -0.2px;
@@ -5897,10 +5922,10 @@ ul {
     letter-spacing: -0.2px;
     color: #3e4352;
     font-size: 12px;
-    font-family: font-opens; }
+    font-family: cairo-r; }
     .printGrid .subiTable td h4 .content {
       font-size: 12px;
-      font-family: font-opensb;
+      font-family: cairo-sb;
       font-size: 12px;
       line-height: 2;
       letter-spacing: -0.2px;
@@ -5920,7 +5945,7 @@ ul {
     align-items: center;
     justify-content: space-around; }
     .docStatus .highClosed span {
-      font-family: font-opensb;
+      font-family: cairo-sb;
       font-size: 11px;
       font-weight: normal;
       line-height: 1.45;
@@ -5939,7 +5964,7 @@ ul {
           border-radius: 50%;
           background-color: red; }
   .docStatus .requireDate span {
-    font-family: font-opensb;
+    font-family: cairo-sb;
     font-size: 12px;
     font-weight: normal;
     line-height: 2;
@@ -5985,7 +6010,7 @@ ul {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: font-opens;
+      font-family: cairo-r;
       font-size: 13px;
       color: #5e6475; }
       .printSecondPage .workflowPrint .flowLevel .flowNumber .stepLevel.pendingLevel {
@@ -5998,7 +6023,7 @@ ul {
         height: 28px;
         margin: 0 8px 0 12px; }
       .printSecondPage .workflowPrint .flowLevel .flowMember .FlowText h3 {
-        font-family: font-opens;
+        font-family: cairo-r;
         font-size: 12px;
         font-weight: 600;
         line-height: 1.33;
@@ -6006,7 +6031,7 @@ ul {
         color: #252833;
         margin: 0; }
       .printSecondPage .workflowPrint .flowLevel .flowMember .FlowText p {
-        font-family: font-opens;
+        font-family: cairo-r;
         font-size: 12px;
         line-height: 1.33;
         letter-spacing: -0.2px;
@@ -6028,14 +6053,14 @@ ul {
     .printSecondPage .workflowPrint .flowStatus.pendingStatue::after {
       background-image: url(../../images/pending.png); }
     .printSecondPage .workflowPrint .flowStatus .statueName {
-      font-family: font-opensb;
+      font-family: cairo-sb;
       font-size: 12px;
       font-weight: 600;
       line-height: 1.67;
       letter-spacing: -0.2px;
       color: #252833; }
     .printSecondPage .workflowPrint .flowStatus .statueDate {
-      font-family: font-opensb;
+      font-family: cairo-sb;
       font-size: 10px;
       line-height: 1.6;
       letter-spacing: -0.2px;
@@ -6087,7 +6112,7 @@ ul {
       width: 13px;
       height: 10px; }
     .notificationPage .noti__header h3 {
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 24px;
       line-height: 1.17;
       letter-spacing: -0.5px;
@@ -6095,7 +6120,7 @@ ul {
       margin-left: 12px;
       margin-right: 18px; }
     .notificationPage .noti__header span {
-      font-family: font-r;
+      font-family: cairo-r;
       font-size: 16px;
       opacity: 0.6;
       color: #858d9e;
@@ -6150,7 +6175,7 @@ ul {
       .notificationPage .notifi__tabs ul li .tabNAme {
         margin-right: 16px;
         opacity: 0.6;
-        font-family: font-b;
+        font-family: cairo-b;
         font-size: 14px;
         line-height: 1.43;
         letter-spacing: normal;
@@ -6194,7 +6219,7 @@ ul {
         background: #fafbfc;
         height: 48px; }
         .notificationPage .notifi__tabs--content .table_notify table thead tr th p {
-          font-family: font-b;
+          font-family: cairo-b;
           font-size: 14px;
           line-height: 1.43;
           letter-spacing: -0.2px;
@@ -6211,7 +6236,7 @@ ul {
               margin: 0;
               flex-shrink: 0; }
             .notificationPage .notifi__tabs--content .table_notify table tbody tr td .notiDrid__avatar h3 {
-              font-family: font-opensb;
+              font-family: cairo-sb;
               font-size: 14px;
               line-height: 1.71;
               letter-spacing: -0.2px;
@@ -6229,26 +6254,26 @@ ul {
               display: flex;
               align-items: center;
               justify-content: center;
-              font-family: font-sb;
+              font-family: cairo-sb;
               font-size: 12px;
               line-height: 1.33;
               letter-spacing: -0.2px;
               color: #ffffff; }
           .notificationPage .notifi__tabs--content .table_notify table tbody tr td .title_name h3 {
             text-transform: capitalize;
-            font-family: font-opensb;
+            font-family: cairo-sb;
             font-size: 14px;
             line-height: 1.71;
             letter-spacing: -0.2px;
             color: #3e4352; }
           .notificationPage .notifi__tabs--content .table_notify table tbody tr td .notifiDate p {
-            font-family: font-opens;
+            font-family: cairo-r;
             font-size: 14px;
             line-height: 1.71;
             letter-spacing: -0.2px;
             color: #3e4352; }
           .notificationPage .notifi__tabs--content .table_notify table tbody tr td .notifistate p {
-            font-family: font-opensb;
+            font-family: cairo-sb;
             font-size: 14px;
             line-height: 1.71;
             letter-spacing: -0.2px;
@@ -6266,11 +6291,11 @@ ul {
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .notifi__status span {
           display: none; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .title_name h3 {
-          font-family: font-opens; }
+          font-family: cairo-r; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .notifistate p {
-          font-family: font-opens; }
+          font-family: cairo-r; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr.opened_row .notiDrid__avatar h3 {
-          font-family: font-opens; }
+          font-family: cairo-r; }
         .notificationPage .notifi__tabs--content .table_notify table tbody tr:hover {
           background: #f2f5f7;
           cursor: pointer; }
@@ -6331,7 +6356,7 @@ ul {
           width: 32px;
           height: 32px;
           border-radius: 8px;
-          font-family: font-b;
+          font-family: cairo-b;
           font-size: 14px;
           font-weight: 800;
           display: flex;
@@ -6383,7 +6408,7 @@ ul {
           background: #ffc107; }
     .login__page .login__page--form .login__heading {
       opacity: 0.4;
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 16px;
       line-height: 1.4;
       letter-spacing: -0.2px;
@@ -6407,7 +6432,7 @@ ul {
       .login__page .login__page--form .proForm .loginChecked {
         margin: 16px 0 32px; }
         .login__page .login__page--form .proForm .loginChecked label {
-          font-family: font-opens;
+          font-family: cairo-r;
           font-size: 14px;
           line-height: 1.71;
           letter-spacing: -0.2px;
@@ -6425,13 +6450,13 @@ ul {
       text-align: center;
       margin-top: 16px; }
       .login__page .login__page--form .register__link p {
-        font-family: font-opens;
+        font-family: cairo-r;
         font-size: 12px;
         line-height: 1.33;
         letter-spacing: -0.2px;
         color: #3E4352; }
         .login__page .login__page--form .register__link p a {
-          font-family: font-opensb;
+          font-family: cairo-sb;
           font-size: 12px;
           line-height: 1.33;
           letter-spacing: -0.3px;
@@ -6441,7 +6466,7 @@ ul {
   .login__page .access__acc {
     text-align: center; }
     .login__page .access__acc p {
-      font-family: font-opens;
+      font-family: cairo-r;
       font-size: 12px;
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -6483,7 +6508,7 @@ ul {
   letter-spacing: -0.2px;
   text-align: center;
   color: #252833;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px;
   border-bottom: 1px solid #E9ECF0;
   position: sticky;
@@ -6521,7 +6546,7 @@ ul {
 .settings-container .settings-tabs-items ul li.title h4 {
   margin: 25px 0;
   padding-left: 40px;
-  font-family: font-xb;
+  font-family: cairo-xb;
   font-size: 12px;
   color: #a8b0bf;
   line-height: 1.33;
@@ -6541,7 +6566,7 @@ ul {
   line-height: 1.5;
   letter-spacing: -0.2px;
   color: #252833;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 13px !important; }
 
 .settings-container .settings-tabs-items ul li .subUlsubT {
@@ -6582,7 +6607,7 @@ ul {
   line-height: 1.4;
   letter-spacing: -0.2px;
   color: #252833;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px; }
 
 .settings-container .setting-tabs-contant .tab .minisettings-header .action {
@@ -6633,7 +6658,7 @@ ul {
   line-height: 1.5;
   letter-spacing: -0.2px;
   color: #252833;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 16px; }
 
 .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .job-title {
@@ -6641,7 +6666,7 @@ ul {
   letter-spacing: -0.2px;
   color: #858d9e;
   font-size: 14px;
-  font-family: font-r;
+  font-family: cairo-r;
   font-weight: normal;
   margin-bottom: 4px; }
 
@@ -6649,7 +6674,7 @@ ul {
   line-height: 1.33;
   letter-spacing: -0.2px;
   color: #3e4352;
-  font-family: font-opens;
+  font-family: cairo-r;
   font-size: 12px; }
 
 .settings-container .setting-tabs-contant .tab .has-tabs-in .setting-mini-tabs li > div .user-info .date {
@@ -6686,7 +6711,7 @@ ul {
   line-height: 1.5;
   letter-spacing: -0.2px;
   color: #252833;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px; }
 
 .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .job-title {
@@ -6694,14 +6719,14 @@ ul {
   letter-spacing: -0.2px;
   color: #858d9e;
   font-size: 14px;
-  font-family: font-r;
+  font-family: cairo-r;
   margin-bottom: 9px; }
 
 .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .status {
   line-height: 1.33;
   letter-spacing: -0.2px;
   color: #3e4352;
-  font-family: font-opens;
+  font-family: cairo-r;
   font-size: 12px; }
 
 .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .top-content .user-info .date {
@@ -6724,7 +6749,7 @@ ul {
   .admin__avatar .sbigAvatar {
     margin: 34px 0 21px 0; }
   .admin__avatar h3 {
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 34px;
     line-height: 1.18;
     letter-spacing: -1.1px;
@@ -6732,7 +6757,7 @@ ul {
     color: #252833;
     margin-bottom: 4px; }
   .admin__avatar span {
-    font-family: font-r;
+    font-family: cairo-r;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -6775,14 +6800,14 @@ ul {
     .admin__profile .admin__profile--content:hover::after {
       opacity: 1; }
     .admin__profile .admin__profile--content h3 {
-      font-family: font-r;
+      font-family: cairo-r;
       font-size: 24px;
       line-height: 1.17;
       letter-spacing: -0.5px;
       color: #252833;
       margin-bottom: 25px; }
     .admin__profile .admin__profile--content p {
-      font-family: font-opens;
+      font-family: cairo-r;
       font-size: 14px;
       line-height: 1.71;
       letter-spacing: -0.2px;
@@ -6791,7 +6816,7 @@ ul {
     .admin__profile .admin__profile--content.big_admin p {
       max-width: 50%; }
   .admin__profile .admin__profile--action h3 {
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
@@ -6802,7 +6827,7 @@ ul {
   .admin__profile .admin__profile--action ul li {
     margin-bottom: 16px; }
     .admin__profile .admin__profile--action ul li a {
-      font-family: font-opensb;
+      font-family: cairo-sb;
       font-size: 16px;
       line-height: 1.5;
       letter-spacing: -0.2px;
@@ -6824,7 +6849,7 @@ ul {
       background-image: url(../../images/q-mark.png);
       background-size: 100%; }
     .admin__profile .admin__profile--action.action__li ul li span {
-      font-family: font-opens;
+      font-family: cairo-r;
       font-size: 12px;
       line-height: 1.33;
       letter-spacing: -0.2px;
@@ -6849,7 +6874,7 @@ ul {
 .button {
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  font-family: font-sb;
+  font-family: cairo-sb;
   font-size: 13px;
   border: 1px solid transparent;
   padding: 0 16px;
@@ -7026,7 +7051,7 @@ ul {
     .primaryBtnGroup1.largeBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
       font-size: 16px; }
 .primaryBtnGroup1 > .ui.button.normal {
-  font-family: font-sb;
+  font-family: cairo-sb;
   position: relative; }
   .primaryBtnGroup1 > .ui.button.normal::after {
     content: '';
@@ -7107,7 +7132,7 @@ ul {
     .defaultBtnGroup.largeBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
       font-size: 16px; }
 .defaultBtnGroup > .ui.button.normal {
-  font-family: font-sb;
+  font-family: cairo-sb;
   position: relative; }
   .defaultBtnGroup > .ui.button.normal::after {
     content: '';
@@ -7186,7 +7211,7 @@ ul {
     .primaryBtnGroup2.largeBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
       font-size: 16px; }
 .primaryBtnGroup2 > .ui.button.normal {
-  font-family: font-sb;
+  font-family: cairo-sb;
   position: relative; }
   .primaryBtnGroup2 > .ui.button.normal::after {
     content: '';
@@ -7394,7 +7419,7 @@ ul {
 
 .ui.checkbox label {
   font-size: 14px;
-  font-family: font-opens;
+  font-family: cairo-r;
   color: #5E6475; }
   .ui.checkbox label:hover {
     color: #252833; }
@@ -7407,7 +7432,7 @@ ul {
   .toggleWithText span {
     color: #252833;
     font-size: 14px;
-    font-family: font-b;
+    font-family: cairo-b;
     display: inline-block;
     position: relative;
     top: -6px; }
@@ -7418,7 +7443,7 @@ ul {
   margin-right: 4px; }
 .form.ui .grouped.fields > label {
   font-size: 14px;
-  font-family: font-b;
+  font-family: cairo-b;
   color: #252833;
   margin-bottom: 4px;
   letter-spacing: -0.2px;
@@ -7428,7 +7453,7 @@ ul {
   align-items: center; }
   .form.ui .grouped.fields > label span {
     color: #adbccc;
-    font-family: font-r;
+    font-family: cairo-r;
     font-size: 12px;
     margin-right: 4px; }
 .form.ui .grouped.fields .field {
@@ -7447,7 +7472,7 @@ ul {
 .form.ui .grouped.fields p {
   color: #E74C3C;
   font-size: 12px;
-  font-family: font-opens;
+  font-family: cairo-r;
   padding-left: 3px; }
 
 .ui.checkbox .box:after,
@@ -7513,13 +7538,13 @@ ul {
     color: #3E4352;
     font-size: 14px;
     position: relative;
-    font-family: font-opens;
+    font-family: cairo-r;
     overflow: hidden;
     margin-bottom: 8px; }
     .choiceCardsUL li span {
       color: #858d9e;
       font-size: 12px;
-      font-family: font-opens; }
+      font-family: cairo-r; }
     .choiceCardsUL li svg {
       position: absolute;
       top: 5px;
@@ -7541,7 +7566,7 @@ ul {
     color: #A8B0BF; }
   .choiceCardsUL .activeChiceCard {
     border: solid 2px #4382f9;
-    font-family: font-opensb;
+    font-family: cairo-sb;
     color: #3E4352;
     background-color: #f7f9fa; }
     .choiceCardsUL .activeChiceCard:hover {
@@ -7586,7 +7611,7 @@ ul {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2); }
 
 .notfiSpan {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 16px;
   -webkit-box-flex: 6;
   -ms-flex: 6;
@@ -7598,7 +7623,7 @@ ul {
   -ms-flex: 1;
   flex: 1;
   text-align: left;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 14px;
   letter-spacing: 0.4px; }
 
@@ -7688,7 +7713,7 @@ ul {
     display: inline-block;
     font-size: 12px;
     color: #3E4352;
-    font-family: font-opensb;
+    font-family: cairo-sb;
     letter-spacing: -0.3px;
     margin-right: 4px; }
 
@@ -7729,7 +7754,7 @@ ul {
     display: inline-block;
     font-size: 12px;
     color: #3E4352;
-    font-family: font-opensb;
+    font-family: cairo-sb;
     letter-spacing: -0.3px;
     margin-right: 4px; }
   .chipImgNameClose svg {
@@ -7772,7 +7797,7 @@ ul {
       display: inline-block;
       font-size: 12px;
       color: #3E4352;
-      font-family: font-opensb;
+      font-family: cairo-sb;
       letter-spacing: -0.3px;
       margin-right: 4px; }
     .chipImgNameTextX .chipImgText:hover {
@@ -7846,7 +7871,7 @@ ul {
     display: inline-block;
     font-size: 14px;
     color: #3E4352;
-    font-family: font-opensb;
+    font-family: cairo-sb;
     letter-spacing: -0.2px;
     margin-right: 4px; }
 
@@ -7887,7 +7912,7 @@ ul {
     display: inline-block;
     font-size: 14px;
     color: #3E4352;
-    font-family: font-opensb;
+    font-family: cairo-sb;
     letter-spacing: -0.3px;
     margin-right: 4px; }
   .chipImgNameCloseLarge svg {
@@ -7912,7 +7937,7 @@ ul {
   color: #3E4352;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: font-opensb; }
+  font-family: cairo-sb; }
 
 .darkGrayTagIcon {
   height: 24px;
@@ -7926,7 +7951,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: font-opensb; }
+  font-family: cairo-sb; }
 
 .blueTagIcon {
   height: 24px;
@@ -7940,7 +7965,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: font-opensb; }
+  font-family: cairo-sb; }
 
 .greenTagIcon {
   height: 24px;
@@ -7954,7 +7979,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: font-opensb; }
+  font-family: cairo-sb; }
 
 .redTagIcon {
   height: 24px;
@@ -7968,7 +7993,7 @@ ul {
   color: #ffffff;
   letter-spacing: -0.3px;
   font-size: 12px;
-  font-family: font-opensb; }
+  font-family: cairo-sb; }
 
 .Labelssss {
   padding: 15px; }
@@ -7991,7 +8016,7 @@ ul {
   .mailBoxLabel .FirstSpAn {
     margin-right: 8px; }
   .mailBoxLabel span {
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 12px; }
 
 .mailBoxLabelGray {
@@ -8049,7 +8074,7 @@ ul {
     .workflowLabel:active path {
       fill: #858d9e; }
   .workflowLabel span {
-    font-family: font-opensb;
+    font-family: cairo-sb;
     font-size: 12px; }
   .workflowLabel svg {
     margin-right: 8px; }
@@ -8063,7 +8088,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: font-b; }
+    font-family: cairo-b; }
 
 .ui.label.labelWithArrowBlue {
   height: 28px;
@@ -8073,7 +8098,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: font-b; }
+    font-family: cairo-b; }
 
 .ui.label.labelWithArrowGreen {
   height: 28px;
@@ -8083,7 +8108,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: font-b; }
+    font-family: cairo-b; }
 
 .ui.label.labelWithArrowBorder.basic {
   height: 28px;
@@ -8093,7 +8118,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 14px;
-    font-family: font-b; }
+    font-family: cairo-b; }
 
 /**/
 .ui.label.labelWithArrowGrayS {
@@ -8104,7 +8129,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: cairo-b; }
 
 .ui.label.labelWithArrowRedS {
   height: 24px;
@@ -8114,7 +8139,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: cairo-b; }
 
 .ui.label.labelWithArrowGreenS {
   height: 24px;
@@ -8124,7 +8149,7 @@ ul {
     color: #ffffff;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: cairo-b; }
 
 .ui.label.labelWithArrowBorderS.basic {
   height: 24px;
@@ -8134,7 +8159,7 @@ ul {
     color: #252833;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: cairo-b; }
 
 .ui.label.labelWithArrowRedBasic.basic {
   border: solid 1px #e74c3c;
@@ -8144,7 +8169,7 @@ ul {
     color: #e74c3c;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: cairo-b; }
 
 .ui.label.labelWithArrowGreenBasic {
   height: 24px;
@@ -8154,13 +8179,13 @@ ul {
     color: #47cc4a;
     letter-spacing: -0.2px;
     font-size: 12px;
-    font-family: font-b; }
+    font-family: cairo-b; }
 
 /**/
 .inboxNotif {
   background-color: #E74C3C;
   color: #f9fbfc;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 12px;
   display: inline-block;
   cursor: pointer;
@@ -8220,7 +8245,7 @@ ul {
   align-items: center;
   cursor: pointer;
   font-size: 9px;
-  font-family: font-xb; }
+  font-family: cairo-xb; }
 
 .inboxNotif.smallCircle {
   width: 20px;
@@ -8237,7 +8262,7 @@ ul {
   align-items: center;
   cursor: pointer;
   font-size: 9px;
-  font-family: font-xb; }
+  font-family: cairo-xb; }
 
 .inboxNotif.largeCircle {
   width: 24px;
@@ -8254,7 +8279,7 @@ ul {
   align-items: center;
   cursor: pointer;
   font-size: 9px;
-  font-family: font-xb; }
+  font-family: cairo-xb; }
 
 .inboxNotif.justCircle {
   width: 8px;
@@ -8279,7 +8304,7 @@ ul {
   align-items: center; }
   .avatarProfile span {
     color: #BCC4D1;
-    font-family: font-black;
+    font-family: cairo-black;
     font-size: 12px;
     letter-spacing: -0.2px; }
   .avatarProfile img {
@@ -8344,7 +8369,7 @@ ul {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-family: font-opensb;
+  font-family: cairo-sb;
   font-size: 13px; }
   .rowsPaginations .ui.selection.dropdown.rowsPagiDrop {
     padding: 15px 30px 15px 5px;
@@ -8352,7 +8377,7 @@ ul {
     border: none;
     font-size: 13px; }
     .rowsPaginations .ui.selection.dropdown.rowsPagiDrop .text {
-      font-family: font-opensb;
+      font-family: cairo-sb;
       font-size: 13px; }
     .rowsPaginations .ui.selection.dropdown.rowsPagiDrop:hover {
       background-color: transparent;
@@ -8408,7 +8433,7 @@ ul {
     background-color: #E9ECF0;
     margin: 5px 2px;
     border-radius: 50%;
-    font-family: font-b;
+    font-family: cairo-b;
     color: #3e4352;
     font-size: 12px;
     letter-spacing: -0.2px; }
@@ -8450,7 +8475,7 @@ ul {
     align-items: center;
     letter-spacing: -0.2px;
     font-size: 11px;
-    font-family: font-opensb;
+    font-family: cairo-sb;
     color: #4382F9;
     -webkit-transition: 0.3s;
     transition: 0.3s; }
@@ -8464,7 +8489,7 @@ ul {
 
 .ui.breadcrumb.proBreadcrumb a {
   color: #4382F9;
-  font-family: font-opens;
+  font-family: cairo-r;
   font-size: 11px;
   letter-spacing: -0.2px;
   -webkit-transition: 0.3s;
@@ -8479,7 +8504,7 @@ ul {
 .ui.breadcrumb.proBreadcrumb .active {
   color: #5E6475;
   font-size: 11px;
-  font-family: font-opens;
+  font-family: cairo-r;
   letter-spacing: -0.2px; }
 
 .Elements-popups {
@@ -8500,7 +8525,7 @@ ul {
   display: inline-block;
   max-width: 310px; }
   .popUp h3 {
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 14px;
     letter-spacing: -0.2px;
     color: #f9fbfc;
@@ -8523,7 +8548,7 @@ ul {
     color: #4382f9;
     font-size: 12px;
     letter-spacing: 0.2px;
-    font-family: font-b;
+    font-family: cairo-b;
     display: block;
     text-align: left; }
 
@@ -8614,7 +8639,7 @@ ul {
         justify-content: flex-start;
         color: #252833;
         font-size: 14px;
-        font-family: font-b; }
+        font-family: cairo-b; }
         .popUpClickContainer .popupClickContent .popupMenu .popupMenuTitile svg {
           width: 24px;
           height: 24px;
@@ -8632,11 +8657,11 @@ ul {
             letter-spacing: -0.2px;
             font-size: 14px;
             color: #858D9E;
-            font-family: font-r; }
+            font-family: cairo-r; }
           .popUpClickContainer .popupClickContent .popupMenu ul li a {
             flex: 0.2;
             text-decoration: underline;
-            font-family: font-b;
+            font-family: cairo-b;
             color: #4382f9; }
             .popUpClickContainer .popupClickContent .popupMenu ul li a:hover {
               text-decoration: none; }
@@ -8727,13 +8752,13 @@ ul {
         background: #DADEE6; }
       .StepperNum .StepNumber .StepNum p {
         font-size: 20px;
-        font-family: font-b;
+        font-family: cairo-b;
         color: #adbccc; }
       .StepperNum .StepNumber .StepNum .StepTrue {
         display: none; }
     .StepperNum .StepNumber .stepWord {
       color: #adbccc;
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 12px;
       margin: 0 8px;
       position: relative; }
@@ -8741,7 +8766,7 @@ ul {
         position: absolute;
         top: 100%;
         left: 0;
-        font-family: font-opens; }
+        font-family: cairo-r; }
     .StepperNum .StepNumber .Step-Line {
       width: 48px;
       height: 2px;
@@ -8824,7 +8849,7 @@ ul {
     line-height: 1.45;
     letter-spacing: -0.2px;
     top: 120%;
-    font-family: font-opens; }
+    font-family: cairo-r; }
 .StepperNum.StepperNum3 .StepNumber.activea .stepWord {
   color: #4382F9; }
 
@@ -8986,7 +9011,7 @@ ul {
       color: #3E4352;
       letter-spacing: -0.2px;
       font-size: 12px;
-      font-family: font-opens;
+      font-family: cairo-r;
       margin: 0 12px; }
       .StepperWorkFlow .step-content-foot span i {
         margin: 0 4px; }
@@ -8998,7 +9023,7 @@ ul {
     letter-spacing: -0.2px;
     font-size: 16px;
     color: #252833;
-    font-family: font-b; }
+    font-family: cairo-b; }
   .StepperWorkFlow .step-content .step-content-body.out {
     display: none; }
   .StepperWorkFlow .workflow-sliderSteps {
@@ -9130,7 +9155,7 @@ ul {
     background-color: #ffffff;
     font-size: 14px;
     text-align: right;
-    font-family: font-r; }
+    font-family: cairo-r; }
     .proForm .labeledInput input:hover {
       border-color: #A8B0BF; }
     .proForm .labeledInput input:focus {
@@ -9176,7 +9201,7 @@ ul {
     font-size: 12px;
     font-style: normal; }
   .proForm .control-label {
-    font-family: font-b;
+    font-family: cairo-b;
     font-size: 13px;
     line-height: 1.54;
     letter-spacing: normal;
@@ -9243,7 +9268,7 @@ ul {
       left: 8px;
       letter-spacing: -0.2px;
       color: #a8b0bf;
-      font-family: font-opens;
+      font-family: cairo-r;
       font-size: 12px;
       background: #fff;
       padding: 0 5px; }
@@ -9298,7 +9323,7 @@ ul {
     .proForm .showPasswordArea .togglePW svg {
       margin-left: 2px; }
     .proForm .showPasswordArea .togglePW span {
-      font-family: font-opens;
+      font-family: cairo-r;
       font-weight: 400;
       font-size: 12px;
       line-height: 1.33;
@@ -9498,7 +9523,7 @@ ul {
     .ui.dropdown.classico > .menu .item-content {
       height: 40px;
       width: 100%;
-      font-family: font-opens;
+      font-family: cairo-r;
       letter-spacing: -0.2px;
       color: #3E4352;
       font-size: 14px;
@@ -9665,7 +9690,7 @@ ul {
   .ui.dropdown.classico.withimages.withHeader .dropdownHeader span {
     letter-spacing: 0.6px;
     padding-left: 8px;
-    font-family: font-b;
+    font-family: cairo-b;
     color: #A8B0BF; }
 
 /*Base Menu*/
@@ -9681,7 +9706,7 @@ ul {
   align-items: center; }
   .ui.dropdown.classico.baseMenu .dropdownHeader span {
     letter-spacing: 0.6px;
-    font-family: font-b;
+    font-family: cairo-b;
     color: #A8B0BF; }
 .ui.dropdown.classico.baseMenu .menu .item {
   padding-left: 32px !important;
@@ -9718,7 +9743,7 @@ ul {
 
 .dropdownTitle {
   font-size: 14px;
-  font-family: font-opensb;
+  font-family: cairo-sb;
   margin-bottom: 4px;
   letter-spacing: -0.2px;
   color: #26344c; }
@@ -9733,17 +9758,17 @@ ul {
     margin: 15px 0; }
   .ui.selection.dropdown > .text {
     font-size: 12px;
-    font-family: font-opensb; }
+    font-family: cairo-sb; }
   .ui.selection.dropdown > .text.default {
     font-size: 14px;
-    font-family: font-opens;
+    font-family: cairo-r;
     letter-spacing: -0.2px;
     color: #A8B0BF; }
   .ui.selection.dropdown .selectionimg {
     margin-right: 7px; }
   .ui.selection.dropdown .item {
     font-size: 14px;
-    font-family: font-opens;
+    font-family: cairo-r;
     color: #3e4352;
     line-height: 1.6; }
     .ui.selection.dropdown .item .closeIcon {
@@ -9812,7 +9837,7 @@ ul {
     align-items: center;
     box-shadow: none;
     font-size: 12px;
-    font-family: font-opensb;
+    font-family: cairo-sb;
     color: #3e4352; }
     .ui.selection.dropdown.multiDropDown > .label img {
       margin-right: .78571429rem; }
@@ -9860,7 +9885,7 @@ ul {
   align-items: center; }
 
 .section__tabs header > h2 {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -9876,8 +9901,8 @@ ul {
   justify-content: center;
   transition: all 0.3s ease-in-out;
   width: 322px;
-  border-left: 6px solid transparent;
-  padding-left: 35px;
+  border-right: 6px solid transparent;
+  padding-right: 35px;
   position: relative; }
 
 .section__tabs .section__tabs--item::after {
@@ -9894,18 +9919,18 @@ ul {
   cursor: pointer; }
 
 .section__tabs .section__tabs--item.active {
-  border-left: 6px solid #4382f9;
+  border-right: 6px solid #4382f9;
   background: #e9ecf0; }
 
 .section__tabs .section__tabs--item h3 {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
   color: #252833; }
 
 .section__tabs .section__tabs--item p {
-  font-family: font-opens;
+  font-family: cairo-r;
   font-size: 12px;
   line-height: 1.33;
   letter-spacing: -0.2px;
@@ -9998,7 +10023,7 @@ ul {
       .card-status .card-box .signature-h .avatarName {
         margin-right: 10px; }
         .card-status .card-box .signature-h .avatarName h6 {
-          font-family: font-r;
+          font-family: cairo-r;
           font-size: 12px;
           font-weight: bold;
           line-height: 1.33;
@@ -10006,7 +10031,7 @@ ul {
           color: #252833;
           margin: 0; }
         .card-status .card-box .signature-h .avatarName p {
-          font-family: font-r;
+          font-family: cairo-r;
           font-size: 12px;
           font-weight: normal;
           line-height: 1.33;
@@ -10024,14 +10049,14 @@ ul {
       position: relative; }
       .card-status .card-box .box-statue h5 {
         margin: 0;
-        font-family: font-r;
+        font-family: cairo-r;
         font-size: 14px;
         font-weight: bold;
         line-height: 1.43;
         letter-spacing: -0.2px;
         color: #252833; }
       .card-status .card-box .box-statue p {
-        font-family: font-r;
+        font-family: cairo-r;
         font-size: 12px;
         font-weight: normal;
         line-height: 1.33;
@@ -10147,7 +10172,7 @@ ul {
   width: 240px !important; }
 
 .filter__more .filter__more--btn {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 12px;
   font-weight: bold;
   font-style: normal;
@@ -10170,7 +10195,7 @@ ul {
   margin-bottom: 10px; }
 
 .filter__more span {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 11px;
   font-weight: bold;
   font-style: normal;
@@ -10207,7 +10232,7 @@ ul {
   position: relative; }
 
 .filterModal .header-filter h2 {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 28px;
   font-weight: bold;
   font-style: normal;
@@ -10219,7 +10244,7 @@ ul {
   margin-bottom: 10px; }
 
 .filterModal .header-filter span {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px;
   font-weight: normal;
   font-style: normal;
@@ -10260,7 +10285,7 @@ ul {
   color: #3570e6;
   text-decoration: underline;
   height: auto;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 14px;
   letter-spacing: -0.2px;
   color: #3570e6;
@@ -10301,6 +10326,411 @@ ul {
   margin: 0 !important; }
 
 /*Done*/
+/* react edition */
+/* grid Style component */
+.react-contextmenu {
+  min-width: 160px !important;
+  padding: 5px 0 !important;
+  margin: 2px 0 0 !important;
+  font-size: 16px !important;
+  color: #373a3c !important;
+  text-align: right !important;
+  background-color: #fff !important;
+  background-clip: padding-box !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  border-radius: 0.25rem !important;
+  outline: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 250ms ease !important; }
+
+.react-contextmenu.react-contextmenu--visible {
+  opacity: 1 !important;
+  pointer-events: auto !important; }
+
+.react-contextmenu-item {
+  padding: 3px 20px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: #373a3c !important;
+  text-align: inherit !important;
+  white-space: nowrap !important;
+  background: 0 0 !important;
+  border: 0 !important;
+  cursor: pointer !important; }
+
+.react-contextmenu-item.react-contextmenu-item--active, .react-contextmenu-item.react-contextmenu-item--selected {
+  color: #fff !important;
+  background-color: #20a0ff !important;
+  border-color: #20a0ff !important;
+  text-decoration: none !important; }
+
+.react-contextmenu-item.react-contextmenu-item--disabled, .react-contextmenu-item.react-contextmenu-item--disabled:hover {
+  color: #878a8c !important;
+  background-color: transparent !important;
+  border-color: rgba(0, 0, 0, 0.15) !important; }
+
+.react-contextmenu-item--divider {
+  margin-bottom: 3px !important;
+  padding: 2px 0 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15) !important;
+  cursor: inherit !important; }
+
+.react-contextmenu-item--divider:hover {
+  background-color: transparent !important;
+  border-color: rgba(0, 0, 0, 0.15) !important; }
+
+.react-contextmenu-item.react-contextmenu-submenu {
+  padding: 0 !important; }
+
+.react-contextmenu-item.react-contextmenu-submenu > .react-contextmenu-item:after {
+  content: "Γû╢" !important;
+  display: inline-block !important;
+  position: absolute !important;
+  left: 7px !important; }
+
+.react-grid-Container {
+  position: relative !important; }
+
+.gridSystemSelected {
+  position: absolute !important;
+  top: 40px !important;
+  right: 50px !important;
+  padding-right: 22px !important;
+  width: calc(100% - 50px) !important;
+  height: 58px !important;
+  background-color: #e74c3c !important;
+  z-index: 5 !important;
+  display: none !important;
+  z-index: 7 !important;
+  -webkit-box-align: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  min-width: 805px !important; }
+
+.gridSystemSelected.active {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important; }
+
+.gridSystemSelected .tableselcted-items {
+  font-family: cairo-b !important;
+  color: #ffffff !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.2px !important;
+  font-size: 16px !important;
+  -webkit-box-flex: 1 !important;
+  -ms-flex: 1 !important;
+  flex: 1 !important; }
+
+.gridSystemSelected .tableSelctedBTNs {
+  -webkit-box-flex: 1 !important;
+  -ms-flex: 1 !important;
+  flex: 1 !important;
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-pack: end !important;
+  -ms-flex-pack: end !important;
+  justify-content: flex-end !important;
+  padding-left: 40px !important; }
+
+.gridSystemSelected .tableSelctedBTNs .defaultBtn {
+  margin-left: 16px !important;
+  border: 1px solid #ffffff !important;
+  color: #ffffff !important; }
+
+.gridSystemSelected .tableSelctedBTNs .defaultBtn:active {
+  color: #000 !important; }
+
+/*.example-multiple-targets::after {
+    content: attr(data-count) !important;
+    display: block !important;
+  }*/
+.react-grid-Toolbar .btn {
+  background: transparent !important; }
+
+/* grid Style component */
+.react-grid-Toolbar {
+  background-color: #fff !important;
+  border-color: #e7eaec !important;
+  border-image: none !important;
+  border-style: solid solid none !important;
+  border-width: 1px !important;
+  color: inherit !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  height: 40px !important;
+  border-radius: 2px !important;
+  background-color: #E9ECF0 !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  position: relative !important;
+  flex-wrap: nowrap !important;
+  z-index: 10 !important; }
+
+.selecteDiv {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important; }
+
+.react-grid-Grid {
+  overflow: unset !important; }
+
+.react-grid-Header {
+  height: 58px !important;
+  border-bottom: 1px solid #ddd !important;
+  background: #fff !important;
+  z-index: 9 !important; }
+
+.react-grid-Row {
+  border-bottom: 1px solid #ddd !important;
+  height: 60px !important; }
+
+.react-grid-HeaderRow > div:first-of-type {
+  height: 58px !important; }
+
+.react-grid-HeaderCell {
+  background: #fff !important;
+  padding: 0 !important;
+  height: 58px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding-right: 14px !important; }
+
+.react-grid-Viewport {
+  top: 58px !important; }
+
+.react-grid-HeaderRow > div:first-child {
+  width: 100% !important; }
+
+.react-grid-HeaderRow .react-grid-HeaderCell, .react-grid-Row .react-grid-Cell {
+  border-left-color: transparent !important;
+  border-right-color: transparent !important; }
+
+.react-grid-HeaderCell-sortable {
+  color: #A8B0BF !important;
+  font-family: cairo-b !important;
+  font-size: 14px !important;
+  position: relative !important;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.react-grid-HeaderCell-sortable span.pull-right {
+  position: absolute !important;
+  left: -16px !important;
+  font-size: 20px !important;
+  top: -3px !important; }
+
+.react-grid-Cell {
+  height: 60px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding-right: 16px !important;
+  padding-left: 0 !important; }
+
+.react-grid-Toolbar .drop-item:hover {
+  border-color: transparent !important; }
+
+.react-grid-Cell__value > div {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important; }
+
+.react-grid-Cell__value, .react-grid-Cell__value a, .react-grid-Cell__value span, .react-grid-Cell__value div {
+  color: #3E4352 !important;
+  letter-spacing: -0.2px !important;
+  font-size: 14px !important;
+  font-family: cairo-r !important; }
+
+.react-grid-Cell__value a {
+  font-weight: bold !important; }
+
+.react-grid-Row.row-context-menu .react-grid-Cell, .react-grid-Row:hover .react-grid-Cell, .react-grid-Row:hover {
+  background-color: #edf0f2 !important;
+  transition: 0.2s ease !important; }
+
+.selecteDiv > div {
+  opacity: 1 !important; }
+
+.react-grid-Toolbar .selecteDiv .dragMessage {
+  letter-spacing: -0.2px !important;
+  text-align: center !important;
+  color: #A8B0BF !important;
+  font-family: cairo-r !important;
+  font-size: 14px !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: relative !important;
+  z-index: 9999 !important; }
+
+.react-grid-Toolbar .selecteDiv .data-dark:empty + .dragMessage {
+  display: flex !important; }
+
+.react-grid-Toolbar .selecteDiv .data-dark + .dragMessage {
+  display: none !important; }
+
+.react-grid-Toolbar .selecteDiv .datagrid-grouping.active ~ .dragMessage {
+  display: flex !important; }
+
+.react-grid-Toolbar .selecteDiv .drop-item span.grouped-col-btn__name {
+  font-size: 12px !important;
+  font-weight: bold !important;
+  font-style: normal !important;
+  font-stretch: normal !important;
+  letter-spacing: -0.2px !important;
+  color: #5E6475 !important; }
+
+.react-grid-Canvas > div:nth-of-type(2), .react-grid-row-group {
+  width: 100% !important; }
+
+.react-grid-Toolbar .drop-item {
+  min-width: 77px !important;
+  height: 26px !important;
+  border-radius: 100px !important;
+  background-color: #e9edf2 !important;
+  padding: 0 10px 0 12px !important;
+  margin-right: 6px !important;
+  line-height: 26px !important;
+  font-family: cairo-b !important;
+  border-color: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+  z-index: 99999 !important;
+  flex-shrink: 0 !important;
+  font-size: 12px !important;
+  letter-spacing: -0.2px !important;
+  color: #5E6475 !important;
+  justify-content: space-between !important; }
+
+.drop-item .remove {
+  padding: 0 !important;
+  float: left !important;
+  background-color: #858D9E !important;
+  width: 16px !important;
+  height: 16px !important;
+  border-radius: 50% !important;
+  color: #e9edf2 !important;
+  font-size: 8px !important;
+  text-align: center !important;
+  line-height: 15px !important;
+  padding-left: 1px !important;
+  font-family: cairo-r !important;
+  margin: 1px 0 0 5px !important; }
+
+.react-grid-Toolbar .data-dark:empty {
+  background-color: #E9ECF0 !important;
+  display: none !important;
+  width: 0 !important; }
+
+.react-grid-Toolbar .data-dark {
+  background-color: #5E6475 !important;
+  padding-right: 12px !important;
+  justify-content: flex-start !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow-x: auto !important; }
+
+.react-grid-Toolbar .data-dark::-webkit-scrollbar {
+  height: 0 !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: -20px !important;
+  transition: all 0.2s ease-in-out; }
+
+.react-grid-Toolbar .data-dark:hover::-webkit-scrollbar {
+  height: 10px !important;
+  position: absolute !important;
+  background-color: #E9ECF0; }
+
+.minimizeRelative {
+  position: relative !important; }
+
+.minimizeSpan {
+  position: absolute !important;
+  left: 40px !important;
+  top: 5px !important;
+  z-index: 19 !important;
+  display: flex !important; }
+
+.minimizeSpan .H-tableSize, .minimizeSpan .V-tableSize {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 30px !important;
+  cursor: pointer !important; }
+
+.minimizeSpan .H-tableSize {
+  flex-flow: column !important; }
+
+.minimizeSpan .H-tableSize span {
+  width: 12px !important;
+  height: 3px !important;
+  background: #A8B0BF !important;
+  border-radius: 5px !important;
+  margin-bottom: 2px !important;
+  display: block !important; }
+
+.minimizeSpan .V-tableSize span {
+  width: 3px !important;
+  height: 12px !important;
+  margin-left: 2px !important;
+  background: #A8B0BF !important;
+  border-radius: 5px !important;
+  margin-bottom: 2px !important;
+  display: block !important; }
+
+.gridLoading {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  z-index: 99999 !important;
+  top: 0 !important;
+  display: none !important; }
+
+.gridLoading span {
+  display: block !important;
+  width: 40px !important;
+  height: 40px !important;
+  border: 3px solid #3570e6 !important;
+  border-left-color: transparent !important;
+  animation: rotate 1s linear infinite !important;
+  border-radius: 50% !important; }
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg) !important; }
+  25% {
+    transform: rotate(90deg) !important; }
+  50% {
+    transform: rotate(180deg) !important; }
+  75% {
+    transform: rotate(270deg) !important; }
+  100% {
+    transform: rotate(360deg) !important; } }
+.miniRows .react-grid-Row {
+  height: 40px !important; }
+
+.miniRows .react-grid-Row .react-grid-Cell {
+  height: 40px !important; }
+
+.react-grid-HeaderCell > .react-grid-checkbox-container {
+  padding: 0 !important; }
+
 .mainGridSystem .gridSystemTables .girdTableHeader .thead-row {
   -webkit-transform: translateX(-365px);
   transform: translateX(-365px); }
@@ -10359,7 +10789,9 @@ ul {
 .subiGrid .subiTable table {
   text-align: right; }
 
-.ui.buttons > .ui.dropdown:last-child .menu, .ui.menu .right.dropdown.item .menu, .ui.menu .right.menu .dropdown:last-child .menu {
+.ui.buttons > .ui.dropdown:last-child .menu,
+.ui.menu .right.dropdown.item .menu,
+.ui.menu .right.menu .dropdown:last-child .menu {
   right: auto;
   left: 0; }
 
@@ -10392,11 +10824,6 @@ ul {
   top: 32%; }
 
 /* Grid Rtl */
-.react-grid-Cell,
-.react-grid-HeaderCell {
-  padding-left: 0 !important;
-  padding-right: 16px !important; }
-
 .react-grid-HeaderRow {
   right: 0; }
 
@@ -10430,7 +10857,8 @@ ul {
 
 body {
   direction: rtl;
-  min-width: 1024px; }
+  min-width: 1024px;
+  font-family: cairo-r; }
 
 #scroll-top {
   border-radius: 50%;
@@ -10566,7 +10994,9 @@ body {
 .ui.fluid.dropdown > .dropdown.icon {
   float: left; }
 
-.ui.selection.dropdown > .delete.icon, .ui.selection.dropdown > .dropdown.icon, .ui.selection.dropdown > .search.icon {
+.ui.selection.dropdown > .delete.icon,
+.ui.selection.dropdown > .dropdown.icon,
+.ui.selection.dropdown > .search.icon {
   left: 1em;
   right: auto; }
 
@@ -10692,7 +11122,10 @@ body {
   box-sizing: border-box;
   margin-top: 22px;
   box-shadow: none;
-  font-family: font-opensb; }
+  font-family: cairo-sb; }
+
+.linebylineInput .customDatepicker .proForm .linebylineInput {
+  width: 100% !important; }
 
 .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
   width: 100%; }
@@ -10703,7 +11136,7 @@ body {
 .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate > div > div {
   z-index: 14; }
 
-.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate > div::after {
+.proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate .sc-bxivhb.hPEdlB::after {
   content: '';
   position: absolute;
   background-image: url(../../images/icons/date-pickericon.svg);
@@ -11071,7 +11504,7 @@ table edition
   margin-bottom: 4px;
   letter-spacing: -0.2px;
   color: #26344c;
-  font-family: font-opens;
+  font-family: cairo-r;
   display: block;
   font-size: 16px;
   font-weight: bold; }
@@ -11250,7 +11683,7 @@ table edition
   -ms-flex-align: center;
   align-items: center;
   color: #A8B0BF;
-  font-family: font-xb;
+  font-family: cairo-xb;
   font-size: 12px;
   cursor: pointer;
   border-bottom: 2px solid transparent !important;
@@ -11455,7 +11888,7 @@ table edition
   animation: rotate 1s linear infinite; }
 
 .dashboardLoading h3 {
-  font-family: font-b;
+  font-family: cairo-b;
   margin-top: 30px;
   font-size: 34px;
   line-height: 1.18;
@@ -11505,7 +11938,7 @@ table edition
 
 .panel h2 {
   text-align: center;
-  font-family: font-r;
+  font-family: cairo-r;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -11583,7 +12016,7 @@ table edition
   line-height: 1.4;
   letter-spacing: 0.6px;
   color: #252833;
-  font-family: font-xb;
+  font-family: cairo-xb;
   text-transform: uppercase;
   margin: 0; }
 
@@ -11876,7 +12309,7 @@ tfoot tr td p {
 
 .dashboard__name .welcome-title {
   font-size: 34px;
-  font-family: font-b;
+  font-family: cairo-b;
   line-height: 1.18;
   letter-spacing: -1.1px;
   color: #252833;
@@ -12030,7 +12463,7 @@ tfoot tr td p {
 
 .noTabs__document .doc-container .main__header p,
 .main__header p {
-  font-family: font-opens;
+  font-family: cairo-r;
   font-size: 12px;
   line-height: 1.33;
   letter-spacing: -0.2px;
@@ -12074,7 +12507,7 @@ tfoot tr td p {
   width: 100%;
   padding-bottom: 12px;
   padding-right: 0;
-  font-family: font-r;
+  font-family: cairo-r;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -12105,7 +12538,7 @@ tfoot tr td p {
 .noTabs__document .doc-container .step-content .linebylineInput .proForm.datepickerContainer .linebylineInput {
   margin-bottom: 0 !important; }
 
-.noTabs__document .doc-container .step-content .document-fields .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
+.proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
   width: 192px; }
 
 /* new css notabs */
@@ -12144,7 +12577,7 @@ tfoot tr td p {
   align-items: center; }
 
 .shareLinks a {
-  font-family: font-openb;
+  font-family: cairo-b;
   font-size: 12px;
   line-height: 1.33;
   letter-spacing: -0.3px;
@@ -12201,7 +12634,7 @@ button.companies_icon {
   display: none; }
 
 .one__tab .doc-container .subiTabContainer .step-content .doc-infohead {
-  font-family: font-opens;
+  font-family: cairo-r;
   font-size: 12px;
   line-height: 1.33;
   letter-spacing: -0.2px;
@@ -12235,7 +12668,7 @@ button.companies_icon {
   width: 100%;
   padding-bottom: 12px;
   padding-right: 0;
-  font-family: font-r;
+  font-family: cairo-r;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -12251,7 +12684,7 @@ button.companies_icon {
   letter-spacing: -0.5px;
   color: #252833;
   opacity: 0.3;
-  font-family: font-opens; }
+  font-family: cairo-r; }
 
 .one__tab .approveDocument .approveDocumentBTNS {
   flex: 1.5;
@@ -12368,7 +12801,7 @@ button.companies_icon {
 .showMore__btn button span {
   background: transparent;
   border: none;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 12px;
   line-height: 1.67;
   letter-spacing: 0.2px;
@@ -12436,7 +12869,7 @@ button.companies_icon {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important; }
 
 .Toastify__toast-body {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 16px;
   -webkit-box-flex: 6;
   -ms-flex: 6;
@@ -12498,7 +12931,7 @@ button.companies_icon {
   padding: 0 10px; }
 
 .summerisItem__number .content__number .number {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 56px;
   line-height: 1.14;
   letter-spacing: -1.1px;
@@ -12510,7 +12943,7 @@ button.companies_icon {
   text-overflow: ellipsis; }
 
 .summerisItem__number .content__number .title {
-  font-family: font-xb;
+  font-family: cairo-xb;
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: 0.2px;
@@ -12576,7 +13009,7 @@ button.companies_icon {
   margin-bottom: 36px; }
 
 .workingHours__cycle header h3 {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -12661,7 +13094,7 @@ button.companies_icon {
 .proForm .has-error .control-label {
   letter-spacing: -0.2px;
   color: #26344c;
-  font-family: font-opens;
+  font-family: cairo-r;
   display: block;
   font-size: 14px; }
 
@@ -12686,7 +13119,7 @@ button.companies_icon {
   width: 271px !important; }
 
 .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
-  font-family: font-opens;
+  font-family: cairo-r;
   font-size: 14px;
   line-height: 1.71;
   letter-spacing: -0.2px;
@@ -12724,7 +13157,7 @@ button.companies_icon {
   display: none; }
 
 .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: -0.2px;
@@ -12761,7 +13194,7 @@ button.companies_icon {
   align-items: flex-start; }
 
 .proForm .mix_dropdown label {
-  font-family: font-openb; }
+  font-family: cairo-b; }
 
 .css-2o5izw,
 .css-10nd86i {
@@ -12885,11 +13318,6 @@ button.companies_icon {
     -webkit-flex: 0.3 1 !important;
     flex: 0.3 1 !important;
     flex-shrink: 0; } }
-.react-grid-Container .gridSystemSelected {
-  right: 58px;
-  width: calc(100% - 58px);
-  min-width: auto; }
-
 .css-1g6gooi {
   max-height: 30px;
   display: flex;
@@ -12948,7 +13376,7 @@ button.companies_icon {
   height: 20px; }
 
 .ReactTable .rt-thead .rt-resizable-header {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: -0.2px;
@@ -12970,7 +13398,7 @@ button.companies_icon {
 
 .ReactTable .rt-tbody .rt-td {
   border-left: 1px solid rgba(0, 0, 0, 0.02);
-  font-family: font-opens;
+  font-family: cairo-r;
   font-size: 14px;
   line-height: 1.71;
   letter-spacing: -0.2px;
@@ -12983,7 +13411,7 @@ button.companies_icon {
   overflow: visible; }
 
 .ReactTable .rt-tbody .rt-td a {
-  font-family: font-openb;
+  font-family: cairo-b;
   font-size: 14px;
   color: #3e4352;
   overflow: hidden;
@@ -13014,7 +13442,7 @@ button.companies_icon {
 
 .ReactTable .-pagination .-btn {
   color: #a8b0bf;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: -0.2px;
@@ -13134,7 +13562,7 @@ button.companies_icon {
   top: -24px;
   letter-spacing: -0.2px;
   color: #26344c;
-  font-family: font-openb;
+  font-family: cairo-b;
   display: block; }
 
 .company__total {
@@ -13181,7 +13609,7 @@ button.companies_icon {
   cursor: pointer;
   font-size: 14px;
   color: #26344c;
-  font-family: font-opensb;
+  font-family: cairo-sb;
   margin: 0 10px;
   border-bottom: 4px solid transparent;
   display: flex;
@@ -13228,7 +13656,7 @@ button.companies_icon {
 .fileDownUp a:hover {
   font-size: 14px;
   margin-bottom: 10px;
-  font-family: font-opensb;
+  font-family: cairo-sb;
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: -0.2px;
@@ -13269,7 +13697,7 @@ button.companies_icon {
 /* TextEditor */
 .public-DraftStyleDefault-ltr span span,
 .public-DraftStyleDefault-rtl span span {
-  font-family: font-r;
+  font-family: cairo-r;
   font-size: 14px;
   line-height: 1.71;
   letter-spacing: -0.2px;
@@ -13325,7 +13753,7 @@ button.companies_icon {
   text-align: right;
   border-bottom: 1px solid #e1e3e8;
   padding-bottom: 14px;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -13431,7 +13859,7 @@ button.companies_icon {
   align-items: center; }
 
 .accordionTitle {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
@@ -13490,7 +13918,7 @@ button.companies_icon {
   display: flex;
   flex-flow: column;
   align-items: center;
-  font-family: font-r;
+  font-family: cairo-r;
   font-size: 12px;
   line-height: 1.33;
   letter-spacing: -0.2px;
@@ -13499,7 +13927,7 @@ button.companies_icon {
   margin-bottom: 0; }
 
 .Project__num .project__num--span {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
@@ -13591,12 +14019,6 @@ button.companies_icon {
 .skylight-dialog .dropWrapper .letterFullWidth .fillter-item-c {
   margin-bottom: 0; }
 
-.react-grid-HeaderCell .react-grid-HeaderCell-sortable {
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; }
-
 .react-grid-checkbox:checked + .react-grid-checkbox-label:before {
   content: url(../../images/checkmark.svg);
   background: #4382F9 !important;
@@ -13668,7 +14090,7 @@ button.companies_icon {
   margin-left: 5px; }
 
 .table__figure .table__figure--item p {
-  font-family: font-r; }
+  font-family: cairo-r; }
 
 .main__fulldash--container {
   padding-right: 40px;
@@ -13722,7 +14144,7 @@ button.companies_icon {
 
 .reports__menu label {
   margin-left: 24px;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -13748,7 +14170,7 @@ button.companies_icon {
 
 .reports__content header h2 {
   margin-left: 24px;
-  font-family: font-r;
+  font-family: cairo-r;
   font-size: 24px;
   line-height: 1.17;
   letter-spacing: -0.5px;
@@ -13942,7 +14364,7 @@ button.companies_icon {
   cursor: pointer; }
 
 .project__Permissions--type .ui.checkbox label {
-  font-family: font-opensb;
+  font-family: cairo-sb;
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: -0.2px;
@@ -13968,7 +14390,7 @@ button.companies_icon {
   width: auto;
   text-align: right;
   margin-left: 32px;
-  font-family: font-opensb;
+  font-family: cairo-sb;
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: -0.2px;
@@ -14024,7 +14446,7 @@ button.companies_icon {
   line-height: 1.33;
   letter-spacing: -0.2px;
   color: #858d9e;
-  font-family: font-r;
+  font-family: cairo-r;
   flex-shrink: 0; }
 
 .main-header .header-content .nav-right li.notifi-icon {
@@ -14044,13 +14466,13 @@ button.companies_icon {
   margin-right: 0 !important; }
 
 .tableReports.attachmentTable tbody tr .contentCell {
-  font-family: font-r; }
+  font-family: cairo-r; }
 
 .tableReports.attachmentTable tbody tr .contentCell.tableCell-4 span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: font-b; }
+  font-family: cairo-b; }
 
 .gridBtn {
   min-width: 55px !important;
@@ -14107,14 +14529,14 @@ button.companies_icon {
   width: 100%; }
 
 .workflowWrapper .workflow-header h4 p span:first-child {
-  font-family: font-r;
+  font-family: cairo-r;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
   color: #252833; }
 
 .workflowWrapper .workflow-header h4 p span:last-child {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
@@ -14122,7 +14544,7 @@ button.companies_icon {
   margin-left: 8px; }
 
 .workflowWrapper .workflow-header h4 span:last-child {
-  font-family: font-opens;
+  font-family: cairo-r;
   font-size: 14px;
   line-height: 1.71;
   letter-spacing: -0.2px;
@@ -14149,7 +14571,7 @@ button.companies_icon {
 .card-status .card-box .signature-h .avatarName h6 {
   max-width: 145px;
   overflow: hidden;
-  font-family: font-b; }
+  font-family: cairo-b; }
 
 .ui.radio.checkbox {
   margin-bottom: 5px; }
@@ -14170,7 +14592,7 @@ button.companies_icon {
   font-size: 12px;
   line-height: 1.33;
   fill: #3e4352;
-  font-family: font-opens;
+  font-family: cairo-r;
   max-width: 90px;
   overflow: hidden;
   text-overflow: ellipsis; }
@@ -14231,7 +14653,7 @@ line.horizontal-grid-line {
   overflow: hidden; }
 
 #legenbd__teext .chartName {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
@@ -14239,7 +14661,7 @@ line.horizontal-grid-line {
   display: block; }
 
 #legenbd__teext .percentage {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 56px;
   line-height: 1.14;
   letter-spacing: -1.1px;
@@ -14247,7 +14669,7 @@ line.horizontal-grid-line {
   display: block; }
 
 #legenbd__teext .totalAmount {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px;
@@ -14311,7 +14733,7 @@ line.horizontal-grid-line {
   border-bottom: 1px solid #e9ecf0; }
 
 .tree__header h2 {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -14360,7 +14782,7 @@ line.horizontal-grid-line {
   height: auto !important; }
 
 .workflowComment h2 {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -14369,7 +14791,7 @@ line.horizontal-grid-line {
   padding-bottom: 29px; }
 
 .workflowComment p {
-  font-family: font-opens;
+  font-family: cairo-r;
   font-size: 14px;
   line-height: 1.71;
   letter-spacing: -0.2px;
@@ -14435,7 +14857,7 @@ line.horizontal-grid-line {
   width: 100%; }
 
 .documents-stepper .doc-container .step-content-body .pdf__action--btns h2 {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px;
   letter-spacing: -0.2px;
   color: #f9fbfc;
@@ -14503,7 +14925,7 @@ line.horizontal-grid-line {
 .mgrpdf-navigation.mgrpdf-navigation__controls.mgrpdf-navigation__controls--pages {
   position: absolute;
   top: 27px;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 20px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -14566,7 +14988,7 @@ line.horizontal-grid-line {
   white-space: nowrap;
   cursor: pointer;
   display: inline-block;
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 14px;
   line-height: 1.14;
   letter-spacing: 0.2px;
@@ -14590,7 +15012,7 @@ line.horizontal-grid-line {
   justify-content: center; }
 
 .drive__wrapper h2 {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: -0.2px;
@@ -14645,7 +15067,7 @@ line.horizontal-grid-line {
   border-radius: 2px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
   background-color: #252833;
-  font-family: font-opens;
+  font-family: cairo-r;
   font-size: 12px;
   line-height: 1.33;
   letter-spacing: -0.2px;
@@ -14695,7 +15117,7 @@ line.horizontal-grid-line {
 
 .header__dropdown header h2 {
   font-size: 20px !important;
-  font-family: font-r !important;
+  font-family: cairo-r !important;
   line-height: 1.4;
   letter-spacing: -0.2px;
   color: #252833; }
@@ -14780,7 +15202,7 @@ body.noScrolling {
   cursor: pointer; }
 
 .default__dropdown .css-10nd86i .css-1492t68 {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 13px;
   font-weight: bold;
   line-height: 1.54;
@@ -14790,7 +15212,7 @@ body.noScrolling {
   text-transform: uppercase; }
 
 .default__dropdown .css-10nd86i .css-xp4uvy {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 13px;
   line-height: 1.54;
   letter-spacing: 0.4px;
@@ -14983,7 +15405,7 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
   padding: 0 12px; }
 
 .tooltip-text .mini-tooltip-name, .tooltip-title {
-  font-family: font-b !important;
+  font-family: cairo-b !important;
   font-size: 14px  !important;
   line-height: 1.43  !important;
   fill: #f9fbfc  !important;
@@ -14991,7 +15413,7 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
   padding: 4px 0; }
 
 .tooltip-text .mini-tooltip-value, .tooltip-body .tooltip-right-text tspan, .tooltip-body .tooltip-left-text, .tooltip-body .tooltip-left-text tspan, .tooltip-body .tooltip-right-text {
-  font-family: font-opens !important;
+  font-family: cairo-r !important;
   font-size: 12px !important;
   line-height: 1.33 !important;
   letter-spacing: -0.2px !important;
@@ -15094,7 +15516,7 @@ div#markup-panel {
   display: block; }
 
 .loadingShow .percentage {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 34px;
   line-height: 1.18;
   letter-spacing: -1.1px;
@@ -15122,7 +15544,7 @@ div#markup-panel {
   height: 36px; }
 
 .document__action--menu .css-10nd86i .css-1492t68 {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 13px;
   font-weight: bold;
   line-height: 1.54;
@@ -15132,7 +15554,7 @@ div#markup-panel {
   text-transform: uppercase; }
 
 .document__action--menu .css-10nd86i .css-xp4uvy {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 13px;
   line-height: 1.54;
   letter-spacing: 0.4px;
@@ -15301,7 +15723,7 @@ div#markup-panel {
   margin: 0; }
 
 .autoDisk__dropdown--comp label {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 13px;
   line-height: 1.54;
   letter-spacing: normal;
@@ -15385,7 +15807,7 @@ div#markup-panel {
   border-bottom: 1px solid #e9ecf0; }
 
 .grid__column--title h2 {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 24px;
   line-height: 1.17;
   letter-spacing: -0.5px;
@@ -15552,7 +15974,7 @@ div#markup-panel {
   padding-bottom: 15px; }
 
 .react-calendar abbr {
-  font-family: font-opensb;
+  font-family: cairo-sb;
   font-size: 14px;
   line-height: 1.71;
   letter-spacing: -0.2px;
@@ -15579,7 +16001,7 @@ button.react-calendar__tile.react-calendar__tile--now.react-calendar__month-view
   color: #252833 !important; }
 
 button.react-calendar__navigation__label {
-  font-family: font-r;
+  font-family: cairo-r;
   letter-spacing: -0.2px;
   text-align: center;
   color: #252833; }
@@ -15590,7 +16012,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
   padding: 0;
   margin: 0; }
 
-.main-header .header-content .nav-left li:nth-child(4) {
+.main-header .header-content .nav-right li:nth-child(4) {
   margin-right: 24px; }
 
 .header__search {
@@ -15664,12 +16086,18 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
   margin-right: 0; }
 
 .filter__showmore .fillter-item-c label.control-label {
-  font-family: font-b;
+  font-family: cairo-b;
   font-size: 13px;
   line-height: 1.54;
   color: #5E6475; }
 
 .attachmentTable.attachmentTableAuto tbody tr td {
   padding: 0 6px !important; }
+
+.gmTeoB {
+  z-index: 99; }
+
+.linebylineInput .ck.ck-button, .linebylineInput .ck.ck-dropdown {
+  margin: 0 !important; }
 
 /*# sourceMappingURL=layout-ar.css.map */
