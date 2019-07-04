@@ -87,10 +87,11 @@ class ProjectSetup extends Component {
         this.renderComponent()
     }
 
-    renderComponent = () => {
+    renderComponent() {
         this.setState({
             isLoading: true
         })
+
         ProjectEps = SelectedProjectEps(PathName[1])
         let ViewPermission = 0
         ProjectEps.map(s => { ViewPermission = s.ViewPermission });
@@ -98,7 +99,6 @@ class ProjectSetup extends Component {
         if (!config.IsAllow(ViewPermission)) {
             toast.warn(Resources['missingPermissions'][currentLanguage])
         }
-
         else {
             this.setState({
                 ProjectEps: ProjectEps[0], ApiData: ProjectEps[0].ApiData, title: ProjectEps[0].title, ApiAdd: ProjectEps[0].ApiAdd, ApiEdit: ProjectEps[0].ApiEdit,
@@ -112,7 +112,6 @@ class ProjectSetup extends Component {
                 dataservice.GetDataList(ProjectEps[0].ApiDrop, 'parentName', 'id').then(
                     res => {
                         this.setState({
-
                             DropData: res
                         })
                     }
@@ -211,8 +210,8 @@ class ProjectSetup extends Component {
         Api.post(this.state.ApiDelete, this.state.selectedRows).then(
             res => {
                 let originalRows = this.state.rows
-
-                this.state.selectedRows.map(i => {
+                let selectedRows = this.state.selectedRows;
+                selectedRows.map((i) => {
                     originalRows = originalRows.filter(r => r.id !== i);
                 })
                 this.setState({
@@ -246,7 +245,7 @@ class ProjectSetup extends Component {
         else {
             Api.get(this.state.ApiGetById + obj.id).then(
                 res => {
-                    let selectDrop = _.find(this.state.DropData, function (i) { return i.value == res.parentId });
+                    let selectDrop = _.find(this.state.DropData, function (i) { return i.value === res.parentId });
                     {
                         this.state.title === 'Area' ?
                             this.setState({
@@ -401,8 +400,7 @@ class ProjectSetup extends Component {
                         {/*Render Filter  */}
                         <div className="submittalFilter">
                             <div className="subFilter">
-                                <h3 className="zero">{this.state.title}</h3>
-                                {/* <span>{this.state.totalRows}</span> */}
+                                <h3 className="zero">{this.state.title}</h3> 
                                 <div className="ui labeled icon top right pointing dropdown fillter-button"
                                     tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
                                     <span>
@@ -525,7 +523,7 @@ class ProjectSetup extends Component {
                                                             }
 
                                                         </div>
-                                                    </div> 
+                                                    </div>
                                                     {this.state.title === 'Area' ? null
                                                         : <div className="linebylineInput valid-input">
                                                             <DropdownMelcous title={this.state.DropName} data={this.state.DropData} name='DropName'
@@ -535,7 +533,7 @@ class ProjectSetup extends Component {
                                                                 error={errors.DropName}
                                                                 touched={touched.DropName}
                                                                 value={values.DropName} />
-                                                        </div>}  
+                                                        </div>}
                                                 </div>
 
                                                 <div className="slider-Btns">
@@ -564,7 +562,7 @@ class ProjectSetup extends Component {
                             {dataGrid}
                         </div>
 
-                        {this.state.showDeleteModal == true ? (
+                        {this.state.showDeleteModal === true ? (
                             <ConfirmationModal
                                 title={Resources['smartDeleteMessage'][currentLanguage].content}
                                 closed={this.onCloseModal}

@@ -89,7 +89,7 @@ class BarChartComp extends Component {
                                 <h2>
                                     {this.props.title}
                                 </h2>
-                                {this.state.isLoading == false ?
+                                {this.state.isLoading === false ?
                                     <ResponsiveContainer
                                         render={
                                             ({ width }) =>
@@ -110,7 +110,7 @@ class BarChartComp extends Component {
                         </div>
                     </div>
                     :
-                    this.state.isLoading == false ?
+                    this.state.isLoading === false ?
                         <div className="col-md-12 col-lg-6">
                             <div className="panel barChart__container">
                                 <div className="panel-body">

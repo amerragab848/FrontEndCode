@@ -2504,7 +2504,7 @@
         "ar": "تاريخ المستند"
     },
     "deadLineDate": {
-        "en": "Deadline ",
+        "en": "Deadline Date",
         "ar": "تاريخ المستند"
     },
     "formDate": {
@@ -2823,7 +2823,6 @@
         "en": "Add Distribution List",
         "ar": "اضافة قائمه التوزيع"
     },
-    
     "projectPictures": {
         "en": "Progress Pictures",
         "ar": "صور المشروع"
@@ -4476,7 +4475,7 @@
         "en": "Contract / Purchase Orders ",
         "ar": "عقد/ أمر الشراء"
     },
-    "contractsPerProject": { 
+    "contractsPerProject": {
         "en": "Contracts ",
         "ar": "ملخص العقود "
     },
@@ -6896,7 +6895,6 @@
         "en": "Claims",
         "ar": "مطالبات"
     },
-
     "wokFlowDistrbutionAccountsReport": {
         "en": "Workflow/Distribution Accounts Report",
         "ar": "تقرير الدورة المستندية و التوزيع"
@@ -7872,7 +7870,7 @@
     "totalMedigationCost": {
         "en": "Total Mitigation Cost",
         "ar": "Mitigation Cost"
-    } ,
+    },
     "preMedigation": {
         "en": "Pre-mitigation ",
         "ar": "Pre-mitigation "
@@ -7997,8 +7995,12 @@
         "en": "Open my folders",
         "ar": "فتح المجلد "
     },
+    "consequenceType": {
+        "en": "Consequence Type",
+        "ar": "فتح المجلد "
+    },
     "filter": {
         "en": "Filter",
         "ar": "بحث"
-    } 
+    }
 }
