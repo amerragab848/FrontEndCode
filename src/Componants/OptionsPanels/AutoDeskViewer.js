@@ -13,6 +13,7 @@ const listOfOptions = [
     { label: 'View Markups', value: 2 },
     { label: 'Edit Markups', value: 3 },
 ];
+
 const markUpsModel = {
     projectId: 0,
     docType: 17,
@@ -21,6 +22,7 @@ const markUpsModel = {
     svg: '',
     viewerState: ''
 };
+
 let docId = 0;
 let docTypeId = 0;
 let encrypte = "";
@@ -28,6 +30,9 @@ let fileName = "";
 let id = 0;
 let projectId = 0;
 
+let oDocument = null, oViewer = null;
+let oViews3D = null, oViews2D = null;
+let urn = null;
 class AutoDeskViewer extends Component {
     constructor(props) {
         super(props)
@@ -74,17 +79,16 @@ class AutoDeskViewer extends Component {
             viewer: null,
             loadingPer: false
         }
-
     }
 
-    getForgeToken() { 
+    getForgeToken() {
         return {
             access_token: this.state.access_token,
             expires_in: 3600,
             token_type: "Bearer"
         };
     }
- 
+
     handleTokenRequested(onAccessToken) {
         console.log('Token requested by the viewer.');
         if (onAccessToken) {
@@ -96,6 +100,25 @@ class AutoDeskViewer extends Component {
     }
 
     componentWillMount() {
+
+    }
+
+    componentDidMount() {
+        var PercentageID = document.getElementById("precent");
+
+        this.animateValue(PercentageID, 0, 98);
+
+        let obj = {
+            fileName: this.state.fileName,
+            attachFile: decodeURIComponent(this.state.attachFile)
+        }
+
+        Api.post("translateAutoDesk", obj).then(data => {
+            this.showModel(data);
+        })
+
+        //this.initializeAutodeskViewer();
+        //this.showModel('dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE5LTA3LTA0LTEyLTE0LTM2LWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL0NoYWlyLmR3Zw');
         Api.get('GetAllMarkUps?docId=' + this.state.docId + '&docType=' + this.state.docType + '&docFileId=' + this.state.docFileId).then((markups) => {
             this.setState({ markups })
             let markupsList = []
@@ -103,19 +126,8 @@ class AutoDeskViewer extends Component {
                 markupsList.push({ label: item.viewerState, value: index })
             })
             this.setState({ markupsList })
-            let obj = {
-                fileName:this.state.fileName, 
-                attachFile:  decodeURIComponent(this.state.attachFile )  
-            }
-            Api.post("translateAutoDesk", obj).then(data => {
-                this.showModel(data);
-            })
-        })
-    }
 
-    componentDidMount() {
-        var PercentageID = document.getElementById("precent");
-        this.animateValue(PercentageID, 0, 98);
+        })
     }
 
     animateValue(id, start, end) {
@@ -132,9 +144,9 @@ class AutoDeskViewer extends Component {
         }, duration);
     }
 
-    showAllToggle = () => { 
-        if (this.state.showAll == true) { 
-            this.setState({ showAll: false, viewEditMarkUps: true }) 
+    showAllToggle = () => {
+        if (this.state.showAll == true) {
+            this.setState({ showAll: false, viewEditMarkUps: true })
         } else {
             this.setState({ viewEditMarkUps: false, showAll: true })
             this.state.markups.forEach(item => {
@@ -161,17 +173,17 @@ class AutoDeskViewer extends Component {
             if (markupCore) {
                 markupCore.leaveEditMode();
                 markupCore.hide();
-            } 
+            }
             this.setState({ showCheckBox: false, showAll: false, isViewEdit: false, viewEditMarkUps: false, markupCore })
 
         } else if (value == 2) {
-            this.setState({ showCheckBox: true, showAll: true, isViewEdit: false, viewEditMarkUps: false }) 
+            this.setState({ showCheckBox: true, showAll: true, isViewEdit: false, viewEditMarkUps: false })
         } else {
             this.setState({ showCheckBox: false, showAll: false, isViewEdit: true, viewEditMarkUps: false })
             this.state.markups.forEach(item => {
                 this.restoreState(item.svg, item.viewerState);
             })
-            this.editingMarkUps(); 
+            this.editingMarkUps();
         }
     }
 
@@ -192,7 +204,7 @@ class AutoDeskViewer extends Component {
             let viewer = this.state.viewer
             viewer.loadExtension('Autodesk.Viewing.MarkupsCore').then(markupsExt => {
                 this.setState({ markupCore: markupsExt, viewer })
-            }) 
+            })
         }
     }
 
@@ -201,8 +213,9 @@ class AutoDeskViewer extends Component {
             env: 'AutodeskProduction',
             getAccessToken: this.getAccessToken,
             refreshToken: this.getAccessToken,
-            useADP: false,
+            useADP: true,
         };
+
         var documentId = 'urn:' + urn;
         Autodesk.Viewing.Initializer(options, () => {
             Autodesk.Viewing.Document.load(documentId, (doc) => {
@@ -224,13 +237,20 @@ class AutoDeskViewer extends Component {
                 var modelOptions = {
                     sharedPropertyDbPath: doc.getPropertyDbPath()
                 };
+                console.log(svfUrl, viewer, modelOptions);
                 viewer.start(svfUrl, modelOptions, () => {
                     this.state.markups.forEach(item => {
                         this.restoreState(item.svg, item.viewerState);
                     })
-                }, console.log("Loading fail model autoDesk"));
+                },
+                    console.log("....Loading fail model autoDesk")
+                );
                 this.setState({ viewer, loaded: true })
-            }, console.log("Loading fail model autoDesk"));
+            },
+                function (errorCode, errorMessage) {
+                    console.log("....Loading fail model autoDesk", errorCode, errorMessage)
+                }
+            );
             this.setState({ loadingPer: true })
         });
     }
@@ -238,7 +258,7 @@ class AutoDeskViewer extends Component {
     getAccessToken = () => {
         var xmlHttp = null;
         xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", Config.static+'/api/Procoor/getAccessToken', false /*forge viewer requires SYNC*/);
+        xmlHttp.open("GET", Config.static + '/api/Procoor/getAccessToken', false /*forge viewer requires SYNC*/);
         xmlHttp.send(null);
         return xmlHttp.responseText;
 
@@ -248,16 +268,16 @@ class AutoDeskViewer extends Component {
         if (this.state.markupCore) {
             let markupCore = this.state.markupCore;
             markupCore.undo();
-            this.setState({ markupCore }) 
-        } 
+            this.setState({ markupCore })
+        }
     }
 
     redo = () => {
         if (this.state.markupCore) {
             let markupCore = this.state.markupCore;
             markupCore.redo();
-            this.setState({ markupCore }) 
-        }  
+            this.setState({ markupCore })
+        }
     }
 
     addComment = () => {
@@ -266,8 +286,8 @@ class AutoDeskViewer extends Component {
             var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
             var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeText(this.state.markupCore);
             extension.enterEditMode();
-            extension.changeEditMode(mode) 
-        }  
+            extension.changeEditMode(mode)
+        }
     }
 
     addCircle = () => {
@@ -276,8 +296,8 @@ class AutoDeskViewer extends Component {
             var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
             var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeCircle(this.state.markupCore);
             extension.enterEditMode();
-            extension.changeEditMode(mode) 
-        }  
+            extension.changeEditMode(mode)
+        }
     }
 
     addArrow = () => {
@@ -286,8 +306,8 @@ class AutoDeskViewer extends Component {
             var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
             var mode = new Autodesk.Viewing.Extensions.Markups.Core.EditModeArrow(this.state.markupCore);
             extension.enterEditMode();
-            extension.changeEditMode(mode) 
-        }  
+            extension.changeEditMode(mode)
+        }
     }
 
     addRectangle = () => {
@@ -296,8 +316,8 @@ class AutoDeskViewer extends Component {
             let viewer = this.state.viewer
             var extension = viewer.getExtension("Autodesk.Viewing.MarkupsCore");
             extension.enterEditMode();
-            extension.changeEditMode(mode) 
-        }  
+            extension.changeEditMode(mode)
+        }
     }
 
     Freehand = () => {
@@ -308,7 +328,7 @@ class AutoDeskViewer extends Component {
             extension.enterEditMode();
             extension.changeEditMode(mode)
 
-        } 
+        }
     }
 
     clear = () => {
@@ -316,7 +336,7 @@ class AutoDeskViewer extends Component {
         if (this.state.markupCore) {
             markupCore.clear();
             this.setState({ markupCore })
-        }   
+        }
     }
 
     close = () => {
@@ -325,7 +345,7 @@ class AutoDeskViewer extends Component {
             markupCore.leaveEditMode();
             markupCore.hide();
             this.setState({ markupCore, viewEditMarkUps: false, showCheckBox: false, isViewEdit: false })
-        } 
+        }
     }
 
     deleteAction = () => {
@@ -360,7 +380,7 @@ class AutoDeskViewer extends Component {
                     selectedMode: listOfOptions[1]
                 })
             })
-        } 
+        }
 
 
     }
@@ -398,7 +418,7 @@ class AutoDeskViewer extends Component {
                                         handleChange={event => this.changeMarkup(event.value)}
                                         index="markups" />
                                 </div> : null}
-                        </div> 
+                        </div>
                         {this.state.isViewEdit == true ?
                             <div id="markup-panel" className="docking-panel" style={{ resize: 'none', border: '1px solid rgba(0, 0, 0, 0.2)', backgroundColor: 'transparent', top: '20%', width: '15%', height: '27%', maxHeight: '513px', maxWidth: '881.406px' }} >
                                 <section className="docking-panel-title" style={{ color: '#0a131c', backgroundColor: 'transparent', borderBottom: 'solid 1px rgba(0, 0, 0, 0.2)' }}  >Markup Editor</section>
@@ -451,7 +471,6 @@ class AutoDeskViewer extends Component {
                 </div>
             </div>
         );
-    } 
+    }
 
 } export default withRouter(AutoDeskViewer);
- 
