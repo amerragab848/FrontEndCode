@@ -5,8 +5,7 @@ import LoadingSection from "../publicComponants/LoadingSection";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
 import Resources from "../../resources.json";
 import Recycle from '../../Styles/images/attacheRecycle.png'
-import { toast } from "react-toastify";
-import _ from "lodash";
+import { toast } from "react-toastify"; 
 import moment from 'moment';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -53,8 +52,7 @@ class RiskCause extends Component {
         }
     }
 
-    DeleteItem = (rowId) => {
-
+    DeleteItem = (rowId) => { 
         this.setState({
             showDeleteModal: true,
             rowId: rowId,

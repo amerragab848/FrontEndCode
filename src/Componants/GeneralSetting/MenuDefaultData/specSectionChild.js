@@ -12,59 +12,23 @@ import * as Yup from 'yup';
 import { toast } from "react-toastify";
 import dataservice from "../../../Dataservice";
 import Resources from "../../../resources.json";
+import ReactTable from "react-table";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const ValidtionSchema = Yup.object().shape({
     title: Yup.string().required(Resources['titleEnValid'][currentLanguage]),
     titleAr: Yup.string().required(Resources['titleArValid'][currentLanguage]),
-    abbreviation: Yup.string().required(Resources['abbreviationValid'][currentLanguage])
 });
 
 class specSectionChild extends Component {
 
     constructor(props) {
-
-        const columnsGrid = [
-            {
-                key: "title",
-                name: Resources["title"][currentLanguage],
-                width: 350,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "titleAr",
-                name: Resources["titleAr"][currentLanguage],
-                width: 350,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "abbreviation",
-                name: Resources["abbreviation"][currentLanguage],
-                width: 350,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-        ]
-
         super(props)
 
         this.state = {
             showCheckbox: false,
-            columns: columnsGrid.filter(column => column.visible !== false),
             isLoading: true,
             rows: [],
-            totalRows: 0,
             showDeleteModal: false,
             listType: '',
             ShowPopup: false,
@@ -73,6 +37,7 @@ class specSectionChild extends Component {
             selectedRow: '',
             specSectionData: [],
             selectedSpecSection: { label: Resources.selectSection[currentLanguage], value: "0" },
+            selected: {},
         }
 
         if (!config.IsAllow(3342) && !config.IsAllow(3338) && !config.IsAllow(3339)) {
@@ -127,17 +92,25 @@ class specSectionChild extends Component {
         });
     }
 
-    onRowClick = (obj) => {
-        if (config.IsAllow(3339)) {
-            this.setState({ ShowPopup: true, IsEdit: true, specObj: obj });
-        }
-        else {
-            toast.warn(Resources["missingPermissions"][currentLanguage]);
+    onRowClick = (obj, type) => {
+        if (type === 'rt-td') {
+            if (config.IsAllow(3339)) {
+                this.setState({ ShowPopup: true, IsEdit: true, specObj: obj });
+            }
+            else {
+                toast.warn(Resources["missingPermissions"][currentLanguage]);
+            }
         }
     }
 
     clickHandlerDeleteRowsMain = (selectedRows) => {
-        this.setState({ selectedRow: selectedRows[0], showDeleteModal: true });
+        if (this.state.showCheckbox) {
+            this.setState({ selectedRow: selectedRows, showDeleteModal: true });
+        }
+        else {
+            this.setState({ showDeleteModal: false });
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+        }
     }
 
     ConfirmDelete = () => {
@@ -179,20 +152,49 @@ class specSectionChild extends Component {
         values.titleAr = ''
         values.abbreviation = ''
     }
+
+
     render() {
 
-        const dataGrid =
-            this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox} single={true}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    onRowClick={this.onRowClick.bind(this)}
-                />
-            ) : <LoadingSection />
+        let ReactTBLColumns = [
+            {
+                Header: Resources["delete"][currentLanguage],
+                accessor: "id",
+                Cell: ({ row }) => {
+                    return (
+                        <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.clickHandlerDeleteRowsMain(row.id)}>
+                            <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
+                        </div>
+                    );
+                },
+                width: 70
+            }, {
+                Header: Resources['title'][currentLanguage],
+                accessor: 'title',
+                width: 350,
+            }, {
+                Header: Resources['titleAr'][currentLanguage],
+                accessor: 'titleAr',
+                sortabel: true,
+                width: 350,
+            },
+            {
+                Header: Resources['abbreviation'][currentLanguage],
+                accessor: 'abbreviation',
+                sortabel: true,
+                width: 350,
+            },
+        ]
+
+        let ExportColumns = [
+            { key: 'title', name: Resources['title'][currentLanguage] },
+            { key: 'titleAr', name: Resources['titleAr'][currentLanguage] },
+            { key: 'abbreviation', name: Resources['abbreviation'][currentLanguage] }
+        ]
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []}
-                columns={this.state.columns} fileName={Resources['subSpecsSection'][currentLanguage]} />
+                columns={ExportColumns} fileName={Resources['subSpecsSection'][currentLanguage]} />
             : null;
 
 
@@ -243,15 +245,14 @@ class specSectionChild extends Component {
 
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
-                                    <div className={"inputDev ui input" + (errors.abbreviation && touched.abbreviation ? (" has-error") : !errors.abbreviation && touched.abbreviation ? (" has-success") : " ")} >
-                                        <input name='abbreviation' className="form-control" autoComplete='off' id='abbreviation'
+                                    <div className="ui input inputDev" >
+                                        <input name='Abbreviation' autoComplete='off'
                                             placeholder={Resources['abbreviation'][currentLanguage]} value={this.state.specObj.abbreviation}
-                                            onBlur={(e) => {
-                                                handleBlur(e)
+                                            className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
+                                            onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
                                                 handleChange(e)
-                                            }}
-                                            onChange={(e) => { this.handleInputChange(e, 'abbreviation') }} />
-                                        {errors.abbreviation && touched.abbreviation ? <em className="pError">{errors.abbreviation}</em> : null}
+                                                this.handleInputChange(e, 'abbreviation')
+                                            }} />
                                     </div>
                                 </div>
 
@@ -294,13 +295,19 @@ class specSectionChild extends Component {
                         : null}
 
                 </div>
-
-                <div className="linebylineInput valid-input">
-                    <Select title='specsSection' data={this.state.specSectionData} handleChange={(e) => this.handleChangespecSection(e)} />
+                <div className="fullWidthWrapper textLeft proForm">
+                    <div className="letterFullWidth">
+                        <Select title='specsSection' data={this.state.specSectionData} handleChange={(e) => this.handleChangespecSection(e)} />
+                    </div>
                 </div>
 
-                <div className="grid-container">
-                    {dataGrid}
+                <div className="doc-pre-cycle">
+                    <ReactTable data={this.state.rows} columns={ReactTBLColumns} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]}
+                        className="-striped -highlight"
+                        getTrProps={(state, rowInfo, column, instance) => {
+                            return { onClick: e => { this.onRowClick(rowInfo.original, e.target.className) } };
+                        }} />
+
                 </div>
 
                 <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false, IsEdit: false })}
