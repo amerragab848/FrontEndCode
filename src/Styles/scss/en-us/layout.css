@@ -3437,7 +3437,7 @@ ul {
       font-family: font-opens; }
   .gridfillter-container .primaryBtn-2.btn.smallBtn {
     margin-left: 8px;
-    margin-top: 22px;
+    margin-bottom: 8px;
     min-width: 126px; }
 
 .mainGridSystem {
@@ -5348,7 +5348,7 @@ ul {
       padding: 0 5px 12px 0; }
       .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
         position: absolute;
-        bottom: 0;
+        bottom: 15px;
         right: 12px;
         font-size: 12px; }
     .SummeriesContainer .SummeriesContainerContent .summerisItem .content .status {
@@ -10106,13 +10106,12 @@ ul {
   padding-top: 0; }
 
 .filter__warrper {
-  min-height: 124px;
   border-radius: 2px;
   background-color: #fafbfc;
-  padding-bottom: 31px;
-  padding-top: 16px;
+  padding-bottom: 10px;
+  padding-top: 10px;
   position: relative;
-  z-index: 100;
+  z-index: unset;
   height: auto; }
 
 .filter__warrper .proForm {
@@ -10123,11 +10122,14 @@ ul {
 
 .filter__warrper .proForm .linebylineInput {
   padding: 0;
-  margin: 0 4px; }
+  margin-right: 4px;
+  margin-left: 4px; }
 
 .filter__warrper .proForm .linebylineInput label {
   margin: 0 !important;
-  background: transparent; }
+  background: transparent;
+  padding: 0;
+  z-index: unset; }
 
 .filter__warrper .proForm .linebylineInput .ui.input.inputDev input {
   height: 36px !important; }
@@ -10183,10 +10185,6 @@ ul {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); }
-
-.filter__warrper .proForm button {
-  margin-bottom: 5px;
-  margin-left: 8px; }
 
 .filter__input-wrapper .linebylineInput .proForm.datepickerContainer {
   margin-top: 0; }
@@ -10295,6 +10293,12 @@ ul {
 
 .filterModal .filter__warrper .filter__input-wrapper .linebylineInput {
   margin-bottom: 20px !important; }
+
+.filterModal .filter__warrper .filter__input-wrapper .linebylineInput .proForm {
+  padding: 0; }
+
+.filter__warrper .filter__input-wrapper .linebylineInput .proForm .linebylineInput {
+  margin: 0 !important; }
 
 /*Done*/
 .notificontainer {
@@ -10510,7 +10514,7 @@ ul {
   background-size: 100% 100%;
   width: 16px;
   height: 16px;
-  top: 15px;
+  top: calc(50% - 8px);
   z-index: 0; }
 
 .customDatepicker .proForm .linebylineInput input {
@@ -11007,12 +11011,6 @@ table edition
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -0.2px; }
-
-.SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
-  position: absolute;
-  bottom: 15px;
-  right: 12px;
-  font-size: 12px; }
 
 /* .SummeriesContainer .SummeriesContainerContent .summerisItem:before {
     bottom: -35px;
@@ -11808,9 +11806,6 @@ tfoot tr td p {
 
 .label__block label {
   display: block; }
-
-.filter__warrper .proForm .linebylineInput label {
-  padding: 0; }
 
 /* noTabs */
 .main__header {
@@ -14692,7 +14687,8 @@ body.noScrolling {
   left: 0;
   display: none;
   z-index: 99999;
-  overflow: auto; }
+  overflow: auto;
+  padding: 35px 0; }
 
 .filterModal__container::after {
   content: '';
@@ -15240,7 +15236,6 @@ div#markup-panel {
   overflow: auto; }
 
 .customDatepicker.fillter-status.fillter-item-c .proForm.datepickerContainer {
-  display: flex;
   flex-direction: column;
   align-items: flex-start; }
 
@@ -15341,17 +15336,16 @@ div#markup-panel {
   margin: 0 !important; }
 
 .filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5 {
-  min-height: 36px;
-  /* height: 40px; */ }
+  height: 36px; }
+
+.filter__input-wrapper .customD_Menu .css-1492t68 {
+  top: 44%; }
 
 .filter__input-wrapper .linebylineInput .fillter-status.fillter-item-c {
   width: 100%; }
 
 .filter__input-wrapper .linebylineInput .fillter-status.fillter-item-c .spanValidation label::after {
   display: none; }
-
-.filter__input-wrapper .proForm .linebylineInput {
-  margin-bottom: 0 !important; }
 
 /* calender */
 .react-calendar {
@@ -15377,9 +15371,6 @@ div#markup-panel {
 
 .react-calendar__tile--active abbr, button.react-calendar__tile.react-calendar__tile--now.react-calendar__tile--active.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day abbr {
   color: #fff !important; }
-
-.filter__warrper {
-  z-index: 19; }
 
 button.react-calendar__tile.react-calendar__tile--now.react-calendar__month-view__days__day abbr {
   color: #4382f9; }

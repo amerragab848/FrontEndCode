@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import LoadingSection from './LoadingSection'
 
+const _ = require('lodash');
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class RiskConesquence extends Component {
     constructor(props) {
@@ -25,6 +26,7 @@ class RiskConesquence extends Component {
             dataservice.GetDataGrid("GetAllConesquencesByRiskId?riskId=" + this.state.riskId).then(result => {
 
                 let selected = this.state.selected;
+                result = _.orderBy(result, ['conesquenceId'],['asc']); // Use Lodash to sort array by 'name'
 
                 result.forEach(item => {
                     selected[item.id] = item.isChecked;

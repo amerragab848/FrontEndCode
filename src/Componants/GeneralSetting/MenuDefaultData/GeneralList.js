@@ -306,6 +306,7 @@ class GeneralList extends Component {
                     this.setState({
                         rows: res,
                         isLoading: false,
+                        ShowPopup: false,
                     })
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {

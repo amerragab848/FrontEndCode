@@ -129,14 +129,14 @@ class budgetCashFlow extends Component {
             finishDate: moment(),
             showTable: false,
             cashFlowTable: [],
-        } 
+        }
     }
 
     componentWillMount() {
         this.setState({
             isLoading: true
         })
-        dataservice.GetDataGrid('GetAllBudgetCashFlowForGrid?projectId=' + this.props.projectId + '').then(res => {
+        dataservice.GetDataGrid('GetAllBudgetCashFlowForGrid?projectId=' + this.state.projectId + '').then(res => {
             this.setState({
                 rows: res,
                 totalRows: res.length,
@@ -150,7 +150,7 @@ class budgetCashFlow extends Component {
             this.setState({
                 isLoading: true
             })
-            dataservice.GetDataGrid('GetAllBudgetCashFlowForGrid?projectId=' + this.props.projectId + '').then(data => {
+            dataservice.GetDataGrid('GetAllBudgetCashFlowForGrid?projectId=' + this.state.projectId + '').then(data => {
                 this.setState({
                     rows: data,
                     projectId: nextProps.projectId,
@@ -171,7 +171,7 @@ class budgetCashFlow extends Component {
         let url = this.state.api + "pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize
         Api.get(url).then(result => {
             let oldRows = this.state.rows;
-            const newRows = [...oldRows, ...result];  
+            const newRows = [...oldRows, ...result];
             this.setState({
                 rows: newRows,
                 totalRows: newRows.length,
@@ -272,7 +272,7 @@ class budgetCashFlow extends Component {
         if (stringifiedQuery !== '{"isCustom":true}') {
             this.setState({ isLoading: true, search: true })
             let _query = stringifiedQuery.split(',"isCustom"')
-            let url = 'GetAccountsFilter?' + this.state.pageNumber + "&pageSize=" + this.state.pageSize + '&query=' + _query[0] + '}'
+            let url = "ProjectCashFlowFilter?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + '&query=' + _query[0] + '}'
             Api.get(url).then(result => {
                 this.setState({
                     rows: result,
@@ -371,7 +371,7 @@ class budgetCashFlow extends Component {
 
     generateDateFun = () => {
         this.setState({ showTable: true });
-        this.cashFlowDiff() 
+        this.cashFlowDiff()
     }
 
     handleChange(e, field, index) {
@@ -465,8 +465,7 @@ class budgetCashFlow extends Component {
 
                         <div className="rowsPaginations">
                             <div className="rowsPagiRange">
-                                <span>0</span> - <span>{this.state.pageSize}</span> of
-                           <span> {this.state.totalRows}</span>
+                                <span>0</span> - <span>{this.state.pageSize}</span> of <span> {this.state.totalRows}</span>
                             </div>
 
                             <button className={this.state.pageNumber === 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
@@ -481,10 +480,7 @@ class budgetCashFlow extends Component {
                     </div>
 
                     <div className="filterHidden"
-                        style={{
-                            maxHeight: this.state.viewfilter ? "" : "0px",
-                            overflow: this.state.viewfilter ? "" : "hidden"
-                        }}>
+                        style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
                         <div className="gridfillter-container">
                             {ComponantFilter}
                         </div>

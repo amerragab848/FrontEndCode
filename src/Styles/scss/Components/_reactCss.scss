@@ -153,7 +153,7 @@
     background-size: 100% 100%;
     width: 16px;
     height: 16px;
-    top: 15px;
+    top: calc(50% - 8px);
     z-index: 0;
 }
 
@@ -767,13 +767,6 @@ table edition
     font-size: 16px;
     line-height: 1.5;
     letter-spacing: -0.2px;
-}
-
-.SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
-    position: absolute;
-    bottom: 15px;
-    #{$right}: 12px;
-    font-size: 12px;
 }
 
 /* .SummeriesContainer .SummeriesContainerContent .summerisItem:before {
@@ -1735,10 +1728,6 @@ tfoot tr td p {
 
 .label__block label {
     display: block;
-}
-
-.filter__warrper .proForm .linebylineInput label {
-    padding: 0;
 }
 
 /* noTabs */
@@ -5236,6 +5225,7 @@ body.noScrolling {
     display: none;
     z-index: 99999;
     overflow: auto;
+    padding: 35px 0;
 }
 
 .filterModal__container::after {
@@ -5896,7 +5886,6 @@ div#markup-panel {
 }
 
 .customDatepicker.fillter-status.fillter-item-c .proForm.datepickerContainer {
-    display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
@@ -6020,9 +6009,10 @@ div#markup-panel {
 }
 
 .filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5 {
-    min-height: 36px;
-
-    /* height: 40px; */
+    height: 36px;
+}
+.filter__input-wrapper .customD_Menu .css-1492t68 {
+    top: 44%;
 }
 
 .filter__input-wrapper .linebylineInput .fillter-status.fillter-item-c {
@@ -6031,10 +6021,6 @@ div#markup-panel {
 
 .filter__input-wrapper .linebylineInput .fillter-status.fillter-item-c .spanValidation label::after {
     display: none;
-}
-
-.filter__input-wrapper .proForm .linebylineInput {
-    margin-bottom: 0 !important;
 }
 
 /* calender */
@@ -6066,10 +6052,6 @@ div#markup-panel {
 
 .react-calendar__tile--active abbr, button.react-calendar__tile.react-calendar__tile--now.react-calendar__tile--active.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day abbr {
     color: #fff !important;
-}
-
-.filter__warrper {
-    z-index: 19;
 }
 
 button.react-calendar__tile.react-calendar__tile--now.react-calendar__month-view__days__day abbr {
