@@ -91,11 +91,7 @@ class UploadAttachment extends Component {
                                         <div className="uploadFormDiv">
                                             <img src={AttachUpload} />
                                             <div className="dragUpload">
-                                            <p>{Resources.dropOrClick[currentLanguage]}</p> 
-                                                {/* <form>
-                                                    <input type="file" name="file" id="file" className="inputfile" />
-                                                    <label>Upload</label>
-                                                </form> */}
+                                            <p>{Resources.dropOrClick[currentLanguage]}</p>  
                                             </div>
                                         </div>
                                         <div className="dragHoverDiv">
@@ -171,7 +167,7 @@ class UploadAttachment extends Component {
                     cancel={() => this.onCancel()}
                     multiselect={true}
                     accessToken={"l7phamm2skocwwy"}
-                    extensions={[".pdf", ".doc", ".docx", ".png"]}>
+                    extensions={[".pdf", ".doc", ".docx", ".png",".dwg",".rvt"]}>
                     <div className="drive__button--tooltip">
                         <div className="drive__button Dbox">
                             <img src={dropbox} alt="drobBox" />
@@ -195,7 +191,7 @@ class UploadAttachment extends Component {
                 multiselect={true}
                 navHidden={true}
                 authImmediate={false}
-                mimeTypes={["image/png", "image/jpeg", "image/jpg"]}
+                mimeTypes={["image/png", "image/jpeg", "image/jpg","application/autocad_dwg","application/dwg","application/octet-stream"]}
                 query={"a query string like .txt or fileName"}
                 viewId={"DOCS"}
                 createPicker={(google, oauthToken) => {
