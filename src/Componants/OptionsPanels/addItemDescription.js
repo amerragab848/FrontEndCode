@@ -28,7 +28,7 @@ const documentItemValidationSchema = Yup.object().shape({
     itemCode: Yup.string().required(Resources['itemCode'][currentLanguage]),
     unitPrice: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
     days: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
-    quantity:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
+    quantity: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
 })
 class addItemDescription extends Component {
 
@@ -126,10 +126,11 @@ class addItemDescription extends Component {
         dataservice.addObject(this.props.addItemApi, saveDocument).then(result => {
             if (result) {
                 let arr = [];
-                
-                console.log('addObject...',result);
 
-                arr.push(result);
+                console.log('addObject...', result);
+                let item = result;
+                item.boqTypeChild = saveDocument.boqChildType;
+                arr.push(item);
                 this.props.actions.addItemDescription(arr);
                 this.setState({
                     itemDescription: {
@@ -175,7 +176,7 @@ class addItemDescription extends Component {
         });
     }
 
-    handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState,fieldLabel) {
+    handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState, fieldLabel) {
         if (event == null) return;
         let original_document = { ...this.state.itemDescription };
         let updated_document = {};
@@ -324,17 +325,17 @@ class addItemDescription extends Component {
                                                         title="boqType"
                                                         data={this.state.boqTypes}
                                                         selectedValue={this.state.selectedBoqType}
-                                                        handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeId', 'selectedBoqType', true, 'GetAllBoqChild', 'parentId', 'BoqTypeChilds','boqType')}
+                                                        handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeId', 'selectedBoqType', true, 'GetAllBoqChild', 'parentId', 'BoqTypeChilds', 'boqType')}
                                                         name="boqType"
                                                         index="boqType" />
-                                                </div> 
+                                                </div>
                                                 <div className="linebylineInput valid-input">
                                                     <Dropdown
                                                         title="boqTypeChild"
                                                         data={this.state.BoqTypeChilds}
 
                                                         selectedValue={this.state.selectedBoqTypeChild}
-                                                        handleChange={event => this.handleChangeItemDropDown(event, 'boqChildTypeId', 'selectedBoqTypeChild', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes','boqChildType')}
+                                                        handleChange={event => this.handleChangeItemDropDown(event, 'boqChildTypeId', 'selectedBoqTypeChild', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes', 'boqChildType')}
 
                                                         name="boqTypeChild"
                                                         index="boqTypeChild" />
@@ -345,7 +346,7 @@ class addItemDescription extends Component {
                                                             title="boqSubType"
                                                             data={this.state.BoqSubTypes}
                                                             selectedValue={this.state.selectedBoqSubType}
-                                                            handleChange={event => this.handleChangeItemDropDown(event, 'boqSubTypeId', 'selectedBoqSubType', false, '', '', '','boqSubType')}
+                                                            handleChange={event => this.handleChangeItemDropDown(event, 'boqSubTypeId', 'selectedBoqSubType', false, '', '', '', 'boqSubType')}
                                                             name="boqSubType"
                                                             index="boqSubType" />
                                                     </div>
@@ -378,9 +379,9 @@ class addItemDescription extends Component {
                                             </div> : null}
 
                                         <div className="slider-Btns fullWidthWrapper textLeft ">
-                                            {this.state.isLoading === false ? 
+                                            {this.state.isLoading === false ?
                                                 <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
-                                                 : <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                                                : <button className="primaryBtn-1 btn  disabled" disabled="disabled">
                                                     <div className="spinner">
                                                         <div className="bounce1" />
                                                         <div className="bounce2" />
