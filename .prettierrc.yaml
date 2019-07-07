@@ -1,0 +1,6 @@
+useTabs: false
+tabWidth: 4
+jsxBracketSameLine: true
+parser: "babylon"
+semi: true
+endOfLine: "lf"
