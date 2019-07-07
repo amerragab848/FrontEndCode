@@ -6,7 +6,7 @@ $rtl: ltr;
 
 @import "../_bootstrap";
 
-@import "../_variables";
+@import "../_variableAr";
 @import "../_Media-Query";
 @import "../_Mixins";
 @import "../_normalize";
@@ -33,8 +33,11 @@ $rtl: ltr;
 @import "../components/_SettingsNew";
 @import "../components/_adminProfile";
 //@import "../components/_EpsProjects";
+
 /*Elements*/
 @import "../Components/Elements/_All-Elements";
 
-@import "../components/_reactCss";
+/* react edition */
+@import "../components/_reactDataGrid";
 @import "../ar-edition";
+@import "../components/_reactCss";

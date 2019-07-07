@@ -155,8 +155,8 @@ class RfiAddEdit extends Component {
         }
     };
 
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+    componentDidUpdate(prevProps) { 
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow|| this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }

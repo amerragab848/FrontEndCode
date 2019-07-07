@@ -1,4 +1,4 @@
-
+/* 
 .react-contextmenu {
   min-width: 160px;
   padding: 5px 0;
@@ -124,10 +124,10 @@
  .gridSystemSelected .tableSelctedBTNs .defaultBtn:active {
   color: #000;
 }
-/*.example-multiple-targets::after {
+.example-multiple-targets::after {
   content: attr(data-count);
   display: block;
-}*/
+}
 .react-grid-Toolbar .btn{
   background: transparent;
-}
+} */

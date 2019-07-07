@@ -4,8 +4,8 @@ import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from "../../resources.json";
 import moment from "moment";
-import Minimize from '../../Styles/images/minimize.png';
-import plus from '../../Styles/images/plus.png';
+// import Minimize from '../../Styles/images/minimize.png';
+// import plus from '../../Styles/images/plus.png';
 import Calendar from "react-calendar";
 
 let currentLanguage =
@@ -177,91 +177,103 @@ class FilterComponent extends Component {
     let count = 0;
     let columns = (
       <div>
-        {this.props.filtersColumns.length > 6 ?
-          <div className="showMore__btn">
-            <button id="showMore_input" className="moreOn">
-              <span className="more" onClick={this.viewSearch}>SHOW MORE</span>
-              <span className="less" onClick={this.resetDate}>SHOW Less</span>
-              <img className="more" src={plus} alt="plus" />
-              <img className="less" src={Minimize} alt="minimize" />
-            </button>
-          </div>
-          : null
-        }
-        <div className="filter__showmore">
-          <div className="fillter-status-container onelineFilter">
-            {this.state.filtersColumns.map((column, index) => {
-              if (this.state.isCustom && count < 6) {
-                count++
-                if (column.type === "string" || column.type === "number") {
-                  return (
-                    <div className="form-group fillterinput fillter-item-c" key={index}>
-                      <InputMelcous ref={column.name} title={column.name} index={index} key={index} type={column.type}
-                        name={column.field}
-                        inputChangeHandler={event =>
-                          this.getValueHandler(event, column.type)
-                        }
-                        placeholderText={column.name} />
-                    </div>
-                  );
-                } else if (column.type === "toggle") {
-                  return (
-                    <div className="form-group fillterinput fillter-item-c" key={index}>
-                      <Dropdown title={column.name} index={index} key={index} placeholder={column.name}
-                        handleChange={event => this.getValueHandler(event, column.type, column.field)}
-                        data={[
-                          { label: "all", value: null },
-                          { label: Resources[column.trueLabel][currentLanguage], value: true },
-                          { label: Resources[column.falseLabel][currentLanguage], value: false }
-                        ]}
-                      />
-                    </div>
-                  );
-                } else if (column.type === "date") {
-                  if (column.isRange) {
+        <div className="filter__warrper">
+          {this.props.filtersColumns.length > 6 ?
+            <div className="filter__more" style={{ padding: 0 }}>
+              <button className="filter__more--btn" onClick={this.viewSearch}>
+                See all
+              </button>
+            </div> : null}
+
+          {/* // <div className="showMore__btn">
+          //   <button id="showMore_input" className="moreOn">
+          //     <span className="more" onClick={this.viewSearch}>SHOW MORE</span>
+          //     <span className="less" onClick={this.resetDate}>SHOW Less</span>
+          //     <img className="more" src={plus} alt="plus" />
+          //     <img className="less" src={Minimize} alt="minimize" />
+          //   </button>
+          // </div>
+          // : null */}
+
+          <div className="filter__input-wrapper">
+            <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
+
+              {this.state.filtersColumns.map((column, index) => {
+                let classX = column.type === "number" ? "small__input--width " : "medium__input--width";
+                if (this.state.isCustom && count < 6) {
+                  count++
+                  if (column.type === "string" || column.type === "number") {
                     return (
-                      <div className="form-group fillterinput fillter-item-c" key={index}>
-                        <label className="control-label" htmlFor={column.key}>{column.name}</label>
-                        <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }}>
-                          <input type="text" autoComplete="off" key={index} placeholder={column.name}
-                            onChange={date => this.getValueHandler(date, column.type, column.field, index)}
-                            value={this.state[index + "-column"]}
-                            onClick={() => this.changeDate(index, column.type)} />
-                          {this.state.currentData === index && this.state.currentData != 0 ? (
-                            <div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
-                              <Calendar onChange={(date) => this.onChange(date, index, column.name, column.type, column.key)} selectRange={true} />
-                            </div>) : ("")}
+                      <div className={"form-group linebylineInput " + classX} key={index}>
+                        <InputMelcous ref={column.name} title={column.name} index={index} key={index} type={column.type}
+                          name={column.field}
+                          inputChangeHandler={event =>
+                            this.getValueHandler(event, column.type)
+                          }
+                          placeholderText={column.name} />
+                      </div>
+                    );
+                  } else if (column.type === "toggle") {
+                    return (
+                      <div className={"form-group linebylineInput " + classX} key={index}>
+                        <Dropdown title={column.name} index={index} key={index} placeholder={column.name}
+                          handleChange={event => this.getValueHandler(event, column.type, column.field)}
+                          data={[
+                            { label: "all", value: null },
+                            { label: Resources[column.trueLabel][currentLanguage], value: true },
+                            { label: Resources[column.falseLabel][currentLanguage], value: false }
+                          ]}
+                        />
+                      </div>
+                    );
+                  } else if (column.type === "date") {
+                    if (column.isRange) {
+                      return (
+                        <div className={"form-group linebylineInput " + classX} key={index}>
+                          <label className="control-label" htmlFor={column.key}>{column.name}</label>
+                          <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }}>
+                            <input type="text" autoComplete="off" key={index} placeholder={column.name}
+                              onChange={date => this.getValueHandler(date, column.type, column.field, index)}
+                              value={this.state[index + "-column"]}
+                              onClick={() => this.changeDate(index, column.type)} />
+                            {this.state.currentData === index && this.state.currentData != 0 ? (
+                              <div className="viewCalender" tabIndex={0} ref={index => { this.index = index; }}>
+                                <Calendar onChange={(date) => this.onChange(date, index, column.name, column.type, column.key)} selectRange={true} />
+                              </div>) : ("")}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  }
-                  else {
-                    return (
-                      <div className="form-group fillterinput fillter-item-c" key={index}>
-                        <DatePicker title={column.name} startDate={this.state[index + "-column"]} index={index} key={index}
-                          handleChange={date =>
-                            this.getValueHandler(date, column.type, column.field, index)
-                          } />
-                      </div>
-                    );
+                      );
+                    }
+                    else {
+                      return (
+                        <div className={"form-group linebylineInput " + classX} key={index}>
+                          <DatePicker title={column.name} startDate={this.state[index + "-column"]} index={index} key={index}
+                            handleChange={date =>
+                              this.getValueHandler(date, column.type, column.field, index)
+                            } />
+                        </div>
+                      );
+                    }
                   }
                 }
-              }
-            })}
+              })}
+
+              {this.state.isLoading === false ? (
+                <button type="button" className="primaryBtn-2 btn smallBtn fillter-item-c" onClick={this.filterMethod}>
+                  {Resources["search"][currentLanguage]}
+                </button>
+              ) : (
+                  <button type="button" className="primaryBtn-2 btn smallBtn fillter-item-c">
+                    <div className="spinner">
+                      <div className="bounce1" />
+                      <div className="bounce2" />
+                      <div className="bounce3" />
+                    </div>
+                  </button>
+                )}
+            </form>
           </div>
-          {this.state.isLoading === false ? (
-            <button className="primaryBtn-2 btn smallBtn fillter-item-c" onClick={this.filterMethod}>
-              {Resources["search"][currentLanguage]}
-            </button>
-          ) : (
-              <button className="primaryBtn-2 btn smallBtn fillter-item-c">
-                <div className="spinner">
-                  <div className="bounce1" />
-                  <div className="bounce2" />
-                  <div className="bounce3" />
-                </div>
-              </button>
-            )}
+
         </div>
       </div>
     );
@@ -300,14 +312,15 @@ class FilterComponent extends Component {
             <div className="header-filter">
               <h2 className="zero">Filter results</h2>
             </div>
-            <div className="content" style={{ maxHeight: '300px', overflow: 'auto' }}>
+            <div className="content">
               <div className="filter__warrper">
                 <div className="filter__input-wrapper">
                   <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
                     {this.state.filtersColumns.map((column, index) => {
+                      let classX = column.type === "number" ? "small__input--width " : "medium__input--width";
                       if (column.type === "string" || column.type === "number") {
                         return (
-                          <div className="form-group fillterinput fillter-item-c" key={index}>
+                          <div className={"form-group linebylineInput " + classX} key={index}>
                             <InputMelcous ref={column.name} title={column.name} index={index} key={index} type={column.type} name={column.field}
                               value={this.state[index + "-column"]}
                               inputChangeHandler={event => this.getValueHandler(event, column.type)} placeholderText={column.name} />
@@ -315,7 +328,7 @@ class FilterComponent extends Component {
                         );
                       } else if (column.type === "toggle") {
                         return (
-                          <div className="form-group fillterinput fillter-item-c" key={index}>
+                          <div className={"form-group linebylineInput " + classX} key={index}>
                             <Dropdown title={column.name} index={index} key={index} placeholder={column.name}
                               handleChange={event => this.getValueHandler(event, column.type, column.field)}
                               data={[
@@ -329,7 +342,7 @@ class FilterComponent extends Component {
                       } else if (column.type === "date") {
                         if (column.isRange) {
                           return (
-                            <div className="form-group fillterinput fillter-item-c" key={index}>
+                            <div className={"form-group linebylineInput " + classX} key={index}>
                               <label className="control-label" htmlFor={column.key}>{column.name}</label>
                               <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }}>
                                 <input type="text" autoComplete="off" key={index} placeholder={column.name}
@@ -346,7 +359,7 @@ class FilterComponent extends Component {
                         }
                         else {
                           return (
-                            <div className="form-group fillterinput fillter-item-c" key={index}>
+                            <div className={"form-group linebylineInput " + classX} key={index}>
                               <DatePicker title={column.name}
                                 handleChange={date => this.getValueHandler(date, column.type, column.field, index)}
                                 startDate={this.state[index + "-column"]} index={index} key={index} />

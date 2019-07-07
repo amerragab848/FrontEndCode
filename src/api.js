@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
  
 let Authorization = localStorage.getItem('userToken');
 
-const Domain = config.static
+const Domain =  config.static
 
 export default class Api {
 
@@ -27,6 +27,7 @@ export default class Api {
     }
 
     static xhr(route, params, verb) {
+         
         const host = Domain + '/api/Procoor/';
         const url = `${host}${route}`;
         let json = null;

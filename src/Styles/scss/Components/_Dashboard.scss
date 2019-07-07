@@ -855,8 +855,8 @@
 
                     sub {
                         position: absolute;
-                        bottom: 0;
-                        right: 12px;
+                        bottom: 15px;
+                        #{$right}: 12px;
                         font-size: 12px;
                     }
                 }

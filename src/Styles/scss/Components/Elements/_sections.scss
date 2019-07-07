@@ -1,6 +1,6 @@
 .section__tabs {
     background: #fafbfc;
-    border-right: 1px solid #e9ecf0;
+    border-#{$left}: 1px solid #e9ecf0;
     width: 322px;
     min-height: 100vh;
 }
@@ -20,7 +20,6 @@
     font-weight: 800;
     font-style: normal;
     font-stretch: normal;
-
 }
 
 .section__tabs .section__tabs--item {
@@ -30,8 +29,8 @@
     justify-content: center;
     transition: all 0.3s ease-in-out;
     width: 322px;
-    border-left: 6px solid transparent;
-    padding-left: 35px;
+    border-#{$left}: 6px solid transparent;
+    padding-#{$left}: 35px;
     position: relative;
 }
 
@@ -51,22 +50,22 @@
 }
 
 .section__tabs .section__tabs--item.active {
-    border-left: 6px solid #4382f9;
+    border-#{$left}: 6px solid #4382f9;
     background: #e9ecf0;
 }
 
-.section__tabs .section__tabs--item.active::after {
-    content: '';
-    height: 24px;
-    width: 24px;
-    background-repeat: no-repeat;
-    right: 13px;
-    left: inherit;
-    top: 20px;
-    bottom: 20px;
-    background-image: url(../../images/active-arrow.png);
-        background-position: center;
-}
+// .section__tabs .section__tabs--item.active::after {
+//     content: '';
+//     height: 24px;
+//     width: 24px;
+//     background-repeat: no-repeat;
+//     right: 13px;
+//     left: inherit;
+//     top: 20px;
+//     bottom: 20px;
+//     background-image: url(../../images/active-arrow.png);
+//         background-position: center;
+// }
 
 
 .section__tabs .section__tabs--item h3 {
