@@ -76,7 +76,7 @@
 
 .gridSystemSelected {
     position: absolute !important;
-    top: 40px !important;
+    top: 40px;
     #{$left}: 50px !important;
     padding-#{$left}: 22px !important;
     width: calc(100% - 50px) !important;

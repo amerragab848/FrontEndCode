@@ -4,6 +4,7 @@
 
 .backBreadcrumbBtn {
     padding-bottom: 24px;
+
     a {
         display: flex;
         align-items: center;
@@ -16,16 +17,15 @@
 
         svg {
             margin-#{$right}: $px-8;
-
         }
+
         &:hover {
             color: $blue-700;
-                        text-decoration: underline;
+            text-decoration: underline;
 
             svg {
                 path {
                     fill: $blue-700;
-
                 }
             }
         }
@@ -40,22 +40,23 @@
         letter-spacing: -0.2px;
         -webkit-transition: 0.3s;
         transition: 0.5s;
+
         &:hover {
             color: $blue-700;
             text-decoration: underline;
-
         }
     }
+
     .icon.divider {
         color: $blue-500;
         font-size: $heading6-font - 1px;
         margin: 0;
     }
+
     .active {
         color: $grey-700;
         font-size: $heading6-font - 1px;
         font-family: $sans-r;
         letter-spacing: -0.2px;
-
     }
 }

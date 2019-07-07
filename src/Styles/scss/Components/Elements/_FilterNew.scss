@@ -23,6 +23,10 @@
     height: auto;
 }
 
+.filter__input-wrapper .proForm button {
+    margin-bottom: 8px !important;
+}
+
 .filter__warrper .proForm {
     display: flex;
     align-items: flex-end;
@@ -228,7 +232,7 @@
 }
 
 .filterModal .filter__warrper .filter__input-wrapper .linebylineInput {
-    margin-bottom: 20px !important
+    margin-bottom: 20px !important;
 }
 
 .filterModal .filter__warrper .filter__input-wrapper .linebylineInput .proForm {

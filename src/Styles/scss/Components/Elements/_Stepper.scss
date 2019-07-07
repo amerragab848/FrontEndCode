@@ -10,6 +10,7 @@
 
 .stepper--bStepper {
     width: 480px;
+
     .stepper__button {
         &::after {
             left: 66%;
@@ -28,6 +29,7 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+
     .StepNumber {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -35,6 +37,7 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
+
         .StepNum {
             width: 32px;
             height: 32px;
@@ -50,24 +53,29 @@
             align-items: center;
             background: $grey-100;
             cursor: pointer;
+
             &:hover {
                 background: $grey-200;
             }
+
             p {
                 font-size: $heading3-font;
                 font-family: $muli-b;
                 color: #adbccc;
             }
+
             .StepTrue {
                 display: none;
             }
         }
+
         .stepWord {
             color: #adbccc;
             font-family: $muli-b;
             font-size: $heading6-font;
             margin: 0 $px-8;
             position: relative;
+
             span {
                 position: absolute;
                 top: 100%;
@@ -75,6 +83,7 @@
                 font-family: $sans-r;
             }
         }
+
         .Step-Line {
             width: 48px;
             height: 2px;
@@ -82,73 +91,78 @@
             display: block;
             margin-right: 8px;
         }
+
         &.active {
             .StepNum {
                 background: $lightgreen-400;
                 -webkit-transition: .1s ease;
                 transition: .1s ease;
-           
+
                 &:hover {
                     background: $lightgreen-600;
-
                 }
+
                 p {
                     color: #fff;
                     -webkit-transition: .1s ease;
                     transition: .1s ease;
                 }
             }
+
             .stepWord {
                 color: $grey-800;
                 -webkit-transition: .1s ease;
                 transition: .1s ease;
+
                 span {
                     color: #adbccc;
                     -webkit-transition: .1s ease;
                     transition: .1s ease;
                 }
             }
+
             .Step-Line {
                 background-color: $grey-300;
             }
+
             &.activea {
-           
                 .StepNum {
-                         position: relative;
-                &::before {
-                    content: "\f0d7";
-                    position: absolute;
-                    top: -20px;
-                    left: 50%;
-                    transform: translate(-50%);
-                    height: 5px;
-                    width: 50px;
-                    font-family: $fa;
-                    text-align: center;
-                    color: $grey-800;
-                    
-                }
+                    position: relative;
+
+                    &::before {
+                        content: "\f0d7";
+                        position: absolute;
+                        top: -20px;
+                        left: 50%;
+                        transform: translate(-50%);
+                        height: 5px;
+                        width: 50px;
+                        font-family: $fa;
+                        text-align: center;
+                        color: $grey-800;
+                    }
                 }
             }
         }
-
     }
-
-
 }
 
 .StepperNum.StepperNum1 {
     .StepNumber {
         flex-flow: column;
+
         .StepNum {
             width: 40px;
             height: 40px;
+
             p {
                 font-size: $heading2-font;
             }
         }
+
         .stepWord {
             text-align: center;
+
             span {
                 left: 50%;
                 -webkit-transform: translateX(-50%);
@@ -156,6 +170,7 @@
             }
         }
     }
+
     .Step-Line {
         margin: 0 $px-4;
         width: 108px;
@@ -165,30 +180,33 @@
         margin-left: -40px;
         margin-right: -40px;
     }
+
     .Step-Line.active {
         background-color: $grey-300;
         transition: 0.5s ease;
-
     }
+
     .stepWord {
         font-size: $heading5-font;
         margin-top: 10px;
     }
-
 }
 
 .StepperNum.StepperNum3 {
     .Stepimg {
         width: 36px;
         height: 36px;
+
         svg {
             width: 100%;
             height: 100%;
             padding-top: 5px;
         }
     }
+
     .stepWord {
         font-size: $heading3-font;
+
         span {
             font-size: 11px;
             line-height: 1.45;
@@ -213,25 +231,30 @@
         width: 12px;
         height: 12px;
         box-sizing: border-box;
+
         .StepTrue {
             font-size: 8px;
         }
     }
+
     .Step-Line {
         margin: 0 $px-4;
         width: 40px;
         height: 2px;
         background-color: $grey-300;
     }
+
     .StepNumber.active {
         .StepNum {
             border: solid 2px $lightgreen-400;
             background-color: $white;
         }
+
         .Step-Line {
             background-color: $lightgreen-400;
         }
     }
+
     .StepNumber.activea {
         .StepNum {
             background-color: $white !important;
@@ -246,6 +269,7 @@
     -webkit-box-direction: normal;
     -ms-flex-flow: column;
     flex-flow: column;
+
     .StepNumber {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
@@ -254,6 +278,7 @@
         -webkit-box-align: start;
         -ms-flex-align: start;
         align-items: flex-start;
+
         .Step-Line {
             height: 16px;
             width: 2px;
@@ -270,6 +295,7 @@
             align-items: center;
         }
     }
+
     .ActiveHei {
         /*.Step-Line {
 			height: 280px;
@@ -283,6 +309,7 @@
 .StepperWorkFlow {
     max-width: 600px;
     width: 100%;
+
     .card {
         padding: 29px 32px;
         width: 600px;
@@ -293,39 +320,48 @@
         border: solid 1px #e9ecf0;
         position: relative;
     }
+
     .Rectangle-2 {
         width: 234px;
         height: 8px;
         background-color: #ccd2db;
         margin: 8px 0;
+
         &:nth-child(3) {
             width: 162px;
         }
+
         &:nth-child(4) {
             width: 306px;
         }
+
         &:nth-child(5) {
             width: 346px;
         }
+
         &:nth-child(6) {
             width: 346px;
         }
+
         &:nth-child(7) {
             width: 266px;
         }
+
         &:nth-child(8) {
             width: 290px;
         }
+
         &:nth-child(9) {
             width: 322px;
         }
+
         &:nth-child(10) {
             width: 314px;
         }
+
         &:nth-child(11) {
             width: 338px;
         }
-
     }
 
     .step-progress {
@@ -333,23 +369,22 @@
         margin: 0 auto;
     }
 
-
-
     .step-progress .step-slider .step-slider-item {
         width: 40px;
         height: 2px;
         position: relative;
         margin-right: 15px;
         background-color: #E0E0E0;
+
         &:first-child {
             &:before {
                 height: 0;
             }
         }
+
         &:last-child {
             background-color: inherit;
         }
-
     }
 
     .step-progress .step-slider .step-slider-item:after {
@@ -366,11 +401,11 @@
         transition: all 0.2s ease-out 0.2s;
         -webkit-transition: all 0.2s ease-out 0.2s;
     }
+
     .step-progress .step-slider .step-slider-item.activee:after {
         border: 2px solid $lightgreen-400;
         background-color: transparent;
     }
-
 
     .step-progress .step-slider .step-slider-item:before {
         content: "";
@@ -382,9 +417,6 @@
         background-color: $grey-300;
         z-index: 1;
         -webkit-transition: all 0.2s ease-out;
-
-
-
     }
 
     .step-progress .step-slider .step-slider-item.active:before {
@@ -397,22 +429,27 @@
         background-color: transparent;
     }
 
-
     .step-content-foot {
         position: absolute;
         top: 73px;
         right: 0;
         -webkit-touch-callout: none;
+
         /* iOS Safari */
         -webkit-user-select: none;
+
         /* Safari */
         -khtml-user-select: none;
+
         /* Konqueror HTML */
         -moz-user-select: none;
+
         /* Firefox */
         -ms-user-select: none;
+
         /* Internet Explorer/Edge */
         user-select: none;
+
         /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
         span {
@@ -422,16 +459,15 @@
             font-size: $heading6-font;
             font-family: $sans-r;
             margin: 0 12px;
+
             i {
                 margin: 0 4px;
             }
-
         }
     }
 
     .step-content-btn.disabled,
-    .step-content-btn-prev.disabled,
-        {
+    .step-content-btn-prev.disabled {
         pointer-events: none;
         color: #ccc;
     }
@@ -468,10 +504,7 @@
             flex: 1;
         }
     }
-
 }
-
-
 
 ///////
 // DEMO UTILS

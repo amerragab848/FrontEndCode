@@ -65,10 +65,10 @@ class rptCostCodingTree extends Component {
     rows.push(this.state.NodeData)
     return (
       <div className="mainContainer"> 
-        <Fragment>
-          <div className="documents-stepper noTabs__document">
+        <div className="white-bg">
+          
           <HeaderDocument projectName={this.props.projectName}   perviousRoute={"/"} docTitle={Resources.costCodingTreeReport[currentLanguage]} moduleTitle={Resources['costControl'][currentLanguage]} />
-          </div>
+
           <Tree projectId={this.props.projectId} GetNodeData={ this.GetNodeData} showActions={false} />
           {this.state.isLoading ?
             <div className="fixedLoading">
@@ -128,8 +128,8 @@ class rptCostCodingTree extends Component {
                 </table>
               </div>
             </div>
-          }    </Fragment>
-
+          }    </div>
+          
       </div>
 
     )

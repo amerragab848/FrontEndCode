@@ -1,6 +1,5 @@
 .avatarsContainer {
     padding: 20px;
-
 }
 
 .avatarProfile {
@@ -76,7 +75,6 @@
     height: 160px;
     background-color: transparent;
     box-shadow: none;
-
 }
 
 /*Pagination*/
@@ -150,7 +148,6 @@
         cursor: pointer;
         &:hover {
             background-color: $grey-200;
-
         }
         i {
             margin: 0;
@@ -190,10 +187,7 @@
                 font-size: $heading6-font;
                 letter-spacing: -0.2px;
                 &:hover {
-
                     background-color: $grey-200;
-
-
                 }
             }
         }

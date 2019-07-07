@@ -2912,7 +2912,7 @@ button.companies_icon {
 }
 
 .precycle-grid .reactTableActions .gridSystemSelected {
-    top: 0;
+    top: 0 !important;
 }
 
 .gridSystemSelected {
@@ -3116,12 +3116,24 @@ button.companies_icon {
 
 .total_money {
     position: absolute;
-    #{$left}: 302px;
-    top: -24px;
+    #{$left}: 309px;
     letter-spacing: -0.2px;
     color: #26344c;
     font-family: $sans-b;
     display: block;
+    top: -10px;
+    z-index: 1;
+}
+
+.total_money::after {
+    content: '';
+    position: absolute;
+    #{$right}: 0;
+    #{$left}: -5px;
+    top: 50%;
+    height: 2px;
+    background: #fff;
+    z-index: -1;
 }
 
 .company__total {
@@ -4061,7 +4073,7 @@ button.companies_icon {
     padding: 40px 50px 0;
 }
 
-.project__Permissions--type .ui.checkbox input[type=checkbox] {
+.project__Permissions--type .ui.checkbox input[type=checkbox], .project__Permissions--selectAll  .ui.checkbox input[type=checkbox] {
     height: 100%;
 }
 
@@ -4120,17 +4132,21 @@ button.companies_icon {
     width: 50%;
 }
 
-.permission__proForm .linebylineInput .control-label {
-    width: auto;
-    text-align: $left;
-    margin-#{$right}: 32px;
-    font-family: $sans-sb;
-    font-size: 14px;
-    line-height: 1.43;
-    letter-spacing: -0.2px;
-    color: #252833;
-    margin-bottom: 4px;
-    display: block;
+// .permission__proForm .linebylineInput .control-label {
+//     width: auto;
+//     text-align: $left;
+//     margin-#{$right}: 32px;
+//     font-family: $sans-sb;
+//     font-size: 14px;
+//     line-height: 1.43;
+//     letter-spacing: -0.2px;
+//     color: #252833;
+//     margin-bottom: 4px;
+//     display: block;
+// }
+
+.permission__proForm .linebylineInput .fillter-status {
+    width: 100%;
 }
 
 .step__permission .main__header,
@@ -5403,10 +5419,10 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     stroke: transparent;
 }
 
-.js-bar-chart-container-tooltip-container,
-.js-grouped-bar-chart-tooltip-container {
-    overflow: auto;
-}
+// .js-bar-chart-container-tooltip-container,
+// .js-grouped-bar-chart-tooltip-container {
+//     overflow: auto;
+// }
 
 .autoDisk__dropdown {
     display: flex;

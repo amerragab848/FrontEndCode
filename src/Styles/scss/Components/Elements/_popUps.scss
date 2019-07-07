@@ -8,10 +8,13 @@
     color: $white;
     letter-spacing: -0.2px;
     background-color: $grey-900;
+
     @include box-shadow(0 1px 2px 0 rgba(0, 0, 0, 0.2));
     @include border-radius(2px);
+
     display: inline-block;
     max-width: 310px;
+
     h3 {
         font-family: $muli-b;
         font-size: $heading5-font;
@@ -19,6 +22,7 @@
         color: #f9fbfc;
         padding-bottom: 8px;
     }
+
     hr {
         margin: 0;
         padding: 0;
@@ -30,12 +34,14 @@
 
 .closePopUp {
     position: relative;
+
     .closePopUpBtn {
         position: absolute;
         top: 4px;
         #{$right}: 4px;
         cursor: pointer;
     }
+
     a {
         color: $Primary-2;
         font-size: $heading6-font;
@@ -53,6 +59,7 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+
     .popUpiMark {
         margin: 8px;
     }
@@ -83,26 +90,30 @@
 
 .popUpContainer {
     position: relative;
+
     .popUpContent {
         position: absolute;
         width: 132px;
         border-radius: 2px;
         background-color: $grey-900;
+
         @include box-shadow(0 1px 2px 0 rgba(0, 0, 0, 0.2));
+
         bottom: 100%;
         min-height: 32px;
         left: 0;
     }
-
 }
 
 .popUpClickContainer {
     position: relative;
     width: 100px;
+
     .popupClickContent.show {
         -webkit-transform: scale(1);
         transform: scale(1);
     }
+
     .popupClickContent {
         z-index: 99;
         padding-top: 20px;
@@ -113,13 +124,16 @@
         top: -55px;
         width: 272px;
         min-height: 487px;
+
         @include border-radius(4px);
         @include box-shadow(0 4px 6px 0 rgba(0, 0, 0, 0.2));
+
         background-color: $white;
         border: solid 1px #e9ecf0;
         transition: transform .35s ease-out, -webkit-transform .35s ease-out;
         -webkit-transform-origin: left right;
         transform-origin: left right;
+
         .popupMenu {
             padding: 5px 28px;
             display: -webkit-box;
@@ -130,6 +144,7 @@
             -webkit-box-pack: start;
             -ms-flex-pack: start;
             justify-content: flex-start;
+
             .popupMenuTitile {
                 display: inline-flex;
                 align-items: center;
@@ -137,19 +152,23 @@
                 color: $grey-900;
                 font-size: $heading5-font;
                 font-family: $muli-b;
+
                 svg {
                     width: 24px;
                     height: 24px;
                     margin-right: $px-8;
                 }
             }
+
             ul {
                 margin-top: 5px;
+
                 li {
                     display: inline-flex;
                     justify-content: flex-start;
                     width: 100%;
                     margin-bottom: 12px;
+
                     span {
                         flex: 1.8;
                         padding-right: 10px;
@@ -158,11 +177,13 @@
                         color: $grey-600;
                         font-family: $muli-r;
                     }
+
                     a {
                         flex: 0.2;
                         text-decoration: underline;
                         font-family: $muli-b;
                         color: $Primary-2;
+
                         &:hover {
                             text-decoration: none;
                         }
@@ -170,9 +191,11 @@
                 }
             }
         }
+
         hr {
             border: 0.5px solid #e9ecf0;
         }
+
         .popupClickArrow {
             width: 50px;
             height: 25px;
@@ -181,6 +204,7 @@
             left: 0;
             transform: translateX(-75%) rotate(90deg);
             overflow: hidden;
+
             &::after {
                 content: "";
                 position: absolute;
@@ -190,6 +214,7 @@
                 transform: translateX(-50%) translateY(-50%) rotate(45deg);
                 top: 0;
                 #{$left}: 50%;
+
                 @include box-shadow(2px 1px 8px 0 rgba(0, 0, 0, 0.2));
             }
         }
@@ -206,12 +231,13 @@
         -ms-flex-align: center;
         align-items: center;
         min-height: 197px;
-
     }
+
     hr {
         height: 87px;
         margin-top: 40px;
     }
+
     .popupClickArrow {
         top: -25px;
         #{$left}: 50%;

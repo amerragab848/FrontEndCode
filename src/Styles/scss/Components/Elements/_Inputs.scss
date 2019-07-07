@@ -52,11 +52,6 @@
 
         margin-bottom: $px-8;
 
-        // label {
-        //     font-family: $sans-sb;
-        //     margin-bottom: 4px;
-        // }
-
         .ui {
             &.labeled {
                 &.input {
@@ -173,6 +168,7 @@
             font-size: $heading5-font;
             text-align: $left;
             font-family: $muli-r;
+
             &:hover {
                 border-color: $grey-500;
             }

@@ -29,7 +29,7 @@
 
 /*Base Hover Press */
 
-.primaryBtn-2{
+.primaryBtn-2 {
     border: solid 1px $grey-300;
     background-color: rgba(255, 255, 255, 0);
     color: $grey-700;
@@ -86,7 +86,7 @@
     }
 }
 
-.defaultBtn  {
+.defaultBtn {
     // background-color: $grey-100;
     // color: $grey-700;
     // border: none;
@@ -355,7 +355,8 @@
             padding-right: 16px;
             display: flex;
             align-items: center;
-//            width: calc(100% - 38px);
+
+            //            width: calc(100% - 38px);
             justify-content: center;
         }
 
@@ -490,7 +491,8 @@
             padding-left: 16px;
             padding-right: 16px;
             display: flex;
-//            width: calc(100% - 38px);
+
+            //            width: calc(100% - 38px);
             align-items: center;
             justify-content: center;
         }
@@ -626,7 +628,8 @@
             display: flex;
             align-items: center;
             padding-right: 16px;
-//            width: calc(100% - 38px);
+
+            //            width: calc(100% - 38px);
             justify-content: center;
         }
 
