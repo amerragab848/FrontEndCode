@@ -13658,14 +13658,6 @@
               "value": false
             },
             {
-              "code": 1377,
-              "title": {
-                "en": "View Project Status Chart",
-                "ar": " عرض شجرة المشاريع"
-              },
-              "value": false
-            },
-            {
               "code": 1378,
               "title": {
                 "en": "View Letters",
@@ -15275,6 +15267,14 @@
               "title": {
                 "en": "Approved IR Count",
                 "ar": " عداد طلب معاينة النشاط معتمدة"
+              },
+              "value": false
+            },
+            {
+              "code": 1377,
+              "title": {
+                "en": "View Project Status Chart",
+                "ar": " عرض شجرة المشاريع"
               },
               "value": false
             }
