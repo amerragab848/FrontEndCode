@@ -805,11 +805,11 @@ class ContractInfoAddEdit extends Component {
       this.setState({ isLoading: false, showItemEdit: false })
     })
   }
+
   viewModelToEdit = (row, e) => {
     this.setState({ selectedVO: row, showItemEdit: true });
     this.itemDialog.show();
   }
-
 
   _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
     this.setState({ isLoading: true });
@@ -1121,7 +1121,6 @@ class ContractInfoAddEdit extends Component {
     }
   }
 
-
   render() {
 
     let editVoItemForm = <Fragment>
@@ -1331,9 +1330,9 @@ class ContractInfoAddEdit extends Component {
     const pricedItemContent = (
       <Fragment>
         <div className="document-fields">
-          <div class="submittalFilter">
-            <div class="subFilter">
-              <h3 class="zero"> {Resources['items'][currentLanguage]}</h3>
+          <div className="submittalFilter">
+            <div className="subFilter">
+              <h3 className="zero"> {Resources['items'][currentLanguage]}</h3>
               <span>{this.state.rows.length}</span>
             </div>
             <div className="rowsPaginations">
@@ -1353,9 +1352,9 @@ class ContractInfoAddEdit extends Component {
     const voiContent = (
       <Fragment>
         <div className="document-fields">
-          <div class="submittalFilter">
-            <div class="subFilter">
-              <h3 class="zero"> {Resources['items'][currentLanguage]}</h3>
+          <div className="submittalFilter">
+            <div className="subFilter">
+              <h3 className="zero"> {Resources['items'][currentLanguage]}</h3>
               <span>{this.state.voItemsLength}</span>
             </div>
             <div className="rowsPaginations">

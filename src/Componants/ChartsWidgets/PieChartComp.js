@@ -87,7 +87,7 @@ class PieChartComp extends Component {
                                 <div className="donut__legend">
                                     <Donut
                                         data={this.state.dataChart}
-                                        height={width / 2}
+                                        height= {width / 2}
                                         width={width / 2}
                                         externalRadius={width / 4}
                                         internalRadius={width / 10}

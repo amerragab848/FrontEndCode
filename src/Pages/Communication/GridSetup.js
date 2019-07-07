@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from "react";
 import ReactDataGrid from "react-data-grid";
 import { ToolsPanel, Data, Draggable } from "react-data-grid-addons";
-
-import "../../Styles/gridStyle.css";
-import "../../Styles/scss/en-us/dataGrid.css";
+ 
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
@@ -419,7 +417,7 @@ class GridSetup extends Component {
         <div
           className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
           <div className="minimizeSpan">
-            <div className="V-tableSize" onClick={this.openModalColumn}>
+            <div className="V-tableSize"  data-toggle="tooltip" title="Filter Columns" onClick={this.openModalColumn}>
               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                 <g fill="none" fillRule="evenodd" transform="translate(5 5)">
                   <g fill="#CCD2DB" mask="url(#b)">

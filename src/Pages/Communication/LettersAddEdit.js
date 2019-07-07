@@ -268,7 +268,7 @@ class LettersAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+        dataservice.GetDataList("GetLettersListByProjectId?" + this.state.projectId, 'subject', 'id').then(result => {
             if (isEdit) {
                 let replyId = this.props.document.replyId;
                 let replyLetter = {};
