@@ -13371,6 +13371,7 @@ button.companies_icon {
 .total_money {
   position: absolute;
   left: 309px;
+  top: -10px;
   letter-spacing: -0.2px;
   color: #26344c;
   font-family: font-openb;

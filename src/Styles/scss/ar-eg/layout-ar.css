@@ -11015,6 +11015,9 @@ body {
   left: auto !important;
   right: 10px !important; }
 
+.header__search .ui.input > input {
+  text-align: right; }
+
 /* layout -ar css */
 /* templates approval ar */
 .moutasem {
@@ -13565,6 +13568,7 @@ button.companies_icon {
 .total_money {
   position: absolute;
   right: 309px;
+  top: -10px;
   letter-spacing: -0.2px;
   color: #26344c;
   font-family: cairo-b;
