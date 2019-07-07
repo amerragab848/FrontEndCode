@@ -18,13 +18,18 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import _ from "lodash";
 import { toast } from "react-toastify";
-
+var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
+var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
     code: Yup.string().required(Resources['isRequiredField'][currentLanguage]),
-    titleEn: Yup.string().required(Resources["titleEnRequired"][currentLanguage]),
-    titleAr: Yup.string().required(Resources["titleArRequired"][currentLanguage]),
+    titleEn: Yup.string().test('projectNameEn', 'Name cannot be arabic', value => {
+        return !en.test(value);
+    }).required(Resources["titleEnRequired"][currentLanguage]),
+    titleAr: Yup.string().test('projectNameAr', 'Name cannot be english', value => { 
+        return  ar.test(value)
+    }).required(Resources["titleArRequired"][currentLanguage]),
 });
 
 const validationSchemaForCopyTo = Yup.object().shape({
