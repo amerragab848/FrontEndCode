@@ -47,7 +47,7 @@ class addItemDescription extends Component {
                 revisedQuantity: 0,
                 boqTypeId: '',
                 SubBoqTypeId: '',
-                boqTypeChildId: '',
+                boqChildTypeId: '',
                 arrange: 0,
                 parentId: '',
                 itemType: '',
@@ -141,7 +141,7 @@ class addItemDescription extends Component {
                         revisedQuantity: 0,
                         boqTypeId: '',
                         SubBoqTypeId: '',
-                        boqTypeChildId: '',
+                        boqChildTypeId: '',
                         arrange: 0,
                         parentId: '',
                         itemType: '',
@@ -175,11 +175,12 @@ class addItemDescription extends Component {
         });
     }
 
-    handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState) {
+    handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState,fieldLabel) {
         if (event == null) return;
         let original_document = { ...this.state.itemDescription };
         let updated_document = {};
         updated_document[field] = event.value;
+        updated_document[fieldLabel] = event.label;
         updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
@@ -323,17 +324,17 @@ class addItemDescription extends Component {
                                                         title="boqType"
                                                         data={this.state.boqTypes}
                                                         selectedValue={this.state.selectedBoqType}
-                                                        handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeId', 'selectedBoqType', true, 'GetAllBoqChild', 'parentId', 'BoqTypeChilds')}
+                                                        handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeId', 'selectedBoqType', true, 'GetAllBoqChild', 'parentId', 'BoqTypeChilds','boqType')}
                                                         name="boqType"
                                                         index="boqType" />
-                                                </div>
+                                                </div> 
                                                 <div className="linebylineInput valid-input">
                                                     <Dropdown
                                                         title="boqTypeChild"
                                                         data={this.state.BoqTypeChilds}
 
                                                         selectedValue={this.state.selectedBoqTypeChild}
-                                                        handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeChildId', 'selectedBoqTypeChild', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes')}
+                                                        handleChange={event => this.handleChangeItemDropDown(event, 'boqChildTypeId', 'selectedBoqTypeChild', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes','boqChildType')}
 
                                                         name="boqTypeChild"
                                                         index="boqTypeChild" />
@@ -344,7 +345,7 @@ class addItemDescription extends Component {
                                                             title="boqSubType"
                                                             data={this.state.BoqSubTypes}
                                                             selectedValue={this.state.selectedBoqSubType}
-                                                            handleChange={event => this.handleChangeItemDropDown(event, 'boqSubTypeId', 'selectedBoqSubType', false, '', '', '')}
+                                                            handleChange={event => this.handleChangeItemDropDown(event, 'boqSubTypeId', 'selectedBoqSubType', false, '', '', '','boqSubType')}
                                                             name="boqSubType"
                                                             index="boqSubType" />
                                                     </div>

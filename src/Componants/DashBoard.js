@@ -851,7 +851,7 @@ class DashBoard extends Component {
           }
           else if (val.type === "column") {
 
-            widgets.push({ 
+            widgets.push({
               title: val.title,
               key: val.key,
               id: val.id,
@@ -1159,46 +1159,51 @@ class DashBoard extends Component {
   render() {
 
     var pane = this.state["refrence"].map((widget, index) => {
-      if (Config.IsAllow(widget.permission))
-        return (
-          <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
-            <div className="secondTabs project__select ui-state-default">
-              <img src={dashBoardLogo} />
 
-              <div
-                className={widget.checked === true ? "ui checkbox checkBoxGray300 count checked" : "ui checkbox checkBoxGray300 count"}
-                onClick={event => { this.checkAllChildrens(event, widget.key, widget.checked); this.toggleParentCheck(event, widget.key, index); }}>
-                <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" checked={widget.checked} />
-                <label />
-              </div>
-              <div className="project__title" onClick={event => this.viewCurrentMenu(event, widget.key)}>
-                <h3>{Resources[widget.widgetCategory][currentLanguage]}</h3>
-              </div>
+      return (
+        <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
+          <div className="secondTabs project__select ui-state-default">
+            <img src={dashBoardLogo} />
+
+            <div
+              className={widget.checked === true ? "ui checkbox checkBoxGray300 count checked" : "ui checkbox checkBoxGray300 count"}
+              onClick={event => { this.checkAllChildrens(event, widget.key, widget.checked); this.toggleParentCheck(event, widget.key, index); }}>
+              <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" checked={widget.checked} />
+              <label />
             </div>
-          </Pane>
-        );
-      else
-        return null;
+            <div className="project__title" onClick={event => this.viewCurrentMenu(event, widget.key)}>
+              <h3>{Resources[widget.widgetCategory][currentLanguage]}</h3>
+            </div>
+          </div>
+        </Pane>
+      );
     });
 
     var paneChild = "";
     if (this.state.viewChild) {
-      paneChild = this.state.childRef.map((widget, index) => {
-        return (
-          <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
-            <div className="secondTabs project__select ui-state-default">
-              <img src={dashBoardLogo} />
-              <div className={"ui checkbox checkBoxGray300 count" + (widget.checked === true ? " checked" : "")} onClick={event => this.toggleChildCheck(event, widget.key)}>
-                <input name="CheckBox" type="checkbox" id="terms" tabIndex={index} className="hidden" checked={widget.checked} />
-                <label />
-              </div>
-              <div className="project__title">
-                <h3>{Resources[widget.title][currentLanguage]}</h3>
-              </div>
-            </div>
-          </Pane>
-        );
-      });
+      if (this.state.childRef.length > 0) {
+        paneChild = this.state.childRef.map((widget, index) => {
+          if (Config.IsAllow(widget.permission) || widget.permission == 0)
+            return (
+              <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
+                <div className="secondTabs project__select ui-state-default">
+                  <img src={dashBoardLogo} />
+                  <div className={"ui checkbox checkBoxGray300 count" + (widget.checked === true ? " checked" : "")} onClick={event => this.toggleChildCheck(event, widget.key)}>
+                    <input name="CheckBox" type="checkbox" id="terms" tabIndex={index} className="hidden" checked={widget.checked} />
+                    <label />
+                  </div>
+                  <div className="project__title">
+                    <h3>{Resources[widget.title][currentLanguage]}</h3>
+                  </div>
+                </div>
+              </Pane>
+            ); else {
+            return "";
+          }
+        });
+      } else {
+        paneChild = "";
+      }
     }
 
     return (
@@ -1254,8 +1259,7 @@ class DashBoard extends Component {
                           <SortablePane direction="vertical" order={this.state.child_widgets_order} onOrderChange={order => this.ChildchageOrder(order)}>
                             {paneChild}
                           </SortablePane>
-                        </Fragment>
-
+                        </Fragment> 
                       ) : null}
                     </div>
                   </div>
@@ -1292,6 +1296,22 @@ class DashBoard extends Component {
                     </div>
                   </div>
                 </TabPanel>
+                {/* <TabPanel>
+                  <div className="dash__content ui tab active">
+                    <div className="project__content">
+                      <SortablePane direction="vertical" order={this.state.parent_widgets_order} onOrderChange={order => this.parentChageOrder(order)}>
+                        {pane}
+                      </SortablePane>
+                    </div>
+                    <div className="project__content">
+                      {this.state.viewChild ? (
+                        <SortablePane direction="vertical" order={this.state.child_widgets_order} onOrderChange={order => this.ChildchageOrder(order)}>
+                          {paneChild}
+                        </SortablePane>
+                      ) : null}
+                    </div>
+                  </div>
+                </TabPanel> */}
               </Tabs>
             </div>
           </div>
@@ -1299,7 +1319,7 @@ class DashBoard extends Component {
       </div>
     );
   }
-  
+
 }
 
 export default DashBoard;
