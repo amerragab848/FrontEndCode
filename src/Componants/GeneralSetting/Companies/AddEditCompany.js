@@ -17,13 +17,18 @@ import { bindActionCreators } from 'redux';
 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
+var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
+var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 const validationSchema = Yup.object().shape({
     email: Yup.string()
         .email(Resources['emailFormat'][currentLanguage])
         .required(Resources['emailRequired'][currentLanguage]),
-    titleEnCompany: Yup.string().required(Resources['ComapnyNameRequired'][currentLanguage]),
-    titleArCompany: Yup.string().required(Resources['ComapnyNameRequired'][currentLanguage]),
+    titleEnCompany: Yup.string().test('titleEnCompany', 'Name cannot be arabic', value => {
+        return ! en.test(value);
+    }).required(Resources['ComapnyNameRequired'][currentLanguage]),
+    titleArCompany: Yup.string().test('contactNameAr', 'Name cannot be english', value => { 
+        return  ar.test(value)
+    }).required(Resources['ComapnyNameRequired'][currentLanguage]),
     ContactNameEn: Yup.string().required(Resources['contactNameRequired'][currentLanguage]),
     ContactNameAr: Yup.string().required(Resources['contactNameRequired'][currentLanguage]),
     Mobile: Yup.number().required(Resources['mobileRequired'][currentLanguage]),
@@ -33,8 +38,12 @@ const validationSchema = Yup.object().shape({
     companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage])
 })
 const validationSchemaForEdit = Yup.object().shape({
-    titleEnCompany: Yup.string().required(Resources['ComapnyNameRequired'][currentLanguage]),
-    titleArCompany: Yup.string().required(Resources['ComapnyNameRequired'][currentLanguage]),
+    titleEnCompany: Yup.string().test('titleEnCompany', 'Name cannot be arabic', value => {
+        return ! en.test(value);
+    }).required(Resources['ComapnyNameRequired'][currentLanguage]),
+    titleArCompany: Yup.string().test('contactNameAr', 'Name cannot be english', value => { 
+        return  ar.test(value)
+    }).required(Resources['ComapnyNameRequired'][currentLanguage]),
     discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
     companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage])
 })

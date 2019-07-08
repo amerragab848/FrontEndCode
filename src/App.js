@@ -25,6 +25,7 @@ class App extends Component {
     currentLanguage === "ar" ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => { }) : import("./Styles/scss/en-us/layout.css").then(css => { });
   }
 
+<<<<<<< HEAD
   render() {
     const showComp = IsAuthorize ? (
       <div id="direction_warrper">
@@ -45,6 +46,33 @@ class App extends Component {
       </Provider>
     );
   }
+=======
+        currentLanguage === "ar"
+            ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => {})
+            : import("./Styles/scss/en-us/layout.css").then(css => {});
+}
+
+    render() {
+        const showComp = IsAuthorize ? (
+            <div id="direction_warrper">
+                <Menu />
+                {Route}
+            </div>
+        ) : (
+            <Login />
+        );
+        return (
+            <Provider store={store}>
+                <ErrorHandler>
+                    <div>
+                        {showComp}
+                        <ToastContainer autoClose={3000} />
+                    </div>
+                </ErrorHandler>
+            </Provider>
+        );
+    }
+>>>>>>> 69a9cefd7a5f375e44b80a7efc8f26dfeeaeada4
 }
 
 class ErrorHandler extends React.Component {

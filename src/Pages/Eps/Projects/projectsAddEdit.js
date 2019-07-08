@@ -15,9 +15,15 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import { toast } from "react-toastify";
 import Api from '../../../api'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
+var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 const validationSchema = Yup.object().shape({
-    projectNameEn: Yup.string().required(Resources['pleaseInsertprojectNameEnglish'][currentLanguage]),
-    projectNameAr: Yup.string().required(Resources['pleaseInsertprojectNameArabic'][currentLanguage]),
+    projectNameEn: Yup.string().test('projectNameEn', 'Name cannot be arabic', value => {
+        return !en.test(value);
+    }).required(Resources['pleaseInsertprojectNameEnglish'][currentLanguage]),
+    projectNameAr: Yup.string().test('projectNameAr', 'Name cannot be english', value => { 
+        return  ar.test(value)
+    }).required(Resources['pleaseInsertprojectNameArabic'][currentLanguage]),
     job: Yup.string().required(Resources['referenceCode'][currentLanguage]),
     projectType: Yup.string().required(Resources['pleaseSelectProjectType'][currentLanguage]),
     country: Yup.string().required(Resources['pleaseSelectCountry'][currentLanguage]),
