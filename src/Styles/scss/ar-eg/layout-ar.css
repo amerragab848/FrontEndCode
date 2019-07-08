@@ -10599,7 +10599,8 @@ h1, h2, h3, h4, h5 {
   border-radius: 100px !important;
   background-color: #e9edf2 !important;
   padding: 0 10px 0 12px !important;
-  margin-right: 6px !important;
+  margin-left: 3px !important;
+  margin-right: 3px !important;
   line-height: 26px !important;
   font-family: cairo-b !important;
   border-color: transparent !important;
@@ -10621,12 +10622,11 @@ h1, h2, h3, h4, h5 {
   height: 16px !important;
   border-radius: 50% !important;
   color: #e9edf2 !important;
-  font-size: 8px !important;
+  font-size: 11px !important;
   text-align: center !important;
   line-height: 15px !important;
-  padding-left: 1px !important;
   font-family: cairo-r !important;
-  margin: 1px 0 0 5px !important; }
+  margin: 1px 3px 0 2px !important; }
 
 .react-grid-Toolbar .data-dark:empty {
   background-color: #E9ECF0 !important;
@@ -10733,6 +10733,13 @@ h1, h2, h3, h4, h5 {
 
 .react-grid-HeaderCell > .react-grid-checkbox-container {
   padding: 0 !important; }
+
+.react-grid-row-group > div {
+  padding-right: 5px !important; }
+
+.react-grid-row-group > div strong {
+  font-size: 14px;
+  font-family: cairo-b; }
 
 .mainGridSystem .gridSystemTables .girdTableHeader .thead-row {
   -webkit-transform: translateX(-365px);
