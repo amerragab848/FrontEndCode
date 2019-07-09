@@ -95,14 +95,14 @@ class PieChartComp extends Component {
                                         height= {width > 390 ? '200' : width / 2}
                                         width={width > 390 ? '200' : width / 2}
                                         externalRadius= {width > 390 ? '100' : width / 4}
-                                        internalRadius= {width > 390 ? '30' : width / 10}
+                                        internalRadius= {width > 390 ? '45' : width / 10}
                                         colorSchema={colorSchema}
                                         customMouseMove={this.logMouseOver}
                                         highlightSliceById={this.state.highlightedSlice}
                                         isAnimated={false} />
 
                                     {this.state.showLegend === true ?
-                                        <p id="legenbd__teext" style={{ width: width > 250 ? '170px' : width / 2 }}>
+                                        <p id="legenbd__teext" style={{ width: width > 250 ? '170' : width / 2 }}>
                                             <span className="chartName">{this.state.data.name}</span>
                                             <span className="percentage">{this.state.data.percentage + '%'}</span>
                                             <span className="totalAmount">{this.state.data.quantity.toFixed(1) }</span>

@@ -18,92 +18,86 @@ const store = configureStore();
 
 const IsAuthorize = api.IsAuthorized();
 class App extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        let currentLanguage =
-            localStorage.getItem("lang") == null
-                ? "en"
-                : localStorage.getItem("lang");
+    let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+    currentLanguage === "ar" ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => { }) : import("./Styles/scss/en-us/layout.css").then(css => { });
+  }
 
-        currentLanguage === "ar"
-            ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => {})
-            : import("./Styles/scss/en-us/layout.css").then(css => {});
-}
-
-    render() {
-        const showComp = IsAuthorize ? (
-            <div id="direction_warrper">
-                <Menu />
-                {Route}
-            </div>
-        ) : (
-            <Login />
-        );
-        return (
-            <Provider store={store}>
-                <ErrorHandler>
-                    <div>
-                        {showComp}
-                        <ToastContainer autoClose={3000} />
-                    </div>
-                </ErrorHandler>
-            </Provider>
-        );
-    }
+  render() {
+    const showComp = IsAuthorize ? (
+      <div id="direction_warrper">
+        <Menu />
+        {Route}
+      </div>
+    ) : (
+        <Login />
+      );
+    return (
+      <Provider store={store}>
+        <ErrorHandler>
+          <div>
+            {showComp}
+            <ToastContainer autoClose={3000} />
+          </div>
+        </ErrorHandler>
+      </Provider>
+    );
+  }
 }
 
 class ErrorHandler extends React.Component {
-    constructor(props) {
-        super(props);
-        // Add some default error states
-        this.state = {
-            error: false,
-            info: null
-        };
-    }
+  constructor(props) {
+    super(props);
+    // Add some default error states
+    this.state = {
+      error: false,
+      info: null
+    };
+  }
 
-    componentDidCatch(error, info) {
-        // Something happened to one of my children.
-        // Add error to state
-        this.setState({
-            error: error,
-            info: info
-        });
-        //  logErrorToMyService(error, info);
-    }
+  componentDidCatch(error, info) {
+    // Something happened to one of my children.
+    // Add error to state
+    this.setState({
+      error: error,
+      info: info
+    });
+    //  logErrorToMyService(error, info);
+  }
 
-    render() {
-        if (this.state.error) {
-            // Some error was thrown. Let's display something helpful to the user
-            return (
-                <div className="screen-error active">
-                    <div className="screen-error-text">
-                        <div>
-                            <p>
-                                <span>Sorry</span> Something went Wrong
+  render() {
+    if (this.state.error) {
+      // Some error was thrown. Let's display something helpful to the user
+      return (
+        <div className="screen-error active">
+          <div className="screen-error-text">
+            <div>
+              <p>
+                <span>Sorry</span> Something went Wrong
                             </p>
-                            <p>
-                                A team of highly trained developers has been
-                                dispatched to deal with this situation!
+              <p>
+                A team of highly trained developers has been
+                dispatched to deal with this situation!
                             </p>
-                        </div>
-                        <NavLink to="/">
-                            <span className="goBack">
-                                <i
-                                    className="fa fa-angle-double-left"
-                                    aria-hidden="true"
-                                />
-                                Back to Dashboard
+            </div>
+            <NavLink to="/">
+              <span className="goBack">
+                <i
+                  className="fa fa-angle-double-left"
+                  aria-hidden="true"
+                />
+                Back to Dashboard
                             </span>
-                        </NavLink>
-                    </div>
-                </div>
-            );
-        }
-        // No errors were thrown. As you were.
-        return this.props.children;
+            </NavLink>
+          </div>
+        </div>
+      );
     }
+    // No errors were thrown. As you were.
+    return this.props.children;
+  }
 }
 
 export default App;
