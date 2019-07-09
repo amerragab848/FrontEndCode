@@ -616,52 +616,6 @@ class CommonLog extends Component {
             ) : null}
           </div>
         </div>
-        <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
-          <div className="grid__column--container">
-            <button className="closeColumn" onClick={this.closeModalColumn}>X</button>
-            <div className="grid__column--title">
-              <h2>Grid Columns</h2>
-            </div>
-            <div className="grid__column--content">
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </Fragment>
     );
   }
