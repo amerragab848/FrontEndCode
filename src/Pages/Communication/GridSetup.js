@@ -414,8 +414,7 @@ class GridSetup extends Component {
     })
     return (
       <Fragment>
-        <div
-          className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
+        <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
           <div className="minimizeSpan">
             
             <div className="V-tableSize"  data-toggle="tooltip" title="Filter Columns" onClick={this.openModalColumn}>
