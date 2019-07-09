@@ -1960,7 +1960,7 @@ h1, h2, h3, h4, h5 {
               border-right: 4px solid transparent; }
             .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl > li .UlName {
               font-size: 14px;
-              font-family: cairo-sb;
+              font-family: cairo-b;
               color: #858d9e;
               display: none;
               margin-right: 16px; }
@@ -2444,7 +2444,7 @@ h1, h2, h3, h4, h5 {
           color: #A8B0BF;
           line-height: normal;
           text-align: center;
-          font-family: cairo-sb; }
+          font-family: cairo-b; }
           .horizSubActions .horizSubUlContainer .SubmittalUL li a .svg {
             width: 32px;
             height: 32px;
@@ -2507,7 +2507,7 @@ h1, h2, h3, h4, h5 {
       text-transform: uppercase;
       margin-left: 8px; }
     .submittalFilter .subFilter > span {
-      font-family: cairo-sb;
+      font-family: cairo-b;
       font-size: 20px;
       line-height: 1.4;
       letter-spacing: 0.6px;
@@ -2557,7 +2557,7 @@ h1, h2, h3, h4, h5 {
       -webkit-transform: scale(0, 1);
       transform: scale(0, 1); }
     .submittalFilter .fillter-button .text span {
-      font-family: font-b;
+      font-family: cairo-b;
       font-size: 12px;
       font-weight: bold;
       font-style: normal;
@@ -3346,7 +3346,7 @@ h1, h2, h3, h4, h5 {
         color: #ffffff;
         letter-spacing: -0.2px;
         font-size: 12px;
-        font-family: cairo-sb;
+        font-family: cairo-b;
         margin: 0 15px; }
         .ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content-foot span i {
           margin: 0 5px; }
@@ -3394,7 +3394,7 @@ h1, h2, h3, h4, h5 {
   .gridfillter-container .fillter-status-container {
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     flex-wrap: wrap; }
     @media screen and (max-width: 1200px) {
       .gridfillter-container .fillter-status-container {
@@ -3404,24 +3404,20 @@ h1, h2, h3, h4, h5 {
       display: flex;
       flex-direction: column;
       align-items: flex-start; }
-    .gridfillter-container .fillter-status-container .fillterinput {
+    .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev {
+      padding: 0; }
+      .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input {
+        height: 36px;
+        border: solid 2px;
+        transition: all 0.5s ease-in-out;
+        border-color: #E9ECF0; }
+        .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:hover {
+          border-color: #A8B0BF; }
+        .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:focus {
+          border: solid 2px #83B4FC; }
+    .gridfillter-container .fillter-status-container .fillterinput .form-group {
       padding: 0;
-      display: flex;
-      flex-flow: column; }
-      .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev {
-        padding: 0; }
-        .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input {
-          height: 36px;
-          border: solid 2px;
-          transition: all 0.5s ease-in-out;
-          border-color: #E9ECF0; }
-          .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:hover {
-            border-color: #A8B0BF; }
-          .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:focus {
-            border: solid 2px #83B4FC; }
-      .gridfillter-container .fillter-status-container .fillterinput .form-group {
-        padding: 0;
-        margin: 0; }
+      margin: 0; }
     .gridfillter-container .fillter-status-container .fillter-status {
       min-width: 136px; }
       .gridfillter-container .fillter-status-container .fillter-status .text {
@@ -4068,7 +4064,7 @@ h1, h2, h3, h4, h5 {
       -ms-flex-align: center;
       align-items: center; }
     .main-header .header-content .titleproject1 a {
-      font-family: cairo-sb;
+      font-family: cairo-b;
       color: #858D9E;
       font-size: 14px;
       letter-spacing: -0.2px; }
@@ -4076,7 +4072,7 @@ h1, h2, h3, h4, h5 {
         transition: 0.5s ease-in-out;
         color: #252833; }
     .main-header .header-content .titleproject2 {
-      font-family: cairo-sb;
+      font-family: cairo-b;
       color: #adbccc;
       font-size: 14px;
       letter-spacing: -0.2px; }
@@ -5769,7 +5765,7 @@ h1, h2, h3, h4, h5 {
             font-size: 12px;
             color: #5E6475;
             font-weight: 600;
-            font-family: cairo-sb;
+            font-family: cairo-b;
             transition: all 0.2s;
             white-space: nowrap;
             max-width: 240px;
@@ -6254,7 +6250,7 @@ h1, h2, h3, h4, h5 {
               display: flex;
               align-items: center;
               justify-content: center;
-              font-family: cairo-sb;
+              font-family: cairo-b;
               font-size: 12px;
               line-height: 1.33;
               letter-spacing: -0.2px;
@@ -6874,7 +6870,7 @@ h1, h2, h3, h4, h5 {
 .button {
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  font-family: cairo-sb;
+  font-family: cairo-b;
   font-size: 13px;
   border: 1px solid transparent;
   padding: 0 16px;
@@ -7051,7 +7047,7 @@ h1, h2, h3, h4, h5 {
     .primaryBtnGroup1.largeBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
       font-size: 16px; }
 .primaryBtnGroup1 > .ui.button.normal {
-  font-family: cairo-sb;
+  font-family: cairo-b;
   position: relative; }
   .primaryBtnGroup1 > .ui.button.normal::after {
     content: '';
@@ -7132,7 +7128,7 @@ h1, h2, h3, h4, h5 {
     .defaultBtnGroup.largeBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
       font-size: 16px; }
 .defaultBtnGroup > .ui.button.normal {
-  font-family: cairo-sb;
+  font-family: cairo-b;
   position: relative; }
   .defaultBtnGroup > .ui.button.normal::after {
     content: '';
@@ -7211,7 +7207,7 @@ h1, h2, h3, h4, h5 {
     .primaryBtnGroup2.largeBtn .ui.floating.dropdown.icon.button > .dropdown.icon {
       font-size: 16px; }
 .primaryBtnGroup2 > .ui.button.normal {
-  font-family: cairo-sb;
+  font-family: cairo-b;
   position: relative; }
   .primaryBtnGroup2 > .ui.button.normal::after {
     content: '';
@@ -10509,8 +10505,8 @@ h1, h2, h3, h4, h5 {
   width: 100% !important; }
 
 .react-grid-HeaderRow .react-grid-HeaderCell, .react-grid-Row .react-grid-Cell {
-  border-left-color: transparent !important;
-  border-right-color: transparent !important; }
+  border-left-color: transparent;
+  border-right-color: transparent; }
 
 .react-grid-HeaderCell-sortable {
   color: #A8B0BF !important;
@@ -10740,6 +10736,13 @@ h1, h2, h3, h4, h5 {
 .react-grid-row-group > div strong {
   font-size: 14px;
   font-family: cairo-b; }
+
+.react-grid-HeaderCell--frozen, .react-grid-Cell--frozen {
+  box-shadow: none !important; }
+
+div[draggable=true]:last-of-type .react-grid-HeaderCell--frozen, .rdg-last--frozen {
+  border-left: 1px solid #E9ECF0 !important;
+  border-left-color: #E9ECF0 !important; }
 
 .mainGridSystem .gridSystemTables .girdTableHeader .thead-row {
   -webkit-transform: translateX(-365px);
@@ -11208,9 +11211,6 @@ table edition
 .mainContainer .customD_Menu {
   width: 100%; }
 
-.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
-  display: block; }
-
 .filterHidden {
   transition: all 0.4s ease-in-out;
   max-height: 850px; }
@@ -11263,9 +11263,6 @@ table edition
 /*
 table edition
 */
-.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
-  display: block; }
-
 .loginWrapper {
   display: flex;
   align-items: center;
@@ -11561,7 +11558,8 @@ table edition
   border: 1px solid #e74c3c; }
 
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
-  display: block; }
+  display: block;
+  margin-left: 0 !important; }
 
 .ui.modal {
   display: block !important; }
@@ -11611,9 +11609,6 @@ table edition
 
 .customDatepicker {
   width: auto !important;
-  margin-left: 0 !important; }
-
-.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   margin-left: 0 !important; }
 
 .filter__showmore .form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c .ui.input.inputDev {
@@ -11677,7 +11672,7 @@ table edition
   background: #fff !important;
   top: 72px !important;
   overflow: hidden !important;
-  z-index: 14 !important;
+  z-index: 998 !important;
   position: sticky !important;
   width: 100% !important;
   height: 64px; }
@@ -12839,12 +12834,6 @@ button.companies_icon {
 .gridfillter-container {
   display: block;
   padding-top: 15px; }
-
-.gridfillter-container .fillter-status-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap; }
 
 .gridfillter-container .fillter-status-container.onelineFilter {
   width: 100%;
@@ -15893,10 +15882,6 @@ div#markup-panel {
 .skylight-dialog .reactTableActions {
   overflow: auto; }
 
-.customDatepicker.fillter-status.fillter-item-c .proForm.datepickerContainer {
-  flex-direction: column;
-  align-items: flex-start; }
-
 .riskConContainer {
   display: flex;
   flex-direction: column;
@@ -16137,7 +16122,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
   top: 9px; }
 
 .gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c {
-  margin-right: 0; }
+  margin-left: 0; }
 
 .filter__showmore .fillter-item-c label.control-label {
   font-family: cairo-b;
@@ -16154,4 +16139,23 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 .linebylineInput .ck.ck-button, .linebylineInput .ck.ck-dropdown {
   margin: 0 !important; }
 
+.gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c .customD_Menu .css-vj8t7z, .gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c .customD_Menu .css-2o5izw, .customD_Menu .css-162g8z5 {
+  min-height: 36px;
+  height: 36px; }
+
+.gridfillter-container .fillter-status-container label {
+  margin: 0; }
+
+label {
+  font-family: cairo-b;
+  font-size: 13px;
+  line-height: 1.54;
+  letter-spacing: normal;
+  color: #5E6475;
+  position: relative; }
+
 /*# sourceMappingURL=layout-ar.css.map */
+.rowsPaginations button i {
+  transform: rotate(180deg);
+  margin-top: 8px;
+}

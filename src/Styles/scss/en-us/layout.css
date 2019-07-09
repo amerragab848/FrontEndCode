@@ -3394,7 +3394,7 @@ h1, h2, h3, h4, h5 {
   .gridfillter-container .fillter-status-container {
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     flex-wrap: wrap; }
     @media screen and (max-width: 1200px) {
       .gridfillter-container .fillter-status-container {
@@ -3404,24 +3404,20 @@ h1, h2, h3, h4, h5 {
       display: flex;
       flex-direction: column;
       align-items: flex-start; }
-    .gridfillter-container .fillter-status-container .fillterinput {
+    .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev {
+      padding: 0; }
+      .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input {
+        height: 36px;
+        border: solid 2px;
+        transition: all 0.5s ease-in-out;
+        border-color: #E9ECF0; }
+        .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:hover {
+          border-color: #A8B0BF; }
+        .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:focus {
+          border: solid 2px #83B4FC; }
+    .gridfillter-container .fillter-status-container .fillterinput .form-group {
       padding: 0;
-      display: flex;
-      flex-flow: column; }
-      .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev {
-        padding: 0; }
-        .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input {
-          height: 36px;
-          border: solid 2px;
-          transition: all 0.5s ease-in-out;
-          border-color: #E9ECF0; }
-          .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:hover {
-            border-color: #A8B0BF; }
-          .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:focus {
-            border: solid 2px #83B4FC; }
-      .gridfillter-container .fillter-status-container .fillterinput .form-group {
-        padding: 0;
-        margin: 0; }
+      margin: 0; }
     .gridfillter-container .fillter-status-container .fillter-status {
       min-width: 136px; }
       .gridfillter-container .fillter-status-container .fillter-status .text {
@@ -10509,8 +10505,8 @@ h1, h2, h3, h4, h5 {
   width: 100% !important; }
 
 .react-grid-HeaderRow .react-grid-HeaderCell, .react-grid-Row .react-grid-Cell {
-  border-right-color: transparent !important;
-  border-left-color: transparent !important; }
+  border-right-color: transparent;
+  border-left-color: transparent; }
 
 .react-grid-HeaderCell-sortable {
   color: #A8B0BF !important;
@@ -10740,6 +10736,13 @@ h1, h2, h3, h4, h5 {
 .react-grid-row-group > div strong {
   font-size: 14px;
   font-family: font-b; }
+
+.react-grid-HeaderCell--frozen, .react-grid-Cell--frozen {
+  box-shadow: none !important; }
+
+div[draggable=true]:last-of-type .react-grid-HeaderCell--frozen, .rdg-last--frozen {
+  border-right: 1px solid #E9ECF0 !important;
+  border-right-color: #E9ECF0 !important; }
 
 body {
   font-family: font-r; }
@@ -11011,9 +11014,6 @@ table edition
 .mainContainer .customD_Menu {
   width: 100%; }
 
-.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
-  display: block; }
-
 .filterHidden {
   transition: all 0.4s ease-in-out;
   max-height: 850px; }
@@ -11066,9 +11066,6 @@ table edition
 /*
 table edition
 */
-.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
-  display: block; }
-
 .loginWrapper {
   display: flex;
   align-items: center;
@@ -11364,7 +11361,8 @@ table edition
   border: 1px solid #e74c3c; }
 
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
-  display: block; }
+  display: block;
+  margin-right: 0 !important; }
 
 .ui.modal {
   display: block !important; }
@@ -11414,9 +11412,6 @@ table edition
 
 .customDatepicker {
   width: auto !important;
-  margin-right: 0 !important; }
-
-.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
   margin-right: 0 !important; }
 
 .filter__showmore .form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c .ui.input.inputDev {
@@ -11480,7 +11475,7 @@ table edition
   background: #fff !important;
   top: 72px !important;
   overflow: hidden !important;
-  z-index: 14 !important;
+  z-index: 998 !important;
   position: sticky !important;
   width: 100% !important;
   height: 64px; }
@@ -12642,12 +12637,6 @@ button.companies_icon {
 .gridfillter-container {
   display: block;
   padding-top: 15px; }
-
-.gridfillter-container .fillter-status-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap; }
 
 .gridfillter-container .fillter-status-container.onelineFilter {
   width: 100%;
@@ -15696,10 +15685,6 @@ div#markup-panel {
 .skylight-dialog .reactTableActions {
   overflow: auto; }
 
-.customDatepicker.fillter-status.fillter-item-c .proForm.datepickerContainer {
-  flex-direction: column;
-  align-items: flex-start; }
-
 .riskConContainer {
   display: flex;
   flex-direction: column;
@@ -15956,5 +15941,20 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 
 .linebylineInput .ck.ck-button, .linebylineInput .ck.ck-dropdown {
   margin: 0 !important; }
+
+.gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c .customD_Menu .css-vj8t7z, .gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c .customD_Menu .css-2o5izw, .customD_Menu .css-162g8z5 {
+  min-height: 36px;
+  height: 36px; }
+
+.gridfillter-container .fillter-status-container label {
+  margin: 0; }
+
+label {
+  font-family: font-b;
+  font-size: 13px;
+  line-height: 1.54;
+  letter-spacing: normal;
+  color: #5E6475;
+  position: relative; }
 
 /*# sourceMappingURL=layout.css.map */

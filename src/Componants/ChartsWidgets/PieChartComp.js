@@ -95,7 +95,7 @@ class PieChartComp extends Component {
                                         height= {width > 390 ? '200' : width / 2}
                                         width={width > 390 ? '200' : width / 2}
                                         externalRadius= {width > 390 ? '100' : width / 4}
-                                        internalRadius= {width > 390 ? '45' : width / 10}
+                                        internalRadius= {width > 390 ? '30' : width / 10}
                                         colorSchema={colorSchema}
                                         customMouseMove={this.logMouseOver}
                                         highlightSliceById={this.state.highlightedSlice}
