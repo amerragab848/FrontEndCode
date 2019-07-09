@@ -2,8 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../Pages/Communication/GridSetup";
-import NotifiMsg from '../../publicComponants/NotifiMsg'
+import GridSetup from "../../../Pages/Communication/GridSetup"; 
 import Export from "../../OptionsPanels/Export";
 import { SkyLightStateless } from 'react-skylight';
 import Select from '../../OptionsPanels/DropdownMelcous';
@@ -15,13 +14,16 @@ import dataservice from "../../../Dataservice";
 import Resources from "../../../resources.json";
 import Api from '../../../api';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
+var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
+var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 
 const ValidtionSchema = Yup.object().shape({
-    ARTitle: Yup.string()
-        .required(Resources['titleArValid'][currentLanguage]),
-    EnTitle: Yup.string()
-        .required(Resources['titleEnValid'][currentLanguage]),
+    ARTitle: Yup.string().test('contactNameAr', 'Name cannot be english', value => { 
+        return  ar.test(value)
+    }).required(Resources['titleArValid'][currentLanguage]),
+    EnTitle: Yup.string().test('titleEnCompany', 'Name cannot be arabic', value => {
+        return ! en.test(value);
+    }).required(Resources['titleEnValid'][currentLanguage]),
     value: Yup.number().required(Resources['isRequiredField'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
 });
