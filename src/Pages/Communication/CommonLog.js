@@ -399,7 +399,7 @@ class CommonLog extends Component {
     });
 
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
-  }
+  } 
 
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
