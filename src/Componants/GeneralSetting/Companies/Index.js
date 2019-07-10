@@ -412,22 +412,22 @@ class Index extends Component {
                 toast.warning("you can't remove this company !")
             else {
                 Api.post('ProjectCompaniesDelete?id=' + this.state.selectedRowId)
-                .then(result => {
-                    this.setState({
-                        rows: newRows,
-                        totalRows: newRows.length,
-                        isLoading: false,
-                        showDeleteModal: false,
-                        IsActiveShow: false
-                    });
-                    toast.success("operation complete successful")
-                })
-                .catch(ex => {
-                    this.setState({
-                        showDeleteModal: false,
-                        IsActiveShow: false
+                    .then(result => {
+                        this.setState({
+                            rows: newRows,
+                            totalRows: newRows.length,
+                            isLoading: false,
+                            showDeleteModal: false,
+                            IsActiveShow: false
+                        });
+                        toast.success("operation complete successful")
                     })
-                })
+                    .catch(ex => {
+                        this.setState({
+                            showDeleteModal: false,
+                            IsActiveShow: false
+                        })
+                    })
             }
         }
         else
@@ -512,18 +512,10 @@ class Index extends Component {
                                     </g>
                                 </svg>
                             </span>
-                            {this.state.viewfilter === false
-                                ? (
-                                    <span className="text active">
-                                        <span className="show-fillter">Show Fillter</span>
-                                        <span className="hide-fillter">Hide Fillter</span>
-                                    </span>
-                                ) : (
-                                    <span className="text">
-                                        <span className="show-fillter">{Resources['showFillter'][currentLanguage]}</span>
-                                        <span className="hide-fillter">{Resources['hideFillter'][currentLanguage]}</span>
-                                    </span>
-                                )}
+                            <span className={this.state.viewfilter === false ? "text active " : "text"}>
+                                <span className="show-fillter">{Resources['hideFillter'][currentLanguage]}</span>
+                                <span className="hide-fillter">{Resources['showFillter'][currentLanguage]}</span>
+                            </span>
                         </div>
                     </div>
                     <div className="filterBTNS">

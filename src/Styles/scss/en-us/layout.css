@@ -15958,3 +15958,6 @@ label {
   position: relative; }
 
 /*# sourceMappingURL=layout.css.map */
+.proForm .form-group {
+  margin-bottom: 8px !important
+}

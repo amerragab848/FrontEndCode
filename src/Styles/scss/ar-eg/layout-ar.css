@@ -16159,3 +16159,7 @@ label {
   transform: rotate(180deg);
   margin-top: 8px;
 }
+
+.proForm .form-group {
+  margin-bottom: 8px !important
+}
