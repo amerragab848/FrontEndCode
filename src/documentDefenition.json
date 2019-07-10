@@ -18910,7 +18910,7 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-        "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\"><a data-bind=\"attr: { href: '#lettersAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text: $parent.entity.subject\"></span></a></div>",
+        "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\"><a data-bind=\"attr: { href: '#claimsAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text: $parent.entity.subject\"></span></a></div>",
         "exportDataType": "s"
       },
       {

@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Styles/css/rodal.css";
 import "./Styles/css/semantic.min.css";
 
+import LoadingSection from "./Componants/publicComponants/LoadingSection";
+
 import Menu from "./Pages/Menu/Menu";
 import Login from "./Componants/Layouts/Login";
 import Route from "./router";
@@ -14,15 +16,56 @@ import { Provider } from "react-redux";
 import configureStore from "./store/configureStore";
 import { ToastContainer } from "react-toastify";
 
+const loadingStyle = {
+  container: {
+    position: "absolute",
+    top: "0",
+    right: "0",
+    left: "0",
+    bottom: "0",
+    display: "-webkit-flex",
+    display: "flex",
+    webkitAlignItems: "center",
+    alignItems: "center",
+    webkitJustifyContent: "center",
+    justifyContent: "center",
+    webkitFlexFlow: "column",
+    flexFlow: "column",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    zIndex: "20",
+    minHeight: "250px"
+  },
+  spinner: {
+    width: "64px",
+    height: "64px",
+    border: "solid 6px #4382f9",
+    borderBottomColor: "transparent",
+    borderRadius: "50%",
+    webkitAnimation: "rotate 1s linear infinite",
+    animation: "rotate 1s linear infinite"
+  }
+}
+
+//import Styles from "./CurrentLang";
 const store = configureStore();
 
 const IsAuthorize = api.IsAuthorized();
 class App extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    cssLoaded: false
+  }
 
+  componentDidMount() {
     let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-    currentLanguage === "ar" ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => { }) : import("./Styles/scss/en-us/layout.css").then(css => { });
+    currentLanguage === "ar" ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => {
+      this.setState({
+        cssLoaded: true
+      })
+    }) : import("./Styles/scss/en-us/layout.css").then(css => {
+      this.setState({
+        cssLoaded: true
+      })
+    });
   }
 
   render() {
@@ -34,7 +77,8 @@ class App extends Component {
     ) : (
         <Login />
       );
-    return (
+
+    return this.state.cssLoaded ? (
       <Provider store={store}>
         <ErrorHandler>
           <div>
@@ -43,6 +87,8 @@ class App extends Component {
           </div>
         </ErrorHandler>
       </Provider>
+    ) : (
+      <div style={loadingStyle.container}><span style={loadingStyle.spinner}></span></div>
     );
   }
 }
