@@ -1221,8 +1221,33 @@ class drawingListAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.schedule[currentLanguage]}
                         moduleTitle={Resources['timeCoordination'][currentLanguage]} />
 
+                    <div className="doc-container" style={{ flexFlow: 'column' }}>
+                        <div className="docstepper-levels" style={{ boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2)', width: '100%', background: '#fff', zIndex: '14' }}>
+                            <div class="StepperNum1 StepperNum" style={{ justifyContent: 'center', marginTop: '40px' }}>
+                                <div onClick={this.StepOneLink} data-id="step1" className={'StepNumber ' + (this.state.SecondStepComplate ? " active" : ' current__step  active')}>
+                                    <div class="StepNum">
+                                        <p class="StepN zero" >1</p>
+                                        <p class="StepTrue zero">✔</p>
+                                    </div>
+                                    <div class="stepWord">{Resources.expensesWorkFlow[currentLanguage]}</div>
+                                </div>
+                                <span class="Step-Line"></span>
+                                <div onClick={this.StepTwoLink} data-id="step2 " className={'StepNumber ' + (this.state.SecondStepComplate ? " active current__step" : " ")}>
+                                    <div class="StepNum">
+                                        <p class="StepN zero">2</p>
+                                        <p class="StepTrue zero">✔</p>
+                                    </div>
+                                    <div class="stepWord">{Resources.contacts[currentLanguage]}</div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div className="doc-container">
+
+
+
+
+
+
                         <div className="step-content">
                             {this.state.FirstStep ?
 
@@ -1369,7 +1394,7 @@ class drawingListAddEdit extends Component {
 
 
 
-                        {this.state.IsEditMode ?
+                        {/* {this.state.IsEditMode ? 
                             <div className="section__tabs">
                                 <div onClick={this.StepOneLink} className={this.state.FirstStep ? "section__tabs--item active" : "section__tabs--item "}>
                                     <h3 className="zero">{Resources["schedule"][currentLanguage]}</h3>
@@ -1381,7 +1406,6 @@ class drawingListAddEdit extends Component {
 
                             :
                             <div className="docstepper-levels">
-                                {/* Next & Previous */}
                                 <div className="step-content-foot">
                                     <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.IsEditMode ? "step-content-btn-prev " :
                                         "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources['previous'][currentLanguage]}</span>
@@ -1390,7 +1414,6 @@ class drawingListAddEdit extends Component {
                                         : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
                                     </span>
                                 </div>
-                                {/* Steps Active  */}
                                 <div className="workflow-sliderSteps">
                                     <div className="step-slider">
                                         <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
@@ -1415,7 +1438,8 @@ class drawingListAddEdit extends Component {
                                 </div>
 
                             </div>
-                        }
+                        
+                        */}
                     </div>
 
                 </div>

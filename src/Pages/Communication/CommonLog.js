@@ -547,7 +547,7 @@ class CommonLog extends Component {
             </div>
             <div className="filterBTNS">
               {btnExport}
-              <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
+              <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button>
             </div>
             <div className="rowsPaginations">
               <div className="rowsPagiRange">

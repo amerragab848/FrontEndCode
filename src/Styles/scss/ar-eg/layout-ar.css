@@ -4526,67 +4526,65 @@ h1, h2, h3, h4, h5 {
 
 .one__tab {
   padding-bottom: 90px; }
-  .one__tab .doc-container {
-    flex-flow: row; }
-    .one__tab .doc-container .subiTabsContent > header.main__header {
-      padding: 0; }
-      .one__tab .doc-container .subiTabsContent > header.main__header .main__header--div {
+  .one__tab .doc-container .subiTabsContent > header.main__header {
+    padding: 0; }
+    .one__tab .doc-container .subiTabsContent > header.main__header .main__header--div {
+      width: 100%;
+      margin: 0 auto;
+      height: 72px; }
+  .one__tab .doc-container .subiTabContainer {
+    width: 70%;
+    flex-flow: column; }
+    @media screen and (max-width: 1200px) {
+      .one__tab .doc-container .subiTabContainer {
+        width: 78%; } }
+    .one__tab .doc-container .subiTabContainer .main__header {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 0 56px; }
+    .one__tab .doc-container .subiTabContainer .step-content {
+      width: 100%;
+      padding: 0 57px; }
+      .one__tab .doc-container .subiTabContainer .step-content.activeTab {
+        display: none; }
+      .one__tab .doc-container .subiTabContainer .step-content .doc-infohead {
+        font-family: cairo-r;
+        font-size: 12px;
+        line-height: 1.33;
+        letter-spacing: -0.2px;
+        color: #a8b0bf;
         width: 100%;
-        margin: 0 auto;
-        height: 72px; }
-    .one__tab .doc-container .subiTabContainer {
-      width: 70%;
-      flex-flow: column; }
-      @media screen and (max-width: 1200px) {
-        .one__tab .doc-container .subiTabContainer {
-          width: 78%; } }
-      .one__tab .doc-container .subiTabContainer .main__header {
-        height: 72px;
-        display: flex;
-        align-items: center;
-        padding: 0 56px; }
-      .one__tab .doc-container .subiTabContainer .step-content {
-        width: 100%;
-        padding: 0 57px; }
-        .one__tab .doc-container .subiTabContainer .step-content.activeTab {
-          display: none; }
-        .one__tab .doc-container .subiTabContainer .step-content .doc-infohead {
-          font-family: cairo-r;
-          font-size: 12px;
-          line-height: 1.33;
-          letter-spacing: -0.2px;
-          color: #a8b0bf;
-          width: 100%;
-          margin-bottom: 32px; }
-        .one__tab .doc-container .subiTabContainer .step-content .document-fields {
-          padding: 14px 0; }
-          .one__tab .doc-container .subiTabContainer .step-content .document-fields .subitTabs {
-            width: 24%;
-            height: 100vh;
-            border-left: 1px solid #e9ecf0; }
-          .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput {
-            margin-right: 0; }
-            .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+        margin-bottom: 32px; }
+      .one__tab .doc-container .subiTabContainer .step-content .document-fields {
+        padding: 14px 0; }
+        .one__tab .doc-container .subiTabContainer .step-content .document-fields .subitTabs {
+          width: 24%;
+          height: 100vh;
+          border-left: 1px solid #e9ecf0; }
+        .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput {
+          margin-right: 0; }
+          .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+            width: 100%; }
+            .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
               width: 100%; }
-              .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
-                width: 100%; }
-    .one__tab .doc-container .doc-pre-cycle {
-      padding: 0; }
-      .one__tab .doc-container .doc-pre-cycle header {
-        padding: 40px 0; }
-        .one__tab .doc-container .doc-pre-cycle header h2 {
-          border-bottom: 1px solid #e1e3e8;
-          width: 100%;
-          padding-bottom: 12px;
-          padding-right: 0;
-          font-family: cairo-r;
-          font-size: 20px;
-          line-height: 1.4;
-          letter-spacing: -0.2px;
-          color: #252833; }
-      .one__tab .doc-container .doc-pre-cycle .slider-Btns {
-        padding-top: 55px;
-        padding-right: 0; }
+  .one__tab .doc-container .doc-pre-cycle {
+    padding: 0; }
+    .one__tab .doc-container .doc-pre-cycle header {
+      padding: 40px 0; }
+      .one__tab .doc-container .doc-pre-cycle header h2 {
+        border-bottom: 1px solid #e1e3e8;
+        width: 100%;
+        padding-bottom: 12px;
+        padding-right: 0;
+        font-family: cairo-r;
+        font-size: 20px;
+        line-height: 1.4;
+        letter-spacing: -0.2px;
+        color: #252833; }
+    .one__tab .doc-container .doc-pre-cycle .slider-Btns {
+      padding-top: 55px;
+      padding-right: 0; }
   @media screen and (max-width: 1200px) {
     .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput input {
       width: 100%; } }
@@ -8789,9 +8787,9 @@ h1, h2, h3, h4, h5 {
         transition: .1s ease; }
     .StepperNum .StepNumber.active .Step-Line {
       background-color: #CCD2DB; }
-    .StepperNum .StepNumber.active.activea .StepNum {
+    .StepperNum .StepNumber.active.current__step .StepNum {
       position: relative; }
-      .StepperNum .StepNumber.active.activea .StepNum::before {
+      .StepperNum .StepNumber.active.current__step .StepNum::before {
         content: "\f0d7";
         position: absolute;
         top: -20px;
@@ -8846,7 +8844,7 @@ h1, h2, h3, h4, h5 {
     letter-spacing: -0.2px;
     top: 120%;
     font-family: cairo-r; }
-.StepperNum.StepperNum3 .StepNumber.activea .stepWord {
+.StepperNum.StepperNum3 .StepNumber.current__step .stepWord {
   color: #4382F9; }
 
 .StepperNum.StepperNum4 .StepNum {
@@ -8868,7 +8866,7 @@ h1, h2, h3, h4, h5 {
   background-color: #ffffff; }
 .StepperNum.StepperNum4 .StepNumber.active .Step-Line {
   background-color: #5FD45F; }
-.StepperNum.StepperNum4 .StepNumber.activea .StepNum {
+.StepperNum.StepperNum4 .StepNumber.current__step .StepNum {
   background-color: #ffffff !important; }
 
 /**/
@@ -11030,6 +11028,13 @@ body {
 
 /* layout -ar css */
 /* templates approval ar */
+.rowsPaginations button i {
+  transform: rotate(180deg);
+  margin-top: 8px; }
+
+.proForm .form-group {
+  margin-bottom: 8px !important; }
+
 .moutasem {
   display: none; }
 
@@ -16155,11 +16160,18 @@ label {
   position: relative; }
 
 /*# sourceMappingURL=layout-ar.css.map */
-.rowsPaginations button i {
-  transform: rotate(180deg);
-  margin-top: 8px;
+.StepperNum .StepNumber.active.current__step .StepNum::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  right: -4px;
+  left: -4px;
+  border: 2px solid #00da67;
+  border-radius: 50%;
 }
 
-.proForm .form-group {
-  margin-bottom: 8px !important
+.StepperNum .StepNumber {
+  min-width: 170px;
+  max-width: 220px;
 }
