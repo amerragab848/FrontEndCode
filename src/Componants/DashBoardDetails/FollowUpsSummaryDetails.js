@@ -2,37 +2,28 @@ import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
+import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
-import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import CryptoJS from "crypto-js";
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
-let  subjectLink = ({ value, row }) => {
-    let doc_view = "";
-    let subject = "";
-    if (row) {
-      doc_view ="/"+ row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
-      subject = row.subject;
-      return <a href={doc_view}> {subject} </a>;
-    }
-    return null;
-  };
+let subjectLink = ({ value, row }) => {
+  let doc_view = "";
+  let subject = "";
+  if (row) {
+    doc_view = "/" + row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
+    subject = row.subject;
+    return <a href={doc_view}> {subject} </a>;
+  }
+  return null;
+};
 
 class FollowUpsSummaryDetails extends Component {
   constructor(props) {
@@ -41,36 +32,33 @@ class FollowUpsSummaryDetails extends Component {
     var columnsGrid = [
       {
         key: "projectName",
-        name:  Resources["projectName"][currentLanguage],
+        name: Resources["projectName"][currentLanguage],
         width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "fromCompany",
-        name:  Resources["fromCompany"][currentLanguage],
+        name: Resources["fromCompany"][currentLanguage],
         width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "arrange",
-        name:  Resources["arrange"][currentLanguage],
+        name: Resources["arrange"][currentLanguage],
         width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "subject",
@@ -81,8 +69,7 @@ class FollowUpsSummaryDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter:subjectLink
+        formatter: subjectLink
       },
       {
         key: "actionByContactName",
@@ -92,76 +79,69 @@ class FollowUpsSummaryDetails extends Component {
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "approvalStatusName",
         name: Resources["approvalStatus"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
+        sortDescendingFirst: true
       },
       {
         key: "docTypeName",
         name: Resources["docType"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
+        sortDescendingFirst: true
       },
       {
         key: "delayDuration",
         name: Resources["delay"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
+        sortDescendingFirst: true
       },
       {
         key: "duration2",
         name: Resources["durationDays"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
+        sortDescendingFirst: true
       },
       {
         key: "sendDate",
         name: Resources["sendDate"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "lastApprovalDate",
         name: Resources["lastApprovalDate"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       }
     ];
 
@@ -235,7 +215,7 @@ class FollowUpsSummaryDetails extends Component {
     ];
 
     this.state = {
-      pageTitle:Resources["followUpsSummaryDetails"][currentLanguage],
+      pageTitle: Resources["followUpsSummaryDetails"][currentLanguage],
       viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
@@ -246,14 +226,14 @@ class FollowUpsSummaryDetails extends Component {
   }
 
   componentDidMount() {
-  
-      Api.get("GetFollowing").then(result => {
-  
-        this.setState({
-          rows: result != null ? result : [],
-          isLoading: false
-        });
-      }); 
+
+    Api.get("GetFollowing").then(result => {
+
+      this.setState({
+        rows: result != null ? result : [],
+        isLoading: false
+      });
+    });
   }
 
   hideFilter(value) {
@@ -271,24 +251,23 @@ class FollowUpsSummaryDetails extends Component {
     });
 
     Api.get("").then(result => {
-        if (result.length > 0) {
-          this.setState({
-            rows: result != null ? result : [],
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
-      })
-      .catch(ex => {
-        alert(ex);
+      if (result.length > 0) {
         this.setState({
-          rows: [],
+          rows: result != null ? result : [],
           isLoading: false
         });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
+    }).catch(ex => {
+
+      this.setState({
+        rows: [],
+        isLoading: false
       });
+    });
   };
 
   onRowClick = (obj) => {
@@ -300,7 +279,7 @@ class FollowUpsSummaryDetails extends Component {
         arrange: 0,
         docApprovalId: 0,
         isApproveMode: false,
-        perviousRoute:window.location.pathname+window.location.search
+        perviousRoute: window.location.pathname + window.location.search
       }
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
@@ -310,16 +289,16 @@ class FollowUpsSummaryDetails extends Component {
       });
     }
   }
- 
+
   render() {
-    const dataGrid = this.state.isLoading === false ?(<GridSetup rows={this.state.rows} onRowClick={this.onRowClick} columns={this.state.columns} showCheckbox={false}/>) : <LoadingSection/>;
+    const dataGrid = this.state.isLoading === false ? (<GridSetup rows={this.state.rows} onRowClick={this.onRowClick} columns={this.state.columns} showCheckbox={false} />) : <LoadingSection />;
 
-    const btnExport = this.state.isLoading === false ? 
-    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-    : <LoadingSection /> ;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : <LoadingSection />;
 
-    const ComponantFilter= this.state.isLoading === false ?   
-    <Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} /> : <LoadingSection />;
+    const ComponantFilter = this.state.isLoading === false ?
+      <Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
@@ -383,22 +362,22 @@ class FollowUpsSummaryDetails extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
           <div className="filterBTNS">
             {btnExport}
-          </div> 
+          </div>
         </div>
-        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
             {ComponantFilter}
           </div>

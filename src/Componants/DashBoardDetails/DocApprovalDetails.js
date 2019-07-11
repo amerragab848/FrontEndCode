@@ -311,8 +311,6 @@ class DocApprovalDetails extends Component {
       // }
     ];
 
-    this.props.actions.RouteToTemplate();
-
     this.state = {
       pageTitle: "",
       viewfilter: false,
@@ -326,6 +324,9 @@ class DocApprovalDetails extends Component {
   }
 
   componentDidMount() {
+    
+    this.props.actions.RouteToTemplate();
+
     const query = new URLSearchParams(this.props.location.search);
 
     let action = null;
