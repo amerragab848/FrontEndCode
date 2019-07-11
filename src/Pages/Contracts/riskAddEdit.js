@@ -30,6 +30,7 @@ import ReactTable from "react-table";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import numeral from 'numeral';
+import RiskCategorisation from "../../Componants/publicComponants/RiskCategorisation";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -2064,6 +2065,7 @@ class riskAddEdit extends Component {
                                     {this.state.SecondStep ?
                                         <div className="subiTabsContent feilds__top">
                                             {this.CurrentMit()}
+                                            <RiskCategorisation riskId={this.state.docId} />
                                             {/* {this.ProposedMit(true)} */}
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">
