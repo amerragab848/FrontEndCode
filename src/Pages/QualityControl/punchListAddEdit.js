@@ -322,6 +322,9 @@ class punchListAddEdit extends Component {
                         rows: res
                     })
                     this.FillDropDowns()
+                    let data = { items: res };
+                    this.props.actions.ExportingData(data);
+    
                 }
             )
             this.GetMaxArrageItem()

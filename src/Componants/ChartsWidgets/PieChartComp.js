@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+//import { Donut, ResponsiveContainer } from 'britecharts-react'
+
 import { Donut, ResponsiveContainer } from 'britecharts-react'
+
+
+import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
 import Api from '../../api';
 
 const colorSchema = [
@@ -87,18 +92,18 @@ class PieChartComp extends Component {
                                 <div className="donut__legend">
                                     <Donut
                                         data={this.state.dataChart}
-                                        height= {width / 2}
-                                        width={width / 2}
-                                        externalRadius={width / 4}
-                                        internalRadius={width / 10}
+                                        height= {width > 390 ? '200' : width / 2}
+                                        width={width > 390 ? '200' : width / 2}
+                                        externalRadius= {width > 390 ? '100' : width / 4}
+                                        internalRadius= {width > 390 ? '45' : width / 10}
                                         colorSchema={colorSchema}
                                         customMouseMove={this.logMouseOver}
                                         highlightSliceById={this.state.highlightedSlice}
                                         isAnimated={false} />
 
                                     {this.state.showLegend === true ?
-                                        <p id="legenbd__teext" style={{ width: width / 2 }}>
-                                            <span className="chartName"> {this.state.data.name}</span>
+                                        <p id="legenbd__teext" style={{ width: width > 250 ? '170' : width / 2 }}>
+                                            <span className="chartName">{this.state.data.name}</span>
                                             <span className="percentage">{this.state.data.percentage + '%'}</span>
                                             <span className="totalAmount">{this.state.data.quantity.toFixed(1) }</span>
                                         </p>

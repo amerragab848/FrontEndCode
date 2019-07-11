@@ -78,9 +78,10 @@ export default class DocumentEmailNotification extends Component {
 
         return (
             <div className="mainContainer main__fulldash--container white-bg">
-                <Dropdown title="docAlerts" data={this.state.DocumentData} handleChange={this.DocumentAlertChange}
+                <div className="proForm">
+                    <Dropdown title="docAlerts" data={this.state.DocumentData} handleChange={this.DocumentAlertChange}
                     index='DocumentAlert' name="DocumentAlert" selectedValue={this.state.SelectedDoc} />
-
+                </div>
                 <div className="fullWidthWrapper">
                     {this.state.isLoading === false ? (
                         <button className={this.state.ChooseOk ? "primaryBtn-1 btn smallBtn" : "primaryBtn-1 ui disabled button"}

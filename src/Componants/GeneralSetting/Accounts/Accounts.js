@@ -642,18 +642,10 @@ class Accounts extends Component {
                                 </svg>
                             </span>
 
-                            {this.state.viewfilter === false
-                                ? (
-                                    <span className="text active">
-                                        <span className="show-fillter">Show Fillter</span>
-                                        <span className="hide-fillter">Hide Fillter</span>
-                                    </span>
-                                ) : (
-                                    <span className="text">
-                                        <span className="show-fillter">Show Fillter</span>
-                                        <span className="hide-fillter">Hide Fillter</span>
-                                    </span>
-                                )}
+                            <span className={this.state.viewfilter === false ? "text active " : " text"}>
+                                <span className="show-fillter">{Resources['hideFillter'][currentLanguage]}</span>
+                                <span className="hide-fillter">{Resources['showFillter'][currentLanguage]}</span>
+                            </span>
                         </div>
                     </div>
 
