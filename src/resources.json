@@ -8006,5 +8006,21 @@
     "new": {
         "en": "New",
         "ar": "اضافة"
+    },
+    "projectPhase": {
+        "en": "Project Phase",
+        "ar": "مرحلة المشروع"
+    },
+    "organisation": {
+        "en": "Organisation",
+        "ar": "منظمة"
+    },
+    "managementlevel": {
+        "en": "Management level",
+        "ar": "مستوى الإدارة"
+    },
+    "categorisation": {
+        "en": "Categorisation",
+        "ar": "Categorisation"
     }
 }
