@@ -4,12 +4,9 @@ import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import Resources from "../../resources.json";
 import moment from "moment";
-// import Minimize from '../../Styles/images/minimize.png';
-// import plus from '../../Styles/images/plus.png';
 import Calendar from "react-calendar";
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class FilterComponent extends Component {
 
@@ -180,20 +177,8 @@ class FilterComponent extends Component {
         <div className="filter__warrper">
           {this.props.filtersColumns.length > 6 ?
             <div className="filter__more" style={{ padding: 0 }}>
-              <button className="filter__more--btn" onClick={this.viewSearch}>
-                See all
-              </button>
+              <button className="filter__more--btn" onClick={this.viewSearch}>{Resources['seeAll'][currentLanguage]}</button>
             </div> : null}
-
-          {/* // <div className="showMore__btn">
-          //   <button id="showMore_input" className="moreOn">
-          //     <span className="more" onClick={this.viewSearch}>SHOW MORE</span>
-          //     <span className="less" onClick={this.resetDate}>SHOW Less</span>
-          //     <img className="more" src={plus} alt="plus" />
-          //     <img className="less" src={Minimize} alt="minimize" />
-          //   </button>
-          // </div>
-          // : null */}
 
           <div className="filter__input-wrapper">
             <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
@@ -310,7 +295,7 @@ class FilterComponent extends Component {
         <div className="filterModal" id="largeModal">
           <div style={{ position: 'relative', minHeight: '200px' }}>
             <div className="header-filter">
-              <h2 className="zero">Filter results</h2>
+              <h2 className="zero">{Resources['resultItems'][currentLanguage]}</h2>
             </div>
             <div className="content">
               <div className="filter__warrper">
@@ -376,16 +361,10 @@ class FilterComponent extends Component {
               {
                 this.state.isLoading === false ? <button className="largeBtn btn primaryBtn-1" onClick={this.filterMethod}>{Resources.filter[currentLanguage]}</button> :
                   <button className="largeBtn btn primaryBtn-1">
-                    <div className="spinner">
-                      <div className="bounce1" />
-                      <div className="bounce2" />
-                      <div className="bounce3" />
-                    </div>
+                    <div className="spinner"> <div className="bounce1" /> <div className="bounce2" /> <div className="bounce3" /> </div>
                   </button>
               }
-              <button className="reset__filter" onClick={this.ClearFilters}>
-                Reset all
-              </button>
+              <button className="reset__filter" onClick={this.ClearFilters}>{Resources['reset'][currentLanguage]}</button>
             </div>
           </div>
         </div>
