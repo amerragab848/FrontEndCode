@@ -14,8 +14,7 @@ export default function (state = initialState.app.communication, action) {
                 ...state
             } 
 
-        case types.Export_Document:
-            console.log('Export_Document....',action.items)
+        case types.Export_Document: 
             let _items=state.items.length>0? state.items:action.items.length>0?action.items:[]
             return {
                 ...state, items: _items 
@@ -73,8 +72,7 @@ export default function (state = initialState.app.communication, action) {
             };
 
         case types.add_item:
-            let docId = state.docId == 0 ? action.docId : state.docId;
-            console.log('add_item reducer',state.items, action.item)
+            let docId = state.docId == 0 ? action.docId : state.docId; 
             return {
                 ...state,
                 docId,

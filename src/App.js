@@ -4,9 +4,7 @@ import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./Styles/css/rodal.css";
 import "./Styles/css/semantic.min.css";
-
-import LoadingSection from "./Componants/publicComponants/LoadingSection";
-
+  
 import Menu from "./Pages/Menu/Menu";
 import Login from "./Componants/Layouts/Login";
 import Route from "./router";
