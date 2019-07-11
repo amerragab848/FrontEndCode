@@ -8002,5 +8002,33 @@
     "filter": {
         "en": "Filter",
         "ar": "بحث"
+    },
+    "riskRealised": {
+        "en": "Risk realised",
+        "ar": "بحث"
+    },
+    "actualImpact": {
+        "en": "Actual impact",
+        "ar": "بحث"
+    },
+    "dateOfRealisation": {
+        "en": "Date of realisation",
+        "ar": "بحث"
+    },
+    "postEventMitigation": {
+        "en": "Post event mitigation",
+        "ar": "بحث"
+    },
+    "costOfMitigation": {
+        "en": "Cost of mitigation",
+        "ar": "بحث"
+    },
+    "residualRiskTitle": {
+        "en": "Residual risk title",
+        "ar": "بحث"
+    },
+    "newRiskRef": {
+        "en": "New risk ref",
+        "ar": "بحث"
     }
 }
