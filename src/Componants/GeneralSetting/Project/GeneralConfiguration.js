@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-import { Formik, Form, validateYupSchema } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Api from '../../../api';
 import config from "../../../Services/Config";
@@ -11,14 +11,12 @@ import dataservice from "../../../Dataservice";
 import DropDown from '../../OptionsPanels/DropdownMelcous'
 import DatePicker from '../../OptionsPanels/DatePicker'
 import moment from 'moment';
-import { SkyLightStateless } from 'react-skylight';
 import { connect } from "react-redux";
 import * as ProjectActions from "../../../store/actions/ProjectActions";
 import { bindActionCreators } from "redux";
 import _ from "lodash";
 import Recycle from '../../../Styles/images/attacheRecycle.png'
 import { toast } from "react-toastify";
-const publicConfiguarion = config.getPayload();
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 
@@ -697,17 +695,6 @@ class GeneralConfiguration extends Component {
         )
     }
 }
-const mapStateToProps = state => {
-    let sState = state;
-    return sState;
-};
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(ProjectActions, dispatch)
-    };
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)
-    (GeneralConfiguration))
+export default withRouter (GeneralConfiguration)
 

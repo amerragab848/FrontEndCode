@@ -4,12 +4,16 @@ import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
-import GridSetup from "../../Pages/Communication/GridSetup"; 
+import GridSetup from "../../Pages/Communication/GridSetup";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as communicationActions from '../../store/actions/communication';
+
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
- 
+
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
@@ -40,7 +44,7 @@ let subjectLink = ({ value, row }) => {
       arrange: row.arrange,
       docApprovalId: row.accountDocWorkFlowId,
       isApproveMode: true,
-      perviousRoute:window.location.pathname+window.location.search
+      perviousRoute: window.location.pathname + window.location.search
     };
 
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
@@ -307,6 +311,8 @@ class DocApprovalDetails extends Component {
       // }
     ];
 
+    this.props.actions.RouteToTemplate();
+
     this.state = {
       pageTitle: "",
       viewfilter: false,
@@ -387,24 +393,24 @@ class DocApprovalDetails extends Component {
       });
   };
 
-  onRowClick = (obj) => {  
-      if(obj){
-        let objRout = {
-          docId: obj.docId,
-          projectId: obj.projectId,
-          projectName: obj.projectName,
-          arrange: obj.arrange,
-          docApprovalId: obj.accountDocWorkFlowId,
-          isApproveMode: true,
-          perviousRoute:window.location.pathname+window.location.search
-        }
-        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
-        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-        this.props.history.push({
-          pathname: "/" + obj.docLink,
-          search: "?id=" + encodedPaylod
-        }); 
+  onRowClick = (obj) => {
+    if (obj) {
+      let objRout = {
+        docId: obj.docId,
+        projectId: obj.projectId,
+        projectName: obj.projectName,
+        arrange: obj.arrange,
+        docApprovalId: obj.accountDocWorkFlowId,
+        isApproveMode: true,
+        perviousRoute: window.location.pathname + window.location.search
       }
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+      this.props.history.push({
+        pathname: "/" + obj.docLink,
+        search: "?id=" + encodedPaylod
+      });
+    }
   }
 
   render() {
@@ -482,12 +488,12 @@ class DocApprovalDetails extends Component {
                     </g>
                   </g>
                 </svg>
-              </span> 
+              </span>
 
               <span className={"text " + (this.state.viewfilter === false ? " " : " active")}>
-                  <span className="show-fillter">Show Fillter</span>
-                  <span className="hide-fillter">Hide Fillter</span>
-                </span>
+                <span className="show-fillter">Show Fillter</span>
+                <span className="hide-fillter">Hide Fillter</span>
+              </span>
             </div>
           </div>
           <div className="filterBTNS">
@@ -505,4 +511,17 @@ class DocApprovalDetails extends Component {
   }
 }
 
-export default DocApprovalDetails;
+function mapStateToProps(state, ownProps) {
+  return {
+    showLeftMenu: state.communication.showLeftMenu
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(DocApprovalDetails);
+ 
