@@ -4,42 +4,91 @@ import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./Styles/css/rodal.css";
 import "./Styles/css/semantic.min.css";
- 
-import Styles from "./CurrentLang";
+
+import LoadingSection from "./Componants/publicComponants/LoadingSection";
 
 import Menu from "./Pages/Menu/Menu";
-import Login from './Componants/Layouts/Login'
-import Route from './router';
-import api from './api';
-import {
-  Provider
-} from 'react-redux';
+import Login from "./Componants/Layouts/Login";
+import Route from "./router";
+import api from "./api";
+import { Provider } from "react-redux";
 
-import configureStore from './store/configureStore';
+import configureStore from "./store/configureStore";
 import { ToastContainer } from "react-toastify";
- 
+
+const loadingStyle = {
+  container: {
+    position: "absolute",
+    top: "0",
+    right: "0",
+    left: "0",
+    bottom: "0",
+    display: "-webkit-flex",
+    display: "flex",
+    webkitAlignItems: "center",
+    alignItems: "center",
+    webkitJustifyContent: "center",
+    justifyContent: "center",
+    webkitFlexFlow: "column",
+    flexFlow: "column",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    zIndex: "20",
+    minHeight: "250px"
+  },
+  spinner: {
+    width: "64px",
+    height: "64px",
+    border: "solid 6px #4382f9",
+    borderBottomColor: "transparent",
+    borderRadius: "50%",
+    webkitAnimation: "rotate 1s linear infinite",
+    animation: "rotate 1s linear infinite"
+  }
+}
+
+//import Styles from "./CurrentLang";
 const store = configureStore();
 
-const IsAuthorize = api.IsAuthorized()
+const IsAuthorize = api.IsAuthorized();
 class App extends Component {
+  state = {
+    cssLoaded: false
+  }
+
+  componentDidMount() {
+    let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+    currentLanguage === "ar" ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => {
+      this.setState({
+        cssLoaded: true
+      })
+    }) : import("./Styles/scss/en-us/layout.css").then(css => {
+      this.setState({
+        cssLoaded: true
+      })
+    });
+  }
 
   render() {
-    const showComp = IsAuthorize ?
-      <div id="direction_warrper" >
+    const showComp = IsAuthorize ? (
+      <div id="direction_warrper">
         <Menu />
         {Route}
       </div>
-      : <Login />
-    return (
+    ) : (
+        <Login />
+      );
+
+    return this.state.cssLoaded ? (
       <Provider store={store}>
-        <ErrorHandler >
+        <ErrorHandler>
           <div>
             {showComp}
             <ToastContainer autoClose={3000} />
           </div>
-        </ErrorHandler >
+        </ErrorHandler>
       </Provider>
-
+    ) : (
+      <div style={loadingStyle.container}><span style={loadingStyle.spinner}></span></div>
     );
   }
 }
@@ -50,7 +99,7 @@ class ErrorHandler extends React.Component {
     // Add some default error states
     this.state = {
       error: false,
-      info: null,
+      info: null
     };
   }
 
@@ -59,7 +108,7 @@ class ErrorHandler extends React.Component {
     // Add error to state
     this.setState({
       error: error,
-      info: info,
+      info: info
     });
     //  logErrorToMyService(error, info);
   }
@@ -73,15 +122,20 @@ class ErrorHandler extends React.Component {
             <div>
               <p>
                 <span>Sorry</span> Something went Wrong
-              </p>
+                            </p>
               <p>
-                A team of highly trained developers has been dispatched to deal with this situation!
-              </p>
+                A team of highly trained developers has been
+                dispatched to deal with this situation!
+                            </p>
             </div>
-            <NavLink to="/" >
+            <NavLink to="/">
               <span className="goBack">
-                <i className="fa fa-angle-double-left" aria-hidden="true"></i>Back to Dashboard
-            </span>
+                <i
+                  className="fa fa-angle-double-left"
+                  aria-hidden="true"
+                />
+                Back to Dashboard
+                            </span>
             </NavLink>
           </div>
         </div>

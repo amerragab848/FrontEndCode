@@ -298,7 +298,7 @@ class Expenses extends Component {
             columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
 
         return (
-            <div className="mainContainer main__fulldash--container">
+            <div className="main__fulldash--container">
                 
                 <div className="resetPassword">
 
@@ -378,13 +378,12 @@ class Expenses extends Component {
                         </div>
                     </div>
 
-                    <div className="sayedWrapper">
+                  
                         {this.state.Loading ? <LoadingSection /> : null}
                         {this.state.isLoading == false
                             ? <GridSetup columns={this.state.columns} rows={this.state.rows} pageSize={this.state.pageSize}
                                 showCheckbox={true} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} onRowClick={this.RouteHandler.bind(this)} />
                             : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
-                    </div>
 
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal

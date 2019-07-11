@@ -173,11 +173,11 @@
     },
     "followUpsSummary": {
         "en": "Follow Up ",
-        "ar": "ملخص متابعات على الدورة المستندية"
+        "ar": "متابعات الدورة المستندية"
     },
     "followUpsSummaryDetails": {
         "en": "Follow Ups  Details",
-        "ar": "تفاصيل ملخص متابعات على الدورة المستندية"
+        "ar": "تفاصيل متابعات الدورة المستندية"
     },
     "discussionPanelCommentPlaceholder": {
         "en": "Write a comment",
@@ -2071,7 +2071,7 @@
         "en": "Correspondence Received Addition",
         "ar": "إضافة المراسلات الواردة"
     },
-    "sendingMethod": {
+    "sendingMethod": { 
         "en": "Sending Method",
         "ar": "طريقة الارسال"
     },
@@ -8002,5 +8002,9 @@
     "filter": {
         "en": "Filter",
         "ar": "بحث"
+    },
+    "new": {
+        "en": "New",
+        "ar": "اضافة"
     }
 }

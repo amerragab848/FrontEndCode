@@ -14,6 +14,9 @@ const marginObject = {
     bottom: 50,
 };
 
+// const pubsub = require('../../Styles/js/pubsub-js')
+// require('../../Styles/js/resizeHelper')
+
 const colorSchema = ["#39bd3d", "#dfe2e6"]
 
 class BarChartCompJS extends Component {

@@ -1221,8 +1221,35 @@ class drawingListAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.schedule[currentLanguage]}
                         moduleTitle={Resources['timeCoordination'][currentLanguage]} />
 
+                    <div className="doc-container" style={{ flexFlow: this.state.IsEditMode ? 'row' : 'column' }}>
+                        {this.state.IsEditMode ? null :
 
-                    <div className="doc-container">
+                            <div className="docstepper-levels" style={{ boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2)', width: '100%', background: '#fff', zIndex: '14' }}>
+                                <div class="StepperNum1 StepperNum" style={{ justifyContent: 'center', marginTop: '40px' }}>
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'StepNumber ' + (this.state.FirstStep ? "current__step active" : ' active')}>
+                                        <div class="StepNum">
+                                            <p class="StepN zero" >1</p>
+                                            <p class="StepTrue zero">✔</p>
+                                        </div>
+                                        <div class="stepWord">{Resources.expensesWorkFlow[currentLanguage]}</div>
+                                    </div>
+                                    <span class="Step-Line"></span>
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'StepNumber ' + (this.state.SecondStepComplate ? " active current__step" : " ")}>
+                                        <div class="StepNum">
+                                            <p class="StepN zero">2</p>
+                                            <p class="StepTrue zero">✔</p>
+                                        </div>
+                                        <div class="stepWord">{Resources.contacts[currentLanguage]}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        }
+
+
+
+
                         <div className="step-content">
                             {this.state.FirstStep ?
 
@@ -1378,44 +1405,10 @@ class drawingListAddEdit extends Component {
                                     <h3 className="zero">{Resources["items"][currentLanguage]}</h3>
                                 </div>
                             </div>
-
                             :
-                            <div className="docstepper-levels">
-                                {/* Next & Previous */}
-                                <div className="step-content-foot">
-                                    <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.IsEditMode ? "step-content-btn-prev " :
-                                        "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources['previous'][currentLanguage]}</span>
-
-                                    <span onClick={this.NextStep} className={this.state.IsEditMode ? "step-content-btn-prev "
-                                        : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                                {/* Steps Active  */}
-                                <div className="workflow-sliderSteps">
-                                    <div className="step-slider">
-                                        <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                            <div className="steps-timeline">
-                                                <span>1</span>
-                                            </div>
-                                            <div className="steps-info">
-                                                <h6>{Resources["schedule"][currentLanguage]}</h6>
-                                            </div>
-                                        </div>
-
-                                        <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.SecondStepComplate ? "current__step" : "")} >
-                                            <div className="steps-timeline">
-                                                <span>2</span>
-                                            </div>
-                                            <div className="steps-info">
-                                                <h6 >{Resources["items"][currentLanguage]}</h6>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
+                            null
                         }
+
                     </div>
 
                 </div>

@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from "react";
 import ReactDataGrid from "react-data-grid";
 import { ToolsPanel, Data, Draggable } from "react-data-grid-addons";
-
-// import "../../Styles/gridStyle.css";
-// import "../../Styles/scss/en-us/dataGrid.css";
+ 
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
@@ -416,9 +414,9 @@ class GridSetup extends Component {
     })
     return (
       <Fragment>
-        <div
-          className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
+        <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
           <div className="minimizeSpan">
+            
             <div className="V-tableSize"  data-toggle="tooltip" title="Filter Columns" onClick={this.openModalColumn}>
               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                 <g fill="none" fillRule="evenodd" transform="translate(5 5)">
@@ -428,6 +426,7 @@ class GridSetup extends Component {
                 </g>
               </svg>
             </div>
+
           </div>
 
           <div className="grid-container">
@@ -438,7 +437,6 @@ class GridSetup extends Component {
             <div id="bottom__scroll">
               {this.state.Loading === false ?
                 <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
-
                   <ReactDataGrid
                     rowKey="id"
                     minHeight={groupedRows != undefined ? (groupedRows.length < 5 ? 350 : (this.props.minHeight !== undefined ? this.props.minHeight : 750)) : 1}
