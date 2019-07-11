@@ -4372,6 +4372,206 @@ h1, h2, h3, h4, h5 {
 .settings-container .setting-tabs-contant .tab .has-tabs-in .mini-tabs-content .tab .bottom-content {
   padding-top: 40px; }
 
+.settings-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+  .settings-container .setting-tabs-contant .tab__header {
+    border: 1px solid #e9ecf0;
+    border-right: 0;
+    border-left: 0;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    padding: 0 40px; }
+    .settings-container .setting-tabs-contant .tab__header p {
+      font-family: font-b;
+      font-size: 20px;
+      line-height: 1.4;
+      letter-spacing: -0.2px;
+      color: #252833; }
+  .settings-container .setting-tabs-contant .company__logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 41px; }
+    .settings-container .setting-tabs-contant .company__logo span {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      padding: 30px;
+      border: solid 1px #eceff1;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px; }
+      .settings-container .setting-tabs-contant .company__logo span img {
+        max-width: 100%;
+        max-height: 100%; }
+    .settings-container .setting-tabs-contant .company__logo .company__logo--change h3 {
+      font-family: font-b;
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: -0.2px;
+      color: #252833; }
+    .settings-container .setting-tabs-contant .company__logo .company__logo--change form {
+      display: inline-block; }
+      .settings-container .setting-tabs-contant .company__logo .company__logo--change form input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1; }
+      .settings-container .setting-tabs-contant .company__logo .company__logo--change form label {
+        display: flex;
+        width: 88px;
+        align-items: center; }
+  .settings-container .setting-tabs-contant .owner__info p {
+    opacity: 0.4;
+    font-family: font-r;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+    color: #252833;
+    padding-left: 16px; }
+  .settings-container .setting-tabs-contant .proForm .admin_form button {
+    margin-left: 16px; }
+  .settings-container .setting-tabs-contant .proForm .admin__checkbox {
+    padding: 4px 16px; }
+    .settings-container .setting-tabs-contant .proForm .admin__checkbox .ui.checkbox label {
+      color: #3e4352; }
+  .settings-container .setting-tabs-contant .proForm .sub__admin .input__btns {
+    display: flex;
+    flex-wrap: wrap; }
+  .settings-container .setting-tabs-contant .proForm .sub__admin button {
+    background: transparent;
+    border: none;
+    cursor: pointer; }
+    .settings-container .setting-tabs-contant .proForm .sub__admin button span {
+      display: flex;
+      align-items: center;
+      font-family: font-b;
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: -0.2px;
+      text-align: center;
+      color: #858d9e; }
+      .settings-container .setting-tabs-contant .proForm .sub__admin button span img {
+        margin-right: 4px; }
+  .settings-container .setting-tabs-contant .proForm .add__new--admin button {
+    margin-top: 8px; }
+  .settings-container .setting-tabs-contant .proForm.flex__proform {
+    display: flex;
+    flex-flow: column; }
+    .settings-container .setting-tabs-contant .proForm.flex__proform .form-group .ui.selection.dropdown.singleDropDown {
+      max-width: 360px; }
+    .settings-container .setting-tabs-contant .proForm.flex__proform .datepickerContainer .form-group .ui.selection.dropdown.singleDropDown {
+      max-width: 192px; }
+  .settings-container .setting-tabs-contant .delete__admin {
+    margin-top: 68px;
+    padding: 0 16px; }
+    .settings-container .setting-tabs-contant .delete__admin button {
+      background: transparent;
+      border: none;
+      height: 40px;
+      font-family: font-b;
+      font-size: 13px;
+      line-height: 1.54;
+      letter-spacing: 0.4px;
+      color: #858d9e;
+      cursor: pointer; }
+  .settings-container .setting-tabs-contant .overview__info .overview__info--content {
+    display: flex;
+    align-items: center;
+    margin-bottom: 37px; }
+    .settings-container .setting-tabs-contant .overview__info .overview__info--content p {
+      font-family: font-b;
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: -0.2px;
+      color: #252833;
+      margin-right: 12px;
+      min-width: 70px; }
+    .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects {
+      display: flex;
+      align-items: center; }
+      .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        margin: 0 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: font-xb;
+        font-size: 18px;
+        line-height: 1.11;
+        letter-spacing: -0.7px;
+        color: #ffffff; }
+        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.pm {
+          background-color: #4382f9; }
+        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.hr {
+          background-color: #e74c3c; }
+        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.fm {
+          background-color: #39bd3d; }
+        .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.border_span.number_span {
+          border: solid 1px #ccd2db;
+          background-color: rgba(67, 130, 249, 0);
+          font-family: font-b;
+          font-size: 24px;
+          line-height: 1.17;
+          letter-spacing: -0.5px;
+          color: #252833; }
+      .settings-container .setting-tabs-contant .overview__info .overview__info--content .overview__info--projects span.text_span {
+        font-family: font-opens;
+        font-size: 14px;
+        line-height: 1.71;
+        letter-spacing: -0.2px;
+        color: #3e4352; }
+
+.two__content--style {
+  display: flex;
+  padding-top: 26px;
+  padding-left: 40px;
+  padding-right: 68px;
+  padding-right: 40px;
+  position: relative;
+  padding-bottom: 32px;
+  margin-bottom: 20px; }
+  @media screen and (max-width: 1200px) {
+    .two__content--style {
+      padding-right: 0; } }
+  .two__content--style::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 40px;
+    right: 68px;
+    height: 1px;
+    background-color: #e1e3e8; }
+  .two__content--style .left__column {
+    width: 234px; }
+    @media screen and (max-width: 1200px) {
+      .two__content--style .left__column {
+        width: 110px; } }
+    .two__content--style .left__column h2 {
+      font-family: font-r;
+      font-size: 20px;
+      line-height: 1.4;
+      letter-spacing: -0.2px;
+      color: #252833; }
+      @media screen and (max-width: 1200px) {
+        .two__content--style .left__column h2 {
+          font-size: 14px; } }
+  .two__content--style .right__column {
+    width: calc(100% - 234px); }
+    @media screen and (max-width: 1200px) {
+      .two__content--style .right__column {
+        width: calc(100% - 110px); } }
+  .two__content--style:last-of-type::after {
+    display: none; }
+
 .documents-temp .doc-container .subitTabs header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -9894,26 +10094,7 @@ h1, h2, h3, h4, h5 {
   top: 0;
   left: 0;
   bottom: 0;
-  z-index: 999; }
-
-
-.b-hover .section__tabs--item,
-.section__tabs.b-hover {
-  width: 88px !important;
-  overflow: hidden;
-  transition: all 0.3s ease; }
-
-
-.b-hover .section__tabs--item > *,
-.b-hover header h2 {
-  max-width: 40px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; }
-
-.section__tabs .section__tabs--item > *,
-.section__tabs header h2 {
-  transition: all 0.3s ease; }
+  z-index: 998; }
 
 .section__tabs header {
   height: 72px;
@@ -9972,6 +10153,23 @@ h1, h2, h3, h4, h5 {
   line-height: 1.33;
   letter-spacing: -0.2px;
   color: #a8b0bf; }
+
+.b-hover .section__tabs--item,
+.section__tabs.b-hover {
+  width: 88px;
+  overflow: hidden;
+  transition: all 0.3s ease; }
+
+.b-hover .section__tabs--item > *,
+.b-hover header h2 {
+  max-width: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.section__tabs .section__tabs--item > *,
+.section__tabs header h2 {
+  transition: all 0.3s ease; }
 
 .workflowWrapper {
   overflow: auto;
@@ -11008,7 +11206,7 @@ body {
   z-index: 0; }
 
 .customDatepicker .proForm .linebylineInput input {
-  width: 100% !important;
+  width: 100%;
   outline: 0;
   padding: .67857143em 1em; }
 
@@ -12583,7 +12781,8 @@ button.companies_icon {
   .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput input,
   .noTabs__document .doc-container .step-content .linebylineInput .inputDev.ui.input,
   .noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
-    max-width: 100%; }
+    max-width: 100%;
+    min-width: 192px; }
 
   .noTabs__document.one__tab.one_step .attachmentTable tbody tr .contentCell.tableCell-2 {
     max-width: 130px; }
@@ -15993,4 +16192,18 @@ label {
   color: #5E6475;
   position: relative; }
 
+
+  .cutomEditSchedule .edit__sign .notifiActionsContainer {
+    position: absolute;
+    margin: 10px auto;
+    text-align: center;
+    min-width: 696px;
+    top: auto;
+    right: calc(50% - 348px);
+    z-index: 998;
+}
+
+.cutomEditSchedule .step-content {
+  padding-top: 50px !important;
+}
 /*# sourceMappingURL=layout.css.map */

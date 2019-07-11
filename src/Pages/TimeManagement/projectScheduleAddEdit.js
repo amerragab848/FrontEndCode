@@ -1230,7 +1230,7 @@ class drawingListAddEdit extends Component {
 
             <div className="mainContainer">
 
-                <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
+                <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs cutomEditSchedule" : "documents-stepper noTabs__document one__tab one_step cutomEditSchedule"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.schedule[currentLanguage]}
                         moduleTitle={Resources['timeCoordination'][currentLanguage]} />
 
