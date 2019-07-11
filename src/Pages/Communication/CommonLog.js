@@ -555,7 +555,7 @@ class CommonLog extends Component {
                 <span>
                   {this.state.pageSize * this.state.pageNumber + this.state.pageSize}
                 </span>
-                of
+                {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
               <span> {this.state.totalRows}</span>
               </div>
               <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>
