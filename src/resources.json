@@ -2071,7 +2071,7 @@
         "en": "Correspondence Received Addition",
         "ar": "إضافة المراسلات الواردة"
     },
-    "sendingMethod": {
+    "sendingMethod": { 
         "en": "Sending Method",
         "ar": "طريقة الارسال"
     },
