@@ -291,75 +291,48 @@ class TransmittalAddEdit extends Component {
         })
 
         //discplines
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "title").then(result => {
             if (isEdit) {
-
                 let disciplineId = this.props.document.discipline;
-
                 if (disciplineId) {
-
-                    let discipline = result.find(i => i.value === parseInt(disciplineId));
-
-                    this.setState({
-                        selectedDiscpline: discipline
-                    });
+                    let discipline = result.find(i => i.label === disciplineId);
+                    this.setState({ selectedDiscpline: discipline });
                 }
             }
-            this.setState({
-                discplines: [...result]
-            });
+            this.setState({ discplines: [...result] });
         });
 
         //area
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "title").then(result => {
             if (isEdit) {
-
                 let areaId = this.props.document.area;
-
                 if (areaId) {
-
-                    let area = result.find(i => i.value === parseInt(areaId));
-
-                    this.setState({
-                        selectedArea: area
-                    });
+                    let area = result.find(i => i.value === areaId);
+                    this.setState({ selectedArea: area });
                 }
             }
-            this.setState({
-                areas: [...result]
-            });
+            this.setState({ areas: [...result] });
         });
 
         //location
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", "title", "id").then(result => {
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", "title", "title").then(result => {
             if (isEdit) {
                 let locationId = this.props.document.location;
                 if (locationId) {
-                    let location = result.find(i => i.value === parseInt(locationId));
-
-                    this.setState({
-                        selectedLocation: location
-                    });
+                    let location = result.find(i => i.value === locationId);
+                    this.setState({ selectedLocation: location });
                 }
             }
-            this.setState({
-                locations: [...result]
-            });
+            this.setState({ locations: [...result] });
         });
 
         //priorty
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority", "title", "id").then(result => {
             if (isEdit) {
-
                 let priorityId = this.props.document.priorityId;
-
                 if (priorityId) {
-
                     let priorityName = result.find(i => i.value === parseInt(priorityId));
-
-                    this.setState({
-                        selectedPriorityId: { label: priorityName.label, value: priorityId }
-                    });
+                    this.setState({ selectedPriorityId: { label: priorityName.label, value: priorityId } });
                 }
             }
             this.setState({
