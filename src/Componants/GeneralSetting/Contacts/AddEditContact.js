@@ -8,18 +8,23 @@ import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux'
 import * as AdminstrationActions from '../../../store/actions/Adminstration'
-
+ 
 import {
     bindActionCreators
 } from 'redux';
-
+var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
+var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const validationSchema = Yup.object().shape({
     email: Yup.string()
         .email(Resources['emailFormat'][currentLanguage])
         .required(Resources['emailRequired'][currentLanguage]),
-    contactNameEn: Yup.string().required(Resources['contactNameRequired'][currentLanguage]),
-    contactNameAr: Yup.string().required(Resources['contactNameRequired'][currentLanguage]),
+    contactNameEn: Yup.string().test('contactNameEn', 'Name cannot be arabic', value => {
+        return !en.test(value);
+    }).required(Resources['contactNameRequired'][currentLanguage]),
+    contactNameAr: Yup.string().test('contactNameAr', 'Name cannot be english', value => { 
+        return  ar.test(value)
+    }).required(Resources['contactNameRequired'][currentLanguage]),
     mobile: Yup.number().required(Resources['mobileRequired'][currentLanguage]),
     telephone: Yup.number().required(Resources['telephoneRequired'][currentLanguage])
 })
@@ -208,7 +213,7 @@ class AddNewContact extends Component {
                                     ) : !errors.contactNameEn && touched.contactNameEn && !this.state.exitsNameEn ? (
                                         <span className="glyphicon form-control-feedback glyphicon-ok"></span>
                                     ) : null}
-                                    {errors.contactNameEn && touched.contactNameEn && this.state.exitsNameEn ? (
+                                    {errors.contactNameEn && touched.contactNameEn ? (
                                         <em className="pError">{errors.contactNameEn}</em>
                                     ) : null}
                                     {!errors.contactNameEn && this.state.exitsNameEn ? (
@@ -221,9 +226,8 @@ class AddNewContact extends Component {
                                 <div className={"ui input inputDev  " + (errors.contactNameAr && touched.contactNameAr || this.state.exitsNameAr ? (
                                     " has-error") : !errors.contactNameAr && touched.contactNameAr ? (" has-success") : "")}
                                 >
-                                    <input autoComplete="off" type='text' className="form-control" name="contactNameAr" value={values.contactNameAr}
-                                        onBlur={(e) => {
-                                            handleBlur(e)
+                                    <input autoComplete="off" type='text' className="form-control" name="contactNameAr" value={values.contactNameAr} 
+                                       onBlur={(e) => {   handleBlur(e)
                                             this.handleBlur(e.target.value, "ContactNameAr")
                                         }} onChange={handleChange} placeholder={Resources['ContactNameAr'][currentLanguage]} />
                                     {errors.contactNameAr && touched.contactNameAr || this.state.exitsNameAr ? (
@@ -231,7 +235,7 @@ class AddNewContact extends Component {
                                     ) : !errors.contactNameAr && touched.contactNameAr && !this.state.exitsNameAr ? (
                                         <span className="glyphicon form-control-feedback glyphicon-ok"></span>
                                     ) : null}
-                                    {errors.contactNameAr && touched.contactNameAr && this.state.exitsNameAr ? (
+                                    {errors.contactNameAr && touched.contactNameAr   ? (
                                         <em className="pError">{errors.contactNameAr}</em>
                                     ) : null}
                                     {!errors.contactNameAr && this.state.exitsNameAr ? (

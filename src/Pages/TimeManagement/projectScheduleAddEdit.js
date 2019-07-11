@@ -36,7 +36,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -166,7 +166,7 @@ class drawingListAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -193,7 +193,7 @@ class drawingListAddEdit extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -254,10 +254,10 @@ class drawingListAddEdit extends Component {
         }
         if (!Config.IsAllow(583) && !Config.IsAllow(358) && !Config.IsAllow(360)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
-          }
+            );
+        }
 
     }
 
@@ -477,7 +477,8 @@ class drawingListAddEdit extends Component {
         });
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -534,7 +535,7 @@ class drawingListAddEdit extends Component {
 
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
         if (item.value !== "0") {
@@ -700,8 +701,8 @@ class drawingListAddEdit extends Component {
 
         let Doc = { ...this.state.documentItemEdit }
 
-        Doc.finishDate = moment(Doc.finishDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        Doc.startDate = moment(Doc.startDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        Doc.finishDate = moment(Doc.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        Doc.startDate = moment(Doc.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('EditProjectScheduleItem', Doc).then(res => {
             this.setState({
@@ -737,8 +738,8 @@ class drawingListAddEdit extends Component {
         })
 
         let DocAdd = this.state.documentItem
-        DocAdd.finishDate = moment(DocAdd.finishDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-        DocAdd.startDate = moment(DocAdd.startDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        DocAdd.finishDate = moment(DocAdd.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+        DocAdd.startDate = moment(DocAdd.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
 
         dataservice.addObject('AddProjectScheduleItem', DocAdd).then(res => {
@@ -796,27 +797,26 @@ class drawingListAddEdit extends Component {
     }
 
     StepOneLink = () => {
-        if (this.state.IsEditMode ) {
-          this.setState({
-            FirstStep: true,
-            SecondStepComplate: false,
-            CurrStep: 1,
-            SecondStep:false,
-            
-          })
-        }
-      }
-    
-      StepTwoLink = () => {
         if (this.state.IsEditMode) {
-          this.setState({
-            FirstStep: false,
-            SecondStepComplate: true,
-            CurrStep: 2,
-            SecondStep:true,
-                  })
+            this.setState({
+                FirstStep: true,
+                SecondStepComplate: false,
+                CurrStep: 1,
+                SecondStep: false,
+            })
         }
-      }
+    }
+
+    StepTwoLink = () => {
+        if (this.state.IsEditMode) {
+            this.setState({
+                FirstStep: false,
+                SecondStepComplate: true,
+                CurrStep: 2,
+                SecondStep: true,
+            })
+        }
+    }
 
     render() {
 
@@ -1218,11 +1218,38 @@ class drawingListAddEdit extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.schedule[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.schedule[currentLanguage]}
                         moduleTitle={Resources['timeCoordination'][currentLanguage]} />
- 
 
-                    <div className="doc-container">
+                    <div className="doc-container" style={{ flexFlow: this.state.IsEditMode ? 'row' : 'column' }}>
+                        {this.state.IsEditMode ? null :
+
+                            <div className="docstepper-levels" style={{ boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2)', width: '100%', background: '#fff', zIndex: '14' }}>
+                                <div class="StepperNum1 StepperNum" style={{ justifyContent: 'center', marginTop: '40px' }}>
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'StepNumber ' + (this.state.FirstStep ? "current__step active" : ' active')}>
+                                        <div class="StepNum">
+                                            <p class="StepN zero" >1</p>
+                                            <p class="StepTrue zero">✔</p>
+                                        </div>
+                                        <div class="stepWord">{Resources.expensesWorkFlow[currentLanguage]}</div>
+                                    </div>
+                                    <span class="Step-Line"></span>
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'StepNumber ' + (this.state.SecondStepComplate ? " active current__step" : " ")}>
+                                        <div class="StepNum">
+                                            <p class="StepN zero">2</p>
+                                            <p class="StepTrue zero">✔</p>
+                                        </div>
+                                        <div class="stepWord">{Resources.contacts[currentLanguage]}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        }
+
+
+
+
                         <div className="step-content">
                             {this.state.FirstStep ?
 
@@ -1336,12 +1363,12 @@ class drawingListAddEdit extends Component {
                                         : null
                                     }
                                     <div className="doc-pre-cycle letterFullWidth">
-                                          <div>
-                                                {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={869} EditAttachments={3249} ShowDropBox={3555} ShowGoogleDrive={3556} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-                                                {this.viewAttachments()}
-                                                {this.props.changeStatus === true ?
-                                                    <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                    : null}
+                                        <div>
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={869} EditAttachments={3249} ShowDropBox={3555} ShowGoogleDrive={3556} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                            {this.viewAttachments()}
+                                            {this.props.changeStatus === true ?
+                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                : null}
                                         </div>
                                     </div>
                                     {this.state.docId > 0 ?
@@ -1365,41 +1392,23 @@ class drawingListAddEdit extends Component {
                             </div>
                         </div>
                         {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.IsEditMode ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources['previous'][currentLanguage]}</span>
 
-                                <span onClick={this.NextStep} className={this.state.IsEditMode ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            {/* Steps Active  */}
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["schedule"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
 
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources["items"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
 
+
+                        {this.state.IsEditMode ?
+                            <div className="section__tabs">
+                                <div onClick={this.StepOneLink} className={this.state.FirstStep ? "section__tabs--item active" : "section__tabs--item "}>
+                                    <h3 className="zero">{Resources["schedule"][currentLanguage]}</h3>
+                                </div>
+                                <div onClick={this.StepTwoLink} className={this.state.SecondStep ? "section__tabs--item active" : "section__tabs--item "}>
+                                    <h3 className="zero">{Resources["items"][currentLanguage]}</h3>
                                 </div>
                             </div>
+                            :
+                            null
+                        }
 
-                        </div>
                     </div>
 
                 </div>

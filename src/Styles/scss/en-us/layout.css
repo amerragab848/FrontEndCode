@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
@@ -1066,6 +1067,30 @@ ul {
   font-family: roboto-M;
   src: url("../../fonts/Roboto-Medium.ttf");
   font-weight: 500; }
+/* Arabic */
+@font-face {
+  font-family: cairo-r;
+  src: url("../../fonts/Cairo/Cairo-Regular.ttf");
+  font-weight: normal; }
+@font-face {
+  font-family: cairo-sb;
+  font-weight: 600;
+  src: url("../../fonts/Cairo/Cairo-SemiBold.ttf"); }
+@font-face {
+  font-family: cairo-b;
+  src: url("../../fonts/Cairo/Cairo-Bold.ttf");
+  font-weight: bold; }
+@font-face {
+  font-family: cairo-xb;
+  src: url("../../fonts/Cairo/Cairo-Bold.ttf");
+  font-weight: 700; }
+@font-face {
+  font-family: cairo-black;
+  src: url("../../fonts/Cairo/Cairo-Black.ttf");
+  font-weight: 900; }
+h1, h2, h3, h4, h5 {
+  font-family: font-r; }
+
 .boxessss {
   margin: 0 auto;
   padding: 50px;
@@ -3369,7 +3394,7 @@ ul {
   .gridfillter-container .fillter-status-container {
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     flex-wrap: wrap; }
     @media screen and (max-width: 1200px) {
       .gridfillter-container .fillter-status-container {
@@ -3379,24 +3404,20 @@ ul {
       display: flex;
       flex-direction: column;
       align-items: flex-start; }
-    .gridfillter-container .fillter-status-container .fillterinput {
+    .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev {
+      padding: 0; }
+      .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input {
+        height: 36px;
+        border: solid 2px;
+        transition: all 0.5s ease-in-out;
+        border-color: #E9ECF0; }
+        .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:hover {
+          border-color: #A8B0BF; }
+        .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:focus {
+          border: solid 2px #83B4FC; }
+    .gridfillter-container .fillter-status-container .fillterinput .form-group {
       padding: 0;
-      display: flex;
-      flex-flow: column; }
-      .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev {
-        padding: 0; }
-        .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input {
-          height: 36px;
-          border: solid 2px;
-          transition: all 0.5s ease-in-out;
-          border-color: #E9ECF0; }
-          .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:hover {
-            border-color: #A8B0BF; }
-          .gridfillter-container .fillter-status-container .fillterinput .ui.input.inputDev input:focus {
-            border: solid 2px #83B4FC; }
-      .gridfillter-container .fillter-status-container .fillterinput .form-group {
-        padding: 0;
-        margin: 0; }
+      margin: 0; }
     .gridfillter-container .fillter-status-container .fillter-status {
       min-width: 136px; }
       .gridfillter-container .fillter-status-container .fillter-status .text {
@@ -3437,7 +3458,7 @@ ul {
       font-family: font-opens; }
   .gridfillter-container .primaryBtn-2.btn.smallBtn {
     margin-left: 8px;
-    margin-top: 22px;
+    margin-bottom: 8px;
     min-width: 126px; }
 
 .mainGridSystem {
@@ -4762,67 +4783,65 @@ ul {
 
 .one__tab {
   padding-bottom: 90px; }
-  .one__tab .doc-container {
-    flex-flow: row; }
-    .one__tab .doc-container .subiTabsContent > header.main__header {
-      padding: 0; }
-      .one__tab .doc-container .subiTabsContent > header.main__header .main__header--div {
+  .one__tab .doc-container .subiTabsContent > header.main__header {
+    padding: 0; }
+    .one__tab .doc-container .subiTabsContent > header.main__header .main__header--div {
+      width: 100%;
+      margin: 0 auto;
+      height: 72px; }
+  .one__tab .doc-container .subiTabContainer {
+    width: 70%;
+    flex-flow: column; }
+    @media screen and (max-width: 1200px) {
+      .one__tab .doc-container .subiTabContainer {
+        width: 78%; } }
+    .one__tab .doc-container .subiTabContainer .main__header {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 0 56px; }
+    .one__tab .doc-container .subiTabContainer .step-content {
+      width: 100%;
+      padding: 0 57px; }
+      .one__tab .doc-container .subiTabContainer .step-content.activeTab {
+        display: none; }
+      .one__tab .doc-container .subiTabContainer .step-content .doc-infohead {
+        font-family: font-opens;
+        font-size: 12px;
+        line-height: 1.33;
+        letter-spacing: -0.2px;
+        color: #a8b0bf;
         width: 100%;
-        margin: 0 auto;
-        height: 72px; }
-    .one__tab .doc-container .subiTabContainer {
-      width: 70%;
-      flex-flow: column; }
-      @media screen and (max-width: 1200px) {
-        .one__tab .doc-container .subiTabContainer {
-          width: 78%; } }
-      .one__tab .doc-container .subiTabContainer .main__header {
-        height: 72px;
-        display: flex;
-        align-items: center;
-        padding: 0 56px; }
-      .one__tab .doc-container .subiTabContainer .step-content {
-        width: 100%;
-        padding: 0 57px; }
-        .one__tab .doc-container .subiTabContainer .step-content.activeTab {
-          display: none; }
-        .one__tab .doc-container .subiTabContainer .step-content .doc-infohead {
-          font-family: font-opens;
-          font-size: 12px;
-          line-height: 1.33;
-          letter-spacing: -0.2px;
-          color: #a8b0bf;
-          width: 100%;
-          margin-bottom: 32px; }
-        .one__tab .doc-container .subiTabContainer .step-content .document-fields {
-          padding: 14px 0; }
-          .one__tab .doc-container .subiTabContainer .step-content .document-fields .subitTabs {
-            width: 24%;
-            height: 100vh;
-            border-right: 1px solid #e9ecf0; }
-          .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput {
-            margin-right: 0; }
-            .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+        margin-bottom: 32px; }
+      .one__tab .doc-container .subiTabContainer .step-content .document-fields {
+        padding: 14px 0; }
+        .one__tab .doc-container .subiTabContainer .step-content .document-fields .subitTabs {
+          width: 24%;
+          height: 100vh;
+          border-right: 1px solid #e9ecf0; }
+        .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput {
+          margin-right: 0; }
+          .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev {
+            width: 100%; }
+            .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
               width: 100%; }
-              .one__tab .doc-container .subiTabContainer .step-content .document-fields .proForm .linebylineInput .ui.input.inputDev input {
-                width: 100%; }
-    .one__tab .doc-container .doc-pre-cycle {
-      padding: 0; }
-      .one__tab .doc-container .doc-pre-cycle header {
-        padding: 40px 0; }
-        .one__tab .doc-container .doc-pre-cycle header h2 {
-          border-bottom: 1px solid #e1e3e8;
-          width: 100%;
-          padding-bottom: 12px;
-          padding-left: 0;
-          font-family: font-r;
-          font-size: 20px;
-          line-height: 1.4;
-          letter-spacing: -0.2px;
-          color: #252833; }
-      .one__tab .doc-container .doc-pre-cycle .slider-Btns {
-        padding-top: 55px;
-        padding-left: 0; }
+  .one__tab .doc-container .doc-pre-cycle {
+    padding: 0; }
+    .one__tab .doc-container .doc-pre-cycle header {
+      padding: 40px 0; }
+      .one__tab .doc-container .doc-pre-cycle header h2 {
+        border-bottom: 1px solid #e1e3e8;
+        width: 100%;
+        padding-bottom: 12px;
+        padding-left: 0;
+        font-family: font-r;
+        font-size: 20px;
+        line-height: 1.4;
+        letter-spacing: -0.2px;
+        color: #252833; }
+    .one__tab .doc-container .doc-pre-cycle .slider-Btns {
+      padding-top: 55px;
+      padding-left: 0; }
   @media screen and (max-width: 1200px) {
     .one__tab.one_step .doc-container .step-content .document-fields .proForm .linebylineInput input {
       width: 100%; } }
@@ -5348,7 +5367,7 @@ ul {
       padding: 0 5px 12px 0; }
       .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
         position: absolute;
-        bottom: 0;
+        bottom: 15px;
         right: 12px;
         font-size: 12px; }
     .SummeriesContainer .SummeriesContainerContent .summerisItem .content .status {
@@ -8768,9 +8787,9 @@ ul {
         transition: .1s ease; }
     .StepperNum .StepNumber.active .Step-Line {
       background-color: #CCD2DB; }
-    .StepperNum .StepNumber.active.activea .StepNum {
+    .StepperNum .StepNumber.active.current__step .StepNum {
       position: relative; }
-      .StepperNum .StepNumber.active.activea .StepNum::before {
+      .StepperNum .StepNumber.active.current__step .StepNum::before {
         content: "\f0d7";
         position: absolute;
         top: -20px;
@@ -8825,7 +8844,7 @@ ul {
     letter-spacing: -0.2px;
     top: 120%;
     font-family: font-opens; }
-.StepperNum.StepperNum3 .StepNumber.activea .stepWord {
+.StepperNum.StepperNum3 .StepNumber.current__step .stepWord {
   color: #4382F9; }
 
 .StepperNum.StepperNum4 .StepNum {
@@ -8847,7 +8866,7 @@ ul {
   background-color: #ffffff; }
 .StepperNum.StepperNum4 .StepNumber.active .Step-Line {
   background-color: #5FD45F; }
-.StepperNum.StepperNum4 .StepNumber.activea .StepNum {
+.StepperNum.StepperNum4 .StepNumber.current__step .StepNum {
   background-color: #ffffff !important; }
 
 /**/
@@ -9849,7 +9868,7 @@ ul {
 
 .section__tabs {
   background: #fafbfc;
-  border-right: 1px solid #e9ecf0;
+  border-left: 1px solid #e9ecf0;
   width: 322px;
   min-height: 100vh; }
 
@@ -9896,18 +9915,6 @@ ul {
 .section__tabs .section__tabs--item.active {
   border-left: 6px solid #4382f9;
   background: #e9ecf0; }
-
-.section__tabs .section__tabs--item.active::after {
-  content: '';
-  height: 24px;
-  width: 24px;
-  background-repeat: no-repeat;
-  right: 13px;
-  left: inherit;
-  top: 20px;
-  bottom: 20px;
-  background-image: url(../../images/active-arrow.png);
-  background-position: center; }
 
 .section__tabs .section__tabs--item h3 {
   font-family: font-b;
@@ -10118,14 +10125,16 @@ ul {
   padding-top: 0; }
 
 .filter__warrper {
-  min-height: 124px;
   border-radius: 2px;
   background-color: #fafbfc;
-  padding-bottom: 31px;
-  padding-top: 16px;
+  padding-bottom: 10px;
+  padding-top: 10px;
   position: relative;
-  z-index: 100;
+  z-index: unset;
   height: auto; }
+
+.filter__input-wrapper .proForm button {
+  margin-bottom: 8px !important; }
 
 .filter__warrper .proForm {
   display: flex;
@@ -10135,11 +10144,14 @@ ul {
 
 .filter__warrper .proForm .linebylineInput {
   padding: 0;
-  margin: 0 4px; }
+  margin-right: 4px;
+  margin-left: 4px; }
 
 .filter__warrper .proForm .linebylineInput label {
   margin: 0 !important;
-  background: transparent; }
+  background: transparent;
+  padding: 0;
+  z-index: unset; }
 
 .filter__warrper .proForm .linebylineInput .ui.input.inputDev input {
   height: 36px !important; }
@@ -10195,10 +10207,6 @@ ul {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); }
-
-.filter__warrper .proForm button {
-  margin-bottom: 5px;
-  margin-left: 8px; }
 
 .filter__input-wrapper .linebylineInput .proForm.datepickerContainer {
   margin-top: 0; }
@@ -10308,7 +10316,435 @@ ul {
 .filterModal .filter__warrper .filter__input-wrapper .linebylineInput {
   margin-bottom: 20px !important; }
 
+.filterModal .filter__warrper .filter__input-wrapper .linebylineInput .proForm {
+  padding: 0; }
+
+.filter__warrper .filter__input-wrapper .linebylineInput .proForm .linebylineInput {
+  margin: 0 !important; }
+
 /*Done*/
+/* reacct edition */
+/* grid Style component */
+.react-contextmenu {
+  min-width: 160px !important;
+  padding: 5px 0 !important;
+  margin: 2px 0 0 !important;
+  font-size: 16px !important;
+  color: #373a3c !important;
+  text-align: left !important;
+  background-color: #fff !important;
+  background-clip: padding-box !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  border-radius: 0.25rem !important;
+  outline: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 250ms ease !important; }
+
+.react-contextmenu.react-contextmenu--visible {
+  opacity: 1 !important;
+  pointer-events: auto !important; }
+
+.react-contextmenu-item {
+  padding: 3px 20px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: #373a3c !important;
+  text-align: inherit !important;
+  white-space: nowrap !important;
+  background: 0 0 !important;
+  border: 0 !important;
+  cursor: pointer !important; }
+
+.react-contextmenu-item.react-contextmenu-item--active, .react-contextmenu-item.react-contextmenu-item--selected {
+  color: #fff !important;
+  background-color: #20a0ff !important;
+  border-color: #20a0ff !important;
+  text-decoration: none !important; }
+
+.react-contextmenu-item.react-contextmenu-item--disabled, .react-contextmenu-item.react-contextmenu-item--disabled:hover {
+  color: #878a8c !important;
+  background-color: transparent !important;
+  border-color: rgba(0, 0, 0, 0.15) !important; }
+
+.react-contextmenu-item--divider {
+  margin-bottom: 3px !important;
+  padding: 2px 0 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15) !important;
+  cursor: inherit !important; }
+
+.react-contextmenu-item--divider:hover {
+  background-color: transparent !important;
+  border-color: rgba(0, 0, 0, 0.15) !important; }
+
+.react-contextmenu-item.react-contextmenu-submenu {
+  padding: 0 !important; }
+
+.react-contextmenu-item.react-contextmenu-submenu > .react-contextmenu-item:after {
+  content: "Γû╢" !important;
+  display: inline-block !important;
+  position: absolute !important;
+  right: 7px !important; }
+
+.react-grid-Container {
+  position: relative !important; }
+
+.gridSystemSelected {
+  position: absolute !important;
+  top: 40px;
+  left: 50px !important;
+  padding-left: 22px !important;
+  width: calc(100% - 50px) !important;
+  height: 58px !important;
+  background-color: #e74c3c !important;
+  z-index: 5 !important;
+  display: none !important;
+  z-index: 7 !important;
+  -webkit-box-align: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  min-width: 805px !important; }
+
+.gridSystemSelected.active {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important; }
+
+.gridSystemSelected .tableselcted-items {
+  font-family: font-b !important;
+  color: #ffffff !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.2px !important;
+  font-size: 16px !important;
+  -webkit-box-flex: 1 !important;
+  -ms-flex: 1 !important;
+  flex: 1 !important; }
+
+.gridSystemSelected .tableSelctedBTNs {
+  -webkit-box-flex: 1 !important;
+  -ms-flex: 1 !important;
+  flex: 1 !important;
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-pack: end !important;
+  -ms-flex-pack: end !important;
+  justify-content: flex-end !important;
+  padding-right: 40px !important; }
+
+.gridSystemSelected .tableSelctedBTNs .defaultBtn {
+  margin-right: 16px !important;
+  border: 1px solid #ffffff !important;
+  color: #ffffff !important; }
+
+.gridSystemSelected .tableSelctedBTNs .defaultBtn:active {
+  color: #000 !important; }
+
+/*.example-multiple-targets::after {
+    content: attr(data-count) !important;
+    display: block !important;
+  }*/
+.react-grid-Toolbar .btn {
+  background: transparent !important; }
+
+/* grid Style component */
+.react-grid-Toolbar {
+  background-color: #fff !important;
+  border-color: #e7eaec !important;
+  border-image: none !important;
+  border-style: solid solid none !important;
+  border-width: 1px !important;
+  color: inherit !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  height: 40px !important;
+  border-radius: 2px !important;
+  background-color: #E9ECF0 !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  position: relative !important;
+  flex-wrap: nowrap !important;
+  z-index: 10 !important; }
+
+.selecteDiv {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important; }
+
+.react-grid-Grid {
+  overflow: unset !important; }
+
+.react-grid-Header {
+  height: 58px !important;
+  border-bottom: 1px solid #ddd !important;
+  background: #fff !important;
+  z-index: 9 !important; }
+
+.react-grid-Row {
+  border-bottom: 1px solid #ddd !important;
+  height: 60px !important; }
+
+.react-grid-HeaderRow > div:first-of-type {
+  height: 58px !important; }
+
+.react-grid-HeaderCell {
+  background: #fff !important;
+  padding: 0 !important;
+  height: 58px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding-left: 14px !important; }
+
+.react-grid-Viewport {
+  top: 58px !important; }
+
+.react-grid-HeaderRow > div:first-child {
+  width: 100% !important; }
+
+.react-grid-HeaderRow .react-grid-HeaderCell, .react-grid-Row .react-grid-Cell {
+  border-right-color: transparent;
+  border-left-color: transparent; }
+
+.react-grid-HeaderCell-sortable {
+  color: #A8B0BF !important;
+  font-family: font-b !important;
+  font-size: 14px !important;
+  position: relative !important;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.react-grid-HeaderCell-sortable span.pull-right {
+  position: absolute !important;
+  right: -16px !important;
+  font-size: 20px !important;
+  top: -3px !important; }
+
+.react-grid-Cell {
+  height: 60px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding-left: 16px !important;
+  padding-right: 0 !important; }
+
+.react-grid-Toolbar .drop-item:hover {
+  border-color: transparent !important; }
+
+.react-grid-Cell__value > div {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important; }
+
+.react-grid-Cell__value, .react-grid-Cell__value a, .react-grid-Cell__value span, .react-grid-Cell__value div {
+  color: #3E4352 !important;
+  letter-spacing: -0.2px !important;
+  font-size: 14px !important;
+  font-family: font-opens !important; }
+
+.react-grid-Cell__value a {
+  font-weight: bold !important; }
+
+.react-grid-Row.row-context-menu .react-grid-Cell, .react-grid-Row:hover .react-grid-Cell, .react-grid-Row:hover {
+  background-color: #edf0f2 !important;
+  transition: 0.2s ease !important; }
+
+.selecteDiv > div {
+  opacity: 1 !important; }
+
+.react-grid-Toolbar .selecteDiv .dragMessage {
+  letter-spacing: -0.2px !important;
+  text-align: center !important;
+  color: #A8B0BF !important;
+  font-family: font-r !important;
+  font-size: 14px !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: relative !important;
+  z-index: 9999 !important; }
+
+.react-grid-Toolbar .selecteDiv .data-dark:empty + .dragMessage {
+  display: flex !important; }
+
+.react-grid-Toolbar .selecteDiv .data-dark + .dragMessage {
+  display: none !important; }
+
+.react-grid-Toolbar .selecteDiv .datagrid-grouping.active ~ .dragMessage {
+  display: flex !important; }
+
+.react-grid-Toolbar .selecteDiv .drop-item span.grouped-col-btn__name {
+  font-size: 12px !important;
+  font-weight: bold !important;
+  font-style: normal !important;
+  font-stretch: normal !important;
+  letter-spacing: -0.2px !important;
+  color: #5E6475 !important; }
+
+.react-grid-Canvas > div:nth-of-type(2), .react-grid-row-group {
+  width: 100% !important; }
+
+.react-grid-Toolbar .drop-item {
+  min-width: 77px !important;
+  height: 26px !important;
+  border-radius: 100px !important;
+  background-color: #e9edf2 !important;
+  padding: 0 10px 0 12px !important;
+  margin-left: 3px !important;
+  margin-right: 3px !important;
+  line-height: 26px !important;
+  font-family: font-b !important;
+  border-color: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+  z-index: 99999 !important;
+  flex-shrink: 0 !important;
+  font-size: 12px !important;
+  letter-spacing: -0.2px !important;
+  color: #5E6475 !important;
+  justify-content: space-between !important; }
+
+.drop-item .remove {
+  padding: 0 !important;
+  float: right !important;
+  background-color: #858D9E !important;
+  width: 16px !important;
+  height: 16px !important;
+  border-radius: 50% !important;
+  color: #e9edf2 !important;
+  font-size: 11px !important;
+  text-align: center !important;
+  line-height: 15px !important;
+  font-family: font-r !important;
+  margin: 1px 3px 0 2px !important; }
+
+.react-grid-Toolbar .data-dark:empty {
+  background-color: #E9ECF0 !important;
+  display: none !important;
+  width: 0 !important; }
+
+.react-grid-Toolbar .data-dark {
+  background-color: #5E6475 !important;
+  padding-left: 12px !important;
+  justify-content: flex-start !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow-x: auto !important; }
+
+.react-grid-Toolbar .data-dark::-webkit-scrollbar {
+  height: 0 !important;
+  position: absolute !important;
+  right: 0 !important;
+  left: 0 !important;
+  bottom: -20px !important;
+  transition: all 0.2s ease-in-out; }
+
+.react-grid-Toolbar .data-dark:hover::-webkit-scrollbar {
+  height: 10px !important;
+  position: absolute !important;
+  background-color: #E9ECF0; }
+
+.minimizeRelative {
+  position: relative !important; }
+
+.minimizeSpan {
+  position: absolute !important;
+  right: 40px !important;
+  top: 5px !important;
+  z-index: 19 !important;
+  display: flex !important; }
+
+.minimizeSpan .H-tableSize, .minimizeSpan .V-tableSize {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 30px !important;
+  cursor: pointer !important; }
+
+.minimizeSpan .H-tableSize {
+  flex-flow: column !important; }
+
+.minimizeSpan .H-tableSize span {
+  width: 12px !important;
+  height: 3px !important;
+  background: #A8B0BF !important;
+  border-radius: 5px !important;
+  margin-bottom: 2px !important;
+  display: block !important; }
+
+.minimizeSpan .V-tableSize span {
+  width: 3px !important;
+  height: 12px !important;
+  margin-right: 2px !important;
+  background: #A8B0BF !important;
+  border-radius: 5px !important;
+  margin-bottom: 2px !important;
+  display: block !important; }
+
+.gridLoading {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  z-index: 99999 !important;
+  top: 0 !important;
+  display: none !important; }
+
+.gridLoading span {
+  display: block !important;
+  width: 40px !important;
+  height: 40px !important;
+  border: 3px solid #3570e6 !important;
+  border-right-color: transparent !important;
+  animation: rotate 1s linear infinite !important;
+  border-radius: 50% !important; }
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg) !important; }
+  25% {
+    transform: rotate(90deg) !important; }
+  50% {
+    transform: rotate(180deg) !important; }
+  75% {
+    transform: rotate(270deg) !important; }
+  100% {
+    transform: rotate(360deg) !important; } }
+.miniRows .react-grid-Row {
+  height: 40px !important; }
+
+.miniRows .react-grid-Row .react-grid-Cell {
+  height: 40px !important; }
+
+.react-grid-HeaderCell > .react-grid-checkbox-container {
+  padding: 0 !important; }
+
+.react-grid-row-group > div {
+  padding-right: 5px !important; }
+
+.react-grid-row-group > div strong {
+  font-size: 14px;
+  font-family: font-b; }
+
+.react-grid-HeaderCell--frozen, .react-grid-Cell--frozen {
+  box-shadow: none !important; }
+
+div[draggable=true]:last-of-type .react-grid-HeaderCell--frozen, .rdg-last--frozen {
+  border-right: 1px solid #E9ECF0 !important;
+  border-right-color: #E9ECF0 !important; }
+
+body {
+  font-family: font-r; }
+
 .notificontainer {
   width: 600px;
   position: absolute;
@@ -10505,6 +10941,9 @@ ul {
   box-shadow: none;
   font-family: font-opensb; }
 
+.linebylineInput .customDatepicker .proForm .linebylineInput {
+  width: 100% !important; }
+
 .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
   width: 100%; }
 
@@ -10514,7 +10953,7 @@ ul {
 .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate > div > div {
   z-index: 14; }
 
-.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate > div::after {
+.proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate .sc-bxivhb.hPEdlB::after {
   content: '';
   position: absolute;
   background-image: url(../../images/icons/date-pickericon.svg);
@@ -10522,7 +10961,7 @@ ul {
   background-size: 100% 100%;
   width: 16px;
   height: 16px;
-  top: 15px;
+  top: calc(50% - 8px);
   z-index: 0; }
 
 .customDatepicker .proForm .linebylineInput input {
@@ -10572,9 +11011,6 @@ table edition
 
 .mainContainer .customD_Menu {
   width: 100%; }
-
-.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
-  display: block; }
 
 .filterHidden {
   transition: all 0.4s ease-in-out;
@@ -10628,9 +11064,6 @@ table edition
 /*
 table edition
 */
-.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
-  display: block; }
-
 .loginWrapper {
   display: flex;
   align-items: center;
@@ -10926,7 +11359,8 @@ table edition
   border: 1px solid #e74c3c; }
 
 .gridfillter-container .fillter-status-container .datepickerContainer.proForm {
-  display: block; }
+  display: block;
+  margin-right: 0 !important; }
 
 .ui.modal {
   display: block !important; }
@@ -10978,9 +11412,6 @@ table edition
   width: auto !important;
   margin-right: 0 !important; }
 
-.gridfillter-container .fillter-status-container .datepickerContainer.proForm {
-  margin-right: 0 !important; }
-
 .filter__showmore .form-group.fillterinput.fillter-item-c .fillter-status.fillter-item-c .ui.input.inputDev {
   width: 100%; }
 
@@ -11020,12 +11451,6 @@ table edition
   line-height: 1.5;
   letter-spacing: -0.2px; }
 
-.SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
-  position: absolute;
-  bottom: 15px;
-  right: 12px;
-  font-size: 12px; }
-
 /* .SummeriesContainer .SummeriesContainerContent .summerisItem:before {
     bottom: -35px;
     top: -15px;
@@ -11048,7 +11473,7 @@ table edition
   background: #fff !important;
   top: 72px !important;
   overflow: hidden !important;
-  z-index: 14 !important;
+  z-index: 998 !important;
   position: sticky !important;
   width: 100% !important;
   height: 64px; }
@@ -11780,7 +12205,8 @@ tfoot tr td p {
   background-color: #cce6ff !important;
   padding-left: 34px !important; }
 
-.settings-tabs-items .react-tabs__tab:hover, .settings-container .settings-tabs-items ul li:hover {
+.settings-tabs-items .react-tabs__tab:hover,
+.settings-container .settings-tabs-items ul li:hover {
   transition: all 0.3s ease-in-out;
   background-color: #edf6ff !important; }
 
@@ -11820,9 +12246,6 @@ tfoot tr td p {
 
 .label__block label {
   display: block; }
-
-.filter__warrper .proForm .linebylineInput label {
-  padding: 0; }
 
 /* noTabs */
 .main__header {
@@ -11925,7 +12348,7 @@ tfoot tr td p {
 .noTabs__document .doc-container .step-content .linebylineInput .proForm.datepickerContainer .linebylineInput {
   margin-bottom: 0 !important; }
 
-.noTabs__document .doc-container .step-content .document-fields .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
+.proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
   width: 192px; }
 
 /* new css notabs */
@@ -11940,7 +12363,8 @@ tfoot tr td p {
   overflow-y: auto;
   top: 100%; }
 
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-vj8t7z, .document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw {
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-vj8t7z,
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw {
   height: 48px;
   border: solid 2px !important;
   transition: all 0.5s ease-in-out; }
@@ -11951,7 +12375,8 @@ tfoot tr td p {
 .document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-vj8t7z:hover {
   border-color: #A8B0BF !important; }
 
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw, .document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw:hover {
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw,
+.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw:hover {
   border-color: #83B4FC !important; }
 
 .document__action--menu .skylight-dialog .spanValidation {
@@ -12210,12 +12635,6 @@ button.companies_icon {
 .gridfillter-container {
   display: block;
   padding-top: 15px; }
-
-.gridfillter-container .fillter-status-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap; }
 
 .gridfillter-container .fillter-status-container.onelineFilter {
   width: 100%;
@@ -12705,11 +13124,6 @@ button.companies_icon {
     -webkit-flex: 0.3 1 !important;
     flex: 0.3 1 !important;
     flex-shrink: 0; } }
-.react-grid-Container .gridSystemSelected {
-  left: 58px;
-  width: calc(100% - 58px);
-  min-width: auto; }
-
 .css-1g6gooi {
   max-height: 30px;
   display: flex;
@@ -12783,7 +13197,7 @@ button.companies_icon {
   border-left: 0; }
 
 .precycle-grid .reactTableActions .gridSystemSelected {
-  top: 0; }
+  top: 0 !important; }
 
 .gridSystemSelected {
   min-width: auto !important; }
@@ -12950,12 +13364,24 @@ button.companies_icon {
 
 .total_money {
   position: absolute;
-  left: 302px;
-  top: -24px;
+  left: 309px;
+  top: -10px;
   letter-spacing: -0.2px;
   color: #26344c;
   font-family: font-openb;
-  display: block; }
+  display: block;
+  top: -10px;
+  z-index: 1; }
+
+.total_money::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  left: -5px;
+  top: 50%;
+  height: 2px;
+  background: #fff;
+  z-index: -1; }
 
 .company__total {
   display: flex;
@@ -13411,12 +13837,6 @@ button.companies_icon {
 .skylight-dialog .dropWrapper .letterFullWidth .fillter-item-c {
   margin-bottom: 0; }
 
-.react-grid-HeaderCell .react-grid-HeaderCell-sortable {
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; }
-
 .react-grid-checkbox:checked + .react-grid-checkbox-label:before {
   content: url(../../images/checkmark.svg);
   background: #4382F9 !important;
@@ -13736,7 +14156,7 @@ button.companies_icon {
   padding-bottom: 70px;
   padding: 40px 50px 0; }
 
-.project__Permissions--type .ui.checkbox input[type=checkbox] {
+.project__Permissions--type .ui.checkbox input[type=checkbox], .project__Permissions--selectAll .ui.checkbox input[type=checkbox] {
   height: 100%; }
 
 .project__Permissions {
@@ -13784,17 +14204,8 @@ button.companies_icon {
 .permission__proForm .linebylineInput {
   width: 50%; }
 
-.permission__proForm .linebylineInput .control-label {
-  width: auto;
-  text-align: left;
-  margin-right: 32px;
-  font-family: font-opensb;
-  font-size: 14px;
-  line-height: 1.43;
-  letter-spacing: -0.2px;
-  color: #252833;
-  margin-bottom: 4px;
-  display: block; }
+.permission__proForm .linebylineInput .fillter-status {
+  width: 100%; }
 
 .step__permission .main__header,
 .noTabs__document .doc-container .step__permission .main__header,
@@ -14034,7 +14445,8 @@ line.horizontal-grid-line {
   stroke-width: 1;
   stroke-dasharray: 4,4; }
 
-.bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .horizontal-grid-line, .bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .vertical-grid-line {
+.bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .horizontal-grid-line,
+.bar-sparkline .js-grouped-bar-chart-tooltip-container-predicted .container-group .vertical-grid-line {
   stroke: #dfe2e6;
   shape-rendering: crispEdges;
   stroke-width: 1;
@@ -14234,7 +14646,8 @@ line.horizontal-grid-line {
   justify-content: center;
   color: #858d9e; }
 
-.pdf__popup .mgrpdf__wrapper canvas, .pdf__action--btns {
+.pdf__popup .mgrpdf__wrapper canvas,
+.pdf__action--btns {
   max-width: 891px !important;
   height: auto !important; }
 
@@ -14529,7 +14942,9 @@ line.horizontal-grid-line {
 .skylight-dialog .letterFullWidth .ReactTable {
   margin-top: 15px; }
 
-.ReactTable .customD_Menu .css-vj8t7z, .ReactTable .customD_Menu .css-2o5izw, .ReactTable .customD_Menu .css-162g8z5 {
+.ReactTable .customD_Menu .css-vj8t7z,
+.ReactTable .customD_Menu .css-2o5izw,
+.ReactTable .customD_Menu .css-162g8z5 {
   min-height: 38px; }
 
 .nav-right li {
@@ -14548,7 +14963,8 @@ line.horizontal-grid-line {
 .barChart__container .y-axis-group g.tick tspan {
   display: none; }
 
-.bar-container .x-axis-group .tick text, .group__charts .x-axis-group .tick text {
+.bar-container .x-axis-group .tick text,
+.group__charts .x-axis-group .tick text {
   fill: #3e4352; }
 
 .doc-pre-cycle.letterFullWidth {
@@ -14704,7 +15120,8 @@ body.noScrolling {
   left: 0;
   display: none;
   z-index: 99999;
-  overflow: auto; }
+  overflow: auto;
+  padding: 35px 0; }
 
 .filterModal__container::after {
   content: '';
@@ -14717,10 +15134,8 @@ body.noScrolling {
 
 .filterModal__container .filterModal {
   background: #fff;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  margin: auto;
   z-index: 99;
   border-radius: 4px; }
 
@@ -14747,13 +15162,17 @@ body.noScrolling {
 .document__action--menu .skylight-dialog .spanValidation {
   display: block; }
 
-.document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
+.document__action--menu .customD_Menu .css-vj8t7z,
+.document__action--menu .customD_Menu .css-2o5izw {
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3); }
 
-.document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z, .document__action--menu .skylight-dialog .customD_Menu .css-2o5izw {
+.document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z,
+.document__action--menu .skylight-dialog .customD_Menu .css-2o5izw {
   box-shadow: none; }
 
-button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button .ck-button__label, button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg, button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg {
+button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button .ck-button__label,
+button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg,
+button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg {
   display: none; }
 
 button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
@@ -14794,7 +15213,8 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 .rootIcon:hover {
   color: #4382F9; }
 
-.tooltip-background, .tooltip-text-container {
+.tooltip-background,
+.tooltip-text-container {
   border-radius: 2px !important;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important;
   fill: #252833 !important;
@@ -14803,7 +15223,8 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 .tooltip-text {
   padding: 0 12px; }
 
-.tooltip-text .mini-tooltip-name, .tooltip-title {
+.tooltip-text .mini-tooltip-name,
+.tooltip-title {
   font-family: font-b !important;
   font-size: 14px  !important;
   line-height: 1.43  !important;
@@ -14811,7 +15232,11 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
   margin: 4px 0;
   padding: 4px 0; }
 
-.tooltip-text .mini-tooltip-value, .tooltip-body .tooltip-right-text tspan, .tooltip-body .tooltip-left-text, .tooltip-body .tooltip-left-text tspan, .tooltip-body .tooltip-right-text {
+.tooltip-text .mini-tooltip-value,
+.tooltip-body .tooltip-right-text tspan,
+.tooltip-body .tooltip-left-text,
+.tooltip-body .tooltip-left-text tspan,
+.tooltip-body .tooltip-right-text {
   font-family: font-opens !important;
   font-size: 12px !important;
   line-height: 1.33 !important;
@@ -14841,9 +15266,6 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 .lineCharts .vertical-marker-container .vertical-marker {
   stroke: transparent; }
 
-.js-bar-chart-container-tooltip-container, .js-grouped-bar-chart-tooltip-container {
-  overflow: auto; }
-
 .autoDisk__dropdown {
   display: flex;
   align-items: center;
@@ -14861,7 +15283,9 @@ div#markup-panel {
   width: 20% !important;
   border-radius: 5px; }
 
-.markup-actions button, .markup-buttons button, .panel-actions button {
+.markup-actions button,
+.markup-buttons button,
+.panel-actions button {
   font-weight: normal;
   font-size: 10px;
   padding: 5px 5px;
@@ -14879,7 +15303,8 @@ div#markup-panel {
   align-items: flex-end;
   width: 100%; }
 
-.doc-input-btn input, .doc-input-btn .inputDev.ui.input {
+.doc-input-btn input,
+.doc-input-btn .inputDev.ui.input {
   width: 100%;
   margin-bottom: 0;
   padding-top: 0;
@@ -14930,7 +15355,8 @@ div#markup-panel {
 .document__action--menu .css-10nd86i {
   min-width: 115px; }
 
-.document__action--menu .css-10nd86i .css-vj8t7z, .document__action--menu .css-10nd86i .css-2o5izw {
+.document__action--menu .css-10nd86i .css-vj8t7z,
+.document__action--menu .css-10nd86i .css-2o5izw {
   background-color: rgba(255, 255, 255, 0) !important;
   border-radius: 4px;
   min-height: 36px;
@@ -14938,7 +15364,8 @@ div#markup-panel {
   cursor: pointer;
   border: solid 1px #ccd2db !important; }
 
-.document__action--menu .customD_Menu .css-vj8t7z, .document__action--menu .customD_Menu .css-2o5izw {
+.document__action--menu .customD_Menu .css-vj8t7z,
+.document__action--menu .customD_Menu .css-2o5izw {
   min-width: 115px;
   height: 36px; }
 
@@ -15026,7 +15453,9 @@ div#markup-panel {
 .document__action--menu .customD_Menu .css-15k3avv {
   min-width: 180px; }
 
-.linebylineInput .fillter-status.fillter-item-c.new_height, .new_height, .dropWrapper .fillter-item-c {
+.linebylineInput .fillter-status.fillter-item-c.new_height,
+.new_height,
+.dropWrapper .fillter-item-c {
   display: flex;
   flex-flow: column;
   align-items: flex-start; }
@@ -15149,7 +15578,8 @@ div#markup-panel {
 .miniRows .H-tableSize svg g g {
   fill: #4382F9; }
 
-.minimizeRelative .H-tableSize:hover svg g g, .minimizeRelative .V-tableSize:hover svg g g {
+.minimizeRelative .H-tableSize:hover svg g g,
+.minimizeRelative .V-tableSize:hover svg g g {
   fill: #4382F9;
   transition: all 0.3s ease-in-out; }
 
@@ -15253,11 +15683,6 @@ div#markup-panel {
 .skylight-dialog .reactTableActions {
   overflow: auto; }
 
-.customDatepicker.fillter-status.fillter-item-c .proForm.datepickerContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; }
-
 .riskConContainer {
   display: flex;
   flex-direction: column;
@@ -15270,15 +15695,18 @@ div#markup-panel {
 .login__page .login__page--form .proForm .form-group {
   display: flex; }
 
-.dropdownMulti .css-1hwfws3, .multiChoice .css-1hwfws3 {
+.dropdownMulti .css-1hwfws3,
+.multiChoice .css-1hwfws3 {
   padding-top: 8px !important;
   padding-bottom: 8px !important; }
 
-.attachmentTableAuto.attachmentTable thead tr th:nth-child(2), .attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
+.attachmentTableAuto.attachmentTable thead tr th:nth-child(2),
+.attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
   width: auto;
   padding-right: 11px !important; }
 
-.attachmentTableAuto.attachmentTable tbody tr td:nth-child(3), .attachmentTable.attachmentTableAuto tbody tr .contentCell {
+.attachmentTableAuto.attachmentTable tbody tr td:nth-child(3),
+.attachmentTable.attachmentTableAuto tbody tr .contentCell {
   width: auto !important;
   max-width: 100% !important; }
 
@@ -15326,7 +15754,10 @@ div#markup-panel {
   padding-bottom: 10px;
   border-bottom: 1px solid #DADEE6; }
 
-.filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5, .filter__input-wrapper .letterFullWidth .customD_Menu .css-1hwfws3 {
+.filter__input-wrapper .customD_Menu .css-vj8t7z,
+.filter__input-wrapper .customD_Menu .css-2o5izw,
+.filter__input-wrapper .customD_Menu .css-162g8z5,
+.filter__input-wrapper .letterFullWidth .customD_Menu .css-1hwfws3 {
   min-height: 36px; }
 
 .filter__input-wrapper .letterFullWidth .multiChoice .css-1hwfws3 {
@@ -15336,7 +15767,8 @@ div#markup-panel {
 .datepickerContainer.proForm .ui.input.inputDev {
   max-width: 100%; }
 
-.datepickerContainer.proForm .letterFullWidth, .dropWrapper .letterFullWidth {
+.datepickerContainer.proForm .letterFullWidth,
+.dropWrapper .letterFullWidth {
   display: flex;
   align-items: flex-start;
   flex-flow: column; }
@@ -15344,28 +15776,31 @@ div#markup-panel {
 .datepickerContainer.proForm .datepickerContainer.proForm.letterFullWidth {
   flex-flow: row; }
 
-.letterFullWidth > .document-fields, .datepickerContainer.proForm .letterFullWidth .ui.input.inputDev {
+.letterFullWidth > .document-fields,
+.datepickerContainer.proForm .letterFullWidth .ui.input.inputDev {
   width: 100%; }
 
 .linebylineInput__checkbox {
   flex-flow: row !important;
   align-items: center !important; }
 
-.linebylineInput__checkbox .ui.checkbox, .linebylineInput__checkbox label {
+.linebylineInput__checkbox .ui.checkbox,
+.linebylineInput__checkbox label {
   margin: 0 !important; }
 
-.filter__input-wrapper .customD_Menu .css-vj8t7z, .filter__input-wrapper .customD_Menu .css-2o5izw, .filter__input-wrapper .customD_Menu .css-162g8z5 {
-  min-height: 36px;
-  /* height: 40px; */ }
+.filter__input-wrapper .customD_Menu .css-vj8t7z,
+.filter__input-wrapper .customD_Menu .css-2o5izw,
+.filter__input-wrapper .customD_Menu .css-162g8z5 {
+  height: 36px; }
+
+.filter__input-wrapper .customD_Menu .css-1492t68 {
+  top: 44%; }
 
 .filter__input-wrapper .linebylineInput .fillter-status.fillter-item-c {
   width: 100%; }
 
 .filter__input-wrapper .linebylineInput .fillter-status.fillter-item-c .spanValidation label::after {
   display: none; }
-
-.filter__input-wrapper .proForm .linebylineInput {
-  margin-bottom: 0 !important; }
 
 /* calender */
 .react-calendar {
@@ -15386,14 +15821,13 @@ div#markup-panel {
   border-radius: 1px;
   background: #4382f9 !important; }
 
-.react-calendar__tile:enabled:hover, .react-calendar__tile:enabled:focus {
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
   background-color: #edf1f5; }
 
-.react-calendar__tile--active abbr, button.react-calendar__tile.react-calendar__tile--now.react-calendar__tile--active.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day abbr {
+.react-calendar__tile--active abbr,
+button.react-calendar__tile.react-calendar__tile--now.react-calendar__tile--active.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day abbr {
   color: #fff !important; }
-
-.filter__warrper {
-  z-index: 19; }
 
 button.react-calendar__tile.react-calendar__tile--now.react-calendar__month-view__days__day abbr {
   color: #4382f9; }
@@ -15433,7 +15867,8 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
   width: 0;
   transition: all 0.4s ease-in-out; }
 
-.header__search:hover .ui.input, .header__search.active .ui.input {
+.header__search:hover .ui.input,
+.header__search.active .ui.input {
   width: 220px;
   transition: all 0.4s ease-in-out; }
 
@@ -15448,7 +15883,8 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
   margin-bottom: 10px; }
 
 /* calender */
-.attachmentTable__fixedWidth.attachmentTable tbody tr td:first-child, .attachmentTable__fixedWidth.attachmentTable thead tr th:first-child {
+.attachmentTable__fixedWidth.attachmentTable tbody tr td:first-child,
+.attachmentTable__fixedWidth.attachmentTable thead tr th:first-child {
   width: auto; }
 
 .letterFullWidth .textarea-group {
@@ -15498,4 +15934,41 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 .attachmentTable.attachmentTableAuto tbody tr td {
   padding: 0 6px !important; }
 
+.gmTeoB {
+  z-index: 99; }
+
+.linebylineInput .ck.ck-button, .linebylineInput .ck.ck-dropdown {
+  margin: 0 !important; }
+
+.gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c .customD_Menu .css-vj8t7z, .gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c .customD_Menu .css-2o5izw, .customD_Menu .css-162g8z5 {
+  min-height: 36px;
+  height: 36px; }
+
+.gridfillter-container .fillter-status-container label {
+  margin: 0; }
+
+label {
+  font-family: font-b;
+  font-size: 13px;
+  line-height: 1.54;
+  letter-spacing: normal;
+  color: #5E6475;
+  position: relative; }
+
 /*# sourceMappingURL=layout.css.map */
+
+.StepperNum .StepNumber.active.current__step .StepNum::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  right: -4px;
+  left: -4px;
+  border: 2px solid #00da67;
+  border-radius: 50%;
+}
+
+.StepperNum .StepNumber {
+  min-width: 170px;
+  max-width: 220px;
+}

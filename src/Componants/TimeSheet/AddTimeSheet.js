@@ -315,7 +315,7 @@ class AddTimeSheet extends Component {
                         }
                         <div className="documents-stepper cutome__inputs noTabs__document">
                             <div className="submittalHead">
-                                <h2 className="zero">{Resources['userTimeSheet'][currentLanguage]}</h2>
+                                <h2 className="zero">TIME SHEET</h2>
                                 <div className="SubmittalHeadClose">
                                     <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                                         <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">

@@ -31,6 +31,8 @@ import ConfirmationModal from '../../Componants/publicComponants/ConfirmationMod
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
 import IPConfig from '../../IP_Configrations'
+import dataservice from "../../Dataservice";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const poqSchema = Yup.object().shape({
@@ -53,7 +55,7 @@ const purchaseSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     advancedPaymentPercent: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).min(0, Resources['onlyNumbers'][currentLanguage])
 });
- 
+
 const BoqTypeSchema = Yup.object().shape({
     boqType: Yup.string().required(Resources['boqSubType'][currentLanguage]),
     boqChild: Yup.string().required(Resources['boqSubType'][currentLanguage]),
@@ -430,6 +432,12 @@ class bogAddEdit extends Component {
         })
     }
 
+    componentDidMount() {
+        dataservice.GetDataList('GetAllBoqParentNull?projectId=' + this.state.projectId, 'title', 'id').then((res)=>{
+            this.setState({boqTypes:res})
+        })
+    }
+
     componentWillMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true, LoadingPage: true })
@@ -468,7 +476,7 @@ class bogAddEdit extends Component {
     getTabelData() {
         let Table = []
         this.setState({ isLoading: true, LoadingPage: true })
-        Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber='+this.state.pageNumber+'&pageSize='+this.state.pageSize).then(res => {
+        Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=' + this.state.pageNumber + '&pageSize=' + this.state.pageSize).then(res => {
             let data = { items: res };
 
             res.forEach((element, index) => {
@@ -528,15 +536,13 @@ class bogAddEdit extends Component {
         if (JSON.stringify(this.state._items.length) != JSON.stringify(_items)) {
             this.setState({ isLoading: true })
             this.setState({ _items }, () => this.setState({ isLoading: false }));
-            
+
         }
 
         if (this.state.showModal != props.showModal) {
             this.setState({ showModal: props.showModal });
         }
     }
-
-
 
     viewAttachments() {
         return (
@@ -646,7 +652,7 @@ class bogAddEdit extends Component {
                     data = this.state._items.filter(item => { return item.id != element });
                 })
                 this.props.actions.resetItems(data);
-                this.setState({ _items: data, showDeleteModal: false, isLoading: false });
+                this.setState({  showDeleteModal: false, isLoading: false });
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }).catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -709,7 +715,7 @@ class bogAddEdit extends Component {
         }
     }
 
-    onRowClick = (value, index, column) => { 
+    onRowClick = (value, index, column) => {
         if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
         }
@@ -759,6 +765,7 @@ class bogAddEdit extends Component {
         let boq = {
             boqChildTypeId: this.state.selectedBoqTypeChildEdit.value,
             boqItemId: itemsId,
+            boqTypeId:this.state.selectedBoqTypeEdit.value,
             boqSubTypeId: this.state.selectedBoqSubTypeEdit.value,
         }
         Api.post('EditBoqItemForSubType', boq).then(() => {
@@ -955,7 +962,7 @@ class bogAddEdit extends Component {
 
             let oldRows = [...this.state._items];
 
-            Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber='+pageNumber+'&pageSize='+this.state.pageSize).then(result => {
+            Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=' + pageNumber + '&pageSize=' + this.state.pageSize).then(result => {
 
                 const newRows = [...this.state._items, ...result];
 
@@ -982,7 +989,7 @@ class bogAddEdit extends Component {
 
         let oldRows = [...this.state._items];
 
-        Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber='+pageNumber+'&pageSize='+this.state.pageSize).then(result => {
+        Api.get('GetBoqItemsList?id=' + this.state.docId + '&pageNumber=' + pageNumber + '&pageSize=' + this.state.pageSize).then(result => {
 
             const newRows = [...this.state._items, ...result];
 
@@ -996,6 +1003,17 @@ class bogAddEdit extends Component {
                 isLoading: false
             });
         });
+    }
+
+    handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState, fieldLabel) {
+        if (isSubscribe) {
+            let action = url + "?" + param + "=" + event.value
+            dataservice.GetDataList(action, 'title', 'id').then(result => {
+                this.setState({
+                    [nextTragetState]: result
+                });
+            });
+        }
     }
 
     render() {
@@ -1381,7 +1399,7 @@ class bogAddEdit extends Component {
                                     data={this.state.boqTypes}
                                     selectedValue={this.state.selectedBoqTypeEdit}
                                     handleChange={event => {
-                                        this.fillSubDropDown('GetAllBoqChild', 'parentId', event.value, 'title', 'id', 'BoqSubTypes', 'BoqTypeChilds')
+                                        this.handleChangeItemDropDown(event, 'boqTypeId', 'selectedBoqType', true, 'GetAllBoqChild', 'parentId', 'BoqTypeChilds', 'boqType')
                                         this.setState({
                                             selectedBoqTypeEdit: event,
                                             selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
@@ -1400,7 +1418,8 @@ class bogAddEdit extends Component {
                                 data={this.state.BoqTypeChilds}
                                 selectedValue={this.state.selectedBoqTypeChildEdit}
                                 handleChange={event => {
-                                    this.setState({ selectedBoqTypeChildEdit: event })
+                                    this.handleChangeItemDropDown(event, 'boqChildTypeId', 'selectedBoqTypeChild', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes', 'boqChildType');
+                                    this.setState({ selectedBoqTypeChildEdit: event });
                                 }}
                                 onChange={setFieldValue}
                                 onBlur={setFieldTouched}
@@ -1413,6 +1432,7 @@ class bogAddEdit extends Component {
                                 data={this.state.BoqSubTypes}
                                 selectedValue={this.state.selectedBoqSubTypeEdit}
                                 handleChange={event => {
+                                    this.handleChangeItemDropDown(event, 'boqSubTypeId', 'selectedBoqSubType', false, '', '', '', 'boqSubType');
                                     this.setState({ selectedBoqSubTypeEdit: event })
                                 }}
                                 onChange={setFieldValue}

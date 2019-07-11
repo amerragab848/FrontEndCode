@@ -40,6 +40,13 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import GridSetup from "../Communication/GridSetup";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
+const voItemSchema = Yup.object().shape({
+  quantity: Yup.number().required(Resources['quantityRequired'][currentLanguage]),
+  unitPrice: Yup.number().required(Resources['unitPriceRequired'][currentLanguage]),
+
+
+});
+
 const contractInfoSchema = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
   tax: Yup.number().required(Resources["tax"][currentLanguage]),
@@ -71,6 +78,7 @@ let docApprovalId = 0;
 let arrange = 0;
 let perviousRoute = '';
 let columnsGrid = [];
+let voColumns = [];
 let selectedRow = [];
 let indexx = 0;
 
@@ -117,6 +125,8 @@ class ContractInfoAddEdit extends Component {
       LoadingPage: false,
       docTypeId: 9,
       pageNumber: 0,
+      voPageNumber: 0,
+      voPageSize: 50,
       pageSize: 2000,
       CurrStep: 1,
       firstComplete: false,
@@ -140,6 +150,9 @@ class ContractInfoAddEdit extends Component {
       Companies: [],
       Contracts: [],
       contacts: [],
+      voItems: [],
+      voItemsLength: 0,
+      selectedVO: {},
       variationOrders: [],
       variationOrdersData: [],
       viewHistoryData: [],
@@ -305,6 +318,70 @@ class ContractInfoAddEdit extends Component {
         filterable: true,
         sortDescendingFirst: true
       }
+    ];
+    voColumns = [
+      {
+        accessor: 'id',
+        show: false,
+        
+      }, {
+        Header: Resources.arrange[currentLanguage],
+        accessor: 'arrange',
+        width: 25
+      }, {
+        Header: Resources.description[currentLanguage],
+        accessor: 'description'   ,
+        width: 120
+      }, {
+        Header: Resources.changeOrder[currentLanguage],
+        accessor: 'subject',
+        width: 120
+      }, {
+        Header: Resources.resourceCode[currentLanguage],
+        accessor: 'resourceCode',
+        width: 100
+      }, {
+        Header: Resources.unit[currentLanguage],
+        accessor: 'unit',
+        width: 80
+      }, {
+        Header: Resources.days[currentLanguage],
+        accessor: 'days',
+        width: 70 
+      }, {
+        Header: Resources.itemType[currentLanguage],
+        accessor: 'itemType',
+        width: 70
+      }, {
+        Header: Resources.unitPrice[currentLanguage],
+        accessor: 'unitPrice',
+        width: 70
+      }, {
+        Header: Resources.quantity[currentLanguage],
+        accessor: 'quantity',
+        width: 70
+      }, {
+        Header: Resources.total[currentLanguage],
+        accessor: 'total',
+        width: 70
+      }, {
+        Header: Resources.itemCode[currentLanguage],
+        accessor: 'itemCode',
+        show: false
+      }, {
+        accessor: 'boqTypeId',
+        show: false
+      }, {
+        accessor: 'boqSubTypeId',
+        show: false
+      }, {
+        accessor: 'boqChildTypeId',
+        show: false
+      }, {
+        accessor: 'changeOrderId',
+        show: false
+      },
+
     ];
 
     if (!Config.IsAllow(139) && !Config.IsAllow(140) && !Config.IsAllow(142)) {
@@ -692,7 +769,47 @@ class ContractInfoAddEdit extends Component {
 
   changeTab = tabName => {
     this.setState({ activeTab: tabName });
+    if (tabName == 'voi')
+      this.getVoItems()
   };
+
+  getVoItems = () => {
+    if (this.state.voItems.length == 0) {
+      this.setState({ isLoading: true })
+      Api.get('GetChangeOrderItemsByContractId?contractId='+this.state.docId+'&pageNumber=' + this.state.voPageNumber + '&pageSize='+this.state.voPageSize).then(result => {
+        let voItems = [];
+        if (result.resultList.length > 0)
+          voItems = result.resultList;
+        this.setState({ voItems, voItemsLength: result.total, isLoading: false });
+
+      }).catch(() => { this.setState({ isLoading: false }) })
+    }
+  }
+
+  editVoItem = (values) => {
+    let item = this.state.selectedVO;
+    item.quantity = values.quantity;
+    item.unitPrice = values.unitPrice;
+    this.setState({ isLoading: true })
+    Api.post('EditChangeOrderItem', item).then(result => {
+      let voItems = this.state.voItems;
+      var match = _.find(voItems, function (item) { return item.id == this.state.selectedVO.id });
+      if (match) {
+        match.quantity = values.quantity;
+        match.unitPrice = values.unitPrice;
+      }
+      this.setState({ voItems, isLoading: false, showItemEdit: false });
+      toast.success(Resources["operationSuccess"][currentLanguage]);
+    }).catch(() => {
+      toast.success(Resources["operationCanceled"][currentLanguage]);
+      this.setState({ isLoading: false, showItemEdit: false })
+    })
+  }
+
+  viewModelToEdit = (row, e) => {
+    this.setState({ selectedVO: row, showItemEdit: true });
+    this.itemDialog.show();
+  }
 
   _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
     this.setState({ isLoading: true });
@@ -907,48 +1024,18 @@ class ContractInfoAddEdit extends Component {
     });
   }
 
-  GetNextData() {
-    let pageNumber = this.state.pageNumber + 1;
-
-    this.setState({
-      isLoading: true,
-      pageNumber: pageNumber
-    });
-
-    let oldRows = [...this.state.rows];
-
-    DataService.GetDataGrid("ShowContractItemsByContractIdShowChildernStracure?ContractId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
-
-      const newRows = [...this.state.rows, ...result];
-
-      this.setState({
-        rows: newRows,
-        isLoading: false
-      });
-    }).catch(ex => {
-      this.setState({
-        rows: oldRows,
-        isLoading: false
-      });
-    });
-  }
-
-  GetPrevoiusData() {
-
-    let pageNumber = this.state.pageNumber - 1;
-
-    if (pageNumber >= 0) {
+  GetNextData(vo) {
+    if (vo == undefined) {
+      let pageNumber = this.state.pageNumber + 1;
       this.setState({
         isLoading: true,
         pageNumber: pageNumber
       });
 
       let oldRows = [...this.state.rows];
-
       DataService.GetDataGrid("ShowContractItemsByContractIdShowChildernStracure?ContractId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
         const newRows = [...this.state.rows, ...result];
-
         this.setState({
           rows: newRows,
           isLoading: false
@@ -960,9 +1047,141 @@ class ContractInfoAddEdit extends Component {
         });
       });
     }
+    else {
+      let voPageNumber = this.state.voPageNumber + 1; 
+      this.setState({
+        isLoading: true,
+        voPageNumber: voPageNumber
+      });
+      let oldRows = [...this.state.voItems];
+      this.setState({ isLoading: true })
+      Api.get('GetChangeOrderItemsByContractId?contractId='+this.state.docId+'&pageNumber=' + voPageNumber + '&pageSize='+this.state.voPageSize).then(result => {
+        let voItems = [];
+        if (result.resultList.length > 0)
+          voItems = result.resultList;
+        this.setState({ voItems , isLoading: false });
+      }).catch(ex => {
+        this.setState({
+          voItems: oldRows,
+          isLoading: false
+        });
+      });
+    }
+  }
+
+  GetPrevoiusData(vo) {
+    if (vo == undefined) {
+      let pageNumber = this.state.pageNumber - 1;
+
+      if (pageNumber >= 0) {
+        this.setState({
+          isLoading: true,
+          pageNumber: pageNumber
+        });
+
+        let oldRows = [...this.state.rows];
+
+        DataService.GetDataGrid("ShowContractItemsByContractIdShowChildernStracure?ContractId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+
+          const newRows = [...this.state.rows, ...result];
+
+          this.setState({
+            rows: newRows,
+            isLoading: false
+          });
+        }).catch(ex => {
+          this.setState({
+            rows: oldRows,
+            isLoading: false
+          });
+        });
+      }
+    }
+    else {
+      let voPageNumber = this.state.voPageNumber - 1;
+      if (voPageNumber >= 0) {
+        this.setState({
+          isLoading: true,
+          voPageNumber: voPageNumber
+        });
+        let oldRows = [...this.state.voItems];
+        this.setState({ isLoading: true })
+        Api.get('GetChangeOrderItemsByContractId?contractId='+this.state.docId+'&pageNumber=' + voPageNumber + '&pageSize='+this.state.voPageSize).then(result => {
+          let voItems = [];
+          if (result.resultList.length > 0)
+            voItems = result.resultList;
+          this.setState({ voItems,  isLoading: false });
+        }).catch(ex => {
+          this.setState({
+            voItems: oldRows,
+            isLoading: false
+          });
+        });
+      }
+    }
   }
 
   render() {
+
+    let editVoItemForm = <Fragment>
+      <div className="document-fields">
+        <Formik initialValues={{
+          quantity: this.state.selectedVO.quantity,
+          unitPrice: this.state.selectedVO.unitPrice
+        }}
+          validationSchema={voItemSchema}
+          enableReinitialize={true}
+          onSubmit={values => {
+            this.editVoItem(values)
+          }}>
+          {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
+            <Form id="ContractForm" className="proForm" noValidate="novalidate" onSubmit={handleSubmit}>
+              <div className=" dropWrapper">
+                <div className="fillter-item-c">
+                  <label className="control-label">
+                    {Resources["quantity"][currentLanguage]}
+                  </label>
+                  <div className={"inputDev ui input " + (errors.quantity ? "has-error" : !errors.quantity && touched.quantity ? " has-success" : " ")}>
+                    <input name="quantity" className="form-control" id="quantity" placeholder={Resources["quantity"][currentLanguage]}
+                      autoComplete="off" onBlur={handleBlur} defaultValue={values.quantity}
+                      onChange={e => { handleChange(e); }} />
+                    {errors.quantity ? (<em className="pError">{errors.quantity}</em>) : null}
+                  </div>
+                </div>
+                <div className="fillter-item-c">
+                  <label className="control-label">
+                    {Resources["unitPrice"][currentLanguage]}
+                  </label>
+                  <div className={"inputDev ui input " + (errors.unitPrice ? "has-error" : !errors.unitPrice && touched.unitPrice ? " has-success" : " ")}>
+                    <input name="unitPrice" className="form-control" id="unitPrice" placeholder={Resources["unitPrice"][currentLanguage]}
+                      autoComplete="off" onBlur={handleBlur} defaultValue={values.unitPrice}
+                      onChange={e => { handleChange(e); }} />
+                    {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                  </div>
+                </div>
+                <div className={" fullWidthWrapper"}>
+                  {this.state.isLoading === false ? (
+                    <button className={"primaryBtn-1 btn " + (this.state.isApproveMode === true ? "disNone" : "")} type="submit" disabled={this.state.isApproveMode}>
+                      {Resources.save[currentLanguage]}
+                    </button>
+                  ) : (
+                      <button className="primaryBtn-1 btn  disabled" disabled="disabled">
+                        <div className="spinner">
+                          <div className="bounce1" />
+                          <div className="bounce2" />
+                          <div className="bounce3" />
+                        </div>
+                      </button>
+                    )}
+                </div>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
+
+
+    </Fragment>
 
     const columnsDetails = [
       {
@@ -1095,10 +1314,14 @@ class ContractInfoAddEdit extends Component {
     const voItemsGrid =
       this.state.isLoading === false ? (
         <Fragment>
-          <GridSetup rows={this.state.rows} showCheckbox={this.state.isViewMode === false ? true : false}
-            clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain.bind(this)}
-            pageSize={this.state.pageSize} onRowClick={this.onRowClick} columns={columnsGrid}
-            onGridRowsUpdated={this._onGridRowsUpdated} key='rows' />
+          <ReactTable data={this.state.voItems}
+            columns={voColumns}
+            defaultPageSize={10}
+            getTrProps={(state, rowInfo, column, instance) => {
+              return { onClick: e => { this.viewModelToEdit(rowInfo.original, e.target.type); } };
+            }}
+            noDataText={Resources["noData"][currentLanguage]}
+            className="-striped -highlight" />
         </Fragment>
       ) : (
           <LoadingSection />
@@ -1107,16 +1330,16 @@ class ContractInfoAddEdit extends Component {
     const pricedItemContent = (
       <Fragment>
         <div className="document-fields">
-          <div class="submittalFilter">
-            <div class="subFilter">
-              <h3 class="zero"> {Resources['items'][currentLanguage]}</h3>
+          <div className="submittalFilter">
+            <div className="subFilter">
+              <h3 className="zero"> {Resources['items'][currentLanguage]}</h3>
               <span>{this.state.rows.length}</span>
             </div>
             <div className="rowsPaginations">
               <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                 <i className="angle left icon" />
               </button>
-              <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
+              <button className={this.state.totalRows !==this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
                 <i className="angle right icon" />
               </button>
             </div>
@@ -1129,16 +1352,16 @@ class ContractInfoAddEdit extends Component {
     const voiContent = (
       <Fragment>
         <div className="document-fields">
-          <div class="submittalFilter">
-            <div class="subFilter">
-              <h3 class="zero"> {Resources['items'][currentLanguage]}</h3>
-              <span>{this.state.rows.length}</span>
+          <div className="submittalFilter">
+            <div className="subFilter">
+              <h3 className="zero"> {Resources['items'][currentLanguage]}</h3>
+              <span>{this.state.voItemsLength}</span>
             </div>
             <div className="rowsPaginations">
-              <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
+              <button className={this.state.voPageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData('vo')}>
                 <i className="angle left icon" />
               </button>
-              <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
+              <button className={this.state.voItemsLength < this.state.voPageSize * this.state.voPageNumber + this.state.voPageSize ? "rowunActive" : ""} onClick={() => this.GetNextData('vo')}>
                 <i className="angle right icon" />
               </button>
             </div>
@@ -1578,7 +1801,7 @@ class ContractInfoAddEdit extends Component {
           {this.state.activeTab == "subContracts" ? (<SubContract type='Contract' ApiGet={'GetSubContractsByContractId?contractId=' + this.state.docId} contractId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
           {this.state.activeTab == "subPOs" ? (<SubPurchaseOrderLog ApiGet={"GetSubPOsByContractId?contractId=" + docId} type="Contract" docId={this.state.docId} projectId={projectId} isViewMode={this.state.isViewMode} subject={this.state.document.subject} items={this.state.rows.length > 0 ? this.state.rows : []} />) : null}
           {this.state.activeTab == "voi" ? (<Fragment>{voiContent}</Fragment>) : null}
-       
+
         </Fragment>
         <div className="doc-pre-cycle letterFullWidth">
           <div className="precycle-grid">
@@ -1691,7 +1914,11 @@ class ContractInfoAddEdit extends Component {
               {this.state.currentComponent}
             </SkyLight>
           </div>
-
+          <div className="largePopup largeModal " style={{ display: this.state.showItemEdit ? 'block' : 'none' }}>
+            <SkyLight hideOnOverlayClicked ref={ref => this.itemDialog = ref} title={Resources.goEdit[currentLanguage]}>
+              {editVoItemForm}
+            </SkyLight>
+          </div>
           {this.state.showDeleteModal == true ? (
             <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}

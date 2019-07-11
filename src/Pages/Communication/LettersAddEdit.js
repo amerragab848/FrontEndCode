@@ -268,7 +268,7 @@ class LettersAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+        dataservice.GetDataList("GetLettersListByProjectId?" + this.state.projectId, 'subject', 'id').then(result => {
             if (isEdit) {
                 let replyId = this.props.document.replyId;
                 let replyLetter = {};
@@ -687,7 +687,7 @@ class LettersAddEdit extends Component {
                                                                         : null
                                                                     }
                                                                     <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
+                                                                    <button type="submit" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
                                                                     <span className="border"></span>
                                                                     <div className="document__action--menu">
                                                                         <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />

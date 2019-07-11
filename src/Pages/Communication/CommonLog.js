@@ -51,7 +51,6 @@ class CommonLog extends Component {
       selectedRows: [],
       minimizeClick: false,
       documentObj: {},
-      columnsModal: false
     };
 
     this.filterMethodMain = this.filterMethodMain.bind(this);
@@ -400,7 +399,7 @@ class CommonLog extends Component {
     });
 
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
-  }
+  } 
 
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
@@ -441,14 +440,6 @@ class CommonLog extends Component {
       !this.state.isCustom
     );
   };
-
-  openModalColumn = () => {
-    this.setState({ columnsModal: true })
-  }
-
-  closeModalColumn = () => {
-    this.setState({ columnsModal: false })
-  }
 
   cellClick = (rowId, colID) => {
 
@@ -549,14 +540,14 @@ class CommonLog extends Component {
                   </svg>
                 </span>
                 <span className={"text " + (this.state.viewfilter === false ? " " : " active")}>
-                  <span className="show-fillter">Show Fillter</span>
-                  <span className="hide-fillter">Hide Fillter</span>
+                  <span className="show-fillter">{Resources["showFillter"][currentLanguage]}</span>
+                  <span className="hide-fillter">{Resources["hideFillter"][currentLanguage]}</span>
                 </span>
               </div>
             </div>
             <div className="filterBTNS">
               {btnExport}
-              <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
+              <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button>
             </div>
             <div className="rowsPaginations">
               <div className="rowsPagiRange">
@@ -579,7 +570,7 @@ class CommonLog extends Component {
           <div>
             <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
               <div className="minimizeSpan">
-                <div className="H-tableSize" onClick={this.handleMinimize}>
+                <div className="H-tableSize" data-toggle="tooltip" title="Minimize Rows" onClick={this.handleMinimize}>
                   <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                     <g fill="none" fillRule="evenodd" transform="translate(5 5)">
                       <g fill="#CCD2DB" mask="url(#b)">
@@ -588,7 +579,7 @@ class CommonLog extends Component {
                     </g>
                   </svg>
                 </div>
-                <div className="V-tableSize" onClick={this.openModalColumn}>
+                <div className="V-tableSize" data-toggle="tooltip" title="Filter Columns" onClick={this.openModalColumn}>
                   <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                     <g fill="none" fillRule="evenodd" transform="translate(5 5)">
                       <g fill="#CCD2DB" mask="url(#b)">
@@ -614,52 +605,6 @@ class CommonLog extends Component {
                 clickHandlerContinue={this.clickHandlerContinueMain}
               />
             ) : null}
-          </div>
-        </div>
-        <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
-          <div className="grid__column--container">
-            <button className="closeColumn" onClick={this.closeModalColumn}>X</button>
-            <div className="grid__column--title">
-              <h2>Grid Columns</h2>
-            </div>
-            <div className="grid__column--content">
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-              <div className="grid__content">
-                <div className="ui checkbox checkBoxGray300 count">
-                  <input name="CheckBox" type="checkbox" id="terms" tabIndex="0" className="hidden" />
-                  <label>Terms of purchase orders 11</label>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </Fragment>
