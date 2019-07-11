@@ -8030,6 +8030,10 @@
     "newRiskRef": {
         "en": "New risk ref",
         "ar": "بحث"
+    }, 
+    "riskRealisation": {
+        "en": "Risk Realisation",
+        "ar": "بحث"
     },
     "new": {
         "en": "New",
