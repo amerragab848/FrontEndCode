@@ -4601,6 +4601,24 @@ h1, h2, h3, h4, h5 {
       .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput input {
         width: 360px; } }
 
+.StepperNum .StepNumber.active.current__step .StepNum::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  right: -4px;
+  left: -4px;
+  border: 2px solid #00da67;
+  border-radius: 50%; }
+
+.StepperNum .StepNumber {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  min-width: 170px;
+  max-width: 220px; }
+
 .dashboard-container {
   padding-top: 90px; }
   .dashboard-container .welcome-title {
@@ -9868,9 +9886,31 @@ h1, h2, h3, h4, h5 {
 
 .section__tabs {
   background: #fafbfc;
-  border-right: 1px solid #e9ecf0;
+  border-left: 1px solid #e9ecf0;
   width: 322px;
-  min-height: 100vh; }
+  min-height: 100vh;
+  transition: all 0.3s ease;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999; }
+
+.section__tabs.b-hover {
+  width: 88px;
+  overflow: hidden;
+  transition: all 0.5s ease; }
+
+.b-hover .section__tabs--item > *,
+.b-hover header h2 {
+  max-width: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.section__tabs .section__tabs--item > *,
+.section__tabs header h2 {
+  transition: all 0.3s ease; }
 
 .section__tabs header {
   height: 72px;
@@ -12609,11 +12649,6 @@ button.companies_icon {
   color: #252833; }
 
 /* sayed step page */
-.one__tab .submittalHead {
-  justify-content: center;
-  padding-right: 0;
-  z-index: 2; }
-
 .one__tab .doc-container {
   background: #fff;
   flex-flow: row; }
@@ -16160,18 +16195,3 @@ label {
   position: relative; }
 
 /*# sourceMappingURL=layout-ar.css.map */
-.StepperNum .StepNumber.active.current__step .StepNum::after {
-  content: '';
-  position: absolute;
-  top: -4px;
-  bottom: -4px;
-  right: -4px;
-  left: -4px;
-  border: 2px solid #00da67;
-  border-radius: 50%;
-}
-
-.StepperNum .StepNumber {
-  min-width: 170px;
-  max-width: 220px;
-}

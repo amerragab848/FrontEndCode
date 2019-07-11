@@ -251,6 +251,7 @@ class drawingListAddEdit extends Component {
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedToContactEdit: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedToCompanyEdit: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
+            tabHover : false
         }
         if (!Config.IsAllow(583) && !Config.IsAllow(358) && !Config.IsAllow(360)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -818,6 +819,18 @@ class drawingListAddEdit extends Component {
         }
     }
 
+    openTabs = () => {
+        this.setState({
+            tabHover : true
+        })
+    }
+
+    closeTabs = () => {
+        this.setState({
+            tabHover : false
+        })
+    }
+
     render() {
 
         const columnsSchedule = [
@@ -1231,7 +1244,7 @@ class drawingListAddEdit extends Component {
                                             <p class="StepN zero" >1</p>
                                             <p class="StepTrue zero">✔</p>
                                         </div>
-                                        <div class="stepWord">{Resources.expensesWorkFlow[currentLanguage]}</div>
+                                        <div class="stepWord">{Resources["schedule"][currentLanguage]}</div>
                                     </div>
                                     <span class="Step-Line"></span>
                                     <div onClick={this.StepTwoLink} data-id="step2 " className={'StepNumber ' + (this.state.SecondStepComplate ? " active current__step" : " ")}>
@@ -1239,18 +1252,14 @@ class drawingListAddEdit extends Component {
                                             <p class="StepN zero">2</p>
                                             <p class="StepTrue zero">✔</p>
                                         </div>
-                                        <div class="stepWord">{Resources.contacts[currentLanguage]}</div>
+                                        <div class="stepWord">{Resources["items"][currentLanguage]}</div>
                                     </div>
                                 </div>
                             </div>
-
-
                         }
 
 
-
-
-                        <div className="step-content">
+                        <div className="step-content" style={{width : '100%', paddingLeft : '98px'}}>
                             {this.state.FirstStep ?
 
                                 <div className="subiTabsContent">
@@ -1397,7 +1406,7 @@ class drawingListAddEdit extends Component {
 
 
                         {this.state.IsEditMode ?
-                            <div className="section__tabs">
+                            <div className={this.state.tabHover ? "section__tabs" : "section__tabs b-hover"} onMouseOut={() => this.closeTabs()} onMouseOver={() => this.openTabs()}>
                                 <div onClick={this.StepOneLink} className={this.state.FirstStep ? "section__tabs--item active" : "section__tabs--item "}>
                                     <h3 className="zero">{Resources["schedule"][currentLanguage]}</h3>
                                 </div>
