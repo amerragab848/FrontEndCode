@@ -94,13 +94,13 @@ class RfiAddEdit extends Component {
             areas: [],
             locations: [],
             permission: [{ name: 'sendByEmail', code: 81 },
-                        { name: 'sendByInbox', code: 80 },
-                        { name: 'sendTask', code: 1 },
-                        { name: 'distributionList', code: 963 },
-                        { name: 'createTransmittal', code: 3049 },
-                        { name: 'sendToWorkFlow', code: 713 },
-                        { name: 'viewAttachments', code: 3318 },
-                        { name: 'deleteAttachments', code: 828 }],
+            { name: 'sendByInbox', code: 80 },
+            { name: 'sendTask', code: 1 },
+            { name: 'distributionList', code: 963 },
+            { name: 'createTransmittal', code: 3049 },
+            { name: 'sendToWorkFlow', code: 713 },
+            { name: 'viewAttachments', code: 3318 },
+            { name: 'deleteAttachments', code: 828 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -149,14 +149,14 @@ class RfiAddEdit extends Component {
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
-        } 
+        }
         if (this.state.showModal != nextProps.showModal) {
             this.setState({ showModal: nextProps.showModal });
         }
     };
 
-    componentDidUpdate(prevProps) { 
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow|| this.props.changeStatus !== prevProps.changeStatus) {
+    componentDidUpdate(prevProps) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -256,8 +256,8 @@ class RfiAddEdit extends Component {
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
                 }
 
-                let toCompanyId = this.props.document.toCompanyId; 
-                if (toCompanyId) { 
+                let toCompanyId = this.props.document.toCompanyId;
+                if (toCompanyId) {
                     this.setState({
                         selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
                     });
@@ -288,11 +288,11 @@ class RfiAddEdit extends Component {
             });
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
         //area
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "title").then(result => {
             if (isEdit) {
                 let areaId = this.props.document.area;
                 if (areaId) {
-                    let area = result.find(i => i.value === parseInt(areaId));
+                    let area = result.find(i => i.value ===  areaId);
                     if (area) {
                         this.setState({
                             selectedArea: { label: area.label, value: areaId }
@@ -305,13 +305,13 @@ class RfiAddEdit extends Component {
             });
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
         //location
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", "title", "id").then(result => {
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", "title", "title").then(result => {
             if (isEdit) {
 
                 let locationId = this.props.document.location;
 
                 if (locationId) {
-                    let location = result.find(i => i.value === parseInt(locationId));
+                    let location = result.find(i => i.value === locationId);
                     if (location) {
                         this.setState({
                             selectedLocation: { label: location.label, value: locationId }
@@ -459,7 +459,8 @@ class RfiAddEdit extends Component {
 
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-
+        saveDocument.area = this.state.selectedArea.label;
+        saveDocument.location = this.state.selectedLocation.label;
         dataservice.addObject('AddCommunicationRfi', saveDocument).then(result => {
             this.setState({
                 docId: result.id,

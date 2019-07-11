@@ -23,6 +23,7 @@ import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
 import RiskCause from '../../Componants/OptionsPanels/RiskCause';
 import RiskConesquence from '../../Componants/publicComponants/RiskConesquence';
+import RiskRealisation from '../../Componants/publicComponants/RiskRealisation';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { toast } from "react-toastify";
 import ReactTable from "react-table";
@@ -2130,7 +2131,7 @@ class riskAddEdit extends Component {
                                                     </div>
                                                     :
                                                     this.state.SixthStep ?
-                                                        <Fragment>
+                                                        <div class="document-fields">
                                                             <div className="datepickerContainer proForm">
                                                                 <header>
                                                                     <h2 className="zero">{Resources['riskAnalysis'][currentLanguage]}</h2>
@@ -2161,13 +2162,16 @@ class riskAddEdit extends Component {
                                                                         <span>{this.state.totalResidualRisk > this.state.totalPretRiskEmv ? 'Cost Effective' : 'Not Cost Effective'}</span>
                                                                     </div>
                                                                 </div>
+
                                                             </div>
+                                                            <RiskRealisation riskId={this.state.docId} />
+                                                            
                                                             <div className="doc-pre-cycle">
                                                                 <div className="slider-Btns">
                                                                     <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextTopStep}>{Resources['next'][currentLanguage]}</button>
                                                                 </div>
                                                             </div>
-                                                        </Fragment>
+                                                        </div>
                                                         :
                                                         <Fragment>
                                                             <div className="document-fields tableBTnabs">
