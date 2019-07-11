@@ -8003,7 +8003,6 @@
         "en": "Filter",
         "ar": "بحث"
     },
-<<<<<<< HEAD
     "riskRealised": {
         "en": "Risk realised",
         "ar": "بحث"
@@ -8031,10 +8030,9 @@
     "newRiskRef": {
         "en": "New risk ref",
         "ar": "بحث"
-=======
+    },
     "new": {
         "en": "New",
         "ar": "اضافة"
->>>>>>> b00dad14a74fc82c88f4b5296fd1d010b9106e91
     }
 }
