@@ -3286,12 +3286,6 @@ class bogAddEdit extends Component {
                             <div>
                                 <div className="docstepper-levels">
                                     <div className="step-content-foot">
-<<<<<<< HEAD
-                                        <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
-                                            "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
-                                        <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
-                                            : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
-=======
                                         <span
                                             onClick={this.PreviousStep}
                                             className={
@@ -3319,7 +3313,6 @@ class bogAddEdit extends Component {
                                                 className="fa fa-caret-right"
                                                 aria-hidden="true"
                                             />
->>>>>>> 672413e89027a35f41de1c14fcbcbc5ccb0b022f
                                         </span>
                                     </div>
                                     <div className="workflow-sliderSteps">
