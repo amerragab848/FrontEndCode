@@ -249,7 +249,9 @@ class CommonLog extends Component {
   filterMethodMain = (event, query, apiFilter) => {
 
     var stringifiedQuery = JSON.stringify(query);
-
+    if (stringifiedQuery == '{"isCustom":true}') {
+      stringifiedQuery = undefined
+    }
     this.setState({
       isLoading: true,
       query: stringifiedQuery
@@ -399,7 +401,7 @@ class CommonLog extends Component {
     });
 
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
-  } 
+  }
 
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
@@ -556,7 +558,7 @@ class CommonLog extends Component {
                   {this.state.pageSize * this.state.pageNumber + this.state.pageSize}
                 </span>
                 {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
-              <span> {this.state.totalRows}</span>
+                <span> {this.state.totalRows}</span>
               </div>
               <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>
               <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
