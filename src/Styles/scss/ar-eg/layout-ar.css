@@ -10094,7 +10094,7 @@ h1, h2, h3, h4, h5 {
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 998; }
+  z-index: 999; }
 
 .section__tabs header {
   height: 72px;
@@ -10146,15 +10146,19 @@ h1, h2, h3, h4, h5 {
   line-height: 1.5;
   letter-spacing: -0.2px;
   color: #252833;
-  white-space: nowrap
-}
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
 
 .section__tabs .section__tabs--item p {
   font-family: cairo-r;
   font-size: 12px;
   line-height: 1.33;
   letter-spacing: -0.2px;
-  color: #a8b0bf; }
+  color: #a8b0bf;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
 
 .b-hover .section__tabs--item,
 .section__tabs.b-hover {
@@ -11277,6 +11281,10 @@ body {
 
 .proForm .form-group {
   margin-bottom: 8px !important; }
+
+.cutomEditSchedule .step-content {
+  padding-right: 100px !important;
+  padding-left: 40px !important; }
 
 .moutasem {
   display: none; }
@@ -16398,7 +16406,10 @@ label {
   color: #5E6475;
   position: relative; }
 
-/*# sourceMappingURL=layout-ar.css.map */
+.react-grid-row-group {
+  background-color: #e9ecf0; }
+
+/* temporary css for new tabs */
 .cutomEditSchedule .edit__sign .notifiActionsContainer {
   position: absolute;
   margin: 10px auto;
@@ -16406,24 +16417,69 @@ label {
   min-width: 696px;
   top: auto;
   left: calc(50% - 348px);
-  z-index: 998;
-}
+  z-index: 998; }
 
 .cutomEditSchedule .step-content {
-  padding-top: 50px !important;
-  padding-right: 100px !important;
-  padding-left: 40px !important
+  padding-top: 50px !important; }
+
+/*# sourceMappingURL=layout-ar.css.map */
+
+
+.react-grid-row-group ~ .react-grid-row-group {
+  background: #fafbfc;
 }
 
-
-.section__tabs .section__tabs--item h3 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.react-grid-Row + .react-grid-row-group {
+  background : #e9ecf0;
 }
 
-.section__tabs .section__tabs--item p {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.react-grid-row-group >div strong {
+  font-family: cairo-b;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: #252833;
+  margin-right: 12px;
+  padding-right: 25px;
+  position: relative;
+}
+
+.react-grid-row-group >div {
+  border: none !important;
+  position: relative;
+}
+
+.react-grid-row-group >div::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 32px;
+  right: 32px;
+  height: 1px;
+  background: #e9ecf0
+}
+
+.react-grid-row-group >div strong::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background-image: url(../../images/greyArrow.png);
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  right: -4px;
+  top: 8px;  
+  transition: all 0.3s ease-in-out;
+  transform: rotate(90deg);
+}
+
+.react-grid-row-group >div strong.Expanded::after  {
+  transform: rotate(0);
+}
+
+.mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .backtoProjects i ,
+.mainSide .mainSideNav .mainSidenavContent .sidenavinner .MainProjectsMenu .backToModules a i{
+  margin-left: 4px;
+  transform: rotate(180deg);
 }
