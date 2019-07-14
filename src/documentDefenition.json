@@ -4172,7 +4172,7 @@
       {
         "field": "subject",
         "friendlyName": "subject",
-        "minWidth": 200,
+        "minWidth": 250,
         "width": "20%",
         "dataType": "string",
         "isDate": false,
@@ -4208,7 +4208,7 @@
       {
         "field": "docDate",
         "friendlyName": "docDate",
-        "minWidth": 85,
+        "minWidth": 120,
         "width": "15%",
         "dataType": "date",
         "isDate": true,
