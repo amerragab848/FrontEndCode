@@ -2071,7 +2071,7 @@
         "en": "Correspondence Received Addition",
         "ar": "إضافة المراسلات الواردة"
     },
-    "sendingMethod": {
+    "sendingMethod": { 
         "en": "Sending Method",
         "ar": "طريقة الارسال"
     },
@@ -8002,5 +8002,61 @@
     "filter": {
         "en": "Filter",
         "ar": "بحث"
+    },
+    "riskRealised": {
+        "en": "Risk realised",
+        "ar": "بحث"
+    },
+    "actualImpact": {
+        "en": "Actual impact",
+        "ar": "بحث"
+    },
+    "dateOfRealisation": {
+        "en": "Date of realisation",
+        "ar": "بحث"
+    },
+    "postEventMitigation": {
+        "en": "Post event mitigation",
+        "ar": "بحث"
+    },
+    "costOfMitigation": {
+        "en": "Cost of mitigation",
+        "ar": "بحث"
+    },
+    "residualRiskTitle": {
+        "en": "Residual risk title",
+        "ar": "بحث"
+    },
+    "newRiskRef": {
+        "en": "New risk ref",
+        "ar": "بحث"
+    }, 
+    "riskRealisation": {
+        "en": "Risk Realisation",
+        "ar": "بحث"
+    },
+    "new": {
+        "en": "New",
+        "ar": "اضافة"
+    },
+    "projectPhase": {
+        "en": "Project Phase",
+        "ar": "مرحلة المشروع"
+    },
+    "organisation": {
+        "en": "Organisation",
+        "ar": "منظمة"
+    },
+    "managementlevel": {
+        "en": "Management level",
+        "ar": "مستوى الإدارة"
+    },
+    "categorisation": {
+        "en": "Categorisation",
+        "ar": "Categorisation"
+    },
+    "seeAll": {
+        "en": "See All",
+        "ar": "عرض الجميع"
     }
 }

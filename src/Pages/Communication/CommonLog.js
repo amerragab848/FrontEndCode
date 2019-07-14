@@ -51,7 +51,6 @@ class CommonLog extends Component {
       selectedRows: [],
       minimizeClick: false,
       documentObj: {},
-      columnsModal: false
     };
 
     this.filterMethodMain = this.filterMethodMain.bind(this);
@@ -400,7 +399,7 @@ class CommonLog extends Component {
     });
 
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
-  }
+  } 
 
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
@@ -441,14 +440,6 @@ class CommonLog extends Component {
       !this.state.isCustom
     );
   };
-
-  openModalColumn = () => {
-    this.setState({ columnsModal: true })
-  }
-
-  closeModalColumn = () => {
-    this.setState({ columnsModal: false })
-  }
 
   cellClick = (rowId, colID) => {
 
@@ -549,14 +540,14 @@ class CommonLog extends Component {
                   </svg>
                 </span>
                 <span className={"text " + (this.state.viewfilter === false ? " " : " active")}>
-                  <span className="show-fillter">Show Fillter</span>
-                  <span className="hide-fillter">Hide Fillter</span>
+                  <span className="show-fillter">{Resources["showFillter"][currentLanguage]}</span>
+                  <span className="hide-fillter">{Resources["hideFillter"][currentLanguage]}</span>
                 </span>
               </div>
             </div>
             <div className="filterBTNS">
               {btnExport}
-              <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
+              <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button>
             </div>
             <div className="rowsPaginations">
               <div className="rowsPagiRange">
@@ -564,7 +555,7 @@ class CommonLog extends Component {
                 <span>
                   {this.state.pageSize * this.state.pageNumber + this.state.pageSize}
                 </span>
-                of
+                {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
               <span> {this.state.totalRows}</span>
               </div>
               <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>

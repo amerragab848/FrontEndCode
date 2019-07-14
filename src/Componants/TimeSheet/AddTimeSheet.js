@@ -150,7 +150,7 @@ class AddTimeSheet extends Component {
         }
 
         if (e.value === 'felmeshmesh') {
-            Api.get('GetTimeSheetByDate?date=' + Today + '').then(
+            Api.get('GetTimeSheetByDate?date=' + moment(Today).format('YYYY-MM-DD') + '').then(
                 res => {
                     this.setState({
                         tableView: true,
