@@ -257,7 +257,7 @@
     },
     "changeBoqIntoContractOrPO": {
         "en": "Create BOQ To Contract/PO",
-        "ar": "تحويل قائمة الكميات إلي عقد / أمر الشراء"
+        "ar": " عقد / أمر الشراء"
     },
     "selectProjectClick": {
         "en": "Click to Select Project",
