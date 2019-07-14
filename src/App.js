@@ -23,11 +23,11 @@ const loadingStyle = {
     bottom: "0",
     display: "-webkit-flex",
     display: "flex",
-    webkitAlignItems: "center",
+    WebkitAlignItems: "center",
     alignItems: "center",
-    webkitJustifyContent: "center",
+    WebkitJustifyContent: "center",
     justifyContent: "center",
-    webkitFlexFlow: "column",
+    WebkitFlexFlow: "column",
     flexFlow: "column",
     backgroundColor: "rgba(255, 255, 255, 0.9)",
     zIndex: "20",
@@ -39,7 +39,7 @@ const loadingStyle = {
     border: "solid 6px #4382f9",
     borderBottomColor: "transparent",
     borderRadius: "50%",
-    webkitAnimation: "rotate 1s linear infinite",
+    WebkitAnimation: "rotate 1s linear infinite",
     animation: "rotate 1s linear infinite"
   }
 }

@@ -1014,9 +1014,9 @@ class ExpensesWorkFlowAddEdit extends Component {
 
                             <div className="step-content-foot">
                                 <span onClick={this.PreviousStep} className={(idEdit !== 0 && this.state.CurrStep > 1) ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>Previous</span>
+                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
                                 <span onClick={this.NextStep} className={this.state.MoveSteps ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>Next<i className="fa fa-caret-right" aria-hidden="true"></i>
+                                    : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
                                 </span>
                             </div>
 

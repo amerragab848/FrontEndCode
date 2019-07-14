@@ -2,37 +2,28 @@ import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
+import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
-import GridSetup from "../../Pages/Communication/GridSetupWithFilter";
-import { Toolbar, Data, Filters } from "react-data-grid-addons";
+import GridSetup from "../../Pages/Communication/GridSetupWithFilter"; 
 import Resources from "../../resources.json";
 import CryptoJS from "crypto-js";
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
-let  subjectLink = ({ value, row }) => {
-    let doc_view = "";
-    let subject = "";
-    if (row) {
-      doc_view ="/"+ row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
-      subject = row.subject;
-      return <a href={doc_view}> {subject} </a>;
-    }
-    return null;
-  };
+let subjectLink = ({ value, row }) => {
+  let doc_view = "";
+  let subject = "";
+  if (row) {
+    doc_view = "/" + row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
+    subject = row.subject;
+    return <a href={doc_view}> {subject} </a>;
+  }
+  return null;
+};
 
 class FollowUpsSummaryDetails extends Component {
   constructor(props) {
@@ -41,36 +32,33 @@ class FollowUpsSummaryDetails extends Component {
     var columnsGrid = [
       {
         key: "projectName",
-        name:  Resources["projectName"][currentLanguage],
+        name: Resources["projectName"][currentLanguage],
         width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "fromCompany",
-        name:  Resources["fromCompany"][currentLanguage],
+        name: Resources["fromCompany"][currentLanguage],
         width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "arrange",
-        name:  Resources["arrange"][currentLanguage],
+        name: Resources["arrange"][currentLanguage],
         width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "subject",
@@ -81,8 +69,7 @@ class FollowUpsSummaryDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter:subjectLink
+        formatter: subjectLink
       },
       {
         key: "actionByContactName",
@@ -92,76 +79,69 @@ class FollowUpsSummaryDetails extends Component {
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true
       },
       {
         key: "approvalStatusName",
         name: Resources["approvalStatus"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
+        sortDescendingFirst: true
       },
       {
         key: "docTypeName",
         name: Resources["docType"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
+        sortDescendingFirst: true
       },
       {
         key: "delayDuration",
         name: Resources["delay"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
+        sortDescendingFirst: true
       },
       {
         key: "duration2",
         name: Resources["durationDays"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
+        sortDescendingFirst: true
       },
       {
         key: "sendDate",
         name: Resources["sendDate"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "lastApprovalDate",
         name: Resources["lastApprovalDate"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       }
     ];
 
@@ -264,7 +244,7 @@ class FollowUpsSummaryDetails extends Component {
         arrange: 0,
         docApprovalId: 0,
         isApproveMode: false,
-        perviousRoute:window.location.pathname+window.location.search
+        perviousRoute: window.location.pathname + window.location.search
       }
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
@@ -274,7 +254,7 @@ class FollowUpsSummaryDetails extends Component {
       });
     }
   }
- 
+
   render() {
     const dataGrid = this.state.isLoading === false ?(
     <GridSetup rows={this.state.rows}
@@ -282,9 +262,9 @@ class FollowUpsSummaryDetails extends Component {
      columns={this.state.columns} 
      showCheckbox={false}/>) : <LoadingSection/>;
 
-    const btnExport = this.state.isLoading === false ? 
-    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-    : <LoadingSection /> ;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : <LoadingSection />;
 
    
     return (
