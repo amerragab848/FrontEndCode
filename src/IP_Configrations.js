@@ -11,9 +11,9 @@ var IP_CONFIG = {
     exportStatic: "https://demov4.procoor.com",
     fmApp: "FM",
     hrApp: "HR",
-    local: "http://172.30.1.17:8900",
-    loginServer: "http://172.30.1.17:8901",
+    local: "https://demov4services.procoor.com/pm",
+    loginServer: "https://procoorauthorization.procoor.com",
     pmApp: "PM",
-    static: "http://172.30.1.17:8900",
-    downloads: "http://172.30.1.17:8900"
+    static: "https://demov4services.procoor.com/pm",
+    downloads: "https://demov4services.procoor.com"
 };
