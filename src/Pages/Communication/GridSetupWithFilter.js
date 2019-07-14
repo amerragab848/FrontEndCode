@@ -287,7 +287,7 @@ class GridSetupWithFilter extends Component {
                 } else {
                   matched = 0;
                 }
-              } else if (typeof filters[key] == 'number') {
+              } else if (!/\D/.test(filters[key])) {
                 if (row[`${key}`] === filters[key]) {
                   matched++;
                 } else {
@@ -326,8 +326,8 @@ class GridSetupWithFilter extends Component {
                 } else {
                   matched = 0;
                 }
-              } else if (typeof filters[key] == 'number') {
-                if (row[`${key}`] === filters[key]) {
+              } else if (!/\D/.test(filters[key])) {
+                if (row[`${key}`] === Number(filters[key])) {
                   matched++;
                 } else {
                   matched = 0;

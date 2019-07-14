@@ -23,7 +23,7 @@ class RiskRealisation extends Component {
         super(props)
         this.state = {
             isLoading: false,
-            riskId: this.props.riskId,
+            riskId: props.riskId,
             riskRealisation: riskRealisation
         }
     }
@@ -66,6 +66,7 @@ class RiskRealisation extends Component {
     saveRisk = () => {
         this.setState({ isLoading: true });
         let riskRealisation = this.state.riskRealisation;
+        riskRealisation.riskId=this.state.riskId;
         riskRealisation.dateRealisation = moment(riskRealisation.dateRealisation).format('MM/DD/YYYY');
         console.log(riskRealisation);
         Api.post('AddRiskRealisation', riskRealisation).then(() => {
