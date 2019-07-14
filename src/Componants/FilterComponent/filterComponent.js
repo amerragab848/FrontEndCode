@@ -55,9 +55,16 @@ class FilterComponent extends Component {
     var obj = {};
 
     if (type === "toggle") {
-      obj.field = field;
-      obj.value = event["value"];
-      obj.type = type;
+      if (event["value"] === null) {
+        obj.field = field;
+        delete obj[field]
+      }
+      else {
+        obj.field = field;
+        obj.value = event["value"];
+        obj.type = type;
+      }
+
     } else if (type === "date") {
       obj.field = field;
       obj.value = typeof (event) === "object" ? "" : event;
