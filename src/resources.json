@@ -8030,10 +8030,30 @@
     "newRiskRef": {
         "en": "New risk ref",
         "ar": "بحث"
+    }, 
+    "riskRealisation": {
+        "en": "Risk Realisation",
+        "ar": "بحث"
     },
     "new": {
         "en": "New",
         "ar": "اضافة"
+    },
+    "projectPhase": {
+        "en": "Project Phase",
+        "ar": "مرحلة المشروع"
+    },
+    "organisation": {
+        "en": "Organisation",
+        "ar": "منظمة"
+    },
+    "managementlevel": {
+        "en": "Management level",
+        "ar": "مستوى الإدارة"
+    },
+    "categorisation": {
+        "en": "Categorisation",
+        "ar": "Categorisation"
     },
     "seeAll": {
         "en": "See All",
