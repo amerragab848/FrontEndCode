@@ -16414,3 +16414,16 @@ label {
   padding-right: 100px !important;
   padding-left: 40px !important
 }
+
+
+.section__tabs .section__tabs--item h3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.section__tabs .section__tabs--item p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
