@@ -143,8 +143,9 @@ class bogAddEdit extends Component {
 
         this.itemsColumns = [
             {
+                name: Resources["itemize"][currentLanguage],
                 formatter: this.customButton,
-                width: 50,
+                width: 70,
                 key: "customBtn"
             },
             {
@@ -2884,7 +2885,7 @@ class bogAddEdit extends Component {
                 </Fragment>
                 {this.state.isCompany ? (
                     <Fragment>
-                        <XSLfile key="boqStructure" docId={this.state.docId} docType="boq2" link={window.IP_CONFIG.downloads + "/Downloads/Excel/BOQ2.xlsx"}
+                        <XSLfile key="boqStructure" docId={this.state.docId} docType="boq2" link={window.IP_CONFIG.downloads + "/Downloads/Excel/BOQStructure.xlsx"}
                             header="addManyItems"
                             disabled={this.props.changeStatus ? this.props.document.contractId > 0 ? true : false : false}
                             afterUpload={() => this.getTabelData()} />
