@@ -42,9 +42,8 @@ const loadingStyle = {
     WebkitAnimation: "rotate 1s linear infinite",
     animation: "rotate 1s linear infinite"
   }
-}
+} 
 
-//import Styles from "./CurrentLang";
 const store = configureStore();
 
 const IsAuthorize = api.IsAuthorized();

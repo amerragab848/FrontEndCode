@@ -101,11 +101,11 @@ class ViewAttachmments extends Component {
 
         window.open(
             window.IP_CONFIG.exportLocal +
-                "/edit-pdf/?zoom=page-actual&q=" +
-                this.b64EncodeUnicode(data) +
-                "#/public/edit-pdf/" +
-                stamp +
-                item.parentAttachFile.split("/")[4]
+            "/edit-pdf/?zoom=page-actual&q=" +
+            this.b64EncodeUnicode(data) +
+            "#/public/edit-pdf/" +
+            stamp +
+            item.parentAttachFile.split("/")[4]
         );
     };
 
@@ -203,14 +203,14 @@ class ViewAttachmments extends Component {
                 ext == "xlsx"
                     ? xlsx
                     : ext == "pdf"
-                    ? pdf
-                    : ext == "jpeg"
-                    ? jpeg
-                    : ext == "png"
-                    ? png
-                    : ext == "jpg"
-                    ? jpg
-                    : doc;
+                        ? pdf
+                        : ext == "jpeg"
+                            ? jpeg
+                            : ext == "png"
+                                ? png
+                                : ext == "jpg"
+                                    ? jpg
+                                    : doc;
             let createdDate = moment(item["createdDate"]).format("DD/MM/YYYY");
             if (item.isCloud !== true) {
                 var containerIndex = item.attachFile.indexOf(
@@ -318,7 +318,7 @@ class ViewAttachmments extends Component {
                                             {" "}
                                             {
                                                 Resources["actions"][
-                                                    currentLanguage
+                                                currentLanguage
                                                 ]
                                             }{" "}
                                         </span>
@@ -329,7 +329,7 @@ class ViewAttachmments extends Component {
                                         <span>
                                             {
                                                 Resources["fileName"][
-                                                    currentLanguage
+                                                currentLanguage
                                                 ]
                                             }{" "}
                                         </span>
@@ -340,7 +340,7 @@ class ViewAttachmments extends Component {
                                         <span>
                                             {
                                                 Resources["docDate"][
-                                                    currentLanguage
+                                                currentLanguage
                                                 ]
                                             }
                                         </span>
@@ -351,7 +351,7 @@ class ViewAttachmments extends Component {
                                         <span>
                                             {
                                                 Resources["uploadedBy"][
-                                                    currentLanguage
+                                                currentLanguage
                                                 ]
                                             }{" "}
                                         </span>
@@ -369,183 +369,181 @@ class ViewAttachmments extends Component {
         let tabel =
             this.props.isLoadingFiles == true
                 ? this.props.files.map((item, Index) => {
-                      let ext = item["fileName"].split(".")[1]
-                          ? item["fileName"].split(".")[1].toLowerCase()
-                          : "png";
-                      let extension =
-                          ext == "xlsx"
-                              ? xlsx
-                              : ext == "pdf"
-                              ? pdf
-                              : ext == "jpeg"
-                              ? jpeg
-                              : ext == "png"
-                              ? png
-                              : ext == "jpg"
-                              ? jpg
-                              : doc;
-                      let createdDate = moment(item["createdDate"]).format(
-                          "DD/MM/YYYY"
-                      );
-                      if (item.isCloud !== true) {
-                          var containerIndex = item.attachFile.indexOf(
-                              "/" + window.IP_CONFIG.BlobStorageContainerName
-                          );
-                          var filePath = item.attachFile.substr(containerIndex);
-                          item.attachFile = window.IP_CONFIG.cdn + filePath;
-                      }
+                    let ext = item["fileName"].split(".")[1]
+                        ? item["fileName"].split(".")[1].toLowerCase()
+                        : "png";
+                    let extension =
+                        ext == "xlsx"
+                            ? xlsx
+                            : ext == "pdf"
+                                ? pdf
+                                : ext == "jpeg"
+                                    ? jpeg
+                                    : ext == "png"
+                                        ? png
+                                        : ext == "jpg"
+                                            ? jpg
+                                            : doc;
+                    let createdDate = moment(item["createdDate"]).format(
+                        "DD/MM/YYYY"
+                    );
+                    if (item.isCloud !== true) {
+                        var containerIndex = item.attachFile ? item.attachFile.indexOf("/" + window.IP_CONFIG.BlobStorageContainerName) : -1;
+                        var filePath = item.attachFile ? item.attachFile.substr(containerIndex) : item.attachFile;
+                        item.attachFile = window.IP_CONFIG.cdn + filePath;
+                    }
 
-                      if (item.fileName) {
-                          item.fileNameDisplay = item.fileName.replace(
-                              /%23/g,
-                              "#"
-                          );
-                          item.fileNameDisplay = item.fileNameDisplay.replace(
-                              /%20/g,
-                              " "
-                          );
-                          item.fileNameDisplay = item.fileNameDisplay.replace(
-                              /%2C/g,
-                              ","
-                          );
+                    if (item.fileName) {
+                        item.fileNameDisplay = item.fileName.replace(
+                            /%23/g,
+                            "#"
+                        );
+                        item.fileNameDisplay = item.fileNameDisplay.replace(
+                            /%20/g,
+                            " "
+                        );
+                        item.fileNameDisplay = item.fileNameDisplay.replace(
+                            /%2C/g,
+                            ","
+                        );
 
-                          if (!this.has_ar(item.fileNameDisplay)) {
-                              item.fileNameDisplay = decodeURI(
-                                  item.fileNameDisplay
-                              );
-                          }
-                      } else {
-                          item.fileNameDisplay = "";
-                      }
+                        if (!this.has_ar(item.fileNameDisplay)) {
+                            item.fileNameDisplay = decodeURI(
+                                item.fileNameDisplay
+                            );
+                        }
+                    } else {
+                        item.fileNameDisplay = "";
+                    }
 
-                      return (
-                          <tr key={Index}>
-                              <td>
-                                  <div className="contentCell tableCell-1">
-                                      <span>
-                                          <img
-                                              src={extension}
-                                              alt={extension}
-                                              width="100%"
-                                              height="100%"
-                                              onClick={() =>
-                                                  this.previewPDF(item, ext)
-                                              }
-                                          />
-                                      </span>
-                                  </div>
-                              </td>
-                              <td>
-                                  <div className="contentCell tableCell-2">
-                                      <a
-                                          href={item["attachFile"]}
-                                          className="pdfPopup various zero"
-                                          data-toggle="tooltip"
-                                          title={item["fileName"]}>
-                                          {item.fileNameDisplay}
-                                      </a>
-                                  </div>
-                              </td>
-                              <td>
-                                  <div className="contentCell tableCell-3">
-                                      <p className="zero status">
-                                          {createdDate}
-                                      </p>
-                                  </div>
-                              </td>
-                              <td>
-                                  <div className="contentCell tableCell-4">
-                                      <p className="zero">
-                                          {item["uploadedBy"]}{" "}
-                                      </p>
-                                  </div>
-                              </td>
-                              <td className="tdHover">
-                                  <div className="attachmentAction">
-                                      {Config.IsAllow(
-                                          this.props.deleteAttachments
-                                      ) ? (
-                                          <a
-                                              className="attachRecycle"
-                                              onClick={() =>
-                                                  this.deletehandler(item)
-                                              }>
-                                              <img
-                                                  src={Recycle}
-                                                  alt="del"
-                                                  width="100%"
-                                                  height="100%"
-                                              />
-                                          </a>
-                                      ) : null}
+                    return (
+                        <tr key={Index}>
+                            <td>
+                                <div className="contentCell tableCell-1">
+                                    <span>
+                                        <img
+                                            src={extension}
+                                            alt={extension}
+                                            width="100%"
+                                            height="100%"
+                                            onClick={() =>
+                                                this.previewPDF(item, ext)
+                                            }
+                                        />
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="contentCell tableCell-2">
+                                    <a
+                                        href={item["attachFile"]}
+                                        className="pdfPopup various zero"
+                                        data-toggle="tooltip"
+                                        title={item["fileName"]}>
+                                        {item.fileNameDisplay}
+                                    </a>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="contentCell tableCell-3">
+                                    <p className="zero status">
+                                        {createdDate}
+                                    </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="contentCell tableCell-4">
+                                    <p className="zero">
+                                        {item["uploadedBy"]}{" "}
+                                    </p>
+                                </div>
+                            </td>
+                            <td className="tdHover">
+                                <div className="attachmentAction">
+                                    {Config.IsAllow(
+                                        this.props.deleteAttachments
+                                    ) ? (
+                                            <a
+                                                className="attachRecycle"
+                                                onClick={() =>
+                                                    this.deletehandler(item)
+                                                }>
+                                                <img
+                                                    src={Recycle}
+                                                    alt="del"
+                                                    width="100%"
+                                                    height="100%"
+                                                />
+                                            </a>
+                                        ) : null}
 
-                                      <a
-                                          href={item["attachFile"]}
-                                          download={item.fileNameDisplay}
-                                          className="pdfPopup various zero attachPdf">
-                                          <img
-                                              src={Download}
-                                              alt="dLoad"
-                                              width="100%"
-                                              height="100%"
-                                          />
-                                      </a>
-                                      {Config.IsAllow(4501) ? (
-                                          <a
-                                              className="attachPend"
-                                              onClick={() =>
-                                                  this.versionHandler(
-                                                      item["parentId"],
-                                                      ext
-                                                  )
-                                              }>
-                                              <img
-                                                  src={Pending}
-                                                  alt="pend"
-                                                  width="100%"
-                                                  height="100%"
-                                              />
-                                          </a>
-                                      ) : null}
+                                    <a
+                                        href={item["attachFile"]}
+                                        download={item.fileNameDisplay}
+                                        className="pdfPopup various zero attachPdf">
+                                        <img
+                                            src={Download}
+                                            alt="dLoad"
+                                            width="100%"
+                                            height="100%"
+                                        />
+                                    </a>
+                                    {Config.IsAllow(4501) ? (
+                                        <a
+                                            className="attachPend"
+                                            onClick={() =>
+                                                this.versionHandler(
+                                                    item["parentId"],
+                                                    ext
+                                                )
+                                            }>
+                                            <img
+                                                src={Pending}
+                                                alt="pend"
+                                                width="100%"
+                                                height="100%"
+                                            />
+                                        </a>
+                                    ) : null}
 
-                                      {ext === "pdf" ? (
-                                          <a
-                                              className="rootIcon"
-                                              onClick={() =>
-                                                  this.goEditPdf(item, ext)
-                                              }>
-                                              <i
-                                                  className=" fa fa-link"
-                                                  width="100%"
-                                                  height="100%"
-                                              />
-                                          </a>
-                                      ) : null}
+                                    {ext === "pdf" ? (
+                                        <a
+                                            className="rootIcon"
+                                            onClick={() =>
+                                                this.goEditPdf(item, ext)
+                                            }>
+                                            <i
+                                                className=" fa fa-link"
+                                                width="100%"
+                                                height="100%"
+                                            />
+                                        </a>
+                                    ) : null}
 
-                                      {ext === "dwg" || ext === "rvt" ? (
-                                          <a
-                                              className="autocadIcon"
-                                              onClick={e =>
-                                                  this.viewAutoDeskModal(
-                                                      item,
-                                                      e
-                                                  )
-                                              }>
-                                              <img
-                                                  src={autocad}
-                                                  style={{
-                                                      maxWidth: "100%",
-                                                      maxHeight: "100%"
-                                                  }}
-                                                  alt="autoDesk"
-                                              />
-                                          </a>
-                                      ) : null}
-                                  </div>
-                              </td>
-                          </tr>
-                      );
-                  })
+                                    {ext === "dwg" || ext === "rvt" ? (
+                                        <a
+                                            className="autocadIcon"
+                                            onClick={e =>
+                                                this.viewAutoDeskModal(
+                                                    item,
+                                                    e
+                                                )
+                                            }>
+                                            <img
+                                                src={autocad}
+                                                style={{
+                                                    maxWidth: "100%",
+                                                    maxHeight: "100%"
+                                                }}
+                                                alt="autoDesk"
+                                            />
+                                        </a>
+                                    ) : null}
+                                </div>
+                            </td>
+                        </tr>
+                    );
+                })
                 : null;
 
         return (
@@ -559,7 +557,7 @@ class ViewAttachmments extends Component {
                                         {" "}
                                         {
                                             Resources["actions"][
-                                                currentLanguage
+                                            currentLanguage
                                             ]
                                         }{" "}
                                     </span>
@@ -584,7 +582,7 @@ class ViewAttachmments extends Component {
                                     <span>
                                         {
                                             Resources["uploadedBy"][
-                                                currentLanguage
+                                            currentLanguage
                                             ]
                                         }{" "}
                                     </span>
