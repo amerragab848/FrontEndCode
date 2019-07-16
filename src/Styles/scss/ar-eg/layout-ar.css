@@ -5901,8 +5901,6 @@ h1, h2, h3, h4, h5 {
 .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table {
     border-left: 0;
     border-right: 0;
-
-    /**/
 }
 
 .documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th {
@@ -6000,9 +5998,8 @@ h1, h2, h3, h4, h5 {
     color: #252833;
 }
 
-.documents-stepper .doc-container {
-    /**/
-}
+/* .documents-stepper .doc-container {
+} */
 
 .documents-stepper .doc-container .step-content .document-fields .doc-infohead {
     font-family: cairo-r;
@@ -6039,8 +6036,6 @@ h1, h2, h3, h4, h5 {
 .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table {
     border-left: 0;
     border-right: 0;
-
-    /**/
 }
 
 .documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th {
@@ -6169,11 +6164,9 @@ h1, h2, h3, h4, h5 {
     font-family: cairo-r;
 }
 
-.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active {
-    /*
-    background-color: #5fd45f;
-    */
-}
+/* .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active {
+
+} */
 
 .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active .steps-timeline > span {
     display: none;

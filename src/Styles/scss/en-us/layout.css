@@ -6586,9 +6586,9 @@ h1, h2, h3, h4, h5 {
     color: #252833;
 }
 
-.documents-stepper .doc-container {
-    /**/
-}
+/* .documents-stepper .doc-container {
+    
+} */
 
 .documents-stepper .doc-container .step-content .document-fields .doc-infohead {
     font-family: font-opens;
@@ -6755,11 +6755,9 @@ h1, h2, h3, h4, h5 {
     font-family: font-opens;
 }
 
-.documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active {
-    /*
+/* .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active {
     background-color: #5fd45f;
-    */
-}
+} */
 
 .documents-stepper .doc-container .docstepper-levels .workflow-sliderSteps .step-slider .step-slider-item.active .steps-timeline > span {
     display: none;
@@ -7420,50 +7418,6 @@ h1, h2, h3, h4, h5 {
 
 .bar-Star .js-grouped-bar-chart-tooltip-container .container-group .metadata-group .tooltip-body .tooltip-circle:nth-child(3) {
     fill: #39bd3d;
-}
-
-.bar-Star .star-rating-container {
-        /*   .rating {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: center;
-            padding: 1em;
-        .rating__input {
-            position: absolute;
-            left: -100vw;
-        }
-        .rating__label--hidden {
-            display: none;
-        }
-
-        .rating__label {
-            position: relative;
-            width: 1.1em;
-            font-size: 55px;
-            color: $lightgreen-300;
-            cursor: pointer;
-        }
-
-        .rating__label::before {
-            content: "\f005";
-            position: absolute;
-            font-family: fontawesome;
-            opacity: 0;
-            top: 18px;
-        }
-
-        .rating__label:hover:before,
-        .rating__label:hover ~ .rating__label:before {
-            opacity: 1 !important;
-        }
-        .rating__input:checked ~ .rating__label:before {
-            opacity: 1;
-        }
-
-
-        }
-
-     */
 }
 
 .bar-Star .star-rating-container .ratingresult {
@@ -12689,13 +12643,6 @@ h1, h2, h3, h4, h5 {
     align-items: center;
 }
 
-.StepperNumV .ActiveHei {
-        /*.Step-Line {
-			height: 280px;
-			transition: 1.5s all;
-		}*/
-}
-
 /**/
 .StepperWorkFlow {
     max-width: 600px;
@@ -12808,7 +12755,7 @@ h1, h2, h3, h4, h5 {
     height: 2px;
     background-color: #CCD2DB;
     z-index: 1;
-    -webkit-transition: all 0.2s ease-out;
+    /* -webkit-transition: all 0.2s ease-out; */
 }
 
 .StepperWorkFlow .step-progress .step-slider .step-slider-item.active:before {

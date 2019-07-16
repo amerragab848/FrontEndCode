@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../Pages/Communication/GridSetup"; 
+import GridSetup from "../../../Pages/Communication/GridSetup";
 import Export from "../../OptionsPanels/Export";
 import { SkyLightStateless } from 'react-skylight';
 import Select from '../../OptionsPanels/DropdownMelcous';
@@ -18,11 +18,11 @@ var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 
 const ValidtionSchema = Yup.object().shape({
-    ARTitle: Yup.string().test('contactNameAr', 'Name cannot be english', value => { 
-        return  ar.test(value)
+    ARTitle: Yup.string().test('contactNameAr', 'Name cannot be english', value => {
+        return ar.test(value)
     }).required(Resources['titleArValid'][currentLanguage]),
     EnTitle: Yup.string().test('titleEnCompany', 'Name cannot be arabic', value => {
-        return ! en.test(value);
+        return !en.test(value);
     }).required(Resources['titleEnValid'][currentLanguage]),
     value: Yup.number().required(Resources['isRequiredField'][currentLanguage])
         .typeError(Resources['onlyNumbers'][currentLanguage]),
@@ -81,7 +81,7 @@ const DropGeneralData =
     { label: Resources["projectPhase"][currentLanguage], value: "projectPhase" },
     { label: Resources["organisation"][currentLanguage], value: "organisation" },
     { label: Resources["managementlevel"][currentLanguage], value: "managementlevel" }
-]
+    ]
 
 class GeneralList extends Component {
 
@@ -487,11 +487,11 @@ class GeneralList extends Component {
                     </div>
 
                 </div>
-
-                <div className="linebylineInput valid-input">
-                    <Select title='AccountsDefaultList' placeholder='AccountsDefaultList' data={DropGeneralData} handleChange={this.GeneralListHandelChange} />
+                <div className="proForm">
+                    <div className="letterFullWidth">
+                        <Select title='AccountsDefaultList' placeholder='AccountsDefaultList' data={DropGeneralData} handleChange={this.GeneralListHandelChange} />
+                    </div>
                 </div>
-
                 <div className="grid-container">
                     {dataGrid}
                 </div>
