@@ -5365,7 +5365,7 @@
     },
     "rejectedItemsSummary": {
         "en": "Rejected Items ",
-        "ar": "ملخص الاصناف المرفوضة "
+        "ar": " الاصناف المرفوضة "
     },
     "peroidExpenses": {
         "en": "Total Peroid Expenses",
@@ -5381,7 +5381,7 @@
     },
     "openedSummary": {
         "en": "Opened Documents ",
-        "ar": "ملخص الوثائق المفتوحة"
+        "ar": " الوثائق المفتوحة"
     },
     "notCodedExpensesSummary": {
         "en": "Not Coded Expenses ",
@@ -5393,11 +5393,11 @@
     },
     "inboxSummary": {
         "en": "Inbox ",
-        "ar": "ملخص التنبيهات"
+        "ar": " التنبيهات"
     },
     "notCodedInvoicesSummary": {
         "en": "Not Coded Invoices ",
-        "ar": "ملخص فواتير غير مكوده"
+        "ar": " فواتير غير مكوده"
     },
     "distributionSummary": {
         "en": "Distribution ",
@@ -5405,7 +5405,7 @@
     },
     "assessmentSummary": {
         "en": "Assessment ",
-        "ar": "ملخص الاعتمادات المطلوبه"
+        "ar": " الاعتمادات المطلوبه"
     },
     "addWidget": {
         "en": "Add Widgets",
@@ -5439,7 +5439,7 @@
         "en": "Projects Of EPS",
         "ar": "مشروعات"
     },
-    "projectsList": {
+    "projectsListReport": {
         "en": "Projects List Report",
         "ar": " تقرير قائمة المشاريع"
     },
@@ -5457,11 +5457,11 @@
     },
     "actionBySummary": {
         "en": "Action By ",
-        "ar": "ملخص عن الشخص المسئول"
+        "ar": " عن الشخص المسئول"
     },
     "alertingQntySummary": {
         "en": "Quantities Alerting ",
-        "ar": "ملخص تنبيه الكميات"
+        "ar": " تنبيه الكميات"
     },
     "quantitiesAlerting": {
         "en": "Quantities Alerting",
@@ -5469,7 +5469,7 @@
     },
     "alertSummary": {
         "en": "Alert ",
-        "ar": "ملخص التنبيهات"
+        "ar": " التنبيهات"
     },
     "alertStatus": {
         "en": "Alert Status",
@@ -5477,7 +5477,7 @@
     },
     "closedSummary": {
         "en": "Closed Documents ",
-        "ar": "ملخص الوثائق المغلقة"
+        "ar": " الوثائق المغلقة"
     },
     "normalSummary": {
         "en": "Normal",
@@ -5813,7 +5813,7 @@
     },
     "distbutionMessage": {
         "en": "Distbution Inbox Messages",
-        "ar": " ملخص صندوق الوارد"
+        "ar": "  صندوق الوارد"
     },
     "delete": {
         "en": "Delete",
@@ -5861,7 +5861,7 @@
     },
     "ScheduleAlertsSummary": {
         "en": "Schedule Activity ",
-        "ar": "ملخص تنبيهات الانشطة"
+        "ar": " تنبيهات الانشطة"
     },
     "useSelection": {
         "en": "Use Selection Mode",
@@ -6869,7 +6869,7 @@
     },
     "RequestsSummary": {
         "en": "HR Requests ",
-        "ar": " ملخص الطلبات"
+        "ar": "  الطلبات"
     },
     "supervisorStatus": {
         "en": "Supervisor Status",
@@ -7417,7 +7417,7 @@
     },
     "executiveSummary": {
         "en": "Executive Summary ",
-        "ar": "ملخص المشاريع التنفيذية "
+        "ar": " المشاريع التنفيذية "
     },
     "countContract": {
         "en": "Count Contract",
