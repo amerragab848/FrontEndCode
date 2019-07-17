@@ -824,19 +824,19 @@ var routes = [
     nav: false,
     settings: { Communication: false }
   },
-  // {
-  //   route: "Email",
-  //   moduleId: "commonLogs",
-  //   title: "communicationEmails",
-  //   nav: true,
-  //   hash: "#Email",
-  //   settings: {
-  //     Communication: true,
-  //     permission: 395,
-  //     caption: "procoor-icon-email-records",
-  //     order: 8
-  //   }
-  // },
+  {
+    route: "Email",
+    moduleId: "commonLogs",
+    title: "communicationEmails",
+    nav: true,
+    hash: "#Email",
+    settings: {
+      Communication: true,
+      permission: 395,
+      caption: "procoor-icon-email-records",
+      order: 8
+    }
+  },
   // {
   //   route: "corrRecievedSent",
   //   moduleId: "communication/corrRecievedSent",
