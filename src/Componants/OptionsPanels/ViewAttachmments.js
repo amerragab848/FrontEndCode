@@ -45,6 +45,7 @@ class ViewAttachmments extends Component {
     }
 
     deletehandler = file => {
+
         let urlDelete = "DeleteAttachFileById?id=" + file.id;
         this.props.actions.deleteFile(urlDelete, file);
     };
@@ -273,18 +274,19 @@ class ViewAttachmments extends Component {
                                 />
                             </a>
 
-                            {Config.IsAllow(4502) ? (
-                                <a
-                                    className="attachRecycle"
-                                    onClick={() => this.deletehandler(item)}>
-                                    <img
-                                        src={Recycle}
-                                        alt="del"
-                                        width="100%"
-                                        height="100%"
-                                    />
-                                </a>
-                            ) : null}
+                            {Config.IsAllow(4502) && (this.props.isApproveMode === false) ?
+                                (
+                                    <a
+                                        className="attachRecycle"
+                                        onClick={() => this.deletehandler(item)}>
+                                        <img
+                                            src={Recycle}
+                                            alt="del"
+                                            width="100%"
+                                            height="100%"
+                                        />
+                                    </a>
+                                ) : null}
                         </div>
                     </td>
                 </tr>
@@ -355,20 +357,9 @@ class ViewAttachmments extends Component {
             this.props.isLoadingFiles == true
                 ? this.props.files.map((item, Index) => {
                     let ext = item["fileName"].split(".")[1]
-                        ? item["fileName"].split(".")[1].toLowerCase()
-                        : "png";
-                    let extension =
-                        ext == "xlsx"
-                            ? xlsx
-                            : ext == "pdf"
-                                ? pdf
-                                : ext == "jpeg"
-                                    ? jpeg
-                                    : ext == "png"
-                                        ? png
-                                        : ext == "jpg"
-                                            ? jpg
-                                            : doc;
+                        ? item["fileName"].split(".")[1].toLowerCase() : "png";
+                    let extension = ext == "xlsx" ? xlsx : ext == "pdf" ? pdf
+                        : ext == "jpeg" ? jpeg : ext == "png" ? png : ext == "jpg" ? jpg : doc;
                     let createdDate = moment(item["createdDate"]).format(
                         "DD/MM/YYYY"
                     );
@@ -445,22 +436,20 @@ class ViewAttachmments extends Component {
                             </td>
                             <td className="tdHover">
                                 <div className="attachmentAction">
-                                    {Config.IsAllow(
-                                        this.props.deleteAttachments
-                                    ) ? (
-                                            <a
-                                                className="attachRecycle"
-                                                onClick={() =>
-                                                    this.deletehandler(item)
-                                                }>
-                                                <img
-                                                    src={Recycle}
-                                                    alt="del"
-                                                    width="100%"
-                                                    height="100%"
-                                                />
-                                            </a>
-                                        ) : null}
+                                    {Config.IsAllow(this.props.deleteAttachments) && (this.props.isApproveMode === false) ? (
+                                        <a
+                                            className="attachRecycle"
+                                            onClick={() =>
+                                                this.deletehandler(item)
+                                            }>
+                                            <img
+                                                src={Recycle}
+                                                alt="del"
+                                                width="100%"
+                                                height="100%"
+                                            />
+                                        </a>
+                                    ) : null}
 
                                     <a
                                         href={item["attachFile"]}

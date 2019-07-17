@@ -419,7 +419,7 @@ class materialReleaseAddEdit extends Component {
     viewAttachments() {
         return this.state.docId > 0 ? (
             Config.IsAllow(3284) === true ?
-                (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={854} />) : null) : null;
+                (<ViewAttachment isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={854} />) : null) : null;
     }
 
     NextStep() {

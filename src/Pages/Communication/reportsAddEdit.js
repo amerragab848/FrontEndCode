@@ -373,7 +373,7 @@ class reportsAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3326) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={822} />
+                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={822} />
                     : null)
                 : null
         )
