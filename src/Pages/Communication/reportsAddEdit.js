@@ -192,7 +192,7 @@ class reportsAddEdit extends Component {
                 toContactId: '',
                 subject: '',
                 message: '',
-                docDate: moment().format('DD/MM/YYYY'),
+                docDate: moment(),
                 arrange: '',
                 status: 'true',
                 refDoc: '',
@@ -368,7 +368,7 @@ class reportsAddEdit extends Component {
         }
         return btn;
     }
-    
+
     viewAttachments() {
         return (
             this.state.docId > 0 ? (

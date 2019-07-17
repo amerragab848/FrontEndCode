@@ -7,12 +7,8 @@ import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
 import DashBoardDefenition from "./DashBoardProjectDefenition";
 import Filter from "../FilterComponent/filterComponent";
-
 import { connect } from 'react-redux';
-import {
-  bindActionCreators
-} from 'redux';
-
+import { bindActionCreators } from 'redux';
 import * as dashboardComponantActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -22,7 +18,9 @@ const dateFormate = ({ value }) => {
 };
 
 class DashBoardProjectCounterLog extends Component {
+  
   constructor(props) {
+  
     super(props);
 
     const query = new URLSearchParams(this.props.location.search);
@@ -48,13 +46,15 @@ class DashBoardProjectCounterLog extends Component {
         }
       });
 
+      let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
+
       this.state = {
         columns: documentInfo.columns,
         rows: [],
         isLoading: true,
         filtersColumns: documentInfo.filters,
         viewfilter: false,
-        apiDetails: documentInfo.apiDetails + this.props.projectId,
+        apiDetails: documentInfo.apiDetails + projectId,
         pageTitle: documentInfo.title
       };
 

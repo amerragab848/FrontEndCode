@@ -27,7 +27,7 @@ import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]), 
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
     toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage])
 })
@@ -48,7 +48,7 @@ class ClaimsAddEdit extends Component {
         super(props);
 
         const query = new URLSearchParams(this.props.location.search);
-        
+
         let index = 0;
 
         for (let param of query.entries()) {
@@ -78,7 +78,7 @@ class ClaimsAddEdit extends Component {
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
-            docTypeId: 115,
+            docTypeId: 116,
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -194,12 +194,12 @@ class ClaimsAddEdit extends Component {
                 toCompanyId: '',
                 toContactId: '',
                 docDate: moment(),
-                status: 'false',
+                status: true,
                 disciplineId: '',
                 refDoc: '',
                 sharedSettings: '',
                 message: '',
-                contractId:''
+                contractId: ''
             };
             this.setState({ document: letter });
             this.fillDropDowns(false);
@@ -265,29 +265,29 @@ class ClaimsAddEdit extends Component {
             });
         });
 
-    //contractList
-    dataservice.GetDataList("GetContractByProjectId?projectId=" + projectId, "subject", "id").then(result => {
+        //contractList
+        dataservice.GetDataList("GetContractByProjectId?projectId=" + projectId, "subject", "id").then(result => {
 
-        if (isEdit) {
-  
-          let contractId = this.props.document.contractId;
-    
-          if (contractId) {
-  
-            let contracts = result.find(i => i.value === contractId);
-  
-            if (contracts) {
-              this.setState({
-                selectedContract: { ...contracts }
-              });
+            if (isEdit) {
+
+                let contractId = this.props.document.contractId;
+
+                if (contractId) {
+
+                    let contracts = result.find(i => i.value === contractId);
+
+                    if (contracts) {
+                        this.setState({
+                            selectedContract: { ...contracts }
+                        });
+                    }
+                }
             }
-          }
-        }
-  
-        this.setState({
-          contracts: [...result]
+
+            this.setState({
+                contracts: [...result]
+            });
         });
-      });
 
     }
 
@@ -398,7 +398,7 @@ class ClaimsAddEdit extends Component {
 
         dataservice.addObject('AddClaims', saveDocument).then(result => {
             this.setState({
-                docId: result 
+                docId: result
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
@@ -717,7 +717,7 @@ class ClaimsAddEdit extends Component {
                         {this.state.currentComponent}
                     </SkyLight>
                 </div>
-            </div> 
+            </div>
         );
     }
 }
