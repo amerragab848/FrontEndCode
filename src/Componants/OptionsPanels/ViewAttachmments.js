@@ -276,28 +276,13 @@ class ViewAttachmments extends Component {
                     </td>
                     <td className="tdHover">
                         <div className="attachmentAction">
-                            <a
-                                href={item["attachFile"]}
-                                download={item.fileNameDisplay}
-                                className="pdfPopup various zero attachPdf">
-                                <img
-                                    src={Download}
-                                    alt="dLoad"
-                                    width="100%"
-                                    height="100%"
-                                />
+                            <a href={item["attachFile"]} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
+                                <img src={Download}  alt="dLoad" width="100%" height="100%" />
                             </a>
 
                             {Config.IsAllow(4502) ? (
-                                <a
-                                    className="attachRecycle"
-                                    onClick={() => this.deletehandler(item)}>
-                                    <img
-                                        src={Recycle}
-                                        alt="del"
-                                        width="100%"
-                                        height="100%"
-                                    />
+                                <a className="attachRecycle" onClick={() => this.deletehandler(item)} data-toggle="tooltip" title={Resources["delete"][currentLanguage]}>
+                                    <img src={Recycle} alt="del" width="100%" height="100%" />
                                 </a>
                             ) : null}
                         </div>
@@ -465,80 +450,29 @@ class ViewAttachmments extends Component {
                                       {Config.IsAllow(
                                           this.props.deleteAttachments
                                       ) ? (
-                                          <a
-                                              className="attachRecycle"
-                                              onClick={() =>
-                                                  this.deletehandler(item)
-                                              }>
-                                              <img
-                                                  src={Recycle}
-                                                  alt="del"
-                                                  width="100%"
-                                                  height="100%"
-                                              />
+                                          <a className="attachRecycle" onClick={() => this.deletehandler(item)} data-toggle="tooltip" title={Resources["delete"][currentLanguage]}>
+                                              <img src={Recycle} alt="del" width="100%" height="100%" />
                                           </a>
                                       ) : null}
 
-                                      <a
-                                          href={item["attachFile"]}
-                                          download={item.fileNameDisplay}
-                                          className="pdfPopup various zero attachPdf">
-                                          <img
-                                              src={Download}
-                                              alt="dLoad"
-                                              width="100%"
-                                              height="100%"
-                                          />
+                                      <a href={item["attachFile"]} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
+                                          <img src={Download} alt="dLoad" width="100%" height="100%"/>
                                       </a>
                                       {Config.IsAllow(4501) ? (
-                                          <a
-                                              className="attachPend"
-                                              onClick={() =>
-                                                  this.versionHandler(
-                                                      item["parentId"],
-                                                      ext
-                                                  )
-                                              }>
-                                              <img
-                                                  src={Pending}
-                                                  alt="pend"
-                                                  width="100%"
-                                                  height="100%"
-                                              />
+                                          <a className="attachPend" onClick={() => this.versionHandler( item["parentId"], ext)} data-toggle="tooltip" title={Resources["versions"][currentLanguage]}>
+                                              <img src={Pending} alt="pend" width="100%" height="100%"/>
                                           </a>
                                       ) : null}
 
                                       {ext === "pdf" ? (
-                                          <a
-                                              className="rootIcon"
-                                              onClick={() =>
-                                                  this.goEditPdf(item, ext)
-                                              }>
-                                              <i
-                                                  className=" fa fa-link"
-                                                  width="100%"
-                                                  height="100%"
-                                              />
+                                          <a className="rootIcon" onClick={() => this.goEditPdf(item, ext) } data-toggle="tooltip" title={Resources["goEdit"][currentLanguage]}>
+                                              <i className=" fa fa-link" width="100%" height="100%" />
                                           </a>
                                       ) : null}
 
                                       {ext === "dwg" || ext === "rvt" ? (
-                                          <a
-                                              className="autocadIcon"
-                                              onClick={e =>
-                                                  this.viewAutoDeskModal(
-                                                      item,
-                                                      e
-                                                  )
-                                              }>
-                                              <img
-                                                  src={autocad}
-                                                  style={{
-                                                      maxWidth: "100%",
-                                                      maxHeight: "100%"
-                                                  }}
-                                                  alt="autoDesk"
-                                              />
+                                          <a className="autocadIcon" onClick={e => this.viewAutoDeskModal(item,e)}>
+                                              <img src={autocad}  style={{ maxWidth: "100%", maxHeight: "100%" }} alt="autoDesk"/>
                                           </a>
                                       ) : null}
                                   </div>
