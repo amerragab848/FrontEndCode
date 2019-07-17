@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from "react"; 
 import Api from "../../api";  
 import Resources from "../../resources.json";
-import _ from "lodash";
-import * as Yup from "yup";
+import _ from "lodash"; 
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection"; 
 import CryptoJS from "crypto-js";
@@ -533,7 +532,7 @@ class Itemize extends Component {
                         key="boqImport"
                         docId={this.state.docId}
                         docType="boq"
-                        link={window.IP_CONFIG.downloads + "/Downloads/Excel/BOQ.xlsx"}
+                        link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQ.xlsx"}
                         header="addManyItems"
                         disabled={
                             this.props.changeStatus
@@ -552,7 +551,7 @@ class Itemize extends Component {
                             docId={this.state.docId}
                             docType="boq2"
                             link={
-                                window.IP_CONFIG.downloads +
+                                Config.getPublicConfiguartion().downloads +
                                 "/Downloads/Excel/BOQ2.xlsx"
                             }
                             header="addManyItems"

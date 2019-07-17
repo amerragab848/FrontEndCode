@@ -12,7 +12,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import { toast } from "react-toastify";
-import _ from "lodash";
+import _ from "lodash"; 
+import Config from "../../Services/Config.js";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -220,7 +221,7 @@ class addItemDescription extends Component {
         return (
             <div className="step-content">
                 {this.props.showImportExcel !== false ? (
-                    <XSLfile key="boqImport" docId={this.props.docId} docType={this.props.docType} link={window.IP_CONFIG.downloads + this.props.docLink}
+                    <XSLfile key="boqImport" docId={this.props.docId} docType={this.props.docType} link={Config.getPublicConfiguartion().downloads + this.props.docLink}
                         header="addManyItems" disabled={this.props.changeStatus ? this.props.docId > 0 ? true : false : false} afterUpload={() => this.fillTable()} />
                 ) : null}
                 <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>

@@ -13,9 +13,8 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
-
-//import IPConfig from '../../assets/IP_Configrations'
-
+ 
+import Config from "../../Services/Config.js";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
@@ -242,7 +241,7 @@ class addItemDescription extends Component {
                         key="boqImport"
                         docId={this.props.docId}
                         docType={this.props.docType}
-                        link={window.IP_CONFIG.downloads + this.props.docLink}
+                        link={Config.getPublicConfiguartion().downloads + this.props.docLink}
                         header="addManyItems"
                         disabled={
                             this.props.changeStatus

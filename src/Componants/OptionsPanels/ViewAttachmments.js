@@ -118,7 +118,18 @@ class ViewAttachmments extends Component {
     };
 
     viewAutoDeskModal = (obj, e) => {
+
         var encrypte = encodeURIComponent(obj.attachFile);
+        // if (obj.isCloud === true) {
+        //     let checkDropbox = obj.attachFile.includes('www.dropbox.com');
+        //     if (checkDropbox) {
+        //         let urlFile = obj.attachFile;
+        //         urlFile = urlFile.replace("www.dropbox.com", "dl.dropbox.com");
+        //         urlFile = urlFile.substr(0, urlFile.length - 5);
+        //         alert(urlFile)
+        //         encrypte = encodeURIComponent(urlFile);
+        //     }
+        // }
         let obj1 = {
             fileName: obj.fileName,
             encrypte: encrypte,
@@ -137,37 +148,32 @@ class ViewAttachmments extends Component {
         //   using blob as input, converts it to a fileURL that is a link that loads the pdf
         // let tagetServer = 'https://newgiza.azureedge.net/project-files-demov4';
 
-        axios
-            .get(fileLink, {
-                method: "GET",
-                responseType: "blob",
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": "application/json"
-                },
-                mode: "no-cors",
-                withCredentials: false
-            })
-            .then(response => {
-                if (response) {
-                    //Create a Blob from the PDF Stream
-                    const blob = new Blob([response.data], {
-                        type: "application/pdf"
-                    });
-                    //Build a URL from the file
-                    const fileURL = URL.createObjectURL(blob);
-
-                    this.setState({
-                        activeURL: fileURL
-                    });
-
-                    activeURL = fileURL;
-                    this.simpleDialog.show();
-                }
-            })
-            .catch(error => {
-                activeURL = "";
-            });
+        axios.get(fileLink, {
+            method: "GET",
+            responseType: "blob",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json"
+            },
+            mode: "no-cors",
+            withCredentials: false
+        }).then(response => {
+            if (response) {
+                //Create a Blob from the PDF Stream
+                const blob = new Blob([response.data], {
+                    type: "application/pdf"
+                });
+                //Build a URL from the file
+                const fileURL = URL.createObjectURL(blob);
+                this.setState({
+                    activeURL: fileURL
+                });
+                activeURL = fileURL;
+                this.simpleDialog.show();
+            }
+        }).catch(error => {
+            activeURL = "";
+        });
     };
 
     componentDidMount() {
@@ -192,21 +198,10 @@ class ViewAttachmments extends Component {
 
     render() {
         let tabelVersion = this.state.Versionfiles.map((item, Index) => {
-            let ext = item["fileName"].split(".")[1]
-                ? item["fileName"].split(".")[1].toLowerCase()
-                : "png";
-            let extension =
-                ext == "xlsx"
-                    ? xlsx
-                    : ext == "pdf"
-                        ? pdf
-                        : ext == "jpeg"
-                            ? jpeg
-                            : ext == "png"
-                                ? png
-                                : ext == "jpg"
-                                    ? jpg
-                                    : doc;
+            let ext = item["fileName"].split(".")[1] ? item["fileName"].split(".")[1].toLowerCase() : "png";
+            let extension = ext == "xlsx" ? xlsx : ext == "pdf" ? pdf : ext == "jpeg" ? jpeg
+                : ext == "png" ? png : ext == "jpg" ? jpg : doc;
+
             let createdDate = moment(item["createdDate"]).format("DD/MM/YYYY");
             if (item.isCloud !== true) {
                 var containerIndex = item.attachFile.indexOf(
@@ -218,14 +213,8 @@ class ViewAttachmments extends Component {
 
             if (item.fileName) {
                 item.fileNameDisplay = item.fileName.replace(/%23/g, "#");
-                item.fileNameDisplay = item.fileNameDisplay.replace(
-                    /%20/g,
-                    " "
-                );
-                item.fileNameDisplay = item.fileNameDisplay.replace(
-                    /%2C/g,
-                    ","
-                );
+                item.fileNameDisplay = item.fileNameDisplay.replace(/%20/g, " ");
+                item.fileNameDisplay = item.fileNameDisplay.replace(/%2C/g, ",");
 
                 if (!this.has_ar(item.fileNameDisplay)) {
                     item.fileNameDisplay = decodeURI(item.fileNameDisplay);
