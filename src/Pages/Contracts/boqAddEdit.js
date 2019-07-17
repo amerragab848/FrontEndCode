@@ -29,8 +29,7 @@ import EditItemDescription from "../../Componants/OptionsPanels/editItemDescript
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-//import IPConfig from '../../assets/IP_Configrations'
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel"; 
 import dataservice from "../../Dataservice";
 
 let currentLanguage =
@@ -2877,7 +2876,7 @@ class bogAddEdit extends Component {
                 {addItemContent}
                 <Fragment>
                     <XSLfile key="boqImport" docId={this.state.docId} docType="boq"
-                        link={window.IP_CONFIG.downloads + "/Downloads/Excel/BOQ.xlsx"}
+                        link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQ.xlsx"}
                         header="addManyItems"
                         disabled={this.props.changeStatus ? this.props.document.contractId > 0 ? true : false : false}
                         afterUpload={() => this.getTabelData()}
@@ -2885,7 +2884,7 @@ class bogAddEdit extends Component {
                 </Fragment>
                 {this.state.isCompany ? (
                     <Fragment>
-                        <XSLfile key="boqStructure" docId={this.state.docId} docType="boq2" link={window.IP_CONFIG.downloads + "/Downloads/Excel/BOQStructure.xlsx"}
+                        <XSLfile key="boqStructure" docId={this.state.docId} docType="boq2" link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQStructure.xlsx"}
                             header="addManyItems"
                             disabled={this.props.changeStatus ? this.props.document.contractId > 0 ? true : false : false}
                             afterUpload={() => this.getTabelData()} />

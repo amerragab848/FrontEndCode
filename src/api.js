@@ -2,21 +2,19 @@
 import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
 
+import Config from "./Services/Config";
+
 let Authorization = localStorage.getItem("userToken");
-
-const Domain = window.IP_CONFIG.static;
-
+ 
 export default class Api {
+
     static headers() {
         return {
             Accept: "application/json",
             "Content-Type": "application/json",
             dataType: "json",
             isNewVersion: "true",
-            Lang:
-                localStorage.getItem("lang") == null
-                    ? "en"
-                    : localStorage.getItem("lang"),
+            Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
             Authorization: localStorage.getItem("userToken")
         };
     }
@@ -28,8 +26,8 @@ export default class Api {
         return this.xhr(route, params, "POST");
     }
 
-    static xhr(route, params, verb) {
-        const host = Domain + "/api/Procoor/";
+    static xhr(route, params, verb) { 
+        const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
         const url = `${host}${route}`;
         let json = null;
 
@@ -76,7 +74,7 @@ export default class Api {
                 // response is not a valid json string
             });
     }
- 
+
 
     static GetPayload() {
         var payload = [];
@@ -110,7 +108,7 @@ export default class Api {
 
     static postFile(route, params, header) {
         let json = "";
-        const host = Domain + "/api/Procoor/";
+        const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
         const url = `${host}${route}`;
         let headers = {};
         headers.Authorization = localStorage.getItem("userToken");
@@ -160,7 +158,7 @@ export default class Api {
             });
     }
     static getPassword(route, password) {
-        const host = Domain + "/api/Procoor/";
+        const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
 
         const url = `${host}${route}`;
         let headers = Api.headers();
@@ -194,6 +192,7 @@ export default class Api {
             })
             .then(json => (json.result ? json.result : json));
     }
+
     static Login(hostt, route, params) {
         const host = hostt;
         const url = `${host}${route}`;
@@ -235,7 +234,7 @@ export default class Api {
     }
 
     static authorizationApi(route, params, method) {
-        const host = window.IP_CONFIG.loginServer + "/api/";
+        const host = Config.getPublicConfiguartion().loginServer + "/api/";
         const url = `${host}${route}`;
         let json = null;
 
@@ -271,12 +270,12 @@ export default class Api {
             })
             .then(json => (json.result ? json.result : json));
     }
+
     static IsAuthorized() {
         let authorize = false;
         if (localStorage.getItem("userToken")) {
             authorize = true;
-        }
-
+        } 
         return authorize;
     }
 }

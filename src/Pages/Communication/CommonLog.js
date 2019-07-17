@@ -385,7 +385,7 @@ class CommonLog extends Component {
       }
     });
 
-    filtersColumns = documentObj.filters;
+   filtersColumns = documentObj.filters;
 
     this.setState({
       pageTitle: Resources[documentObj.documentTitle][currentLanguage],
