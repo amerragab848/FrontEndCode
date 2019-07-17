@@ -8445,6 +8445,14 @@ h1, h2, h3, h4, h5 {
     transform: translateY(0);
 }
 
+.attachmentTable tbody tr td.tdHover .attachmentAction a svg g g  {
+    transition: all 0.4s ease-in-out;
+}
+
+.attachmentTable tbody tr td.tdHover .attachmentAction a:hover svg g g  {
+    fill: #969eab
+}
+
 .attachmentTable tbody tr td.tdHover .attachmentAction a::after {
     content: '';
     width: 16px;
@@ -8464,7 +8472,7 @@ h1, h2, h3, h4, h5 {
     }
 }
 
-.attachmentTable tbody tr td.tdHover .attachmentAction a.attachRecycle::after {
+/* .attachmentTable tbody tr td.tdHover .attachmentAction a.attachRecycle::after {
     background-image: url(../../images/afterDelete.png);
 }
 
@@ -8474,7 +8482,7 @@ h1, h2, h3, h4, h5 {
 
 .attachmentTable tbody tr td.tdHover .attachmentAction a.attachPend::after {
     background-image: url(../../images/afterPend.png);
-}
+} */
 
 .attachmentTable tbody tr td.tdHover .attachmentAction a:hover img {
     transform: translateY(20px);
@@ -20521,7 +20529,7 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 }
 
 .rootIcon:hover {
-    color: #4382F9;
+    color: #969eab;
 }
 
 .tooltip-background,
