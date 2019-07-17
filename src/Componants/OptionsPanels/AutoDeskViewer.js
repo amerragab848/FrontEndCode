@@ -4,7 +4,7 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import moment from "moment";
 import CryptoJS from "crypto-js";
 import { withRouter } from "react-router-dom";
-//import Config from "../../IP_Configrations.json";
+import Config from "../../Services/Config.js";
 
 const Autodesk = window.Autodesk;
 
@@ -302,7 +302,7 @@ class AutoDeskViewer extends Component {
         xmlHttp = new XMLHttpRequest();
         xmlHttp.open(
             "GET",
-            window.IP_CONFIG.static + "/api/Procoor/getAccessToken",
+            Config.getPublicConfiguartion().static + "/api/Procoor/getAccessToken",
             false /*forge viewer requires SYNC*/
         );
         xmlHttp.send(null);

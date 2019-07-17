@@ -25,8 +25,7 @@ import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import Api from "../../api";
 import ReactTable from "react-table";
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-import "react-table/react-table.css";
-//import IPConfig from '../../assets/IP_Configrations'
+import "react-table/react-table.css"; 
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -2329,7 +2328,7 @@ class materialRequestAddEdit extends Component {
                     docId={this.state.docId}
                     docType="siteRequest"
                     link={
-                        window.IP_CONFIG.downloads +
+                        Config.getPublicConfiguartion().downloads +
                         "/Downloads/Excel/SiteRequest.xlsx"
                     }
                     header="addManyItems"
