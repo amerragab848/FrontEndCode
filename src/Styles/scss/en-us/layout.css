@@ -21533,3 +21533,19 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > span.ck.ck-b
 button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown__arrow {
     display: none
 }
+
+.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__panel .ck-list__item {
+    min-width: 11em;
+}
+.ck.ck-input-text {
+    height: 36px !important;
+    min-width: 192px;
+    box-shadow: none !important
+}
+.ck.ck-input-text:focus {
+    box-shadow: none !important
+}
+
+.slider-Btns:empty {
+    padding-top: 0 !important;
+}

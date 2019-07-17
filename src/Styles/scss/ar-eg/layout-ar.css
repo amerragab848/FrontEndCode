@@ -7874,6 +7874,10 @@ h1, h2, h3, h4, h5 {
     background-image: url(../../images/afterPend.png);
 } */
 
+.attachmentTable tbody tr td.tdHover .attachmentAction a:hover svg g g  {
+    fill: #969eab
+}
+
 .attachmentTable tbody tr td.tdHover .attachmentAction a:hover img {
     transform: translateY(20px);
 }
@@ -20782,7 +20786,7 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 }
 
 .rootIcon:hover {
-    color: #4382F9;
+    color: #969eab;
 }
 
 .tooltip-background,
@@ -21796,4 +21800,21 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > span.ck.ck-b
 
 button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown__arrow {
     display: none
+}
+
+.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__panel .ck-list__item {
+    min-width: 11em;
+}
+
+.ck.ck-input-text {
+    height: 36px !important;
+    min-width: 192px;
+    box-shadow: none !important
+}
+.ck.ck-input-text:focus {
+    box-shadow: none !important
+}
+
+.slider-Btns:empty {
+    padding-top: 0 !important;
 }
