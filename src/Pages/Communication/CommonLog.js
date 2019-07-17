@@ -249,7 +249,9 @@ class CommonLog extends Component {
   filterMethodMain = (event, query, apiFilter) => {
 
     var stringifiedQuery = JSON.stringify(query);
-
+    if (stringifiedQuery == '{"isCustom":true}') {
+      stringifiedQuery = undefined
+    }
     this.setState({
       isLoading: true,
       query: stringifiedQuery
@@ -359,34 +361,34 @@ class CommonLog extends Component {
 
     var filtersColumns = [];
 
-    // documentObj.documentColumns.map((item, index) => {
+    documentObj.documentColumns.map((item, index) => {
 
-    //   var obj = {
-    //     key: item.field,
-    //     frozen: index < 2 ? true : false,
-    //     name: Resources[item.friendlyName][currentLanguage],
-    //     width: item.minWidth,
-    //     draggable: true,
-    //     sortable: true,
-    //     resizable: true,
-    //     filterable: false,
-    //     sortDescendingFirst: true,
-    //     formatter: item.field === "subject" ? subjectLink : item.dataType === "date" ? dateFormate : ""
-    //   };
+      var obj = {
+        key: item.field,
+        frozen: index < 2 ? true : false,
+        name: Resources[item.friendlyName][currentLanguage],
+        width: item.minWidth,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: false,
+        sortDescendingFirst: true,
+        formatter: item.field === "subject" ? subjectLink : item.dataType === "date" ? dateFormate : ""
+      };
 
-    //   if (isCustom !== true) {
-    //     cNames.push(obj);
-    //   } else {
-    //     if (item.isCustom === true) {
-    //       cNames.push(obj);
-    //     }
-    //   }
-    // });
+      if (isCustom !== true) {
+        cNames.push(obj);
+      } else {
+        if (item.isCustom === true) {
+          cNames.push(obj);
+        }
+      }
+    });
 
-   // filtersColumns = documentObj.filters;
+   filtersColumns = documentObj.filters;
 
     this.setState({
-    //  pageTitle: Resources[documentObj.documentTitle][currentLanguage],
+      pageTitle: Resources[documentObj.documentTitle][currentLanguage],
       docType: documents,
       routeAddEdit: documentObj.documentAddEditLink,
       apiFilter: documentObj.filterApi,
@@ -399,7 +401,7 @@ class CommonLog extends Component {
     });
 
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
-  } 
+  }
 
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
@@ -556,7 +558,7 @@ class CommonLog extends Component {
                   {this.state.pageSize * this.state.pageNumber + this.state.pageSize}
                 </span>
                 {Resources['jqxGridLanguage'][currentLanguage].localizationobj.pagerrangestring}
-              <span> {this.state.totalRows}</span>
+                <span> {this.state.totalRows}</span>
               </div>
               <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}><i className="angle left icon" /></button>
               <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>

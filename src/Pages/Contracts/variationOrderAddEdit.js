@@ -696,7 +696,7 @@ class variationOrderAddEdit extends Component {
 
     let pageNumber = this.state.pageNumber - 1;
 
-    if (pageNumber >= 0) {
+    if (pageNumber > 0) {
       this.setState({
         isLoading: true,
         pageNumber: pageNumber

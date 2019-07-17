@@ -105,7 +105,7 @@ class requestPaymentsAddEdit extends Component {
             showCostCodingTree: false,
             showDeleteModal: false,
             userType: userType.uty,
-            fillDropDown: [{ label: "AddMissingAmendments", value: "1" }, { label: "ReCalculatorPayment", value: "2" }, { label: "UpdateItemsFromVO", value: "3" }],
+            fillDropDown: [{ label: "AddMissingAmendments", value: "1" }, { label: "ReCalculatorPayment", value: "2" }, { label: "UpdateItemsFromVO", value: "3" }, { label: "AddMissingItems", value: "4" }],
             selectedDropDownTrees: { label: Resources.codingTree[currentLanguage], value: "0" },
             selectedPercentageStatus: { label: Resources.percentageStatus[currentLanguage], value: "0" },
             fillDropDownTress: [],
@@ -1578,6 +1578,13 @@ class requestPaymentsAddEdit extends Component {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
             });
         }
+         else if (event.label === "AddMissingItems") {
+            dataservice.GetDataGrid("v4_addMissingRequestPaymentItem?requestId=" + this.state.docId+ "&contractId=" + this.state.document.contractId).then(result => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }).catch(res => {
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+            });
+        }
 
         this.setState({
             selectedDropDown: event
@@ -1830,7 +1837,7 @@ class requestPaymentsAddEdit extends Component {
 
         let pageNumber = this.state.pageNumber - 1;
 
-        if (pageNumber >= 0) {
+        if (pageNumber > 0) {
             this.setState({
                 isLoading: true,
                 pageNumber: pageNumber

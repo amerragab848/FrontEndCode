@@ -283,14 +283,14 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "docClosedate",
         "field": "docClosedate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "disciplineName",
@@ -306,6 +306,281 @@
       }
     ]
   },
+  "Email": {
+    "documentTitle": "communicationEmails",
+    "docTyp": 77,
+    "documentAddEditLink": "emailAddEdit/",
+    "documentAddEditPopUp": "",
+    "documentAddPermission": 391,
+    "documentEditPermission": 392,
+    "documentDeletePermission": 393,
+    "documentViewPermission": 394,
+    "documentPermission": 395,
+    "documentApi": {
+      "get": "getCommunicationEmails",
+      "getCustom": "getCommunicationEmailsCustom",
+      "delete": "communicationEmailsMultipleDelete"
+    },
+    "documentColumns": [
+      {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "3%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
+        "field": "statusName",
+        "friendlyName": "status",
+        "minWidth": 155,
+        "width": "7%",
+        "dataType": "status",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\"><a data-bind=\"attr: { href: '#emailAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text: $parent.entity.subject\"></span></a></div>",
+        "exportDataType": "s"
+      },
+      {
+        "field": "fromCompanyName",
+        "friendlyName": "fromCompany",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "fromContactName",
+        "friendlyName": "fromContact",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "docDate",
+        "friendlyName": "docDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
+        "field": "disciplineTitle",
+        "friendlyName": "disciplineName",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "openedBy",
+        "friendlyName": "openedBy",
+        "minWidth": 85,
+        "width": "3%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "closedBy",
+        "friendlyName": "closedBy",
+        "minWidth": 85,
+        "width": "6%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditBy",
+        "friendlyName": "lastEdit",
+        "minWidth": 85,
+        "width": "6%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditDate",
+        "friendlyName": "lastEditDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastSendDate",
+        "friendlyName": "lastSendDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastSendTime",
+        "friendlyName": "lastSendTime",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastApproveDate",
+        "friendlyName": "lastApproveDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastApproveTime",
+        "friendlyName": "lastApprovedTime",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      }
+    ],
+    "filterApi": "emailsFilter",
+    "filters": [
+      {
+        "name": "numberAbb",
+        "field": "arrange",
+        "type": "number",
+        "isCustom": true
+
+      },
+      {
+        "name": "status",
+        "field": "status",
+        "isCustom": true,
+
+        "type": "toggle",
+        "trueLabel": "oppened",
+        "falseLabel": "closed"
+      },
+      {
+        "name": "subject",
+        "field": "subject",
+        "type": "string",
+        "isCustom": true
+
+      },
+      {
+        "name": "fromCompany",
+        "field": "fromCompanyName",
+        "type": "string",
+        "isCustom": true
+
+      },
+      {
+        "name": "fromContact",
+        "field": "fromContactName",
+        "type": "string",
+        "isCustom": true
+
+      },
+      {
+        "name": "docDate",
+        "field": "docDate",
+        "type": "date",
+        "isCustom": true
+
+      },
+      {
+        "name": "disciplineTitle",
+        "field": "disciplineName",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "openedBy",
+        "field": "openedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "closedBy",
+        "field": "closedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "lastEdit",
+        "field": "lastEditBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "lastEditDate",
+        "field": "lastEditDate",
+        "type": "date",
+        "isCustom": false
+      }
+    ]
+  }, 
   "InternalMemo": {
     "documentTitle": "communicationInternalMemo",
     "docTyp": 30,
@@ -1266,28 +1541,28 @@
         "field": "docCloseDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "docDate",
         "field": "docDate",
         "type": "date",
         "isCustom": true,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "requiredDate",
         "field": "requiredDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "resultDate",
         "field": "resultDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "openedBy",
@@ -1312,7 +1587,7 @@
         "field": "lastEditDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       }
     ]
   },
@@ -2906,7 +3181,7 @@
         "field": "docCloseDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "Building",
@@ -2919,14 +3194,14 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "answerDate",
         "field": "answerDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "refDoc",
@@ -2945,7 +3220,7 @@
         "field": "requiredDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "cycleNo",
@@ -2976,14 +3251,14 @@
         "field": "lastEditDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "lastSendDate",
         "field": "lastSendDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       }
     ]
   },
@@ -3307,21 +3582,21 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "requiredDate",
         "field": "requiredDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "disciplineName",
@@ -3364,14 +3639,14 @@
         "field": "lastEditDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "lastSendDate",
         "field": "lastSendDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       }
     ]
   },
@@ -4172,7 +4447,7 @@
       {
         "field": "subject",
         "friendlyName": "subject",
-        "minWidth": 200,
+        "minWidth": 250,
         "width": "20%",
         "dataType": "string",
         "isDate": false,
@@ -4208,7 +4483,7 @@
       {
         "field": "docDate",
         "friendlyName": "docDate",
-        "minWidth": 85,
+        "minWidth": 120,
         "width": "15%",
         "dataType": "date",
         "isDate": true,
@@ -12645,28 +12920,28 @@
         "field": "docCloseDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "resultDate",
         "field": "resultDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "docDate",
         "field": "docDate",
         "type": "date",
         "isCustom": true,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "requiredDate",
         "field": "requiredDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "disciplineName",
@@ -12715,7 +12990,7 @@
         "field": "lastEditDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       }
     ]
   },
@@ -13398,28 +13673,28 @@
         "field": "docCloseDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "resultDate",
         "field": "resultDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "docDate",
         "field": "docDate",
         "type": "date",
         "isCustom": true,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "requiredDate",
         "field": "requiredDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "disciplineName",
@@ -13462,14 +13737,14 @@
         "field": "lastEditDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "lastSendDate",
         "field": "lastSendDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       }
     ]
   },
@@ -15332,7 +15607,7 @@
         "isTime": false,
         "cellTemplate": "<div class=\"btn-group\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\" role=\"group\" style=\"margin-top: 15px;\"><button class=\"transfer\" type=\"button\" data-bind=\"click: $parent.$userViewModelRoot.showTransFer\" class=\"btn table-btn-tooltip btn-xs btn-default\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Transfer To Project\"><i class=\"fa fa-stack-exchange\"></i></button></div>",
         "exportDataType": "s",
-        "isCustom":true
+        "isCustom": true
       },
       {
         "field": "resourceCode",
@@ -15344,7 +15619,7 @@
         "isTime": false,
         "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#000000\" class=\"table-item\" data-bind=\"css: { 'is-child-item': $parent.entity.isItem } \"><span data-bind=\"text:  ( $parent.entity.isItem ? '&#9679; ' : '') + $parent.entity.resourceCode\"></span></div>",
         "exportDataType": "s",
-        "isCustom":true
+        "isCustom": true
       },
       {
         "field": "description",
@@ -15356,7 +15631,7 @@
         "isTime": false,
         "isCustom": true,
         "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\" class=\"table-item\" data-bind=\"css: { 'is-child-item': $parent.entity.isItem } \"><a data-bind=\"attr: { href: $parent.entity.isItem ? 'javascript:void(0);' :'#materialInventoryAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text:  ( $parent.entity.isItem ? '&#9679; ' : '') + $parent.entity.description\"></span></a></div>",
-        "exportDataType": "s" 
+        "exportDataType": "s"
       },
       {
         "field": "disciplineName",
@@ -15368,7 +15643,7 @@
         "isTime": false,
         "cellTemplate": "",
         "isCustom": true,
-        "exportDataType": "s" 
+        "exportDataType": "s"
       },
       {
         "field": "remainingQuantity",
@@ -15380,7 +15655,7 @@
         "isTime": false,
         "cellTemplate": "",
         "isCustom": true,
-        "exportDataType": "n" 
+        "exportDataType": "n"
       },
       {
         "field": "unitPrice",
@@ -15392,7 +15667,7 @@
         "isTime": false,
         "cellTemplate": "",
         "isCustom": true,
-        "exportDataType": "n" 
+        "exportDataType": "n"
       },
       {
         "field": "total",
@@ -15464,7 +15739,7 @@
         "isTime": false,
         "cellTemplate": "<div data-bind=\"attr: { 'class': 'kgCellText colt' + $index() }\" style=\"text-align: center;\"><a class=\"editable-click reject\" style=\"text-decoration: none; color: #333\" data-bind=\"text: $parent.entity.rejectedQuantity\"></a></div>",
         "exportDataType": "n",
-        "isCustom":false
+        "isCustom": false
       },
       {
         "field": "pendingQuantity",
@@ -15476,7 +15751,7 @@
         "isTime": false,
         "cellTemplate": "<div data-bind=\"attr: { 'class': 'kgCellText colt' + $index() }\" style=\"text-align: center;\"><a class=\"editable-click approval\" style=\"text-decoration: none; color: #333\" data-bind=\"text: $parent.entity.pendingQuantity\"></a></div>",
         "exportDataType": "n",
-        "isCustom":false
+        "isCustom": false
       },
       {
         "field": "releasePrice",
@@ -15488,7 +15763,7 @@
         "isTime": false,
         "cellTemplate": "",
         "isCustom": false,
-        "exportDataType": "s" 
+        "exportDataType": "s"
       },
       {
         "field": "lastDeliveryDate",
@@ -15548,7 +15823,7 @@
         "isTime": true,
         "cellTemplate": "",
         "isCustom": false,
-        "exportDataType": "s" 
+        "exportDataType": "s"
       }
     ],
     "filterApi": "LogsMaterialInventoryFilter",
@@ -17251,14 +17526,14 @@
         "field": "docDate",
         "type": "date",
         "isCustom": true,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "docClosedate",
         "field": "docCloseDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "submittalType",
@@ -17307,14 +17582,14 @@
         "field": "lastEditDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       },
       {
         "name": "lastSendDate",
         "field": "lastSendDate",
         "type": "date",
         "isCustom": false,
-        "isRange":true
+        "isRange": true
       }
     ]
   },
@@ -18078,7 +18353,7 @@
     "documentEditPermission": 626,
     "documentDeletePermission": 627,
     "documentViewPermission": 629,
-    "documentPermission":628 ,
+    "documentPermission": 628,
     "documentApi": {
       "get": "ProjectDistributionListGet",
       "getCustom": "ProjectDistributionListGet",
@@ -18249,7 +18524,7 @@
       "getCustom": "GetCommunicationRiskCustom",
       "delete": "CommunicationRiskMultipleDelete"
     },
-    "documentColumns": [ 
+    "documentColumns": [
       {
         "field": "subject",
         "friendlyName": "subject",
@@ -18259,8 +18534,8 @@
         "isDate": false,
         "isTime": false,
         "isCustom": true,
-          "exportDataType": "s"
-      }, 
+        "exportDataType": "s"
+      },
       {
         "field": "statusName",
         "friendlyName": "status",
@@ -18272,7 +18547,7 @@
         "cellTemplate": "",
         "isCustom": true,
         "exportDataType": "s"
-      }, 
+      },
       {
         "field": "toCompanyName",
         "friendlyName": "responsibleCompanyName",
@@ -18344,7 +18619,7 @@
         "cellTemplate": "",
         "isCustom": true,
         "exportDataType": "s"
-      },  
+      },
       {
         "field": "docCloseDate",
         "friendlyName": "docClosedate",
@@ -18356,7 +18631,7 @@
         "cellTemplate": "",
         "isCustom": false,
         "exportDataType": "d"
-      }, 
+      },
       {
         "field": "oppenedBy",
         "friendlyName": "openedBy",
@@ -19032,7 +19307,7 @@
         "cellTemplate": "",
         "isCustom": true,
         "exportDataType": "d"
-      }, 
+      },
       {
         "field": "refDoc",
         "friendlyName": "refDoc",
@@ -19115,7 +19390,7 @@
         "field": "subject",
         "type": "string",
         "isCustom": true
-      }, 
+      },
       {
         "name": "fromContact",
         "field": "fromContactName",
@@ -19165,5 +19440,257 @@
         "isCustom": true
       }
     ]
-  } 
+  },
+  "weeklyReport": {
+    "documentTitle": "weeklyReport",
+    "docTyp": 97,
+    "documentAddEditLink": "weeklyReportsAddEdit",
+    "documentAddEditPopUp": "",
+    "documentAddPermission": 784,
+    "documentEditPermission": 785,
+    "documentDeletePermission": 786,
+    "documentViewPermission": 787,
+    "documentPermission": 788,
+    "documentApi": {
+      "get": "GetLogsWeeklyReports",
+      "getCustom": "GetLogsWeeklyReportsCustom",
+      "delete": "LogsWeeklyReportsMultipleDelete"
+    },
+    "documentColumns": [
+      {
+        "field": "arrange",
+        "friendlyName": "numberAbb",
+        "minWidth": 65,
+        "width": "3%",
+        "dataType": "number",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
+        "field": "statusName",
+        "friendlyName": "status",
+        "minWidth": 155,
+        "width": "7%",
+        "dataType": "status",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "subject",
+        "friendlyName": "subject",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\"><a data-bind=\"attr: { href: '#claimsAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text: $parent.entity.subject\"></span></a></div>",
+        "exportDataType": "s"
+      },
+      {
+        "field": "companyName",
+        "friendlyName": "fromCompany",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "docDate",
+        "friendlyName": "docDate",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+    
+      {
+        "field": "docCloseDate",
+        "friendlyName": "docClosedate",
+        "minWidth": 85,
+        "width": "8%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "openedBy",
+        "friendlyName": "openedBy",
+        "minWidth": 150,
+        "width": "8%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "closedBy",
+        "friendlyName": "closedBy",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditBy",
+        "friendlyName": "lastEdit",
+        "minWidth": 150,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastEditDate",
+        "friendlyName": "lastEditDate",
+        "minWidth": 100,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastSendDate",
+        "friendlyName": "lastSendDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastSendTime",
+        "friendlyName": "lastSendTime",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      },
+      {
+        "field": "lastApproveDate",
+        "friendlyName": "lastApproveDate",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "d"
+      },
+      {
+        "field": "lastApproveTime",
+        "friendlyName": "lastApprovedTime",
+        "minWidth": 85,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": true,
+        "cellTemplate": "",
+        "isCustom": false,
+        "exportDataType": "s"
+      }
+    ],
+    "filterApi": "WeeklyReportsFilter",
+    "filters": [
+      {
+        "name": "numberAbb",
+        "field": "arrange",
+        "type": "number",
+        "isCustom": true
+      },
+      {
+        "name": "status",
+        "field": "status",
+        "type": "toggle",
+        "isCustom": true,
+        "trueLabel": "oppened",
+        "falseLabel": "closed"
+      },
+      {
+        "name": "subject",
+        "field": "subject",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "fromCompany",
+        "field": "fromCompanyName",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "docDate",
+        "field": "docDate",
+        "type": "date",
+        "isCustom": true
+      },
+      {
+        "name": "docClosedate",
+        "field": "docClosedate",
+        "type": "date",
+        "isCustom": false
+      },
+      {
+        "name": "openedBy",
+        "field": "oppenedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "closedBy",
+        "field": "closedBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "lastEdit",
+        "field": "lastEditBy",
+        "type": "string",
+        "isCustom": false
+      },
+      {
+        "name": "lastEditDate",
+        "field": "lastEditDate",
+        "type": "date",
+        "isCustom": false
+      }
+    ]
+  }
 }

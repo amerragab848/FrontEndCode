@@ -22,10 +22,8 @@ import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument' 
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'); 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
@@ -75,31 +73,27 @@ class emailAddEdit extends Component {
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
-            docId: 0,//docId,
+            docId: docId,
             docTypeId: 77,
-            projectId:2, //projectId,
+            projectId:projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             companies: [],
             ToContacts: [],
             fromContacts: [],
-            discplines: [],
-            letters: [],
-            permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
-            { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
-            { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 }],
+            permission: [{ name: 'sendByEmail', code: 397 }, { name: 'sendByInbox', code: 396 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 958 },
+            { name: 'createTransmittal', code: 3044 }, { name: 'sendToWorkFlow', code: 709 },
+            { name: 'viewAttachments', code: 3322 }, { name: 'deleteAttachments', code: 844 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-            selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
-            selectedReplyLetter: { label: Resources.replyletter[currentLanguage], value: "0" },
             message: ''
         }
 
-        if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
+        if (!Config.IsAllow(391) && !Config.IsAllow(392) && !Config.IsAllow(394)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(
                 this.state.perviousRoute
@@ -117,11 +111,11 @@ class emailAddEdit extends Component {
             }
         }
         if (this.state.docId > 0) {
-            let url = "GetLettersById?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'lettertitle');
+            let url = "GetCommunicationEmailsForEdit?id=" + this.state.docId
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'communicationEmails');
 
         } else {
-            let letter = {
+            let email = {
                 subject: '',
                 id: 0,
                 projectId: this.state.projectId,
@@ -129,16 +123,13 @@ class emailAddEdit extends Component {
                 fromCompanyId: '',
                 fromContactId: '',
                 toCompanyId: '',
-                toContactId: '',
-                replayId: '',
+                toContactId: '', 
                 docDate: moment(),
-                status: false,
-                disciplineId: '',
-                refDoc: '',
-                sharedSettings: '',
+                status: true, 
+                refDoc: '', 
                 message: ''
             };
-            this.setState({ document: letter });
+            this.setState({ document: email });
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -147,24 +138,16 @@ class emailAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id !== this.props.document.id) {
+        if (nextProps.document.id !== this.props.document.id) { 
             this.setState({
-                document: nextProps.document,
+                document:nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: nextProps.document.message
-            });
-            // und 976 --1
-            //976 976 fire modal
-            //976 976 close modal
-            //alert('recieve....');
-            //console.log(this.props.document.id, nextProps.document.id);
-            //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+            }); 
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
-        }
-
-        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+        } 
         if (this.state.showModal != nextProps.showModal) {
             this.setState({ showModal: nextProps.showModal });
         }
@@ -186,12 +169,12 @@ class emailAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(49))) {
+            if (!(Config.IsAllow(392))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(49)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
-                    if (this.props.document.status !== false && Config.IsAllow(49)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(392)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(392)) {
+                    if (this.props.document.status !== false && Config.IsAllow(392)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -215,8 +198,7 @@ class emailAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; }); 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -227,7 +209,6 @@ class emailAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
-
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
@@ -236,7 +217,6 @@ class emailAddEdit extends Component {
                     });
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
                 }
-
                 let toCompanyId = this.props.document.toCompanyId;
                 if (toCompanyId) {
                     this.setState({
@@ -249,83 +229,35 @@ class emailAddEdit extends Component {
             this.setState({
                 companies: [...result]
             });
-        });
-
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
-            if (isEdit) {
-                let disciplineId = this.props.document.disciplineId;
-                let discpline = {};
-                if (disciplineId) {
-                    discpline = _.find(result, function (i) { return i.value == disciplineId; });
-
-                    this.setState({
-                        selectedDiscpline: discpline
-                    });
-                }
-            }
-            this.setState({
-                discplines: [...result]
-            });
-        });
-
-        dataservice.GetDataList("GetLettersListByProjectId?" + this.state.projectId, 'subject', 'id').then(result => {
-            if (isEdit) {
-                let replyId = this.props.document.replyId;
-                let replyLetter = {};
-                if (replyId) {
-                    replyLetter = _.find(result, function (i) { return i.value == replyId; });
-                    this.setState({
-                        [replyLetter]: replyLetter
-                    });
-                }
-            }
-            this.setState({
-                letters: result
-            });
-        });
+        }); 
     }
 
     onChangeMessage = (value) => {
         if (value != null) {
             this.setState({ message: value });
             let original_document = { ...this.state.document };
-            let updated_document = {};
-
-            updated_document.message = value;
-
-            updated_document = Object.assign(original_document, updated_document);
-
+            let updated_document = {}; 
+            updated_document.message = value; 
+            updated_document = Object.assign(original_document, updated_document); 
             this.setState({
                 document: updated_document
             });
         }
     };
 
-    handleChange(e, field) {
-        console.log(field, e);
-        let original_document = { ...this.state.document };
-
-        let updated_document = {};
-
-        updated_document[field] = e.target.value;
-
-        updated_document = Object.assign(original_document, updated_document);
-
-        this.setState({
-            document: updated_document
-        });
+    handleChange(e, field) { 
+        let original_document = { ...this.state.document }; 
+        let updated_document = {}; 
+        updated_document[field] = e.target.value; 
+        updated_document = Object.assign(original_document, updated_document); 
+        this.setState({  document: updated_document });
     }
 
-    handleChangeDate(e, field) {
-        console.log(field, e);
-        let original_document = { ...this.state.document };
-
-        let updated_document = {};
-
-        updated_document[field] = e;
-
-        updated_document = Object.assign(original_document, updated_document);
-
+    handleChangeDate(e, field) { 
+        let original_document = { ...this.state.document }; 
+        let updated_document = {}; 
+        updated_document[field] = e; 
+        updated_document = Object.assign(original_document, updated_document); 
         this.setState({
             document: updated_document
         });
@@ -343,7 +275,6 @@ class emailAddEdit extends Component {
         }); 
         if (field == "fromContactId") {
             let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-
             dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
                 updated_document = Object.assign(original_document, updated_document); 
@@ -363,11 +294,8 @@ class emailAddEdit extends Component {
     }
 
     editEmail(event) {
-        this.setState({
-            isLoading: true
-        });
-
-        dataservice.addObject('EditLetterById', this.state.document).then(result => {
+        this.setState({  isLoading: true   });
+        dataservice.addObject('EditCommunicationEmails', this.state.document).then(result => {
             this.setState({
                 isLoading: false
             });
@@ -379,11 +307,8 @@ class emailAddEdit extends Component {
         });
     }
 
-    saveEmail(event) {
-        console.log(this.state.document)
-        this.setState({
-            isLoading: true
-        });
+    saveEmail(event) { 
+        this.setState({   isLoading: true });
         let saveDocument = { ...this.state.document }; 
         saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY'); 
         dataservice.addObject('AddCommunicationEmails', saveDocument).then(result => {
@@ -403,7 +328,6 @@ class emailAddEdit extends Component {
 
     showBtnsSaving() {
         let btn = null;
-
         if (this.state.docId === 0) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0 && this.props.changeStatus === false) {
@@ -669,16 +593,10 @@ class emailAddEdit extends Component {
                                         </Formik>
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
-                                        <div> 
-                                            {
-                                                this.state.docId > 0 ? this.props.changeStatus === false ?
-                                                (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
-                                                (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
-                                            } 
-                                            {this.viewAttachments()} 
-                                            {
-                                                this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null
-                                            }
+                                        <div>
+                                            {this.state.docId > 0 && this.state.isViewMode === false  ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={843} EditAttachments={3228} ShowDropBox={3617} ShowGoogleDrive={3618} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                            {this.viewAttachments()}
+                                            {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                         </div>
                                     </div>
                                 </div>
