@@ -1700,6 +1700,19 @@ var routes = [
     }
   },
   {
+    route: "weeklyReport",
+    moduleId: "commonLogs",
+    title: "weeklyReport",
+    nav: true,
+    hash: "#weeklyReport",
+    settings: {
+      Site: true,
+      permission: 788,
+      caption: "procoor-icon-submittal",
+      order: 1
+    }
+  },
+  {
     route:
       "submittalAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
     moduleId: "site/submittalAddEdit",
@@ -2901,10 +2914,11 @@ var routes = [
     nav: true,
     settings: { technicalOffice: true, permission: 3762, order: 3 }
   },
+ 
   {
-    route: "approvalDocument",
-    moduleId: "TechnicalOffice/approvalDocument",
-    title: "approvalDocument",
+    route: "weeklyReport",
+    moduleId: "TechnicalOffice/weeklyReport",
+    title: "weeklyReport",
     nav: true,
     settings: { technicalOffice: true, permission: 3763, order: 4 }
   },

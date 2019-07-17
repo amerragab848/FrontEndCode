@@ -1,22 +1,20 @@
-//import config from "./IP_Configrations.json";
+
 import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
 
+import Config from "./Services/Config";
+
 let Authorization = localStorage.getItem("userToken");
-
-const Domain = window.IP_CONFIG.static;
-
+ 
 export default class Api {
+
     static headers() {
         return {
             Accept: "application/json",
             "Content-Type": "application/json",
             dataType: "json",
             isNewVersion: "true",
-            Lang:
-                localStorage.getItem("lang") == null
-                    ? "en"
-                    : localStorage.getItem("lang"),
+            Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
             Authorization: localStorage.getItem("userToken")
         };
     }
@@ -28,8 +26,8 @@ export default class Api {
         return this.xhr(route, params, "POST");
     }
 
-    static xhr(route, params, verb) {
-        const host = Domain + "/api/Procoor/";
+    static xhr(route, params, verb) { 
+        const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
         const url = `${host}${route}`;
         let json = null;
 
@@ -39,8 +37,8 @@ export default class Api {
             },
             params
                 ? {
-                      body: JSON.stringify(params)
-                  }
+                    body: JSON.stringify(params)
+                }
                 : null
         );
 
@@ -54,9 +52,7 @@ export default class Api {
                     return json;
                 } else if (resp.status === 500) {
                     json = null;
-                    toast.error(
-                        "Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!"
-                    );
+                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
 
                     return json;
                 } else if (resp.status === 401) {
@@ -79,42 +75,6 @@ export default class Api {
             });
     }
 
-    static ConvertNumbers(number, decPlaces) {
-        var orig = number;
-        var dec = decPlaces;
-        // 2 decimal places => 100, 3 => 1000, etc
-        decPlaces = Math.pow(10, decPlaces);
-
-        // Enumerate number abbreviations
-        var abbrev = ["k", "m", "b", "t"];
-
-        // Go through the array backwards, so we do the largest first
-        for (var i = abbrev.length - 1; i >= 0; i--) {
-            // Convert array index to "1000", "1000000", etc
-            var size = Math.pow(10, (i + 1) * 3);
-
-            // If the number is bigger or equal do the abbreviation
-            if (size <= number) {
-                // Here, we multiply by decPlaces, round, and then divide by decPlaces.
-                // This gives us nice rounding to a particular decimal place.
-                var number =
-                    Math.round((number * decPlaces) / size) / decPlaces;
-
-                // Handle special case where we round up to the next abbreviation
-                if (number === 1000 && i < abbrev.length - 1) {
-                    number = 1;
-                    i++;
-                }
-
-                // console.log(number);
-                // Add the letter for the abbreviation
-                number += abbrev[i];
-
-                // We are done... stop
-                break;
-            }
-        }
-    }
 
     static GetPayload() {
         var payload = [];
@@ -148,7 +108,7 @@ export default class Api {
 
     static postFile(route, params, header) {
         let json = "";
-        const host = Domain + "/api/Procoor/";
+        const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
         const url = `${host}${route}`;
         let headers = {};
         headers.Authorization = localStorage.getItem("userToken");
@@ -198,7 +158,7 @@ export default class Api {
             });
     }
     static getPassword(route, password) {
-        const host = Domain + "/api/Procoor/";
+        const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
 
         const url = `${host}${route}`;
         let headers = Api.headers();
@@ -232,6 +192,7 @@ export default class Api {
             })
             .then(json => (json.result ? json.result : json));
     }
+
     static Login(hostt, route, params) {
         const host = hostt;
         const url = `${host}${route}`;
@@ -243,8 +204,8 @@ export default class Api {
             },
             params
                 ? {
-                      body: params
-                  }
+                    body: params
+                }
                 : null
         );
 
@@ -273,7 +234,7 @@ export default class Api {
     }
 
     static authorizationApi(route, params, method) {
-        const host = window.IP_CONFIG.loginServer + "/api/";
+        const host = Config.getPublicConfiguartion().loginServer + "/api/";
         const url = `${host}${route}`;
         let json = null;
 
@@ -283,8 +244,8 @@ export default class Api {
             },
             params
                 ? {
-                      body: JSON.stringify(params)
-                  }
+                    body: JSON.stringify(params)
+                }
                 : null
         );
 
@@ -309,12 +270,12 @@ export default class Api {
             })
             .then(json => (json.result ? json.result : json));
     }
+
     static IsAuthorized() {
         let authorize = false;
         if (localStorage.getItem("userToken")) {
             authorize = true;
-        }
-
+        } 
         return authorize;
     }
 }

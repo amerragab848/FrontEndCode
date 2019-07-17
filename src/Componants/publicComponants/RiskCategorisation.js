@@ -5,9 +5,9 @@ import Resources from "../../resources.json";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import { toast } from "react-toastify";
-import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-
+import ReactTable from "react-table";
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 
 const _ = require('lodash');
 
@@ -23,14 +23,17 @@ class RiskCategorisation extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            document: {},
             isLoading: false,
             projectPhase: [],
             organisation: [],
             managementlevel: [],
+            riskCategorisation: [],
             SelectProjectPhase: { label: Resources["projectPhase"][currentLanguage], value: "0" },
             SelectOrganisation: { label: Resources["organisation"][currentLanguage], value: "0" },
             SelectManagementlevel: { label: Resources["managementlevel"][currentLanguage], value: "0" },
-
+            currentDocument: 0,
+            showDeleteModal: false
         }
     }
 
@@ -58,24 +61,147 @@ class RiskCategorisation extends Component {
                 });
 
             }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+
+            dataservice.GetDataGrid("GetCommunicationRiskCategorisationByRiskId?riskId=" + this.props.riskId).then(result => {
+
+                this.setState({
+                    riskCategorisation: [...result]
+                });
+
+            }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+
+            let document = {
+                projectPhase: "",
+                organisation: "",
+                managementlevel: "",
+                riskId: this.props.riskId
+            }
+
+            this.setState({
+                document: document
+            })
         }
     }
 
     handleChangeDropDown(event, field, selectedValue) {
         if (event == null) return;
-        //let original_document = { ...this.state.documentCycle };
-        // let updated_document = {};
-        // updated_document[field] = event.value;
-        // updated_document = Object.assign(original_document, updated_document);
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+        updated_document[field] = event.value;
+        updated_document = Object.assign(original_document, updated_document);
 
         this.setState({
-            //documentCycle: updated_document,
+            document: updated_document,
             [selectedValue]: event
         });
-
     }
 
+    saveCategorisation = () => {
+        this.setState({
+            isLoading: true
+        });
+
+        dataservice.addObject("AddRiskCategorisation", this.state.document).then(result => {
+
+            let original_Data = this.state.riskCategorisation;
+
+            original_Data.push(result);
+
+            this.setState({
+                riskCategorisation: original_Data,
+                isLoading: false,
+                SelectProjectPhase: { label: Resources["projectPhase"][currentLanguage], value: "0" },
+                SelectOrganisation: { label: Resources["organisation"][currentLanguage], value: "0" },
+                SelectManagementlevel: { label: Resources["managementlevel"][currentLanguage], value: "0" }
+            });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(ex => {
+            this.setState({
+                isLoading: false
+            });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        });
+    }
+
+    clickHandlerContinueMain = () => {
+
+        this.setState({
+            isLoading: true
+        });
+
+        dataservice.GetDataGrid("DeleteRiskCategorisation?id=" + this.state.currentDocument).then(result => {
+
+            let original_Data = this.state.riskCategorisation;
+
+            let getIndex = original_Data.findIndex(x => x.id === this.state.currentDocument);
+
+            original_Data.splice(getIndex, 1);
+
+            this.setState({
+                riskCategorisation: original_Data,
+                isLoading: false,
+                showDeleteModal: false
+            });
+
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+
+        }).catch(ex => {
+            this.setState({
+                isLoading: false,
+                showDeleteModal: false
+            });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        });
+    };
+
+    viewConfirmDelete(id) {
+        this.setState({
+            currentDocument: id,
+        })
+    }
+
+    clickHandlerCancelMain = () => {
+        this.setState({ showDeleteModal: false });
+    };
+
+    onCloseModal = () => {
+        this.setState({ showDeleteModal: false });
+    };
+
     render() {
+        const columns = [
+            // {
+            //   Header: Resources["delete"][currentLanguage],
+            //   accessor: "id",
+            //   Cell: ({ row }) => {
+            //     return (
+            //       <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.viewConfirmDeleteCycle(row.id)}>
+            //         <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
+            //       </div>
+            //     );
+            //   },
+            //   width: 70
+            // },
+            {
+                Header: Resources["projectPhase"][currentLanguage],
+                accessor: "projectPhase",
+                sortabel: true,
+                width: 200
+            },
+            {
+                Header: Resources["organisation"][currentLanguage],
+                accessor: "organisation",
+                width: 200,
+                sortabel: true
+            },
+            {
+                Header: Resources["managementlevel"][currentLanguage],
+                accessor: "managementlevel",
+                width: 200,
+                sortabel: true
+            }
+        ];
+
         return (
             <div className="doc-pre-cycle letterFullWidth">
                 <div className="document-fields">
@@ -84,11 +210,15 @@ class RiskCategorisation extends Component {
                     </header>
                     {this.state.isLoading == true ? <LoadingSection /> :
                         <Fragment>
-                            <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema} enableReinitialize={true}
+                            <Formik initialValues={{
+                                projectPhase: this.state.SelectProjectPhase.value > 0 ? this.state.SelectProjectPhase.value : '',
+                                organisation: this.state.SelectOrganisation.value > 0 ? this.state.SelectOrganisation.value : '',
+                                managementlevel: this.state.SelectManagementlevel.value > 0 ? this.state.SelectManagementlevel.value : ''
+                            }} validationSchema={validationSchema} enableReinitialize={true}
                                 onSubmit={(values) => {
                                     if (this.props.showModal) { return; }
                                     if (this.props.riskId > 0) {
-                                        // this.editLetter();
+                                        this.saveCategorisation();
                                     }
                                 }}>
                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -98,7 +228,7 @@ class RiskCategorisation extends Component {
                                                 title="projectPhase"
                                                 data={this.state.projectPhase}
                                                 selectedValue={this.state.SelectProjectPhase}
-                                                handleChange={event => this.handleChangeDropDown(event, 'disciplineId', 'SelectProjectPhase')}
+                                                handleChange={event => this.handleChangeDropDown(event, 'projectPhase', 'SelectProjectPhase')}
                                                 onChange={setFieldValue}
                                                 onBlur={setFieldTouched}
                                                 error={errors.projectPhase}
@@ -112,7 +242,7 @@ class RiskCategorisation extends Component {
                                                 title="organisation"
                                                 data={this.state.organisation}
                                                 selectedValue={this.state.SelectOrganisation}
-                                                handleChange={event => this.handleChangeDropDown(event, 'contractId', "SelectOrganisation")}
+                                                handleChange={event => this.handleChangeDropDown(event, 'organisation', "SelectOrganisation")}
                                                 onChange={setFieldValue}
                                                 onBlur={setFieldTouched}
                                                 error={errors.organisation}
@@ -127,7 +257,7 @@ class RiskCategorisation extends Component {
                                                 title="managementlevel"
                                                 data={this.state.managementlevel}
                                                 selectedValue={this.state.SelectManagementlevel}
-                                                handleChange={event => this.handleChangeDropDown(event, 'contractId','SelectManagementlevel')}
+                                                handleChange={event => this.handleChangeDropDown(event, 'managementlevel', 'SelectManagementlevel')}
                                                 onChange={setFieldValue}
                                                 onBlur={setFieldTouched}
                                                 error={errors.managementlevel}
@@ -154,7 +284,16 @@ class RiskCategorisation extends Component {
                             </Formik>
                         </Fragment>
                     }
+                    <ReactTable data={this.state.riskCategorisation}
+                        columns={columns}
+                        defaultPageSize={5}
+                        noDataText={Resources["noData"][currentLanguage]}
+                        className="-striped -highlight" />
                 </div>
+                {this.state.showDeleteModal == true ? (
+                    <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
+                        showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
+                        clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />) : null}
             </div>
         );
     }

@@ -4,15 +4,15 @@ import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./Styles/css/rodal.css";
 import "./Styles/css/semantic.min.css";
-  
+
 import Menu from "./Pages/Menu/Menu";
 import Login from "./Componants/Layouts/Login";
 import Route from "./router";
-import api from "./api";
 import { Provider } from "react-redux";
 
 import configureStore from "./store/configureStore";
 import { ToastContainer } from "react-toastify";
+import Config from "./Services/Config";
 
 const loadingStyle = {
   container: {
@@ -44,36 +44,46 @@ const loadingStyle = {
   }
 }
 
-//import Styles from "./CurrentLang";
 const store = configureStore();
 
-const IsAuthorize = api.IsAuthorized();
+const IsAuthorize = Config.IsAuthorized();
 class App extends Component {
+
   state = {
-    cssLoaded: false
+    cssLoaded: false,
+    isComplete: false
   }
 
   componentDidMount() {
+
     let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-    currentLanguage === "ar" ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => {
-      this.setState({
-        cssLoaded: true
-      })
-    }) : import("./Styles/scss/en-us/layout.css").then(css => {
-      this.setState({
-        cssLoaded: true
-      })
+
+    fetch("/assets/IP_Configrations.json").then(r => r.json()).then(data => {
+      Config.SetConfigObject(data);
+    }).then(e => {
+      currentLanguage === "ar" ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => {
+        this.setState({
+          cssLoaded: true,
+          isComplete: true
+        })
+      }) : import("./Styles/scss/en-us/layout.css").then(css => {
+        this.setState({
+          cssLoaded: true,
+          isComplete: true
+        })
+      });
     });
+
   }
 
   render() {
     const showComp = IsAuthorize ? (
       <div id="direction_warrper">
-        <Menu />
+        {this.state.isComplete === true ? <Menu /> : null}
         {Route}
       </div>
     ) : (
-        <Login />
+        this.state.isComplete === true ? <Login /> : null
       );
 
     return this.state.cssLoaded ? (
@@ -86,8 +96,8 @@ class App extends Component {
         </ErrorHandler>
       </Provider>
     ) : (
-      <div style={loadingStyle.container}><span style={loadingStyle.spinner}></span></div>
-    );
+        <div style={loadingStyle.container}><span style={loadingStyle.spinner}></span></div>
+      );
   }
 }
 

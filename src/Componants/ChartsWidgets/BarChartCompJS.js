@@ -13,7 +13,7 @@ const marginObject = {
     top: 50,
     bottom: 50,
 };
- 
+
 const colorSchema = ["#39bd3d", "#dfe2e6"]
 
 class BarChartCompJS extends Component {
@@ -88,14 +88,16 @@ class BarChartCompJS extends Component {
 
             }
             else {
-                let groupedBarData = [] 
+                let groupedBarData = []
                 this.props.barContent.map((bar) => {
-                    results.map((obj) => {
-                        groupedBarData.push({ stack: bar.value, total: obj[bar.value], name: obj[this.props.catagName] })
-                        return null;
-                    })
+                    if (results) {
+                        results.map((obj) => {
+                            groupedBarData.push({ stack: bar.value, total: obj[bar.value], name: obj[this.props.catagName] })
+                            return null;
+                        })
+                    }
                     return null;
-                }) 
+                })
 
                 let groupedData = { data: groupedBarData }
 
