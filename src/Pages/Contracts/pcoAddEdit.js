@@ -53,8 +53,7 @@ const documentItemValidationSchema = Yup.object().shape({
         .required(Resources['resourceCode'][currentLanguage]),
     itemCode: Yup.string()
         .required(Resources['itemCode'][currentLanguage]),
-    unitPrice: Yup.string().required(Resources['unitPrice'][currentLanguage])
-        .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
+    unitPrice: Yup.number().required(Resources['unitPrice'][currentLanguage]),
     days: Yup.string()
         .matches(/(^[0-9]+$)/, Resources['onlyNumbers'][currentLanguage]),
     quantity: Yup.string().required(Resources['quantity'][currentLanguage])
@@ -388,6 +387,21 @@ class pcoAddEdit extends Component {
             this.setState({
                 variations: [...result]
             });
+        });
+
+        dataservice.GetDataList("GetContractsForList?projectId=" + this.state.projectId, 'subject', 'id').then(ContractData => {
+            if (isEdit) {
+                if (this.state.document.contractId) {
+                    let contractId = this.state.document.contractId;
+                    let contractSubject = _.find(ContractData, function (i) { return i.value === contractId });
+                    this.setState({
+                        selectContract: contractSubject
+                    })
+                }
+            }
+            this.setState({
+                contractsPos: ContractData
+            })
         });
 
     }
@@ -1058,13 +1072,12 @@ class pcoAddEdit extends Component {
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(event, 'companyId', false, '', '', '', '', '')
+                                                                            this.handleChangeDropDown(event, 'companyId', 'selectedFromCompany', '', '', '', '', '')
                                                                         }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.companyId}
-                                                                        touched={touched.companyId}
-
+                                                                        touched={touched.companyId} 
                                                                         index="companyId"
                                                                         name="companyId"
                                                                         id="companyId" />

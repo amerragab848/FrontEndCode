@@ -1,29 +1,23 @@
-import React, { Component, Fragment } from "react";
-import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import Api from "../../api";
-import DatePicker from "../../Componants/OptionsPanels/DatePicker";
-import moment from "moment";
+import React, { Component, Fragment } from "react"; 
+import Api from "../../api";  
 import Resources from "../../resources.json";
 import _ from "lodash";
 import * as Yup from "yup";
 import { withRouter } from "react-router-dom";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import DataService from "../../Dataservice";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection"; 
 import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
 import Config from "../../Services/Config.js";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as communicationActions from "../../store/actions/communication";
-//import Recycle from '../../Styles/images/attacheRecycle.png'
+import * as communicationActions from "../../store/actions/communication"; 
 import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import "react-table/react-table.css";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetup from "../Communication/GridSetup";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-//import IPConfig from '../../assets/IP_Configrations'
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel"; 
 import SkyLight from "react-skylight";
 
 let currentLanguage =
@@ -60,7 +54,9 @@ class Itemize extends Component {
 
         this.itemsColumns = [
             {
+                name: Resources["itemize"][currentLanguage],
                 formatter: this.customButton,
+                width: 70,
                 key: "customBtn"
             },
             {
