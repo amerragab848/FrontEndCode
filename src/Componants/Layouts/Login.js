@@ -10,11 +10,10 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast } from "react-toastify";
 import Logo from '../../Styles/images/logo.svg'
-import config from "../../Services/Config";
+import Config from "../../Services/Config";
 import Resources from '../../resources.json';
 const _ = require('lodash')
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage =    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
     userName: Yup.string().required(Resources['userNameRequired'][currentLanguage]),
@@ -22,7 +21,7 @@ const validationSchema = Yup.object().shape({
 })
 
 
-const publicConfiguarion = config.getPublicConfiguartion();
+const publicConfiguarion =Config.IP_CONFIG;// config.getPublicConfiguartion();
 
 class Login extends Component {
 

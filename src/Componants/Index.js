@@ -226,7 +226,7 @@ class Index extends Component {
                     <h2 className="SummeriesTitle">
                       {language[widget.widgetCategory][currentLanguage]}
                     </h2>
-                  }
+                  } 
                   <div className={"SummeriesContainerContent " + (widget.key == "0-1" ? " numbersContainerContent" : " ")}>
                     {widget.widgets.length > 0 ?
                       widget.widgets.map(panel => {

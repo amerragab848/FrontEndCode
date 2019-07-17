@@ -14,8 +14,7 @@ import pdfMenuAction from "../../Styles/images/pdfMenuAction.png";
 import autocad from "../../Styles/images/autocad.png";
 import pdfMaxi from "../../Styles/images/pdfMaxi.png";
 import CryptoJS from "crypto-js";
-import Api from "../../api";
-//import IP_Configrations from "../../IP_Configrations.json";
+import Api from "../../api"; 
 import Resources from "../../resources.json";
 import PDFViewer from "mgr-pdf-viewer-react";
 import { connect } from "react-redux";
@@ -28,9 +27,9 @@ import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config";
 import _ from "lodash";
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage =    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let activeURL = "";
+
 class ViewAttachmments extends Component {
     constructor(props) {
         super(props);
@@ -70,12 +69,10 @@ class ViewAttachmments extends Component {
 
     previewPDF = (item, extension) => {
         if (extension == "pdf") {
-            this.setState({
-                //view: true,
+            this.setState({ 
                 activeURL: item.attachFile
             });
-            activeURL = item.attachFile;
-            // this.simpleDialog.show()
+            activeURL = item.attachFile; 
             this.getPDFblob(item.attachFile);
         }
     };
@@ -90,7 +87,7 @@ class ViewAttachmments extends Component {
                 localStorage.getItem("contactName") !== null
                     ? localStorage.getItem("contactName")
                     : "Procoor User",
-            photo: window.IP_CONFIG.static + "/public/img/signature.png",
+            photo:  Config.getPublicConfiguartion().static + "/public/img/signature.png",
             file: item.parentAttachFile,
             fileName: item.parentAttachFile.split("/")[4],
             fileId: item.id,
@@ -100,7 +97,7 @@ class ViewAttachmments extends Component {
         });
 
         window.open(
-            window.IP_CONFIG.exportLocal +
+             Config.getPublicConfiguartion().exportLocal +
             "/edit-pdf/?zoom=page-actual&q=" +
             this.b64EncodeUnicode(data) +
             "#/public/edit-pdf/" +
@@ -188,8 +185,7 @@ class ViewAttachmments extends Component {
             this.props.docTypeId +
             "&docId=" +
             this.props.docId;
-        if (this.props.files.length === 0) {
-            //&& this.props.changeStatus === true)
+        if (this.props.files.length === 0) { 
             this.props.actions.GetUploadedFiles(url);
         }
     }
@@ -214,10 +210,10 @@ class ViewAttachmments extends Component {
             let createdDate = moment(item["createdDate"]).format("DD/MM/YYYY");
             if (item.isCloud !== true) {
                 var containerIndex = item.attachFile.indexOf(
-                    "/" + window.IP_CONFIG.BlobStorageContainerName
+                    "/" +  Config.getPublicConfiguartion().BlobStorageContainerName
                 );
                 var filePath = item.attachFile.substr(containerIndex);
-                item.attachFile = window.IP_CONFIG.cdn + filePath;
+                item.attachFile =  Config.getPublicConfiguartion().cdn + filePath;
             }
 
             if (item.fileName) {
@@ -388,9 +384,9 @@ class ViewAttachmments extends Component {
                         "DD/MM/YYYY"
                     );
                     if (item.isCloud !== true) {
-                        var containerIndex = item.attachFile ? item.attachFile.indexOf("/" + window.IP_CONFIG.BlobStorageContainerName) : -1;
+                        var containerIndex = item.attachFile ? item.attachFile.indexOf("/" +  Config.getPublicConfiguartion().BlobStorageContainerName) : -1;
                         var filePath = item.attachFile ? item.attachFile.substr(containerIndex) : item.attachFile;
-                        item.attachFile = window.IP_CONFIG.cdn + filePath;
+                        item.attachFile =  Config.getPublicConfiguartion().cdn + filePath;
                     }
 
                     if (item.fileName) {

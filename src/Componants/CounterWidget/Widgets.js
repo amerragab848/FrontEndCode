@@ -51,8 +51,8 @@ class Widgets extends Component {
         <div className="summerisItem__number">
           <div className="content__number">
             <p className="number" onClick={this.onOpenModal.bind(this)}>
-              {this.state.value != null ? numeral(this.state.value).format('0a') : 0}
-
+              {this.state.value != null ? numeral(this.state.value).format('0a') : 0} 
+              {/* <sub style={{  fontSize: '16px', fontFamily: 'font-r'}}>Days</sub> */}
             </p>
             <h4 className="title">
               {Resources[this.props.title][currentLanguage]}
