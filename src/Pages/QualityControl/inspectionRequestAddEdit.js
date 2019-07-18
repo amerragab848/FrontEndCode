@@ -660,7 +660,7 @@ class inspectionRequestAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3312) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={850} />
+                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={850} />
                     : null)
                 : null
         )

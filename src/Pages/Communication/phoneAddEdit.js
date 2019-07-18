@@ -351,7 +351,7 @@ class phoneAddEdit extends Component {
     }
 
     viewAttachments() {
-        return (this.state.docId > 0 ? (Config.IsAllow(3320) === true ? <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={834} /> : null) : null)
+        return (this.state.docId > 0 ? (Config.IsAllow(3320) === true ?<ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={834} /> : null) : null)
     }
 
     render() {

@@ -45,6 +45,7 @@ class ViewAttachmments extends Component {
     }
 
     deletehandler = file => {
+
         let urlDelete = "DeleteAttachFileById?id=" + file.id;
         this.props.actions.deleteFile(urlDelete, file);
     };
@@ -272,7 +273,7 @@ class ViewAttachmments extends Component {
                                 </svg>
                             </a>
 
-                            {Config.IsAllow(4502) ? (
+                            {Config.IsAllow(4502) && (this.props.isApproveMode === false) ? (
                                 <a className="attachRecycle" onClick={() => this.deletehandler(item)} data-toggle="tooltip" title={Resources["delete"][currentLanguage]}>
                                     {/* <img src={Recycle} alt="del" width="100%" height="100%" /> */}
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
@@ -354,20 +355,9 @@ class ViewAttachmments extends Component {
             this.props.isLoadingFiles == true
                 ? this.props.files.map((item, Index) => {
                     let ext = item["fileName"].split(".")[1]
-                        ? item["fileName"].split(".")[1].toLowerCase()
-                        : "png";
-                    let extension =
-                        ext == "xlsx"
-                            ? xlsx
-                            : ext == "pdf"
-                                ? pdf
-                                : ext == "jpeg"
-                                    ? jpeg
-                                    : ext == "png"
-                                        ? png
-                                        : ext == "jpg"
-                                            ? jpg
-                                            : doc;
+                        ? item["fileName"].split(".")[1].toLowerCase() : "png";
+                    let extension = ext == "xlsx" ? xlsx : ext == "pdf" ? pdf
+                        : ext == "jpeg" ? jpeg : ext == "png" ? png : ext == "jpg" ? jpg : doc;
                     let createdDate = moment(item["createdDate"]).format(
                         "DD/MM/YYYY"
                     );
@@ -444,23 +434,21 @@ class ViewAttachmments extends Component {
                             </td>
                             <td className="tdHover">
                                 <div className="attachmentAction">
-                                    {Config.IsAllow(
-                                        this.props.deleteAttachments
-                                    ) ? (
-                                            <a className="attachRecycle" onClick={() => this.deletehandler(item)} data-toggle="tooltip" title={Resources["delete"][currentLanguage]}>
-                                                {/* <img src={Recycle}  alt="del"  width="100%" height="100%" /> */}
-                                                <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
-                                                    <g fill="none" fill-rule="evenodd" transform="translate(1)">
-                                                        <g fill="#A8B0BF" mask="url(#b)">
-                                                            <path id="a" d="M5.628 2.771h2.748v-.805H5.628v.805zm5.094 1.972H3.278l.711 8.292h6.022l.71-8.292zm-9.38.015C1.106 4.73.88 4.73.67 4.676c-.444-.115-.712-.56-.663-1.05.04-.42.422-.8.846-.837.14-.012.28-.01.42-.01h2.414V2.62 1.052c.002-.643.4-1.05 1.034-1.05C6.24 0 7.76-.002 9.28.001c.634 0 1.028.405 1.03 1.052.003.518.001 1.037.001 1.555v.17h.166c.837 0 1.674-.002 2.51.001.471.002.822.244.957.65.22.661-.226 1.28-.938 1.303-.112.003-.224 0-.347 0l-.086.967a8623.91 8623.91 0 0 0-.711 8.355c-.048.567-.442.943-1.004.944H3.15c-.575 0-.96-.368-1.01-.95l-.533-6.203c-.086-1-.169-2-.254-3-.002-.031-.008-.063-.01-.088zm6.065 3.795c0-.394.015-.789-.004-1.182-.028-.6.452-1.035.93-1.038.574-.005.994.402 1.002 1.012.012.82.01 1.64 0 2.46-.006.54-.378.93-.907.984-.451.045-.884-.28-.998-.755a1.21 1.21 0 0 1-.022-.272c-.002-.403-.001-.806-.001-1.21zm-2.741 0c0-.412-.004-.825.001-1.237.006-.472.32-.864.751-.954a.955.955 0 0 1 1.174.932c.015.847.012 1.695 0 2.543a.953.953 0 0 1-.75.925c-.455.095-.881-.105-1.079-.534a1.188 1.188 0 0 1-.093-.451c-.012-.408-.004-.816-.004-1.224z" />
-                                                        </g>
+                                    {Config.IsAllow(this.props.deleteAttachments) && (this.props.isApproveMode === false)? (
+                                        <a className="attachRecycle" onClick={() => this.deletehandler(item)} data-toggle="tooltip" title={Resources["delete"][currentLanguage]}>
+                                             
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+                                                <g fill="none" fill-rule="evenodd" transform="translate(1)">
+                                                    <g fill="#A8B0BF" mask="url(#b)">
+                                                        <path id="a" d="M5.628 2.771h2.748v-.805H5.628v.805zm5.094 1.972H3.278l.711 8.292h6.022l.71-8.292zm-9.38.015C1.106 4.73.88 4.73.67 4.676c-.444-.115-.712-.56-.663-1.05.04-.42.422-.8.846-.837.14-.012.28-.01.42-.01h2.414V2.62 1.052c.002-.643.4-1.05 1.034-1.05C6.24 0 7.76-.002 9.28.001c.634 0 1.028.405 1.03 1.052.003.518.001 1.037.001 1.555v.17h.166c.837 0 1.674-.002 2.51.001.471.002.822.244.957.65.22.661-.226 1.28-.938 1.303-.112.003-.224 0-.347 0l-.086.967a8623.91 8623.91 0 0 0-.711 8.355c-.048.567-.442.943-1.004.944H3.15c-.575 0-.96-.368-1.01-.95l-.533-6.203c-.086-1-.169-2-.254-3-.002-.031-.008-.063-.01-.088zm6.065 3.795c0-.394.015-.789-.004-1.182-.028-.6.452-1.035.93-1.038.574-.005.994.402 1.002 1.012.012.82.01 1.64 0 2.46-.006.54-.378.93-.907.984-.451.045-.884-.28-.998-.755a1.21 1.21 0 0 1-.022-.272c-.002-.403-.001-.806-.001-1.21zm-2.741 0c0-.412-.004-.825.001-1.237.006-.472.32-.864.751-.954a.955.955 0 0 1 1.174.932c.015.847.012 1.695 0 2.543a.953.953 0 0 1-.75.925c-.455.095-.881-.105-1.079-.534a1.188 1.188 0 0 1-.093-.451c-.012-.408-.004-.816-.004-1.224z" />
                                                     </g>
-                                                </svg>
-                                            </a>
-                                        ) : null}
+                                                </g>
+                                            </svg>
+                                        </a>
+                                    ) : null}
 
                                     <a href={item["attachFile"]} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
-                                        {/* <img src={Download} alt="dLoad" width="100%" height="100%" /> */}
+                                       
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                             <g fill="none" fill-rule="evenodd" transform="translate(1)">
                                                 <g fill="#A8B0BF" mask="url(#b)">
@@ -471,11 +459,11 @@ class ViewAttachmments extends Component {
                                     </a>
                                     {Config.IsAllow(4501) ? (
                                         <a className="attachPend" onClick={() => this.versionHandler(item["parentId"], ext)} data-toggle="tooltip" title={Resources["versions"][currentLanguage]}>
-                                            {/* <img src={Pending} alt="pend" width="100%" height="100%" /> */}
+                                        
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                                 <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
                                                     <g fill="#A8B0BF" mask="url(#b)">
-                                                        <path id="a" d="M7.002.002C7.81.002 8.619.006 9.427 0c.319-.002.578.105.803.33a925.297 925.297 0 0 0 3.415 3.41c.239.236.356.508.355.846a888.57 888.57 0 0 0 0 4.838c0 .323-.108.588-.337.815a1207.202 1207.202 0 0 0-3.423 3.419c-.23.232-.496.343-.825.342a873.21 873.21 0 0 0-4.838 0c-.323 0-.585-.109-.814-.337a1027.606 1027.606 0 0 0-3.415-3.409A1.114 1.114 0 0 1 0 9.418C.006 7.806.006 6.193 0 4.58a1.113 1.113 0 0 1 .348-.835A909.544 909.544 0 0 0 3.763.336c.229-.229.49-.339.814-.336.808.007 1.617.002 2.425.002zm-.01 12.173c.677 0 1.353-.002 2.028.001.083 0 .143-.02.202-.08.957-.961 1.917-1.919 2.873-2.88a.293.293 0 0 0 .076-.188c.005-1.351.005-2.703 0-4.054a.294.294 0 0 0-.075-.188c-.958-.965-1.92-1.927-2.885-2.886a.276.276 0 0 0-.176-.071 659.005 659.005 0 0 0-4.068 0 .293.293 0 0 0-.186.079 663.38 663.38 0 0 0-2.877 2.876.277.277 0 0 0-.075.175 667.31 667.31 0 0 0 0 4.08c0 .06.033.133.075.176.959.964 1.92 1.926 2.885 2.885a.278.278 0 0 0 .177.072c.675.004 1.351.003 2.027.003zm-.904-6.476c0-.44-.002-.88 0-1.321.003-.508.3-.856.8-.943.4-.069.859.215.971.609.03.105.051.218.052.327.004.89.004 1.78.001 2.67-.001.474-.304.847-.745.925-.57.102-1.064-.308-1.079-.894v-.026V5.7zM7 8.75a.915.915 0 0 1 .911.915.927.927 0 0 1-.915.914.917.917 0 0 1-.909-.93.91.91 0 0 1 .913-.898z"/>
+                                                        <path id="a" d="M7.002.002C7.81.002 8.619.006 9.427 0c.319-.002.578.105.803.33a925.297 925.297 0 0 0 3.415 3.41c.239.236.356.508.355.846a888.57 888.57 0 0 0 0 4.838c0 .323-.108.588-.337.815a1207.202 1207.202 0 0 0-3.423 3.419c-.23.232-.496.343-.825.342a873.21 873.21 0 0 0-4.838 0c-.323 0-.585-.109-.814-.337a1027.606 1027.606 0 0 0-3.415-3.409A1.114 1.114 0 0 1 0 9.418C.006 7.806.006 6.193 0 4.58a1.113 1.113 0 0 1 .348-.835A909.544 909.544 0 0 0 3.763.336c.229-.229.49-.339.814-.336.808.007 1.617.002 2.425.002zm-.01 12.173c.677 0 1.353-.002 2.028.001.083 0 .143-.02.202-.08.957-.961 1.917-1.919 2.873-2.88a.293.293 0 0 0 .076-.188c.005-1.351.005-2.703 0-4.054a.294.294 0 0 0-.075-.188c-.958-.965-1.92-1.927-2.885-2.886a.276.276 0 0 0-.176-.071 659.005 659.005 0 0 0-4.068 0 .293.293 0 0 0-.186.079 663.38 663.38 0 0 0-2.877 2.876.277.277 0 0 0-.075.175 667.31 667.31 0 0 0 0 4.08c0 .06.033.133.075.176.959.964 1.92 1.926 2.885 2.885a.278.278 0 0 0 .177.072c.675.004 1.351.003 2.027.003zm-.904-6.476c0-.44-.002-.88 0-1.321.003-.508.3-.856.8-.943.4-.069.859.215.971.609.03.105.051.218.052.327.004.89.004 1.78.001 2.67-.001.474-.304.847-.745.925-.57.102-1.064-.308-1.079-.894v-.026V5.7zM7 8.75a.915.915 0 0 1 .911.915.927.927 0 0 1-.915.914.917.917 0 0 1-.909-.93.91.91 0 0 1 .913-.898z" />
                                                     </g>
                                                 </g>
                                             </svg>
