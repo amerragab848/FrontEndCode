@@ -400,7 +400,7 @@ class ProposalAddEdit extends Component {
   viewAttachments() {
     return this.state.docId > 0 ? (
       Config.IsAllow(3287) === true ? (
-        <ViewAttachment
+       <ViewAttachment isApproveMode={this.state.isViewMode}
           docTypeId={this.state.docTypeId}
           docId={this.state.docId}
           projectId={this.state.projectId}

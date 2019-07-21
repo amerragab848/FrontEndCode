@@ -19138,7 +19138,7 @@
   },
   "claims": {
     "documentTitle": "claims",
-    "docTyp": 115,
+    "docTyp": 116,
     "documentAddEditLink": "ClaimsAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 48,

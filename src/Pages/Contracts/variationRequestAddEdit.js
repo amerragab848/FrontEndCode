@@ -420,7 +420,7 @@ class VariationRequestAdd extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3294) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3173} />
+                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3173} />
                     : null)
                 : null
         )

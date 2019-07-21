@@ -192,7 +192,7 @@ class reportsAddEdit extends Component {
                 toContactId: '',
                 subject: '',
                 message: '',
-                docDate: moment().format('DD/MM/YYYY'),
+                docDate: moment(),
                 arrange: '',
                 status: 'true',
                 refDoc: '',
@@ -368,12 +368,12 @@ class reportsAddEdit extends Component {
         }
         return btn;
     }
-    
+
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3326) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={822} />
+                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={822} />
                     : null)
                 : null
         )

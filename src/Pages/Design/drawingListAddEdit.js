@@ -483,7 +483,7 @@ class drawingListAddEdit extends Component {
         return (
             this.state.docId !== 0 ? (
                 Config.IsAllow(3732) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3733} />
+                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3733} />
                     : null)
                 : null
         )
