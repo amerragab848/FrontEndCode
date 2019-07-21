@@ -40,6 +40,7 @@ import AccountsEPSPermissions from './Componants/GeneralSetting/Accounts/Account
 import TemplatesSettings from './Componants/GeneralSetting/TemplatesSettings';
 import ReportsMenu from './Pages/ReportsCenter/ReportsMenu';
 import LettersAddEdit from "./Pages/Communication/LettersAddEdit";
+import emailAddEdit from "./Pages/Communication/emailAddEdit";
 import corrRecievedSent from "./Pages/Communication/corrRecievedSent";
 import FollowUpsSummaryDetails from "./Componants/DashBoardDetails/FollowUpsSummaryDetails";
 import GeneralList from './Componants/GeneralSetting/MenuDefaultData/GeneralList';
@@ -356,6 +357,7 @@ let originalRoutes = [
     , <Route path="/RiskRealisation" component={RiskRealisation} />
     , <Route path="/WeeklyReportsAddEdit" component={WeeklyReportsAddEdit} />
     
+    , <Route path="/emailAddEdit" component={emailAddEdit} />
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes]

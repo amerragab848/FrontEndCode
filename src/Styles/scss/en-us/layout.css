@@ -6586,9 +6586,9 @@ h1, h2, h3, h4, h5 {
     color: #252833;
 }
 
-.documents-stepper .doc-container {
-    /**/
-}
+/* .documents-stepper .doc-container {
+    
+} */
 
 .documents-stepper .doc-container .step-content .document-fields .doc-infohead {
     font-family: font-opens;
@@ -7420,50 +7420,6 @@ h1, h2, h3, h4, h5 {
 
 .bar-Star .js-grouped-bar-chart-tooltip-container .container-group .metadata-group .tooltip-body .tooltip-circle:nth-child(3) {
     fill: #39bd3d;
-}
-
-.bar-Star .star-rating-container {
-        /*   .rating {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: center;
-            padding: 1em;
-        .rating__input {
-            position: absolute;
-            left: -100vw;
-        }
-        .rating__label--hidden {
-            display: none;
-        }
-
-        .rating__label {
-            position: relative;
-            width: 1.1em;
-            font-size: 55px;
-            color: $lightgreen-300;
-            cursor: pointer;
-        }
-
-        .rating__label::before {
-            content: "\f005";
-            position: absolute;
-            font-family: fontawesome;
-            opacity: 0;
-            top: 18px;
-        }
-
-        .rating__label:hover:before,
-        .rating__label:hover ~ .rating__label:before {
-            opacity: 1 !important;
-        }
-        .rating__input:checked ~ .rating__label:before {
-            opacity: 1;
-        }
-
-
-        }
-
-     */
 }
 
 .bar-Star .star-rating-container .ratingresult {
@@ -8489,6 +8445,14 @@ h1, h2, h3, h4, h5 {
     transform: translateY(0);
 }
 
+.attachmentTable tbody tr td.tdHover .attachmentAction a svg g g  {
+    transition: all 0.4s ease-in-out;
+}
+
+.attachmentTable tbody tr td.tdHover .attachmentAction a:hover svg g g  {
+    fill: #969eab
+}
+
 .attachmentTable tbody tr td.tdHover .attachmentAction a::after {
     content: '';
     width: 16px;
@@ -8508,7 +8472,7 @@ h1, h2, h3, h4, h5 {
     }
 }
 
-.attachmentTable tbody tr td.tdHover .attachmentAction a.attachRecycle::after {
+/* .attachmentTable tbody tr td.tdHover .attachmentAction a.attachRecycle::after {
     background-image: url(../../images/afterDelete.png);
 }
 
@@ -8518,7 +8482,7 @@ h1, h2, h3, h4, h5 {
 
 .attachmentTable tbody tr td.tdHover .attachmentAction a.attachPend::after {
     background-image: url(../../images/afterPend.png);
-}
+} */
 
 .attachmentTable tbody tr td.tdHover .attachmentAction a:hover img {
     transform: translateY(20px);
@@ -12689,13 +12653,6 @@ h1, h2, h3, h4, h5 {
     align-items: center;
 }
 
-.StepperNumV .ActiveHei {
-        /*.Step-Line {
-			height: 280px;
-			transition: 1.5s all;
-		}*/
-}
-
 /**/
 .StepperWorkFlow {
     max-width: 600px;
@@ -12808,6 +12765,7 @@ h1, h2, h3, h4, h5 {
     height: 2px;
     background-color: #CCD2DB;
     z-index: 1;
+    transition: all 0.2s ease-out;
     -webkit-transition: all 0.2s ease-out;
 }
 
@@ -14465,6 +14423,7 @@ h1, h2, h3, h4, h5 {
     padding: 0;
     margin-right: 4px;
     margin-left: 4px;
+    margin-bottom: 8px !important
 }
 
 .filter__warrper .proForm .linebylineInput label {
@@ -14872,9 +14831,9 @@ h1, h2, h3, h4, h5 {
     top: 58px !important;
 }
 
-.react-grid-HeaderRow > div:first-child {
+/* .react-grid-HeaderRow > div:first-child {
     width: 100% !important;
-}
+} */
 
 .react-grid-HeaderRow .react-grid-HeaderCell, .react-grid-Row .react-grid-Cell {
     border-right-color: transparent;
@@ -14918,19 +14877,19 @@ h1, h2, h3, h4, h5 {
 }
 
 .react-grid-Cell__value, .react-grid-Cell__value a, .react-grid-Cell__value span, .react-grid-Cell__value div {
-    color: #3E4352 !important;
-    letter-spacing: -0.2px !important;
-    font-size: 14px !important;
-    font-family: font-opens !important;
+    color: #3E4352 ;
+    letter-spacing: -0.2px ;
+    font-size: 14px ;
+    font-family: font-opens ;
 }
 
 .react-grid-Cell__value a {
-    font-weight: bold !important;
+    font-weight: bold ;
 }
 
 .react-grid-Row.row-context-menu .react-grid-Cell, .react-grid-Row:hover .react-grid-Cell, .react-grid-Row:hover {
-    background-color: #edf0f2 !important;
-    transition: 0.2s ease !important;
+    background-color: #edf0f2 ;
+    transition: 0.2s ease ;
 }
 
 .selecteDiv > div {
@@ -14938,18 +14897,18 @@ h1, h2, h3, h4, h5 {
 }
 
 .react-grid-Toolbar .selecteDiv .dragMessage {
-    letter-spacing: -0.2px !important;
-    text-align: center !important;
-    color: #A8B0BF !important;
-    font-family: font-r !important;
-    font-size: 14px !important;
-    width: 100% !important;
-    height: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    position: relative !important;
-    z-index: 9999 !important;
+    letter-spacing: -0.2px ;
+    text-align: center ;
+    color: #A8B0BF ;
+    font-family: font-r ;
+    font-size: 14px ;
+    width: 100% ;
+    height: 100% ;
+    display: flex ;
+    justify-content: center ;
+    align-items: center ;
+    position: relative ;
+    z-index: 9999 ;
 }
 
 .react-grid-Toolbar .selecteDiv .data-dark:empty + .dragMessage {
@@ -14965,189 +14924,189 @@ h1, h2, h3, h4, h5 {
 }
 
 .react-grid-Toolbar .selecteDiv .drop-item span.grouped-col-btn__name {
-    font-size: 12px !important;
-    font-weight: bold !important;
-    font-style: normal !important;
-    font-stretch: normal !important;
-    letter-spacing: -0.2px !important;
-    color: #5E6475 !important;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: -0.2px;
+    color: #5E6475;
 }
-
-.react-grid-Canvas > div:nth-of-type(2), .react-grid-row-group {
-    width: 100% !important;
+ /* .react-grid-row-group */
+.react-grid-Canvas > div:nth-of-type(2) {
+    min-width: 100% !important;
 }
 
 .react-grid-Toolbar .drop-item {
-    min-width: 77px !important;
-    height: 26px !important;
-    border-radius: 100px !important;
-    background-color: #e9edf2 !important;
-    padding: 0 10px 0 12px !important;
-    margin-left: 3px !important;
-    margin-right: 3px !important;
-    line-height: 26px !important;
-    font-family: font-b !important;
-    border-color: transparent !important;
-    display: flex !important;
-    align-items: center !important;
-    position: relative !important;
-    z-index: 99999 !important;
-    flex-shrink: 0 !important;
-    font-size: 12px !important;
-    letter-spacing: -0.2px !important;
-    color: #5E6475 !important;
-    justify-content: space-between !important;
+    min-width: 77px;
+    height: 26px;
+    border-radius: 100px;
+    background-color: #e9edf2;
+    padding: 0 10px 0 12px;
+    margin-left: 3px;
+    margin-right: 3px;
+    line-height: 26px;
+    font-family: font-b;
+    border-color: transparent;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 99999;
+    flex-shrink: 0;
+    font-size: 12px;
+    letter-spacing: -0.2px;
+    color: #5E6475;
+    justify-content: space-between;
 }
 
 .drop-item .remove {
-    padding: 0 !important;
-    float: right !important;
-    background-color: #858D9E !important;
-    width: 16px !important;
-    height: 16px !important;
-    border-radius: 50% !important;
-    color: #e9edf2 !important;
-    font-size: 11px !important;
-    text-align: center !important;
-    line-height: 15px !important;
-    font-family: font-r !important;
-    margin: 1px 3px 0 2px !important;
+    padding: 0;
+    float: right;
+    background-color: #858D9E;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    color: #e9edf2;
+    font-size: 11px;
+    text-align: center;
+    line-height: 15px;
+    font-family: font-r;
+    margin: 1px 3px 0 2px;
 }
 
 .react-grid-Toolbar .data-dark:empty {
-    background-color: #E9ECF0 !important;
-    display: none !important;
-    width: 0 !important;
+    background-color: #E9ECF0;
+    display: none;
+    width: 0;
 }
 
 .react-grid-Toolbar .data-dark {
-    background-color: #5E6475 !important;
-    padding-left: 12px !important;
-    justify-content: flex-start !important;
-    display: flex !important;
-    align-items: center !important;
-    width: 100% !important;
-    height: 100% !important;
-    overflow-x: auto !important;
+    background-color: #5E6475;
+    padding-left: 12px;
+    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
 }
 
 .react-grid-Toolbar .data-dark::-webkit-scrollbar {
-    height: 0 !important;
-    position: absolute !important;
-    right: 0 !important;
-    left: 0 !important;
-    bottom: -20px !important;
+    height: 0;
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: -20px;
     transition: all 0.2s ease-in-out;
 }
 
 .react-grid-Toolbar .data-dark:hover::-webkit-scrollbar {
-    height: 10px !important;
-    position: absolute !important;
+    height: 10px;
+    position: absolute;
     background-color: #E9ECF0;
 }
 
 .minimizeRelative {
-    position: relative !important;
+    position: relative;
 }
 
 .minimizeSpan {
-    position: absolute !important;
-    right: 40px !important;
-    top: 5px !important;
-    z-index: 19 !important;
-    display: flex !important;
+    position: absolute;
+    right: 40px;
+    top: 5px;
+    z-index: 19;
+    display: flex;
 }
 
 .minimizeSpan .H-tableSize, .minimizeSpan .V-tableSize {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-height: 30px !important;
-    cursor: pointer !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    cursor: pointer;
 }
 
 .minimizeSpan .H-tableSize {
-    flex-flow: column !important;
+    flex-flow: column;
 }
 
 .minimizeSpan .H-tableSize span {
-    width: 12px !important;
-    height: 3px !important;
-    background: #A8B0BF !important;
-    border-radius: 5px !important;
-    margin-bottom: 2px !important;
-    display: block !important;
+    width: 12px;
+    height: 3px;
+    background: #A8B0BF;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    display: block;
 }
 
 .minimizeSpan .V-tableSize span {
-    width: 3px !important;
-    height: 12px !important;
-    margin-right: 2px !important;
-    background: #A8B0BF !important;
-    border-radius: 5px !important;
-    margin-bottom: 2px !important;
-    display: block !important;
+    width: 3px;
+    height: 12px;
+    margin-right: 2px;
+    background: #A8B0BF;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    display: block;
 }
 
 .gridLoading {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: absolute !important;
-    width: 100% !important;
-    height: 100% !important;
-    background-color: rgba(255, 255, 255, 0.8) !important;
-    z-index: 99999 !important;
-    top: 0 !important;
-    display: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 99999;
+    top: 0;
+    display: none;
 }
 
 .gridLoading span {
-    display: block !important;
-    width: 40px !important;
-    height: 40px !important;
-    border: 3px solid #3570e6 !important;
-    border-right-color: transparent !important;
-    animation: rotate 1s linear infinite !important;
-    border-radius: 50% !important;
+    display: block;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #3570e6;
+    border-right-color: transparent;
+    animation: rotate 1s linear infinite;
+    border-radius: 50%;
 }
 
 @keyframes rotate {
     0% {
-        transform: rotate(0deg) !important;
+        transform: rotate(0deg);
     }
 
     25% {
-        transform: rotate(90deg) !important;
+        transform: rotate(90deg);
     }
 
     50% {
-        transform: rotate(180deg) !important;
+        transform: rotate(180deg);
     }
 
     75% {
-        transform: rotate(270deg) !important;
+        transform: rotate(270deg);
     }
 
     100% {
-        transform: rotate(360deg) !important;
+        transform: rotate(360deg);
     }
 }
 
 .miniRows .react-grid-Row {
-    height: 40px !important;
+    height: 40px;
 }
 
 .miniRows .react-grid-Row .react-grid-Cell {
-    height: 40px !important;
+    height: 40px;
 }
 
 .react-grid-HeaderCell > .react-grid-checkbox-container {
-    padding: 0 !important;
+    padding: 0;
 }
 
 .react-grid-row-group > div {
-    padding-right: 5px !important;
+    padding-right: 5px;
 }
 
 .react-grid-row-group > div strong {
@@ -15415,7 +15374,7 @@ body {
     width: 100% !important;
 }
 
-.customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
+.filter__input-wrapper .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
     width: 100%;
 }
 
@@ -18308,6 +18267,7 @@ button.companies_icon {
 .fullInputWidth .ui.input.inputDev,
 .fullInputWidth input {
     width: 100% !important;
+    max-width: 360px !important;
 }
 
 .customeError .fullInputWidth.fillter-item-c {
@@ -20569,7 +20529,7 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
 }
 
 .rootIcon:hover {
-    color: #4382F9;
+    color: #969eab;
 }
 
 .tooltip-background,
@@ -21466,6 +21426,7 @@ label {
 
 .react-grid-row-group {
     background-color: #e9ecf0;
+    min-width: 100%;
 }
 
 /* temporary css for new tabs */
@@ -21546,3 +21507,45 @@ label {
 /* .rdg-dragging {
   background: red !important
 } */
+.ck.ck-editor .ck-editor__editable  ol li {
+    list-style-type: decimal;
+}
+
+.ck.ck-editor .ck-editor__editable  ul {
+    padding-left: 40px;
+}
+
+.ck.ck-editor .ck-editor__editable ul li {
+    list-style-type: disc;
+}
+
+button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button {
+    background-image: url(../../images/tt.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent
+}
+
+button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > span.ck.ck-button__label {
+    font-size: 0
+}
+
+button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown__arrow {
+    display: none
+}
+
+.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__panel .ck-list__item {
+    min-width: 11em;
+}
+.ck.ck-input-text {
+    height: 36px !important;
+    min-width: 192px;
+    box-shadow: none !important
+}
+.ck.ck-input-text:focus {
+    box-shadow: none !important
+}
+
+.slider-Btns:empty {
+    padding-top: 0 !important;
+}

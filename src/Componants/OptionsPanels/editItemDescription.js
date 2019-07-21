@@ -13,9 +13,8 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
-
-//import IPConfig from '../../assets/IP_Configrations'
-
+ 
+import Config from "../../Services/Config.js";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
@@ -89,43 +88,32 @@ class addItemDescription extends Component {
     }
     componentWillMount() {
         this.fillTable();
-        DataService.GetDataList(
-            "GetDefaultListForUnit?listType=unit",
-            "listType",
-            "listType"
-        ).then(res => {
+        DataService.GetDataList("GetDefaultListForUnit?listType=unit", "listType", "listType").then(res => {
             this.setState({ Units: [...res] });
         });
 
-        DataService.GetDataList(
-            "GetAllBoqParentNull?projectId=" + this.props.projectId,
-            "title",
-            "id"
-        ).then(res => {
+        DataService.GetDataList("GetAllBoqParentNull?projectId=" + this.props.projectId, "title", "id").then(res => {
             this.setState({ boqTypes: [...res] });
         });
+
         if (this.props.showItemType === true) {
-            DataService.GetDataGrid(
-                "GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000"
-            ).then(result => {
+            DataService.GetDataGrid("GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000").then(result => {
                 let Data = [];
+
                 result.forEach(item => {
                     var obj = {};
                     obj.label = item.title;
                     obj.value = item.id;
                     Data.push(obj);
                 });
+
                 this.setState({
                     itemTypes: [...Data],
                     poolItemTypes: result
                 });
             });
 
-            DataService.GetDataList(
-                "GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000",
-                "title",
-                "id"
-            ).then(res => {
+            DataService.GetDataList("GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000", "title", "id").then(res => {
                 this.setState({ equipmentTypes: [...res] });
             });
         }
@@ -226,7 +214,7 @@ class addItemDescription extends Component {
         });
         if (field === "itemType") {
             let poolItemTypes = this.state.poolItemTypes;
-            let item = _.find(poolItemTypes, function(x) {
+            let item = _.find(poolItemTypes, function (x) {
                 return x.id == event.value;
             });
             if (item) {
@@ -253,7 +241,7 @@ class addItemDescription extends Component {
                         key="boqImport"
                         docId={this.props.docId}
                         docType={this.props.docType}
-                        link={window.IP_CONFIG.downloads + this.props.docLink}
+                        link={Config.getPublicConfiguartion().downloads + this.props.docLink}
                         header="addManyItems"
                         disabled={
                             this.props.changeStatus
@@ -285,488 +273,488 @@ class addItemDescription extends Component {
                             handleBlur,
                             handleChange
                         }) => (
-                            <Form
-                                id="voItemForm"
-                                className="proForm datepickerContainer customProform"
-                                noValidate="novalidate">
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {
-                                                Resources["addItems"][
+                                <Form
+                                    id="voItemForm"
+                                    className="proForm datepickerContainer customProform"
+                                    noValidate="novalidate">
+                                    <header className="main__header">
+                                        <div className="main__header--div">
+                                            <h2 className="zero">
+                                                {
+                                                    Resources["addItems"][
                                                     currentLanguage
-                                                ]
-                                            }
-                                        </h2>
-                                    </div>
-                                </header>
-                                <div className="document-fields">
-                                    <div className="letterFullWidth proForm  first-proform proform__twoInput">
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">
-                                                {
-                                                    Resources["description"][
-                                                        currentLanguage
-                                                    ]
-                                                }{" "}
-                                            </label>
-                                            <div
-                                                className={
-                                                    "inputDev ui input " +
-                                                    (errors.description
-                                                        ? "has-error"
-                                                        : !errors.description &&
-                                                          touched.description
-                                                        ? " has-success"
-                                                        : " ")
-                                                }>
-                                                <input
-                                                    name="description"
-                                                    className="form-control"
-                                                    id="description"
-                                                    placeholder={
-                                                        Resources[
-                                                            "description"
-                                                        ][currentLanguage]
-                                                    }
-                                                    autoComplete="off"
-                                                    onBlur={handleBlur}
-                                                    value={
-                                                        this.state
-                                                            .itemDescription
-                                                            .description
-                                                    }
-                                                    onChange={e =>
-                                                        this.handleChangeItem(
-                                                            e,
-                                                            "description"
-                                                        )
-                                                    }
-                                                />
-                                                {errors.description ? (
-                                                    <em className="pError">
-                                                        {errors.description}
-                                                    </em>
-                                                ) : null}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="proForm datepickerContainer">
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">
-                                                {
-                                                    Resources.quantity[
-                                                        currentLanguage
                                                     ]
                                                 }
-                                            </label>
-                                            <div className="ui input inputDev">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="quantity"
-                                                    value={
-                                                        this.state
-                                                            .itemDescription
-                                                            .quantity
-                                                    }
-                                                    name="quantity"
-                                                    onBlur={handleBlur}
-                                                    placeholder={
+                                            </h2>
+                                        </div>
+                                    </header>
+                                    <div className="document-fields">
+                                        <div className="letterFullWidth proForm  first-proform proform__twoInput">
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">
+                                                    {
+                                                        Resources["description"][
+                                                        currentLanguage
+                                                        ]
+                                                    }{" "}
+                                                </label>
+                                                <div
+                                                    className={
+                                                        "inputDev ui input " +
+                                                        (errors.description
+                                                            ? "has-error"
+                                                            : !errors.description &&
+                                                                touched.description
+                                                                ? " has-success"
+                                                                : " ")
+                                                    }>
+                                                    <input
+                                                        name="description"
+                                                        className="form-control"
+                                                        id="description"
+                                                        placeholder={
+                                                            Resources[
+                                                            "description"
+                                                            ][currentLanguage]
+                                                        }
+                                                        autoComplete="off"
+                                                        onBlur={handleBlur}
+                                                        value={
+                                                            this.state
+                                                                .itemDescription
+                                                                .description
+                                                        }
+                                                        onChange={e =>
+                                                            this.handleChangeItem(
+                                                                e,
+                                                                "description"
+                                                            )
+                                                        }
+                                                    />
+                                                    {errors.description ? (
+                                                        <em className="pError">
+                                                            {errors.description}
+                                                        </em>
+                                                    ) : null}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="proForm datepickerContainer">
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">
+                                                    {
                                                         Resources.quantity[
-                                                            currentLanguage
+                                                        currentLanguage
                                                         ]
                                                     }
-                                                    onChange={e =>
-                                                        this.handleChangeItem(
-                                                            e,
-                                                            "quantity"
-                                                        )
-                                                    }
-                                                />
-                                                {errors.quantity ? (
-                                                    <em className="pError">
-                                                        {errors.quantity}
-                                                    </em>
-                                                ) : null}
+                                                </label>
+                                                <div className="ui input inputDev">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        id="quantity"
+                                                        value={
+                                                            this.state
+                                                                .itemDescription
+                                                                .quantity
+                                                        }
+                                                        name="quantity"
+                                                        onBlur={handleBlur}
+                                                        placeholder={
+                                                            Resources.quantity[
+                                                            currentLanguage
+                                                            ]
+                                                        }
+                                                        onChange={e =>
+                                                            this.handleChangeItem(
+                                                                e,
+                                                                "quantity"
+                                                            )
+                                                        }
+                                                    />
+                                                    {errors.quantity ? (
+                                                        <em className="pError">
+                                                            {errors.quantity}
+                                                        </em>
+                                                    ) : null}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">
-                                                {
-                                                    Resources.unitPrice[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            </label>
-                                            <div className="ui input inputDev">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="unitPrice"
-                                                    value={
-                                                        this.state
-                                                            .itemDescription
-                                                            .unitPrice
-                                                    }
-                                                    name="unitPrice"
-                                                    onBlur={handleBlur}
-                                                    placeholder={
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">
+                                                    {
                                                         Resources.unitPrice[
-                                                            currentLanguage
+                                                        currentLanguage
                                                         ]
                                                     }
-                                                    onChange={e =>
-                                                        this.handleChangeItem(
-                                                            e,
-                                                            "unitPrice"
-                                                        )
-                                                    }
-                                                />
-                                                {errors.unitPrice ? (
-                                                    <em className="pError">
-                                                        {errors.unitPrice}
-                                                    </em>
-                                                ) : null}
+                                                </label>
+                                                <div className="ui input inputDev">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        id="unitPrice"
+                                                        value={
+                                                            this.state
+                                                                .itemDescription
+                                                                .unitPrice
+                                                        }
+                                                        name="unitPrice"
+                                                        onBlur={handleBlur}
+                                                        placeholder={
+                                                            Resources.unitPrice[
+                                                            currentLanguage
+                                                            ]
+                                                        }
+                                                        onChange={e =>
+                                                            this.handleChangeItem(
+                                                                e,
+                                                                "unitPrice"
+                                                            )
+                                                        }
+                                                    />
+                                                    {errors.unitPrice ? (
+                                                        <em className="pError">
+                                                            {errors.unitPrice}
+                                                        </em>
+                                                    ) : null}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">
-                                                {
-                                                    Resources["itemCode"][
-                                                        currentLanguage
-                                                    ]
-                                                }{" "}
-                                            </label>
-                                            <div
-                                                className={
-                                                    "inputDev ui input " +
-                                                    (errors.itemCode
-                                                        ? "has-error"
-                                                        : !errors.itemCode &&
-                                                          touched.itemCode
-                                                        ? " has-success"
-                                                        : " ")
-                                                }>
-                                                <input
-                                                    name="itemCode"
-                                                    className="form-control"
-                                                    id="itemCode"
-                                                    placeholder={
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">
+                                                    {
                                                         Resources["itemCode"][
-                                                            currentLanguage
-                                                        ]
-                                                    }
-                                                    autoComplete="off"
-                                                    onBlur={handleBlur}
-                                                    value={
-                                                        this.state
-                                                            .itemDescription
-                                                            .itemCode
-                                                    }
-                                                    onChange={e =>
-                                                        this.handleChangeItem(
-                                                            e,
-                                                            "itemCode"
-                                                        )
-                                                    }
-                                                />
-                                                {errors.itemCode ? (
-                                                    <em className="pError">
-                                                        {errors.itemCode}
-                                                    </em>
-                                                ) : null}
-                                            </div>
-                                        </div>
-
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">
-                                                {
-                                                    Resources["resourceCode"][
                                                         currentLanguage
-                                                    ]
-                                                }{" "}
-                                            </label>
-                                            <div className="inputDev ui input has-success">
-                                                <input
-                                                    name="resourceCode"
-                                                    className="form-control"
-                                                    id="resourceCode"
-                                                    placeholder={
-                                                        Resources[
-                                                            "resourceCode"
-                                                        ][currentLanguage]
-                                                    }
-                                                    autoComplete="off"
-                                                    onBlur={handleBlur}
-                                                    value={
-                                                        this.state
-                                                            .itemDescription
-                                                            .resourceCode
-                                                    }
-                                                    onChange={e =>
-                                                        this.handleChangeItem(
-                                                            e,
-                                                            "resourceCode"
-                                                        )
-                                                    }
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="linebylineInput valid-input">
-                                            <Dropdown
-                                                title="unit"
-                                                data={this.state.Units}
-                                                selectedValue={
-                                                    this.state.selectedUnit
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeItemDropDown(
-                                                        event,
-                                                        "unit",
-                                                        "selectedUnit",
-                                                        false,
-                                                        "",
-                                                        "",
-                                                        ""
-                                                    )
-                                                }
-                                                index="unit"
-                                            />
-                                        </div>
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">
-                                                {
-                                                    Resources["days"][
-                                                        currentLanguage
-                                                    ]
-                                                }{" "}
-                                            </label>
-                                            <div
-                                                className={
-                                                    "inputDev ui input " +
-                                                    (errors.days
-                                                        ? "has-error"
-                                                        : !errors.days &&
-                                                          touched.days
-                                                        ? " has-success"
-                                                        : " ")
-                                                }>
-                                                <input
-                                                    name="days"
-                                                    className="form-control"
-                                                    id="days"
-                                                    placeholder={
-                                                        Resources["days"][
-                                                            currentLanguage
                                                         ]
-                                                    }
-                                                    autoComplete="off"
-                                                    onBlur={handleBlur}
-                                                    value={
-                                                        this.state
-                                                            .itemDescription
-                                                            .days
-                                                    }
-                                                    onChange={e =>
-                                                        this.handleChangeItem(
-                                                            e,
-                                                            "days"
-                                                        )
-                                                    }
-                                                />
-                                                {errors.days ? (
-                                                    <em className="pError">
-                                                        {errors.days}
-                                                    </em>
-                                                ) : null}
-                                            </div>
-                                        </div>
-                                        {this.props.showBoqType == true ? (
-                                            <React.Fragment>
-                                                <div className="linebylineInput valid-input">
-                                                    <Dropdown
-                                                        title="boqType"
-                                                        data={
-                                                            this.state.boqTypes
+                                                    }{" "}
+                                                </label>
+                                                <div
+                                                    className={
+                                                        "inputDev ui input " +
+                                                        (errors.itemCode
+                                                            ? "has-error"
+                                                            : !errors.itemCode &&
+                                                                touched.itemCode
+                                                                ? " has-success"
+                                                                : " ")
+                                                    }>
+                                                    <input
+                                                        name="itemCode"
+                                                        className="form-control"
+                                                        id="itemCode"
+                                                        placeholder={
+                                                            Resources["itemCode"][
+                                                            currentLanguage
+                                                            ]
                                                         }
-                                                        selectedValue={
+                                                        autoComplete="off"
+                                                        onBlur={handleBlur}
+                                                        value={
                                                             this.state
-                                                                .selectedBoqType
+                                                                .itemDescription
+                                                                .itemCode
                                                         }
-                                                        handleChange={event =>
-                                                            this.handleChangeItemDropDown(
-                                                                event,
-                                                                "boqTypeId",
-                                                                "selectedBoqType",
-                                                                true,
-                                                                "GetAllBoqChild",
-                                                                "parentId",
-                                                                "BoqTypeChilds",
-                                                                "boqType"
+                                                        onChange={e =>
+                                                            this.handleChangeItem(
+                                                                e,
+                                                                "itemCode"
                                                             )
                                                         }
-                                                        name="boqType"
-                                                        index="boqType"
                                                     />
+                                                    {errors.itemCode ? (
+                                                        <em className="pError">
+                                                            {errors.itemCode}
+                                                        </em>
+                                                    ) : null}
                                                 </div>
-                                                <div className="linebylineInput valid-input">
-                                                    <Dropdown
-                                                        title="boqTypeChild"
-                                                        data={
-                                                            this.state
-                                                                .BoqTypeChilds
+                                            </div>
+
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">
+                                                    {
+                                                        Resources["resourceCode"][
+                                                        currentLanguage
+                                                        ]
+                                                    }{" "}
+                                                </label>
+                                                <div className="inputDev ui input has-success">
+                                                    <input
+                                                        name="resourceCode"
+                                                        className="form-control"
+                                                        id="resourceCode"
+                                                        placeholder={
+                                                            Resources[
+                                                            "resourceCode"
+                                                            ][currentLanguage]
                                                         }
-                                                        selectedValue={
+                                                        autoComplete="off"
+                                                        onBlur={handleBlur}
+                                                        value={
                                                             this.state
-                                                                .selectedBoqTypeChild
+                                                                .itemDescription
+                                                                .resourceCode
                                                         }
-                                                        handleChange={event =>
-                                                            this.handleChangeItemDropDown(
-                                                                event,
-                                                                "boqChildTypeId",
-                                                                "selectedBoqTypeChild",
-                                                                true,
-                                                                "GetAllBoqChild",
-                                                                "parentId",
-                                                                "BoqSubTypes",
-                                                                "boqChildType"
+                                                        onChange={e =>
+                                                            this.handleChangeItem(
+                                                                e,
+                                                                "resourceCode"
                                                             )
                                                         }
-                                                        name="boqTypeChild"
-                                                        index="boqTypeChild"
                                                     />
                                                 </div>
-                                                <div className="letterFullWidth">
-                                                    <div className="linebylineInput valid-input">
-                                                        <Dropdown
-                                                            title="boqSubType"
-                                                            data={
-                                                                this.state
-                                                                    .BoqSubTypes
-                                                            }
-                                                            selectedValue={
-                                                                this.state
-                                                                    .selectedBoqSubType
-                                                            }
-                                                            handleChange={event =>
-                                                                this.handleChangeItemDropDown(
-                                                                    event,
-                                                                    "boqSubTypeId",
-                                                                    "selectedBoqSubType",
-                                                                    false,
-                                                                    "",
-                                                                    "",
-                                                                    "",
-                                                                    "boqSubType"
-                                                                )
-                                                            }
-                                                            name="boqSubType"
-                                                            index="boqSubType"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </React.Fragment>
-                                        ) : null}
-                                        <div
-                                            className={
-                                                "linebylineInput valid-input " +
-                                                (this.props.showItemType !==
-                                                false
-                                                    ? " "
-                                                    : " disNone")
-                                            }>
-                                            <Dropdown
-                                                title="itemType"
-                                                data={this.state.itemTypes}
-                                                selectedValue={
-                                                    this.state.selectedItemType
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeItemDropDown(
-                                                        event,
-                                                        "itemType",
-                                                        "selectedItemType",
-                                                        false,
-                                                        "",
-                                                        "",
-                                                        ""
-                                                    )
-                                                }
-                                                onChange={setFieldValue}
-                                                onBlur={setFieldTouched}
-                                                error={errors.itemType}
-                                                touched={touched.itemType}
-                                                name="itemType"
-                                                index="itemType"
-                                            />
-                                        </div>
-
-                                        {this.state.action == 2 ? (
+                                            </div>
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown
-                                                    title="equipmentType"
-                                                    data={
-                                                        this.state
-                                                            .equipmentTypes
-                                                    }
+                                                    title="unit"
+                                                    data={this.state.Units}
                                                     selectedValue={
-                                                        this.state
-                                                            .selectedequipmentType
+                                                        this.state.selectedUnit
                                                     }
                                                     handleChange={event =>
                                                         this.handleChangeItemDropDown(
                                                             event,
-                                                            "equipmentType",
-                                                            "selectedequipmentType",
+                                                            "unit",
+                                                            "selectedUnit",
                                                             false,
                                                             "",
                                                             "",
                                                             ""
                                                         )
                                                     }
-                                                    name="equipmentType"
-                                                    index="equipmentType"
+                                                    index="unit"
                                                 />
                                             </div>
-                                        ) : null}
-
-                                        <div className="slider-Btns fullWidthWrapper textLeft ">
-                                            {this.state.isLoading === false ? (
-                                                <button
-                                                    className={
-                                                        "primaryBtn-1 btn " +
-                                                        (this.props
-                                                            .isViewMode === true
-                                                            ? " disNone"
-                                                            : "")
-                                                    }
-                                                    type="submit"
-                                                    disabled={
-                                                        this.props.isViewMode
-                                                    }>
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">
                                                     {
-                                                        Resources["save"][
-                                                            currentLanguage
+                                                        Resources["days"][
+                                                        currentLanguage
                                                         ]
-                                                    }
-                                                </button>
-                                            ) : (
-                                                <button
-                                                    className="primaryBtn-1 btn  disabled"
-                                                    disabled="disabled">
-                                                    <div className="spinner">
-                                                        <div className="bounce1" />
-                                                        <div className="bounce2" />
-                                                        <div className="bounce3" />
+                                                    }{" "}
+                                                </label>
+                                                <div
+                                                    className={
+                                                        "inputDev ui input " +
+                                                        (errors.days
+                                                            ? "has-error"
+                                                            : !errors.days &&
+                                                                touched.days
+                                                                ? " has-success"
+                                                                : " ")
+                                                    }>
+                                                    <input
+                                                        name="days"
+                                                        className="form-control"
+                                                        id="days"
+                                                        placeholder={
+                                                            Resources["days"][
+                                                            currentLanguage
+                                                            ]
+                                                        }
+                                                        autoComplete="off"
+                                                        onBlur={handleBlur}
+                                                        value={
+                                                            this.state
+                                                                .itemDescription
+                                                                .days
+                                                        }
+                                                        onChange={e =>
+                                                            this.handleChangeItem(
+                                                                e,
+                                                                "days"
+                                                            )
+                                                        }
+                                                    />
+                                                    {errors.days ? (
+                                                        <em className="pError">
+                                                            {errors.days}
+                                                        </em>
+                                                    ) : null}
+                                                </div>
+                                            </div>
+                                            {this.props.showBoqType == true ? (
+                                                <React.Fragment>
+                                                    <div className="linebylineInput valid-input">
+                                                        <Dropdown
+                                                            title="boqType"
+                                                            data={
+                                                                this.state.boqTypes
+                                                            }
+                                                            selectedValue={
+                                                                this.state
+                                                                    .selectedBoqType
+                                                            }
+                                                            handleChange={event =>
+                                                                this.handleChangeItemDropDown(
+                                                                    event,
+                                                                    "boqTypeId",
+                                                                    "selectedBoqType",
+                                                                    true,
+                                                                    "GetAllBoqChild",
+                                                                    "parentId",
+                                                                    "BoqTypeChilds",
+                                                                    "boqType"
+                                                                )
+                                                            }
+                                                            name="boqType"
+                                                            index="boqType"
+                                                        />
                                                     </div>
-                                                </button>
-                                            )}{" "}
+                                                    <div className="linebylineInput valid-input">
+                                                        <Dropdown
+                                                            title="boqTypeChild"
+                                                            data={
+                                                                this.state
+                                                                    .BoqTypeChilds
+                                                            }
+                                                            selectedValue={
+                                                                this.state
+                                                                    .selectedBoqTypeChild
+                                                            }
+                                                            handleChange={event =>
+                                                                this.handleChangeItemDropDown(
+                                                                    event,
+                                                                    "boqChildTypeId",
+                                                                    "selectedBoqTypeChild",
+                                                                    true,
+                                                                    "GetAllBoqChild",
+                                                                    "parentId",
+                                                                    "BoqSubTypes",
+                                                                    "boqChildType"
+                                                                )
+                                                            }
+                                                            name="boqTypeChild"
+                                                            index="boqTypeChild"
+                                                        />
+                                                    </div>
+                                                    <div className="letterFullWidth">
+                                                        <div className="linebylineInput valid-input">
+                                                            <Dropdown
+                                                                title="boqSubType"
+                                                                data={
+                                                                    this.state
+                                                                        .BoqSubTypes
+                                                                }
+                                                                selectedValue={
+                                                                    this.state
+                                                                        .selectedBoqSubType
+                                                                }
+                                                                handleChange={event =>
+                                                                    this.handleChangeItemDropDown(
+                                                                        event,
+                                                                        "boqSubTypeId",
+                                                                        "selectedBoqSubType",
+                                                                        false,
+                                                                        "",
+                                                                        "",
+                                                                        "",
+                                                                        "boqSubType"
+                                                                    )
+                                                                }
+                                                                name="boqSubType"
+                                                                index="boqSubType"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </React.Fragment>
+                                            ) : null}
+                                            <div
+                                                className={
+                                                    "linebylineInput valid-input " +
+                                                    (this.props.showItemType !==
+                                                        false
+                                                        ? " "
+                                                        : " disNone")
+                                                }>
+                                                <Dropdown
+                                                    title="itemType"
+                                                    data={this.state.itemTypes}
+                                                    selectedValue={
+                                                        this.state.selectedItemType
+                                                    }
+                                                    handleChange={event =>
+                                                        this.handleChangeItemDropDown(
+                                                            event,
+                                                            "itemType",
+                                                            "selectedItemType",
+                                                            false,
+                                                            "",
+                                                            "",
+                                                            ""
+                                                        )
+                                                    }
+                                                    onChange={setFieldValue}
+                                                    onBlur={setFieldTouched}
+                                                    error={errors.itemType}
+                                                    touched={touched.itemType}
+                                                    name="itemType"
+                                                    index="itemType"
+                                                />
+                                            </div>
+
+                                            {this.state.action == 2 ? (
+                                                <div className="linebylineInput valid-input">
+                                                    <Dropdown
+                                                        title="equipmentType"
+                                                        data={
+                                                            this.state
+                                                                .equipmentTypes
+                                                        }
+                                                        selectedValue={
+                                                            this.state
+                                                                .selectedequipmentType
+                                                        }
+                                                        handleChange={event =>
+                                                            this.handleChangeItemDropDown(
+                                                                event,
+                                                                "equipmentType",
+                                                                "selectedequipmentType",
+                                                                false,
+                                                                "",
+                                                                "",
+                                                                ""
+                                                            )
+                                                        }
+                                                        name="equipmentType"
+                                                        index="equipmentType"
+                                                    />
+                                                </div>
+                                            ) : null}
+
+                                            <div className="slider-Btns fullWidthWrapper textLeft ">
+                                                {this.state.isLoading === false ? (
+                                                    <button
+                                                        className={
+                                                            "primaryBtn-1 btn " +
+                                                            (this.props
+                                                                .isViewMode === true
+                                                                ? " disNone"
+                                                                : "")
+                                                        }
+                                                        type="submit"
+                                                        disabled={
+                                                            this.props.isViewMode
+                                                        }>
+                                                        {
+                                                            Resources["save"][
+                                                            currentLanguage
+                                                            ]
+                                                        }
+                                                    </button>
+                                                ) : (
+                                                        <button
+                                                            className="primaryBtn-1 btn  disabled"
+                                                            disabled="disabled">
+                                                            <div className="spinner">
+                                                                <div className="bounce1" />
+                                                                <div className="bounce2" />
+                                                                <div className="bounce3" />
+                                                            </div>
+                                                        </button>
+                                                    )}{" "}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Form>
-                        )}
+                                </Form>
+                            )}
                     </Formik>
 
                     {/* <div className="doc-pre-cycle">

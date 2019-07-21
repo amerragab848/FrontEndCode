@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -22,17 +22,12 @@ import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
-import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-import Api from "../../api";
+import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument"; 
 import ReactTable from "react-table";
-import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import { SkyLightStateless } from "react-skylight";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-//import IPConfig from '../../assets/IP_Configrations'
-import Tree from "../../Componants/OptionsPanels/Tree";
-import { fstat } from "fs";
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal"; 
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel";   
+
+let currentLanguage =    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
@@ -487,7 +482,7 @@ class procurementAddEdit extends Component {
     viewAttachments() {
         return this.state.docId > 0 ? (
             Config.IsAllow(4020) === true ? (
-                <ViewAttachment
+               <ViewAttachment isApproveMode={this.state.isViewMode}
                     docTypeId={this.state.docTypeId}
                     docId={this.state.docId}
                     projectId={this.state.projectId}
@@ -1820,8 +1815,7 @@ class procurementAddEdit extends Component {
                             docId={this.state.docId}
                             docType={this.state.docType}
                             link={
-                                window.IP_CONFIG.downloads +
-                                "/DownLoads/Excel/procurement.xlsx"
+                                Config.getPublicConfiguartion().downloads +                                "/DownLoads/Excel/procurement.xlsx"
                             }
                             header="addManyItems"
                             disabled={

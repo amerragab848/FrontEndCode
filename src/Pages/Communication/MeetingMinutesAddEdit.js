@@ -343,7 +343,7 @@ class MeetingMinutesAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3325) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={836} />
+                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={836} />
                     : null)
                 : null
         )

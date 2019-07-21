@@ -10,35 +10,26 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { toast } from "react-toastify";
 import Logo from '../../Styles/images/logo.svg'
-import config from "../../Services/Config";
+import Config from "../../Services/Config";
 import Resources from '../../resources.json';
 const _ = require('lodash')
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
+let currentLanguage =    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const validationSchema = Yup.object().shape({
     userName: Yup.string().required(Resources['userNameRequired'][currentLanguage]),
     password: Yup.string().required(Resources['passwordRequired'][currentLanguage]),
 })
-
-
-const publicConfiguarion = config.getPublicConfiguartion();
-
+const publicConfiguarion =Config.IP_CONFIG;// Config.getPublicConfiguartion();
 class Login extends Component {
-
     constructor(props) {
-
         super(props);
         this.state = {
             type: false, isLoading: false, checked: false
         }
-
     }
-
     loginHandler = (input) => {
         this.setState({ isLoading: true })
-        let companyId = publicConfiguarion.accountCompanyId// config["accountCompanyId"]
-        let loginServer = publicConfiguarion.loginServer// config["loginServer"]
+        let companyId = Config.getPublicConfiguartion().accountCompanyId// config["accountCompanyId"]
+        let loginServer =Config.getPublicConfiguartion().loginServer// config["loginServer"]
         let url = '/token'
         let param = 'grant_type=password&username=' + input.userName + '&password=' + input.password + '&companyId=' + companyId
         Api.Login(loginServer, url, param).then(Response => {
@@ -50,9 +41,7 @@ class Login extends Component {
                 let token = Response.access_token
                 tokenStore.setItem('userToken', 'Bearer ' + token)
                 let payLoad = {}
-
                 Api.get('LoginSuccess').then(result => {
-
                     if (result) {
                         payLoad.acn = result.acn
                         payLoad.aoi = result.aoi
@@ -68,25 +57,21 @@ class Login extends Component {
                         payLoad.uty = result.uty
                         payLoad.aci = result.aci
                     }
-
                     let _payLoad = CryptoJS.enc.Utf8.parse(JSON.stringify(payLoad))
                     let encodedPaylod = CryptoJS.enc.Base64.stringify(_payLoad)
                     tokenStore.setItem('claims', encodedPaylod)
-
                     let browserObj = this.createBrowserObject()
                     let cookie = this.getCookie();
-                    if (publicConfiguarion.canSendAlert) {
+                    if (Config.getPublicConfiguartion().canSendAlert) {
                         browserObj.token = cookie
                         if (browserObj.publicIP === undefined) {
                             Api.getPublicIP("https://ipapi.co/json").then(res => {
                                 browserObj.publicIP = res.ip
                                 browserObj.macAddress = res.latitude + ',' + res.longitude
-
                                 Api.post('checkAccountLogin', browserObj).then(resp => {
                                     if (resp !== "Done")
                                         this.setCookie(resp)
                                 })
-
                             })
                         }
                     } else {
@@ -95,12 +80,10 @@ class Login extends Component {
                                 this.setCookie(resp)
                         })
                     }
-
                     if (tokenStore.getItem('requestPermission')) {
                         let deviceToken = tokenStore.getItem('requestPermission')
                         Api.post('UpdateAccountWebDeviceToken?webDeviceToken=' + deviceToken, null)
                     }
-
                     Api.get('GetPrimeData?token=undefined').then(primeData => {
                         if (primeData.permissions && primeData.permissions.length > 0) {
                             let permission = CryptoJS.enc.Utf8.parse(JSON.stringify(primeData.permissions))
@@ -119,31 +102,25 @@ class Login extends Component {
                         if (primeData.contactName) {
                             tokenStore.setItem('contactName', primeData.contactName)
                         }
-
                         window.location.reload();
                     })
                 })
             }
-
         })
     }
-
     getCookie = () => {
         let cookieName = Cookies.loadAll()
         if (!_.isEmpty(cookieName)) {
-
             return Cookies.load("randomNumber")
         }
         return "";
     }
-
     setCookie = (name) => {
         let documentCookie = this.getCookie()
         if (documentCookie === "") {
             Cookies.save("randomNumber", name)
         }
     }
-
     createBrowserObject = () => {
         let size = {}
         size.height = window.innerHeight
@@ -154,19 +131,16 @@ class Login extends Component {
             "Description": platform.description
         }
         return objBrowser;
-
     }
     toggle = () => {
         const currentType = this.state.type;
         this.setState({ type: !currentType })
-
     }
     keepActive = (e) => {
         this.setState({ checked: !this.state.checked });
     }
     render() {
         return (
-
             <div className="login__page">
                 <div className="login__page--form">
                     <div className="login__logo">
@@ -179,14 +153,12 @@ class Login extends Component {
                         initialValues={{
                             password: '',
                             userName: ''
-
                         }}
                         validationSchema={validationSchema}
                         onSubmit={values => {
                             if (!this.state.isLoading)
                                 this.loginHandler(values)
                         }}
-
                     >
                         {({ errors, touched, handleBlur, handleChange }) => (
                             <Form id="signupForm1" className="proForm" noValidate="novalidate">
@@ -211,7 +183,6 @@ class Login extends Component {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className="form-group linebylineInput fullInputWidth">
                                     <label className="control-label" for="username">{Resources['password'][currentLanguage]}</label>
                                     <div className="inputDev ui input">
@@ -237,13 +208,11 @@ class Login extends Component {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className={this.state.checked?  "ui checkbox checkBoxGray300 loginChecked checked" : "ui checkbox checkBoxGray300 loginChecked"}>
                                     <input id="keep_login" type="checkbox" onChange={this.keepActive} defaultChecked={this.state.checked} />
                                     <label>Keep me logged In</label>
                                 </div>
                                 <div className="ui input inputDev">
-
                                     {this.state.isLoading === false ? (
                                         <button
                                             className="primaryBtn-1 btn mediumBtn"
@@ -260,9 +229,7 @@ class Login extends Component {
                                                 </div>
                                             </button>
                                         )}
-
                                 </div>
-
                             </Form>
                         )}
                     </Formik>
@@ -271,8 +238,6 @@ class Login extends Component {
                     <p>Unable to access your account? please contact your site administrators.</p>
                 </div>
             </div>
-
-
         );
     }
 }

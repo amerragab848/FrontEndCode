@@ -59,7 +59,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 class VariationRequestAdd extends Component {
@@ -74,7 +74,7 @@ class VariationRequestAdd extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -93,7 +93,7 @@ class VariationRequestAdd extends Component {
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -119,9 +119,9 @@ class VariationRequestAdd extends Component {
 
         if (!Config.IsAllow(3162) && !Config.IsAllow(3163) && !Config.IsAllow(3165)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
     }
 
@@ -142,13 +142,13 @@ class VariationRequestAdd extends Component {
         if (nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow 
+                hasWorkflow: nextProps.hasWorkflow
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
         if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
+            this.setState({ showModal: nextProps.showModal });
         }
     }
 
@@ -274,20 +274,18 @@ class VariationRequestAdd extends Component {
 
         dataservice.GetDataList("GetContractsForList?projectId=" + this.state.projectId, 'subject', 'id').then(ContractData => {
             if (isEdit) {
-
-                this.setState({
-                    contracts: ContractData
-                })
-
                 if (this.state.document.contractId) {
                     let contractId = this.state.document.contractId;
                     let contractSubject = _.find(ContractData, function (i) { return i.value === contractId });
                     this.setState({
                         selectedContractSubject: contractSubject
                     })
-                } 
-            } 
-        }); 
+                }
+            }
+            this.setState({
+                contracts: ContractData
+            })
+        });
     }
 
     onChangeMessage = (value) => {
@@ -308,8 +306,8 @@ class VariationRequestAdd extends Component {
                 this.setState({
                     document: updated_document
                 });
-            } 
-        } 
+            }
+        }
     };
 
     handleChange(e, field) {
@@ -369,7 +367,7 @@ class VariationRequestAdd extends Component {
             isLoading: true
         });
 
-        let saveDocument = { ...this.state.document }; 
+        let saveDocument = { ...this.state.document };
 
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
@@ -380,22 +378,20 @@ class VariationRequestAdd extends Component {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
-                this.props.history.push( 
-                    this.state.perviousRoute
-                  );
-            } 
+                this.props.history.push(this.state.perviousRoute);
+            }
         });
     }
 
     saveRequest(event) {
-        let saveDocument = { ...this.state.document }; 
+        let saveDocument = { ...this.state.document };
 
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
 
         dataservice.addObject('AddContractsVariationRequest', saveDocument).then(result => {
             this.setState({
-                docId: result
+                docId: result.id
             });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
@@ -424,16 +420,17 @@ class VariationRequestAdd extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3294) === true ?
-                    <ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3173} />
+                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3173} />
                     : null)
                 : null
         )
     }
 
-    handleShowAction = (item) => { 
+    handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
- 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -464,7 +461,7 @@ class VariationRequestAdd extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                    <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.variationRequest[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.variationRequest[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                     <div className="doc-container">
                         {
                             this.props.changeStatus == true ?
@@ -564,12 +561,7 @@ class VariationRequestAdd extends Component {
 
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
-                                                            <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : (!errors.refDoc && touched.refDoc ? (" has-success") : "ui input inputDev has-success"))} >
-                                                                {errors.refDoc && touched.refDoc ? (
-                                                                    <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                                                ) : !errors.refDoc && touched.refDoc ? (
-                                                                    <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                                                ) : null}
+                                                            <div className={"ui input inputDev"}> 
                                                                 <input type="text" className="form-control" id="refDoc"
                                                                     value={this.state.document.refDoc}
                                                                     name="refDoc"
@@ -579,7 +571,7 @@ class VariationRequestAdd extends Component {
                                                                         handleBlur(e)
                                                                     }}
                                                                     onChange={(e) => this.handleChange(e, 'refDoc')} />
-                                                                {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
+                                                                {/* {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null} */}
 
                                                             </div>
                                                         </div>
@@ -744,9 +736,9 @@ class VariationRequestAdd extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                        {this.state.docId > 0 && this.state.isViewMode === false  ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3172} EditAttachments={3253} ShowDropBox={3563} ShowGoogleDrive={3564} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
-                                        {this.viewAttachments()}
-                                        {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null }
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3172} EditAttachments={3253} ShowDropBox={3563} ShowGoogleDrive={3564} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                            {this.viewAttachments()}
+                                            {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>
                                     </div>
                                 </div>

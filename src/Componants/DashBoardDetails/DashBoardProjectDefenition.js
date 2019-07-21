@@ -87,7 +87,7 @@ let widgets = [
   {
     title: "materialRequestcount",
     key: "0-1-2",
-    apiDetails: "GetMaterialRequestCountingForProject?projectId=",
+    apiDetails: "GetTotalMaterialRequestCountingForProject?projectId=",
     columns: [
       {
         key: "arrange",

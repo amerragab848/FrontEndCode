@@ -16,4 +16,4 @@ var IP_CONFIG = {
     "pmApp": "PM",
     "static": "http://172.30.1.17:8900",
     "downloads": "http://172.30.1.17:8900"
-}
+};

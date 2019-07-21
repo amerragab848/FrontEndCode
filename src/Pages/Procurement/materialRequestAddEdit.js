@@ -25,8 +25,7 @@ import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import Api from "../../api";
 import ReactTable from "react-table";
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-import "react-table/react-table.css";
-//import IPConfig from '../../assets/IP_Configrations'
+import "react-table/react-table.css"; 
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -1034,7 +1033,7 @@ class materialRequestAddEdit extends Component {
     viewAttachments() {
         return this.state.docId > 0 ? (
             Config.IsAllow(3282) === true ? (
-                <ViewAttachment
+               <ViewAttachment isApproveMode={this.state.isViewMode}
                     docTypeId={this.state.docTypeId}
                     docId={this.state.docId}
                     projectId={this.state.projectId}
@@ -1490,7 +1489,7 @@ class materialRequestAddEdit extends Component {
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
 
-        if (pageNumber >= 0) {
+        if (pageNumber > 0) {
             this.setState({
                 isLoading: true,
                 pageNumber: pageNumber
@@ -2329,7 +2328,7 @@ class materialRequestAddEdit extends Component {
                     docId={this.state.docId}
                     docType="siteRequest"
                     link={
-                        window.IP_CONFIG.downloads +
+                        Config.getPublicConfiguartion().downloads +
                         "/Downloads/Excel/SiteRequest.xlsx"
                     }
                     header="addManyItems"
@@ -3368,32 +3367,10 @@ class materialRequestAddEdit extends Component {
                         </div>
                         <div className="docstepper-levels">
                             <div className="step-content-foot">
-                                <span
-                                    onClick={this.PreviousStep}
-                                    className={
-                                        this.props.changeStatus == true &&
-                                        this.state.CurrStep > 1
-                                            ? "step-content-btn-prev "
-                                            : "step-content-btn-prev disabled"
-                                    }>
-                                    <i
-                                        className="fa fa-caret-left"
-                                        aria-hidden="true"
-                                    />
-                                    Previous
-                                </span>
-                                <span
-                                    onClick={this.NextStep}
-                                    className={
-                                        this.state.docId > 0
-                                            ? "step-content-btn-prev "
-                                            : "step-content-btn-prev disabled"
-                                    }>
-                                    Next
-                                    <i
-                                        className="fa fa-caret-right"
-                                        aria-hidden="true"
-                                    />
+                                <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
+                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
+                                <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
+                                    : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
                                 </span>
                             </div>
                             <div className="workflow-sliderSteps">

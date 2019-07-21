@@ -21,7 +21,7 @@ import { bindActionCreators } from "redux";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import CryptoJS from "crypto-js";
-import moment from "moment";
+import moment from "moment"; 
 import Distribution from "../../Componants/OptionsPanels/DistributionList";
 import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
@@ -30,8 +30,7 @@ import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { SkyLightStateless } from "react-skylight";
 import Recycle from "../../Styles/images/attacheRecycle.png";
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-//import IPConfig from "../../assets/IP_Configrations";
+import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument"; 
 import Schedule from "../Contracts/Schedule";
 import ContractInsurance from "../Contracts/ContractInsurance";
 import SubPurchaseOrderLog from "../Contracts/subPurchaseOrderLog";
@@ -935,7 +934,7 @@ class PurchaseOrderAddEdit extends Component {
     viewAttachments() {
         return this.state.docId > 0 ? (
             Config.IsAllow(3289) === true ? (
-                <ViewAttachment
+               <ViewAttachment isApproveMode={this.state.isViewMode}
                     docTypeId={this.state.docTypeId}
                     docId={this.state.docId}
                     projectId={this.state.projectId}
@@ -2207,7 +2206,7 @@ class PurchaseOrderAddEdit extends Component {
                         key="POImport"
                         docId={this.state.docId}
                         docType="po"
-                        link={window.IP_CONFIG.downloads + "/Downloads/Excel/PO.xlsx"}
+                        link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/PO.xlsx"}
                         header="items"
                         disabled={this.state.isViewMode}
                         afterUpload={() => this.getTabelData()}

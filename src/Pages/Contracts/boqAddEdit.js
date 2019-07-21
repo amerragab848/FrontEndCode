@@ -29,8 +29,7 @@ import EditItemDescription from "../../Componants/OptionsPanels/editItemDescript
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-//import IPConfig from '../../assets/IP_Configrations'
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel"; 
 import dataservice from "../../Dataservice";
 
 let currentLanguage =
@@ -143,8 +142,9 @@ class bogAddEdit extends Component {
 
         this.itemsColumns = [
             {
+                name: Resources["itemize"][currentLanguage],
                 formatter: this.customButton,
-                width: 50,
+                width: 70,
                 key: "customBtn"
             },
             {
@@ -400,11 +400,7 @@ class bogAddEdit extends Component {
             _items: []
         };
 
-        if (
-            !Config.IsAllow(616) &&
-            !Config.IsAllow(617) &&
-            !Config.IsAllow(619)
-        ) {
+        if (!Config.IsAllow(616) && !Config.IsAllow(617) && !Config.IsAllow(619)) {
             toast.warning(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(this.state.perviousRoute);
         }
@@ -427,23 +423,14 @@ class bogAddEdit extends Component {
         };
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-        this.props.history.push({
-            pathname: "/Itemize",
-            search: "?id=" + encodedPaylod
-        });
+        this.props.history.push({ pathname: "/Itemize", search: "?id=" + encodedPaylod });
     };
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (
-                !Config.IsAllow(617) ||
-                this.props.document.contractId !== null
-            ) {
+            if (!Config.IsAllow(617) || this.props.document.contractId !== null) {
                 this.setState({ isViewMode: true });
-            } else if (
-                this.state.isApproveMode != true &&
-                Config.IsAllow(617)
-            ) {
+            } else if (this.state.isApproveMode != true && Config.IsAllow(617)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(617)) {
                     if (
                         this.props.document.status != false &&
@@ -475,7 +462,7 @@ class bogAddEdit extends Component {
             if (isEdit) {
                 let companyId = this.state.document.company;
                 if (companyId) {
-                    let comapny = _.find(res, function(x) {
+                    let comapny = _.find(res, function (x) {
                         return x.value == companyId;
                     });
                     this.setState({
@@ -494,7 +481,7 @@ class bogAddEdit extends Component {
             if (isEdit) {
                 let disciplineId = this.state.document.discipline;
                 if (disciplineId) {
-                    let discipline = _.find(res, function(x) {
+                    let discipline = _.find(res, function (x) {
                         return x.value == disciplineId;
                     });
                     this.setState({
@@ -554,9 +541,9 @@ class bogAddEdit extends Component {
         this.setState({ selectedFromCompany: event });
         Api.get(
             "GetBoqNumber?projectId=" +
-                this.state.projectId +
-                "&companyId=" +
-                event.value
+            this.state.projectId +
+            "&companyId=" +
+            event.value
         ).then(res => {
             this.setState({
                 document: { ...this.state.document, arrange: res },
@@ -601,9 +588,9 @@ class bogAddEdit extends Component {
             this.setState({ LoadingPage: true });
             Api.get(
                 "GetBoqNumber?projectId=" +
-                    this.state.projectId +
-                    "&companyId=" +
-                    cmi
+                this.state.projectId +
+                "&companyId=" +
+                cmi
             ).then(res => {
                 this.setState({
                     document: { ...this.state.document, arrange: res },
@@ -635,14 +622,8 @@ class bogAddEdit extends Component {
     getTabelData() {
         let Table = [];
         this.setState({ isLoading: true, LoadingPage: true });
-        Api.get(
-            "GetBoqItemsList?id=" +
-                this.state.docId +
-                "&pageNumber=" +
-                this.state.pageNumber +
-                "&pageSize=" +
-                this.state.pageSize
-        ).then(res => {
+        Api.get("GetBoqItemsList?id=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(res => {
+
             let data = { items: res };
 
             res.forEach((element, index) => {
@@ -721,7 +702,7 @@ class bogAddEdit extends Component {
     viewAttachments() {
         return this.state.docId > 0 ? (
             Config.IsAllow(3295) === true ? (
-                <ViewAttachment
+               <ViewAttachment isApproveMode={this.state.isViewMode}
                     docTypeId={this.state.docTypeId}
                     docId={this.state.docId}
                     projectId={this.state.projectId}
@@ -736,9 +717,7 @@ class bogAddEdit extends Component {
 
         let documentObj = {
             project: this.state.projectId,
-            documentDate: moment(values.documentDate, "YYYY-MM-DD").format(
-                "YYYY-MM-DD[T]HH:mm:ss.SSS"
-            ),
+            documentDate: moment(values.documentDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
             company: this.state.selectedFromCompany.value,
             discipline: this.state.selectedDiscipline.value,
             status: values.status,
@@ -749,16 +728,15 @@ class bogAddEdit extends Component {
             showOptimization: values.showOptimization
         };
 
-        DataService.addObject("AddBoq", documentObj)
-            .then(result => {
-                this.props.actions.setDocId(result.id);
-                this.setState({
-                    docId: result.id,
-                    isLoading: false,
-                    btnTxt: "next"
-                });
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-            })
+        DataService.addObject("AddBoq", documentObj).then(result => {
+            this.props.actions.setDocId(result.id);
+            this.setState({
+                docId: result.id,
+                isLoading: false,
+                btnTxt: "next"
+            });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        })
             .catch(() => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
                 this.setState({ isLoading: false });
@@ -778,9 +756,7 @@ class bogAddEdit extends Component {
                 project: this.state.projectId,
                 id: this.state.docId,
                 arrange: this.state.document.arrange,
-                DocumentDate: moment(values.documentDate, "YYYY-MM-DD").format(
-                    "YYYY-MM-DD[T]HH:mm:ss.SSS"
-                ),
+                DocumentDate: moment(values.documentDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
                 Company: Config.getPayload().cmi,
                 Discipline: this.state.selectedDiscipline.value,
                 Status: values.status,
@@ -790,32 +766,25 @@ class bogAddEdit extends Component {
                 ShowOptimization: values.showOptimization
             };
 
-            Api.post("EditBoq", documentObj)
-                .then(result => {
-                    this.setState({
-                        isLoading: false
-                    });
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
-                    this.NextStep();
-                })
-                .catch(() => {
-                    toast.error(
-                        Resources["operationCanceled"][currentLanguage]
-                    );
-                    this.setState({ isLoading: false });
+            Api.post("EditBoq", documentObj).then(result => {
+                this.setState({
+                    isLoading: false
                 });
+                toast.success(
+                    Resources["operationSuccess"][currentLanguage]
+                );
+                this.NextStep();
+            }).catch(() => {
+                toast.error(
+                    Resources["operationCanceled"][currentLanguage]
+                );
+                this.setState({ isLoading: false });
+            });
         }
     };
 
     checkItemCode = code => {
-        Api.get(
-            "GetItemCode?itemCode=" +
-                code +
-                "&projectId=" +
-                this.state.projectId
-        ).then(res => {
+        Api.get("GetItemCode?itemCode=" + code + "&projectId=" + this.state.projectId).then(res => {
             if (res == true) {
                 toast.error(Resources["itemCodeExist"][currentLanguage]);
                 this.setState({ items: { ...this.state.items, itemCode: "" } });
@@ -1158,7 +1127,7 @@ class bogAddEdit extends Component {
                 }
                 return { _items };
             },
-            function() {
+            function () {
                 if (
                     updateRow[Object.keys(updated)[0]] !==
                     updated[Object.keys(updated)[0]]
@@ -1167,9 +1136,9 @@ class bogAddEdit extends Component {
                         updated[Object.keys(updated)[0]];
                     Api.post(
                         "EditBoqItemUnitPrice?id=" +
-                            this.state._items[fromRow].id +
-                            "&unitPrice=" +
-                            updated.unitPrice
+                        this.state._items[fromRow].id +
+                        "&unitPrice=" +
+                        updated.unitPrice
                     )
                         .then(() => {
                             toast.success(
@@ -1224,7 +1193,8 @@ class bogAddEdit extends Component {
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
 
-        if (pageNumber >= 0) {
+        if (pageNumber > 0) {
+
             this.setState({
                 isLoading: true,
                 pageNumber: pageNumber
@@ -1234,11 +1204,11 @@ class bogAddEdit extends Component {
 
             Api.get(
                 "GetBoqItemsList?id=" +
-                    this.state.docId +
-                    "&pageNumber=" +
-                    pageNumber +
-                    "&pageSize=" +
-                    this.state.pageSize
+                this.state.docId +
+                "&pageNumber=" +
+                pageNumber +
+                "&pageSize=" +
+                this.state.pageSize
             )
                 .then(result => {
                     const newRows = [...this.state._items, ...result];
@@ -1267,28 +1237,19 @@ class bogAddEdit extends Component {
 
         let oldRows = [...this.state._items];
 
-        Api.get(
-            "GetBoqItemsList?id=" +
-                this.state.docId +
-                "&pageNumber=" +
-                pageNumber +
-                "&pageSize=" +
-                this.state.pageSize
-        )
-            .then(result => {
-                const newRows = [...this.state._items, ...result];
+        Api.get("GetBoqItemsList?id=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+            const newRows = [...this.state._items, ...result];
 
-                this.setState({
-                    _items: newRows,
-                    isLoading: false
-                });
-            })
-            .catch(ex => {
-                this.setState({
-                    _items: oldRows,
-                    isLoading: false
-                });
+            this.setState({
+                _items: newRows,
+                isLoading: false
             });
+        }).catch(ex => {
+            this.setState({
+                _items: oldRows,
+                isLoading: false
+            });
+        });
     }
 
     handleChangeItemDropDown(
@@ -1328,28 +1289,18 @@ class bogAddEdit extends Component {
                     assignFn={() => this.assign()}
                     key="items"
                 />
-            ) : (
-                <LoadingSection />
-            );
+            ) : (<LoadingSection />);
 
         const contractContent = (
             <Fragment>
                 <div className="document-fields">
-                    <Formik
-                        enableReinitialize={true}
-                        initialValues={{
-                            subject: this.props.changeStatus
-                                ? this.props.document.subject
-                                : "",
-                            reference: 1,
-                            completionDate: moment(),
-                            docDate: this.props.changeStatus
-                                ? this.props.document.documentDate
-                                : moment(),
-                            status: this.props.document.status
-                                ? this.props.document.status
-                                : true
-                        }}
+                    <Formik enableReinitialize={true} initialValues={{
+                        subject: this.props.changeStatus ? this.props.document.subject : "",
+                        reference: 1,
+                        completionDate: moment(),
+                        docDate: this.props.changeStatus ? this.props.document.documentDate : moment(),
+                        status: this.props.document.status ? this.props.document.status : true
+                    }}
                         validationSchema={contractSchema}
                         onSubmit={values => {
                             this.addContract(values);
@@ -1363,434 +1314,434 @@ class bogAddEdit extends Component {
                             handleChange,
                             values
                         }) => (
-                            <Form
-                                id="signupForm1"
-                                className="proForm datepickerContainer customProform"
-                                noValidate="novalidate">
-                                <div className="proForm first-proform letterFullWidth">
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {
-                                                Resources["subject"][
-                                                    currentLanguage
-                                                ]
-                                            }{" "}
-                                        </label>
-                                        <div
-                                            className={
-                                                "inputDev ui input " +
-                                                (errors.subject
-                                                    ? "has-error"
-                                                    : !errors.subject &&
-                                                      touched.subject
-                                                    ? " has-success"
-                                                    : " ")
-                                            }>
-                                            <input
-                                                name="subject"
-                                                className="form-control"
-                                                id="subject"
-                                                placeholder={
+                                <Form
+                                    id="signupForm1"
+                                    className="proForm datepickerContainer customProform"
+                                    noValidate="novalidate">
+                                    <div className="proForm first-proform letterFullWidth">
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {
                                                     Resources["subject"][
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
-                                                }
-                                                autoComplete="off"
-                                                onBlur={handleBlur}
-                                                defaultValue={values.subject}
-                                                onChange={e => handleChange(e)}
-                                            />
-                                            {errors.subject ? (
-                                                <em className="pError">
-                                                    {errors.subject}
-                                                </em>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {Resources.status[currentLanguage]}
-                                        </label>
-                                        <div className="ui checkbox radio radioBoxBlue">
-                                            <input
-                                                type="radio"
-                                                name="status"
-                                                defaultChecked={
-                                                    values.status === false
-                                                        ? null
-                                                        : "checked"
-                                                }
-                                                value="true"
-                                                onChange={e =>
-                                                    setFieldValue(
-                                                        "status",
-                                                        true
-                                                    )
-                                                }
-                                            />
-                                            <label>
-                                                {
-                                                    Resources.oppened[
-                                                        currentLanguage
-                                                    ]
-                                                }
+                                                }{" "}
                                             </label>
-                                        </div>
-                                        <div className="ui checkbox radio radioBoxBlue">
-                                            <input
-                                                type="radio"
-                                                name="status"
-                                                defaultChecked={
-                                                    values.status === false
-                                                        ? "checked"
-                                                        : null
-                                                }
-                                                value="false"
-                                                onChange={e =>
-                                                    setFieldValue(
-                                                        "status",
-                                                        false
-                                                    )
-                                                }
-                                            />
-                                            <label>
-                                                {
-                                                    Resources.closed[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="proForm datepickerContainer">
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {
-                                                Resources.reference[
-                                                    currentLanguage
-                                                ]
-                                            }
-                                        </label>
-                                        <div className="ui input inputDev">
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="reference"
-                                                defaultValue={values.reference}
-                                                name="reference"
-                                                placeholder={
-                                                    Resources.reference[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <DatePicker
-                                            title="completionDate"
-                                            name="completionDate"
-                                            startDate={values.completionDate}
-                                            handleChange={e =>
-                                                setFieldValue(
-                                                    "completionDate",
-                                                    e
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <DatePicker
-                                            title="docDate"
-                                            name="documentDate"
-                                            startDate={values.docDate}
-                                            handleChange={e =>
-                                                setFieldValue("docDate", e)
-                                            }
-                                        />
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown
-                                            title="currency"
-                                            data={this.state.currency}
-                                            selectedValue={
-                                                this.state.selectedCurrency
-                                            }
-                                            handleChange={event => {
-                                                this.setState({
-                                                    selectedCurrency: event
-                                                });
-                                            }}
-                                            name="currency"
-                                            index="currency"
-                                        />
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {Resources.tax[currentLanguage]}
-                                        </label>
-                                        <div
-                                            className={
-                                                "inputDev ui input " +
-                                                (errors.tax
-                                                    ? "has-error"
-                                                    : !errors.tax && touched.tax
-                                                    ? " has-success"
-                                                    : " ")
-                                            }>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="tax"
-                                                defaultValue={0}
-                                                onBlur={handleBlur}
-                                                onChange={e => handleChange(e)}
-                                                name="tax"
-                                                placeholder={
-                                                    Resources.tax[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            />
-                                            {errors.tax ? (
-                                                <em className="pError">
-                                                    {errors.tax}
-                                                </em>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {Resources.vat[currentLanguage]}
-                                        </label>
-                                        <div
-                                            className={
-                                                "inputDev ui input " +
-                                                (errors.vat
-                                                    ? "has-error"
-                                                    : !errors.vat && touched.vat
-                                                    ? " has-success"
-                                                    : " ")
-                                            }>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="vat"
-                                                defaultValue={0}
-                                                onBlur={handleBlur}
-                                                onChange={e => handleChange(e)}
-                                                name="vat"
-                                                placeholder={
-                                                    Resources.vat[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            />
-                                            {errors.vat ? (
-                                                <em className="pError">
-                                                    {errors.vat}
-                                                </em>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {
-                                                Resources.advancedPayment[
-                                                    currentLanguage
-                                                ]
-                                            }
-                                        </label>
-                                        <div
-                                            className={
-                                                "inputDev ui input " +
-                                                (errors.advancedPayment
-                                                    ? "has-error"
-                                                    : !errors.advancedPayment &&
-                                                      touched.advancedPayment
-                                                    ? " has-success"
-                                                    : " ")
-                                            }>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="advancedPayment"
-                                                defaultValue={0}
-                                                onBlur={handleBlur}
-                                                onChange={e => handleChange(e)}
-                                                name="advancedPayment"
-                                                placeholder={
-                                                    Resources.advancedPayment[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            />
-                                            {errors.advancedPayment ? (
-                                                <em className="pError">
-                                                    {errors.advancedPayment}
-                                                </em>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {
-                                                Resources.retainage[
-                                                    currentLanguage
-                                                ]
-                                            }
-                                        </label>
-                                        <div
-                                            className={
-                                                "inputDev ui input " +
-                                                (errors.retainage
-                                                    ? "has-error"
-                                                    : !errors.retainage &&
-                                                      touched.retainage
-                                                    ? " has-success"
-                                                    : " ")
-                                            }>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="retainage"
-                                                defaultValue={0}
-                                                onBlur={handleBlur}
-                                                onChange={e => handleChange(e)}
-                                                name="retainage"
-                                                placeholder={
-                                                    Resources.retainage[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            />
-                                            {errors.retainage ? (
-                                                <em className="pError">
-                                                    {errors.retainage}
-                                                </em>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {
-                                                Resources.insurance[
-                                                    currentLanguage
-                                                ]
-                                            }
-                                        </label>
-                                        <div
-                                            className={
-                                                "inputDev ui input " +
-                                                (errors.insurance
-                                                    ? "has-error"
-                                                    : !errors.insurance &&
-                                                      touched.insurance
-                                                    ? " has-success"
-                                                    : " ")
-                                            }>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="insurance"
-                                                defaultValue={0}
-                                                name="insurance"
-                                                onBlur={handleBlur}
-                                                onChange={e => handleChange(e)}
-                                                placeholder={
-                                                    Resources.insurance[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            />
-                                            {errors.insurance ? (
-                                                <em className="pError">
-                                                    {errors.insurance}
-                                                </em>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {
-                                                Resources.advancedPaymentAmount[
-                                                    currentLanguage
-                                                ]
-                                            }
-                                        </label>
-                                        <div
-                                            className={
-                                                "inputDev ui input " +
-                                                (errors.advancedPaymentAmount
-                                                    ? "has-error"
-                                                    : !errors.advancedPaymentAmount &&
-                                                      touched.advancedPaymentAmount
-                                                    ? " has-success"
-                                                    : " ")
-                                            }>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="advancedPaymentAmount"
-                                                defaultValue={0}
-                                                onBlur={handleBlur}
-                                                onChange={e => handleChange(e)}
-                                                name="advancedPaymentAmount"
-                                                placeholder={
-                                                    Resources
-                                                        .advancedPaymentAmount[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            />
-                                            {errors.advancedPaymentAmount ? (
-                                                <em className="pError">
-                                                    {
-                                                        errors.advancedPaymentAmount
-                                                    }
-                                                </em>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={
-                                            "slider-Btns fullWidthWrapper textLeft "
-                                        }>
-                                        {this.state.isLoading === false ? (
-                                            <button
+                                            <div
                                                 className={
-                                                    "primaryBtn-1 btn " +
-                                                    (this.state
-                                                        .isApproveMode === true
-                                                        ? "disabled"
-                                                        : "")
-                                                }
-                                                type="submit"
-                                                disabled={
-                                                    this.state.isApproveMode
+                                                    "inputDev ui input " +
+                                                    (errors.subject
+                                                        ? "has-error"
+                                                        : !errors.subject &&
+                                                            touched.subject
+                                                            ? " has-success"
+                                                            : " ")
                                                 }>
-                                                {
-                                                    Resources.save[
+                                                <input
+                                                    name="subject"
+                                                    className="form-control"
+                                                    id="subject"
+                                                    placeholder={
+                                                        Resources["subject"][
                                                         currentLanguage
+                                                        ]
+                                                    }
+                                                    autoComplete="off"
+                                                    onBlur={handleBlur}
+                                                    defaultValue={values.subject}
+                                                    onChange={e => handleChange(e)}
+                                                />
+                                                {errors.subject ? (
+                                                    <em className="pError">
+                                                        {errors.subject}
+                                                    </em>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {Resources.status[currentLanguage]}
+                                            </label>
+                                            <div className="ui checkbox radio radioBoxBlue">
+                                                <input
+                                                    type="radio"
+                                                    name="status"
+                                                    defaultChecked={
+                                                        values.status === false
+                                                            ? null
+                                                            : "checked"
+                                                    }
+                                                    value="true"
+                                                    onChange={e =>
+                                                        setFieldValue(
+                                                            "status",
+                                                            true
+                                                        )
+                                                    }
+                                                />
+                                                <label>
+                                                    {
+                                                        Resources.oppened[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                </label>
+                                            </div>
+                                            <div className="ui checkbox radio radioBoxBlue">
+                                                <input
+                                                    type="radio"
+                                                    name="status"
+                                                    defaultChecked={
+                                                        values.status === false
+                                                            ? "checked"
+                                                            : null
+                                                    }
+                                                    value="false"
+                                                    onChange={e =>
+                                                        setFieldValue(
+                                                            "status",
+                                                            false
+                                                        )
+                                                    }
+                                                />
+                                                <label>
+                                                    {
+                                                        Resources.closed[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="proForm datepickerContainer">
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {
+                                                    Resources.reference[
+                                                    currentLanguage
                                                     ]
                                                 }
-                                            </button>
-                                        ) : (
-                                            <button
-                                                className="primaryBtn-1 btn  disabled"
-                                                disabled="disabled">
-                                                <div className="spinner">
-                                                    <div className="bounce1" />
-                                                    <div className="bounce2" />
-                                                    <div className="bounce3" />
-                                                </div>
-                                            </button>
-                                        )}
+                                            </label>
+                                            <div className="ui input inputDev">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="reference"
+                                                    defaultValue={values.reference}
+                                                    name="reference"
+                                                    placeholder={
+                                                        Resources.reference[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <DatePicker
+                                                title="completionDate"
+                                                name="completionDate"
+                                                startDate={values.completionDate}
+                                                handleChange={e =>
+                                                    setFieldValue(
+                                                        "completionDate",
+                                                        e
+                                                    )
+                                                }
+                                            />
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <DatePicker
+                                                title="docDate"
+                                                name="documentDate"
+                                                startDate={values.docDate}
+                                                handleChange={e =>
+                                                    setFieldValue("docDate", e)
+                                                }
+                                            />
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <Dropdown
+                                                title="currency"
+                                                data={this.state.currency}
+                                                selectedValue={
+                                                    this.state.selectedCurrency
+                                                }
+                                                handleChange={event => {
+                                                    this.setState({
+                                                        selectedCurrency: event
+                                                    });
+                                                }}
+                                                name="currency"
+                                                index="currency"
+                                            />
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {Resources.tax[currentLanguage]}
+                                            </label>
+                                            <div
+                                                className={
+                                                    "inputDev ui input " +
+                                                    (errors.tax
+                                                        ? "has-error"
+                                                        : !errors.tax && touched.tax
+                                                            ? " has-success"
+                                                            : " ")
+                                                }>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="tax"
+                                                    defaultValue={0}
+                                                    onBlur={handleBlur}
+                                                    onChange={e => handleChange(e)}
+                                                    name="tax"
+                                                    placeholder={
+                                                        Resources.tax[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                />
+                                                {errors.tax ? (
+                                                    <em className="pError">
+                                                        {errors.tax}
+                                                    </em>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {Resources.vat[currentLanguage]}
+                                            </label>
+                                            <div
+                                                className={
+                                                    "inputDev ui input " +
+                                                    (errors.vat
+                                                        ? "has-error"
+                                                        : !errors.vat && touched.vat
+                                                            ? " has-success"
+                                                            : " ")
+                                                }>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="vat"
+                                                    defaultValue={0}
+                                                    onBlur={handleBlur}
+                                                    onChange={e => handleChange(e)}
+                                                    name="vat"
+                                                    placeholder={
+                                                        Resources.vat[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                />
+                                                {errors.vat ? (
+                                                    <em className="pError">
+                                                        {errors.vat}
+                                                    </em>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {
+                                                    Resources.advancedPayment[
+                                                    currentLanguage
+                                                    ]
+                                                }
+                                            </label>
+                                            <div
+                                                className={
+                                                    "inputDev ui input " +
+                                                    (errors.advancedPayment
+                                                        ? "has-error"
+                                                        : !errors.advancedPayment &&
+                                                            touched.advancedPayment
+                                                            ? " has-success"
+                                                            : " ")
+                                                }>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="advancedPayment"
+                                                    defaultValue={0}
+                                                    onBlur={handleBlur}
+                                                    onChange={e => handleChange(e)}
+                                                    name="advancedPayment"
+                                                    placeholder={
+                                                        Resources.advancedPayment[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                />
+                                                {errors.advancedPayment ? (
+                                                    <em className="pError">
+                                                        {errors.advancedPayment}
+                                                    </em>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {
+                                                    Resources.retainage[
+                                                    currentLanguage
+                                                    ]
+                                                }
+                                            </label>
+                                            <div
+                                                className={
+                                                    "inputDev ui input " +
+                                                    (errors.retainage
+                                                        ? "has-error"
+                                                        : !errors.retainage &&
+                                                            touched.retainage
+                                                            ? " has-success"
+                                                            : " ")
+                                                }>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="retainage"
+                                                    defaultValue={0}
+                                                    onBlur={handleBlur}
+                                                    onChange={e => handleChange(e)}
+                                                    name="retainage"
+                                                    placeholder={
+                                                        Resources.retainage[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                />
+                                                {errors.retainage ? (
+                                                    <em className="pError">
+                                                        {errors.retainage}
+                                                    </em>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {
+                                                    Resources.insurance[
+                                                    currentLanguage
+                                                    ]
+                                                }
+                                            </label>
+                                            <div
+                                                className={
+                                                    "inputDev ui input " +
+                                                    (errors.insurance
+                                                        ? "has-error"
+                                                        : !errors.insurance &&
+                                                            touched.insurance
+                                                            ? " has-success"
+                                                            : " ")
+                                                }>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="insurance"
+                                                    defaultValue={0}
+                                                    name="insurance"
+                                                    onBlur={handleBlur}
+                                                    onChange={e => handleChange(e)}
+                                                    placeholder={
+                                                        Resources.insurance[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                />
+                                                {errors.insurance ? (
+                                                    <em className="pError">
+                                                        {errors.insurance}
+                                                    </em>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {
+                                                    Resources.advancedPaymentAmount[
+                                                    currentLanguage
+                                                    ]
+                                                }
+                                            </label>
+                                            <div
+                                                className={
+                                                    "inputDev ui input " +
+                                                    (errors.advancedPaymentAmount
+                                                        ? "has-error"
+                                                        : !errors.advancedPaymentAmount &&
+                                                            touched.advancedPaymentAmount
+                                                            ? " has-success"
+                                                            : " ")
+                                                }>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="advancedPaymentAmount"
+                                                    defaultValue={0}
+                                                    onBlur={handleBlur}
+                                                    onChange={e => handleChange(e)}
+                                                    name="advancedPaymentAmount"
+                                                    placeholder={
+                                                        Resources
+                                                            .advancedPaymentAmount[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                />
+                                                {errors.advancedPaymentAmount ? (
+                                                    <em className="pError">
+                                                        {
+                                                            errors.advancedPaymentAmount
+                                                        }
+                                                    </em>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                        <div
+                                            className={
+                                                "slider-Btns fullWidthWrapper textLeft "
+                                            }>
+                                            {this.state.isLoading === false ? (
+                                                <button
+                                                    className={
+                                                        "primaryBtn-1 btn " +
+                                                        (this.state
+                                                            .isApproveMode === true
+                                                            ? "disabled"
+                                                            : "")
+                                                    }
+                                                    type="submit"
+                                                    disabled={
+                                                        this.state.isApproveMode
+                                                    }>
+                                                    {
+                                                        Resources.save[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                </button>
+                                            ) : (
+                                                    <button
+                                                        className="primaryBtn-1 btn  disabled"
+                                                        disabled="disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>
+                                                )}
+                                        </div>
                                     </div>
-                                </div>
-                            </Form>
-                        )}
+                                </Form>
+                            )}
                     </Formik>
                 </div>
             </Fragment>
@@ -1830,391 +1781,391 @@ class bogAddEdit extends Component {
                             handleChange,
                             values
                         }) => (
-                            <Form
-                                id="signupForm1"
-                                className="proForm datepickerContainer customProform"
-                                noValidate="novalidate">
-                                <div className="proForm first-proform letterFullWidth">
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {
-                                                Resources["subject"][
-                                                    currentLanguage
-                                                ]
-                                            }{" "}
-                                        </label>
-                                        <div
-                                            className={
-                                                "inputDev ui input " +
-                                                (errors.subject
-                                                    ? "has-error"
-                                                    : !errors.subject &&
-                                                      touched.subject
-                                                    ? " has-success"
-                                                    : " ")
-                                            }>
-                                            <input
-                                                name="subject"
-                                                className="form-control"
-                                                id="subject"
-                                                placeholder={
+                                <Form
+                                    id="signupForm1"
+                                    className="proForm datepickerContainer customProform"
+                                    noValidate="novalidate">
+                                    <div className="proForm first-proform letterFullWidth">
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {
                                                     Resources["subject"][
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                                autoComplete="off"
-                                                onBlur={handleBlur}
-                                                defaultValue={values.subject}
-                                                onChange={e => {
-                                                    handleChange(e);
-                                                }}
-                                            />
-                                            {errors.subject ? (
-                                                <em className="pError">
-                                                    {errors.subject}
-                                                </em>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {Resources.status[currentLanguage]}
-                                        </label>
-                                        <div className="ui checkbox radio radioBoxBlue">
-                                            <input
-                                                type="radio"
-                                                name="status"
-                                                defaultChecked={
-                                                    values.status === false
-                                                        ? null
-                                                        : "checked"
-                                                }
-                                                value="true"
-                                                onChange={() =>
-                                                    setFieldValue(
-                                                        "status",
-                                                        true
-                                                    )
-                                                }
-                                            />
-                                            <label>
-                                                {
-                                                    Resources.oppened[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            </label>
-                                        </div>
-                                        <div className="ui checkbox radio radioBoxBlue">
-                                            <input
-                                                type="radio"
-                                                name="status"
-                                                defaultChecked={
-                                                    values.status === false
-                                                        ? "checked"
-                                                        : null
-                                                }
-                                                value="false"
-                                                onChange={() =>
-                                                    setFieldValue(
-                                                        "status",
-                                                        false
-                                                    )
-                                                }
-                                            />
-                                            <label>
-                                                {
-                                                    Resources.closed[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="proForm datepickerContainer">
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {
-                                                Resources.reference[
                                                     currentLanguage
-                                                ]
-                                            }
-                                        </label>
-                                        <div className="ui input inputDev">
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="reference"
-                                                readOnly
-                                                defaultValue={values.reference}
-                                                name="reference"
-                                                placeholder={
+                                                    ]
+                                                }{" "}
+                                            </label>
+                                            <div
+                                                className={
+                                                    "inputDev ui input " +
+                                                    (errors.subject
+                                                        ? "has-error"
+                                                        : !errors.subject &&
+                                                            touched.subject
+                                                            ? " has-success"
+                                                            : " ")
+                                                }>
+                                                <input
+                                                    name="subject"
+                                                    className="form-control"
+                                                    id="subject"
+                                                    placeholder={
+                                                        Resources["subject"][
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                    autoComplete="off"
+                                                    onBlur={handleBlur}
+                                                    defaultValue={values.subject}
+                                                    onChange={e => {
+                                                        handleChange(e);
+                                                    }}
+                                                />
+                                                {errors.subject ? (
+                                                    <em className="pError">
+                                                        {errors.subject}
+                                                    </em>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {Resources.status[currentLanguage]}
+                                            </label>
+                                            <div className="ui checkbox radio radioBoxBlue">
+                                                <input
+                                                    type="radio"
+                                                    name="status"
+                                                    defaultChecked={
+                                                        values.status === false
+                                                            ? null
+                                                            : "checked"
+                                                    }
+                                                    value="true"
+                                                    onChange={() =>
+                                                        setFieldValue(
+                                                            "status",
+                                                            true
+                                                        )
+                                                    }
+                                                />
+                                                <label>
+                                                    {
+                                                        Resources.oppened[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                </label>
+                                            </div>
+                                            <div className="ui checkbox radio radioBoxBlue">
+                                                <input
+                                                    type="radio"
+                                                    name="status"
+                                                    defaultChecked={
+                                                        values.status === false
+                                                            ? "checked"
+                                                            : null
+                                                    }
+                                                    value="false"
+                                                    onChange={() =>
+                                                        setFieldValue(
+                                                            "status",
+                                                            false
+                                                        )
+                                                    }
+                                                />
+                                                <label>
+                                                    {
+                                                        Resources.closed[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="proForm datepickerContainer">
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {
                                                     Resources.reference[
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
+                                                }
+                                            </label>
+                                            <div className="ui input inputDev">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="reference"
+                                                    readOnly
+                                                    defaultValue={values.reference}
+                                                    name="reference"
+                                                    placeholder={
+                                                        Resources.reference[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <DatePicker
+                                                title="completionDate"
+                                                name="completionDate"
+                                                startDate={values.completionDate}
+                                                handleChange={e =>
+                                                    setFieldValue(
+                                                        "completionDate",
+                                                        e
+                                                    )
                                                 }
                                             />
                                         </div>
-                                    </div>
+                                        <div className="linebylineInput valid-input">
+                                            <DatePicker
+                                                title="docDate"
+                                                name="documentDate"
+                                                startDate={
+                                                    this.state.document.documentDate
+                                                }
+                                                handleChange={e =>
+                                                    setFieldValue("documentDate", e)
+                                                }
+                                            />
+                                        </div>
 
-                                    <div className="linebylineInput valid-input">
-                                        <DatePicker
-                                            title="completionDate"
-                                            name="completionDate"
-                                            startDate={values.completionDate}
-                                            handleChange={e =>
-                                                setFieldValue(
-                                                    "completionDate",
-                                                    e
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <DatePicker
-                                            title="docDate"
-                                            name="documentDate"
-                                            startDate={
-                                                this.state.document.documentDate
-                                            }
-                                            handleChange={e =>
-                                                setFieldValue("documentDate", e)
-                                            }
-                                        />
-                                    </div>
-
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {
-                                                Resources.advancedPayment[
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {
+                                                    Resources.advancedPayment[
                                                     currentLanguage
-                                                ]
-                                            }
-                                        </label>
+                                                    ]
+                                                }
+                                            </label>
+                                            <div
+                                                className={
+                                                    "inputDev ui input " +
+                                                    (errors.advancedPaymentPercent
+                                                        ? "has-error"
+                                                        : !errors.advancedPaymentPercent &&
+                                                            touched.advancedPaymentPercent
+                                                            ? " has-success"
+                                                            : " ")
+                                                }>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="advancedPaymentPercent"
+                                                    defaultValue={
+                                                        values.advancedPaymentPercent
+                                                    }
+                                                    name="advancedPaymentPercent"
+                                                    placeholder={
+                                                        Resources.advancedPayment[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                    onChange={e => {
+                                                        handleChange(e);
+                                                        setFieldValue(
+                                                            "advancedPaymentPercent",
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                />
+                                                {errors.advancedPaymentPercent ? (
+                                                    <em className="pError">
+                                                        {
+                                                            errors.advancedPaymentPercent
+                                                        }
+                                                    </em>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                        <div className="fullWidthWrapper account__checkbox">
+                                            <div className="proForm fullLinearInput">
+                                                <div className="linebylineInput">
+                                                    <label className="control-label">
+                                                        {
+                                                            Resources
+                                                                .useItemization[
+                                                            currentLanguage
+                                                            ]
+                                                        }
+                                                    </label>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input
+                                                            type="radio"
+                                                            name="useItemization"
+                                                            defaultChecked={
+                                                                values.useItemization ===
+                                                                    false
+                                                                    ? null
+                                                                    : "checked"
+                                                            }
+                                                            value="true"
+                                                            onChange={() =>
+                                                                setFieldValue(
+                                                                    "useItemization",
+                                                                    true
+                                                                )
+                                                            }
+                                                        />
+                                                        <label>
+                                                            {
+                                                                Resources.yes[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                        </label>
+                                                    </div>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input
+                                                            type="radio"
+                                                            name="useItemization"
+                                                            defaultChecked={
+                                                                values.useItemization ===
+                                                                    false
+                                                                    ? "checked"
+                                                                    : null
+                                                            }
+                                                            value="false"
+                                                            onChange={() =>
+                                                                setFieldValue(
+                                                                    "useItemization",
+                                                                    false
+                                                                )
+                                                            }
+                                                        />
+                                                        <label>
+                                                            {
+                                                                Resources.no[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="proForm fullLinearInput">
+                                                <div className="linebylineInput">
+                                                    <label className="control-label">
+                                                        {
+                                                            Resources.useRevised[
+                                                            currentLanguage
+                                                            ]
+                                                        }
+                                                    </label>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input
+                                                            type="radio"
+                                                            name="useRevised"
+                                                            defaultChecked={
+                                                                values.useRevised ===
+                                                                    false
+                                                                    ? null
+                                                                    : "checked"
+                                                            }
+                                                            value="true"
+                                                            onChange={() =>
+                                                                setFieldValue(
+                                                                    "useRevised",
+                                                                    true
+                                                                )
+                                                            }
+                                                        />
+                                                        <label>
+                                                            {
+                                                                Resources.yes[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                        </label>
+                                                    </div>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input
+                                                            type="radio"
+                                                            name="useRevised"
+                                                            defaultChecked={
+                                                                values.useRevised ===
+                                                                    false
+                                                                    ? "checked"
+                                                                    : null
+                                                            }
+                                                            value="false"
+                                                            onChange={() =>
+                                                                setFieldValue(
+                                                                    "useRevised",
+                                                                    false
+                                                                )
+                                                            }
+                                                        />
+                                                        <label>
+                                                            {
+                                                                Resources.no[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <Dropdown
+                                                title="currency"
+                                                data={this.state.currency}
+                                                selectedValue={
+                                                    this.state.selectedCurrency
+                                                }
+                                                handleChange={event => {
+                                                    this.setState({
+                                                        selectedCurrency: event
+                                                    });
+                                                }}
+                                                name="currency"
+                                                index="currency"
+                                            />
+                                        </div>
                                         <div
                                             className={
-                                                "inputDev ui input " +
-                                                (errors.advancedPaymentPercent
-                                                    ? "has-error"
-                                                    : !errors.advancedPaymentPercent &&
-                                                      touched.advancedPaymentPercent
-                                                    ? " has-success"
-                                                    : " ")
+                                                "slider-Btns fullWidthWrapper textLeft "
                                             }>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="advancedPaymentPercent"
-                                                defaultValue={
-                                                    values.advancedPaymentPercent
-                                                }
-                                                name="advancedPaymentPercent"
-                                                placeholder={
-                                                    Resources.advancedPayment[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                                onChange={e => {
-                                                    handleChange(e);
-                                                    setFieldValue(
-                                                        "advancedPaymentPercent",
-                                                        e.target.value
-                                                    );
-                                                }}
-                                            />
-                                            {errors.advancedPaymentPercent ? (
-                                                <em className="pError">
-                                                    {
-                                                        errors.advancedPaymentPercent
+                                            {this.state.isLoading === false ? (
+                                                <button
+                                                    className={
+                                                        "primaryBtn-1 btn " +
+                                                        (this.state
+                                                            .isApproveMode === true
+                                                            ? "disabled"
+                                                            : "")
                                                     }
-                                                </em>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                    <div className="fullWidthWrapper account__checkbox">
-                                        <div className="proForm fullLinearInput">
-                                            <div className="linebylineInput">
-                                                <label className="control-label">
+                                                    type="submit"
+                                                    disabled={
+                                                        this.state.isApproveMode
+                                                    }>
                                                     {
-                                                        Resources
-                                                            .useItemization[
-                                                            currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div className="ui checkbox radio radioBoxBlue">
-                                                    <input
-                                                        type="radio"
-                                                        name="useItemization"
-                                                        defaultChecked={
-                                                            values.useItemization ===
-                                                            false
-                                                                ? null
-                                                                : "checked"
-                                                        }
-                                                        value="true"
-                                                        onChange={() =>
-                                                            setFieldValue(
-                                                                "useItemization",
-                                                                true
-                                                            )
-                                                        }
-                                                    />
-                                                    <label>
-                                                        {
-                                                            Resources.yes[
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                    </label>
-                                                </div>
-                                                <div className="ui checkbox radio radioBoxBlue">
-                                                    <input
-                                                        type="radio"
-                                                        name="useItemization"
-                                                        defaultChecked={
-                                                            values.useItemization ===
-                                                            false
-                                                                ? "checked"
-                                                                : null
-                                                        }
-                                                        value="false"
-                                                        onChange={() =>
-                                                            setFieldValue(
-                                                                "useItemization",
-                                                                false
-                                                            )
-                                                        }
-                                                    />
-                                                    <label>
-                                                        {
-                                                            Resources.no[
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="proForm fullLinearInput">
-                                            <div className="linebylineInput">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.useRevised[
-                                                            currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div className="ui checkbox radio radioBoxBlue">
-                                                    <input
-                                                        type="radio"
-                                                        name="useRevised"
-                                                        defaultChecked={
-                                                            values.useRevised ===
-                                                            false
-                                                                ? null
-                                                                : "checked"
-                                                        }
-                                                        value="true"
-                                                        onChange={() =>
-                                                            setFieldValue(
-                                                                "useRevised",
-                                                                true
-                                                            )
-                                                        }
-                                                    />
-                                                    <label>
-                                                        {
-                                                            Resources.yes[
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                    </label>
-                                                </div>
-                                                <div className="ui checkbox radio radioBoxBlue">
-                                                    <input
-                                                        type="radio"
-                                                        name="useRevised"
-                                                        defaultChecked={
-                                                            values.useRevised ===
-                                                            false
-                                                                ? "checked"
-                                                                : null
-                                                        }
-                                                        value="false"
-                                                        onChange={() =>
-                                                            setFieldValue(
-                                                                "useRevised",
-                                                                false
-                                                            )
-                                                        }
-                                                    />
-                                                    <label>
-                                                        {
-                                                            Resources.no[
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown
-                                            title="currency"
-                                            data={this.state.currency}
-                                            selectedValue={
-                                                this.state.selectedCurrency
-                                            }
-                                            handleChange={event => {
-                                                this.setState({
-                                                    selectedCurrency: event
-                                                });
-                                            }}
-                                            name="currency"
-                                            index="currency"
-                                        />
-                                    </div>
-                                    <div
-                                        className={
-                                            "slider-Btns fullWidthWrapper textLeft "
-                                        }>
-                                        {this.state.isLoading === false ? (
-                                            <button
-                                                className={
-                                                    "primaryBtn-1 btn " +
-                                                    (this.state
-                                                        .isApproveMode === true
-                                                        ? "disabled"
-                                                        : "")
-                                                }
-                                                type="submit"
-                                                disabled={
-                                                    this.state.isApproveMode
-                                                }>
-                                                {
-                                                    Resources[
+                                                        Resources[
                                                         this.state.btnText
-                                                    ][currentLanguage]
-                                                }
-                                            </button>
-                                        ) : (
-                                            <button
-                                                className="primaryBtn-1 btn  disabled"
-                                                disabled="disabled">
-                                                <div className="spinner">
-                                                    <div className="bounce1" />
-                                                    <div className="bounce2" />
-                                                    <div className="bounce3" />
-                                                </div>
-                                            </button>
-                                        )}
+                                                        ][currentLanguage]
+                                                    }
+                                                </button>
+                                            ) : (
+                                                    <button
+                                                        className="primaryBtn-1 btn  disabled"
+                                                        disabled="disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>
+                                                )}
+                                        </div>
                                     </div>
-                                </div>
-                            </Form>
-                        )}
+                                </Form>
+                            )}
                     </Formik>
                 </div>
             </Fragment>
@@ -2282,128 +2233,128 @@ class bogAddEdit extends Component {
                             handleBlur,
                             handleChange
                         }) => (
-                            <Form
-                                id="signupForm1"
-                                className="proForm datepickerContainer customProform"
-                                noValidate="novalidate">
-                                <div className="fullWidthWrapper textLeft">
+                                <Form
+                                    id="signupForm1"
+                                    className="proForm datepickerContainer customProform"
+                                    noValidate="novalidate">
+                                    <div className="fullWidthWrapper textLeft">
+                                        <Dropdown
+                                            title="boqType"
+                                            data={this.state.boqTypes}
+                                            selectedValue={
+                                                this.state.selectedBoqTypeEdit
+                                            }
+                                            handleChange={event => {
+                                                this.handleChangeItemDropDown(
+                                                    event,
+                                                    "boqTypeId",
+                                                    "selectedBoqType",
+                                                    true,
+                                                    "GetAllBoqChild",
+                                                    "parentId",
+                                                    "BoqTypeChilds",
+                                                    "boqType"
+                                                );
+                                                this.setState({
+                                                    selectedBoqTypeEdit: event,
+                                                    selectedBoqTypeChildEdit: {
+                                                        label:
+                                                            Resources.boqTypeChild[
+                                                            currentLanguage
+                                                            ],
+                                                        value: "0"
+                                                    },
+                                                    selectedBoqSubTypeEdit: {
+                                                        label:
+                                                            Resources.boqSubType[
+                                                            currentLanguage
+                                                            ],
+                                                        value: "0"
+                                                    }
+                                                });
+                                            }}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.boqType}
+                                            touched={touched.boqType}
+                                            name="boqType"
+                                            index="boqType"
+                                        />
+                                    </div>
                                     <Dropdown
-                                        title="boqType"
-                                        data={this.state.boqTypes}
+                                        title="boqTypeChild"
+                                        data={this.state.BoqTypeChilds}
                                         selectedValue={
-                                            this.state.selectedBoqTypeEdit
+                                            this.state.selectedBoqTypeChildEdit
                                         }
                                         handleChange={event => {
                                             this.handleChangeItemDropDown(
                                                 event,
-                                                "boqTypeId",
-                                                "selectedBoqType",
+                                                "boqChildTypeId",
+                                                "selectedBoqTypeChild",
                                                 true,
                                                 "GetAllBoqChild",
                                                 "parentId",
-                                                "BoqTypeChilds",
-                                                "boqType"
+                                                "BoqSubTypes",
+                                                "boqChildType"
                                             );
                                             this.setState({
-                                                selectedBoqTypeEdit: event,
-                                                selectedBoqTypeChildEdit: {
-                                                    label:
-                                                        Resources.boqTypeChild[
-                                                            currentLanguage
-                                                        ],
-                                                    value: "0"
-                                                },
-                                                selectedBoqSubTypeEdit: {
-                                                    label:
-                                                        Resources.boqSubType[
-                                                            currentLanguage
-                                                        ],
-                                                    value: "0"
-                                                }
+                                                selectedBoqTypeChildEdit: event
                                             });
                                         }}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
-                                        error={errors.boqType}
-                                        touched={touched.boqType}
-                                        name="boqType"
-                                        index="boqType"
+                                        error={errors.boqChild}
+                                        touched={touched.boqChild}
+                                        name="boqChild"
+                                        index="boqChild"
                                     />
-                                </div>
-                                <Dropdown
-                                    title="boqTypeChild"
-                                    data={this.state.BoqTypeChilds}
-                                    selectedValue={
-                                        this.state.selectedBoqTypeChildEdit
-                                    }
-                                    handleChange={event => {
-                                        this.handleChangeItemDropDown(
-                                            event,
-                                            "boqChildTypeId",
-                                            "selectedBoqTypeChild",
-                                            true,
-                                            "GetAllBoqChild",
-                                            "parentId",
-                                            "BoqSubTypes",
-                                            "boqChildType"
-                                        );
-                                        this.setState({
-                                            selectedBoqTypeChildEdit: event
-                                        });
-                                    }}
-                                    onChange={setFieldValue}
-                                    onBlur={setFieldTouched}
-                                    error={errors.boqChild}
-                                    touched={touched.boqChild}
-                                    name="boqChild"
-                                    index="boqChild"
-                                />
-                                <Dropdown
-                                    title="boqSubType"
-                                    data={this.state.BoqSubTypes}
-                                    selectedValue={
-                                        this.state.selectedBoqSubTypeEdit
-                                    }
-                                    handleChange={event => {
-                                        this.handleChangeItemDropDown(
-                                            event,
-                                            "boqSubTypeId",
-                                            "selectedBoqSubType",
-                                            false,
-                                            "",
-                                            "",
-                                            "",
-                                            "boqSubType"
-                                        );
-                                        this.setState({
-                                            selectedBoqSubTypeEdit: event
-                                        });
-                                    }}
-                                    onChange={setFieldValue}
-                                    onBlur={setFieldTouched}
-                                    error={errors.boqSubType}
-                                    touched={touched.boqSubType}
-                                    name="boqSubType"
-                                    index="boqSubType"
-                                />
+                                    <Dropdown
+                                        title="boqSubType"
+                                        data={this.state.BoqSubTypes}
+                                        selectedValue={
+                                            this.state.selectedBoqSubTypeEdit
+                                        }
+                                        handleChange={event => {
+                                            this.handleChangeItemDropDown(
+                                                event,
+                                                "boqSubTypeId",
+                                                "selectedBoqSubType",
+                                                false,
+                                                "",
+                                                "",
+                                                "",
+                                                "boqSubType"
+                                            );
+                                            this.setState({
+                                                selectedBoqSubTypeEdit: event
+                                            });
+                                        }}
+                                        onChange={setFieldValue}
+                                        onBlur={setFieldTouched}
+                                        error={errors.boqSubType}
+                                        touched={touched.boqSubType}
+                                        name="boqSubType"
+                                        index="boqSubType"
+                                    />
 
-                                <div className={"slider-Btns fullWidthWrapper"}>
-                                    <button
-                                        className={
-                                            this.state.isViewMode === true
-                                                ? "primaryBtn-1 btn  disNone"
-                                                : "primaryBtn-1 btn "
-                                        }
-                                        type="submit">
-                                        {
-                                            Resources[this.state.btnText][
+                                    <div className={"slider-Btns fullWidthWrapper"}>
+                                        <button
+                                            className={
+                                                this.state.isViewMode === true
+                                                    ? "primaryBtn-1 btn  disNone"
+                                                    : "primaryBtn-1 btn "
+                                            }
+                                            type="submit">
+                                            {
+                                                Resources[this.state.btnText][
                                                 currentLanguage
-                                            ]
-                                        }
-                                    </button>
-                                </div>
-                            </Form>
-                        )}
+                                                ]
+                                            }
+                                        </button>
+                                    </div>
+                                </Form>
+                            )}
                     </Formik>
                 </div>
             </Fragment>
@@ -2477,12 +2428,12 @@ class bogAddEdit extends Component {
                                     fromCompany:
                                         this.state.selectedFromCompany.value > 0
                                             ? this.state.selectedFromCompany
-                                                  .value
+                                                .value
                                             : "",
                                     discipline:
                                         this.state.selectedDiscipline.value > 0
                                             ? this.state.selectedDiscipline
-                                                  .value
+                                                .value
                                             : "",
                                     status: this.props.changeStatus
                                         ? this.props.document.status
@@ -2531,388 +2482,388 @@ class bogAddEdit extends Component {
                                     setFieldTouched,
                                     values
                                 }) => (
-                                    <Form
-                                        id="ClientSelectionForm"
-                                        className="customProform"
-                                        noValidate="novalidate"
-                                        onSubmit={handleSubmit}>
-                                        <div className="proForm first-proform">
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources["subject"][
+                                        <Form
+                                            id="ClientSelectionForm"
+                                            className="customProform"
+                                            noValidate="novalidate"
+                                            onSubmit={handleSubmit}>
+                                            <div className="proForm first-proform">
+                                                <div className="linebylineInput valid-input">
+                                                    <label className="control-label">
+                                                        {
+                                                            Resources["subject"][
                                                             currentLanguage
-                                                        ]
-                                                    }{" "}
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input " +
-                                                        (errors.subject
-                                                            ? "has-error"
-                                                            : !errors.subject &&
-                                                              touched.subject
-                                                            ? " has-success"
-                                                            : " ")
-                                                    }>
-                                                    <input
-                                                        name="subject"
-                                                        className="form-control"
-                                                        id="subject"
-                                                        placeholder={
-                                                            Resources[
+                                                            ]
+                                                        }{" "}
+                                                    </label>
+                                                    <div
+                                                        className={
+                                                            "inputDev ui input " +
+                                                            (errors.subject
+                                                                ? "has-error"
+                                                                : !errors.subject &&
+                                                                    touched.subject
+                                                                    ? " has-success"
+                                                                    : " ")
+                                                        }>
+                                                        <input
+                                                            name="subject"
+                                                            className="form-control"
+                                                            id="subject"
+                                                            placeholder={
+                                                                Resources[
                                                                 "subject"
-                                                            ][currentLanguage]
+                                                                ][currentLanguage]
+                                                            }
+                                                            autoComplete="off"
+                                                            onBlur={handleBlur}
+                                                            defaultValue={
+                                                                values.subject
+                                                            }
+                                                            onChange={e => {
+                                                                handleChange(e);
+                                                            }}
+                                                        />
+                                                        {errors.subject ? (
+                                                            <em className="pError">
+                                                                {errors.subject}
+                                                            </em>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+                                                <div className="linebylineInput valid-input">
+                                                    <label className="control-label">
+                                                        {
+                                                            Resources.status[
+                                                            currentLanguage
+                                                            ]
                                                         }
-                                                        autoComplete="off"
-                                                        onBlur={handleBlur}
-                                                        defaultValue={
-                                                            values.subject
+                                                    </label>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input
+                                                            type="radio"
+                                                            name="status"
+                                                            defaultChecked={
+                                                                values.status ===
+                                                                    false
+                                                                    ? null
+                                                                    : "checked"
+                                                            }
+                                                            value="true"
+                                                            onChange={() =>
+                                                                setFieldValue(
+                                                                    "status",
+                                                                    true
+                                                                )
+                                                            }
+                                                        />
+                                                        <label>
+                                                            {
+                                                                Resources.oppened[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                        </label>
+                                                    </div>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input
+                                                            type="radio"
+                                                            name="status"
+                                                            defaultChecked={
+                                                                values.status ===
+                                                                    false
+                                                                    ? "checked"
+                                                                    : null
+                                                            }
+                                                            value="false"
+                                                            onChange={() =>
+                                                                setFieldValue(
+                                                                    "status",
+                                                                    false
+                                                                )
+                                                            }
+                                                        />
+                                                        <label>
+                                                            {
+                                                                Resources.closed[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="proForm datepickerContainer">
+                                                <div className="linebylineInput valid-input">
+                                                    <label className="control-label">
+                                                        {
+                                                            Resources.arrange[
+                                                            currentLanguage
+                                                            ]
                                                         }
-                                                        onChange={e => {
+                                                    </label>
+                                                    <div className="ui input inputDev">
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            id="arrange"
+                                                            readOnly
+                                                            defaultValue={
+                                                                this.state.document
+                                                                    .arrange
+                                                            }
+                                                            name="arrange"
+                                                            placeholder={
+                                                                Resources.arrange[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="linebylineInput valid-input">
+                                                    <DatePicker
+                                                        title="docDate"
+                                                        name="documentDate"
+                                                        startDate={
+                                                            values.documentDate
+                                                        }
+                                                        handleChange={e => {
                                                             handleChange(e);
+                                                            setFieldValue(
+                                                                "documentDate",
+                                                                e
+                                                            );
                                                         }}
                                                     />
-                                                    {errors.subject ? (
-                                                        <em className="pError">
-                                                            {errors.subject}
-                                                        </em>
-                                                    ) : null}
                                                 </div>
-                                            </div>
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.status[
-                                                            currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div className="ui checkbox radio radioBoxBlue">
-                                                    <input
-                                                        type="radio"
-                                                        name="status"
-                                                        defaultChecked={
-                                                            values.status ===
-                                                            false
-                                                                ? null
-                                                                : "checked"
-                                                        }
-                                                        value="true"
-                                                        onChange={() =>
-                                                            setFieldValue(
-                                                                "status",
-                                                                true
-                                                            )
-                                                        }
-                                                    />
-                                                    <label>
-                                                        {
-                                                            Resources.oppened[
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                    </label>
-                                                </div>
-                                                <div className="ui checkbox radio radioBoxBlue">
-                                                    <input
-                                                        type="radio"
-                                                        name="status"
-                                                        defaultChecked={
-                                                            values.status ===
-                                                            false
-                                                                ? "checked"
-                                                                : null
-                                                        }
-                                                        value="false"
-                                                        onChange={() =>
-                                                            setFieldValue(
-                                                                "status",
-                                                                false
-                                                            )
-                                                        }
-                                                    />
-                                                    <label>
-                                                        {
-                                                            Resources.closed[
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        <div className="proForm datepickerContainer">
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.arrange[
-                                                            currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div className="ui input inputDev">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        id="arrange"
-                                                        readOnly
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .arrange
-                                                        }
-                                                        name="arrange"
-                                                        placeholder={
-                                                            Resources.arrange[
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="linebylineInput valid-input">
-                                                <DatePicker
-                                                    title="docDate"
-                                                    name="documentDate"
-                                                    startDate={
-                                                        values.documentDate
-                                                    }
-                                                    handleChange={e => {
-                                                        handleChange(e);
-                                                        setFieldValue(
-                                                            "documentDate",
-                                                            e
-                                                        );
-                                                    }}
-                                                />
-                                            </div>
-
-                                            <div className="linebylineInput valid-input">
-                                                <Dropdown
-                                                    title="fromCompany"
-                                                    data={this.state.Companies}
-                                                    selectedValue={
-                                                        this.state
-                                                            .selectedFromCompany
-                                                    }
-                                                    handleChange={event => {
-                                                        this.getNextArrange(
-                                                            event
-                                                        );
-                                                    }}
-                                                    onChange={setFieldValue}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.fromCompany}
-                                                    touched={
-                                                        touched.fromCompany
-                                                    }
-                                                    name="fromCompany"
-                                                    index="fromCompany"
-                                                />
-                                            </div>
-
-                                            <div className="linebylineInput valid-input">
-                                                <Dropdown
-                                                    title="discipline"
-                                                    data={
-                                                        this.state.Disciplines
-                                                    }
-                                                    selectedValue={
-                                                        this.state
-                                                            .selectedDiscipline
-                                                    }
-                                                    handleChange={event => {
-                                                        this.setState({
-                                                            selectedDiscipline: event
-                                                        });
-                                                    }}
-                                                    onChange={setFieldValue}
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.discipline}
-                                                    touched={touched.discipline}
-                                                    name="discipline"
-                                                    index="discipline"
-                                                />
-                                            </div>
-
-                                            <div className="fullWidthWrapper account__checkbox">
-                                                <div className="proForm fullLinearInput">
-                                                    <div className="linebylineInput">
-                                                        <label className="control-label">
-                                                            {
-                                                                Resources
-                                                                    .showInSiteRequest[
-                                                                    currentLanguage
-                                                                ]
-                                                            }
-                                                        </label>
-                                                        <div className="ui checkbox radio radioBoxBlue">
-                                                            <input
-                                                                type="radio"
-                                                                name="showInSiteRequest"
-                                                                defaultChecked={
-                                                                    values.showInSiteRequest ===
-                                                                    false
-                                                                        ? null
-                                                                        : "checked"
-                                                                }
-                                                                value="true"
-                                                                onChange={() =>
-                                                                    setFieldValue(
-                                                                        "showInSiteRequest",
-                                                                        true
-                                                                    )
-                                                                }
-                                                            />
-                                                            <label>
-                                                                {
-                                                                    Resources
-                                                                        .yes[
-                                                                        currentLanguage
-                                                                    ]
-                                                                }
-                                                            </label>
-                                                        </div>
-                                                        <div className="ui checkbox radio radioBoxBlue">
-                                                            <input
-                                                                type="radio"
-                                                                name="showInSiteRequest"
-                                                                defaultChecked={
-                                                                    values.showInSiteRequest ===
-                                                                    false
-                                                                        ? "checked"
-                                                                        : null
-                                                                }
-                                                                value="false"
-                                                                onChange={() =>
-                                                                    setFieldValue(
-                                                                        "showInSiteRequest",
-                                                                        false
-                                                                    )
-                                                                }
-                                                            />
-                                                            <label>
-                                                                {
-                                                                    Resources
-                                                                        .no[
-                                                                        currentLanguage
-                                                                    ]
-                                                                }
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="proForm fullLinearInput">
-                                                    <div className="linebylineInput">
-                                                        <label className="control-label">
-                                                            {
-                                                                Resources
-                                                                    .showOptemization[
-                                                                    currentLanguage
-                                                                ]
-                                                            }
-                                                        </label>
-                                                        <div className="ui checkbox radio radioBoxBlue">
-                                                            <input
-                                                                type="radio"
-                                                                name="showOptimization"
-                                                                defaultChecked={
-                                                                    values.showOptimization ===
-                                                                    false
-                                                                        ? null
-                                                                        : "checked"
-                                                                }
-                                                                value="true"
-                                                                onChange={() =>
-                                                                    setFieldValue(
-                                                                        "showOptimization",
-                                                                        true
-                                                                    )
-                                                                }
-                                                            />
-                                                            <label>
-                                                                {
-                                                                    Resources
-                                                                        .yes[
-                                                                        currentLanguage
-                                                                    ]
-                                                                }
-                                                            </label>
-                                                        </div>
-                                                        <div className="ui checkbox radio radioBoxBlue">
-                                                            <input
-                                                                type="radio"
-                                                                name="showOptimization"
-                                                                defaultChecked={
-                                                                    values.showOptimization ===
-                                                                    false
-                                                                        ? "checked"
-                                                                        : null
-                                                                }
-                                                                value="false"
-                                                                onChange={() =>
-                                                                    setFieldValue(
-                                                                        "showOptimization",
-                                                                        false
-                                                                    )
-                                                                }
-                                                            />
-                                                            <label>
-                                                                {
-                                                                    Resources
-                                                                        .no[
-                                                                        currentLanguage
-                                                                    ]
-                                                                }
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div
-                                                className={
-                                                    "slider-Btns fullWidthWrapper textLeft "
-                                                }>
-                                                {this.state.isLoading ===
-                                                false ? (
-                                                    <button
-                                                        className={
-                                                            "primaryBtn-1 btn " +
-                                                            (this.state
-                                                                .isViewMode ===
-                                                            true
-                                                                ? "disNone"
-                                                                : "")
-                                                        }
-                                                        type="submit"
-                                                        disabled={
+                                                <div className="linebylineInput valid-input">
+                                                    <Dropdown
+                                                        title="fromCompany"
+                                                        data={this.state.Companies}
+                                                        selectedValue={
                                                             this.state
-                                                                .isViewMode
-                                                        }>
-                                                        {
-                                                            Resources[
-                                                                this.state
-                                                                    .btnTxt
-                                                            ][currentLanguage]
+                                                                .selectedFromCompany
                                                         }
-                                                    </button>
-                                                ) : (
-                                                    <button
-                                                        className="primaryBtn-1 btn  disabled"
-                                                        disabled="disabled">
-                                                        <div className="spinner">
-                                                            <div className="bounce1" />
-                                                            <div className="bounce2" />
-                                                            <div className="bounce3" />
+                                                        handleChange={event => {
+                                                            this.getNextArrange(
+                                                                event
+                                                            );
+                                                        }}
+                                                        onChange={setFieldValue}
+                                                        onBlur={setFieldTouched}
+                                                        error={errors.fromCompany}
+                                                        touched={
+                                                            touched.fromCompany
+                                                        }
+                                                        name="fromCompany"
+                                                        index="fromCompany"
+                                                    />
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
+                                                    <Dropdown
+                                                        title="discipline"
+                                                        data={
+                                                            this.state.Disciplines
+                                                        }
+                                                        selectedValue={
+                                                            this.state
+                                                                .selectedDiscipline
+                                                        }
+                                                        handleChange={event => {
+                                                            this.setState({
+                                                                selectedDiscipline: event
+                                                            });
+                                                        }}
+                                                        onChange={setFieldValue}
+                                                        onBlur={setFieldTouched}
+                                                        error={errors.discipline}
+                                                        touched={touched.discipline}
+                                                        name="discipline"
+                                                        index="discipline"
+                                                    />
+                                                </div>
+
+                                                <div className="fullWidthWrapper account__checkbox">
+                                                    <div className="proForm fullLinearInput">
+                                                        <div className="linebylineInput">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources
+                                                                        .showInSiteRequest[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input
+                                                                    type="radio"
+                                                                    name="showInSiteRequest"
+                                                                    defaultChecked={
+                                                                        values.showInSiteRequest ===
+                                                                            false
+                                                                            ? null
+                                                                            : "checked"
+                                                                    }
+                                                                    value="true"
+                                                                    onChange={() =>
+                                                                        setFieldValue(
+                                                                            "showInSiteRequest",
+                                                                            true
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <label>
+                                                                    {
+                                                                        Resources
+                                                                            .yes[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                </label>
+                                                            </div>
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input
+                                                                    type="radio"
+                                                                    name="showInSiteRequest"
+                                                                    defaultChecked={
+                                                                        values.showInSiteRequest ===
+                                                                            false
+                                                                            ? "checked"
+                                                                            : null
+                                                                    }
+                                                                    value="false"
+                                                                    onChange={() =>
+                                                                        setFieldValue(
+                                                                            "showInSiteRequest",
+                                                                            false
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <label>
+                                                                    {
+                                                                        Resources
+                                                                            .no[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                </label>
+                                                            </div>
                                                         </div>
-                                                    </button>
-                                                )}
+                                                    </div>
+                                                    <div className="proForm fullLinearInput">
+                                                        <div className="linebylineInput">
+                                                            <label className="control-label">
+                                                                {
+                                                                    Resources
+                                                                        .showOptemization[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </label>
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input
+                                                                    type="radio"
+                                                                    name="showOptimization"
+                                                                    defaultChecked={
+                                                                        values.showOptimization ===
+                                                                            false
+                                                                            ? null
+                                                                            : "checked"
+                                                                    }
+                                                                    value="true"
+                                                                    onChange={() =>
+                                                                        setFieldValue(
+                                                                            "showOptimization",
+                                                                            true
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <label>
+                                                                    {
+                                                                        Resources
+                                                                            .yes[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                </label>
+                                                            </div>
+                                                            <div className="ui checkbox radio radioBoxBlue">
+                                                                <input
+                                                                    type="radio"
+                                                                    name="showOptimization"
+                                                                    defaultChecked={
+                                                                        values.showOptimization ===
+                                                                            false
+                                                                            ? "checked"
+                                                                            : null
+                                                                    }
+                                                                    value="false"
+                                                                    onChange={() =>
+                                                                        setFieldValue(
+                                                                            "showOptimization",
+                                                                            false
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <label>
+                                                                    {
+                                                                        Resources
+                                                                            .no[
+                                                                        currentLanguage
+                                                                        ]
+                                                                    }
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div
+                                                    className={
+                                                        "slider-Btns fullWidthWrapper textLeft "
+                                                    }>
+                                                    {this.state.isLoading ===
+                                                        false ? (
+                                                            <button
+                                                                className={
+                                                                    "primaryBtn-1 btn " +
+                                                                    (this.state
+                                                                        .isViewMode ===
+                                                                        true
+                                                                        ? "disNone"
+                                                                        : "")
+                                                                }
+                                                                type="submit"
+                                                                disabled={
+                                                                    this.state
+                                                                        .isViewMode
+                                                                }>
+                                                                {
+                                                                    Resources[
+                                                                    this.state
+                                                                        .btnTxt
+                                                                    ][currentLanguage]
+                                                                }
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                className="primaryBtn-1 btn  disabled"
+                                                                disabled="disabled">
+                                                                <div className="spinner">
+                                                                    <div className="bounce1" />
+                                                                    <div className="bounce2" />
+                                                                    <div className="bounce3" />
+                                                                </div>
+                                                            </button>
+                                                        )}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </Form>
-                                )}
+                                        </Form>
+                                    )}
                             </Formik>
                         </div>
                     </div>
@@ -2924,42 +2875,19 @@ class bogAddEdit extends Component {
             <Fragment>
                 {addItemContent}
                 <Fragment>
-                    <XSLfile
-                        key="boqImport"
-                        docId={this.state.docId}
-                        docType="boq"
-                        link={window.IP_CONFIG.downloads + "/Downloads/Excel/BOQ.xlsx"}
+                    <XSLfile key="boqImport" docId={this.state.docId} docType="boq"
+                        link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQ.xlsx"}
                         header="addManyItems"
-                        disabled={
-                            this.props.changeStatus
-                                ? this.props.document.contractId > 0
-                                    ? true
-                                    : false
-                                : false
-                        }
+                        disabled={this.props.changeStatus ? this.props.document.contractId > 0 ? true : false : false}
                         afterUpload={() => this.getTabelData()}
                     />
                 </Fragment>
                 {this.state.isCompany ? (
                     <Fragment>
-                        <XSLfile
-                            key="boqStructure"
-                            docId={this.state.docId}
-                            docType="boq2"
-                            link={
-                                window.IP_CONFIG.downloads +
-                                "/Downloads/Excel/BOQ2.xlsx"
-                            }
+                        <XSLfile key="boqStructure" docId={this.state.docId} docType="boq2" link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQStructure.xlsx"}
                             header="addManyItems"
-                            disabled={
-                                this.props.changeStatus
-                                    ? this.props.document.contractId > 0
-                                        ? true
-                                        : false
-                                    : false
-                            }
-                            afterUpload={() => this.getTabelData()}
-                        />
+                            disabled={this.props.changeStatus ? this.props.document.contractId > 0 ? true : false : false}
+                            afterUpload={() => this.getTabelData()} />
                     </Fragment>
                 ) : null}
                 <div className="doc-pre-cycle letterFullWidth">
@@ -2970,34 +2898,18 @@ class bogAddEdit extends Component {
                     </header>
                     <div className="precycle-grid">
                         <div className="grid-container">
-                            <div class="submittalFilter">
-                                <div class="subFilter">
-                                    <h3 class="zero">
-                                        {" "}
+                            <div className="submittalFilter">
+                                <div className="subFilter">
+                                    <h3 className="zero">
                                         {Resources["items"][currentLanguage]}
                                     </h3>
                                     <span>{this.state._items.length}</span>
                                 </div>
                                 <div className="rowsPaginations">
-                                    <button
-                                        className={
-                                            this.state.pageNumber == 0
-                                                ? "rowunActive"
-                                                : ""
-                                        }
-                                        onClick={() => this.GetPrevoiusData()}>
+                                    <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                         <i className="angle left icon" />
                                     </button>
-                                    <button
-                                        className={
-                                            this.state.totalRows !==
-                                            this.state.pageSize *
-                                                this.state.pageNumber +
-                                                this.state.pageSize
-                                                ? "rowunActive"
-                                                : ""
-                                        }
-                                        onClick={() => this.GetNextData()}>
+                                    <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
                                         <i className="angle right icon" />
                                     </button>
                                 </div>
@@ -3005,10 +2917,7 @@ class bogAddEdit extends Component {
                             {ItemsGrid}
                         </div>
                         <div className="slider-Btns">
-                            <button
-                                className="primaryBtn-1 btn meduimBtn  "
-                                type="submit"
-                                onClick={this.NextStep}>
+                            <button className="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>
                                 {Resources.next[currentLanguage]}
                             </button>
                         </div>
@@ -3025,35 +2934,19 @@ class bogAddEdit extends Component {
                         <label className="control-label">
                             {Resources.company[currentLanguage]}
                         </label>
-                        <div
-                            className="ui right labeled input inputDev  "
-                            style={{ display: "flex" }}>
-                            <input
-                                className="form-control"
-                                autoComplete="off"
-                                type="text"
-                                value={this.state.selectedFromCompany.label}
-                                readOnly
-                                data-toggle="tooltip"
-                                title="procoor Company"
-                            />
+                        <div className="ui right labeled input inputDev  " style={{ display: "flex" }}>
+                            <input className="form-control" autoComplete="off" type="text"
+                                value={this.state.selectedFromCompany.label} readOnly data-toggle="tooltip" title="procoor Company" />
                             <span className="total_money">
                                 {Resources.total[currentLanguage]}
                             </span>
                             <div className="ui basic label greyLabel">
-                                {" "}
                                 {this.props.document.total}
                             </div>
                         </div>
                     </div>
                     <ul id="stepper__tabs" className="data__tabs">
-                        <li
-                            className={
-                                " data__tabs--list " +
-                                (this.state.activeTab == "contract"
-                                    ? "active"
-                                    : "")
-                            }
+                        <li className={" data__tabs--list " + (this.state.activeTab == "contract" ? "active" : "")}
                             onClick={() => this.changeTab("contract")}>
                             {Resources.contract[currentLanguage]}
                         </li>
@@ -3094,7 +2987,7 @@ class bogAddEdit extends Component {
                     <div
                         className={
                             this.state.isViewMode === true &&
-                            this.state.CurrStep != 3
+                                this.state.CurrStep != 3
                                 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
                                 : "documents-stepper noTabs__document one__tab one_step"
                         }>
@@ -3112,172 +3005,172 @@ class bogAddEdit extends Component {
                                 {this.state.LoadingPage ? (
                                     <LoadingSection />
                                 ) : (
-                                    <Fragment>
-                                        {this.state.CurrStep == 1
-                                            ? Step_1
-                                            : this.state.CurrStep == 2
-                                            ? Step_2
-                                            : Step_3}
-                                        <div
-                                            className="largePopup largeModal "
-                                            style={{
-                                                display: this.state.showPopUp
-                                                    ? "block"
-                                                    : "none"
-                                            }}>
-                                            <SkyLight
-                                                hideOnOverlayClicked
-                                                ref={ref =>
-                                                    (this.simpleDialog1 = ref)
-                                                }
-                                                title={
-                                                    Resources.editTitle[
+                                        <Fragment>
+                                            {this.state.CurrStep == 1
+                                                ? Step_1
+                                                : this.state.CurrStep == 2
+                                                    ? Step_2
+                                                    : Step_3}
+                                            <div
+                                                className="largePopup largeModal "
+                                                style={{
+                                                    display: this.state.showPopUp
+                                                        ? "block"
+                                                        : "none"
+                                                }}>
+                                                <SkyLight
+                                                    hideOnOverlayClicked
+                                                    ref={ref =>
+                                                        (this.simpleDialog1 = ref)
+                                                    }
+                                                    title={
+                                                        Resources.editTitle[
                                                         currentLanguage
-                                                    ] +
-                                                    " - " +
-                                                    Resources.edit[
+                                                        ] +
+                                                        " - " +
+                                                        Resources.edit[
                                                         currentLanguage
-                                                    ]
-                                                }
-                                                beforeClose={
-                                                    this
-                                                        ._executeBeforeModalClose
-                                                }
-                                                beforeOpen={
-                                                    this._executeBeforeModalOpen
-                                                }>
-                                                {itemsContent}
-                                            </SkyLight>
-                                        </div>
-                                        {this.props.changeStatus === true ? (
-                                            <div className="approveDocument">
-                                                <div className="approveDocumentBTNS">
-                                                    {this.state
-                                                        .isApproveMode ===
-                                                    true ? (
-                                                        <div>
-                                                            <button
-                                                                type="button"
-                                                                className="primaryBtn-1 btn "
-                                                                onClick={e =>
-                                                                    this.handleShowAction(
-                                                                        actions[2]
-                                                                    )
-                                                                }>
-                                                                {
-                                                                    Resources
-                                                                        .approvalModalApprove[
-                                                                        currentLanguage
-                                                                    ]
+                                                        ]
+                                                    }
+                                                    beforeClose={
+                                                        this
+                                                            ._executeBeforeModalClose
+                                                    }
+                                                    beforeOpen={
+                                                        this._executeBeforeModalOpen
+                                                    }>
+                                                    {itemsContent}
+                                                </SkyLight>
+                                            </div>
+                                            {this.props.changeStatus === true ? (
+                                                <div className="approveDocument">
+                                                    <div className="approveDocumentBTNS">
+                                                        {this.state
+                                                            .isApproveMode ===
+                                                            true ? (
+                                                                <div>
+                                                                    <button
+                                                                        type="button"
+                                                                        className="primaryBtn-1 btn "
+                                                                        onClick={e =>
+                                                                            this.handleShowAction(
+                                                                                actions[2]
+                                                                            )
+                                                                        }>
+                                                                        {
+                                                                            Resources
+                                                                                .approvalModalApprove[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        className="primaryBtn-2 btn middle__btn"
+                                                                        onClick={e =>
+                                                                            this.handleShowAction(
+                                                                                actions[3]
+                                                                            )
+                                                                        }>
+                                                                        {
+                                                                            Resources
+                                                                                .approvalModalReject[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </button>
+                                                                </div>
+                                                            ) : null}
+                                                        <button
+                                                            type="button"
+                                                            className="primaryBtn-2 btn middle__btn"
+                                                            onClick={e =>
+                                                                this.handleShowAction(
+                                                                    actions[1]
+                                                                )
+                                                            }>
+                                                            {
+                                                                Resources
+                                                                    .sendToWorkFlow[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            className="primaryBtn-2 btn"
+                                                            onClick={e =>
+                                                                this.handleShowAction(
+                                                                    actions[0]
+                                                                )
+                                                            }>
+                                                            {
+                                                                Resources
+                                                                    .distributionList[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                        </button>
+                                                        <span className="border" />
+                                                        <div className="document__action--menu">
+                                                            <OptionContainer
+                                                                permission={
+                                                                    this.state
+                                                                        .permission
                                                                 }
-                                                            </button>
-                                                            <button
-                                                                type="button"
-                                                                className="primaryBtn-2 btn middle__btn"
-                                                                onClick={e =>
-                                                                    this.handleShowAction(
-                                                                        actions[3]
-                                                                    )
-                                                                }>
-                                                                {
-                                                                    Resources
-                                                                        .approvalModalReject[
-                                                                        currentLanguage
-                                                                    ]
+                                                                docTypeId={
+                                                                    this.state
+                                                                        .docTypeId
                                                                 }
-                                                            </button>
+                                                                docId={
+                                                                    this.state.docId
+                                                                }
+                                                                projectId={
+                                                                    this.state
+                                                                        .projectId
+                                                                }
+                                                            />
                                                         </div>
-                                                    ) : null}
-                                                    <button
-                                                        type="button"
-                                                        className="primaryBtn-2 btn middle__btn"
-                                                        onClick={e =>
-                                                            this.handleShowAction(
-                                                                actions[1]
-                                                            )
-                                                        }>
-                                                        {
-                                                            Resources
-                                                                .sendToWorkFlow[
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        className="primaryBtn-2 btn"
-                                                        onClick={e =>
-                                                            this.handleShowAction(
-                                                                actions[0]
-                                                            )
-                                                        }>
-                                                        {
-                                                            Resources
-                                                                .distributionList[
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                    </button>
-                                                    <span className="border" />
-                                                    <div className="document__action--menu">
-                                                        <OptionContainer
-                                                            permission={
-                                                                this.state
-                                                                    .permission
-                                                            }
-                                                            docTypeId={
-                                                                this.state
-                                                                    .docTypeId
-                                                            }
-                                                            docId={
-                                                                this.state.docId
-                                                            }
-                                                            projectId={
-                                                                this.state
-                                                                    .projectId
-                                                            }
-                                                        />
                                                     </div>
                                                 </div>
-                                            </div>
-                                        ) : null}
-                                    </Fragment>
-                                )}
+                                            ) : null}
+                                        </Fragment>
+                                    )}
                                 {this.state.CurrStep == 1 ? (
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
                                             {this.state.docId > 0 &&
-                                            this.state.isViewMode === false ? (
-                                                <UploadAttachment
-                                                    changeStatus={
-                                                        this.props.changeStatus
-                                                    }
-                                                    AddAttachments={861}
-                                                    EditAttachments={3254}
-                                                    ShowDropBox={3565}
-                                                    ShowGoogleDrive={3566}
-                                                    docTypeId={
-                                                        this.state.docTypeId
-                                                    }
-                                                    docId={this.state.docId}
-                                                    projectId={
-                                                        this.state.projectId
-                                                    }
-                                                />
-                                            ) : null}
+                                                this.state.isViewMode === false ? (
+                                                    <UploadAttachment
+                                                        changeStatus={
+                                                            this.props.changeStatus
+                                                        }
+                                                        AddAttachments={861}
+                                                        EditAttachments={3254}
+                                                        ShowDropBox={3565}
+                                                        ShowGoogleDrive={3566}
+                                                        docTypeId={
+                                                            this.state.docTypeId
+                                                        }
+                                                        docId={this.state.docId}
+                                                        projectId={
+                                                            this.state.projectId
+                                                        }
+                                                    />
+                                                ) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus ===
-                                            true ? (
-                                                <ViewWorkFlow
-                                                    docType={
-                                                        this.state.docTypeId
-                                                    }
-                                                    docId={this.state.docId}
-                                                    projectId={
-                                                        this.state.projectId
-                                                    }
-                                                />
-                                            ) : null}
+                                                true ? (
+                                                    <ViewWorkFlow
+                                                        docType={
+                                                            this.state.docTypeId
+                                                        }
+                                                        docId={this.state.docId}
+                                                        projectId={
+                                                            this.state.projectId
+                                                        }
+                                                    />
+                                                ) : null}
                                         </div>
                                     </div>
                                 ) : null}
@@ -3286,33 +3179,10 @@ class bogAddEdit extends Component {
                             <div>
                                 <div className="docstepper-levels">
                                     <div className="step-content-foot">
-                                        <span
-                                            onClick={this.PreviousStep}
-                                            className={
-                                                this.props.changeStatus ==
-                                                    true &&
-                                                this.state.CurrStep > 1
-                                                    ? "step-content-btn-prev "
-                                                    : "step-content-btn-prev disabled"
-                                            }>
-                                            <i
-                                                className="fa fa-caret-left"
-                                                aria-hidden="true"
-                                            />
-                                            Previous
-                                        </span>
-                                        <span
-                                            onClick={this.NextStep}
-                                            className={
-                                                this.state.docId > 0
-                                                    ? "step-content-btn-prev "
-                                                    : "step-content-btn-prev disabled"
-                                            }>
-                                            Next
-                                            <i
-                                                className="fa fa-caret-right"
-                                                aria-hidden="true"
-                                            />
+                                        <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
+                                            "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
+                                        <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
+                                            : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
                                         </span>
                                     </div>
                                     <div className="workflow-sliderSteps">
@@ -3325,9 +3195,9 @@ class bogAddEdit extends Component {
                                                     (this.state.CurrStep == 1
                                                         ? "current__step"
                                                         : this.state
-                                                              .firstComplete
-                                                        ? "active"
-                                                        : "")
+                                                            .firstComplete
+                                                            ? "active"
+                                                            : "")
                                                 }>
                                                 <div className="steps-timeline">
                                                     <span>1</span>
@@ -3336,7 +3206,7 @@ class bogAddEdit extends Component {
                                                     <h6>
                                                         {
                                                             Resources.boq[
-                                                                currentLanguage
+                                                            currentLanguage
                                                             ]
                                                         }
                                                     </h6>
@@ -3350,9 +3220,9 @@ class bogAddEdit extends Component {
                                                     (this.state.CurrStep == 2
                                                         ? "current__step"
                                                         : this.state
-                                                              .secondComplete
-                                                        ? "active"
-                                                        : "")
+                                                            .secondComplete
+                                                            ? "active"
+                                                            : "")
                                                 }>
                                                 <div className="steps-timeline">
                                                     <span>2</span>
@@ -3361,7 +3231,7 @@ class bogAddEdit extends Component {
                                                     <h6>
                                                         {
                                                             Resources.items[
-                                                                currentLanguage
+                                                            currentLanguage
                                                             ]
                                                         }
                                                     </h6>
@@ -3383,7 +3253,7 @@ class bogAddEdit extends Component {
                                                         {
                                                             Resources
                                                                 .changeBoqIntoContractOrPO[
-                                                                currentLanguage
+                                                            currentLanguage
                                                             ]
                                                         }
                                                     </h6>
@@ -3419,7 +3289,7 @@ class bogAddEdit extends Component {
                             ref={ref => (this.simpleDialog = ref)}
                             title={
                                 Resources[this.state.currentTitle][
-                                    currentLanguage
+                                currentLanguage
                                 ]
                             }>
                             {this.state.currentComponent}

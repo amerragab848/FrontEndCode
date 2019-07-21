@@ -1,15 +1,14 @@
 import React, { Component, Fragment } from "react";
 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-//import IPConfig from '../../assets/IP_Configrations'
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel"; 
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
@@ -446,7 +445,7 @@ class materialDeliveryAddEdit extends Component {
     viewAttachments() {
         return this.state.docId > 0 ? (
             Config.IsAllow(891) === true ? (
-                <ViewAttachment
+               <ViewAttachment isApproveMode={this.state.isViewMode}
                     docTypeId={this.state.docTypeId}
                     docId={this.state.docId}
                     projectId={this.state.projectId}
@@ -1405,7 +1404,7 @@ class materialDeliveryAddEdit extends Component {
                         docId={this.state.docId}
                         docType={this.state.docType}
                         link={
-                            window.IP_CONFIG.downloads +
+                            Config.getPublicConfiguartion().downloads +
                             "/DownLoads/Excel/MaterialDelivery.xlsx"
                         }
                         header="addManyItems"
