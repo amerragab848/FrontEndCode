@@ -5107,7 +5107,7 @@
         "en": "Sub Order Unit",
         "ar": " اسعار الوحدات من الباطن"
     },
-    "newUnitPrice": {
+    "newUnitPrice": { 
         "en": "New UnitPrice",
         "ar": " السعر الجديد"
     },
