@@ -1484,12 +1484,13 @@ class weeklyReportsAddEdit extends Component {
                                     </div>
                                 </div>
 
-                                <div className="slider-Btns letterFullWidth" style={{ flexFlow: 'row' }}>
+                                <div className="slider-Btns letterFullWidth">
                                     <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} onClick={() => this.saveTechnicalOffice()} disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
-                                    <button type="button" style={{ margin: '0 8px' }} className="primaryBtn-2 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                                 </div>
                             </div>
-
+                            <div className="slider-Btns letterFullWidth">
+                                <button type="button" className="primaryBtn-1 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2509,10 +2510,9 @@ class weeklyReportsAddEdit extends Component {
                             </div>
                             <div className="slider-Btns letterFullWidth" style={{ flexFlow: 'row' }}>
                                 <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} onClick={() => this.saveCoordination()} disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
-                                <button type="button" style={{ margin: '0 8px' }} className="primaryBtn-2 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                             </div>
                             <div className="slider-Btns fullWidthWrapper textLeft ">
-
+                                <button type="button" className="primaryBtn-1 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                             </div>
                         </div>
                     </div>
