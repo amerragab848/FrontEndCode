@@ -169,6 +169,7 @@ import GlobalSearch from "./Componants/publicComponants/GlobalSearch";
 import currencyExchangeRates from './Componants/GeneralSetting/Administrations/currencyExchangeRates';
 import specSectionChild from './Componants/GeneralSetting/MenuDefaultData/specSectionChild';
 import RiskRealisation from './Componants/publicComponants/RiskRealisation';
+import WeeklyReportsAddEdit from "./Pages/TechnicalOffice/weeklyReportsAddEdit";
 
 import RiskCause from './Componants/OptionsPanels/RiskCause';
 let setupRoutes = ProjectSetupRoutes.map((item) => {
@@ -354,6 +355,8 @@ let originalRoutes = [
     , <Route path="/currencyExchangeRates" component={currencyExchangeRates} />
     , <Route path="/specSectionChild" component={specSectionChild} /> 
     , <Route path="/RiskRealisation" component={RiskRealisation} />
+    , <Route path="/WeeklyReportsAddEdit" component={WeeklyReportsAddEdit} />
+    
     , <Route path="/emailAddEdit" component={emailAddEdit} />
 ];
 
