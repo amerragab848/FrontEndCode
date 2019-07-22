@@ -21549,3 +21549,8 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .slider-Btns:empty {
     padding-top: 0 !important;
 }
+
+.letterFullWidth.fullInputWidth .ui.input.inputDev,
+.letterFullWidth.fullInputWidth input {
+    max-width: 100% !important;
+}
