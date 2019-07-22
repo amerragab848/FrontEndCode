@@ -62,7 +62,7 @@ const validationItemsForAddEdit = Yup.object().shape({
 
 
 
-class drawingListAddEdit extends Component {
+class projectScheduleAddEdit extends Component {
 
     constructor(props) {
 
@@ -1485,7 +1485,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(drawingListAddEdit))
+)(withRouter(projectScheduleAddEdit))
 
 
 
