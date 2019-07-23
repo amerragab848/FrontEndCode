@@ -175,7 +175,7 @@ class dailyReportsAddEdit extends Component {
             dueBack: moment(),
             visitorsRows: [],
             visitorsId: '',
-            visitorsArrange: '',
+            visitorsArrange: '1',
             contactsVisitors: [],
             selectedVisitorsCompany: { label: Resources.selectCompany[currentLanguage], value: "0" },
             selectedVisitorsContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -183,7 +183,7 @@ class dailyReportsAddEdit extends Component {
             selectedFromTo: { label: Resources.fromToRequired[currentLanguage], value: "0" },
             weatherRows: [],
             weatherId: '',
-            weatherArrange: '',
+            weatherArrange: '1',
             weatherData: [],
             fromToData: [],
         };
@@ -413,7 +413,7 @@ class dailyReportsAddEdit extends Component {
             dataservice.addObject('AddLogsDailyReports', doc).then(result => {
                 this.setState({ isLoading: false, docId: result.id, IsAddMood: true });
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-                this.getCoordinationData();
+                this.GetNextArrangeWorkActivity();
             }).catch(ex => {
                 this.setState({ Loading: false })
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
