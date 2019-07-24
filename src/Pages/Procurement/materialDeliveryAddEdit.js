@@ -231,7 +231,7 @@ class materialDeliveryAddEdit extends Component {
             dataservice
                 .GetDataGrid(
                     "GetLogsMaterialDeliveryTickets?deliveryId=" +
-                        this.state.docId
+                    this.state.docId
                 )
                 .then(res => {
                     this.setState({ Items: res, arrangeItem: res.length + 1 });
@@ -298,10 +298,10 @@ class materialDeliveryAddEdit extends Component {
             dataservice
                 .GetNextArrangeMainDocument(
                     "GetNextArrangeMainDoc?projectId=" +
-                        projectId +
-                        "&docType=" +
-                        this.state.docTypeId +
-                        "&companyId=undefined&contactId=undefined"
+                    projectId +
+                    "&docType=" +
+                    this.state.docTypeId +
+                    "&companyId=undefined&contactId=undefined"
                 )
                 .then(res => {
                     const Document = {
@@ -325,67 +325,22 @@ class materialDeliveryAddEdit extends Component {
     fillDropDowns(isEdit) {
         dataservice
             .GetDataList(
-                "GetPoContractForList?projectId= " + this.state.projectId,
-                "subject",
-                "id"
+                "GetProjectProjectsCompaniesForList?projectId= " + this.state.projectId,
+                "companyName",
+                "companyId"
             )
             .then(result => {
                 if (isEdit) {
                     let id = this.props.document.contractId;
                     let selectedValue = {};
                     if (id) {
-                        selectedValue = _.find(result, function(i) {
+                        selectedValue = _.find(result, function (i) {
                             return i.value === id;
                         });
                         this.setState({ selectedContractId: selectedValue });
                     }
                 }
                 this.setState({ contractPoData: [...result] });
-            });
-
-        dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000",
-                "title",
-                "id"
-            )
-            .then(result => {
-                if (isEdit) {
-                    let id = this.props.document.specsSectionId;
-                    let selectedValue = {};
-                    if (id) {
-                        selectedValue = _.find(result, function(i) {
-                            return i.value == id;
-                        });
-                        this.setState({ selectedSpecsSection: selectedValue });
-                    }
-                }
-                this.setState({ specsSectionData: [...result] });
-            });
-
-        dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=materialtitle&pageNumber=0&pageSize=10000",
-                "title",
-                "id"
-            )
-            .then(result => {
-                if (isEdit) {
-                    let id = this.props.document.materialDeliveryTypeId;
-                    let selectedValue = {};
-                    if (id) {
-                        selectedValue = _.find(result, function(i) {
-                            return i.value == id;
-                        });
-
-                        this.setState({
-                            selectedMaterialType: selectedValue
-                        });
-                    }
-                }
-                this.setState({
-                    materialTypeData: [...result]
-                });
             });
     }
 
@@ -725,7 +680,7 @@ class materialDeliveryAddEdit extends Component {
                         selectedMaterialCode: {
                             label:
                                 Resources.specsSectionSelection[
-                                    currentLanguage
+                                currentLanguage
                                 ],
                             value: "0"
                         }
@@ -744,8 +699,8 @@ class materialDeliveryAddEdit extends Component {
         } else {
             toast.error(
                 "Approved, Pending, and Rejected Quantity Greater than " +
-                    ActaulQty +
-                    " And Greater Than 0"
+                ActaulQty +
+                " And Greater Than 0"
             );
         }
     };
@@ -763,18 +718,6 @@ class materialDeliveryAddEdit extends Component {
     };
 
     HandelChangeItems = (e, name) => {
-        // switch (name) {
-        //     case 'approvedQuantity':
-        //         // code block
-        //         break;
-        //     case 'rejectedQuantity':
-        //         // code block
-        //         break;
-        //     case 'pendingQuantity':
-        //         // code block
-        //         break;
-        //     default:
-        //   }
         this.setState({ [name]: e.target.value });
     };
 
@@ -797,16 +740,16 @@ class materialDeliveryAddEdit extends Component {
             this.setState({ isLoading: true });
             Api.post(
                 "UpdateQuantityMaterialDelivery?materialDeliveryId=" +
-                    this.state.objItem.id +
-                    "&quantity=" +
-                    this.state.LastPendingQuantity +
-                    "&status=" +
-                    this.state.selectedApproveOrRejectData.value
+                this.state.objItem.id +
+                "&quantity=" +
+                this.state.LastPendingQuantity +
+                "&status=" +
+                this.state.selectedApproveOrRejectData.value
             ).then(result => {
                 dataservice
                     .GetDataGrid(
                         "GetLogsMaterialDeliveryTickets?deliveryId=" +
-                            this.state.docId
+                        this.state.docId
                     )
                     .then(res => {
                         this.setState({
@@ -946,381 +889,381 @@ class materialDeliveryAddEdit extends Component {
                             setFieldValue,
                             setFieldTouched
                         }) => (
-                            <Form
-                                id="QsForm"
-                                className="customProform"
-                                noValidate="novalidate"
-                                onSubmit={handleSubmit}>
-                                <div className="proForm first-proform">
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {Resources.subject[currentLanguage]}
-                                        </label>
-                                        <div
-                                            className={
-                                                "inputDev ui input" +
-                                                (errors.subject &&
-                                                touched.subject
-                                                    ? " has-error"
-                                                    : !errors.subject &&
-                                                      touched.subject
-                                                    ? " has-success"
-                                                    : " ")
-                                            }>
-                                            <input
-                                                name="subject"
-                                                className="form-control fsadfsadsa"
-                                                id="subject"
-                                                placeholder={
-                                                    Resources.subject[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                                value={
-                                                    this.state.document.subject
-                                                }
-                                                autoComplete="off"
-                                                onChange={e =>
-                                                    this.handleChange(
-                                                        e,
-                                                        "subject"
-                                                    )
-                                                }
-                                                onBlur={e => {
-                                                    handleBlur(e);
-                                                    handleChange(e);
-                                                }}
-                                            />{" "}
-                                            {touched.subject ? (
-                                                <em className="pError">
-                                                    {errors.subject}
-                                                </em>
-                                            ) : null}
-                                        </div>
-                                    </div>
-
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {Resources.status[currentLanguage]}
-                                        </label>
-                                        <div className="ui checkbox radio radioBoxBlue">
-                                            <input
-                                                type="radio"
-                                                name="letter-status"
-                                                defaultChecked={
-                                                    this.state.document
-                                                        .status === false
-                                                        ? null
-                                                        : "checked"
-                                                }
-                                                value="true"
-                                                onChange={e =>
-                                                    this.handleChange(
-                                                        e,
-                                                        "status"
-                                                    )
-                                                }
-                                            />
-                                            <label>
-                                                {
-                                                    Resources.oppened[
-                                                        currentLanguage
-                                                    ]
-                                                }
+                                <Form
+                                    id="QsForm"
+                                    className="customProform"
+                                    noValidate="novalidate"
+                                    onSubmit={handleSubmit}>
+                                    <div className="proForm first-proform">
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {Resources.subject[currentLanguage]}
                                             </label>
-                                        </div>
-                                        <div className="ui checkbox radio radioBoxBlue">
-                                            <input
-                                                type="radio"
-                                                name="letter-status"
-                                                defaultChecked={
-                                                    this.state.document
-                                                        .status === false
-                                                        ? "checked"
-                                                        : null
-                                                }
-                                                value="false"
-                                                onChange={e =>
-                                                    this.handleChange(
-                                                        e,
-                                                        "status"
-                                                    )
-                                                }
-                                            />
-                                            <label>
-                                                {
-                                                    Resources.closed[
+                                            <div
+                                                className={
+                                                    "inputDev ui input" +
+                                                    (errors.subject &&
+                                                        touched.subject
+                                                        ? " has-error"
+                                                        : !errors.subject &&
+                                                            touched.subject
+                                                            ? " has-success"
+                                                            : " ")
+                                                }>
+                                                <input
+                                                    name="subject"
+                                                    className="form-control fsadfsadsa"
+                                                    id="subject"
+                                                    placeholder={
+                                                        Resources.subject[
                                                         currentLanguage
-                                                    ]
-                                                }
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="proForm datepickerContainer">
-                                    <div className="linebylineInput valid-input alternativeDate">
-                                        <DatePicker
-                                            title="docDate"
-                                            startDate={
-                                                this.state.document.docDate
-                                            }
-                                            handleChange={e =>
-                                                this.handleChangeDate(
-                                                    e,
-                                                    "docDate"
-                                                )
-                                            }
-                                        />
-                                    </div>
-
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">
-                                            {Resources.arrange[currentLanguage]}
-                                        </label>
-                                        <div className="ui input inputDev">
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                readOnly
-                                                value={
-                                                    this.state.document.arrange
-                                                }
-                                                onBlur={e => {
-                                                    handleChange(e);
-                                                    handleBlur(e);
-                                                }}
-                                                onChange={e =>
-                                                    this.handleChange(
-                                                        e,
-                                                        "arrange"
-                                                    )
-                                                }
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown
-                                            title="contractPo"
-                                            data={this.state.contractPoData}
-                                            selectedValue={
-                                                this.state.selectedContractId
-                                            }
-                                            handleChange={event =>
-                                                this.handleChangeDropDown(
-                                                    event,
-                                                    "contractId",
-                                                    false,
-                                                    "",
-                                                    "",
-                                                    "",
-                                                    "selectedContractId"
-                                                )
-                                            }
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.contractId}
-                                            isDisabled={this.props.changeStatus}
-                                            touched={touched.contractId}
-                                            name="contractId"
-                                            id="contractId"
-                                        />
-                                    </div>
-
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown
-                                            title="specsSection"
-                                            data={this.state.specsSectionData}
-                                            selectedValue={
-                                                this.state.selectedSpecsSection
-                                            }
-                                            handleChange={event =>
-                                                this.handleChangeDropDown(
-                                                    event,
-                                                    "specsSectionId",
-                                                    false,
-                                                    "",
-                                                    "",
-                                                    "",
-                                                    "selectedSpecsSection"
-                                                )
-                                            }
-                                        />
-                                    </div>
-
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown
-                                            title="materialDeliveryType"
-                                            data={this.state.materialTypeData}
-                                            selectedValue={
-                                                this.state.selectedMaterialType
-                                            }
-                                            handleChange={event =>
-                                                this.handleChangeDropDown(
-                                                    event,
-                                                    "materialDeliveryTypeId",
-                                                    false,
-                                                    "",
-                                                    "",
-                                                    "",
-                                                    "selectedMaterialType"
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                </div>
-
-                                {this.props.changeStatus === true ? (
-                                    <div className="approveDocument">
-                                        <div className="approveDocumentBTNS">
-                                            {this.state.isLoading ? (
-                                                <button className="primaryBtn-1 btn disabled">
-                                                    <div className="spinner">
-                                                        <div className="bounce1" />
-                                                        <div className="bounce2" />
-                                                        <div className="bounce3" />
-                                                    </div>
-                                                </button>
-                                            ) : (
-                                                <button
-                                                    className={
-                                                        this.state
-                                                            .isViewMode === true
-                                                            ? "primaryBtn-1 btn middle__btn disNone"
-                                                            : "primaryBtn-1 btn middle__btn"
-                                                    }>
-                                                    {
-                                                        Resources.save[
-                                                            currentLanguage
                                                         ]
                                                     }
-                                                </button>
-                                            )}
-                                            {this.state.isApproveMode ===
-                                            true ? (
-                                                <div>
-                                                    <button
-                                                        className="primaryBtn-1 btn "
-                                                        type="button"
-                                                        onClick={e =>
-                                                            this.handleShowAction(
-                                                                actions[2]
-                                                            )
-                                                        }>
-                                                        {
-                                                            Resources
-                                                                .approvalModalApprove[
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                    </button>
-                                                    <button
-                                                        className="primaryBtn-2 btn middle__btn"
-                                                        type="button"
-                                                        onClick={e =>
-                                                            this.handleShowAction(
-                                                                actions[3]
-                                                            )
-                                                        }>
-                                                        {
-                                                            Resources
-                                                                .approvalModalReject[
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                    </button>
-                                                </div>
-                                            ) : null}
-                                            <button
-                                                type="button"
-                                                className="primaryBtn-2 btn middle__btn"
-                                                onClick={e =>
-                                                    this.handleShowAction(
-                                                        actions[1]
-                                                    )
-                                                }>
-                                                {
-                                                    Resources.sendToWorkFlow[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="primaryBtn-2 btn"
-                                                onClick={e =>
-                                                    this.handleShowAction(
-                                                        actions[0]
-                                                    )
-                                                }>
-                                                {
-                                                    Resources.distributionList[
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            </button>
-                                            <span className="border" />
-                                            <div className="document__action--menu">
-                                                <OptionContainer
-                                                    permission={
-                                                        this.state.permission
+                                                    value={
+                                                        this.state.document.subject
                                                     }
-                                                    docTypeId={
-                                                        this.state.docTypeId
+                                                    autoComplete="off"
+                                                    onChange={e =>
+                                                        this.handleChange(
+                                                            e,
+                                                            "subject"
+                                                        )
                                                     }
-                                                    docId={this.state.docId}
-                                                    projectId={
-                                                        this.state.projectId
+                                                    onBlur={e => {
+                                                        handleBlur(e);
+                                                        handleChange(e);
+                                                    }}
+                                                />{" "}
+                                                {touched.subject ? (
+                                                    <em className="pError">
+                                                        {errors.subject}
+                                                    </em>
+                                                ) : null}
+                                            </div>
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {Resources.status[currentLanguage]}
+                                            </label>
+                                            <div className="ui checkbox radio radioBoxBlue">
+                                                <input
+                                                    type="radio"
+                                                    name="letter-status"
+                                                    defaultChecked={
+                                                        this.state.document
+                                                            .status === false
+                                                            ? null
+                                                            : "checked"
+                                                    }
+                                                    value="true"
+                                                    onChange={e =>
+                                                        this.handleChange(
+                                                            e,
+                                                            "status"
+                                                        )
+                                                    }
+                                                />
+                                                <label>
+                                                    {
+                                                        Resources.oppened[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                </label>
+                                            </div>
+                                            <div className="ui checkbox radio radioBoxBlue">
+                                                <input
+                                                    type="radio"
+                                                    name="letter-status"
+                                                    defaultChecked={
+                                                        this.state.document
+                                                            .status === false
+                                                            ? "checked"
+                                                            : null
+                                                    }
+                                                    value="false"
+                                                    onChange={e =>
+                                                        this.handleChange(
+                                                            e,
+                                                            "status"
+                                                        )
+                                                    }
+                                                />
+                                                <label>
+                                                    {
+                                                        Resources.closed[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="proForm datepickerContainer">
+                                        <div className="linebylineInput valid-input alternativeDate">
+                                            <DatePicker
+                                                title="docDate"
+                                                startDate={
+                                                    this.state.document.docDate
+                                                }
+                                                handleChange={e =>
+                                                    this.handleChangeDate(
+                                                        e,
+                                                        "docDate"
+                                                    )
+                                                }
+                                            />
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                                {Resources.arrange[currentLanguage]}
+                                            </label>
+                                            <div className="ui input inputDev">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    readOnly
+                                                    value={
+                                                        this.state.document.arrange
+                                                    }
+                                                    onBlur={e => {
+                                                        handleChange(e);
+                                                        handleBlur(e);
+                                                    }}
+                                                    onChange={e =>
+                                                        this.handleChange(
+                                                            e,
+                                                            "arrange"
+                                                        )
                                                     }
                                                 />
                                             </div>
                                         </div>
-                                    </div>
-                                ) : null}
 
-                                <div className="doc-pre-cycle letterFullWidth">
-                                    <div>
-                                        {this.state.docId > 0 ? (
-                                            <UploadAttachment
-                                                changeStatus={
-                                                    this.props.changeStatus
+                                        <div className="linebylineInput valid-input">
+                                            <Dropdown
+                                                title="contractPo"
+                                                data={this.state.contractPoData}
+                                                selectedValue={
+                                                    this.state.selectedContractId
                                                 }
-                                                AddAttachments={891}
-                                                EditAttachments={3242}
-                                                ShowDropBox={3539}
-                                                ShowGoogleDrive={3540}
-                                                docTypeId={this.state.docTypeId}
-                                                docId={this.state.docId}
-                                                projectId={this.state.projectId}
+                                                handleChange={event =>
+                                                    this.handleChangeDropDown(
+                                                        event,
+                                                        "contractId",
+                                                        false,
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        "selectedContractId"
+                                                    )
+                                                }
+                                                onChange={setFieldValue}
+                                                onBlur={setFieldTouched}
+                                                error={errors.contractId}
+                                                isDisabled={this.props.changeStatus}
+                                                touched={touched.contractId}
+                                                name="contractId"
+                                                id="contractId"
                                             />
-                                        ) : null}
-                                        {this.viewAttachments()}
-                                        {this.props.changeStatus === true ? (
-                                            <ViewWorkFlow
-                                                docType={this.state.docTypeId}
-                                                docId={this.state.docId}
-                                                projectId={this.state.projectId}
-                                            />
-                                        ) : null}
-                                    </div>
-                                </div>
+                                        </div>
 
-                                <div className="slider-Btns">
-                                    {this.state.isLoading ? (
-                                        <button className="primaryBtn-1 btn disabled">
-                                            <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
+                                        <div className="linebylineInput valid-input">
+                                            <Dropdown
+                                                title="specsSection"
+                                                data={this.state.specsSectionData}
+                                                selectedValue={
+                                                    this.state.selectedSpecsSection
+                                                }
+                                                handleChange={event =>
+                                                    this.handleChangeDropDown(
+                                                        event,
+                                                        "specsSectionId",
+                                                        false,
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        "selectedSpecsSection"
+                                                    )
+                                                }
+                                            />
+                                        </div>
+
+                                        <div className="linebylineInput valid-input">
+                                            <Dropdown
+                                                title="materialDeliveryType"
+                                                data={this.state.materialTypeData}
+                                                selectedValue={
+                                                    this.state.selectedMaterialType
+                                                }
+                                                handleChange={event =>
+                                                    this.handleChangeDropDown(
+                                                        event,
+                                                        "materialDeliveryTypeId",
+                                                        false,
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        "selectedMaterialType"
+                                                    )
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {this.props.changeStatus === true ? (
+                                        <div className="approveDocument">
+                                            <div className="approveDocumentBTNS">
+                                                {this.state.isLoading ? (
+                                                    <button className="primaryBtn-1 btn disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>
+                                                ) : (
+                                                        <button
+                                                            className={
+                                                                this.state
+                                                                    .isViewMode === true
+                                                                    ? "primaryBtn-1 btn middle__btn disNone"
+                                                                    : "primaryBtn-1 btn middle__btn"
+                                                            }>
+                                                            {
+                                                                Resources.save[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                        </button>
+                                                    )}
+                                                {this.state.isApproveMode ===
+                                                    true ? (
+                                                        <div>
+                                                            <button
+                                                                className="primaryBtn-1 btn "
+                                                                type="button"
+                                                                onClick={e =>
+                                                                    this.handleShowAction(
+                                                                        actions[2]
+                                                                    )
+                                                                }>
+                                                                {
+                                                                    Resources
+                                                                        .approvalModalApprove[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </button>
+                                                            <button
+                                                                className="primaryBtn-2 btn middle__btn"
+                                                                type="button"
+                                                                onClick={e =>
+                                                                    this.handleShowAction(
+                                                                        actions[3]
+                                                                    )
+                                                                }>
+                                                                {
+                                                                    Resources
+                                                                        .approvalModalReject[
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </button>
+                                                        </div>
+                                                    ) : null}
+                                                <button
+                                                    type="button"
+                                                    className="primaryBtn-2 btn middle__btn"
+                                                    onClick={e =>
+                                                        this.handleShowAction(
+                                                            actions[1]
+                                                        )
+                                                    }>
+                                                    {
+                                                        Resources.sendToWorkFlow[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="primaryBtn-2 btn"
+                                                    onClick={e =>
+                                                        this.handleShowAction(
+                                                            actions[0]
+                                                        )
+                                                    }>
+                                                    {
+                                                        Resources.distributionList[
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                </button>
+                                                <span className="border" />
+                                                <div className="document__action--menu">
+                                                    <OptionContainer
+                                                        permission={
+                                                            this.state.permission
+                                                        }
+                                                        docTypeId={
+                                                            this.state.docTypeId
+                                                        }
+                                                        docId={this.state.docId}
+                                                        projectId={
+                                                            this.state.projectId
+                                                        }
+                                                    />
+                                                </div>
                                             </div>
-                                        </button>
-                                    ) : (
-                                        this.showBtnsSaving()
-                                    )}
-                                </div>
-                            </Form>
-                        )}
+                                        </div>
+                                    ) : null}
+
+                                    <div className="doc-pre-cycle letterFullWidth">
+                                        <div>
+                                            {this.state.docId > 0 ? (
+                                                <UploadAttachment
+                                                    changeStatus={
+                                                        this.props.changeStatus
+                                                    }
+                                                    AddAttachments={891}
+                                                    EditAttachments={3242}
+                                                    ShowDropBox={3539}
+                                                    ShowGoogleDrive={3540}
+                                                    docTypeId={this.state.docTypeId}
+                                                    docId={this.state.docId}
+                                                    projectId={this.state.projectId}
+                                                />
+                                            ) : null}
+                                            {this.viewAttachments()}
+                                            {this.props.changeStatus === true ? (
+                                                <ViewWorkFlow
+                                                    docType={this.state.docTypeId}
+                                                    docId={this.state.docId}
+                                                    projectId={this.state.projectId}
+                                                />
+                                            ) : null}
+                                        </div>
+                                    </div>
+
+                                    <div className="slider-Btns">
+                                        {this.state.isLoading ? (
+                                            <button className="primaryBtn-1 btn disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                        ) : (
+                                                this.showBtnsSaving()
+                                            )}
+                                    </div>
+                                </Form>
+                            )}
                     </Formik>
                 </div>
             );
@@ -1340,7 +1283,7 @@ class materialDeliveryAddEdit extends Component {
                                     className="checkbox"
                                     checked={
                                         this.state.selected[
-                                            row._original.id
+                                        row._original.id
                                         ] === true
                                     }
                                     onChange={() =>
@@ -1505,425 +1448,425 @@ class materialDeliveryAddEdit extends Component {
                                 handleBlur,
                                 handleChange
                             }) => (
-                                <Form
-                                    id="voItemForm"
-                                    className="proForm datepickerContainer customProform"
-                                    noValidate="novalidate">
-                                    <header className="main__header">
-                                        <div className="main__header--div">
-                                            <h2 className="zero">
-                                                {
-                                                    Resources["addItems"][
+                                    <Form
+                                        id="voItemForm"
+                                        className="proForm datepickerContainer customProform"
+                                        noValidate="novalidate">
+                                        <header className="main__header">
+                                            <div className="main__header--div">
+                                                <h2 className="zero">
+                                                    {
+                                                        Resources["addItems"][
                                                         currentLanguage
-                                                    ]
-                                                }
-                                            </h2>
-                                        </div>
-                                    </header>
-                                    <div className="document-fields">
-                                        <div className="proForm datepickerContainer">
-                                            <div className="linebylineInput valid-input letterFullWidth ">
-                                                <Dropdown
-                                                    title="itemDescription"
-                                                    data={
-                                                        this.state
-                                                            .descriptionDropData
-                                                    }
-                                                    selectedValue={
-                                                        this.state
-                                                            .selectedItemId
-                                                    }
-                                                    handleChange={event =>
-                                                        this.handleChangeItemId(
-                                                            event
-                                                        )
-                                                    }
-                                                    onBlur={setFieldTouched}
-                                                    error={errors.itemId}
-                                                    onChange={setFieldValue}
-                                                    touched={touched.itemId}
-                                                    name="itemId"
-                                                    id="itemId"
-                                                />
-                                            </div>
-
-                                            <div className="linebylineInput valid-input alternativeDate">
-                                                <DatePicker
-                                                    title="recievedDate"
-                                                    startDate={
-                                                        this.state.receivedDate
-                                                    }
-                                                    handleChange={e =>
-                                                        this.setState({
-                                                            receivedDate: e
-                                                        })
-                                                    }
-                                                />
-                                            </div>
-
-                                            <div className="linebylineInput valid-input alternativeDate">
-                                                <DatePicker
-                                                    title="nextDate"
-                                                    startDate={
-                                                        this.state
-                                                            .nextDeliveryDate
-                                                    }
-                                                    handleChange={e =>
-                                                        this.setState({
-                                                            nextDeliveryDate: e
-                                                        })
-                                                    }
-                                                />
-                                            </div>
-
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources["no"][
-                                                            currentLanguage
-                                                        ]
-                                                    }{" "}
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input " +
-                                                        (errors.arrange
-                                                            ? "has-error"
-                                                            : !errors.arrange &&
-                                                              touched.arrange
-                                                            ? " has-success"
-                                                            : " ")
-                                                    }>
-                                                    <input
-                                                        className="form-control"
-                                                        name="arrangeItem"
-                                                        placeholder={
-                                                            Resources["no"][
-                                                                currentLanguage
-                                                            ]
-                                                        }
-                                                        value={
-                                                            this.state
-                                                                .arrangeItem
-                                                        }
-                                                        onChange={e =>
-                                                            this.HandelChangeItems(
-                                                                e,
-                                                                "arrangeItem"
-                                                            )
-                                                        }
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                    />
-                                                    {errors.arrange ? (
-                                                        <em className="pError">
-                                                            {errors.arrange}
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="linebylineInput valid-input ">
-                                                <Dropdown
-                                                    title="materialCode"
-                                                    data={
-                                                        this.state
-                                                            .MaterialCodeData
-                                                    }
-                                                    name="materialCode"
-                                                    selectedValue={
-                                                        this.state
-                                                            .selectedMaterialCode
-                                                    }
-                                                    handleChange={e =>
-                                                        this.setState({
-                                                            selectedMaterialCode: e
-                                                        })
-                                                    }
-                                                />
-                                            </div>
-
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources["unitPrice"][
-                                                            currentLanguage
-                                                        ]
-                                                    }{" "}
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input " +
-                                                        (errors.unitPrice
-                                                            ? "has-error"
-                                                            : !errors.unitPrice &&
-                                                              touched.unitPrice
-                                                            ? " has-success"
-                                                            : " ")
-                                                    }>
-                                                    <input
-                                                        name="unitPrice"
-                                                        className="form-control"
-                                                        autoComplete="off"
-                                                        placeholder={
-                                                            Resources[
-                                                                "unitPrice"
-                                                            ][currentLanguage]
-                                                        }
-                                                        value={
-                                                            this.state.unitPrice
-                                                        }
-                                                        onChange={e =>
-                                                            this.HandelChangeItems(
-                                                                e,
-                                                                "unitPrice"
-                                                            )
-                                                        }
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                    />
-                                                    {errors.unitPrice ? (
-                                                        <em className="pError">
-                                                            {errors.unitPrice}
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources[
-                                                            "approvedQuantity"
-                                                        ][currentLanguage]
-                                                    }{" "}
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input " +
-                                                        (errors.approvedQuantity
-                                                            ? "has-error"
-                                                            : !errors.approvedQuantity &&
-                                                              touched.approvedQuantity
-                                                            ? " has-success"
-                                                            : " ")
-                                                    }>
-                                                    <input
-                                                        name="approvedQuantity"
-                                                        className="form-control"
-                                                        autoComplete="off"
-                                                        placeholder={
-                                                            Resources[
-                                                                "approvedQuantity"
-                                                            ][currentLanguage]
-                                                        }
-                                                        value={
-                                                            this.state
-                                                                .approvedQuantity
-                                                        }
-                                                        onChange={e =>
-                                                            this.HandelChangeItems(
-                                                                e,
-                                                                "approvedQuantity"
-                                                            )
-                                                        }
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                    />
-                                                    {errors.approvedQuantity ? (
-                                                        <em className="pError">
-                                                            {
-                                                                errors.approvedQuantity
-                                                            }
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources[
-                                                            "pendingQuantity"
-                                                        ][currentLanguage]
-                                                    }{" "}
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input " +
-                                                        (errors.pendingQuantity
-                                                            ? "has-error"
-                                                            : !errors.pendingQuantity &&
-                                                              touched.pendingQuantity
-                                                            ? " has-success"
-                                                            : " ")
-                                                    }>
-                                                    <input
-                                                        name="pendingQuantity"
-                                                        className="form-control"
-                                                        autoComplete="off"
-                                                        placeholder={
-                                                            Resources[
-                                                                "pendingQuantity"
-                                                            ][currentLanguage]
-                                                        }
-                                                        value={
-                                                            this.state
-                                                                .pendingQuantity
-                                                        }
-                                                        onChange={e =>
-                                                            this.HandelChangeItems(
-                                                                e,
-                                                                "pendingQuantity"
-                                                            )
-                                                        }
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                    />
-                                                    {errors.pendingQuantity ? (
-                                                        <em className="pError">
-                                                            {
-                                                                errors.pendingQuantity
-                                                            }
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources[
-                                                            "rejectedQuantity"
-                                                        ][currentLanguage]
-                                                    }{" "}
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input " +
-                                                        (errors.rejectedQuantity
-                                                            ? "has-error"
-                                                            : !errors.rejectedQuantity &&
-                                                              touched.rejectedQuantity
-                                                            ? " has-success"
-                                                            : " ")
-                                                    }>
-                                                    <input
-                                                        name="rejectedQuantity"
-                                                        className="form-control"
-                                                        autoComplete="off"
-                                                        placeholder={
-                                                            Resources[
-                                                                "rejectedQuantity"
-                                                            ][currentLanguage]
-                                                        }
-                                                        value={
-                                                            this.state
-                                                                .rejectedQuantity
-                                                        }
-                                                        onChange={e =>
-                                                            this.HandelChangeItems(
-                                                                e,
-                                                                "rejectedQuantity"
-                                                            )
-                                                        }
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                    />
-                                                    {errors.rejectedQuantity ? (
-                                                        <em className="pError">
-                                                            {
-                                                                errors.rejectedQuantity
-                                                            }
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="linebylineInput valid-input fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.remarks[
-                                                            currentLanguage
                                                         ]
                                                     }
-                                                </label>
-                                                <div className="ui input inputDev">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        value={
-                                                            this.state.remarks
+                                                </h2>
+                                            </div>
+                                        </header>
+                                        <div className="document-fields">
+                                            <div className="proForm datepickerContainer">
+                                                <div className="linebylineInput valid-input letterFullWidth ">
+                                                    <Dropdown
+                                                        title="itemDescription"
+                                                        data={
+                                                            this.state
+                                                                .descriptionDropData
                                                         }
-                                                        placeholder={
-                                                            Resources.remarks[
-                                                                currentLanguage
-                                                            ]
+                                                        selectedValue={
+                                                            this.state
+                                                                .selectedItemId
                                                         }
-                                                        onBlur={e => {
-                                                            handleChange(e);
-                                                            handleBlur(e);
-                                                        }}
-                                                        onChange={e =>
+                                                        handleChange={event =>
+                                                            this.handleChangeItemId(
+                                                                event
+                                                            )
+                                                        }
+                                                        onBlur={setFieldTouched}
+                                                        error={errors.itemId}
+                                                        onChange={setFieldValue}
+                                                        touched={touched.itemId}
+                                                        name="itemId"
+                                                        id="itemId"
+                                                    />
+                                                </div>
+
+                                                <div className="linebylineInput valid-input alternativeDate">
+                                                    <DatePicker
+                                                        title="recievedDate"
+                                                        startDate={
+                                                            this.state.receivedDate
+                                                        }
+                                                        handleChange={e =>
                                                             this.setState({
-                                                                remarks:
-                                                                    e.target
-                                                                        .value
+                                                                receivedDate: e
                                                             })
                                                         }
                                                     />
                                                 </div>
-                                            </div>
 
-                                            <div className="slider-Btns fullWidthWrapper textLeft ">
-                                                {this.state.BtnLoading ===
-                                                false ? (
-                                                    <button
-                                                        className={
-                                                            "primaryBtn-1 btn " +
-                                                            (this.props
-                                                                .isViewMode ===
-                                                            true
-                                                                ? " disNone"
-                                                                : "")
+                                                <div className="linebylineInput valid-input alternativeDate">
+                                                    <DatePicker
+                                                        title="nextDate"
+                                                        startDate={
+                                                            this.state
+                                                                .nextDeliveryDate
                                                         }
-                                                        type="submit"
-                                                        disabled={
-                                                            this.props
-                                                                .isViewMode
-                                                        }>
+                                                        handleChange={e =>
+                                                            this.setState({
+                                                                nextDeliveryDate: e
+                                                            })
+                                                        }
+                                                    />
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
+                                                    <label className="control-label">
                                                         {
-                                                            Resources["save"][
+                                                            Resources["no"][
+                                                            currentLanguage
+                                                            ]
+                                                        }{" "}
+                                                    </label>
+                                                    <div
+                                                        className={
+                                                            "inputDev ui input " +
+                                                            (errors.arrange
+                                                                ? "has-error"
+                                                                : !errors.arrange &&
+                                                                    touched.arrange
+                                                                    ? " has-success"
+                                                                    : " ")
+                                                        }>
+                                                        <input
+                                                            className="form-control"
+                                                            name="arrangeItem"
+                                                            placeholder={
+                                                                Resources["no"][
                                                                 currentLanguage
+                                                                ]
+                                                            }
+                                                            value={
+                                                                this.state
+                                                                    .arrangeItem
+                                                            }
+                                                            onChange={e =>
+                                                                this.HandelChangeItems(
+                                                                    e,
+                                                                    "arrangeItem"
+                                                                )
+                                                            }
+                                                            onBlur={e => {
+                                                                handleBlur(e);
+                                                                handleChange(e);
+                                                            }}
+                                                        />
+                                                        {errors.arrange ? (
+                                                            <em className="pError">
+                                                                {errors.arrange}
+                                                            </em>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+
+                                                <div className="linebylineInput valid-input ">
+                                                    <Dropdown
+                                                        title="materialCode"
+                                                        data={
+                                                            this.state
+                                                                .MaterialCodeData
+                                                        }
+                                                        name="materialCode"
+                                                        selectedValue={
+                                                            this.state
+                                                                .selectedMaterialCode
+                                                        }
+                                                        handleChange={e =>
+                                                            this.setState({
+                                                                selectedMaterialCode: e
+                                                            })
+                                                        }
+                                                    />
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
+                                                    <label className="control-label">
+                                                        {
+                                                            Resources["unitPrice"][
+                                                            currentLanguage
+                                                            ]
+                                                        }{" "}
+                                                    </label>
+                                                    <div
+                                                        className={
+                                                            "inputDev ui input " +
+                                                            (errors.unitPrice
+                                                                ? "has-error"
+                                                                : !errors.unitPrice &&
+                                                                    touched.unitPrice
+                                                                    ? " has-success"
+                                                                    : " ")
+                                                        }>
+                                                        <input
+                                                            name="unitPrice"
+                                                            className="form-control"
+                                                            autoComplete="off"
+                                                            placeholder={
+                                                                Resources[
+                                                                "unitPrice"
+                                                                ][currentLanguage]
+                                                            }
+                                                            value={
+                                                                this.state.unitPrice
+                                                            }
+                                                            onChange={e =>
+                                                                this.HandelChangeItems(
+                                                                    e,
+                                                                    "unitPrice"
+                                                                )
+                                                            }
+                                                            onBlur={e => {
+                                                                handleBlur(e);
+                                                                handleChange(e);
+                                                            }}
+                                                        />
+                                                        {errors.unitPrice ? (
+                                                            <em className="pError">
+                                                                {errors.unitPrice}
+                                                            </em>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
+                                                    <label className="control-label">
+                                                        {
+                                                            Resources[
+                                                            "approvedQuantity"
+                                                            ][currentLanguage]
+                                                        }{" "}
+                                                    </label>
+                                                    <div
+                                                        className={
+                                                            "inputDev ui input " +
+                                                            (errors.approvedQuantity
+                                                                ? "has-error"
+                                                                : !errors.approvedQuantity &&
+                                                                    touched.approvedQuantity
+                                                                    ? " has-success"
+                                                                    : " ")
+                                                        }>
+                                                        <input
+                                                            name="approvedQuantity"
+                                                            className="form-control"
+                                                            autoComplete="off"
+                                                            placeholder={
+                                                                Resources[
+                                                                "approvedQuantity"
+                                                                ][currentLanguage]
+                                                            }
+                                                            value={
+                                                                this.state
+                                                                    .approvedQuantity
+                                                            }
+                                                            onChange={e =>
+                                                                this.HandelChangeItems(
+                                                                    e,
+                                                                    "approvedQuantity"
+                                                                )
+                                                            }
+                                                            onBlur={e => {
+                                                                handleBlur(e);
+                                                                handleChange(e);
+                                                            }}
+                                                        />
+                                                        {errors.approvedQuantity ? (
+                                                            <em className="pError">
+                                                                {
+                                                                    errors.approvedQuantity
+                                                                }
+                                                            </em>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
+                                                    <label className="control-label">
+                                                        {
+                                                            Resources[
+                                                            "pendingQuantity"
+                                                            ][currentLanguage]
+                                                        }{" "}
+                                                    </label>
+                                                    <div
+                                                        className={
+                                                            "inputDev ui input " +
+                                                            (errors.pendingQuantity
+                                                                ? "has-error"
+                                                                : !errors.pendingQuantity &&
+                                                                    touched.pendingQuantity
+                                                                    ? " has-success"
+                                                                    : " ")
+                                                        }>
+                                                        <input
+                                                            name="pendingQuantity"
+                                                            className="form-control"
+                                                            autoComplete="off"
+                                                            placeholder={
+                                                                Resources[
+                                                                "pendingQuantity"
+                                                                ][currentLanguage]
+                                                            }
+                                                            value={
+                                                                this.state
+                                                                    .pendingQuantity
+                                                            }
+                                                            onChange={e =>
+                                                                this.HandelChangeItems(
+                                                                    e,
+                                                                    "pendingQuantity"
+                                                                )
+                                                            }
+                                                            onBlur={e => {
+                                                                handleBlur(e);
+                                                                handleChange(e);
+                                                            }}
+                                                        />
+                                                        {errors.pendingQuantity ? (
+                                                            <em className="pError">
+                                                                {
+                                                                    errors.pendingQuantity
+                                                                }
+                                                            </em>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+
+                                                <div className="linebylineInput valid-input">
+                                                    <label className="control-label">
+                                                        {
+                                                            Resources[
+                                                            "rejectedQuantity"
+                                                            ][currentLanguage]
+                                                        }{" "}
+                                                    </label>
+                                                    <div
+                                                        className={
+                                                            "inputDev ui input " +
+                                                            (errors.rejectedQuantity
+                                                                ? "has-error"
+                                                                : !errors.rejectedQuantity &&
+                                                                    touched.rejectedQuantity
+                                                                    ? " has-success"
+                                                                    : " ")
+                                                        }>
+                                                        <input
+                                                            name="rejectedQuantity"
+                                                            className="form-control"
+                                                            autoComplete="off"
+                                                            placeholder={
+                                                                Resources[
+                                                                "rejectedQuantity"
+                                                                ][currentLanguage]
+                                                            }
+                                                            value={
+                                                                this.state
+                                                                    .rejectedQuantity
+                                                            }
+                                                            onChange={e =>
+                                                                this.HandelChangeItems(
+                                                                    e,
+                                                                    "rejectedQuantity"
+                                                                )
+                                                            }
+                                                            onBlur={e => {
+                                                                handleBlur(e);
+                                                                handleChange(e);
+                                                            }}
+                                                        />
+                                                        {errors.rejectedQuantity ? (
+                                                            <em className="pError">
+                                                                {
+                                                                    errors.rejectedQuantity
+                                                                }
+                                                            </em>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+
+                                                <div className="linebylineInput valid-input fullInputWidth">
+                                                    <label className="control-label">
+                                                        {
+                                                            Resources.remarks[
+                                                            currentLanguage
                                                             ]
                                                         }
-                                                    </button>
-                                                ) : (
-                                                    <button
-                                                        className="primaryBtn-1 btn  disabled"
-                                                        disabled="disabled">
-                                                        <div className="spinner">
-                                                            <div className="bounce1" />
-                                                            <div className="bounce2" />
-                                                            <div className="bounce3" />
-                                                        </div>
-                                                    </button>
-                                                )}
+                                                    </label>
+                                                    <div className="ui input inputDev">
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            value={
+                                                                this.state.remarks
+                                                            }
+                                                            placeholder={
+                                                                Resources.remarks[
+                                                                currentLanguage
+                                                                ]
+                                                            }
+                                                            onBlur={e => {
+                                                                handleChange(e);
+                                                                handleBlur(e);
+                                                            }}
+                                                            onChange={e =>
+                                                                this.setState({
+                                                                    remarks:
+                                                                        e.target
+                                                                            .value
+                                                                })
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="slider-Btns fullWidthWrapper textLeft ">
+                                                    {this.state.BtnLoading ===
+                                                        false ? (
+                                                            <button
+                                                                className={
+                                                                    "primaryBtn-1 btn " +
+                                                                    (this.props
+                                                                        .isViewMode ===
+                                                                        true
+                                                                        ? " disNone"
+                                                                        : "")
+                                                                }
+                                                                type="submit"
+                                                                disabled={
+                                                                    this.props
+                                                                        .isViewMode
+                                                                }>
+                                                                {
+                                                                    Resources["save"][
+                                                                    currentLanguage
+                                                                    ]
+                                                                }
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                className="primaryBtn-1 btn  disabled"
+                                                                disabled="disabled">
+                                                                <div className="spinner">
+                                                                    <div className="bounce1" />
+                                                                    <div className="bounce2" />
+                                                                    <div className="bounce3" />
+                                                                </div>
+                                                            </button>
+                                                        )}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Form>
-                            )}
+                                    </Form>
+                                )}
                         </Formik>
 
                         <div className="doc-pre-cycle">
@@ -2097,7 +2040,7 @@ class materialDeliveryAddEdit extends Component {
                                             {" "}
                                             {
                                                 Resources.goEdit[
-                                                    currentLanguage
+                                                currentLanguage
                                                 ]
                                             }{" "}
                                         </h2>
@@ -2125,8 +2068,8 @@ class materialDeliveryAddEdit extends Component {
                             {this.state.CurrentStep === 1 ? (
                                 <Fragment>{StepOne()}</Fragment>
                             ) : (
-                                StepTwo()
-                            )}
+                                    StepTwo()
+                                )}
                         </div>
 
                         {/* Right Menu */}
@@ -2136,7 +2079,7 @@ class materialDeliveryAddEdit extends Component {
                                     onClick={this.PreviousStep.bind(this)}
                                     className={
                                         this.state.CurrentStep !== 1 &&
-                                        this.state.isEdit === true
+                                            this.state.isEdit === true
                                             ? "step-content-btn-prev "
                                             : "step-content-btn-prev disabled"
                                     }>
@@ -2179,7 +2122,7 @@ class materialDeliveryAddEdit extends Component {
                                             <h6>
                                                 {
                                                     Resources[
-                                                        "materialDelivery"
+                                                    "materialDelivery"
                                                     ][currentLanguage]
                                                 }
                                             </h6>
@@ -2193,8 +2136,8 @@ class materialDeliveryAddEdit extends Component {
                                             (this.state.ThirdStepComplate
                                                 ? "active"
                                                 : this.state.SecondStepComplate
-                                                ? "current__step"
-                                                : "")
+                                                    ? "current__step"
+                                                    : "")
                                         }>
                                         <div className="steps-timeline">
                                             <span>2</span>
@@ -2203,7 +2146,7 @@ class materialDeliveryAddEdit extends Component {
                                             <h6>
                                                 {
                                                     Resources["items"][
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
                                                 }
                                             </h6>
