@@ -1055,7 +1055,7 @@ class riskAddEdit extends Component {
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input mix_dropdown">
-                                            <label className="control-label">{Resources.ownerRisk[currentLanguage]}</label>
+                                            <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
                                             <div className="supervisor__company">
                                                 <div className="super_name">
                                                     <Dropdown data={this.state.companies} isMulti={false}
@@ -2002,7 +2002,7 @@ class riskAddEdit extends Component {
                                                                     id="riskType" />
                                                             </div>
                                                             <div className="linebylineInput valid-input mix_dropdown">
-                                                                <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
+                                                                <label className="control-label">{Resources.ownerRisk[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
                                                                         <Dropdown isMulti={false} data={this.state.companies}
