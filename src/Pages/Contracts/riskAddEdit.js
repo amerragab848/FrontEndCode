@@ -269,14 +269,16 @@ class riskAddEdit extends Component {
                 let IRCyclesPre = [];
                 let IRCyclesPost = [];
                 let totalProposedMit = 0;
-                result.map(i => {
-                    if (i.isActive == true) {
-                        IRCyclesPre.push(i)
-                    } else {
-                        IRCyclesPost.push(i)
-                        totalProposedMit = totalProposedMit + (i.mitigationCost == null ? 0 : i.mitigationCost);
-                    }
-                })
+                if (result.length > 0) {
+                    result.map(i => {
+                        if (i.isActive == true) {
+                            IRCyclesPre.push(i)
+                        } else {
+                            IRCyclesPost.push(i)
+                            totalProposedMit = totalProposedMit + (i.mitigationCost == null ? 0 : i.mitigationCost);
+                        }
+                    })
+                }
 
                 let totalPostRiskEmv = this.state.totalPostRiskEmv;
                 let totalResidualRisk = (totalPostRiskEmv == null ? 0 : totalPostRiskEmv) + totalProposedMit;
@@ -289,7 +291,7 @@ class riskAddEdit extends Component {
                     IRCyclesPost: IRCyclesPost
                 });
 
-                let data = { items: result };
+                let data = { items: result.length > 0 ? result : [] };
                 this.props.actions.ExportingData(data);
             });
             this.fillDropDownsCycle(true);
@@ -1055,7 +1057,7 @@ class riskAddEdit extends Component {
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input mix_dropdown">
-                                            <label className="control-label">{Resources.ownerRisk[currentLanguage]}</label>
+                                            <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
                                             <div className="supervisor__company">
                                                 <div className="super_name">
                                                     <Dropdown data={this.state.companies} isMulti={false}
@@ -2002,7 +2004,7 @@ class riskAddEdit extends Component {
                                                                     id="riskType" />
                                                             </div>
                                                             <div className="linebylineInput valid-input mix_dropdown">
-                                                                <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
+                                                                <label className="control-label">{Resources.ownerRisk[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
                                                                         <Dropdown isMulti={false} data={this.state.companies}
