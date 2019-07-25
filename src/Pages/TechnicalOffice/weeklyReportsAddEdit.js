@@ -391,7 +391,11 @@ class weeklyReportsAddEdit extends Component {
 
         if (this.state.docId !== 0) {
             this.getCoordinationData();
-            dataservice.GetRowById('GetLogsWeeklyReportsTechnicalOfficesForEdit?id=' + this.state.docId).then(result => { this.setState({ technicalOfficeObj: result, EditMood: true }) });
+            let technicalOfficeObj = {
+                arrange: '', workshopDrawingsRecived: '', workshopDrawingsRequired: '',
+                architicturalContractors: '', electricityContractors: '', weeklyReportsId: this.state.docId
+            }
+            dataservice.GetRowById('GetLogsWeeklyReportsTechnicalOfficesForEdit?id=' + this.state.docId).then(result => { this.setState({ technicalOfficeObj: result ? result : technicalOfficeObj, EditMood: true }) });
 
             dataservice.GetDataGrid('GetLogsWeeklyReportsConstraints?parentId=' + this.state.docId).then(result => { this.setState({ constraintsRows: result }) });
 
@@ -1443,8 +1447,8 @@ class weeklyReportsAddEdit extends Component {
                                     <label className="control-label">{Resources.deliveredWorkShopDrawings[currentLanguage]}</label>
                                     <div className="ui input inputDev"  >
                                         <input type="text" className="form-control" placeholder={Resources.deliveredWorkShopDrawings[currentLanguage]}
-                                            value={this.state.technicalOfficeObj.workshopDrawingsRecived}
-                                            onChange={(e) => this.handleChangeStepTwo(e, 'workshopDrawingsRecived')} />
+                                            value={this.state.technicalOfficeObj.didi}
+                                            onChange={(e) => this.handleChangeStepTwo(e, 'didi')} />
                                     </div>
                                 </div>
 
@@ -1776,18 +1780,19 @@ class weeklyReportsAddEdit extends Component {
                                             <div className="slider-Btns fullWidthWrapper textLeft ">
                                                 <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
                                             </div>
-                                            <div className="doc-pre-cycle">
-                                                <header>
-                                                    <h2 className="zero">{Resources['delivery'][currentLanguage]}</h2>
-                                                </header>
-
-                                                <ReactTable
-                                                    // filterable
-                                                    ref={(r) => { this.selectTable = r }}
-                                                    data={this.state.deliveryRows} noDataText={Resources['noData'][currentLanguage]}
-                                                    columns={columnsDevlivery} defaultPageSize={10} minRows={2} />
-                                            </div>
                                         </div>
+                                        <div className="doc-pre-cycle">
+                                            <header>
+                                                <h2 className="zero">{Resources['delivery'][currentLanguage]}</h2>
+                                            </header>
+
+                                            <ReactTable
+                                                // filterable
+                                                ref={(r) => { this.selectTable = r }}
+                                                data={this.state.deliveryRows} noDataText={Resources['noData'][currentLanguage]}
+                                                columns={columnsDevlivery} defaultPageSize={10} minRows={2} />
+                                        </div>
+
                                     </div>
                                 </Form>
                             )}

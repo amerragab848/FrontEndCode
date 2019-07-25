@@ -323,11 +323,6 @@ class dailyReportsAddEdit extends Component {
     }
 
     componentDidMount() {
-        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-        for (var i = 0; i < links.length; i++) {
-            if ((i + 1) % 2 == 0) { links[i].classList.add("even") }
-            else { links[i].classList.add("odd") }
-        }
         this.checkDocumentIsView();
 
         if (this.state.docId !== 0) {
@@ -992,7 +987,7 @@ class dailyReportsAddEdit extends Component {
                     <div className="doc-pre-cycle letterFullWidth">
                         <div className="precycle-grid">
                             <div className="slider-Btns">
-                                <button className="primaryBtn-1 btn meduimBtn " type="button" onClick={()=>this.NextStep()}>
+                                <button className="primaryBtn-1 btn meduimBtn " type="button" onClick={() => this.NextStep()}>
                                     {Resources.next[currentLanguage]}
                                 </button>
                             </div>
@@ -1210,7 +1205,6 @@ class dailyReportsAddEdit extends Component {
                                                     touched={touched.area} index="area" name="area" id="area" />
                                             </div>
 
-
                                             <div className="linebylineInput valid-input fullInputWidth">
                                                 <label className="control-label">{Resources.quantity[currentLanguage]}</label>
                                                 <div className={"inputDev ui input" + (errors.amount && touched.amount ? (" has-error") : !errors.amount && touched.amount ? (" has-success") : " ")} >
@@ -1240,16 +1234,16 @@ class dailyReportsAddEdit extends Component {
                                             <div className="slider-Btns fullWidthWrapper textLeft ">
                                                 <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
                                             </div>
-                                            <div className="doc-pre-cycle">
-                                                <header>
-                                                    <h2 className="zero">{Resources['fieldForce'][currentLanguage]}</h2>
-                                                </header>
+                                        </div>
+                                        <div className="doc-pre-cycle">
+                                            <header>
+                                                <h2 className="zero">{Resources['fieldForce'][currentLanguage]}</h2>
+                                            </header>
 
-                                                <ReactTable
-                                                    ref={(r) => { this.selectTable = r }}
-                                                    data={this.state.fieldForceRows} noDataText={Resources['noData'][currentLanguage]}
-                                                    columns={columns} defaultPageSize={10} minRows={2} />
-                                            </div>
+                                            <ReactTable
+                                                ref={(r) => { this.selectTable = r }}
+                                                data={this.state.fieldForceRows} noDataText={Resources['noData'][currentLanguage]}
+                                                columns={columns} defaultPageSize={10} minRows={2} />
                                         </div>
                                     </div>
                                 </Form>
@@ -1847,9 +1841,9 @@ class dailyReportsAddEdit extends Component {
 
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown title="weatherFromTo" data={this.state.fromToData} selectedValue={this.state.selectedFromTo}
-                                                    handleChange={event => this.setState({ selectedFromTo: event })} 
-                                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromToId}
-                                                    touched={touched.fromToId} 
+                                                    handleChange={event => this.setState({ selectedFromTo: event })}
+                                                    onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromToId}
+                                                    touched={touched.fromToId}
                                                     index="fromToId" name="fromToId" id="fromToId" />
                                             </div>
 
@@ -1898,7 +1892,7 @@ class dailyReportsAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
                         docTitle={Resources.dailyReports[currentLanguage]} moduleTitle={Resources["technicalOffice"][currentLanguage]} />
                     <div className="doc-container">
-                        <div className="step-content">
+                        <div className="step-content withManyTabs">
                             {this.props.changeStatus == true ? (
                                 <header className="main__header">
                                     <div className="main__header--div">
