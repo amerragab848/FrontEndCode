@@ -8058,5 +8058,9 @@
     "seeAll": {
         "en": "See All",
         "ar": "عرض الجميع"
+    },
+    "raisedBy": {
+        "en": "Raised By",
+        "ar": "اُعِدَ بواسطة"
     }
 }
