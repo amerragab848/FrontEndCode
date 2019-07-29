@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
 })
 
 
-const publicConfiguarion =Config.IP_CONFIG;// config.getPublicConfiguartion();
+const publicConfiguarion =Config.IP_CONFIG;// Config.getPublicConfiguartion();
 
 class Login extends Component {
 
@@ -36,8 +36,8 @@ class Login extends Component {
 
     loginHandler = (input) => {
         this.setState({ isLoading: true })
-        let companyId = publicConfiguarion.accountCompanyId// config["accountCompanyId"]
-        let loginServer = publicConfiguarion.loginServer// config["loginServer"]
+        let companyId = Config.getPublicConfiguartion().accountCompanyId// config["accountCompanyId"]
+        let loginServer =Config.getPublicConfiguartion().loginServer// config["loginServer"]
         let url = '/token'
         let param = 'grant_type=password&username=' + input.userName + '&password=' + input.password + '&companyId=' + companyId
         Api.Login(loginServer, url, param).then(Response => {
@@ -74,7 +74,7 @@ class Login extends Component {
 
                     let browserObj = this.createBrowserObject()
                     let cookie = this.getCookie();
-                    if (publicConfiguarion.canSendAlert) {
+                    if (Config.getPublicConfiguartion().canSendAlert) {
                         browserObj.token = cookie
                         if (browserObj.publicIP === undefined) {
                             Api.getPublicIP("https://ipapi.co/json").then(res => {
