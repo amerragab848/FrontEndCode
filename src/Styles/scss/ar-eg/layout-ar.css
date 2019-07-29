@@ -14770,17 +14770,23 @@ h1, h2, h3, h4, h5 {
 
 .react-grid-Grid {
     overflow: unset !important;
+    border: 1px solid #e9ebf0 !important
 }
 
 .react-grid-Header {
     height: 58px !important;
-    border-bottom: 1px solid #ddd !important;
+    border-bottom: 1px solid #e9ebf0 !important;
     background: #fff !important;
     z-index: 9 !important;
+    box-shadow: none !important
+}
+
+.react-grid-Main {
+    outline: none !important;
 }
 
 .react-grid-Row {
-    border-bottom: 1px solid #ddd !important;
+    border-bottom: 1px solid #e9ebf0 !important;
     height: 60px !important;
 }
 
@@ -15929,10 +15935,6 @@ table edition
 
 .has-success .spanValidation label {
     color: #2AA832;
-}
-
-.customD_Menu div:first-child > div:hover {
-    border-color: #cccccc;
 }
 
 .has-error .customD_Menu div:first-child > div {
