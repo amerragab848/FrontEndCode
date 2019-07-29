@@ -1713,6 +1713,19 @@ var routes = [
     }
   },
   {
+    route: "dailyReports",
+    moduleId: "commonLogs",
+    title: "dailyReports",
+    nav: true,
+    hash: "#dailyReports",
+    settings: {
+      Site: true,
+      permission: 269,
+      caption: "procoor-icon-submittal",
+      order: 1
+    }
+  },
+  {
     route:
       "submittalAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
     moduleId: "site/submittalAddEdit",

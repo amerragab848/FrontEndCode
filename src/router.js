@@ -169,7 +169,8 @@ import GlobalSearch from "./Componants/publicComponants/GlobalSearch";
 import currencyExchangeRates from './Componants/GeneralSetting/Administrations/currencyExchangeRates';
 import specSectionChild from './Componants/GeneralSetting/MenuDefaultData/specSectionChild';
 import RiskRealisation from './Componants/publicComponants/RiskRealisation';
-
+import WeeklyReportsAddEdit from "./Pages/TechnicalOffice/weeklyReportsAddEdit";
+import dailyReportsAddEdit from "./Pages/TechnicalOffice/dailyReportsAddEdit";
 import RiskCause from './Componants/OptionsPanels/RiskCause';
 let setupRoutes = ProjectSetupRoutes.map((item) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
@@ -354,6 +355,9 @@ let originalRoutes = [
     , <Route path="/currencyExchangeRates" component={currencyExchangeRates} />
     , <Route path="/specSectionChild" component={specSectionChild} /> 
     , <Route path="/RiskRealisation" component={RiskRealisation} />
+    , <Route path="/WeeklyReportsAddEdit" component={WeeklyReportsAddEdit} />
+    , <Route path="/dailyReportsAddEdit" component={dailyReportsAddEdit} />
+    
     , <Route path="/emailAddEdit" component={emailAddEdit} />
 ];
 

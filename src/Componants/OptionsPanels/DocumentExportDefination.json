@@ -2529,5 +2529,107 @@
             "resourceCode",
             "stock"
         ]
+    },
+    "97": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "startDate",
+                "value": "startDate",
+                "type": "D"
+            },
+            {
+                "name": "finishDate",
+                "value": "endDate",
+                "type": "D"
+            },
+            {
+                "name": "consultatnt",
+                "value": "companyName",
+                "type": "S"
+            },
+            {
+                "name": "weekNumber",
+                "value": "weekNumber",
+                "type": "S"
+            },
+            {
+                "name": "projectManager",
+                "value": "companyNameManager",
+                "type": "S"
+            },
+            {
+                "name": "projectContact",
+                "value": "contactNameManager",
+                "type": "S"
+            },
+            {
+                "name": "siteCompany",
+                "value": "contactNameEngineer",
+                "type": "S"
+            },
+            {
+                "name": "siteEngineer",
+                "value": "companyNameEngineer",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
+    },
+    "60": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "CompanyName",
+                "value": "companyName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
     }
 }

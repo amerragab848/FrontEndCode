@@ -5107,7 +5107,7 @@
         "en": "Sub Order Unit",
         "ar": " اسعار الوحدات من الباطن"
     },
-    "newUnitPrice": {
+    "newUnitPrice": { 
         "en": "New UnitPrice",
         "ar": " السعر الجديد"
     },
@@ -8082,5 +8082,9 @@
     "dashboardCenter": {
         "en": "Dashboard center",
         "ar": "لوحة التحكم"
-    } 
+    } ,
+    "raisedBy": {
+        "en": "Raised By",
+        "ar": "اُعِدَ بواسطة"
+    }
 }

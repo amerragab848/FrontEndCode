@@ -30,6 +30,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import Export from "../../Componants/OptionsPanels/Export";
+import Api from "../../api";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -70,11 +71,11 @@ let type = 1;
 const _ = require('lodash')
 let itemsColumns = [];
 let VOItemsColumns = [];
+const isCompany = Config.getPayload().uty == "company" ? true : false;
 
 class requestPaymentsAddEdit extends Component {
 
     constructor(props) {
-
         super(props);
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
@@ -729,13 +730,16 @@ class requestPaymentsAddEdit extends Component {
             });
 
             this.buildColumns(this.props.changeStatus);
+
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                 this.setState({
                     paymentsItems: result,
                     isLoading: false
                 });
             });
+
             let contract = _.find(this.state.contractsPool, function (x) { return x.id == event.value });
+
             if (contract) {
 
                 var objDate = new Date(),
@@ -1578,8 +1582,8 @@ class requestPaymentsAddEdit extends Component {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
             });
         }
-         else if (event.label === "AddMissingItems") {
-            dataservice.GetDataGrid("v4_addMissingRequestPaymentItem?requestId=" + this.state.docId+ "&contractId=" + this.state.document.contractId).then(result => {
+        else if (event.label === "AddMissingItems") {
+            dataservice.GetDataGrid("v4_addMissingRequestPaymentItem?requestId=" + this.state.docId + "&contractId=" + this.state.document.contractId).then(result => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }).catch(res => {
                 toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -1628,7 +1632,27 @@ class requestPaymentsAddEdit extends Component {
             }).catch(ex => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             });
-        } else {
+        }else if(this.state.currentDocument==='requestItems'){ 
+            this.setState({isLoading:true})
+            Api.post("DeletePaymentRequestItems" , this.state.currentId).then(result => {
+                let originalData = this.state.paymentsItems;
+                let ids=this.state.currentId;
+                let newItems= originalData.filter(item=> !ids.includes(item.id)); 
+                this.setState({
+                    paymentsItems: newItems,
+                    showDeleteModal: false,
+                    isLoading:false
+                });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }).catch(ex => {
+                toast.success(Resources["operationCanceled"][currentLanguage]);
+                this.setState({ 
+                    showDeleteModal: false,
+                    isLoading:false
+                });
+            });
+        }
+         else {
 
             if (this.props.changeStatus) {
                 dataservice.GetDataGrid("DeleteDistributionItems?id=" + this.state.currentId).then(result => {
@@ -1888,6 +1912,10 @@ class requestPaymentsAddEdit extends Component {
         });
     }
 
+    clickHandlerDeleteRows = (rows) => {
+        this.viewConfirmDelete(rows,'requestItems')
+    }
+
     render() {
 
         let actions = [
@@ -1985,7 +2013,8 @@ class requestPaymentsAddEdit extends Component {
         const ItemsGrid = this.state.isLoading === false && this.state.CurrentStep === 2 && itemsColumns.length > 0 ? (
             <GridSetup
                 rows={this.state.paymentsItems}
-                showCheckbox={false}
+                showCheckbox={isCompany && this.props.changeStatus ? true : false}
+                clickHandlerDeleteRows={this.clickHandlerDeleteRows}
                 pageSize={this.state.pageSize}
                 onRowClick={this.onRowClick}
                 columns={itemsColumns}
@@ -2504,12 +2533,12 @@ class requestPaymentsAddEdit extends Component {
                                                     </div>
                                                 </div>
                                                 : null}
-                                            <div class="submittalFilter">
-                                                <div class="subFilter">
-                                                    <h3 class="zero"> {Resources['AddedItems'][currentLanguage]}</h3>
+                                            <div className="submittalFilter">
+                                                <div className="subFilter">
+                                                    <h3 className="zero"> {Resources['AddedItems'][currentLanguage]}</h3>
                                                     <span>{this.state.paymentsItems.length}</span>
                                                 </div>
-                                                <div class="filterBTNS">
+                                                <div className="filterBTNS">
                                                     <div className="default__dropdown--custom" style={{ marginBottom: '0' }}>
                                                         <div className="default__dropdown">
                                                             <Dropdown
