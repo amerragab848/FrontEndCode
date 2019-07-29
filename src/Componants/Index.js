@@ -42,7 +42,7 @@ class Index extends Component {
     const data = orderBy(await IndexedDb.getSelectedWidgets(), 'order', 'asc');
 
     const categoryOrder = await IndexedDb.getCategoryOrder();
-    
+
     let widgets = "";
 
     if (data.length > 0) {
@@ -130,7 +130,9 @@ class Index extends Component {
           </h2>
           <div className={"SummeriesContainerContent " + (category.title == "mainAlerts" ? " numbersContainerContent" : " ")}>
             {category.widgets.map((widget, widgetIndex) => {
-              return this.renderWidget(widget, widgetIndex);
+              if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
+                return this.renderWidget(widget, widgetIndex);
+              }
             })}
           </div>
         </Fragment>

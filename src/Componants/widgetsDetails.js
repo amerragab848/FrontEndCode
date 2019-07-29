@@ -48,6 +48,14 @@ let categories = {
     '11': {
         title: 'bar',
         type: 3
+    },
+    '12': {
+        title: 'pie',
+        type: 3
+    },
+    '13': {
+        title: 'line',
+        type: 3
     }
 };
 

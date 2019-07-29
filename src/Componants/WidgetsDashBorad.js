@@ -1321,6 +1321,24 @@ var widgets = [
         barContent: [{ name: 'Contracts Under Review', value: 'countUnderContract' }, { name: 'Contracted', value: 'countContract' }]
       }
     ]
+  },
+  {
+    widgetCategory: "pie",
+    refrence: 2,
+    key: "2-2",
+    canView: false,
+    checked: false,
+    order: 2,
+    widgets: []
+  },
+  {
+    widgetCategory: "line",
+    refrence: 2,
+    key: "2-3",
+    canView: false,
+    checked: false,
+    order: 3,
+    widgets: []
   }
 ];
 
