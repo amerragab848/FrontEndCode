@@ -870,9 +870,6 @@ class requestPaymentsAddEdit extends Component {
     NextStep = () => {
 
         if (this.state.CurrentStep === 1) {
-            this.setState({
-                isLoading: true
-            });
             this.FillGridItems();
             this.editPaymentRequistion();
 
