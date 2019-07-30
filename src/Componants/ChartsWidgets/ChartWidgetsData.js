@@ -1,7 +1,7 @@
 
 let ChartWidgets = [
     {
-        id: 'wt-Name03',
+        id: 'wt-Name01',
         title: 'completedActivitiesCommulative',
         props: {
             'api': 'GetTopFiveCompletedActivities',
@@ -14,8 +14,9 @@ let ChartWidgets = [
         catagName: 'projectName',
         multiSeries: 'no',
         barContent: []
-    }, {
-        id: 'wt-Name04',
+    },
+    {
+        id: 'wt-Name02',
         title: 'completedActivitiesThisMonth',
         props: {
             'api': 'GetTopFiveMonthlyCompletedActivities',
@@ -28,8 +29,9 @@ let ChartWidgets = [
         catagName: 'projectName',
         multiSeries: 'no',
         barContent: []
-    }, {
-        id: 'wt-Name05',
+    },
+    {
+        id: 'wt-Name03',
         title: 'percentOfMaterialRequestPerProject',
         props: {
             'api': 'GetTopFiveRequests',
@@ -42,9 +44,9 @@ let ChartWidgets = [
         catagName: 'projectName',
         multiSeries: 'no',
         barContent: []
-    }, {
-        ////////////////////////////////////
-        id: 'wt-Name07',
+    },
+    {
+        id: 'wt-Name04',
         title: 'percentOfRejectedSubmittalPerProject',
         props: {
             'api': 'GetTopFiveApprovedSubmittal?status=false',
@@ -57,8 +59,9 @@ let ChartWidgets = [
         catagName: 'projectName',
         multiSeries: 'no',
         barContent: []
-    } , {
-        id: 'wt-Name09',
+    },
+    {
+        id: 'wt-Name05',
         title: 'rejectedInspectionRequest',
         props: {
             'api': 'GetStatusIspectionRequest?status=false',
@@ -71,8 +74,9 @@ let ChartWidgets = [
         catagName: 'projectName',
         multiSeries: 'no',
         barContent: []
-    }, {
-        id: 'wt-Name10',
+    },
+    {
+        id: 'wt-Name06',
         title: 'pendingItemInWorkFlow',
         props: {
             'api': 'GetPendingItemInWorkFlowTopFive',
@@ -85,8 +89,9 @@ let ChartWidgets = [
         catagName: 'docName',
         multiSeries: 'no',
         barContent: []
-    }, {
-        id: 'wt-Name12',
+    },
+    {
+        id: 'wt-Name07',
         title: 'contractsSummaryAllProjectProject',
         props: {
             'api': 'GetTopFiveContractsForAllProjects',
@@ -101,7 +106,6 @@ let ChartWidgets = [
         barContent: [{ name: 'Contracts Under Review', value: 'countUnderContract' }, { name: 'Contracted', value: 'countContract' }]
 
     }
-
 ];
 
 export default ChartWidgets; 

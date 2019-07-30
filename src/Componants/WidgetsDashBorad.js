@@ -398,7 +398,8 @@ var widgets = [
         }
       }
     ]
-  }, {
+  },
+  {
     widgetCategory: "reportChart",
     refrence: 0,
     key: "0-3",
@@ -412,6 +413,7 @@ var widgets = [
         permission: 1377,
         key: "0-3-1",
         title: 'projectStatus',
+        order: 1,
         props: {
           'api': 'GetProjectsStatusSummaryCount',
           'name': 'item',
@@ -425,6 +427,7 @@ var widgets = [
         key: "0-3-2",
         checked: false,
         title: 'percentageExpensesTypesOfTotal',
+        order: 2,
         props: {
           'api': 'GetPercentageExpensesType',
           'name': 'projectName',
@@ -439,6 +442,7 @@ var widgets = [
         checked: false,
         permission: 3507,
         title: 'expensesAllProject',
+        order: 3,
         props: {
           'api': 'GetExpensesByTypeForAllProjects',
           'name': 'expenseTypeName',
@@ -453,6 +457,7 @@ var widgets = [
         checked: false,
         permission: 10041,
         title: 'riskStatusYearly',
+        order: 4,
         props: {
           'api': 'GetRiskDataChartLine'
         },
@@ -464,6 +469,7 @@ var widgets = [
         checked: false,
         permission: 3498,
         title: 'percentOfApprovedSubmittalPerProject',
+        order: 5,
         props: {
           'api': 'GetTopFiveApprovedSubmittal?status=true',
           'name': 'projectName',
@@ -481,6 +487,7 @@ var widgets = [
         permission: 10042,
         checked: false,
         title: 'letterStatusYearly',
+        order: 6,
         props: {
           'api': 'GetChartLineDataByDocType?docType=17'
         },
@@ -491,6 +498,7 @@ var widgets = [
         key: "0-3-7",
         checked: false,
         permission: 3497,
+        order: 7,
         title: 'percentOfMaterialRequestPerProject',
         props: {
           'api': 'GetTopFiveRequests',
@@ -508,6 +516,7 @@ var widgets = [
         key: "0-3-8",
         checked: false,
         permission: 10039,
+        order: 8,
         title: 'submittalStatusYearly',
         props: {
           'api': 'GetChartLineDataByDocType?docType=42'
@@ -519,6 +528,7 @@ var widgets = [
         key: "0-3-9",
         checked: false,
         permission: 3499,
+        order: 9,
         title: 'percentOfRejectedSubmittalPerProject',
         props: {
           'api': 'GetTopFiveApprovedSubmittal?status=false',
@@ -536,6 +546,7 @@ var widgets = [
         key: "0-3-10",
         checked: false,
         permission: 10043,
+        order: 10,
         title: 'countinspectionApproved',
         props: {
           'api': 'GetStatusIspectionRequest?status=true',
@@ -553,6 +564,7 @@ var widgets = [
         key: "0-3-11",
         checked: false,
         permission: 3505,
+        order: 11,
         title: 'contractsPerProject',
         props: {
           'api': 'GetTopFiveContracts',
@@ -572,6 +584,7 @@ var widgets = [
         checked: false,
         title: 'budgetVariance',
         permission: 3509,
+        order: 12,
         props: {
           'api': 'GetTopFiveBudgetVariance',
           'name': 'projectName',
@@ -588,6 +601,7 @@ var widgets = [
         key: "0-3-13",
         checked: false,
         permission: 10040,
+        order: 13,
         title: 'transmittalStatusYearly',
         props: {
           'api': 'GetChartLineDataByDocType?docType=28'
@@ -1044,16 +1058,16 @@ var widgets = [
   },
   {
     widgetCategory: "qualityControl",
-    refrence: 2,
-    key: "2-1",
+    refrence: 1,
+    key: "1-6",
     canView: false,
     checked: false,
-    order: 1,
+    order: 6,
     widgets: [
       {
         title: "materialRequestcount",
         permission: 3343,
-        key: "2-1-1",
+        key: "1-6-1",
         canView: false,
         checked: false,
         order: 1,
@@ -1066,12 +1080,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "2-1-1"
+          key: "1-6-1"
         }
       }, {
         title: "inspectionRequestCount",
         permission: 0,
-        key: "2-1-2",
+        key: "1-6-2",
         canView: false,
         checked: false,
         order: 2,
@@ -1084,12 +1098,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "2-1-2"
+          key: "1-6-2"
         }
       }, {
         title: "NCRCount",
         permission: 0,
-        key: "2-1-3",
+        key: "1-6-3",
         canView: false,
         checked: false,
         order: 3,
@@ -1102,12 +1116,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "2-1-3"
+          key: "1-6-3"
         }
       }, {
         title: "siteInstructionsCount",
         permission: 0,
-        key: "2-1-4",
+        key: "1-6-4",
         canView: false,
         checked: false,
         order: 4,
@@ -1120,23 +1134,23 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "2-1-4"
+          key: "1-6-4"
         }
       }
     ]
   },
   {
     widgetCategory: "po",
-    refrence: 2,
-    key: "2-2",
+    refrence: 1,
+    key: "1-7",
     canView: false,
     checked: false,
-    order: 1,
+    order: 7,
     widgets: [
       {
         title: "InvoicesForPOCount",
         permission: 0,
-        key: "2-2-1",
+        key: "1-7-1",
         canView: false,
         checked: false,
         order: 1,
@@ -1149,12 +1163,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "2-2-1"
+          key: "1-7-1"
         }
       }, {
         title: "projectInventory",
         permission: 0,
-        key: "2-2-2",
+        key: "1-7-2",
         canView: false,
         checked: false,
         order: 2,
@@ -1167,10 +1181,164 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "2-2-2"
+          key: "1-7-2"
         }
       }
     ]
+  },
+  {
+    widgetCategory: "bar",
+    refrence: 2,
+    key: "2-1",
+    canView: false,
+    checked: false,
+    order: 1,
+    widgets: [
+      {
+        key: "2-1-1",
+        checked: false,
+        permission: 0,
+        order: 1,
+        title: 'completedActivitiesCommulative',
+        props: {
+          'api': 'GetTopFiveCompletedActivities',
+          'name': 'projectName',
+          'data': 'percentage'
+        },
+        type: 'column',
+        stack: 'normal',
+        yTitle: 'total',
+        catagName: 'projectName',
+        multiSeries: 'no',
+        barContent: []
+      },
+      {
+        key: "2-1-2",
+        checked: false,
+        permission: 0,
+        order: 2,
+        title: 'completedActivitiesThisMonth',
+        props: {
+          'api': 'GetTopFiveMonthlyCompletedActivities',
+          'name': 'projectName',
+          'data': 'percentage'
+        },
+        type: 'column',
+        stack: 'normal',
+        yTitle: 'total',
+        catagName: 'projectName',
+        multiSeries: 'no',
+        barContent: []
+      },
+      {
+        key: "2-1-3",
+        checked: false,
+        permission: 0,
+        order: 3,
+        title: 'percentOfMaterialRequestPerProject',
+        props: {
+          'api': 'GetTopFiveRequests',
+          'name': 'projectName',
+          'data': 'percentage'
+        },
+        type: 'column',
+        stack: 'normal',
+        yTitle: 'total',
+        catagName: 'projectName',
+        multiSeries: 'no',
+        barContent: []
+      },
+      {
+        key: "2-1-4",
+        checked: false,
+        permission: 0,
+        order: 4,
+        title: 'percentOfRejectedSubmittalPerProject',
+        props: {
+          'api': 'GetTopFiveApprovedSubmittal?status=false',
+          'name': 'projectName',
+          'data': 'percentage'
+        },
+        type: 'column',
+        stack: 'normal',
+        yTitle: 'total',
+        catagName: 'projectName',
+        multiSeries: 'no',
+        barContent: []
+      },
+      {
+        key: "2-1-5",
+        checked: false,
+        permission: 0,
+        order: 5,
+        title: 'rejectedInspectionRequest',
+        props: {
+          'api': 'GetStatusIspectionRequest?status=false',
+          'name': 'projectName',
+          'data': 'percentage'
+        },
+        type: 'column',
+        stack: 'normal',
+        yTitle: 'sum',
+        catagName: 'projectName',
+        multiSeries: 'no',
+        barContent: []
+      },
+      {
+        key: "2-1-6",
+        checked: false,
+        permission: 0,
+        order: 6,
+        title: 'pendingItemInWorkFlow',
+        props: {
+          'api': 'GetPendingItemInWorkFlowTopFive',
+          'name': 'docName',
+          'data': 'count'
+        },
+        type: 'column',
+        stack: 'normal',
+        yTitle: 'total',
+        catagName: 'docName',
+        multiSeries: 'no',
+        barContent: []
+      },
+      {
+        key: "2-1-7",
+        checked: false,
+        permission: 0,
+        order: 7,
+        title: 'contractsSummaryAllProjectProject',
+        props: {
+          'api': 'GetTopFiveContractsForAllProjects',
+          'name': 'docName',
+          'data': 'count'
+        },
+        type: 'column',
+        stack: '',
+        yTitle: 'total',
+        catagName: 'projectName',
+        multiSeries: 'yes',
+        barContent: [{ name: 'Contracts Under Review', value: 'countUnderContract' }, { name: 'Contracted', value: 'countContract' }]
+      }
+    ]
+  },
+  {
+    widgetCategory: "pie",
+    refrence: 2,
+    key: "2-2",
+    canView: false,
+    checked: false,
+    order: 2,
+    widgets: []
+  },
+  {
+    widgetCategory: "line",
+    refrence: 2,
+    key: "2-3",
+    canView: false,
+    checked: false,
+    order: 3,
+    widgets: []
   }
 ];
 

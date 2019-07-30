@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import configureStore from "./store/configureStore";
 import { ToastContainer } from "react-toastify";
 import Config from "./Services/Config";
+import IndexedDb from "./IndexedDb";
 
 const loadingStyle = {
   container: {
@@ -44,21 +45,29 @@ const loadingStyle = {
   }
 }
 
-const store = configureStore();
-
+const store = configureStore(); 
 const IsAuthorize = Config.IsAuthorized();
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    IndexedDb.initialize();
+  };
 
   state = {
     cssLoaded: false,
     isComplete: false
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await IndexedDb.seed();
 
     let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-    fetch("/assets/IP_Configrations.json").then(r => r.json()).then(data => {
+    fetch("/assets/IP_Configrations.json")
+    .then(r => r.json())
+    .then(data => {
       Config.SetConfigObject(data);
     }).then(e => {
       currentLanguage === "ar" ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => {
