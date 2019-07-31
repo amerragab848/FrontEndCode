@@ -8059,6 +8059,30 @@
         "en": "See All",
         "ar": "عرض الجميع"
     },
+    "chart": {
+        "en": "Charts",
+        "ar": "رسم البيانى"
+    },
+    "customize": {
+        "en": "Customize",
+        "ar": "تعديل"
+    },
+    "bar": {
+        "en": "Bar",
+        "ar": "Bar"
+    },
+    "pie": {
+        "en": "Pie",
+        "ar": "Pie"
+    },
+    "line": {
+        "en": "Line",
+        "ar": "Line"
+    } ,
+    "dashboardCenter": {
+        "en": "Dashboard center",
+        "ar": "لوحة التحكم"
+    } ,
     "raisedBy": {
         "en": "Raised By",
         "ar": "اُعِدَ بواسطة"

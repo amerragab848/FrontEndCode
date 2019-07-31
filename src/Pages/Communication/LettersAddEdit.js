@@ -23,6 +23,8 @@ import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -544,7 +546,7 @@ class LettersAddEdit extends Component {
     viewAttachments() {
         return this.state.docId > 0 ? (
             Config.IsAllow(3317) === true ? (
-               <ViewAttachment isApproveMode={this.state.isViewMode}  
+                <ViewAttachment isApproveMode={this.state.isViewMode}
                     docTypeId={this.state.docTypeId}
                     docId={this.state.docId}
                     projectId={this.state.projectId}
@@ -1057,6 +1059,9 @@ class LettersAddEdit extends Component {
                                                                             index="fromCompanyId"
                                                                             name="fromCompanyId"
                                                                             id="fromCompanyId"
+                                                                            styles={CompanyDropdown}
+                                                                            classDrop="companyName1"
+
                                                                         />
                                                                     </div>
                                                                     <div className="super_company">
@@ -1103,6 +1108,8 @@ class LettersAddEdit extends Component {
                                                                             index="letter-fromContactId"
                                                                             name="fromContactId"
                                                                             id="fromContactId"
+                                                                            classDrop="contactName1"
+                                                                            styles={ContactDropdown}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -1159,6 +1166,8 @@ class LettersAddEdit extends Component {
                                                                             index="letter-toCompany"
                                                                             name="toCompanyId"
                                                                             id="toCompanyId"
+                                                                            styles={CompanyDropdown}
+                                                                            classDrop="companyName1"
                                                                         />
                                                                     </div>
                                                                     <div className="super_company">
@@ -1202,6 +1211,8 @@ class LettersAddEdit extends Component {
                                                                             index="letter-toContactId"
                                                                             name="toContactId"
                                                                             id="toContactId"
+                                                                            classDrop="contactName1"
+                                                                            styles={ContactDropdown}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -1428,9 +1439,9 @@ class LettersAddEdit extends Component {
                                         </Formik>
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
-                                    <div>
-                                            {this.state.docId > 0 && this.state.isViewMode === false  ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={839} EditAttachments={3223} ShowDropBox={3607} ShowGoogleDrive={3608} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-                                            { this.viewAttachments()  }
+                                        <div>
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={839} EditAttachments={3223} ShowDropBox={3607} ShowGoogleDrive={3608} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                            {this.viewAttachments()}
                                             {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                         </div>
                                     </div>

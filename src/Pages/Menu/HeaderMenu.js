@@ -5,7 +5,7 @@ import Img from "../../Styles/images/avatar.png";
 import CryptoJS from "crypto-js";
 import config from "../../Services/Config";
 import dataservice from "../../Dataservice";
-import Select from "react-select";
+import Select, { components } from "react-select";
 import Resources from "../../resources.json";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import Logo from "../../Styles/images/logo.svg";
@@ -18,6 +18,71 @@ import { bindActionCreators } from "redux";
 import * as dashboardComponantActions from "../../store/actions/communication";
 import moment from "moment";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
+const DashboardArrow = () => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" xmlnsXlink="http://www.w3.org/1999/xlink">
+      <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+        <g id="Icons/Info/drop/dproimaryBtn2/16px/Black" fill="#4382F9">
+          <g id="info_24pt-black">
+            <path fill="#4382F9" fillRule="evenodd" d="M11.319 6c.886 0 .8.687.346 1.235-.587.705-2.28 2.757-2.728 3.224-.69.721-1.004.722-1.696 0L4.303 7.235C3.866 6.719 3.848 6 4.606 6h6.713z"></path>
+          </g>
+        </g>
+      </g>
+    </svg>
+  );
+};
+
+const DropdownIndicator = props => {
+  return (
+    <Fragment>
+      <components.DropdownIndicator {...props}>
+        <DashboardArrow />
+      </components.DropdownIndicator>
+    </Fragment>
+  );
+};
+
+let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
+
+
+const dashboardMenu = {
+  control: (styles, { isFocused }) =>
+    ({
+      ...styles,
+      transition: ' all 0.4s ease-in-out',
+      width: '166px',
+      height: '36px',
+      borderRadius: '4px',
+      border: isFocused ? 'solid 1px #3570e6' : 'solid 1px #5f98fa',
+      backgroundColor: isFocused ? '#f7faff' : 'rgba(255, 255, 255, 0)',
+      boxShadow: isFocused ? 'none' : 'none',
+      '&:hover': {
+        border: ' solid 1px #4382f9',
+        backgroundColor: ' #fafcff',
+      }
+    }),
+  option: (styles, { isDisabled, isFocused, isSelected }) => {
+    return {
+      ...styles,
+      backgroundColor: isDisabled ? '#fff' : isSelected ? '#e9ecf0' : isFocused ? '#f2f6fa' : "#fff",
+      color: '#3e4352',
+      fontSize: '14px',
+      cursor: isDisabled ? 'not-allowed' : 'pointer',
+      textTransform: 'capitalize',
+      fontFamily: publicFonts,
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    };
+  },
+  input: styles => ({ ...styles, maxWidth: '100%' }),
+  placeholder: styles => ({ ...styles, color: '#3570e6', fontSize: '14', width: '100%', fontFamily: publicFonts, fontWeight: '700' }),
+  singleValue: styles => ({ ...styles, color: '#3570e6', fontSize: '14', width: '100%', fontFamily: publicFonts, fontWeight: '700' }),
+  indicatorSeparator: styles => ({ ...styles, opacity: '0.3', backgroundColor: '#83b4fc' }),
+  menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db' }),
+  dropdownIndicator: styles => ({ ...styles, fill: '#83b4fc' })
+};
 
 class HeaderMenu extends Component {
   constructor(props) {
@@ -1040,7 +1105,7 @@ class HeaderMenu extends Component {
                     <li className="default__dropdown">
                       <Select key="dash-selectproject" ref="dash-selectproject" options={this.state.projects}
                         isSearchable="true" defaultValue={this.state.value} value={this.state.selectedValue}
-                        isMulti={false} onChange={this.handleChangeSelectProject} />
+                        isMulti={false} onChange={this.handleChangeSelectProject} styles={dashboardMenu} components={{ DropdownIndicator }} />
                     </li>
                   </Fragment>
                 ) : null}

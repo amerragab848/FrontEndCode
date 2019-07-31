@@ -14,6 +14,8 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from '../../publicComponants/LoadingSection';
 import Eyepw from '../../../Styles/images/eyepw.svg';
 import { toast } from "react-toastify";
+import CompanyDropdown from '../../publicComponants/CompanyDropdown'
+import ContactDropdown from '../../publicComponants/ContactDropdown'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const publicConfiguarion = config.getPayload();
@@ -408,14 +410,14 @@ class AddAccount extends Component {
                                                                 onBlur={setFieldTouched} error={errors.ContactName} id="ContactName"
                                                                 touched={touched.ContactName} index="IR-ContactName"
                                                                 handleChange={this.ContactNamehandleChange}
-                                                                selectedValue={this.state.ContactId}
+                                                                selectedValue={this.state.ContactId} styles={CompanyDropdown} classDrop="contactName1 "
                                                             />
                                                         </div>
 
                                                         <div className="super_company">
                                                             <DropdownMelcous data={this.state.CompanyData} name="CompanyName"
                                                                 selectedValue={this.state.selectedFromCompany}
-                                                                handleChange={this.CompanyNamehandleChange} selectedValue={this.state.CompanyId} />
+                                                                handleChange={this.CompanyNamehandleChange} selectedValue={this.state.CompanyId} classDrop="companyName1" styles={ContactDropdown}  />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -429,14 +431,14 @@ class AddAccount extends Component {
                                                                 onBlur={setFieldTouched} error={errors.SupervisorName} id="SupervisorName"
                                                                 touched={touched.SupervisorName} index="IR-SupervisorName"
                                                                 handleChange={this.SupervisorNamehandleChange}
-                                                                selectedValue={this.state.SupervisorId}
+                                                                selectedValue={this.state.SupervisorId} styles={CompanyDropdown} classDrop="contactName1 "
                                                             />
                                                         </div>
 
                                                         <div className="super_company">
                                                             <DropdownMelcous data={this.state.CompanyData} name="SupervisorCompany"
                                                                 selectedValue={this.state.selectedFromCompany}
-                                                                handleChange={this.SupervisorCompanyhandleChange} selectedValue={this.state.SupervisorCompanyId} />
+                                                                handleChange={this.SupervisorCompanyhandleChange} selectedValue={this.state.SupervisorCompanyId} classDrop=" companyName1" styles={ContactDropdown} />
                                                         </div>
                                                     </div>
                                                 </div>

@@ -29,6 +29,9 @@ import ConfirmationModal from '../../Componants/publicComponants/ConfirmationMod
 import GridSetup from "./GridSetup";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const meetingAgendaValidation = Yup.object().shape({
@@ -909,7 +912,7 @@ class meetingAgendaAddEdit extends Component {
                                         data={this.state.Companies}
                                         handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedActionByCompany', 'actionByContacts', 'selectedActionByContact', 'toContactRequired')}
                                         placeholder='actionByCompany'
-                                        selectedValue={this.state.selectedActionByCompany}
+                                        selectedValue={this.state.selectedActionByCompany} styles={CompanyDropdown} classDrop="companyName1 "
                                     />
                                 </div>
                                 <div className="super_company">
@@ -923,7 +926,7 @@ class meetingAgendaAddEdit extends Component {
                                         onBlur={setFieldTouched}
                                         error={errors.actionByContact}
                                         touched={touched.actionByContact}
-                                        id="actionByContact"
+                                        id="actionByContact" classDrop=" contactName1" styles={ContactDropdown}
                                     />
                                 </div>
                             </div>
@@ -973,7 +976,7 @@ class meetingAgendaAddEdit extends Component {
                                             data={this.state.Companies}
                                             handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedActionByCompany', 'attendencesContacts', 'selectedActionByContact', 'toContactRequired')}
                                             placeholder='actionByCompany'
-                                            selectedValue={this.state.selectedActionByCompany}
+                                            selectedValue={this.state.selectedActionByCompany} styles={CompanyDropdown} classDrop="companyName1 "
                                         />
                                     </div>
                                     <div className="super_company">
@@ -987,7 +990,7 @@ class meetingAgendaAddEdit extends Component {
                                             onBlur={setFieldTouched}
                                             error={errors.attendeesContact}
                                             touched={touched.attendeesContact}
-                                            id="attendeesContact"
+                                            id="attendeesContact" classDrop=" contactName1" styles={ContactDropdown}
                                         />
                                     </div>
                                 </div>
@@ -1123,7 +1126,7 @@ class meetingAgendaAddEdit extends Component {
                                                     data={this.state.Companies}
                                                     handleChange={(e) => this.handleChangeDropDowns(e, 'calledByCompanyName', 'calledByCompanyId', 'selectedCalledByCompany', 'calledContacts', 'selectedCalledByContact', 'calledByContactRequired')}
                                                     placeholder='calledByCompany'
-                                                    selectedValue={this.state.selectedCalledByCompany} />
+                                                    selectedValue={this.state.selectedCalledByCompany} styles={CompanyDropdown} classDrop="companyName1 " />
                                             </div>
                                             <div className="super_company">
                                                 <DropdownMelcous
@@ -1135,7 +1138,7 @@ class meetingAgendaAddEdit extends Component {
                                                     onChange={setFieldValue}
                                                     onBlur={setFieldTouched}
                                                     error={errors.calledByContact}
-                                                    touched={touched.calledByContact} />
+                                                    touched={touched.calledByContact} classDrop=" contactName1" styles={ContactDropdown}/>
                                             </div>
                                         </div>
                                     </div>
@@ -1148,7 +1151,7 @@ class meetingAgendaAddEdit extends Component {
                                                     data={this.state.Companies}
                                                     handleChange={(e) => this.handleChangeDropDowns(e, 'facilitatorCompanyName', 'facilitatorCompanyId', 'selectedFacilitatorCompany', 'facilitatorContacts', 'selectedFacilitatorContact', 'facilitatorContactReuired')}
                                                     placeholder='facilitatorCompany'
-                                                    selectedValue={this.state.selectedFacilitatorCompany} />
+                                                    selectedValue={this.state.selectedFacilitatorCompany} styles={CompanyDropdown} classDrop="companyName1 " />
                                             </div>
                                             <div className="super_company">
                                                 <DropdownMelcous
@@ -1160,7 +1163,7 @@ class meetingAgendaAddEdit extends Component {
                                                     onChange={setFieldValue}
                                                     onBlur={setFieldTouched}
                                                     error={errors.facilitatorContact}
-                                                    touched={touched.facilitatorContact} />
+                                                    touched={touched.facilitatorContact} classDrop=" contactName1" styles={ContactDropdown}/>
                                             </div>
                                         </div>
                                     </div>
@@ -1173,7 +1176,7 @@ class meetingAgendaAddEdit extends Component {
                                                     data={this.state.Companies}
                                                     handleChange={(e) => this.handleChangeDropDowns(e, 'noteTakerCompanyName', 'noteTakerCompanyId', 'selectedNoteTakerCompany', 'noteTakerContacts', 'selectedNoteTakerContact', 'noteTakerContactRequired')}
                                                     placeholder='noteTakerCompany'
-                                                    selectedValue={this.state.selectedNoteTakerCompany} />
+                                                    selectedValue={this.state.selectedNoteTakerCompany} styles={CompanyDropdown} classDrop="companyName1 " />
                                             </div>
                                             <div className="super_company">
                                                 <DropdownMelcous
@@ -1185,7 +1188,7 @@ class meetingAgendaAddEdit extends Component {
                                                     onChange={setFieldValue}
                                                     onBlur={setFieldTouched}
                                                     error={errors.noteTakerContact}
-                                                    touched={touched.noteTakerContact} />
+                                                    touched={touched.noteTakerContact} classDrop=" contactName1" styles={ContactDropdown}/>
                                             </div>
                                         </div>
                                     </div>

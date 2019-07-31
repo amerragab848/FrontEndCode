@@ -29,6 +29,9 @@ import 'react-table/react-table.css';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -725,7 +728,7 @@ class MeetingMinutesAddEdit extends Component {
                                             data={this.state.Companies}
                                             handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedFromCompany', 'fromContacts', 'selectedFromContact')}
                                             placeholder='fromCompany'
-                                            selectedValue={this.state.selectedFromCompany}
+                                            selectedValue={this.state.selectedFromCompany} styles={CompanyDropdown} classDrop="companyName1"
                                         />
                                     </div>
                                     <div className="super_company">
@@ -740,7 +743,7 @@ class MeetingMinutesAddEdit extends Component {
                                             error={errors.fromContact}
                                             touched={touched.fromContact}
                                             index="fromContact"
-                                            id="fromContact" />
+                                            id="fromContact" classDrop=" contactName1" styles={ContactDropdown}/>
                                     </div>
                                 </div>
                             </div>
@@ -753,7 +756,7 @@ class MeetingMinutesAddEdit extends Component {
                                             data={this.state.Companies}
                                             handleChange={(e) => this.handleChangeDropDowns(e, 'calledByCompanyName', 'calledByCompanyId', 'selectedCalledByCompany', 'calledContacts', 'selectedCalledByContact')}
                                             placeholder='calledByCompany'
-                                            selectedValue={this.state.selectedCalledByCompany} />
+                                            selectedValue={this.state.selectedCalledByCompany} styles={CompanyDropdown} classDrop="companyName1" />
                                     </div>
                                     <div className="super_company">
                                         <DropdownMelcous
@@ -765,7 +768,7 @@ class MeetingMinutesAddEdit extends Component {
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
                                             error={errors.calledByContact}
-                                            touched={touched.calledByContact} />
+                                            touched={touched.calledByContact} classDrop=" contactName1" styles={ContactDropdown}/>
                                     </div>
                                 </div>
                             </div>
@@ -778,7 +781,7 @@ class MeetingMinutesAddEdit extends Component {
                                             data={this.state.Companies}
                                             handleChange={(e) => this.handleChangeDropDowns(e, 'facilitatorCompanyName', 'facilitatorCompanyId', 'selectedFacilitatorCompany', 'facilitatorContacts', 'selectedFacilitatorContact')}
                                             placeholder='facilitatorCompany'
-                                            selectedValue={this.state.selectedFacilitatorCompany} />
+                                            selectedValue={this.state.selectedFacilitatorCompany} styles={CompanyDropdown} classDrop="companyName1" />
                                     </div>
                                     <div className="super_company">
                                         <DropdownMelcous
@@ -790,7 +793,7 @@ class MeetingMinutesAddEdit extends Component {
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
                                             error={errors.facilitatorContact}
-                                            touched={touched.facilitatorContact} />
+                                            touched={touched.facilitatorContact} classDrop=" contactName1" styles={ContactDropdown}/>
                                     </div>
                                 </div>
                             </div>
@@ -803,7 +806,7 @@ class MeetingMinutesAddEdit extends Component {
                                             data={this.state.Companies}
                                             handleChange={(e) => this.handleChangeDropDowns(e, 'noteTakerCompanyName', 'noteTakerCompanyId', 'selectedNoteTakerCompany', 'noteTakerContacts', 'selectedNoteTakerContact')}
                                             placeholder='noteTakerCompany'
-                                            selectedValue={this.state.selectedNoteTakerCompany} />
+                                            selectedValue={this.state.selectedNoteTakerCompany} styles={CompanyDropdown} classDrop="companyName1" />
                                     </div>
                                     <div className="super_company">
                                         <DropdownMelcous
@@ -815,7 +818,7 @@ class MeetingMinutesAddEdit extends Component {
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
                                             error={errors.noteTakerContact}
-                                            touched={touched.noteTakerContact} />
+                                            touched={touched.noteTakerContact} classDrop=" contactName1" styles={ContactDropdown}/>
                                     </div>
                                 </div>
                             </div>
@@ -863,7 +866,7 @@ class MeetingMinutesAddEdit extends Component {
                                                 data={this.state.Companies}
                                                 handleChange={e => this.handleChangeDropDowns(e, 'fromCompanyName', 'fromCompanyId', 'selectedAttendencesCompany', 'attendencesContacts', 'selectedAttendencesContact')}
                                                 placeholder='fromCompany'
-                                                selectedValue={this.state.selectedAttendencesCompany}
+                                                selectedValue={this.state.selectedAttendencesCompany} styles={CompanyDropdown} classDrop="companyName1"
                                             />
                                         </div>
                                         <div className="super_company">
@@ -877,7 +880,7 @@ class MeetingMinutesAddEdit extends Component {
                                                 onBlur={setFieldTouched}
                                                 error={errors.attendeesContact}
                                                 touched={touched.attendeesContact}
-                                                id="attendeesContact"
+                                                id="attendeesContact" classDrop=" contactName1" styles={ContactDropdown}
                                             />
                                         </div>
                                     </div>
@@ -984,7 +987,7 @@ class MeetingMinutesAddEdit extends Component {
                                             data={this.state.Companies}
                                             handleChange={(e) => this.handleChangeDropDowns(e, 'calledByCompanyName', 'calledByCompanyId', 'selectedTopicCompany', 'topicsContacts', 'selectedTopicContact')}
                                             placeholder='topicCompany'
-                                            selectedValue={this.state.selectedTopicCompany} />
+                                            selectedValue={this.state.selectedTopicCompany} styles={CompanyDropdown} classDrop="companyName1"/>
                                     </div>
                                     <div className="super_company">
                                         <DropdownMelcous
@@ -996,7 +999,7 @@ class MeetingMinutesAddEdit extends Component {
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
                                             error={errors.topicContact}
-                                            touched={touched.topicContact}
+                                            touched={touched.topicContact} classDrop=" contactName1" styles={ContactDropdown}
                                         />
                                     </div>
                                 </div>

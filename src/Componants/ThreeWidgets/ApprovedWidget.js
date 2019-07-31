@@ -1,12 +1,7 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom";
-import Modales from "./modal";
-import Api from "../../api";
-import "../../Styles/css/rodal.css";
-import language from "../../resources.json";
-
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import { withRouter } from "react-router-dom"; 
+import Api from "../../api"; 
+ 
 
 class ApprovedWidget extends Component {
   constructor(props) {

@@ -21819,3 +21819,39 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .slider-Btns:empty {
     padding-top: 0 !important;
 }
+
+ .contactName1 {
+    position: relative;
+}
+
+.contactName1::before {
+  content: '';
+  position: absolute;
+  background-image: url(../../images/dropdownPerson.png);
+  right: 7px;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  top: calc(50% - 8px);
+  z-index: 9; 
+}
+
+.companyName1 {
+  position: relative; 
+}
+
+.companyName1::before {
+  content: '';
+  position: absolute;
+  background-image: url(../../images/companyDropdown.png);
+  right: 7px;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  top: calc(50% - 8px);
+  z-index: 9; 
+}
+
+.drop__hasError >div {
+    border : solid 2px #e74c3c !important
+}

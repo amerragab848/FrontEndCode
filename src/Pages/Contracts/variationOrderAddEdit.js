@@ -1031,8 +1031,8 @@ class variationOrderAddEdit extends Component {
                                 </div>
 
                                 {this.props.changeStatus === true ? (
-                                  <div className="proForm first-proform letterFullWidth proform__twoInput">
-                                    <div className="linebylineInput valid-input">
+                                  <div className="proForm letterFullWidth">
+                                    <div className="letterFullWidth fullInputWidth">
                                       <label className="control-label">
                                         {Resources.pco[currentLanguage]}
                                       </label>
@@ -1048,7 +1048,7 @@ class variationOrderAddEdit extends Component {
                                       </div>
                                     </div>
 
-                                    <div className="linebylineInput valid-input">
+                                    <div className="letterFullWidth fullInputWidth">
                                       <label className="control-label">
                                         {Resources.contractPo[currentLanguage]}
                                       </label>

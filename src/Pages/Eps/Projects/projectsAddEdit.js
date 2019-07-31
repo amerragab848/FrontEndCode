@@ -14,6 +14,10 @@ import * as communicationActions from '../../../store/actions/communication';
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import { toast } from "react-toastify";
 import Api from '../../../api'
+
+import CompanyDropdown from '../../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
@@ -511,7 +515,7 @@ class projectsAddEdit extends Component {
                                                                         error={errors.projectManagerContact}
                                                                         touched={touched.projectManagerContact}
                                                                         index="projectManagerContact"
-                                                                        id="projectManagerContact" />
+                                                                        id="projectManagerContact" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -527,7 +531,7 @@ class projectsAddEdit extends Component {
                                                                         }}
                                                                         index="projectManagerCompany"
                                                                         name="projectManagerCompany"
-                                                                        id="projectManagerCompany" />
+                                                                        id="projectManagerCompany" classDrop=" contactName1" styles={ContactDropdown} />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -547,7 +551,7 @@ class projectsAddEdit extends Component {
                                                                         error={errors.executiveManagerContact}
                                                                         touched={touched.executiveManagerContact}
                                                                         index="executiveManagerContact"
-                                                                        id="executiveManagerContact" />
+                                                                        id="executiveManagerContact" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -562,7 +566,7 @@ class projectsAddEdit extends Component {
                                                                             })
                                                                         }}
                                                                         name="executiveManagerCompany"
-                                                                        id="executiveManagerCompany" />
+                                                                        id="executiveManagerCompany" classDrop=" contactName1" styles={ContactDropdown} />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -630,7 +634,7 @@ class projectsAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="letterFullWidth">
-                                                        <label data-toggle="tooltip" title="Design Team" className="control-label">{Resources.projectStatus[currentLanguage]} </label>
+                                                        <label style={{margin: '0', marginBottom: '4px'}} data-toggle="tooltip" title="Design Team" className="control-label">{Resources.projectStatus[currentLanguage]} </label>
                                                         <div className="check__radio">
                                                             <div className="">
                                                                 <div className="ui checkbox radio radioBoxBlue checked">
@@ -638,7 +642,7 @@ class projectsAddEdit extends Component {
                                                                         defaultChecked={values.status === true ? 'checked' : null} value="true" onChange={() => setFieldValue('status', true)} />
                                                                     <label>{Resources.active[currentLanguage]}</label>
                                                                 </div>
-                                                                <div className="ui checkbox radio radioBoxBlue checked">
+                                                                <div style={{margin : '0 6px'}} className="ui checkbox radio radioBoxBlue checked">
                                                                     <input type="radio" name="status" value='false' onChange={() => setFieldValue('status', false)}
                                                                         defaultChecked={values.status == false ? 'checked' : null} />
                                                                     <label>{Resources.inActive[currentLanguage]}</label>
@@ -648,13 +652,13 @@ class projectsAddEdit extends Component {
                                                                         defaultChecked={values.holded == true ? 'checked' : null} />
                                                                     <label>{Resources.holded[currentLanguage]}</label>
                                                                 </div>
-                                                                <div className="ui checkbox radio radioBoxBlue">
+                                                                <div style={{margin : '0 6px'}} className="ui checkbox radio radioBoxBlue">
                                                                     <input type="radio" name="holded" onChange={e => setFieldValue('holded', false)}
                                                                         defaultChecked={values.holded == false ? 'checked' : null} />
                                                                     <label>{Resources.unHolded[currentLanguage]}</label>
                                                                 </div>
                                                             </div>
-                                                            <div className="ui checkbox checkBoxGray300 checked">
+                                                            <div style={{marginTop:' 8px'}} className="ui checkbox checkBoxGray300 checked">
                                                                 <input type="checkbox" name='showInReport' defaultChecked={values.showInReport == true ? 'checked' : null} onChange={e => setFieldValue('showInReport', e.target.checked)} />
                                                                 <label>{Resources.showInReport[currentLanguage]}</label>
                                                             </div>
@@ -663,7 +667,7 @@ class projectsAddEdit extends Component {
 
 
                                                     <div className="linebylineInput account__checkbox odd">
-                                                        <div className="linebylineInput valid-input even">
+                                                        <div className="linebylineInput linebylineInput__checkbox">
                                                             <label data-toggle="tooltip" className="control-label">{Resources.useEmail[currentLanguage]}</label>
                                                             <div className="ui checkbox radio radioBoxBlue checked">
                                                                 <input type="radio" name="useMail" onChange={e => { setFieldValue('useMail', true); this.setState({ emailSection: true }) }}

@@ -26,6 +26,9 @@ import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -466,7 +469,7 @@ class phoneAddEdit extends Component {
                                                                 data={this.state.CompanyData}
                                                                 handleChange={e => this.handleChange('fromCompany', e)}
                                                                 placeholder='fromCompany'
-                                                                selectedValue={this.state.selectedFromCompany} />
+                                                                selectedValue={this.state.selectedFromCompany} styles={CompanyDropdown} classDrop="companyName1 "/>
                                                         </div>
                                                         <div className="super_company">
                                                             <DropdownMelcous
@@ -480,7 +483,7 @@ class phoneAddEdit extends Component {
                                                                 error={errors.fromContact}
                                                                 touched={touched.fromContact}
                                                                 index="fromContact"
-                                                                id="fromContact" />
+                                                                id="fromContact" classDrop=" contactName1" styles={ContactDropdown} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -493,7 +496,7 @@ class phoneAddEdit extends Component {
                                                                 data={this.state.CompanyData}
                                                                 handleChange={(e) => this.handleChange("toCompany", e)}
                                                                 placeholder='toCompany'
-                                                                selectedValue={this.state.selectedToCompany} />
+                                                                selectedValue={this.state.selectedToCompany} styles={CompanyDropdown} classDrop="companyName1 "/>
                                                         </div>
                                                         <div className="super_company">
                                                             <DropdownMelcous
@@ -505,7 +508,7 @@ class phoneAddEdit extends Component {
                                                                 onChange={setFieldValue}
                                                                 onBlur={setFieldTouched}
                                                                 error={errors.toContact}
-                                                                touched={touched.toContact} />
+                                                                touched={touched.toContact} classDrop=" contactName1" styles={ContactDropdown}/>
                                                         </div>
                                                     </div>
                                                 </div>
