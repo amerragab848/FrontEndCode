@@ -13,9 +13,7 @@ import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import { withRouter } from "react-router-dom";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
@@ -27,6 +25,8 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -504,7 +504,7 @@ class clientModificationAddEdit extends Component {
     viewAttachments() {
         return (this.state.docId > 0 ? (
             Config.IsAllow(3321) === true ?
-               <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3144} />
+                <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3144} />
                 : null)
             : null
         )
@@ -673,7 +673,8 @@ class clientModificationAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromCompanyId}
                                                                         touched={touched.fromCompanyId}
-
+                                                                        styles={CompanyDropdown}
+                                                                        classDrop="companyName1"
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
                                                                         id="fromCompanyId" />
@@ -692,7 +693,10 @@ class clientModificationAddEdit extends Component {
                                                                         isClear={false}
                                                                         index="clientSelection-fromContactId"
                                                                         name="fromContactId"
-                                                                        id="fromContactId" />
+                                                                        id="fromContactId"
+                                                                        classDrop="contactName1"
+                                                                        styles={ContactDropdown}
+                                                                    />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -712,7 +716,10 @@ class clientModificationAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}
                                                                         touched={touched.toCompanyId}
-                                                                        name="toCompanyId" />
+                                                                        name="toCompanyId"
+                                                                        styles={CompanyDropdown}
+                                                                        classDrop="companyName1"
+                                                                    />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -729,6 +736,8 @@ class clientModificationAddEdit extends Component {
                                                                         index="clientSelection-toContactId"
                                                                         name="toContactId"
                                                                         id="toContactId"
+                                                                        classDrop="contactName1"
+                                                                        styles={ContactDropdown}
                                                                     />
                                                                 </div>
                                                             </div>
