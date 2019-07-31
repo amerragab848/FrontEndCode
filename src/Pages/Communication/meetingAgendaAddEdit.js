@@ -1247,6 +1247,8 @@ class meetingAgendaAddEdit extends Component {
                                                 this.state
                                                     .selectedActionByCompany
                                             }
+                                            styles={CompanyDropdown} classDrop="companyName1 "
+
                                         />
                                     </div>
                                     <div className="super_company">
@@ -1267,7 +1269,7 @@ class meetingAgendaAddEdit extends Component {
                                             onBlur={setFieldTouched}
                                             error={errors.actionByContact}
                                             touched={touched.actionByContact}
-                                            id="actionByContact"
+                                            id="actionByContact" classDrop=" contactName1" styles={ContactDropdown}
                                         />
                                     </div>
                                 </div>
@@ -1401,6 +1403,7 @@ class meetingAgendaAddEdit extends Component {
                                                     this.state
                                                         .selectedActionByCompany
                                                 }
+                                                styles={CompanyDropdown} classDrop="companyName1 "
                                             />
                                         </div>
                                         <div className="super_company">
@@ -1427,6 +1430,7 @@ class meetingAgendaAddEdit extends Component {
                                                     touched.attendeesContact
                                                 }
                                                 id="attendeesContact"
+                                                classDrop=" contactName1" styles={ContactDropdown}
                                             />
                                         </div>
                                     </div>
@@ -1885,6 +1889,7 @@ class meetingAgendaAddEdit extends Component {
                                                             this.state
                                                                 .selectedCalledByCompany
                                                         }
+                                                        styles={CompanyDropdown} classDrop="companyName1 "
                                                     />
                                                 </div>
                                                 <div className="super_company">
@@ -1915,6 +1920,7 @@ class meetingAgendaAddEdit extends Component {
                                                         touched={
                                                             touched.calledByContact
                                                         }
+                                                        classDrop=" contactName1" styles={ContactDropdown}
                                                     />
                                                 </div>
                                             </div>
@@ -1950,6 +1956,7 @@ class meetingAgendaAddEdit extends Component {
                                                             this.state
                                                                 .selectedFacilitatorCompany
                                                         }
+                                                        styles={CompanyDropdown} classDrop="companyName1 "
                                                     />
                                                 </div>
                                                 <div className="super_company">
@@ -1980,6 +1987,7 @@ class meetingAgendaAddEdit extends Component {
                                                         touched={
                                                             touched.facilitatorContact
                                                         }
+                                                        classDrop=" contactName1" styles={ContactDropdown}
                                                     />
                                                 </div>
                                             </div>
@@ -2015,6 +2023,7 @@ class meetingAgendaAddEdit extends Component {
                                                             this.state
                                                                 .selectedNoteTakerCompany
                                                         }
+                                                        styles={CompanyDropdown} classDrop="companyName1 "
                                                     />
                                                 </div>
                                                 <div className="super_company">
@@ -2045,6 +2054,7 @@ class meetingAgendaAddEdit extends Component {
                                                         touched={
                                                             touched.noteTakerContact
                                                         }
+                                                        classDrop=" contactName1" styles={ContactDropdown}
                                                     />
                                                 </div>
                                             </div>

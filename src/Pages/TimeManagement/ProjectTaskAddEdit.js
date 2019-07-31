@@ -22,6 +22,9 @@ import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
 import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 import { toast } from "react-toastify";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -748,14 +751,14 @@ class ProjectTaskAddEdit extends Component {
                                     handleChange={event => { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
                                     onChange={setFieldValue} onBlur={setFieldTouched}
                                     error={errors.fromCompanyId} touched={touched.fromCompanyId}
-                                    name="fromCompanyId" id="fromCompanyId" />
+                                    name="fromCompanyId" id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                 </div>
                                 <div className="super_company">
                                   <Dropdown isMulti={false} data={this.state.fromContacts}
                                     selectedValue={this.state.selectedFromContact}
                                     handleChange={event => this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromContactId} touched={touched.fromContactId}
-                                    name="fromContactId" id="fromContactId"
+                                    name="fromContactId" id="fromContactId" classDrop=" contactName1" styles={ContactDropdown}
                                   />
                                 </div>
                               </div>
@@ -770,13 +773,13 @@ class ProjectTaskAddEdit extends Component {
                                     selectedValue={this.state.selectedBicCompany}
                                     handleChange={event => this.handleChangeDropDown(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompany", "selectedToContact")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
-                                    touched={touched.bicCompanyId} name="bicCompanyId" id="bicCompanyId" />
+                                    touched={touched.bicCompanyId} name="bicCompanyId" id="bicCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                 </div>
                                 <div className="super_company">
                                   <Dropdown isMulti={false} data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
                                     handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedToContact")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId}
-                                    name="bicContactId" id="bicContactId" />
+                                    name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                 </div>
                               </div>
                             </div>
@@ -988,7 +991,7 @@ class ProjectTaskAddEdit extends Component {
                               <Dropdown data={this.state.companies} isMulti={false}
                                 selectedValue={this.state.selectedBicCompanyCycle}
                                 handleChange={event => { this.handleChangeDropDownCycle(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompanyCycle", "selectedFromContact"); }}
-                                name="bicCompanyId" id="bicCompanyId" />
+                                name="bicCompanyId" id="bicCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                             </div>
                             <div className="super_company">
                               <Dropdown isMulti={false} data={this.state.ToContacts}
@@ -996,7 +999,7 @@ class ProjectTaskAddEdit extends Component {
                                 handleChange={event => this.handleChangeDropDownCycle(event, "bicContactId", false, "", "", "", "selectedToContactCycle")}
                                 onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId}
                                 touched={touched.bicContactId}
-                                name="bicContactId" id="bicContactId"
+                                name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}
                               />
                             </div>
                           </div>

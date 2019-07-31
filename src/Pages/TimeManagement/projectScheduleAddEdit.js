@@ -30,6 +30,9 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import ReactTable from "react-table";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Api from "../../api";
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
 let projectId = 0;
@@ -1005,7 +1008,7 @@ class projectScheduleAddEdit extends Component {
 
                                                 index="letter-toContactId"
                                                 name="toContactId"
-                                                id="toContactId" />
+                                                id="toContactId" styles={CompanyDropdown} classDrop="companyName1 " />
                                         </div>
                                         <div className="super_company">
                                             <Dropdown
@@ -1022,7 +1025,7 @@ class projectScheduleAddEdit extends Component {
 
                                                 index="letter-toCompany"
                                                 name="toCompanyId"
-                                                id="toCompanyId" />
+                                                id="toCompanyId" classDrop=" contactName1" styles={ContactDropdown} />
                                         </div>
                                     </div>
                                 </div>
@@ -1158,7 +1161,7 @@ class projectScheduleAddEdit extends Component {
 
                                                         index="letter-bicContactId"
                                                         name="bicContactId"
-                                                        id="bicContactId" />
+                                                        id="bicContactId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                 </div>
                                                 <div className="super_company">
                                                     <Dropdown
@@ -1175,7 +1178,7 @@ class projectScheduleAddEdit extends Component {
 
                                                         index="letter-bicCompanyId"
                                                         name="bicCompanyId"
-                                                        id="bicCompanyId" />
+                                                        id="bicCompanyId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                 </div>
                                             </div>
                                         </div>

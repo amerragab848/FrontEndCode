@@ -36,6 +36,9 @@ import SubPurchaseOrderLog from "../Contracts/subPurchaseOrderLog";
 import SubContract from "../Contracts/SubContractLog";
 import Steps from "../../Componants/publicComponants/Steps";
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let docId = 0;
@@ -3403,6 +3406,7 @@ class PurchaseOrderAddEdit extends Component {
                                                         index="companyId"
                                                         name="companyId"
                                                         id="companyId"
+                                                        styles={CompanyDropdown} classDrop="companyName1 "
                                                     />
                                                 </div>
                                                 <div className="super_company">
@@ -3436,6 +3440,7 @@ class PurchaseOrderAddEdit extends Component {
                                                         index="letter-toContactId"
                                                         name="toContactId"
                                                         id="toContactId"
+                                                        classDrop=" contactName1" styles={ContactDropdown}
                                                     />
                                                 </div>
                                             </div>
