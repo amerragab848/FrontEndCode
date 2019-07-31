@@ -16495,9 +16495,9 @@ tfoot tr td p {
     padding-right: 0;
 }
 
-.timeSheetInput .fillter-item-c {
+/* .timeSheetInput .fillter-item-c {
     margin-bottom: 20px;
-}
+} */
 
 /* .timeSheetInput .fillter-item-c .spanValidation,
 .timeSheetInput .fullWidthWrapper label {
@@ -16668,9 +16668,9 @@ tfoot tr td p {
 .taskInfo {
     max-height: inherit;
     margin-bottom: 10px;
-    position: absolute;
-    top: 75%;
-    z-index: 9999999999999;
+    /* position: absolute;
+    top: 75%; */
+    z-index: 799;
     background: #fff;
 }
 
@@ -20395,7 +20395,6 @@ body.noScrolling {
     background-image: url(../../images/primarybtn-2Menu-arrow.png);
     width: 16px;
     height: 16px;
-    opacity: 0.6;
     background-repeat: no-repeat;
     background-position: center;
 }

@@ -44,9 +44,9 @@ const loadingStyle = {
   }
 }
 
-const store = configureStore();
-
+const store = configureStore(); 
 const IsAuthorize = Config.IsAuthorized();
+
 class App extends Component {
 
   state = {
@@ -58,7 +58,9 @@ class App extends Component {
 
     let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-    fetch("/assets/IP_Configrations.json").then(r => r.json()).then(data => {
+    fetch("/assets/IP_Configrations.json")
+    .then(r => r.json())
+    .then(data => {
       Config.SetConfigObject(data);
     }).then(e => {
       currentLanguage === "ar" ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => {

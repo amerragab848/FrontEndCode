@@ -148,8 +148,7 @@ class RiskConesquence extends Component {
                     </header>
                     <div className="riskConContainer">
                         {this.state.isLoading == true ? <LoadingSection /> :
-                            <Fragment>
-                                {/* {checkBoxs} */}
+                            <Fragment> 
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div className='document-fields'>
                                         <table className="attachmentTable">
