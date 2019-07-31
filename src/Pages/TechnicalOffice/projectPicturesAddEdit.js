@@ -4,32 +4,28 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
+import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
-
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
-
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-
+import Distribution from '../../Componants/OptionsPanels/DistributionList';
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
+import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 let docId = 0;
@@ -139,7 +135,7 @@ class projectPicturesAddEdit extends Component {
         if (nextProps.document.id) {
             let ProjectPicDoc = nextProps.document
             ProjectPicDoc.docDate = ProjectPicDoc.docDate === null ? moment().format('YYYY-MM-DD') : moment(ProjectPicDoc.docDate).format('YYYY-MM-DD')
-            ProjectPicDoc.picDate =ProjectPicDoc.picDate === null ? moment().format('YYYY-MM-DD') : moment(ProjectPicDoc.picDate).format('YYYY-MM-DD')
+            ProjectPicDoc.picDate = ProjectPicDoc.picDate === null ? moment().format('YYYY-MM-DD') : moment(ProjectPicDoc.picDate).format('YYYY-MM-DD')
             this.setState({
                 document: ProjectPicDoc,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -310,7 +306,7 @@ class projectPicturesAddEdit extends Component {
         return (
             this.state.docId !== 0 ? (
                 Config.IsAllow(3301) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
         )
@@ -482,7 +478,8 @@ class projectPicturesAddEdit extends Component {
                                                                     selectedValue={this.state.selectedFromCompany}
                                                                     handleChange={event => {
                                                                         this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
-                                                                    }} />
+                                                                    }} styles={CompanyDropdown}
+                                                                    classDrop="companyName1" />
                                                             </div>
 
                                                             <div className="super_company">
@@ -490,6 +487,8 @@ class projectPicturesAddEdit extends Component {
                                                                     onBlur={setFieldTouched} error={errors.fromContactId} id="fromContactId"
                                                                     touched={touched.fromContactId} index="IR-fromContactId"
                                                                     selectedValue={this.state.selectedFromContact}
+                                                                    classDrop="contactName1"
+                                                                    styles={ContactDropdown}
                                                                     handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
                                                                 />
                                                             </div>

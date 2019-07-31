@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from "react";
-
+import React, { Component, Fragment } from "react"; 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form  } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -27,7 +26,7 @@ import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import Api from "../../api";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import { SkyLightStateless } from "react-skylight";
+import { SkyLightStateless } from "react-skylight"; 
 
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
