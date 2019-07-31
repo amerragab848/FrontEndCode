@@ -21,6 +21,7 @@
     "immutable": "^4.0.0-rc.12",
     "jspdf": "^1.5.3",
     "lodash": "^4.17.11",
+    "lovefield": "^2.1.12",
     "material-ui": "^0.20.2",
     "mgr-pdf-viewer-react": "^1.0.3",
     "moment": "^2.23.0",

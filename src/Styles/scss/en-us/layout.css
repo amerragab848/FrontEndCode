@@ -17842,7 +17842,7 @@ button.companies_icon {
     display: none;
 }
 
-.supervisor__company .super_company .customD_Menu .css-vj8t7z {
+.supervisor__company .super_company .customD_Menu .css-vj8t7z ,.supervisor__company .super_company .customD_Menu .css-1pcexqc-container {
     border-radius: 3px;
     background-color: #e9ecf0;
     border-top-left-radius: 0;

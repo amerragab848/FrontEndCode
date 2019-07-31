@@ -1,4 +1,4 @@
-{
+var IP_CONFIG = {
     "BlobStorageContainerName": "project-files-demov4",
     "acApp": "AC",
     "accountCompanyId": "2",
