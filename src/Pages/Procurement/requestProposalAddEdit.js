@@ -24,6 +24,9 @@ import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
@@ -476,7 +479,7 @@ class RequestProposalAddEdit extends Component {
                                     touched={touched.fromCompanyId}
                                     index="fromCompanyId"
                                     name="fromCompanyId"
-                                    id="fromCompanyId" />
+                                    id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                 </div>
                                 <div className="super_company">
                                   <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
@@ -489,7 +492,7 @@ class RequestProposalAddEdit extends Component {
                                     isClear={false}
                                     index="proposal-fromContactId"
                                     name="fromContactId"
-                                    id="fromContactId" />
+                                    id="fromContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                 </div>
                               </div>
                             </div>
@@ -508,7 +511,7 @@ class RequestProposalAddEdit extends Component {
                                     touched={touched.toCompanyId}
                                     index="proposal-toCompany"
                                     name="toCompanyId"
-                                    id="toCompanyId" />
+                                    id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                 </div>
                                 <div className="super_company">
                                   <Dropdown isMulti={false} data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
@@ -520,7 +523,7 @@ class RequestProposalAddEdit extends Component {
                                     touched={touched.toContactId}
                                     index="proposal-toContactId"
                                     name="toContactId"
-                                    id="toContactId" />
+                                    id="toContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                 </div>
                               </div>
                             </div>

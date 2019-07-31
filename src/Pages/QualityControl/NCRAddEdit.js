@@ -34,6 +34,9 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 let docId = 0;
@@ -866,14 +869,14 @@ class NCRAddEdit extends Component {
                                                                     selectedValue={this.state.selectedFromCompany}
                                                                     handleChange={event => {
                                                                         this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
-                                                                    }} />
+                                                                    }} styles={CompanyDropdown} classDrop="companyName1 " />
                                                             </div>
 
                                                             <div className="super_company">
                                                                 <Dropdown data={this.state.fromContacts} name="fromContactId"
                                                                     selectedValue={this.state.selectedFromContact}
                                                                     handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-                                                                />
+                                                                    classDrop=" contactName1" styles={ContactDropdown}/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -886,7 +889,7 @@ class NCRAddEdit extends Component {
                                                                     selectedValue={this.state.selectedActionByCompanyId}
                                                                     handleChange={event =>
                                                                         this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
-                                                                />
+                                                                        styles={CompanyDropdown} classDrop="companyName1 " />
                                                             </div>
                                                             <div className="super_company">
                                                                 <Dropdown data={this.state.bicContacts} onChange={setFieldValue} name="bicContactId"
@@ -894,7 +897,7 @@ class NCRAddEdit extends Component {
                                                                     touched={touched.bicContactId} index="IR-bicContactId"
                                                                     selectedValue={this.state.selectedActionByContactId}
                                                                     handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedActionByContactId')}
-                                                                />
+                                                                    classDrop=" contactName1" styles={ContactDropdown}/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -908,7 +911,7 @@ class NCRAddEdit extends Component {
                                                                     touched={touched.toCompanyId} name="toCompanyId"
                                                                     handleChange={event =>
                                                                         this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
-                                                                />
+                                                                        styles={CompanyDropdown} classDrop="companyName1 " />
                                                             </div>
 
                                                             <div className="super_company">
@@ -916,7 +919,7 @@ class NCRAddEdit extends Component {
                                                                     handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
                                                                     onChange={setFieldValue} onBlur={setFieldTouched}
                                                                     error={errors.toContactId} touched={touched.toContactId}
-                                                                    index="IR-toContactId" name="toContactId" id="toContactId" />
+                                                                    index="IR-toContactId" name="toContactId" id="toContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                             </div>
                                                         </div>
                                                     </div>

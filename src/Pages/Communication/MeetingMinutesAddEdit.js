@@ -30,6 +30,9 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import Steps from "../../Componants/publicComponants/Steps";
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -1242,6 +1245,7 @@ class MeetingMinutesAddEdit extends Component {
                                                     this.state
                                                         .selectedFromCompany
                                                 }
+                                                styles={CompanyDropdown} classDrop="companyName1 "
                                             />
                                         </div>
                                         <div className="super_company">
@@ -1267,6 +1271,7 @@ class MeetingMinutesAddEdit extends Component {
                                                 touched={touched.fromContact}
                                                 index="fromContact"
                                                 id="fromContact"
+                                                classDrop=" contactName1" styles={ContactDropdown}
                                             />
                                         </div>
                                     </div>
@@ -1299,6 +1304,7 @@ class MeetingMinutesAddEdit extends Component {
                                                     this.state
                                                         .selectedCalledByCompany
                                                 }
+                                                styles={CompanyDropdown} classDrop="companyName1 "
                                             />
                                         </div>
                                         <div className="super_company">
@@ -1324,6 +1330,7 @@ class MeetingMinutesAddEdit extends Component {
                                                 touched={
                                                     touched.calledByContact
                                                 }
+                                                classDrop=" contactName1" styles={ContactDropdown}
                                             />
                                         </div>
                                     </div>
@@ -1356,6 +1363,7 @@ class MeetingMinutesAddEdit extends Component {
                                                     this.state
                                                         .selectedFacilitatorCompany
                                                 }
+                                                styles={CompanyDropdown} classDrop="companyName1 "
                                             />
                                         </div>
                                         <div className="super_company">
@@ -1386,6 +1394,7 @@ class MeetingMinutesAddEdit extends Component {
                                                 touched={
                                                     touched.facilitatorContact
                                                 }
+                                                classDrop=" contactName1" styles={ContactDropdown}
                                             />
                                         </div>
                                     </div>
@@ -1418,6 +1427,7 @@ class MeetingMinutesAddEdit extends Component {
                                                     this.state
                                                         .selectedNoteTakerCompany
                                                 }
+                                                styles={CompanyDropdown} classDrop="companyName1 "
                                             />
                                         </div>
                                         <div className="super_company">
@@ -1445,6 +1455,7 @@ class MeetingMinutesAddEdit extends Component {
                                                 touched={
                                                     touched.noteTakerContact
                                                 }
+                                                classDrop=" contactName1" styles={ContactDropdown}
                                             />
                                         </div>
                                     </div>
@@ -1536,6 +1547,7 @@ class MeetingMinutesAddEdit extends Component {
                                                         this.state
                                                             .selectedAttendencesCompany
                                                     }
+                                                    styles={CompanyDropdown} classDrop="companyName1 "
                                                 />
                                             </div>
                                             <div className="super_company">
@@ -1564,6 +1576,7 @@ class MeetingMinutesAddEdit extends Component {
                                                         touched.attendeesContact
                                                     }
                                                     id="attendeesContact"
+                                                    classDrop=" contactName1" styles={ContactDropdown}
                                                 />
                                             </div>
                                         </div>
@@ -1799,6 +1812,7 @@ class MeetingMinutesAddEdit extends Component {
                                                     this.state
                                                         .selectedTopicCompany
                                                 }
+                                                styles={CompanyDropdown} classDrop="companyName1 "
                                             />
                                         </div>
                                         <div className="super_company">
@@ -1819,6 +1833,7 @@ class MeetingMinutesAddEdit extends Component {
                                                 onBlur={setFieldTouched}
                                                 error={errors.topicContact}
                                                 touched={touched.topicContact}
+                                                classDrop=" contactName1" styles={ContactDropdown}
                                             />
                                         </div>
                                     </div>

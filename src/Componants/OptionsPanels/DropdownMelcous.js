@@ -11,7 +11,7 @@ const publicStyles = {
             ...styles,
             backgroundColor: '#fff',
             width: '100%',
-            height: '48px',
+            minHeight: '48px',
             borderRadius: '4px',
             border: isFocused ? "solid 2px #83B4FC" : '2px solid #E9ECF0',
             boxShadow: 'none',

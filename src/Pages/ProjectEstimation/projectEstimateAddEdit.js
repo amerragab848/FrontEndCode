@@ -25,6 +25,10 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Api from "../../api";
+
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
 let projectId = 0;
@@ -1021,6 +1025,7 @@ class projectEstimateAddEdit extends Component {
                                                                         touched={touched.bicContactId} index="IR-bicContactId"
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedFromContact')}
+                                                                        styles={CompanyDropdown} classDrop="companyName1 "
                                                                     />
                                                                 </div>
 
@@ -1029,7 +1034,7 @@ class projectEstimateAddEdit extends Component {
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
                                                                             this.handleChangeDropDown(event, 'bicCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
-                                                                        }} />
+                                                                        }} classDrop=" contactName1" styles={ContactDropdown} />
                                                                 </div>
                                                             </div>
                                                         </div>
