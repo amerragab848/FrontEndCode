@@ -61,4 +61,8 @@ export const RouteToMainDashboard = 'RouteToMainDashboard';
 export const RouteToTemplate = 'RouteToTemplate'; 
 export const FillGridLeftMenu = 'FillGridLeftMenu'; 
 
+//Steps
+export const Set_Step = 'Set_Step';
+
+
 

@@ -57,7 +57,7 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 document: {},
                 showLeftMenu: true,
-                showSelectProject: false,
+                showSelectProject: false, 
                 changeStatus: false,
                 items: [],
                 projectId: state.projectId == 0 ? localStorage.getItem('lastSelectedProject') : state.projectId,

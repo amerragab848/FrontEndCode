@@ -44,6 +44,9 @@ export default {
 			getingData: false,
 			companyList: [],
 			tabIndex: 0
+		},
+		Steps: {
+			currentStep: 0
 		}
 	}
 }
