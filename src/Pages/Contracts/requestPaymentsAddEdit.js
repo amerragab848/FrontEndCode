@@ -31,8 +31,7 @@ import "react-table/react-table.css";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import Export from "../../Componants/OptionsPanels/Export";
 import Api from "../../api";
-import Steps from "../../Componants/publicComponants/Steps";
-import * as StepsActions from "../../store/actions/Steps";
+import Steps from "../../Componants/publicComponants/Steps"; 
 
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -4971,8 +4970,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(communicationActions, dispatch),
-        stepsActions: bindActionCreators(StepsActions, dispatch)
+        actions: bindActionCreators(communicationActions, dispatch) 
     };
 }
 
