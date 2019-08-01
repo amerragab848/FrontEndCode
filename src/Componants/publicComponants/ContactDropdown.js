@@ -15,7 +15,8 @@ const ContactDropdown = {
         borderBottomRightRadius: currentLanguage === "ar" ? '0' : '3px',
         border: isFocused ? "solid 2px #83B4FC" : '2px solid #E9ECF0',
         boxShadow: 'none',
-        transition: ' all 0.4s ease-in-out'
+        transition: ' all 0.4s ease-in-out',
+        cursor: 'pointer'
     }),
     option: (styles, { isDisabled, isFocused, isSelected }) => {
         return {

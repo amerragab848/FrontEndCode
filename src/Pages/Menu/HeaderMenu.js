@@ -57,6 +57,7 @@ const dashboardMenu = {
       border: isFocused ? 'solid 1px #3570e6' : 'solid 1px #5f98fa',
       backgroundColor: isFocused ? '#f7faff' : 'rgba(255, 255, 255, 0)',
       boxShadow: isFocused ? 'none' : 'none',
+      cursor: 'pointer',
       '&:hover': {
         border: ' solid 1px #4382f9',
         backgroundColor: ' #fafcff',
