@@ -23,6 +23,8 @@ import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
+import Steps from "../../Componants/publicComponants/Steps";
+var steps_defination = [];
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -137,11 +139,6 @@ class pcoAddEdit extends Component {
 
         this.state = {
             currIndex: 1,
-            FirstStep: true,
-            SecondStep: false,
-            ThirdStep: false,
-            SecondStepComplate: false,
-            ThirdStepComplate: false,
             pageSize: 500,
             pageNumber: 0,
             currentTitle: "sendToWorkFlow",
@@ -193,7 +190,7 @@ class pcoAddEdit extends Component {
             pcos: [],
             contractsPos: [],
             voItems: [],
-            CurrentStep: 1
+            CurrentStep: 0
         }
 
         if (!Config.IsAllow(148) && !Config.IsAllow(149) && !Config.IsAllow(151)) {
@@ -202,6 +199,16 @@ class pcoAddEdit extends Component {
                 this.state.perviousRoute
             );
         }
+        steps_defination = [
+            {
+                name: "pco",
+                callBackFn: null
+            },
+            {
+                name: "items",
+                callBackFn: null
+            }
+        ];
     }
 
     componentDidMount() {
@@ -558,7 +565,7 @@ class pcoAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3298) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
         )
@@ -580,77 +587,9 @@ class pcoAddEdit extends Component {
         }
     }
 
-    NextStep = () => {
-
-        if (this.state.CurrentStep === 1) {
-            if (this.props.changeStatus == true) {
-                this.editVariationOrder();
-            }
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: false,
-                CurrentStep: this.state.CurrentStep + 1,
-                ThirdStep: false
-            })
-        }
-        else if (this.state.CurrentStep === 2) {
-            this.props.history.push({
-                pathname: "/pco/" + projectId
-            });
-        }
-
-    }
-
-
-    NextTopStep = () => {
-
-        if (this.state.CurrentStep === 1) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrentStep: this.state.CurrentStep + 1,
-            })
-        }
-        else if (this.state.CurrentStep === 2) {
-            this.props.history.push({
-                pathname: "/pco/" + projectId
-            });
-        }
-    }
-
-    PreviousStep = () => {
-        if (this.state.docId !== 0) {
-            if (this.state.CurrentStep === 3) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: false,
-                    SecondStep: true,
-                    ThirdStep: false,
-                    CurrentStep: (this.state.CurrentStep - 1),
-                    ThirdStepComplate: false,
-                    SecondStepComplate: true
-                })
-            }
-            else {
-                if (this.state.CurrentStep === 2) {
-                    window.scrollTo(0, 0)
-                    this.setState({
-                        FirstStep: true,
-                        SecondStep: false,
-                        SecondStepComplate: false,
-                        ThirdStep: false,
-                        CurrentStep: (this.state.CurrentStep - 1)
-                    })
-                }
-            }
-        }
-    }
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrentStep: stepNo });
+    };
 
     saveVariationOrderItem(event) {
         let saveDocument = { ...this.state.voItem };
@@ -732,9 +671,9 @@ class pcoAddEdit extends Component {
                                 <div className="company__total proForm tabinsideItem">
 
                                     <ul id="stepper__tabs" className="data__tabs ">
-                                        <li className={"data__tabs--list " + (this.state.currIndex === 1 ? " active" : " ")} index={this.state.currIndex} onClick={e => { this.setState({ currIndex: 1 }) }} >{Resources.material[currentLanguage]}</li>
-                                        <li className={"data__tabs--list " + (this.state.currIndex === 2 ? " active" : " ")} onClick={e => { this.setState({ currIndex: 2 }) }} >{Resources.labor[currentLanguage]}</li>
-                                        <li className={"data__tabs--list " + (this.state.currIndex === 3 ? " active" : " ")} onClick={e => { this.setState({ currIndex: 3 }) }} >{Resources.equipment[currentLanguage]}</li>
+                                        <li className={"data__tabs--list " + (this.state.currIndex === 1 ? " active" : " ")} index={this.state.currIndex} onClick={() => this.setState({ currIndex: 1 })} >{Resources.material[currentLanguage]}</li>
+                                        <li className={"data__tabs--list " + (this.state.currIndex === 2 ? " active" : " ")} onClick={() => this.setState({ currIndex: 2 })} >{Resources.labor[currentLanguage]}</li>
+                                        <li className={"data__tabs--list " + (this.state.currIndex === 3 ? " active" : " ")} onClick={() => this.setState({ currIndex: 3 })} >{Resources.equipment[currentLanguage]}</li>
                                     </ul>
                                 </div>
 
@@ -897,27 +836,6 @@ class pcoAddEdit extends Component {
         )
     }
 
-    StepOneLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                FirstStep: true,
-                SecondStep: false,
-                SecondStepComplate: false,
-                CurrentStep: 1,
-            })
-        }
-    }
-
-    StepTwoLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrentStep: 2,
-            })
-        }
-    }
 
 
     GetPrevoiusData() {
@@ -989,7 +907,7 @@ class pcoAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.pco[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            {this.state.FirstStep ?
+                            {this.state.CurrentStep == 0 ?
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
                                         <div className="subiTabsContent">
@@ -1004,7 +922,9 @@ class pcoAddEdit extends Component {
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveVariationOrder();
                                                         } else {
-                                                            this.NextStep();
+                                                            if (this.props.changeStatus)
+                                                                this.editVariationOrder();
+                                                            this.changeCurrentStep(1);
                                                         }
                                                     }}>
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -1077,7 +997,7 @@ class pcoAddEdit extends Component {
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.companyId}
-                                                                        touched={touched.companyId} 
+                                                                        touched={touched.companyId}
                                                                         index="companyId"
                                                                         name="companyId"
                                                                         id="companyId" />
@@ -1300,45 +1220,22 @@ class pcoAddEdit extends Component {
                                         </div>
                                         <div className="doc-pre-cycle">
                                             <div className="slider-Btns">
-                                                <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </Fragment>}
                         </div>
-                        <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.docId !== 0 ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
-
-                                <span onClick={this.NextTopStep} className={!this.state.ThirdStepComplate && this.state.docId !== 0 ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            {/* Steps Active  */}
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources.pco[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources.items[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
+                        <div>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/pco/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrStep}
+                            />
                         </div>
                         {
                             this.props.changeStatus === true ?

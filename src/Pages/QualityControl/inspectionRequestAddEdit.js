@@ -31,7 +31,8 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
-
+import Steps from "../../Componants/publicComponants/Steps";
+var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -106,7 +107,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 class inspectionRequestAddEdit extends Component {
@@ -121,7 +122,7 @@ class inspectionRequestAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -137,16 +138,10 @@ class inspectionRequestAddEdit extends Component {
         }
 
         this.state = {
-            FirstStep: true,
-            SecondStep: false,
-            ThirdStep: false,
-
-            SecondStepComplate: false,
-            ThirdStepComplate: false,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -182,7 +177,7 @@ class inspectionRequestAddEdit extends Component {
             buildings: [],
             answer: '',
             rfi: '',
-            CurrentStep: 1,
+            CurrentStep: 0,
             CycleEditLoading: false,
             CycleAddLoading: false,
             DocLoading: false
@@ -190,12 +185,26 @@ class inspectionRequestAddEdit extends Component {
 
         if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
         this.newCycle = this.newCycle.bind(this);
         this.editCycle = this.editCycle.bind(this);
+        steps_defination = [
+            {
+                name: "inspectionRequest",
+                callBackFn: null
+            },
+            {
+                name: "newCycle",
+                callBackFn: null
+            },
+            {
+                name: "addDocAttachment",
+                callBackFn: null
+            }
+        ];
     }
 
     componentDidMount() {
@@ -228,14 +237,14 @@ class inspectionRequestAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
-        
+
         if (this.state.showModal != nextProps.showModal) {
             this.setState({ showModal: nextProps.showModal });
         }
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow  || this.props.changeStatus !== prevProps.changeStatus) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -601,7 +610,6 @@ class inspectionRequestAddEdit extends Component {
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            //this.NextStep();
         });
     }
 
@@ -611,7 +619,7 @@ class inspectionRequestAddEdit extends Component {
             DocLoading: true
         });
 
-        
+
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
@@ -660,7 +668,7 @@ class inspectionRequestAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3312) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={850} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={850} />
                     : null)
                 : null
         )
@@ -669,7 +677,8 @@ class inspectionRequestAddEdit extends Component {
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
 
             this.setState({
                 currentComponent: item.value,
@@ -681,99 +690,10 @@ class inspectionRequestAddEdit extends Component {
         }
     }
 
-    NextStep = () => {
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrentStep: stepNo });
+    };
 
-        if (this.state.CurrentStep === 1) {
-            if (this.props.changeStatus == true) {
-                this.editInspectionRequest();
-            }
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: false,
-                CurrentStep: this.state.CurrentStep + 1,
-                ThirdStep: false
-            })
-        }
-        else if (this.state.CurrentStep === 2) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: true,
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: true
-            })
-        } else {
-            this.props.history.push({
-                pathname: "/inspectionRequest/" + projectId
-            });
-        }
-
-    }
-
-    NextTopStep = () => {
-
-        if (this.state.CurrentStep === 1) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: false,
-                CurrentStep: this.state.CurrentStep + 1,
-                ThirdStep: false
-            })
-        }
-        else if (this.state.CurrentStep === 2) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: true,
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: true
-            })
-        } else {
-            this.props.history.push({
-                pathname: "/inspectionRequest/" + projectId
-            });
-        }
-
-    }
-
-    PreviousStep = () => {
-        if (this.state.docId !== 0) {
-            if (this.state.CurrentStep === 3) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: false,
-                    SecondStep: true,
-                    ThirdStep: false,
-                    CurrentStep: (this.state.CurrentStep - 1),
-                    ThirdStepComplate: false,
-                    SecondStepComplate: true
-                })
-            }
-            else {
-                if (this.state.CurrentStep === 2) {
-                    window.scrollTo(0, 0)
-                    this.setState({
-                        FirstStep: true,
-                        SecondStep: false,
-                        SecondStepComplate: false,
-                        ThirdStep: false,
-                        CurrentStep: (this.state.CurrentStep - 1)
-                    })
-                }
-            }
-        }
-    }
 
     saveInspectionRequestCycle(event) {
         let saveDocument = { ...this.state.documentCycle };
@@ -994,42 +914,6 @@ class inspectionRequestAddEdit extends Component {
     }
 
 
-    StepOneLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                FirstStep: true,
-                SecondStep: false,
-                SecondStepComplate: false,
-                ThirdStepComplate: false,
-                CurrentStep: 1,
-            })
-        }
-    }
-
-    StepTwoLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: false,
-                CurrentStep: 2,
-            })
-        }
-    }
-
-    StepThreeLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                ThirdStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
-                CurrentStep: 3,
-                FirstStep: false,
-                SecondStep: false,
-            })
-        }
-    }
 
     render() {
 
@@ -1056,7 +940,7 @@ class inspectionRequestAddEdit extends Component {
                     <div className="doc-container">
 
                         <div className="step-content">
-                            {this.state.FirstStep ?
+                            {this.state.CurrentStep == 0 ?
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
                                         <div className="subiTabsContent">
@@ -1067,11 +951,16 @@ class inspectionRequestAddEdit extends Component {
                                                     enableReinitialize={this.props.changeStatus}
                                                     onSubmit={(values) => {
                                                         if (this.props.showModal) { return; }
-        
+
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveInspectionRequest();
                                                         } else {
-                                                            this.NextStep();
+
+                                                            if (this.props.changeStatus == true) {
+                                                                this.editInspectionRequest();
+                                                            }
+                                                            this.changeCurrentStep(1);
+
                                                         }
                                                     }}  >
 
@@ -1372,7 +1261,7 @@ class inspectionRequestAddEdit extends Component {
                                                                             onChange={this.onChangeRfi} />
                                                                     </div>
                                                                 </div>
-                                                                
+
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
                                                                     <div className="inputDev ui input">
@@ -1394,7 +1283,7 @@ class inspectionRequestAddEdit extends Component {
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
-                                                    {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={849} EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
+                                                    {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={849} EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                     {this.viewAttachments()}
                                                     {this.props.changeStatus === true ?
                                                         <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
@@ -1407,7 +1296,7 @@ class inspectionRequestAddEdit extends Component {
                                 </Fragment>
                                 :
                                 <Fragment>
-                                    {this.state.SecondStep ?
+                                    {this.state.CurrentStep == 1 ?
                                         <div className="subiTabsContent feilds__top">
 
                                             {this.AddNewCycle()}
@@ -1430,7 +1319,7 @@ class inspectionRequestAddEdit extends Component {
 
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
                                                 </div>
 
                                             </div>
@@ -1445,7 +1334,7 @@ class inspectionRequestAddEdit extends Component {
 
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>{Resources['next'][currentLanguage]}</button>
                                                 </div>
 
                                             </div>
@@ -1454,47 +1343,15 @@ class inspectionRequestAddEdit extends Component {
                                 </Fragment>}
 
                         </div>
-                        <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.docId !== 0 ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
-
-                                <span onClick={this.NextTopStep} className={this.state.docId !== 0 ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            {/* Steps Active  */}
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources.inspectionRequest[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources.newCycle[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                    <div onClick={this.StepThreeLink} data-id="step3" className={this.state.ThirdStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
-                                        <div className="steps-timeline">
-                                            <span>3</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources.addDocAttachment[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <Steps
+                            steps_defination={steps_defination}
+                            exist_link="/inspectionRequest/"
+                            docId={this.state.docId}
+                            changeCurrentStep={stepNo =>
+                                this.changeCurrentStep(stepNo)
+                            }
+                            stepNo={this.state.CurrentStep}
+                        />
                         {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">

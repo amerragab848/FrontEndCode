@@ -16,7 +16,7 @@ class Steps extends Component {
     }
 
     componentWillReceiveProps(props) {
-        if (props.stepNo != this.state.stepNo)
+        if (props.stepNo&&props.stepNo != this.state.stepNo)
             this.setCurrentStep(props.stepNo);
     }
 

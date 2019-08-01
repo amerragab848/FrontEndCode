@@ -28,7 +28,7 @@ import Rodal from "../../Styles/js/rodal";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { MapsTransferWithinAStation } from "material-ui/svg-icons";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
-
+import Steps from "../../Componants/publicComponants/Steps";
 const _ = require("lodash");
 
 let selectedRows = [];
@@ -72,7 +72,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-
+var steps_defination = []
 class SubmittalAddEdit extends Component {
   constructor(props) {
     super(props);
@@ -103,7 +103,7 @@ class SubmittalAddEdit extends Component {
     }
 
     this.state = {
-      Stepes: 1,
+      currentStep: 0,
       cycleId: "",
       showDeleteModal: false,
       isLoading: false,
@@ -191,6 +191,25 @@ class SubmittalAddEdit extends Component {
       toast.warn(Resources["missingPermissions"][currentLanguage]);
       this.props.history.push("/submittal/" + this.state.projectId);
     }
+    steps_defination = [
+      {
+        name: "Submittal",
+        callBackFn: null
+      },
+      {
+        name: "cyclesCount",
+        callBackFn: () => this.getMaxArrange()
+      },
+      {
+        name: "items",
+        callBackFn: () => this.getLogsSubmittalItems()
+      },
+      {
+        name: "addDocAttachment",
+        callBackFn: null
+      }
+    ];
+
   }
 
   componentDidMount() {
@@ -805,6 +824,22 @@ class SubmittalAddEdit extends Component {
       [selectedValue]: event
     });
 
+    if (field == "flowCompanyId") {
+      let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
+
+      dataservice.GetNextArrangeMainDocument(url).then(res => {
+
+        updated_document.arrange = res;
+
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+          documentCycle: updated_document
+        });
+      });
+    }
+
+
     if (isSubscrib) {
 
       let action = url + "?" + param + "=" + event.value;
@@ -833,6 +868,21 @@ class SubmittalAddEdit extends Component {
       addCycleSubmital: updated_document,
       [selectedValue]: event
     });
+
+    if (field == "flowCompanyId") {
+      let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + event.value + "&contactId=" + null;
+
+      dataservice.GetNextArrangeMainDocument(url).then(res => {
+
+        updated_document.arrange = res;
+
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+          addCycleSubmital: updated_document
+        });
+      });
+    }
 
     if (isSubscrib) {
 
@@ -871,21 +921,15 @@ class SubmittalAddEdit extends Component {
     });
 
     let saveDocument = this.state.document;
-
-
     saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocument.forwardToDate = moment(saveDocument.forwardToDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocument.area = this.state.selectedArea.label;
     saveDocument.location = this.state.selectedLocation.label;
+    this.changeCurrentStep(1);
     dataservice.addObject("EditLogSubmittal", saveDocument).then(result => {
 
       this.setState({
-        isLoading: false,
-        Stepes: this.state.Stepes + 1,
-        SecondStepComplate: true,
-        ThirdStepComplate: false,
-        FourthStepComplate: false,
-        FivethStepComplate: false
+        isLoading: false
       });
 
       toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -894,10 +938,9 @@ class SubmittalAddEdit extends Component {
 
   editSubmittalCycle() {
     let saveDocumentCycle = this.state.documentCycle;
-
     saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-
+    this.changeCurrentStep(2);
     dataservice.addObject("EditLogSubmittalCycle", saveDocumentCycle).then(data => {
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
 
@@ -913,7 +956,6 @@ class SubmittalAddEdit extends Component {
           isLoading: false,
           itemData: data,
           itemsDocumentSubmital: submittalItem,
-          Stepes: this.state.Stepes + 1
         });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
 
@@ -932,7 +974,7 @@ class SubmittalAddEdit extends Component {
     saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocumentCycle.submittalId = this.state.docId;
-
+    this.changeCurrentStep(2);
     dataservice.addObject("AddLogSubmittalCycles", saveDocumentCycle).then(data => {
 
       let submittalItem = {};
@@ -945,8 +987,7 @@ class SubmittalAddEdit extends Component {
 
       this.setState({
         isLoading: false,
-        itemsDocumentSubmital: submittalItem,
-        Stepes: this.state.Stepes + 1
+        itemsDocumentSubmital: submittalItem
       });
 
       toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -979,12 +1020,7 @@ class SubmittalAddEdit extends Component {
 
         this.setState({
           docId: result.id,
-          isLoading: false,
-          //Stepes: this.state.Stepes + 1,
-          SecondStepComplate: true,
-          ThirdStepComplate: false,
-          FourthStepComplate: false,
-          FivethStepComplate: false
+          isLoading: false
         });
       }).catch(ex => {
         this.setState({
@@ -994,18 +1030,16 @@ class SubmittalAddEdit extends Component {
         toast.error(Resources["failError"][currentLanguage]);
       });
     } else {
-      this.setState({
-        Stepes: this.state.Stepes + 1
-      });
+      this.changeCurrentStep(1);
     }
   }
 
   saveAndExit(event) {
 
-    if (this.state.Stepes === 1) {
+    if (this.state.currentStep === 0) {
 
       if (this.props.changeStatus) {
-
+        this.changeCurrentStep(1);
         dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
 
           let submittalItem = {};
@@ -1018,8 +1052,7 @@ class SubmittalAddEdit extends Component {
 
           this.setState({
             itemData: data,
-            itemsDocumentSubmital: submittalItem,
-            Stepes: this.state.Stepes + 1
+            itemsDocumentSubmital: submittalItem
           });
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
       } else {
@@ -1031,10 +1064,9 @@ class SubmittalAddEdit extends Component {
         submittalItem.refDoc = "";
         submittalItem.arrange = 1;
         submittalItem.id = "";
-
+        this.changeCurrentStep(1);
         this.setState({
           itemsDocumentSubmital: submittalItem,
-          Stepes: this.state.Stepes + 1
         });
       }
     }
@@ -1081,84 +1113,22 @@ class SubmittalAddEdit extends Component {
     }
   };
 
-  NextStep() {
-    if (this.state.Stepes === 1) {
+  getLogsSubmittalItems = () => {
+    this.changeCurrentStep(2);
+    dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
+      let maxArrange = _.maxBy(data, "arrange");
+      let submittalItem = {};
+      submittalItem.description = "";
+      submittalItem.reviewResult = "";
+      submittalItem.submitalDate = moment();
+      submittalItem.arrange = data.length > 0 ? maxArrange.arrange + 1 : 1;
+      submittalItem.refDoc = "";
+      submittalItem.submittalId = this.state.docId;
       this.setState({
-        Stepes: this.state.Stepes + 1,
-        SecondStepComplate: true,
-        ThirdStepComplate: false,
-        FourthStepComplate: false,
-        FivethStepComplate: false
+        itemData: data,
+        itemsDocumentSubmital: submittalItem
       });
-    }
-    else if (this.state.Stepes === 2) {
-
-      dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
-
-        let maxArrange = _.maxBy(data, "arrange");
-
-        let submittalItem = {};
-
-
-        submittalItem.description = "";
-        submittalItem.reviewResult = "";
-        submittalItem.submitalDate = moment();
-        submittalItem.arrange = data.length > 0 ? maxArrange.arrange + 1 : 1;
-        submittalItem.refDoc = "";
-        submittalItem.submittalId = this.state.docId;
-
-        this.setState({
-          itemData: data,
-          itemsDocumentSubmital: submittalItem,
-          Stepes: this.state.Stepes + 1,
-          SecondStepComplate: true,
-          ThirdStepComplate: true,
-          FourthStepComplate: false,
-          FivethStepComplate: false
-        });
-      }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-    } else if (this.state.Stepes === 3) {
-      this.setState({
-        Stepes: this.state.Stepes + 1,
-        SecondStepComplate: true,
-        ThirdStepComplate: true,
-        FourthStepComplate: true,
-        FivethStepComplate: false
-      });
-    }else if(this.state.Stepes === 4)
-    {
-      this.props.history.push("/submittal/" + this.state.projectId);
-    }
-  }
-
-  PreviousStep() {
-    if (this.state.Stepes === 2) {
-      this.setState({
-        Stepes: this.state.Stepes - 1,
-        SecondStepComplate: false,
-        ThirdStepComplate: false,
-        FourthStepComplate: false,
-        FivethStepComplate: false
-      });
-    }
-    else if (this.state.Stepes === 3) {
-      this.setState({
-        Stepes: this.state.Stepes - 1,
-        SecondStepComplate: true,
-        ThirdStepComplate: false,
-        FourthStepComplate: false,
-        FivethStepComplate: false
-      });
-    }
-    else if (this.state.Stepes === 4) {
-      this.setState({
-        Stepes: this.state.Stepes - 1,
-        SecondStepComplate: true,
-        ThirdStepComplate: false,
-        FourthStepComplate: false,
-        FivethStepComplate: false
-      });
-    }
+    }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
   }
 
   addSubmittalItems() {
@@ -1225,19 +1195,6 @@ class SubmittalAddEdit extends Component {
     }
   }
 
-  nextSteps() {
-    if (this.state.Stepes === 4) {
-      this.props.history.push("/submittal/" + this.state.projectId);
-    } else {
-      this.setState({
-        Stepes: this.state.Stepes + 1,
-        SecondStepComplate: true,
-        ThirdStepComplate: true,
-        FourthStepComplate: false,
-        FivethStepComplate: false
-      });
-    }
-  }
 
   ExistDocument() {
     this.props.history.push("/submittal/" + this.state.projectId);
@@ -1423,7 +1380,7 @@ class SubmittalAddEdit extends Component {
 
   addCycle() {
 
-    let maxArrange = _.maxBy(this.state.submittalItemData, "arrange");
+    let maxArrange = (_.maxBy(this.state.submittalItemData, "arrange"))["arrange"] || 1;
 
     let arrangeCycle = this.state.documentCycle.arrange;
 
@@ -1437,7 +1394,7 @@ class SubmittalAddEdit extends Component {
     submittalCycle.flowContactId = "";
     submittalCycle.fromCompanyId = "";
     submittalCycle.submittalId = docId;
-    submittalCycle.arrange = arrangeCycle != null ? maxArrange.arrange + 1 : arrangeCycle + 1;
+    submittalCycle.arrange = arrangeCycle ? arrangeCycle + 1 : maxArrange + 1;
 
     this.setState({
       selectedCycleAprrovalStatus: { label: Resources.selectResult[currentLanguage], value: "0" },
@@ -1482,68 +1439,11 @@ class SubmittalAddEdit extends Component {
     });
   }
 
-  viewCurrentStep(step) {
-    if (this.props.changeStatus) {
-      if (step === 1) {
-        this.setState({
-          ThirdStepComplate: false,
-          Stepes: step
-        });
-      }
-      if (step === 2) {
-        this.setState({
-          ThirdStepComplate: false,
-          SecondStepComplate: true,
-          Stepes: step
-        });
-      }
-      if (step === 3) {
-        this.setState({
-          ThirdStepComplate: true,
-          SecondStepComplate: false,
-          Stepes: step
-        });
-      }
-      if (step === 4) {
-        this.setState({
-          ThirdStepComplate: false,
-          SecondStepComplate: false,
-          FivethStepComplate: true,
-          Stepes: step
-        });
-      }
-    }
-  }
+  changeCurrentStep = stepNo => {
+    this.setState({ currentStep: stepNo });
+  };
 
-  StepOneLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        // FirstStep: true,
-        SecondStep: false,
-        SecondStepComplate: false,
-        ThirdStepComplate: false,
-        FourthStepComplate: false,
-        FivethStepComplate: false,
-        Stepes: 1,
-      })
-    }
-  }
-
-  StepTwoLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        // FirstStep: false,
-        SecondStep: true,
-        SecondStepComplate: true,
-        ThirdStepComplate: false,
-        FourthStepComplate: false,
-        FivethStepComplate: false,
-        Stepes: 2,
-      })
-    }
-  }
-
-  StepThreeLink = () => {
+  getMaxArrange = () => {
     if (docId !== 0) {
       let maxArrange = _.maxBy(this.state.itemData, "arrange");
 
@@ -1553,34 +1453,17 @@ class SubmittalAddEdit extends Component {
       submittalItem.submitalDate = moment();
       submittalItem.refDoc = "";
       submittalItem.arrange = maxArrange != undefined ? (maxArrange.arrange != null ? maxArrange.arrange + 1 : 1) : 1;
-
+      this.changeCurrentStep(3);
       this.setState({
-        itemsDocumentSubmital: submittalItem,
-        ThirdStep: true,
-        SecondStepComplate: true,
-        ThirdStepComplate: true,
-        FourthStepComplate:false,
-        FivethStepComplate:false,
-        Stepes: 3,
-        //FirstStep: false,
-        SecondStep: false,
+        itemsDocumentSubmital: submittalItem
+
       })
     }
   }
 
-  StepFourLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        ThirdStep: false,
-        SecondStepComplate: true,
-        ThirdStepComplate: true,
-        Stepes: 4,
-        SecondStep: false,
-        FivethStepComplate: false,
-        FourthStepComplate: true
-      })
-    }
-  }
+
+
+
 
   render() {
 
@@ -1723,7 +1606,7 @@ class SubmittalAddEdit extends Component {
             <div className="step-content">
               <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
-                  {this.state.Stepes === 1 ?
+                  {this.state.currentStep === 0 ?
                     <div className="document-fields">
                       <Formik initialValues={this.state.document}
                         validationSchema={validationSchema}
@@ -1978,7 +1861,7 @@ class SubmittalAddEdit extends Component {
                     </div>
                     :
                     (<Fragment>
-                      {this.state.Stepes === 2 ?
+                      {this.state.currentStep === 1 ?
                         <Fragment>
                           <div className="document-fields">
                             <Formik initialValues={this.state.documentCycle} validationSchema={validationCycleSubmital} enableReinitialize={this.props.changeStatus}
@@ -2132,7 +2015,7 @@ class SubmittalAddEdit extends Component {
                         </Fragment> :
                         <Fragment>
                           {
-                            this.state.Stepes === 3 ? <Fragment>
+                            this.state.currentStep === 2 ? <Fragment>
                               <header className="main__header">
                                 <div className="main__header--div">
                                   <h2 className="zero">
@@ -2264,8 +2147,8 @@ class SubmittalAddEdit extends Component {
                               </div>
 
                               <div className="slider-Btns">
-                                {this.state.Stepes === 3 ? (
-                                  <button className="primaryBtn-1 btn meduimBtn" onClick={this.nextSteps.bind(this)}>
+                                {this.state.currentStep === 2 ? (
+                                  <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>
                                     {Resources["next"][currentLanguage]}
                                   </button>
                                 ) : null}
@@ -2290,23 +2173,23 @@ class SubmittalAddEdit extends Component {
                     </Fragment>
                     )}
                   <div className="slider-Btns">
-                    {this.state.Stepes === 2 && this.props.changeStatus === true ? (
-                      <button className="primaryBtn-1 btn meduimBtn" onClick={this.nextSteps.bind(this)}>
+                    {this.state.currentStep === 1 && this.props.changeStatus === true ? (
+                      <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>
                         {Resources["next"][currentLanguage]}
                       </button>
                     ) : null}
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 && this.state.isViewMode === false && this.state.Stepes === 1 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={883} EditAttachments={3261} ShowDropBox={3581} ShowGoogleDrive={3582} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-                      {this.state.Stepes === 1 ? this.viewAttachments() : null}
+                      {this.state.docId > 0 && this.state.isViewMode === false && this.state.currentStep === 0 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={883} EditAttachments={3261} ShowDropBox={3581} ShowGoogleDrive={3582} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                      {this.state.currentStep === 0 ? this.viewAttachments() : null}
                       {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            {this.props.changeStatus === true && this.state.Stepes === 1 ? (
+            {this.props.changeStatus === true && this.state.currentStep === 0 ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
                   {this.state.isApproveMode === true ? (
@@ -2332,54 +2215,15 @@ class SubmittalAddEdit extends Component {
                 </div>
               </div>
             ) : null}
-            {/* step document */}
-            <div className="docstepper-levels">
-              {/* Next & Previous */}
-              <div className="step-content-foot">
-                <span onClick={this.PreviousStep.bind(this)} className={this.state.Stepes !== 1 ? "step-content-btn-prev " :
-                  "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources['previous'][currentLanguage]}</span>
-                <span onClick={this.NextStep.bind(this)} className={this.state.docId !== 0 ? "step-content-btn-prev "
-                  : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
-                </span>
-              </div>
-              {/* Steps Active  */}
-              <div className="workflow-sliderSteps">
-                <div className="step-slider">
-                  <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                    <div className="steps-timeline">
-                      <span>1</span>
-                    </div>
-                    <div className="steps-info">
-                      <h6 onClick={e => this.setState({ Stepes: 1 })}>{Resources['Submittal'][currentLanguage]}</h6>
-                    </div>
-                  </div>
-                  <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                    <div className="steps-timeline">
-                      <span>2</span>
-                    </div>
-                    <div className="steps-info">
-                      <h6>{Resources['cyclesCount'][currentLanguage]}</h6>
-                    </div>
-                  </div>
-                  <div onClick={this.StepThreeLink} data-id="step3" className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")} >
-                    <div className="steps-timeline">
-                      <span>3</span>
-                    </div>
-                    <div className="steps-info">
-                      <h6>{Resources['items'][currentLanguage]}</h6>
-                    </div>
-                  </div>
-                  <div onClick={this.StepFourLink} data-id="step4" className={'step-slider-item ' + (this.state.FivethStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")} >
-                    <div className="steps-timeline">
-                      <span>4</span>
-                    </div>
-                    <div className="steps-info">
-                      <h6>{Resources.addDocAttachment[currentLanguage]}</h6>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Steps
+              steps_defination={steps_defination}
+              exist_link="/submittal/"
+              docId={this.state.docId}
+              changeCurrentStep={stepNo =>
+                this.changeCurrentStep(stepNo)
+              }
+              stepNo={this.state.currentStep}
+            />
           </div>
         </div>
         <div>
@@ -2419,7 +2263,7 @@ class SubmittalAddEdit extends Component {
                             handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")}
                             onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reviewResult}
                             touched={touched.reviewResult} name="reviewResult" id="reviewResult" />
-
+                          {JSON.stringify(errors)}
                           <div className="fillter-status fillter-item-c">
                             <div className="inputDev ui input input-group date NormalInputDate">
                               <div className="customDatepicker fillter-status fillter-item-c ">
