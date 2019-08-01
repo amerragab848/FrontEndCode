@@ -29,6 +29,9 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { MapsTransferWithinAStation } from "material-ui/svg-icons";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import Steps from "../../Componants/publicComponants/Steps";
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+
 const _ = require("lodash");
 
 let selectedRows = [];
@@ -1707,6 +1710,8 @@ class SubmittalAddEdit extends Component {
                                 <div className="supervisor__company">
                                   <div className="super_name">
                                     <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
+                                      styles={CompanyDropdown}
+                                      classDrop="companyName1"
                                       handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
                                       name="fromCompanyId" id="fromCompanyId" />
                                   </div>
@@ -1719,6 +1724,8 @@ class SubmittalAddEdit extends Component {
                                       onBlur={setFieldTouched}
                                       error={errors.bicContactId}
                                       touched={touched.bicContactId}
+                                      classDrop="contactName1"
+                                      styles={ContactDropdown}
                                       name="bicContactId" id="bicContactId" />
                                   </div>
                                 </div>
@@ -1957,6 +1964,8 @@ class SubmittalAddEdit extends Component {
                                         <div className="super_name">
                                           <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompanyCycles}
                                             handleChange={event => { this.handleChangeDropDownCycles(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedFromCompanyCycles", "selectedFromContact"); }}
+                                            styles={CompanyDropdown}
+                                            classDrop="companyName1"
                                             id="fromCompanyIdCycle" />
                                         </div>
                                         <div className="super_company">
@@ -1967,6 +1976,8 @@ class SubmittalAddEdit extends Component {
                                             onBlur={setFieldTouched}
                                             error={errors.flowContactId}
                                             touched={touched.flowContactId}
+                                            classDrop="contactName1"
+                                            styles={ContactDropdown}
                                             name="flowContactId"
                                             id="flowContactId" />
                                         </div>
@@ -2416,6 +2427,8 @@ class SubmittalAddEdit extends Component {
                               <Dropdown data={this.state.companies}
                                 isMulti={false}
                                 selectedValue={this.state.selectedNewFromCompanyCycles}
+                                styles={CompanyDropdown}
+                                classDrop="companyName1"
                                 handleChange={event => { this.handleChangeDropDownCyclesPopUp(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedNewFromCompanyCycles", "selectedFromContact"); }}
                                 id="fromCompanyIdCycle" />
                             </div>
@@ -2429,6 +2442,8 @@ class SubmittalAddEdit extends Component {
                                 error={errors.flowContactId}
                                 touched={touched.flowContactId}
                                 id="flowContactId"
+                                classDrop="contactName1"
+                                styles={ContactDropdown}
                                 name="flowContactId" />
                             </div>
                           </div>

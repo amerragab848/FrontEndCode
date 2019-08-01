@@ -25,7 +25,9 @@ import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import Steps from "../../Componants/publicComponants/Steps";
+import Steps from "../../Componants/publicComponants/Steps"; 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 var steps_defination = [];
 const _ = require("lodash");
 
@@ -864,13 +866,14 @@ class DrawingSetsAddEdit extends Component {
                                   <div className="super_name">
                                     <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
                                       handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
-                                      onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromCompanyId} touched={touched.fromCompanyId} name="fromCompanyId" id="fromCompanyId" />
+                                      onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromCompanyId} touched={touched.fromCompanyId} name="fromCompanyId" id="fromCompanyId"
+                                      styles={CompanyDropdown} classDrop="companyName1 " />
                                   </div>
                                   <div className="super_company">
                                     <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
                                       handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedFromContact")}
                                       onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId}
-                                      name="bicContactId" id="bicContactId" />
+                                      name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                   </div>
                                 </div>
                               </div>

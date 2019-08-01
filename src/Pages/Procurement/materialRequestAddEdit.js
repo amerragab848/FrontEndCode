@@ -29,6 +29,48 @@ import "react-table/react-table.css";
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
+let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
+const actionPanel = {
+    control: (styles, { isFocused }) => ({
+        ...styles,
+        height: '36px',
+        borderRadius: '4px',
+        boxShadow: 'none',
+        transition: ' all 0.4s ease-in-out',
+        width: '166px',
+        backgroundColor: isFocused ? '#fafbfc' : 'rgba(255, 255, 255, 0)',
+        border: isFocused ? 'solid 1px #858d9e' : ' solid 1px #ccd2db',
+        '&:hover': {
+            border: 'solid 1px #a8b0bf',
+            backgroundColor: ' #fafbfc'
+        }
+    }),
+    option: (styles, { isDisabled, isFocused, isSelected }) => {
+        return {
+            ...styles,
+            backgroundColor: isDisabled ? '#fff' : isSelected ? '#e9ecf0' : isFocused ? '#f2f6fa' : "#fff",
+            color: '#3e4352',
+            fontSize: '14px',
+            cursor: isDisabled ? 'not-allowed' : 'pointer',
+            textTransform: 'capitalize',
+            fontFamily: publicFonts,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            fontWeight: '700',
+            textOverflow: 'ellipsis',
+            zIndex: '155'
+        };
+    },
+    input: styles => ({ ...styles, maxWidth: '100%' }),
+    placeholder: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700' }),
+    singleValue: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700', textAlign: 'center' }),
+    indicatorSeparator: styles => ({ ...styles, backgroundColor: '#dadee6' }),
+};
+
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -2359,6 +2401,7 @@ class materialRequestAddEdit extends Component {
                                             });
                                             this.actionsChange(event);
                                         }}
+                                        styles={actionPanel}
                                     />
                                 </div>
                             )}
@@ -2946,7 +2989,7 @@ class materialRequestAddEdit extends Component {
                                                         );
                                                     }}
                                                     name="M_fromCompanyId"
-                                                    id="M_fromCompanyId"
+                                                    id="M_fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 "
                                                 />
                                             </div>
                                             <div className="super_company">
@@ -2965,7 +3008,7 @@ class materialRequestAddEdit extends Component {
                                                     error={errors.M_contact}
                                                     touched={touched.M_contact}
                                                     name="M_contact"
-                                                    id="M_contact"
+                                                    id="M_contact" classDrop=" contactName1" styles={ContactDropdown}
                                                 />
                                             </div>
                                         </div>

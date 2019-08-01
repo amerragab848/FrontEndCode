@@ -91,6 +91,44 @@ const BoqTypeSchema = Yup.object().shape({
     boqSubType: Yup.string().required(Resources["boqSubType"][currentLanguage])
 });
 
+let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
+const actionPanel = {
+    control: (styles, { isFocused }) => ({
+        ...styles,
+        height: '36px',
+        borderRadius: '4px',
+        boxShadow: 'none',
+        transition: ' all 0.4s ease-in-out',
+        width: '166px',
+        backgroundColor: isFocused ? '#fafbfc' : 'rgba(255, 255, 255, 0)',
+        border: isFocused ? 'solid 1px #858d9e' : ' solid 1px #ccd2db',
+        '&:hover': {
+            border: 'solid 1px #a8b0bf',
+            backgroundColor: ' #fafbfc'
+        }
+    }),
+    option: (styles, { isDisabled, isFocused, isSelected }) => {
+        return {
+            ...styles,
+            backgroundColor: isDisabled ? '#fff' : isSelected ? '#e9ecf0' : isFocused ? '#f2f6fa' : "#fff",
+            color: '#3e4352',
+            fontSize: '14px',
+            cursor: isDisabled ? 'not-allowed' : 'pointer',
+            textTransform: 'capitalize',
+            fontFamily: publicFonts,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            fontWeight: '700',
+            textOverflow: 'ellipsis',
+            zIndex: '155'
+        };
+    },
+    input: styles => ({ ...styles, maxWidth: '100%' }),
+    placeholder: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700' }),
+    singleValue: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700', textAlign: 'center' }),
+    indicatorSeparator: styles => ({ ...styles, backgroundColor: '#dadee6' }),
+};
+
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
@@ -4052,6 +4090,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 }
                                                                 index="contractId"
                                                                 name="contractId"
+                                                                styles={actionPanel}
                                                             />
                                                             <div
                                                                 style={{

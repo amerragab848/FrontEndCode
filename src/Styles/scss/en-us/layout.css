@@ -14800,17 +14800,23 @@ h1, h2, h3, h4, h5 {
 
 .react-grid-Grid {
     overflow: unset !important;
+    border: 1px solid #e9ebf0 !important
 }
 
 .react-grid-Header {
     height: 58px !important;
-    border-bottom: 1px solid #ddd !important;
+    border-bottom: 1px solid #e9ebf0 !important;
     background: #fff !important;
     z-index: 9 !important;
+    box-shadow: none !important
+}
+
+.react-grid-Main {
+    outline: none !important;
 }
 
 .react-grid-Row {
-    border-bottom: 1px solid #ddd !important;
+    border-bottom: 1px solid #e9ebf0 !important;
     height: 60px !important;
 }
 
@@ -15674,10 +15680,6 @@ table edition
     color: #2AA832;
 }
 
-.customD_Menu div:first-child > div:hover {
-    border-color: #cccccc;
-}
-
 .has-error .customD_Menu div:first-child > div {
     border-color: #E74C3C;
 }
@@ -16493,9 +16495,9 @@ tfoot tr td p {
     padding-right: 0;
 }
 
-.timeSheetInput .fillter-item-c {
+/* .timeSheetInput .fillter-item-c {
     margin-bottom: 20px;
-}
+} */
 
 /* .timeSheetInput .fillter-item-c .spanValidation,
 .timeSheetInput .fullWidthWrapper label {
@@ -16666,9 +16668,9 @@ tfoot tr td p {
 .taskInfo {
     max-height: inherit;
     margin-bottom: 10px;
-    position: absolute;
-    top: 75%;
-    z-index: 9999999999999;
+    /* position: absolute;
+    top: 75%; */
+    z-index: 799;
     background: #fff;
 }
 
@@ -20321,9 +20323,9 @@ body.noScrolling {
     text-align: center;
 }
 
-.default__dropdown .css-10nd86i .css-1hwfws3 {
+/* .default__dropdown .css-10nd86i .css-1hwfws3 {
     padding: 0;
-}
+} */
 
 .default__dropdown .css-10nd86i .css-19bqh2r {
     display: inline-block;
@@ -20393,7 +20395,6 @@ body.noScrolling {
     background-image: url(../../images/primarybtn-2Menu-arrow.png);
     width: 16px;
     height: 16px;
-    opacity: 0.6;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -21553,4 +21554,40 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .letterFullWidth.fullInputWidth .ui.input.inputDev,
 .letterFullWidth.fullInputWidth input {
     max-width: 100% !important;
+}
+
+.contactName1 {
+    position: relative;
+}
+
+.contactName1::before {
+  content: '';
+  position: absolute;
+  background-image: url(../../images/dropdownPerson.png);
+  left: 7px;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  top: calc(50% - 8px);
+  z-index: 9; 
+}
+
+.companyName1 {
+  position: relative; 
+}
+
+.companyName1::before {
+  content: '';
+  position: absolute;
+  background-image: url(../../images/companyDropdown.png);
+  left: 7px;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  top: calc(50% - 8px);
+  z-index: 9; 
+}
+
+.drop__hasError >div {
+    border : solid 2px #e74c3c !important
 }

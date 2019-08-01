@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from "react";
-
+import React, { Component, Fragment } from "react"; 
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form  } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -28,6 +27,7 @@ import Api from "../../api";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import { SkyLightStateless } from "react-skylight";
+import Steps from "../../Componants/publicComponants/Steps";
 
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -105,6 +105,20 @@ const ModificationSchema = Yup.object().shape({
     no: Yup.number().required(Resources['selectNumber'][currentLanguage]).typeError(Resources['onlyNumbers'][currentLanguage]),
 });
 
+var steps_defination = [];
+steps_defination = [
+    { name: "weeklyReport", callBackFn: null },
+    { name: "technicalOffice", callBackFn: null },
+    { name: "constraints", callBackFn: null },
+    { name: "delivery", callBackFn: null },
+    { name: "needs", callBackFn: null },
+    { name: "implementationWork", callBackFn: null },
+    { name: "nextWeek", callBackFn: null },
+    { name: "coordination", callBackFn: null },
+    { name: "meetings", callBackFn: null },
+    { name: "modifications", callBackFn: null }
+];
+
 class weeklyReportsAddEdit extends Component {
 
     constructor(props) {
@@ -129,26 +143,7 @@ class weeklyReportsAddEdit extends Component {
         }
         this.state = {
             selectedRows: [],
-            CurrentStep: 1,
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
-            thirdStep: false,
-            thirdStepComplate: false,
-            fourStep: false,
-            fourStepComplate: false,
-            fiveStep: false,
-            fiveStepComplate: false,
-            sexStep: false,
-            sexStepComplate: false,
-            sevenStep: false,
-            sevenStepComplate: false,
-            eightStep: false,
-            eightStepComplate: false,
-            nineStep: false,
-            nineStepComplate: false,
-            tenStep: false,
-            tenStepComplate: false,
+            CurrentStep: 0,
             showDeleteModal: false,
             isLoading: false,
             isEdit: false,
@@ -391,7 +386,11 @@ class weeklyReportsAddEdit extends Component {
 
         if (this.state.docId !== 0) {
             this.getCoordinationData();
-            dataservice.GetRowById('GetLogsWeeklyReportsTechnicalOfficesForEdit?id=' + this.state.docId).then(result => { this.setState({ technicalOfficeObj: result, EditMood: true }) });
+            let technicalOfficeObj = {
+                arrange: '', workshopDrawingsRecived: '', workshopDrawingsRequired: '',
+                architicturalContractors: '', electricityContractors: '', weeklyReportsId: this.state.docId
+            }
+            dataservice.GetRowById('GetLogsWeeklyReportsTechnicalOfficesForEdit?id=' + this.state.docId).then(result => { this.setState({ technicalOfficeObj: result ? result : technicalOfficeObj, EditMood: true }) });
 
             dataservice.GetDataGrid('GetLogsWeeklyReportsConstraints?parentId=' + this.state.docId).then(result => { this.setState({ constraintsRows: result }) });
 
@@ -445,283 +444,6 @@ class weeklyReportsAddEdit extends Component {
         updated_document[field] = e.target.value;
         updated_document = Object.assign(original_document, updated_document);
         this.setState({ document: updated_document })
-    }
-
-    NextStep(Islinks, stepNumber) {
-        let CurrentStep = Islinks ? stepNumber - 1 : this.state.CurrentStep
-        if (CurrentStep === 1) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep + 1,
-                SecondStepComplate: true,
-                thirdStepComplate: false,
-                fourStepComplate: false,
-                fiveStepComplate: false,
-                sexStepComplate: false,
-                sevenStepComplate: false,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            })
-        }
-        else if (CurrentStep === 2) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep + 1,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: false,
-                fiveStepComplate: false,
-                sexStepComplate: false,
-                sevenStepComplate: false,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-
-            })
-        }
-        else if (CurrentStep === 3) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep + 1,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: false,
-                sexStepComplate: false,
-                sevenStepComplate: false,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            })
-        }
-
-        else if (CurrentStep === 4) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep + 1,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: true,
-                sexStepComplate: false,
-                sevenStepComplate: false,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            })
-        }
-
-        else if (CurrentStep === 5) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep + 1,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: true,
-                sexStepComplate: true,
-                sevenStepComplate: false,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            })
-        }
-
-        else if (CurrentStep === 6) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep + 1,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: true,
-                sexStepComplate: true,
-                sevenStepComplate: true,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            })
-        }
-
-        else if (CurrentStep === 7) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep + 1,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: true,
-                sexStepComplate: true,
-                sevenStepComplate: true,
-                eightStepComplate: true,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            })
-        }
-
-        else if (CurrentStep === 8) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep + 1,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: true,
-                sexStepComplate: true,
-                sevenStepComplate: true,
-                eightStepComplate: true,
-                nineStepComplate: true,
-                tenStepComplate: false,
-            })
-        }
-        else if (CurrentStep === 9) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep + 1,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: true,
-                sexStepComplate: true,
-                sevenStepComplate: true,
-                eightStepComplate: true,
-                nineStepComplate: true,
-                tenStepComplate: true,
-            })
-        }
-
-        else { this.props.history.push("/weeklyReport/" + this.state.projectId) }
-    }
-
-    PreviousStep(Islinks, stepNumber) {
-        let CurrentStep = Islinks ? stepNumber + 1 : this.state.CurrentStep
-        if (CurrentStep === 2) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep - 1,
-                FirstStep: true,
-                SecondStepComplate: false,
-                thirdStepComplate: false,
-                fourStepComplate: false,
-                fiveStepComplate: false,
-                sexStepComplate: false,
-                sevenStepComplate: false,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            });
-        }
-        else if (CurrentStep === 3) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep - 1,
-                FirstStep: true,
-                SecondStepComplate: true,
-                thirdStepComplate: false,
-                fourStepComplate: false,
-                fiveStepComplate: false,
-                sexStepComplate: false,
-                sevenStepComplate: false,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            });
-        }
-        else if (CurrentStep === 4) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep - 1,
-                FirstStep: true,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: false,
-                fiveStepComplate: false,
-                sexStepComplate: false,
-                sevenStepComplate: false,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            });
-        }
-        else if (CurrentStep === 5) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep - 1,
-                FirstStep: true,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: false,
-                sexStepComplate: false,
-                sevenStepComplate: false,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            });
-        }
-        else if (CurrentStep === 6) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep - 1,
-                FirstStep: true,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: true,
-                sexStepComplate: false,
-                sevenStepComplate: false,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            });
-        }
-        else if (CurrentStep === 7) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep - 1,
-                FirstStep: true,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: true,
-                sexStepComplate: true,
-                sevenStepComplate: false,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            });
-        }
-        else if (CurrentStep === 8) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep - 1,
-                FirstStep: true,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: true,
-                sexStepComplate: true,
-                sevenStepComplate: true,
-                eightStepComplate: false,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            });
-        }
-        else if (CurrentStep === 9) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep - 1,
-                FirstStep: true,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: true,
-                sexStepComplate: true,
-                sevenStepComplate: true,
-                eightStepComplate: true,
-                nineStepComplate: false,
-                tenStepComplate: false,
-            });
-        }
-        else if (CurrentStep === 10) {
-            this.setState({
-                CurrentStep: Islinks ? stepNumber : this.state.CurrentStep - 1,
-                FirstStep: true,
-                SecondStepComplate: true,
-                thirdStepComplate: true,
-                fourStepComplate: true,
-                fiveStepComplate: true,
-                sexStepComplate: true,
-                sevenStepComplate: true,
-                eightStepComplate: true,
-                nineStepComplate: true,
-                tenStepComplate: false,
-            });
-        }
     }
 
     componentWillUnmount() {
@@ -849,10 +571,10 @@ class weeklyReportsAddEdit extends Component {
         dataservice.GetRowById('LogsWeeklyReportsConstraintsDelete?id=' + this.state.ConstraintId).then(
             result => {
                 this.setState({ constraintsRows: result, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
-                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
     }
 
@@ -930,7 +652,7 @@ class weeklyReportsAddEdit extends Component {
     }
 
     saveNeed = (values) => {
-        this.setState({ isLoading: true })
+        this.setState({ isLoading: true });
         let obj = {
             weeklyReportsId: this.state.docId, constraints: values.constraints, disciplineId: this.state.selectedDiscplineNeeds.value,
             totalInSite: values.totalInSite, arrange: values.no,
@@ -965,10 +687,10 @@ class weeklyReportsAddEdit extends Component {
         dataservice.GetRowById('LogsWeeklyReportsNeedsDelete?id=' + this.state.needsId).then(
             result => {
                 this.setState({ needsRows: result, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
-                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
     }
 
@@ -1074,10 +796,10 @@ class weeklyReportsAddEdit extends Component {
         dataservice.GetRowById('LogsWeeklyReportsNextWeekDelete?id=' + this.state.NextId).then(
             result => {
                 this.setState({ NextRows: result, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
-                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
     }
 
@@ -1086,12 +808,12 @@ class weeklyReportsAddEdit extends Component {
             let col = colName + name
             let element = this.state.Coordinationobj
             element[col] = value
-            this.setState({ Coordinationobj: element })
+            this.setState({ Coordinationobj: element });
         }
     }
 
     saveCoordination = () => {
-        this.setState({ isLoading: true })
+        this.setState({ isLoading: true });
         dataservice.addObject('EditLogsWeeklyReportsCoordination', this.state.Coordinationobj).then(result => {
             this.setState({ isLoading: false });
             toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -1112,7 +834,7 @@ class weeklyReportsAddEdit extends Component {
     }
 
     saveMeeting = (values) => {
-        this.setState({ isLoading: true })
+        this.setState({ isLoading: true });
         let obj = {
             weeklyReportsId: this.state.docId,
             arrange: values.no,
@@ -1150,10 +872,10 @@ class weeklyReportsAddEdit extends Component {
         dataservice.GetRowById('LogsWeeklyReportsMeetingsDelete?id=' + this.state.meetingId).then(
             result => {
                 this.setState({ meetingRows: result, showDeleteModal: false, isLoading: false });
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
-                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
     }
 
@@ -1179,7 +901,7 @@ class weeklyReportsAddEdit extends Component {
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
             }).catch(ex => {
                 this.setState({ showDeleteModal: false, isLoading: false, });
-                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
     }
 
@@ -1215,17 +937,9 @@ class weeklyReportsAddEdit extends Component {
         });
     }
 
-    StepLinks = (linkNumber) => {
-        if (this.state.isEdit) {
-            let currStep = this.state.CurrentStep
-            if (currStep < linkNumber) {
-                this.NextStep(true, linkNumber);
-            }
-            else if (currStep > linkNumber) {
-                this.PreviousStep(true, linkNumber);
-            }
-        }
-    }
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrentStep: stepNo });
+    };
 
     render() {
 
@@ -1246,12 +960,12 @@ class weeklyReportsAddEdit extends Component {
                             if (this.props.showModal) { return; }
 
                             if (this.state.IsAddMood) {
-                                this.NextStep();
+                                this.changeCurrentStep(1);
                             }
                             else {
                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                     this.SaveDoc('EditMood');
-                                    this.NextStep();
+                                    this.changeCurrentStep(1);
                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                     this.SaveDoc('AddMood');
                                 }
@@ -1443,8 +1157,8 @@ class weeklyReportsAddEdit extends Component {
                                     <label className="control-label">{Resources.deliveredWorkShopDrawings[currentLanguage]}</label>
                                     <div className="ui input inputDev"  >
                                         <input type="text" className="form-control" placeholder={Resources.deliveredWorkShopDrawings[currentLanguage]}
-                                            value={this.state.technicalOfficeObj.workshopDrawingsRecived}
-                                            onChange={(e) => this.handleChangeStepTwo(e, 'workshopDrawingsRecived')} />
+                                            value={this.state.technicalOfficeObj.didi}
+                                            onChange={(e) => this.handleChangeStepTwo(e, 'didi')} />
                                     </div>
                                 </div>
 
@@ -1489,7 +1203,7 @@ class weeklyReportsAddEdit extends Component {
                                 </div>
                             </div>
                             <div className="slider-Btns letterFullWidth">
-                                <button type="button" className="primaryBtn-1 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
+                                <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(2)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                             </div>
                         </div>
                     </div>
@@ -1612,7 +1326,7 @@ class weeklyReportsAddEdit extends Component {
                             )}
                         </Formik>
                         <div className="slider-Btns letterFullWidth">
-                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
+                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(3)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                         </div>
                     </div>
                 </div>
@@ -1776,24 +1490,25 @@ class weeklyReportsAddEdit extends Component {
                                             <div className="slider-Btns fullWidthWrapper textLeft ">
                                                 <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
                                             </div>
-                                            <div className="doc-pre-cycle">
-                                                <header>
-                                                    <h2 className="zero">{Resources['delivery'][currentLanguage]}</h2>
-                                                </header>
-
-                                                <ReactTable
-                                                    // filterable
-                                                    ref={(r) => { this.selectTable = r }}
-                                                    data={this.state.deliveryRows} noDataText={Resources['noData'][currentLanguage]}
-                                                    columns={columnsDevlivery} defaultPageSize={10} minRows={2} />
-                                            </div>
                                         </div>
+                                        <div className="doc-pre-cycle">
+                                            <header>
+                                                <h2 className="zero">{Resources['delivery'][currentLanguage]}</h2>
+                                            </header>
+
+                                            <ReactTable
+                                                // filterable
+                                                ref={(r) => { this.selectTable = r }}
+                                                data={this.state.deliveryRows} noDataText={Resources['noData'][currentLanguage]}
+                                                columns={columnsDevlivery} defaultPageSize={10} minRows={2} />
+                                        </div>
+
                                     </div>
                                 </Form>
                             )}
                         </Formik>
                         <div className="slider-Btns letterFullWidth">
-                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
+                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(4)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                         </div>
                     </div>
                 </div>
@@ -1944,7 +1659,7 @@ class weeklyReportsAddEdit extends Component {
                             )}
                         </Formik>
                         <div className="slider-Btns letterFullWidth">
-                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
+                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(5)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                         </div>
                     </div>
                 </div>
@@ -2187,7 +1902,7 @@ class weeklyReportsAddEdit extends Component {
                             )}
                         </Formik>
                         <div className="slider-Btns letterFullWidth">
-                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
+                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(6)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                         </div>
                     </div>
                 </div>
@@ -2414,7 +2129,7 @@ class weeklyReportsAddEdit extends Component {
                             )}
                         </Formik>
                         <div className="slider-Btns letterFullWidth">
-                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
+                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(7)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                         </div>
                     </div>
                 </div>
@@ -2512,7 +2227,7 @@ class weeklyReportsAddEdit extends Component {
                                 <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} onClick={() => this.saveCoordination()} disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
                             </div>
                             <div className="slider-Btns fullWidthWrapper textLeft ">
-                                <button type="button" className="primaryBtn-1 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
+                                <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(8)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                             </div>
                         </div>
                     </div>
@@ -2661,7 +2376,7 @@ class weeklyReportsAddEdit extends Component {
                             )}
                         </Formik>
                         <div className="slider-Btns letterFullWidth">
-                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
+                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(9)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                         </div>
                     </div>
                 </div>
@@ -2823,7 +2538,7 @@ class weeklyReportsAddEdit extends Component {
                             )}
                         </Formik>
                         <div className="slider-Btns letterFullWidth">
-                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.NextStep(false, '')} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
+                            <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(10)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
                         </div>
                     </div>
                 </div>
@@ -2850,94 +2565,30 @@ class weeklyReportsAddEdit extends Component {
                                 </header>
                             ) : null}
                             {this.state.isLoading ? <LoadingSection /> : null}
-                            {this.state.CurrentStep === 1 ? <Fragment>{stepOne()}</Fragment>
-                                : this.state.CurrentStep === 2 ? <Fragment> {stepTwo()}</Fragment> :
-                                    this.state.CurrentStep === 3 ? <Fragment> {stepThree()}</Fragment> :
-                                        this.state.CurrentStep === 4 ? <Fragment> {stepFour()}</Fragment> :
-                                            this.state.CurrentStep === 5 ? <Fragment> {stepFive()}</Fragment> :
-                                                this.state.CurrentStep === 6 ? <Fragment> {stepSex()}</Fragment> :
-                                                    this.state.CurrentStep === 7 ? <Fragment> {stepSeven()}</Fragment> :
-                                                        this.state.CurrentStep === 8 ? <Fragment> {stepEight()}</Fragment> :
-                                                            this.state.CurrentStep === 9 ? <Fragment> {stepNine()}</Fragment> :
+                            {this.state.CurrentStep === 0 ? <Fragment>{stepOne()}</Fragment> :
+                                this.state.CurrentStep === 1 ? <Fragment> {stepTwo()}</Fragment> :
+                                    this.state.CurrentStep === 2 ? <Fragment> {stepThree()}</Fragment> :
+                                        this.state.CurrentStep === 3 ? <Fragment> {stepFour()}</Fragment> :
+                                            this.state.CurrentStep === 4 ? <Fragment> {stepFive()}</Fragment> :
+                                                this.state.CurrentStep === 5 ? <Fragment> {stepSex()}</Fragment> :
+                                                    this.state.CurrentStep === 6 ? <Fragment> {stepSeven()}</Fragment> :
+                                                        this.state.CurrentStep === 7 ? <Fragment> {stepEight()}</Fragment> :
+                                                            this.state.CurrentStep === 8 ? <Fragment> {stepNine()}</Fragment> :
                                                                 <Fragment> {stepTen()}</Fragment>}
                         </div>
 
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            <div className="step-content-foot">
-                                <span onClick={() => this.PreviousStep(false, '')} className={this.state.CurrentStep !== 1 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                                    <i className="fa fa-caret-left" aria-hidden="true" />{" "} Previous</span>
-                                <span onClick={() => this.NextStep(false, '')} className={this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                                    Next <i className="fa fa-caret-right" aria-hidden="true" /> </span>
-                            </div>
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/weeklyReport/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrentStep}
+                            />
+                        </Fragment>
 
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-
-                                    <div onClick={() => this.StepLinks(1)} data-id="step1"
-                                        className={"step-slider-item " + (this.state.SecondStepComplate ? "active" : "current__step")}>
-                                        <div className="steps-timeline"> <span>1</span></div>
-                                        <div className="steps-info"><h6>{Resources["weeklyReport"][currentLanguage]}</h6> </div>
-                                    </div>
-
-                                    <div onClick={() => this.StepLinks(2)} data-id="step2 "
-                                        className={"step-slider-item " + (this.state.thirdStepComplate ? "active" : this.state.SecondStepComplate ? "current__step" : "")}>
-                                        <div className="steps-timeline"> <span>2</span></div>
-                                        <div className="steps-info"><h6> {Resources["technicalOffice"][currentLanguage]}</h6></div>
-                                    </div>
-
-
-                                    <div onClick={() => this.StepLinks(3)} data-id="step2 "
-                                        className={"step-slider-item " + (this.state.fourStepComplate ? "active" : this.state.thirdStepComplate ? "current__step" : "")}>
-                                        <div className="steps-timeline"> <span>3</span></div>
-                                        <div className="steps-info"><h6> {Resources["constraints"][currentLanguage]}</h6></div>
-                                    </div>
-
-
-                                    <div onClick={() => this.StepLinks(4)} data-id="step2 "
-                                        className={"step-slider-item " + (this.state.fiveStepComplate ? "active" : this.state.fourStepComplate ? "current__step" : "")}>
-                                        <div className="steps-timeline"> <span>4</span></div>
-                                        <div className="steps-info"><h6> {Resources["delivery"][currentLanguage]}</h6></div>
-                                    </div>
-
-                                    <div onClick={() => this.StepLinks(5)} data-id="step2 "
-                                        className={"step-slider-item " + (this.state.sexStepComplate ? "active" : this.state.fiveStepComplate ? "current__step" : "")}>
-                                        <div className="steps-timeline"> <span>5</span></div>
-                                        <div className="steps-info"><h6> {Resources["needs"][currentLanguage]}</h6></div>
-                                    </div>
-
-                                    <div onClick={() => this.StepLinks(6)} data-id="step2 "
-                                        className={"step-slider-item " + (this.state.sevenStepComplate ? "active" : this.state.sexStepComplate ? "current__step" : "")}>
-                                        <div className="steps-timeline"> <span>6</span></div>
-                                        <div className="steps-info"><h6> {Resources["implementationWork"][currentLanguage]}</h6></div>
-                                    </div>
-
-                                    <div onClick={() => this.StepLinks(7)} data-id="step2 "
-                                        className={"step-slider-item " + (this.state.eightStepComplate ? "active" : this.state.sevenStepComplate ? "current__step" : "")}>
-                                        <div className="steps-timeline"> <span>7</span></div>
-                                        <div className="steps-info"><h6> {Resources["nextWeek"][currentLanguage]}</h6></div>
-                                    </div>
-
-                                    <div onClick={() => this.StepLinks(8)} data-id="step2 "
-                                        className={"step-slider-item " + (this.state.nineStepComplate ? "active" : this.state.eightStepComplate ? "current__step" : "")}>
-                                        <div className="steps-timeline"> <span>8</span></div>
-                                        <div className="steps-info"><h6> {Resources["coordination"][currentLanguage]}</h6></div>
-                                    </div>
-
-                                    <div onClick={() => this.StepLinks(9)} data-id="step2 "
-                                        className={"step-slider-item " + (this.state.tenStepComplate ? "active" : this.state.nineStepComplate ? "current__step" : "")}>
-                                        <div className="steps-timeline"> <span>9</span></div>
-                                        <div className="steps-info"><h6> {Resources["meetings"][currentLanguage]}</h6></div>
-                                    </div>
-
-                                    <div onClick={() => this.StepLinks(10)} data-id="step5" className={this.state.tenStepComplate ? "step-slider-item  current__step" : "step-slider-item"} >
-                                        <div className="steps-timeline"> <span>10</span></div>
-                                        <div className="steps-info"><h6> {Resources["modifications"][currentLanguage]}</h6></div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 

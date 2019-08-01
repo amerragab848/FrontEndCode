@@ -1,38 +1,31 @@
 import React, { Component } from "react";
-
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, FastField } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
-import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment';
+import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments';
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-
 import { withRouter } from "react-router-dom";
-
-
-import TextEditor from '../../Componants/OptionsPanels/TextEditor'
+import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
-
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-
-import DatePicker from '../../Componants/OptionsPanels/DatePicker'
+import Distribution from '../../Componants/OptionsPanels/DistributionList';
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
+import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
+import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -444,7 +437,7 @@ class siteInstructionsAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3314) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={864} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={864} />
                     : null)
                 : null
         )
@@ -605,7 +598,8 @@ class siteInstructionsAddEdit extends Component {
                                                                             handleChange={event => {
                                                                                 this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact', { label: Resources.fromContactRequired[currentLanguage], value: "0" })
                                                                             }}
-
+                                                                            styles={CompanyDropdown}
+                                                                            classDrop="companyName1"
                                                                             index="fromCompanyId"
                                                                             name="fromCompanyId"
                                                                             id="fromCompanyId" />
@@ -623,7 +617,9 @@ class siteInstructionsAddEdit extends Component {
                                                                             isClear={false}
                                                                             index="IR-fromContactId"
                                                                             name="fromContactId"
-                                                                            id="fromContactId" />
+                                                                            id="fromContactId"
+                                                                            classDrop="contactName1"
+                                                                            styles={ContactDropdown} />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -638,7 +634,9 @@ class siteInstructionsAddEdit extends Component {
                                                                             selectedValue={this.state.selectedToCompany}
                                                                             handleChange={event =>
                                                                                 this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact', { label: Resources.toContactRequired[currentLanguage], value: "0" })}
-                                                                            name="toCompanyId" />
+                                                                            name="toCompanyId"
+                                                                            styles={CompanyDropdown}
+                                                                            classDrop="companyName1" />
                                                                     </div>
                                                                     <div className="super_company">
                                                                         <Dropdown
@@ -654,6 +652,8 @@ class siteInstructionsAddEdit extends Component {
                                                                             index="IR-toContactId"
                                                                             name="toContactId"
                                                                             id="toContactId"
+                                                                            classDrop="contactName1"
+                                                                            styles={ContactDropdown}
                                                                         />
                                                                     </div>
                                                                 </div>

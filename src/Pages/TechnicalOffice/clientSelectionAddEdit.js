@@ -9,30 +9,23 @@ import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-
 import { withRouter } from "react-router-dom";
-
-import TextEditor from '../../Componants/OptionsPanels/TextEditor'
-
+import TextEditor from '../../Componants/OptionsPanels/TextEditor';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
-
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
-
-import DatePicker from '../../Componants/OptionsPanels/DatePicker'
+import Distribution from '../../Componants/OptionsPanels/DistributionList';
+import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
+import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
+import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -532,7 +525,7 @@ class clientSelectionAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3293) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
         )
@@ -707,7 +700,8 @@ class clientSelectionAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromCompanyId}
                                                                         touched={touched.fromCompanyId}
-
+                                                                        styles={CompanyDropdown}
+                                                                        classDrop="companyName1"
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
                                                                         id="fromCompanyId" />
@@ -718,7 +712,8 @@ class clientSelectionAddEdit extends Component {
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-
+                                                                        classDrop="contactName1"
+                                                                        styles={ContactDropdown}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
@@ -746,7 +741,10 @@ class clientSelectionAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}
                                                                         touched={touched.toCompanyId}
-                                                                        name="toCompanyId" />
+                                                                        name="toCompanyId"
+                                                                        styles={CompanyDropdown}
+                                                                        classDrop="companyName1"
+                                                                    />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -754,7 +752,8 @@ class clientSelectionAddEdit extends Component {
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-
+                                                                        classDrop="contactName1"
+                                                                        styles={ContactDropdown}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}

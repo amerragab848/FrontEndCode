@@ -31,7 +31,9 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import numeral from 'numeral';
 import RiskCategorisation from "../../Componants/publicComponants/RiskCategorisation";
-import Steps from "../../Componants/publicComponants/Steps";
+import Steps from "../../Componants/publicComponants/Steps"; 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -963,7 +965,7 @@ class riskAddEdit extends Component {
                                                         error={errors.fromCompanyId}
                                                         touched={touched.fromCompanyId}
                                                         name="fromCompanyId"
-                                                        id="actionOwnerId" />
+                                                        id="actionOwnerId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                 </div>
                                                 <div className="super_company">
                                                     <Dropdown isMulti={false} data={this.state.fromContacts}
@@ -974,7 +976,7 @@ class riskAddEdit extends Component {
                                                         error={errors.actionOwnerContactId}
                                                         touched={touched.actionOwnerContactId}
                                                         name="actionOwnerContactId"
-                                                        id="actionOwnerContactId" />
+                                                        id="actionOwnerContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                 </div>
                                             </div>
                                         </div>
@@ -1775,7 +1777,7 @@ class riskAddEdit extends Component {
                                                                             error={errors.ownerCompanyId}
                                                                             touched={touched.ownerCompanyId}
                                                                             name="ownerCompanyId"
-                                                                            id="ownerCompanyId" />
+                                                                            id="ownerCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                     </div>
                                                                     <div className="super_company">
                                                                         <Dropdown isMulti={false} data={this.state.ToContacts}
@@ -1786,7 +1788,7 @@ class riskAddEdit extends Component {
                                                                             error={errors.ownerContactId}
                                                                             touched={touched.ownerContactId}
                                                                             name="ownerContactId"
-                                                                            id="ownerContactId" />
+                                                                            id="ownerContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                                     </div>
                                                                 </div>
                                                             </div>

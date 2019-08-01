@@ -34,7 +34,9 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
-import Steps from "../../Componants/publicComponants/Steps";
+import Steps from "../../Componants/publicComponants/Steps"; 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -1093,7 +1095,7 @@ class materialInspectionRequestAddEdit extends Component {
 
                                                                                 index="fromCompanyId"
                                                                                 name="fromCompanyId"
-                                                                                id="fromCompanyId" />
+                                                                                id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                         </div>
                                                                         <div className="super_company">
                                                                             <Dropdown
@@ -1109,7 +1111,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 isClear={false}
                                                                                 index="IR-fromContactId"
                                                                                 name="fromContactId"
-                                                                                id="fromContactId" />
+                                                                                id="fromContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1128,7 +1130,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.toCompanyId}
                                                                                 touched={touched.toCompanyId}
-                                                                                name="toCompanyId" />
+                                                                                name="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                         </div>
                                                                         <div className="super_company">
                                                                             <Dropdown
@@ -1144,7 +1146,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 isClear={false}
                                                                                 index="IR-toContactId"
                                                                                 name="toContactId"
-                                                                                id="toContactId"
+                                                                                id="toContactId" classDrop=" contactName1" styles={ContactDropdown}
                                                                             />
                                                                         </div>
                                                                     </div>
@@ -1160,7 +1162,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 selectedValue={this.state.selectedActionByCompanyId}
                                                                                 handleChange={event =>
                                                                                     this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
-                                                                                name="bicCompanyId" />
+                                                                                name="bicCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                         </div>
                                                                         <div className="super_company">
                                                                             <Dropdown
@@ -1176,7 +1178,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 isClear={false}
                                                                                 index="IR-bicContactId"
                                                                                 name="bicContactId"
-                                                                                id="bicContactId" />
+                                                                                id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}/>
 
                                                                         </div>
                                                                     </div>

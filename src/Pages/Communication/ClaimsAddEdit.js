@@ -24,6 +24,9 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -584,7 +587,9 @@ class ClaimsAddEdit extends Component {
                                                                         touched={touched.fromCompanyId}
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
-                                                                        id="fromCompanyId" />
+                                                                        id="fromCompanyId" 
+                                                                        styles={CompanyDropdown} classDrop="companyName1 "
+                                                                        />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -599,7 +604,9 @@ class ClaimsAddEdit extends Component {
                                                                         isClear={false}
                                                                         index="letter-fromContactId"
                                                                         name="fromContactId"
-                                                                        id="fromContactId" />
+                                                                        id="fromContactId"
+                                                                        classDrop=" contactName1" styles={ContactDropdown}
+                                                                        />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -619,7 +626,9 @@ class ClaimsAddEdit extends Component {
                                                                         touched={touched.toCompanyId}
                                                                         index="letter-toCompany"
                                                                         name="toCompanyId"
-                                                                        id="toCompanyId" />
+                                                                        id="toCompanyId" 
+                                                                        styles={CompanyDropdown} classDrop="companyName1 "
+                                                                        />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -633,7 +642,9 @@ class ClaimsAddEdit extends Component {
                                                                         touched={touched.toContactId}
                                                                         index="letter-toContactId"
                                                                         name="toContactId"
-                                                                        id="toContactId" />
+                                                                        id="toContactId" 
+                                                                        classDrop=" contactName1" styles={ContactDropdown}
+                                                                        />
                                                                 </div>
                                                             </div>
                                                         </div>

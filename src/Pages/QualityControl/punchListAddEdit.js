@@ -31,7 +31,9 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
-import Steps from "../../Componants/publicComponants/Steps";
+import Steps from "../../Componants/publicComponants/Steps"; 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -904,7 +906,7 @@ this.changeCurrentStep(1);
                                                             touched={touched.bicCompanyId} name="bicCompanyId"
                                                             handleChange={event =>
                                                                 this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
-                                                        />
+                                                                styles={CompanyDropdown} classDrop="companyName1 " />
                                                     </div>
 
                                                     <div className="super_company">
@@ -912,7 +914,7 @@ this.changeCurrentStep(1);
                                                             handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
                                                             onChange={setFieldValue} onBlur={setFieldTouched}
                                                             error={errors.bicContactId} touched={touched.bicContactId}
-                                                            index="IR-bicContactId" name="bicContactId" id="bicContactId" />
+                                                            index="IR-bicContactId" name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1090,7 +1092,7 @@ this.changeCurrentStep(1);
                                                                 touched={touched.ActionByCompanyIdItem} name="ActionByCompanyIdItem"
                                                                 handleChange={event =>
                                                                     this.handleChangeDropDown(event, 'ActionByCompanyIdItem', true, 'ToContactsItem', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyIdItem', 'selectedActionByContactItem')}
-                                                            />
+                                                                    styles={CompanyDropdown} classDrop="companyName1 " />
                                                         </div>
 
                                                         <div className="super_company">
@@ -1098,7 +1100,7 @@ this.changeCurrentStep(1);
                                                                 handleChange={event => this.handleChangeDropDown(event, 'ActionByContactItem', false, '', '', '', 'selectedActionByContactItem')}
                                                                 onChange={setFieldValue} onBlur={setFieldTouched}
                                                                 error={errors.ActionByContactItem} touched={touched.ActionByContactItem}
-                                                                index="IR-ActionByContactItem" name="ActionByContactItem" id="ActionByContactItem" />
+                                                                index="IR-ActionByContactItem" name="ActionByContactItem" id="ActionByContactItem" classDrop=" contactName1" styles={ContactDropdown}/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1233,7 +1235,7 @@ this.changeCurrentStep(1);
                                                 touched={touched.bicCompanyId} name="bicCompanyId"
                                                 handleChange={event =>
                                                     this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
-                                            />
+                                                    styles={CompanyDropdown} classDrop="companyName1 " />
                                         </div>
 
                                         <div className="super_company">
@@ -1241,7 +1243,7 @@ this.changeCurrentStep(1);
                                                 handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
                                                 onChange={setFieldValue} onBlur={setFieldTouched}
                                                 error={errors.bicContactId} touched={touched.bicContactId}
-                                                index="IR-bicContactId" name="bicContactId" id="bicContactId" />
+                                                index="IR-bicContactId" name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                         </div>
                                     </div>
                                 </div>
