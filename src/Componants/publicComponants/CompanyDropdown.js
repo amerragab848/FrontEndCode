@@ -34,7 +34,7 @@ const CompanyDropdown = {
             zIndex: '155'
         };
     },
-    input: styles => ({ ...styles, maxWidth: '100%' }),
+    input: styles => ({ ...styles, maxWidth: '100%', marginLeft: currentLanguage === "ar" ? '0' : '22px', marginRight: currentLanguage === "ar" ? '22px' : '0'  }),
     placeholder: styles => ({ ...styles, color: '#A8B0BF', fontSize: '13px', width: '100%', fontFamily: publicFonts, left: currentLanguage === "ar" ? 'auto' : '27px', right: currentLanguage === "ar" ? '27px' : 'auto' }),
     singleValue: styles => ({ ...styles, color: '#252833', fontSize: '13px', width: '100%', fontFamily: publicFonts, left: currentLanguage === "ar" ? 'auto' : '27px', right: currentLanguage === "ar" ? '27px' : 'auto' }),
     indicatorSeparator: styles => ({ ...styles, display: 'none' }),

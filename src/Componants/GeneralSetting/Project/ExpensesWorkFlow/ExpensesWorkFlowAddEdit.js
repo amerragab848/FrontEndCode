@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import DropdownMelcous from '../../../OptionsPanels/DropdownMelcous';
 import _ from "lodash";
-import Select from 'react-select';
+import Select, { components } from 'react-select';
 import { toast } from "react-toastify";
 import * as AdminstrationActions from '../../../../store/actions/Adminstration'
 const publicConfiguarion = config.getPayload();
@@ -23,6 +23,68 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 let CurrProject = localStorage.getItem('lastSelectedprojectName')
 let MaxArrange = ''
 let idEdit = ''
+
+let publicFonts = currentLanguage === "ar" ? 'cairo-sb' : 'Muli, sans-serif'
+
+
+const filterStyle = {
+    control: (styles, { isFocused }) =>
+        ({
+            ...styles,
+            backgroundColor: '#fff',
+            width: '100%',
+            height: '36px',
+            borderRadius: '4px',
+            border: isFocused ? "solid 2px #83B4FC" : '2px solid #E9ECF0',
+            boxShadow: 'none',
+            transition: ' all 0.4s ease-in-out',
+            minHeight: '36px'
+        }),
+    option: (styles, { isDisabled, isFocused, isSelected }) => {
+        return {
+            ...styles,
+            backgroundColor: isDisabled ? '#fff' : isSelected ? '#e9ecf0' : isFocused ? '#f2f6fa' : "#fff",
+            color: '#3e4352',
+            fontSize: '14px',
+            cursor: isDisabled ? 'not-allowed' : 'pointer',
+            textTransform: 'capitalize',
+            fontFamily: publicFonts,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            zIndex: '155'
+        };
+    },
+    input: styles => ({ ...styles, maxWidth: '100%' }),
+    placeholder: styles => ({ ...styles, color: '#A8B0BF', fontSize: '13px', width: '100%', fontFamily: publicFonts }),
+    singleValue: styles => ({ ...styles, color: '#252833', fontSize: '13px', width: '100%', fontFamily: publicFonts }),
+    indicatorSeparator: styles => ({ ...styles, display: 'none' }),
+    menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db' })
+};
+
+const ArrowPublic = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" xmlnsXlink="http://www.w3.org/1999/xlink">
+            <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                <g id="Icons/Info/drop/defaultBtn/16px/Black" fill="#5E6475">
+                    <g id="info_24pt-black">
+                        <path fill="#5E6475" fillRule="evenodd" d="M11.319 6c.886 0 .8.687.346 1.235-.587.705-2.28 2.757-2.728 3.224-.69.721-1.004.722-1.696 0L4.303 7.235C3.866 6.719 3.848 6 4.606 6h6.713z"></path>
+                    </g>
+                </g>
+            </g>
+        </svg>
+    );
+};
+
+const DropdownIndicator = props => {
+    return (
+        <Fragment>
+            <components.DropdownIndicator {...props}>
+                <ArrowPublic />
+            </components.DropdownIndicator>
+        </Fragment>
+    );
+};
 
 const ValidtionSchema = Yup.object().shape({
     ArrangeContact: Yup.string()
@@ -221,8 +283,8 @@ class ExpensesWorkFlowAddEdit extends Component {
                 })
                 break;
             case 3:
-                    this.props.actions.routeToTabIndex(3)
-                    this.props.history.push({ pathname: '/TemplatesSettings' })
+                this.props.actions.routeToTabIndex(3)
+                this.props.history.push({ pathname: '/TemplatesSettings' })
                 break;
         }
     }
@@ -523,7 +585,7 @@ class ExpensesWorkFlowAddEdit extends Component {
         let SelectedRow = Data.filter(s => s.workFlowItemId === id)
         let OldData = Data.filter(s => s.workFlowItemId !== id)
 
-        let SelectedValue = this.state.MultiApproval.val.value
+        let SelectedValue = this.state.MultiApproval.val === undefined ? null : this.state.MultiApproval.val.value
         _.filter(SelectedRow, function (i) {
             let x = {};
             x.arrange = i.arrange
@@ -620,6 +682,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                                 onChange={e => this.MultiApprovalhandleChange(item.workFlowItemId, e)}
                                 onBlur={() => this.handleBlurmultiApproval(item.workFlowItemId)}
                                 defaultValue={item.multiApproval ? { label: 'Multi', value: true } : { label: 'Single', value: false }}
+                                styles={filterStyle} components={{ DropdownIndicator }}
                             />
                         </td>
                     </tr>

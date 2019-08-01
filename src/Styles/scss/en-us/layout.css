@@ -15287,13 +15287,13 @@ body {
     padding: 4px 0;
 }
 
-.dropWrapper .borderError .css-1aya2g8 {
+/* .dropWrapper .borderError .css-1aya2g8 {
     border: 1px solid #d13e2e;
 }
 
 .dropWrapper .borderValid .css-1aya2g8 {
     border: 1px solid #2AA832;
-}
+} */
 
 .dropWrapper .fillter-item-c {
     min-width: 48%;
@@ -15317,14 +15317,14 @@ body {
     height: auto;
 }
 
-.dropWrapper .css-d8oujb {
+/* .dropWrapper .css-d8oujb {
     width: 0 !important;
 }
 
 .dropWrapper .css-19bqh2r {
     width: 15px;
     height: 18px;
-}
+} */
 
 .dropWrapper {
     padding: 5px 10px;
@@ -15668,9 +15668,9 @@ table edition
     align-items: center;
 }
 
-.customD_Menu .css-1hwfws3 {
+/* .customD_Menu .css-1hwfws3 {
     max-height: 40px;
-}
+} */
 
 .has-error .spanValidation label {
     color: #E74C3C;
@@ -16626,9 +16626,9 @@ tfoot tr td p {
     height: 400px;
 }
 
-.customD_Menu .css-15k3avv {
+/* .customD_Menu .css-15k3avv {
     z-index: 155;
-}
+} */
 
 .table__inputs {
     display: flex;
@@ -16933,10 +16933,10 @@ tfoot tr td p {
     margin-top: 0;
 }
 
-.dropdownMulti .customD_Menu .css-1hwfws3,
+/* .dropdownMulti .customD_Menu .css-1hwfws3,
 .multiChoice .customD_Menu .css-1hwfws3 {
     max-height: inherit;
-}
+} */
 
 .dropdownMulti.letterFullWidth .fillter-status.fillter-item-c {
     display: flex;
@@ -17078,13 +17078,13 @@ tfoot tr td p {
 
 /* new css notabs */
 /* noTabs */
-.document__action--menu .customD_Menu .css-10nd86i .css-15k3avv {
+/* .document__action--menu .customD_Menu .css-10nd86i .css-15k3avv {
     height: 145px;
     overflow-y: auto;
     top: -155px;
-}
+} */
 
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-10nd86i .css-15k3avv {
+/* .document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-10nd86i .css-15k3avv {
     height: auto;
     overflow-y: auto;
     top: 100%;
@@ -17108,7 +17108,7 @@ tfoot tr td p {
 .document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw,
 .document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw:hover {
     border-color: #83B4FC !important;
-}
+} */
 
 .document__action--menu .skylight-dialog .spanValidation {
     display: block;
@@ -17522,10 +17522,10 @@ button.companies_icon {
     }
 }
 
-.document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z,
+/* .document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z,
 .document__action--menu .skylight-dialog .customD_Menu .css-2o5izw {
     background: #fff;
-}
+} */
 
 .summerisItem__number {
     position: relative;
@@ -17591,7 +17591,7 @@ button.companies_icon {
     z-index: 2;
 }
 
-.errorClass.customD_Menu .css-vj8t7z {
+/* .errorClass.customD_Menu .css-vj8t7z {
     border: solid 2px #e74c3c !important;
 }
 
@@ -17609,7 +17609,7 @@ button.companies_icon {
     border-radius: 4px;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
     border: solid 1px #ccd2db;
-}
+} */
 
 .SummeriesContainer .SummeriesContainerContent.numbersContainerContent {
     background-color: transparent;
@@ -17673,9 +17673,9 @@ button.companies_icon {
     width: 360px;
 }
 
-.customD_Menu .css-d8oujb {
+/* .customD_Menu .css-d8oujb {
     display: none;
-}
+} */
 
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.daysCheckbox {
     flex-wrap: wrap;
@@ -17776,15 +17776,15 @@ button.companies_icon {
     width: 271px !important;
 }
 
-.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
+/* .supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
     font-family: font-opens;
     font-size: 14px;
     line-height: 1.71;
     letter-spacing: -0.2px;
     color: #3e4352;
-}
+} */
 
-.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before,
+/* .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before,
 .supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before {
     content: '';
     position: absolute;
@@ -17849,7 +17849,7 @@ button.companies_icon {
     background-color: #e9ecf0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-}
+} */
 
 .supervisor__company .super_name .spanValidation,
 .supervisor__company .super_company .spanValidation {
@@ -17867,10 +17867,10 @@ button.companies_icon {
     font-family: font-openb;
 }
 
-.css-2o5izw,
+/* .css-2o5izw,
 .css-10nd86i {
     border-color: transparent !important;
-}
+} */
 
 @media (max-width: 1200px) {
     .noTabs__document .approveDocument .approveDocumentBTNS .border {
@@ -17947,7 +17947,7 @@ button.companies_icon {
     color: #fff;
 }
 
-.customD_Menu .css-vj8t7z, .customD_Menu .css-2o5izw, .customD_Menu .css-162g8z5 {
+/* .customD_Menu .css-vj8t7z, .customD_Menu .css-2o5izw, .customD_Menu .css-162g8z5 {
     min-height: 48px;
     border: solid 2px !important;
     transition: all 0.5s ease-in-out;
@@ -17969,7 +17969,7 @@ button.companies_icon {
 
 .supervisor__company .super_name .customD_Menu.errorClass .css-vj8t7z:hover {
     border: solid 2px #e74c3c !important;
-}
+} */
 
 .main-header.dashboard__header {
     padding-left: 40px;
@@ -18023,11 +18023,11 @@ button.companies_icon {
     }
 }
 
-.css-1g6gooi {
+/* .css-1g6gooi {
     max-height: 30px;
     display: flex;
     align-items: center;
-}
+} */
 
 .griddata__load .react-grid-Cell .react-grid-Cell__value span div {
     background: #dadee6;
@@ -18858,13 +18858,13 @@ button.companies_icon {
     margin-right: 16px;
 }
 
-.document__action--menu .skylight-dialog .customD_Menu .css-xp4uvy {
+/* .document__action--menu .skylight-dialog .customD_Menu .css-xp4uvy {
     font-size: 14px;
     font-weight: 400;
     text-transform: capitalize;
     text-align: left;
     padding-left: 16px;
-}
+} */
 
 .noTabs__document .doc-container .step-content .document-fields .skylight-dialog .proForm.datepickerContainer {
     flex-flow: column;
@@ -20207,11 +20207,11 @@ line.horizontal-grid-line {
     margin-top: 15px;
 }
 
-.ReactTable .customD_Menu .css-vj8t7z,
+/* .ReactTable .customD_Menu .css-vj8t7z,
 .ReactTable .customD_Menu .css-2o5izw,
 .ReactTable .customD_Menu .css-162g8z5 {
     min-height: 38px;
-}
+} */
 
 .nav-right li {
     cursor: pointer;
@@ -20288,7 +20288,7 @@ body.noScrolling {
     margin-left: 88px;
 }
 
-.default__dropdown .css-10nd86i {
+/* .default__dropdown .css-10nd86i {
     min-width: 166px;
 }
 
@@ -20376,7 +20376,6 @@ body.noScrolling {
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
     background-color: #ffffff;
 
-    /* border: solid 1px #4382f9 !important; */
     margin: 0;
     border-top: 2px;
     border-radius: 4px;
@@ -20407,7 +20406,7 @@ body.noScrolling {
 .default__dropdown .css-10nd86i .css-1ep9fjw:last-child svg,
 .default__dropdown .css-10nd86i .css-1uq0kb5:last-child svg {
     display: none;
-}
+} */
 
 .britechart-tooltip {
     z-index: 9999;
@@ -20471,7 +20470,7 @@ body.noScrolling {
     display: block;
 }
 
-.document__action--menu .customD_Menu .css-vj8t7z,
+/* .document__action--menu .customD_Menu .css-vj8t7z,
 .document__action--menu .customD_Menu .css-2o5izw {
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
 }
@@ -20479,7 +20478,7 @@ body.noScrolling {
 .document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z,
 .document__action--menu .skylight-dialog .customD_Menu .css-2o5izw {
     box-shadow: none;
-}
+} */
 
 button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button .ck-button__label,
 button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button svg,
@@ -20694,7 +20693,7 @@ div#markup-panel {
     width: 115px;
 }
 
-.document__action--menu .css-10nd86i {
+/* .document__action--menu .css-10nd86i {
     min-width: 115px;
 }
 
@@ -20811,7 +20810,7 @@ div#markup-panel {
 
 .document__action--menu .customD_Menu .css-15k3avv {
     min-width: 180px;
-}
+} */
 
 .linebylineInput .fillter-status.fillter-item-c.new_height,
 .new_height,
@@ -21104,11 +21103,11 @@ div#markup-panel {
     display: flex;
 }
 
-.dropdownMulti .css-1hwfws3,
+/* .dropdownMulti .css-1hwfws3,
 .multiChoice .css-1hwfws3 {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
-}
+} */
 
 .attachmentTableAuto.attachmentTable thead tr th:nth-child(2),
 .attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
@@ -21174,7 +21173,7 @@ div#markup-panel {
     border-bottom: 1px solid #DADEE6;
 }
 
-.filter__input-wrapper .customD_Menu .css-vj8t7z,
+/* .filter__input-wrapper .customD_Menu .css-vj8t7z,
 .filter__input-wrapper .customD_Menu .css-2o5izw,
 .filter__input-wrapper .customD_Menu .css-162g8z5,
 .filter__input-wrapper .letterFullWidth .customD_Menu .css-1hwfws3 {
@@ -21184,7 +21183,7 @@ div#markup-panel {
 .filter__input-wrapper .letterFullWidth .multiChoice .css-1hwfws3 {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
-}
+} */
 
 .datepickerContainer.proForm .ui.input.inputDev {
     max-width: 100%;
@@ -21216,7 +21215,7 @@ div#markup-panel {
     margin: 0 !important;
 }
 
-.filter__input-wrapper .customD_Menu .css-vj8t7z,
+/* .filter__input-wrapper .customD_Menu .css-vj8t7z,
 .filter__input-wrapper .customD_Menu .css-2o5izw,
 .filter__input-wrapper .customD_Menu .css-162g8z5 {
     height: 36px;
@@ -21224,7 +21223,7 @@ div#markup-panel {
 
 .filter__input-wrapper .customD_Menu .css-1492t68 {
     top: 44%;
-}
+} */
 
 .filter__input-wrapper .linebylineInput .fillter-status.fillter-item-c {
     width: 100%;
@@ -21371,12 +21370,12 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     flex-flow: row;
 }
 
-.filter__showmore .customD_Menu .css-vj8t7z,
+/* .filter__showmore .customD_Menu .css-vj8t7z,
 .filter__showmore .customD_Menu .css-vj8t7z:hover,
 .filter__showmore .customD_Menu .css-2o5izw {
     min-height: 36px;
     height: 36px;
-}
+} */
 
 .filter__showmore .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate > div::after {
     top: 9px;
@@ -21405,12 +21404,12 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     margin: 0 !important;
 }
 
-.gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c .customD_Menu .css-vj8t7z,
+/* .gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c .customD_Menu .css-vj8t7z,
 .gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c .customD_Menu .css-2o5izw,
 .customD_Menu .css-162g8z5 {
     min-height: 36px;
     height: 36px;
-}
+} */
 
 .gridfillter-container .fillter-status-container label {
     margin: 0;
