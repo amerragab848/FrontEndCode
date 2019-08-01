@@ -29,7 +29,15 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Api from "../../api";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import Steps from "../../Componants/publicComponants/Steps";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
+var steps_defination = [];
+steps_defination = [
+    { name: "invoicesForPO", callBackFn: null },
+    { name: "items", callBackFn: null },
+    { name: "deductions", callBackFn: null }
+];
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
@@ -43,14 +51,14 @@ const documentItemValidationSchema = Yup.object().shape({
 
     resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
 
-    unitPrice:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
+    unitPrice: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['unitSelection'][currentLanguage]),
 
     unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
 
     itemType: Yup.string().required(Resources['itemTypeSelection'][currentLanguage]),
 
-    days:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
+    days: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
 })
 
 const validationDeductionSchema = Yup.object().shape({
@@ -63,12 +71,12 @@ const documentItemValidationSchemaEdit = Yup.object().shape({
 
     details: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
 
-    quantity:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
+    quantity: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['quantityRequired'][currentLanguage]),
 
     resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
 
-    unitPrice:Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
+    unitPrice: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
         .required(Resources['unitSelection'][currentLanguage]),
 
     unit: Yup.string().required(Resources['unitSelection'][currentLanguage]),
@@ -123,10 +131,7 @@ class invoicesForPoAddEdit extends Component {
         }
 
         this.state = {
-            CurrStep: 1,
-            firstComplete: false,
-            secondComplete: false,
-            thirdComplete: false,
+            CurrStep: 0,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
@@ -505,48 +510,56 @@ class invoicesForPoAddEdit extends Component {
             })
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
+        this.changeCurrentStep(1);
     }
 
     AddDoc(event) {
-        this.setState({
-            isLoading: true
-        });
-        let saveDocument = { ...this.state.document };
+        if (this.state.docId !== 0) {
+            this.changeCurrentStep(1);
+        }
+        else {
 
-        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-        dataservice.addObject('AddContractsInvoicesForPo', saveDocument).then(result => {
-            let itemsList = []
-            let InvoicesItems = this.state.InvoicesItems
-            let invoiceId = result.id
-            InvoicesItems.map(item => {
-                let items = {}
-                items.invoiceId = invoiceId
-                items.itemId = item.itemId
-                items.specsSectionId = item.specsSectionId
-                items.details = item.details
-                items.unit = item.unit
-                items.days = item.days
-                items.unitPrice = item.unitPrice
-                items.equipmenttypeId = item.equipmenttypeId
-                items.quantity = item.quantity
-                items.quantityComplete = item.quantityComplete
-                items.resourceCode = item.resourceCode
-                items.purchaseOrderId = this.state.selectedPurchaseOrders.value
-                itemsList.push(items)
-            })
             this.setState({
-                docId: result.id,
-                InvoicesItems: itemsList,
-                isLoading: false
-            })
-            saveDocument.items = itemsList
-            dataservice.addObject('AddContractsInvoicesForPoItemsList', saveDocument).then(
-                res => {
+                isLoading: true
+            });
+            let saveDocument = { ...this.state.document };
 
+            saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+
+            dataservice.addObject('AddContractsInvoicesForPo', saveDocument).then(result => {
+                let itemsList = []
+                let InvoicesItems = this.state.InvoicesItems
+                let invoiceId = result.id
+                InvoicesItems.map(item => {
+                    let items = {}
+                    items.invoiceId = invoiceId
+                    items.itemId = item.itemId
+                    items.specsSectionId = item.specsSectionId
+                    items.details = item.details
+                    items.unit = item.unit
+                    items.days = item.days
+                    items.unitPrice = item.unitPrice
+                    items.equipmenttypeId = item.equipmenttypeId
+                    items.quantity = item.quantity
+                    items.quantityComplete = item.quantityComplete
+                    items.resourceCode = item.resourceCode
+                    items.purchaseOrderId = this.state.selectedPurchaseOrders.value
+                    itemsList.push(items)
                 })
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-        })
+                this.setState({
+                    docId: result.id,
+                    InvoicesItems: itemsList,
+                    isLoading: false
+                })
+                saveDocument.items = itemsList
+                dataservice.addObject('AddContractsInvoicesForPoItemsList', saveDocument).then(
+                    res => {
+
+                    })
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            })
+        }
 
     }
 
@@ -562,7 +575,7 @@ class invoicesForPoAddEdit extends Component {
         if (this.state.docId === 0) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
+            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.next[currentLanguage]}</button>
         }
         return btn;
     }
@@ -571,7 +584,7 @@ class invoicesForPoAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(857) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
         )
@@ -631,40 +644,6 @@ class invoicesForPoAddEdit extends Component {
             }
             data[index]['quantityComplete'] = e.target.value
             this.setState({ InvoicesItems: data })
-        }
-    }
-
-    StepOneLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                firstComplete: true,
-                secondComplete: false,
-                CurrStep: 1,
-                thirdComplete: false,
-            })
-        }
-    }
-
-    StepTwoLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                firstComplete: true,
-                secondComplete: true,
-                CurrStep: 2,
-                thirdComplete: false,
-            })
-            this.GetNextArrangeItems()
-        }
-    }
-
-    StepThreeLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                thirdComplete: true,
-                CurrStep: 3,
-                firstComplete: true,
-                secondComplete: true,
-            })
         }
     }
 
@@ -978,38 +957,9 @@ class invoicesForPoAddEdit extends Component {
         })
     }
 
-    NextStep = () => {
-        window.scrollTo(0, 0)
-        switch (this.state.CurrStep) {
-            case 1:
-                this.setState({
-                    CurrStep: this.state.CurrStep + 1,
-                    firstComplete: true
-                })
-                break;
-            case 2:
-
-                this.setState({
-                    CurrStep: this.state.CurrStep + 1, secondComplete: true,
-                })
-                break;
-            case 3:
-                this.props.history.push({ pathname: '/invoicesForPo/' + this.state.projectId })
-                break;
-        }
-    }
-
-    PreviousStep = () => {
-        window.scrollTo(0, 0)
-        switch (this.state.CurrStep) {
-            case 2:
-                this.setState({ CurrStep: this.state.CurrStep - 1, secondComplete: false })
-                break;
-            case 3:
-                this.setState({ CurrStep: this.state.CurrStep - 1, thirdComplete: false })
-                break;
-        }
-    }
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrStep: stepNo });
+    };
 
     render() {
 
@@ -1251,7 +1201,7 @@ class invoicesForPoAddEdit extends Component {
                                     } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                         this.AddDoc();
                                     } else {
-                                        this.saveAndExit();
+                                        this.changeCurrentStep(1);
                                     }
                                 }}  >
 
@@ -1557,7 +1507,7 @@ class invoicesForPoAddEdit extends Component {
                         </Formik>
                         <div className="doc-pre-cycle">
                             <div className="slider-Btns">
-                                <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>NEXT STEP</button>
+                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>NEXT STEP</button>
                             </div>
                         </div>
 
@@ -1901,6 +1851,12 @@ class invoicesForPoAddEdit extends Component {
                                     noDataText={Resources['noData'][currentLanguage]}
                                 />
                             </div>
+
+                        </div>
+                        <div className="doc-pre-cycle">
+                            <div className="slider-Btns">
+                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>NEXT STEP</button>
+                            </div>
                         </div>
                     </div>
 
@@ -2043,49 +1999,22 @@ class invoicesForPoAddEdit extends Component {
                                     </div>
                                 </header> : null}
 
-                            {this.state.CurrStep == 1 ? StepOne() : this.state.CurrStep == 2 ? StepTwo() : StepThree()}
+                            {this.state.CurrStep == 0 ? StepOne() : this.state.CurrStep == 1 ? StepTwo() : StepThree()}
 
                         </div>
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
 
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
-                                <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/invoicesForPo/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrStep}
+                            />
+                        </Fragment>
 
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources.invoicesForPO[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources.items[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                    <div onClick={this.StepThreeLink} data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
-                                        <div className="steps-timeline">
-                                            <span>3</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources.deductions[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 

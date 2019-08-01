@@ -24,7 +24,8 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import Recycle from '../../Styles/images/attacheRecycle.png'
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
+import Steps from "../../Componants/publicComponants/Steps";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const _ = require('lodash')
 let MaxArrange = 1
@@ -46,6 +47,12 @@ const ValidtionSchemaForContact = Yup.object().shape({
         .required(Resources['toContactRequired'][currentLanguage])
         .nullable(false),
 });
+
+var steps_defination = [];
+steps_defination = [
+    { name: "projectTaskGroups", callBackFn: null },
+    { name: "ContactsLog", callBackFn: null }
+];
 
 let docId = 0;
 let projectId = 0;
@@ -136,11 +143,8 @@ class TaskGroupsAddEdit extends Component {
             Status: 'true',
             CompanyData: [],
             ContactData: [],
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
             isLoading: true,
-            CurrStep: 1,
+            CurrStep: 0,
             SelectedCompany: '',
             SelectedContact: '',
             selectedRows: [],
@@ -218,38 +222,6 @@ class TaskGroupsAddEdit extends Component {
         }
     }
 
-    NextStep = () => {
-        if (this.state.CurrStep === 1) {
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: this.state.CurrStep + 1,
-            })
-        }
-        else if (this.state.CurrStep === 2) {
-            window.scrollTo(0, 0)
-            this.props.history.push({
-                pathname: '/TaskGroups/' + projectId + '',
-            })
-        }
-    }
-
-    PreviousStep = () => {
-        if (this.state.IsEditMode) {
-            if (this.state.CurrStep === 2) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: true,
-                    SecondStep: false,
-                    SecondStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1
-                })
-            }
-        }
-    }
-
     handleChangeDrops = (SelectedItem, DropName) => {
 
         switch (DropName) {
@@ -278,7 +250,7 @@ class TaskGroupsAddEdit extends Component {
 
     componentWillReceiveProps(props, state) {
         if (props.document.id) {
-            let date =  props.document.docDate = props.document.docDate === null ? moment().format('YYYY-MM-DD') : moment(props.document.docDate).format('YYYY-MM-DD')
+            let date = props.document.docDate = props.document.docDate === null ? moment().format('YYYY-MM-DD') : moment(props.document.docDate).format('YYYY-MM-DD')
             this.setState({
                 IsEditMode: true,
                 DocTaskGroupsData: props.document,
@@ -436,9 +408,7 @@ class TaskGroupsAddEdit extends Component {
                 });
 
         }
-
-        this.NextStep()
-
+        this.changeCurrentStep(1);
     }
 
     checkDocumentIsView() {
@@ -486,28 +456,6 @@ class TaskGroupsAddEdit extends Component {
         }
     }
 
-    StepOneLink = () => {
-        if (this.state.IsEditMode) {
-            this.setState({
-                FirstStep: true,
-                SecondStep: false,
-                SecondStepComplate: false,
-                CurrStep: 1,
-            })
-        }
-    }
-
-    StepTwoLink = () => {
-        if (this.state.IsEditMode) {
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: 2,
-            })
-        }
-    }
-
     componentDidUpdate(prevProps) {
 
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
@@ -530,6 +478,11 @@ class TaskGroupsAddEdit extends Component {
         }
         return btn;
     }
+
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrStep: stepNo });
+    };
+
 
     render() {
 
@@ -669,17 +622,11 @@ class TaskGroupsAddEdit extends Component {
         return (
             <div className="mainContainer" >
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    {/* Header */}
-
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.projectTaskGroups[currentLanguage]}
                         moduleTitle={Resources['generalCoordination'][currentLanguage]} />
-
-
                     <div className="doc-container">
                         <div className="step-content">
-                            {this.state.FirstStep ?
-
-                                // FirstStep
+                            {this.state.CurrStep === 0 ?
                                 <Fragment>
                                     <Formik
                                         initialValues={{
@@ -845,42 +792,18 @@ class TaskGroupsAddEdit extends Component {
                         </div>
 
 
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.IsEditMode ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}>{Resources['previous'][currentLanguage]}<i className="fa fa-caret-left" aria-hidden="true"></i></span>
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/DistributionList/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrStep}
+                            />
+                        </Fragment>
 
-                                <span onClick={this.NextStep} className={!this.state.ThirdStepComplate && this.state.IsEditMode ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            {/* Steps Active  */}
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources['projectTaskGroups'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources['ContactsLog'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
 
                     </div>
                     {this.state.showDeleteModal == true ? (

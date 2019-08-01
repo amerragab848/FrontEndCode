@@ -26,7 +26,7 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
-
+import Steps from "../../Componants/publicComponants/Steps";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -38,6 +38,15 @@ let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
+
+var steps_defination = [];
+steps_defination = [
+    { name: "workFlow", callBackFn: null },
+    { name: "contacts", callBackFn: null },
+    { name: "followingUps", callBackFn: null },
+    { name: "docType", callBackFn: null },
+    { name: "multiApproval", callBackFn: null },
+];
 
 const ValidtionSchemaContactsForAdd = Yup.object().shape({
     Company: Yup.string()
@@ -175,17 +184,7 @@ class projectWorkFlowAddEdit extends Component {
 
         this.state = {
             IsAddModel: false,
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
-            ThirdStep: false,
-            ThirdStepComplate: false,
-            FourthStepComplate: false,
-            FourthStep: false,
-            FivethStepComplate: false,
-            FivethStep: false,
-            isLoading: false,
-            CurrStep: 1,
+            CurrStep: 0,
             rows: [],
             showDeleteModal: false,
             selectedRows: [],
@@ -532,10 +531,6 @@ class projectWorkFlowAddEdit extends Component {
         });
     }
 
-    SelectedValueDropsInEditMode = (RejData, NextWFData) => {
-
-    }
-
     FillDropDowns = (isEdit) => {
         dataservice.GetDataList('GetDefaultListForList?listType=rejectionOptions', 'title', 'id').then(res => {
 
@@ -573,7 +568,7 @@ class projectWorkFlowAddEdit extends Component {
 
     AddEditWorkFlow = () => {
         if (this.state.IsAddModel) {
-            this.NextStep()
+            this.changeCurrentStep(1)
         }
         else {
 
@@ -586,7 +581,7 @@ class projectWorkFlowAddEdit extends Component {
                 }).catch(ex => {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                 });
-                this.NextStep()
+                this.changeCurrentStep(1)
             }
             else {
                 dataservice.addObject('AddWorkFlow', WorkFlowObj).then(res => {
@@ -599,7 +594,7 @@ class projectWorkFlowAddEdit extends Component {
                     toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                 });
 
-                this.NextStep()
+                this.changeCurrentStep(1)
             }
         }
     }
@@ -657,98 +652,6 @@ class projectWorkFlowAddEdit extends Component {
             }, 300);
             toast.error('This Contact Already Exist in Same Level ....')
             values.ContactName = ''
-        }
-
-    }
-
-    PreviousStep = () => {
-        if (this.state.IsEditMode) {
-            if (this.state.CurrStep === 2) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: true,
-                    SecondStep: false,
-                    SecondStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1
-                })
-            }
-            else if (this.state.CurrStep === 3) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    ThirdStep: true,
-                    ThirdStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1,
-                })
-            }
-            else if (this.state.CurrStep === 4) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FourthStep: true,
-                    FivethStep: false,
-                    FourthStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1,
-                })
-            }
-
-
-            else if (this.state.CurrStep === 5) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FourthStep: true,
-                    FivethStep: false,
-                    FivethStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1,
-                })
-            }
-
-
-        }
-    }
-
-    NextStep = () => {
-
-        if (this.state.CurrStep === 1) {
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: this.state.CurrStep + 1,
-            })
-        }
-
-        else if (this.state.CurrStep === 2) {
-            window.scrollTo(0, 0)
-            this.setState({
-                SecondStep: false,
-                ThirdStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
-                CurrStep: this.state.CurrStep + 1,
-            })
-        }
-        else if (this.state.CurrStep === 3) {
-            window.scrollTo(0, 0)
-            this.setState({
-                FourthStep: true,
-                ThirdStep: false,
-                FourthStepComplate: true,
-                CurrStep: this.state.CurrStep + 1,
-            })
-        }
-        else if (this.state.CurrStep === 4) {
-            window.scrollTo(0, 0)
-            this.setState({
-                FourthStep: false,
-                FivethStep: true,
-                FivethStepComplate: true,
-                CurrStep: this.state.CurrStep + 1,
-            })
-        }
-        else if (this.state.CurrStep === 5) {
-            this.props.history.push({
-                pathname: '/WorkFlow/' + projectId + '',
-            })
         }
 
     }
@@ -1045,88 +948,9 @@ class projectWorkFlowAddEdit extends Component {
 
     }
 
-    StepOneLink = () => {
-        if (this.state.IsEditMode) {
-            this.setState({
-                FirstStep: true,
-                SecondStep: false,
-                SecondStepComplate: false,
-                CurrStep: 1,
-                ThirdStepComplate: false,
-                FourthStepComplate: false,
-                FivethStepComplate: false,
-                FivethStep: false,
-            })
-        }
-    }
-
-    StepTwoLink = () => {
-        if (this.state.IsEditMode) {
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: 2,
-                ThirdStepComplate: false,
-                FourthStepComplate: false,
-                FivethStepComplate: false,
-                FivethStep: false,
-            })
-        }
-    }
-
-    StepThreeLink = () => {
-        if (this.state.IsEditMode) {
-            this.setState({
-                ThirdStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
-                CurrStep: 3,
-                FourthStepComplate: false,
-                FivethStepComplate: false,
-                FourthStep: false,
-                FivethStep: false,
-                FirstStep: false,
-                SecondStep: false,
-            })
-        }
-    }
-
-    StepFourLink = () => {
-        if (this.state.IsEditMode) {
-            this.setState({
-                FourthStep: true,
-                ThirdStep: false,
-                FirstStep: false,
-                SecondStep: false,
-                FourthStepComplate: true,
-                CurrStep: 4,
-                FivethStepComplate: false,
-                FivethStep: false,
-                ThirdStepComplate: true,
-                SecondStepComplate: true
-            })
-        }
-    }
-
-    StepFiveLink = () => {
-        if (this.state.IsEditMode) {
-            this.setState({
-                FourthStep: false,
-                FivethStep: true,
-                FivethStepComplate: true,
-                CurrStep: 5,
-                FivethStepComplate: true,
-                FivethStep: true,
-                ThirdStepComplate: true,
-                SecondStepComplate: true,
-                FourthStepComplate: true,
-                SecondStep: false,
-                ThirdStep: false,
-                FirstStep: false
-            })
-        }
-    }
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrStep: stepNo });
+    };
 
     render() {
 
@@ -1483,7 +1307,7 @@ class projectWorkFlowAddEdit extends Component {
                     </Formik>
                     <div className="doc-pre-cycle">
                         <div className="slider-Btns">
-                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>NEXT STEP</button>
+                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>NEXT STEP</button>
                         </div>
                     </div>
                 </div>
@@ -1580,7 +1404,7 @@ class projectWorkFlowAddEdit extends Component {
 
                     <div className="doc-pre-cycle">
                         <div className="slider-Btns">
-                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>NEXT STEP</button>
+                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>NEXT STEP</button>
                         </div>
                     </div>
                 </div>
@@ -1722,11 +1546,8 @@ class projectWorkFlowAddEdit extends Component {
 
                     <div className="doc-pre-cycle">
                         <div className="slider-Btns">
-                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>NEXT STEP</button>
+                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(4)}>NEXT STEP</button>
                         </div>
-                        {/* <div className="slider-Btns">
-                        <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.setState({ FirstStep: true, SecondStepComplate: false, ThirdStepComplate: false ,CurrStep:this.state.CurrStep -1 })}>Last STEP</button>
-                    </div> */}
                     </div>
                 </div>
             )
@@ -1763,6 +1584,11 @@ class projectWorkFlowAddEdit extends Component {
                     <div className="doc-pre-cycle">
                         <div className="slider-Btns">
                             <button className="primaryBtn-1 btn meduimBtn" onClick={this.SaveMultiApproval} >Save STEP</button>
+                        </div>
+                    </div>
+                    <div className="doc-pre-cycle">
+                        <div className="slider-Btns">
+                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(5)}>NEXT STEP</button>
                         </div>
                     </div>
                 </Fragment>
@@ -1869,80 +1695,25 @@ class projectWorkFlowAddEdit extends Component {
                         </div>
 
                         <div className="step-content">
-                            {this.state.FirstStep ?
-                                <Fragment>
-                                    {FirstStepWorkFlow()}
-                                </Fragment>
-                                :
-                                <Fragment>{this.state.SecondStep ? SecondStepContacts() : this.state.ThirdStep ? ThirdStepFollowingUps()
-                                    : this.state.FourthStep ? FouthStepDocumentType() : FivethStepMultiApproval()}
-                                </Fragment>
-                            }
+                            {this.state.CurrStep === 0 ? <Fragment>{FirstStepWorkFlow()}</Fragment> :
+                                this.state.CurrStep === 1 ? <Fragment> {SecondStepContacts()}</Fragment> :
+                                    this.state.CurrStep === 2 ? <Fragment> {ThirdStepFollowingUps()}</Fragment> :
+                                        this.state.CurrStep === 3 ? <Fragment> {FouthStepDocumentType()}</Fragment> :
+                                            <Fragment> {FivethStepMultiApproval()}</Fragment>}
                         </div>
 
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={this.state.CurrStep !== 1 && this.state.IsEditMode ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources['previous'][currentLanguage]}</span>
 
-                                <span onClick={this.NextStep} className={this.state.docId !== 0 ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            {/* Steps Active  */}
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 onClick={e => this.setState({ CurrStep: 1 })}>{Resources['workFlow'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources['contacts'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={this.StepThreeLink} data-id="step3" className={'step-slider-item ' + (this.state.FourthStepComplate ? 'active' : this.state.ThirdStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>3</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources['followingUps'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={this.StepFourLink} data-id="step4" className={'step-slider-item ' + (this.state.FivethStepComplate ? 'active' : this.state.FourthStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>4</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources['docType'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={this.StepFiveLink} data-id="step5" className={this.state.FivethStep ? "step-slider-item  current__step" : "step-slider-item"} >
-                                        <div className="steps-timeline">
-                                            <span>5</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources['multiApproval'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/WorkFlow/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrStep}
+                            />
+                        </Fragment>
 
                     </div>
 

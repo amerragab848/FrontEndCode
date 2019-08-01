@@ -27,7 +27,7 @@ import Api from "../../api";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import { SkyLightStateless } from "react-skylight";
-
+import Steps from "../../Componants/publicComponants/Steps";
 import Tree from "../../Componants/OptionsPanels/Tree";
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -39,6 +39,13 @@ let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
 const _ = require("lodash");
+
+var steps_defination = [];
+steps_defination = [
+    { name: "materialReturned", callBackFn: null },
+    { name: "items", callBackFn: null }
+];
+
 
 let selectedRows = [];
 
@@ -126,10 +133,7 @@ class materialReturnedAddEdit extends Component {
         }
         this.state = {
             selectedRows: [],
-            CurrentStep: 1,
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
+            CurrentStep: 0,
             showDeleteModal: false,
             isLoading: false,
             isEdit: false,
@@ -608,56 +612,10 @@ class materialReturnedAddEdit extends Component {
         ) : null;
     }
 
-    NextStep() {
-        if (this.state.CurrentStep === 1) {
-            this.setState({
-                CurrentStep: this.state.CurrentStep + 1,
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true
-            });
-        } else {
-            this.props.history.push(
-                "/materialReturned/" + this.state.projectId
-            );
-        }
-    }
-
-    PreviousStep() {
-        if (this.state.CurrentStep === 2) {
-            this.setState({
-                CurrentStep: this.state.CurrentStep - 1,
-                FirstStep: true,
-                SecondStep: false,
-                SecondStepComplate: false
-            });
-        }
-    }
-
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({ docId: 0 });
     }
-
-    StepOneLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                FirstStep: true,
-                SecondStepComplate: false,
-                CurrentStep: 1
-            });
-        }
-    };
-
-    StepTwoLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                FirstStep: true,
-                SecondStepComplate: true,
-                CurrentStep: 2
-            });
-        }
-    };
 
     handleChangeDate(e, field) {
         let original_document = { ...this.state.document };
@@ -1025,6 +983,10 @@ class materialReturnedAddEdit extends Component {
         }
     };
 
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrentStep: stepNo });
+    };
+
     render() {
         let actions = [
             {
@@ -1097,13 +1059,14 @@ class materialReturnedAddEdit extends Component {
                                 this.state.docId > 0
                             ) {
                                 this.SaveDoc("EditMood");
-                                this.NextStep();
+                                this.changeCurrentStep(1);
                             } else if (
                                 this.props.changeStatus === false &&
                                 this.state.docId === 0
                             ) {
                                 this.SaveDoc("AddMood");
                             } else {
+                                this.changeCurrentStep(1);
                             }
                         }}>
                         {({
@@ -2074,6 +2037,11 @@ class materialReturnedAddEdit extends Component {
                                 />
                             </div>
                         </div>
+                        <div className="doc-pre-cycle">
+                            <div className="slider-Btns">
+                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>NEXT STEP</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             );
@@ -2570,97 +2538,26 @@ class materialReturnedAddEdit extends Component {
                                 </header>
                             ) : null}
                             {this.state.isLoading ? <LoadingSection /> : null}
-                            {this.state.CurrentStep === 1 ? (
+                            {this.state.CurrentStep === 0 ? (
                                 <Fragment>{StepOne()}</Fragment>
                             ) : (
                                 StepTwo()
                             )}
                         </div>
 
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            <div className="step-content-foot">
-                                <span
-                                    onClick={this.PreviousStep.bind(this)}
-                                    className={
-                                        this.state.CurrentStep !== 1 &&
-                                        this.state.isEdit === true
-                                            ? "step-content-btn-prev "
-                                            : "step-content-btn-prev disabled"
-                                    }>
-                                    <i
-                                        className="fa fa-caret-left"
-                                        aria-hidden="true"
-                                    />{" "}
-                                    Previous
-                                </span>
-                                <span
-                                    onClick={this.NextStep.bind(this)}
-                                    className={
-                                        this.state.isEdit === true
-                                            ? "step-content-btn-prev "
-                                            : "step-content-btn-prev disabled"
-                                    }>
-                                    Next
-                                    <i
-                                        className="fa fa-caret-right"
-                                        aria-hidden="true"
-                                    />
-                                </span>
-                            </div>
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/materialReturned/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrentStep}
+                            />
+                        </Fragment>
 
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div
-                                        onClick={this.StepOneLink}
-                                        data-id="step1"
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.SecondStepComplate
-                                                ? "active"
-                                                : "current__step")
-                                        }>
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>
-                                                {
-                                                    Resources[
-                                                        "materialReturned"
-                                                    ][currentLanguage]
-                                                }
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div
-                                        onClick={this.StepTwoLink}
-                                        data-id="step2 "
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.ThirdStepComplate
-                                                ? "active"
-                                                : this.state.SecondStepComplate
-                                                ? "current__step"
-                                                : "")
-                                        }>
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>
-                                                {
-                                                    Resources["items"][
-                                                        currentLanguage
-                                                    ]
-                                                }
-                                            </h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                   </div>
                 </div>
 
                 <div

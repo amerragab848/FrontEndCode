@@ -38,6 +38,8 @@ import * as communicationActions from "../../store/actions/communication";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetup from "../Communication/GridSetup";
+import Steps from "../../Componants/publicComponants/Steps";
+var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const voItemSchema = Yup.object().shape({
@@ -128,7 +130,7 @@ class ContractInfoAddEdit extends Component {
       voPageNumber: 0,
       voPageSize: 50,
       pageSize: 2000,
-      CurrStep: 1,
+      CurrStep: 0,
       firstComplete: false,
       secondComplete: false,
       thirdComplete: false,
@@ -390,6 +392,16 @@ class ContractInfoAddEdit extends Component {
         this.state.perviousRoute
       );
     }
+    steps_defination = [
+      {
+          name: "contract",
+          callBackFn: null
+      },
+      {
+          name: "details",
+          callBackFn: null
+      } 
+  ];
   }
 
   statusButton = ({ value, row }) => {
@@ -643,7 +655,7 @@ class ContractInfoAddEdit extends Component {
 
   editContract = values => {
     if (this.state.isViewMode) {
-      this.NextStep();
+      this.changeCurrentStep(1);
     } else {
       this.setState({
         isLoading: true,
@@ -669,13 +681,13 @@ class ContractInfoAddEdit extends Component {
         advancedPaymentAmount: values.advancedPaymentAmount,
         parentType: this.state.document.parentType
       };
-
+      this.changeCurrentStep(1);
       Api.post("EditContractById", documentObj).then(result => {
         this.setState({
           isLoading: false
         });
         toast.success(Resources["operationSuccess"][currentLanguage]);
-        this.NextStep();
+        
       })
         .catch(() => {
           toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -699,42 +711,14 @@ class ContractInfoAddEdit extends Component {
     this.setState({ showDeleteModal: true, currentId: id });
   };
 
-  NextStep = () => {
-    window.scrollTo(0, 0);
-    switch (this.state.CurrStep) {
-      case 1:
-        this.setState({
-          activeTab: "pricedItem",
-          CurrStep: this.state.CurrStep + 1,
-          firstComplete: true
-        });
-        break;
-      case 2:
-        this.props.history.push({
-          pathname: "/contractInfo/" + this.state.projectId
-        });
-        break;
-    }
+  changeCurrentStep = stepNo => {
+    if (stepNo == 1)
+      this.setState({ CurrStep: stepNo, activeTab: "pricedItem" })
+    else
+      this.setState({ CurrStep: stepNo });
   };
 
-  PreviousStep = () => {
-    window.scrollTo(0, 0);
-    switch (this.state.CurrStep) {
-      case 2:
-        this.setState({
-          CurrStep: this.state.CurrStep - 1,
-          secondComplete: false
-        });
-        break;
-      case 3:
-        this.setState({
-          CurrStep: this.state.CurrStep - 1,
-          thirdComplete: false
-        });
-        break;
-    }
-  };
-
+  
   handleShowAction = item => {
     if (item.title == "sendToWorkFlow") {
       this.props.actions.SendingWorkFlow(true);
@@ -846,30 +830,7 @@ class ContractInfoAddEdit extends Component {
       }
     );
   };
-
-  StepOneLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        firstComplete: true,
-        secondComplete: false,
-        CurrStep: 1,
-        thirdComplete: false
-      });
-    }
-  };
-
-  StepTwoLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        activeTab: "pricedItem",
-        firstComplete: true,
-        secondComplete: true,
-        CurrStep: 2,
-        thirdComplete: false
-      });
-    }
-  };
-
+ 
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
 
     if (event == null) return;
@@ -1492,7 +1453,7 @@ class ContractInfoAddEdit extends Component {
                   } else if (this.props.changeStatus === false && this.state.docId === 0) {
                     this.addContract(values);
                   } else if (this.props.changeStatus === false && this.state.docId > 0) {
-                    this.NextStep();
+                    this.changeCurrentStep(1);
                   }
                 }}>
                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
@@ -1806,7 +1767,7 @@ class ContractInfoAddEdit extends Component {
         <div className="doc-pre-cycle letterFullWidth">
           <div className="precycle-grid">
             <div className="slider-Btns">
-              <button className="primaryBtn-1 btn meduimBtn " type="submit" onClick={this.NextStep}>
+              <button className="primaryBtn-1 btn meduimBtn " type="submit" onClick={()=>this.changeCurrentStep(2)}>
                 {Resources.next[currentLanguage]}
               </button>
             </div>
@@ -1818,7 +1779,7 @@ class ContractInfoAddEdit extends Component {
     return (
       <Fragment>
         <div className="mainContainer">
-          <div className={this.state.isViewMode === true && this.state.CurrStep != 3 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
+          <div className={this.state.isViewMode === true && this.state.CurrStep != 2 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
             <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.contract[currentLanguage]}
               moduleTitle={Resources["contracts"][currentLanguage]} />
             <div className="doc-container">
@@ -1826,7 +1787,7 @@ class ContractInfoAddEdit extends Component {
                 {this.state.LoadingPage ? (<LoadingSection />) :
                   (
                     <Fragment>
-                      {this.state.CurrStep == 1 ? Step_1 : this.state.CurrStep == 2 ? Step_2 : null}
+                      {this.state.CurrStep == 0 ? Step_1 : this.state.CurrStep == 1 ? Step_2 : null}
                       {this.props.changeStatus === true ? (
                         <div className="approveDocument">
                           <div className="approveDocumentBTNS">
@@ -1860,39 +1821,15 @@ class ContractInfoAddEdit extends Component {
                   )}
               </div>
               <div>
-                <div className="docstepper-levels">
-                  <div className="step-content-foot">
-                    <span onClick={this.PreviousStep} className={this.props.changeStatus == true && this.state.CurrStep > 1 ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                      <i className="fa fa-caret-left" aria-hidden="true" />
-                      Previous
-                    </span>
-                    <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                      Next
-                      <i className="fa fa-caret-right" aria-hidden="true" />
-                    </span>
-                  </div>
-                  <div className="workflow-sliderSteps">
-                    <div className="step-slider">
-                      <div onClick={this.StepOneLink} data-id="step1"
-                        className={"step-slider-item " + (this.state.CurrStep == 1 ? "current__step" : this.state.firstComplete ? "active" : "")}>
-                        <div className="steps-timeline">
-                          <span>1</span>
-                        </div>
-                        <div className="steps-info">
-                          <h6>{Resources.contract[currentLanguage]}</h6>
-                        </div>
-                      </div>
-                      <div onClick={this.StepTwoLink} data-id="step3" className={this.state.CurrStep == 2 ? "step-slider-item  current__step" : "step-slider-item"}>
-                        <div className="steps-timeline">
-                          <span>2</span>
-                        </div>
-                        <div className="steps-info">
-                          <h6>{Resources.details[currentLanguage]}</h6>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <Steps
+                  steps_defination={steps_defination}
+                  exist_link="/contractInfo/"
+                  docId={this.state.docId}
+                  changeCurrentStep={stepNo =>
+                    this.changeCurrentStep(stepNo)
+                  }
+                  stepNo={this.state.CurrStep}
+                />
               </div>
             </div>
           </div>

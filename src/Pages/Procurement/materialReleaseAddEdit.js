@@ -27,7 +27,7 @@ import Api from "../../api";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import { SkyLightStateless } from 'react-skylight';
-
+import Steps from "../../Componants/publicComponants/Steps";
 import Tree from '../../Componants/OptionsPanels/Tree'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
@@ -40,6 +40,11 @@ let perviousRoute = '';
 const _ = require('lodash')
 
 let selectedRows = [];
+var steps_defination = [];
+steps_defination = [
+    { name: "materialRelease", callBackFn: null },
+    { name: "items", callBackFn: null }
+];
 
 
 const validationSchema = Yup.object().shape({
@@ -107,10 +112,7 @@ class materialReleaseAddEdit extends Component {
         }
         this.state = {
             selectedRows: [],
-            CurrentStep: 1,
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
+            CurrentStep: 0,
             showDeleteModal: false,
             isLoading: false,
             isEdit: false,
@@ -422,33 +424,9 @@ class materialReleaseAddEdit extends Component {
                 (<ViewAttachment isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={854} />) : null) : null;
     }
 
-    NextStep() {
-        if (this.state.CurrentStep === 1) {
-            this.setState({
-                CurrentStep: this.state.CurrentStep + 1, FirstStep: false,
-                SecondStep: true, SecondStepComplate: true,
-            })
-        }
-        else { this.props.history.push("/materialRelease/" + this.state.projectId) }
-    }
-
-    PreviousStep() {
-        if (this.state.CurrentStep === 2) {
-            this.setState({ CurrentStep: this.state.CurrentStep - 1, FirstStep: true, SecondStep: false, SecondStepComplate: false })
-        }
-    }
-
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({ docId: 0 })
-    }
-
-    StepOneLink = () => {
-        if (docId !== 0) { this.setState({ FirstStep: true, SecondStepComplate: false, CurrentStep: 1 }) }
-    }
-
-    StepTwoLink = () => {
-        if (docId !== 0) { this.setState({ FirstStep: true, SecondStepComplate: true, CurrentStep: 2 }) }
     }
 
     handleChangeDate(e, field) {
@@ -675,38 +653,42 @@ class materialReleaseAddEdit extends Component {
     }
 
     SaveEditItem = () => {
-            this.setState({ isLoading: true })
-            let obj = {
-                id: this.state.objItemForEdit.id,
-                materialReleaseId: this.state.document.id,
-                itemId: this.state.objItemForEdit.itemId,
-                areaId: this.state.SelectedAreaForEdit.value === '0' ? undefined : this.state.SelectedAreaForEdit.value,
-                locationId: this.state.SelectedLocationForEdit.value === '0' ? undefined : this.state.SelectedLocationForEdit.value,
-                arrange: this.state.objItemForEdit.arrange,
-                quantity: this.state.objItemForEdit.quantity,
-                unitPrice: this.state.objItemForEdit.unitPrice,
-                description: this.state.objItemForEdit.description,
-                remarks: this.state.objItemForEdit.remarks,
-                costCodeTreeId: this.state.objItemForEdit.costCodeTreeId,
-                resourceCode: this.state.objItemForEdit.resourceCode,
-                requestedQuantity: this.state.objItemForEdit.requestedQuantity,
-                total: parseInt(this.state.objItemForEdit.quantity) * parseInt(this.state.objItemForEdit.unitPrice)
-            }
-            dataservice.addObject('EditLogsMaterialReleaseTickets', obj).then(result => {
-                let Items = this.state.Items.filter(s => s.id !== this.state.objItemForEdit.id)
-                console.log(Items)
-                Items.push(this.state.objItemForEdit)
-                this.setState({
-                    isLoading: false, Items ,ShowPopup:false
-                })
-                toast.success(Resources["operationSuccess"][currentLanguage])
-
-            }).catch(ex => {
-                this.setState({ Loading: false })
-                toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        this.setState({ isLoading: true })
+        let obj = {
+            id: this.state.objItemForEdit.id,
+            materialReleaseId: this.state.document.id,
+            itemId: this.state.objItemForEdit.itemId,
+            areaId: this.state.SelectedAreaForEdit.value === '0' ? undefined : this.state.SelectedAreaForEdit.value,
+            locationId: this.state.SelectedLocationForEdit.value === '0' ? undefined : this.state.SelectedLocationForEdit.value,
+            arrange: this.state.objItemForEdit.arrange,
+            quantity: this.state.objItemForEdit.quantity,
+            unitPrice: this.state.objItemForEdit.unitPrice,
+            description: this.state.objItemForEdit.description,
+            remarks: this.state.objItemForEdit.remarks,
+            costCodeTreeId: this.state.objItemForEdit.costCodeTreeId,
+            resourceCode: this.state.objItemForEdit.resourceCode,
+            requestedQuantity: this.state.objItemForEdit.requestedQuantity,
+            total: parseInt(this.state.objItemForEdit.quantity) * parseInt(this.state.objItemForEdit.unitPrice)
+        }
+        dataservice.addObject('EditLogsMaterialReleaseTickets', obj).then(result => {
+            let Items = this.state.Items.filter(s => s.id !== this.state.objItemForEdit.id)
+            console.log(Items)
+            Items.push(this.state.objItemForEdit)
+            this.setState({
+                isLoading: false, Items, ShowPopup: false
             })
-        
+            toast.success(Resources["operationSuccess"][currentLanguage])
+
+        }).catch(ex => {
+            this.setState({ Loading: false })
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        })
+
     }
+
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrentStep: stepNo });
+    };
 
     render() {
 
@@ -715,7 +697,7 @@ class materialReleaseAddEdit extends Component {
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
             { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
-        
+
         ]
 
         let StepOne = () => {
@@ -728,12 +710,12 @@ class materialReleaseAddEdit extends Component {
                             if (this.props.showModal) { return; }
 
                             if (this.state.IsAddMood) {
-                                this.NextStep();
+                                this.changeCurrentStep(1);
                             }
                             else {
                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                     this.SaveDoc('EditMood');
-                                    this.NextStep();
+                                    this.changeCurrentStep(1);
                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                     this.SaveDoc('AddMood');
                                 }
@@ -1103,7 +1085,11 @@ class materialReleaseAddEdit extends Component {
                             </div>
 
                         </div>
-
+                        <div className="doc-pre-cycle">
+                            <div className="slider-Btns">
+                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>NEXT STEP</button>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -1283,7 +1269,7 @@ class materialReleaseAddEdit extends Component {
                                     </div>
                                 </header> : null}
                             {this.state.isLoading ? <LoadingSection /> : null}
-                            {this.state.CurrentStep === 1 ?
+                            {this.state.CurrentStep === 0 ?
                                 <Fragment>
                                     {StepOne()}
 
@@ -1291,37 +1277,19 @@ class materialReleaseAddEdit extends Component {
 
                         </div>
 
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep.bind(this)}
-                                    className={this.state.CurrentStep !== 1 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                                    <i className="fa fa-caret-left" aria-hidden="true" /> Previous</span>
-                                <span onClick={this.NextStep.bind(this)} className={this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                                    Next<i className="fa fa-caret-right" aria-hidden="true" /></span>
-                            </div>
 
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["materialRelease"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["items"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/materialRelease/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrentStep}
+                            />
+                        </Fragment>
+
                     </div>
                 </div>
 

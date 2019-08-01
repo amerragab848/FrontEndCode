@@ -23,8 +23,9 @@ import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import Recycle from '../../Styles/images/attacheRecycle.png'
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import Recycle from '../../Styles/images/attacheRecycle.png';
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
+import Steps from "../../Componants/publicComponants/Steps";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const _ = require('lodash')
@@ -47,6 +48,12 @@ const ValidtionSchemaForContact = Yup.object().shape({
         .required(Resources['toContactRequired'][currentLanguage])
         .nullable(false),
 });
+
+var steps_defination = [];
+steps_defination = [
+    { name: "distributionList", callBackFn: null },
+    { name: "ContactsLog", callBackFn: null }
+];
 
 let docId = 0;
 let projectId = 0;
@@ -137,11 +144,8 @@ class TaskGroupsAddEdit extends Component {
             Status: 'true',
             CompanyData: [],
             ContactData: [],
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
             isLoading: true,
-            CurrStep: 1,
+            CurrStep: 0,
             SelectedCompany: '',
             SelectedContact: '',
             selectedRows: [],
@@ -172,22 +176,9 @@ class TaskGroupsAddEdit extends Component {
     FillCompanyDrop = () => {
         dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId + '', 'companyName', 'companyId').then(
             res => {
-                this.setState({
-                    CompanyData: res,
-                })
+                this.setState({ CompanyData: res });
             }
         )
-    }
-
-    StepOneLink = () => {
-        if (this.state.IsEditMode) {
-            this.setState({
-                FirstStep: true,
-                SecondStep: false,
-                SecondStepComplate: false,
-                CurrStep: 1,
-            })
-        }
     }
 
     componentDidUpdate(prevProps) {
@@ -201,31 +192,15 @@ class TaskGroupsAddEdit extends Component {
         }
     }
 
-    StepTwoLink = () => {
-        if (this.state.IsEditMode) {
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: 2,
-            })
-        }
-    }
-
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
-        this.setState({
-            docId: 0
-        });
+        this.setState({ docId: 0 });
     }
 
     MaxArrangeContacts = () => {
-
         Api.get('GetNextArrangeItems?docId=' + docId + '&docType=89').then(
             res => {
-                this.setState({
-                    MaxArrangeContact: res
-                })
+                this.setState({ MaxArrangeContact: res });
             }
         )
     }
@@ -233,11 +208,7 @@ class TaskGroupsAddEdit extends Component {
     FillContactsList = () => {
         Api.get('GetProjectDistributionListItemsByDistributionId?distributionId=' + docId + '').then(
             res => {
-                console.log(res)
-                this.setState({
-                    rows: res,
-                    isLoading: false
-                })
+                this.setState({ rows: res, isLoading: false });
                 let data = { items: res };
                 this.props.actions.ExportingData(data);
             }
@@ -252,87 +223,47 @@ class TaskGroupsAddEdit extends Component {
         }
         else {
             Api.get('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
-                res => {
-                    MaxArrange = res
-                }
+                res => { MaxArrange = res }
             )
             this.props.actions.documentForAdding()
         }
         this.FillCompanyDrop();
         this.FillContactsList()
         if (Config.IsAllow(627)) {
-            this.setState({
-                showCheckbox: true
-            })
+            this.setState({ showCheckbox: true });
         }
-        this.MaxArrangeContacts()
+        this.MaxArrangeContacts();
     }
 
-    NextStep = () => {
-        if (this.state.CurrStep === 1) {
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: this.state.CurrStep + 1,
-            })
-        }
-        else if (this.state.CurrStep === 2) {
-            window.scrollTo(0, 0)
-            this.props.history.push({
-                pathname: '/DistributionList/' + projectId + '',
-            })
-        }
-    }
-
-    PreviousStep = () => {
-        if (this.state.IsEditMode) {
-            if (this.state.CurrStep === 2) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: true,
-                    SecondStep: false,
-                    SecondStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1
-                })
-            }
-        }
-    }
 
     handleChangeDrops = (SelectedItem, DropName) => {
-
         switch (DropName) {
             case 'Company':
                 this.setState({ SelectedCompany: SelectedItem })
                 if (SelectedItem !== null) {
-                    dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + SelectedItem.value + '', 'contactName', 'id')
-                        .then(res => {
-                            this.setState({
-                                ContactData: res,
-                            })
-                        })
+                    dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + SelectedItem.value + '', 'contactName', 'id').then(
+                        res => {
+                            this.setState({ ContactData: res });
+                        }
+                    )
                 }
                 break;
-
             default:
                 break;
         }
     }
 
     DocumentDatehandleChange = (date) => {
-        this.setState({
-            DocumentDate: date
-        })
+        this.setState({ DocumentDate: date });
     }
 
     componentWillReceiveProps(props, state) {
         if (props.document.id) {
-            let date =  props.document.docDate = props.document.docDate === null ? moment().format('YYYY-MM-DD') : moment(props.document.docDate).format('YYYY-MM-DD')
+            let date = props.document.docDate = props.document.docDate === null ? moment().format('YYYY-MM-DD') : moment(props.document.docDate).format('YYYY-MM-DD')
             this.setState({
                 IsEditMode: true,
                 Dis_ListData: props.document,
-               DocumentDate: date,
+                DocumentDate: date,
                 isLoading: false
             });
             this.checkDocumentIsView();
@@ -347,7 +278,7 @@ class TaskGroupsAddEdit extends Component {
                 showDeleteModal: true,
                 rowId: rowId,
                 DeleteFromLog: true
-            })
+            });
         }
         else {
             let Ids = []
@@ -356,7 +287,7 @@ class TaskGroupsAddEdit extends Component {
                 showDeleteModal: true,
                 rowId: Ids,
                 index: index
-            })
+            });
         }
     }
 
@@ -365,9 +296,7 @@ class TaskGroupsAddEdit extends Component {
         Api.post("DeleteMultipleProjectDistributionListItem", this.state.rowId).then(
             res => {
                 let originalRows = this.state.rows
-                this.state.rowId.map(i => {
-                    originalRows = originalRows.filter(r => r.id !== i);
-                })
+                this.state.rowId.map(i => { originalRows = originalRows.filter(r => r.id !== i); });
                 this.setState({
                     rows: originalRows,
                     showDeleteModal: false,
@@ -376,7 +305,7 @@ class TaskGroupsAddEdit extends Component {
                 })
                 let data = { items: originalRows };
                 this.props.actions.ExportingData(data);
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
             }
 
         ).catch(ex => {
@@ -384,8 +313,8 @@ class TaskGroupsAddEdit extends Component {
                 showDeleteModal: false,
                 isLoading: false,
                 DeleteFromLog: false
-            })
-            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+            });
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
         })
 
     }
@@ -399,56 +328,47 @@ class TaskGroupsAddEdit extends Component {
     }
 
     AddContact = (values, actions) => {
-        this.setState({
-            isLoading: true
-        })
-        Api.post('AddProjectDistributionListItem', {
+        this.setState({ isLoading: true });
+        let obj = {
             id: undefined,
             arrange: values.ArrangeContact,
             companyId: values.Company.value,
             contactId: values.ContactName.value,
             distributionListId: docId,
-        }).then(
+        };
+        Api.post('AddProjectDistributionListItem', obj).then(
             res => {
                 let NewRows = this.state.rows;
                 NewRows.unshift(res)
-                this.setState({
-                    rows: NewRows,
-                    isLoading: false
-                })
+                this.setState({ rows: NewRows, isLoading: false });
                 let data = { items: NewRows };
                 this.props.actions.ExportingData(data);
-                this.MaxArrangeContacts()
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+                this.MaxArrangeContacts();
+                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
             }
         ).catch(ex => {
-            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
         });
 
-        values.Company = ''
-        values.ContactName = ''
-        values.ArrangeContact = this.state.MaxArrangeContact
-
-
+        values.Company = '';
+        values.ContactName = '';
+        values.ArrangeContact = this.state.MaxArrangeContact;
     }
 
-    AddEditDis_List = (values, actions) => { 
-
+    AddEditDis_List = (values, actions) => {
         let Date = moment(this.state.DocumentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-
         if (this.state.IsEditMode) {
-
             let saveDoc = {
                 arrange: values.ArrangeTaskGroups, docDate: Date,
                 id: docId, projectId: projectId,
                 status: this.state.Status, subject: values.Subject,
-            }
+            };
             dataservice.addObject('EditProjectDistributionList', saveDoc).then(
                 res => {
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-                    this.NextStep()
+                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                    this.changeCurrentStep(1);
                 }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
                 });
         }
 
@@ -457,20 +377,17 @@ class TaskGroupsAddEdit extends Component {
                 id: undefined, projectId: this.state.projectId,
                 arrange: values.ArrangeTaskGroups, docDate: Date,
                 subject: values.Subject, status: this.state.Status,
-            }
+            };
             dataservice.addObject('AddProjectDistributionList', saveDoc).then(
                 res => {
-                    docId = res.id
-                    this.setState({
-                        Dis_ListData: res
-                    })
-                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-                    this.NextStep()
+                    docId = res.id;
+                    this.setState({ Dis_ListData: res, docId: res.id });
+                    toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+                    this.changeCurrentStep(1);
                 }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
                 });
         }
-
     }
 
     checkDocumentIsView() {
@@ -499,11 +416,8 @@ class TaskGroupsAddEdit extends Component {
         this.checkDocumentIsView();
     }
 
-
     saveAndExit = () => {
-        this.props.history.push({
-            pathname: '/DistributionList/' + projectId + '',
-        })
+        this.props.history.push({ pathname: '/DistributionList/' + projectId + '', });
     }
 
     handleShowAction = (item) => {
@@ -514,8 +428,8 @@ class TaskGroupsAddEdit extends Component {
                 currentComponent: item.value,
                 currentTitle: item.title,
                 showModal: true
-            })
-            this.simpleDialog.show()
+            });
+            this.simpleDialog.show();
         }
     }
 
@@ -531,6 +445,10 @@ class TaskGroupsAddEdit extends Component {
         return btn;
     }
 
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrStep: stepNo });
+    };
+
     render() {
 
         let actions = [
@@ -544,8 +462,7 @@ class TaskGroupsAddEdit extends Component {
                     projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }];
 
-        let Data = this.state.rows
-        let RenderContactsTable = Data.map((item, index) => {
+        let RenderContactsTable = this.state.rows.map((item, index) => {
             return (
                 this.state.isLoading === false ?
                     <tr key={item.id}>
@@ -574,7 +491,8 @@ class TaskGroupsAddEdit extends Component {
                     </tr>
                     : <LoadingSection />
             )
-        })
+        });
+
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows} columns={this.state.columns}
@@ -588,21 +506,15 @@ class TaskGroupsAddEdit extends Component {
         const RenderAddContact = () => {
             return (
                 <Fragment>
-
                     <Formik
                         initialValues={{
                             ArrangeContact: this.state.MaxArrangeContact,
                             Company: '',
                             ContactName: '',
                         }}
-
                         enableReinitialize={true}
-
                         validationSchema={ValidtionSchemaForContact}
-
-                        onSubmit={(values, actions) => {
-                            this.AddContact(values, actions)
-                        }}>
+                        onSubmit={(values, actions) => { this.AddContact(values, actions) }}>
 
                         {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                             <Form onSubmit={handleSubmit}>
@@ -658,19 +570,16 @@ class TaskGroupsAddEdit extends Component {
                     </Formik>
                 </Fragment>
             )
-        }
+        };
 
         return (
             <div className="mainContainer" >
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    {/* Header */}
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.distributionList[currentLanguage]}
                         moduleTitle={Resources['generalCoordination'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            {this.state.FirstStep ?
-
-                                // FirstStep
+                            {this.state.CurrStep === 0 ?
                                 <Fragment>
                                     <Formik
                                         initialValues={{
@@ -680,18 +589,13 @@ class TaskGroupsAddEdit extends Component {
                                         }}
                                         enableReinitialize={true}
                                         validationSchema={ValidtionSchemaForDis_List}
-
-                                        onSubmit={(values, actions) => {
-                                            this.AddEditDis_List(values, actions)
-                                        }}
-                                    >
+                                        onSubmit={(values, actions) => { this.AddEditDis_List(values, actions) }}>
 
                                         {({ errors, touched, handleBlur, handleChange, values, handleSubmit }) => (
                                             <Form onSubmit={handleSubmit}>
-
                                                 <div className="document-fields">
-
                                                     <div className="proForm first-proform">
+
                                                         <div className='linebylineInput '>
                                                             <label className="control-label">{Resources['subject'][currentLanguage]}</label>
                                                             <div className={"inputDev ui input " + (errors.Subject && touched.Subject ? 'has-error' : null) + ' '}>
@@ -708,6 +612,7 @@ class TaskGroupsAddEdit extends Component {
                                                                 {errors.Subject && touched.Subject ? (<em className="pError">{errors.Subject}</em>) : null}
                                                             </div>
                                                         </div>
+
                                                         <div className="linebylineInput">
                                                             <label className="control-label"> {Resources['status'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue checked">
@@ -723,9 +628,11 @@ class TaskGroupsAddEdit extends Component {
                                                                 <label> {Resources['closed'][currentLanguage]}</label>
                                                             </div>
                                                         </div>
+
                                                     </div>
 
                                                     <div className="proForm datepickerContainer">
+
                                                         <div className="linebylineInput valid-input">
                                                             <div className="inputDev ui input">
                                                                 <DatePicker title='docDate' handleChange={this.DocumentDatehandleChange}
@@ -733,6 +640,7 @@ class TaskGroupsAddEdit extends Component {
                                                                 />
                                                             </div>
                                                         </div>
+
                                                         <div className='linebylineInput '>
                                                             <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
                                                             <div className={"inputDev ui input " + (errors.ArrangeTaskGroups && touched.ArrangeTaskGroups ? 'has-error' : null) + ' '}>
@@ -753,15 +661,13 @@ class TaskGroupsAddEdit extends Component {
 
                                                 </div>
                                                 <div className="doc-pre-cycle">
-                                                    <div className="slider-Btns">
-                                                        {this.showBtnsSaving()}
-                                                    </div>
+                                                    <div className="slider-Btns"> {this.showBtnsSaving()} </div>
                                                 </div>
-
                                             </Form>
                                         )}
                                     </Formik>
-                                    {/* Table List Of Contacts */}
+
+
                                     {this.state.IsEditMode ?
                                         <Fragment>
                                             <div className='document-fields'>
@@ -813,8 +719,8 @@ class TaskGroupsAddEdit extends Component {
                                     </div>
                                 </Fragment>
                                 :
-                                /* SecoundStep */
-                                < div className="subiTabsContent feilds__top">
+
+                                <div className="subiTabsContent feilds__top">
 
                                     {RenderAddContact()}
 
@@ -835,42 +741,18 @@ class TaskGroupsAddEdit extends Component {
 
                         </div>
 
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/DistributionList/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrStep}
+                            />
+                        </Fragment>
 
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.IsEditMode ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}>{Resources['previous'][currentLanguage]}<i className="fa fa-caret-left" aria-hidden="true"></i></span>
-
-                                <span onClick={this.NextStep} className={!this.state.ThirdStepComplate && this.state.IsEditMode ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            {/* Steps Active  */}
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources['distributionList'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources['ContactsLog'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal

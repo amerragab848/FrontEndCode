@@ -28,6 +28,9 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import Rodal from "../../Styles/js/rodal";
 import "../../Styles/css/rodal.css";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import Steps from "../../Componants/publicComponants/Steps";
+var steps_defination = [];
+
 const _ = require("lodash");
 
 let selectedRows = [];
@@ -91,10 +94,7 @@ class QsAddEdit extends Component {
     }
 
     this.state = {
-      CurrentStep: 1,
-      FirstStep: true,
-      SecondStep: false,
-      SecondStepComplate: false,
+      CurrentStep: 0, 
       showDeleteModal: false,
       isLoading: false,
       isEdit: false,
@@ -142,6 +142,16 @@ class QsAddEdit extends Component {
         this.state.perviousRoute
       );
     }
+    steps_defination = [
+      {
+        name: "quantitySurvey",
+        callBackFn: null
+      },
+      {
+        name: "quantitySurveyItems",
+        callBackFn: null
+      }
+    ];
   }
 
   componentDidMount() {
@@ -439,11 +449,10 @@ class QsAddEdit extends Component {
     let saveDocument = this.state.document;
 
     saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-
+    this.changeCurrentStep(1);
     dataservice.addObject("EditContractsQs", saveDocument).then(result => {
       this.setState({
         isLoading: false,
-        CurrentStep: this.state.CurrentStep + 1
       });
       toast.success(Resources["operationSuccess"][currentLanguage]);
     });
@@ -477,20 +486,12 @@ class QsAddEdit extends Component {
         toast.error(Resources["failError"][currentLanguage]);
       });
     } else {
-      this.setState({
-        CurrentStep: this.state.CurrentStep + 1
-      });
+      this.changeCurrentStep(1);
     }
   }
 
   saveAndExit(event) {
-    if (this.state.CurrentStep === 1) {
-      this.setState({
-        CurrentStep: this.state.CurrentStep + 1
-      });
-    } else {
-      this.props.history.push("/qs/" + this.state.projectId);
-    }
+    this.changeCurrentStep(this.state.CurrentStep + 1);
   }
 
   showBtnsSaving() {
@@ -532,10 +533,8 @@ class QsAddEdit extends Component {
     }
   };
 
-  NextStep() {
-    if (this.state.CurrentStep === 1) {
-
-      //field
+  changeCurrentStep = stepNo => {
+    if (stepNo == 1) {
       const itemDocument = {
         id: 0,
         qsId: "",
@@ -549,30 +548,11 @@ class QsAddEdit extends Component {
         resourceCode: "",
         itemType: ""
       };
-
-      this.setState({
-        addItemDocument: itemDocument,
-        CurrentStep: this.state.CurrentStep + 1,
-        FirstStep: false,
-        SecondStep: true,
-        SecondStepComplate: true,
-      });
-
-    } else {
-      this.props.history.push("/qs/" + this.state.projectId);
+      this.setState({ CurrentStep: stepNo, addItemDocument: itemDocument })
     }
-  }
-
-  PreviousStep() {
-    if (this.state.CurrentStep === 2) {
-      this.setState({
-        CurrentStep: this.state.CurrentStep - 1,
-        FirstStep: true,
-        SecondStep: false,
-        SecondStepComplate: false,
-      });
-    }
-  }
+    else
+      this.setState({ CurrentStep: stepNo });
+  };
 
   toggleRow(obj) {
 
@@ -684,26 +664,6 @@ class QsAddEdit extends Component {
     });
   }
 
-
-  StepOneLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        FirstStep: true,
-        SecondStepComplate: false,
-        CurrentStep: 1,
-      })
-    }
-  }
-
-  StepTwoLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        FirstStep: true,
-        SecondStepComplate: true,
-        CurrentStep: 2,
-      })
-    }
-  }
 
 
   render() {
@@ -861,7 +821,7 @@ class QsAddEdit extends Component {
             <div className="step-content">
               <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
-                  {this.state.CurrentStep === 1 ? (
+                  {this.state.CurrentStep === 0 ? (
                     <div className="document-fields">
                       <Formik initialValues={this.state.document}
                         validationSchema={validationSchema}
@@ -914,7 +874,7 @@ class QsAddEdit extends Component {
                               </div>
                             </div>
                             <div className="proForm datepickerContainer">
- 
+
 
                               <div className="linebylineInput valid-input">
                                 <div className="inputDev ui input input-group date NormalInputDate">
@@ -1044,7 +1004,7 @@ class QsAddEdit extends Component {
                       </Fragment>
                     )}
                   <div className="slider-Btns">
-                    {this.state.CurrentStep === 2 && this.state.isViewMode === false ? (
+                    {this.state.CurrentStep === 1 && this.state.isViewMode === false ? (
                       <button className="primaryBtn-1 btn meduimBtn" onClick={this.finishDocument.bind(this)}>
                         {Resources["finish"][currentLanguage]}
                       </button>
@@ -1052,15 +1012,15 @@ class QsAddEdit extends Component {
                   </div>
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 && this.state.isViewMode === false && this.state.CurrentStep === 1 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={853} EditAttachments={3255} ShowDropBox={3567} ShowGoogleDrive={3568} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-                      {this.state.CurrentStep === 1 ? this.viewAttachments() : null}
+                      {this.state.docId > 0 && this.state.isViewMode === false && this.state.CurrentStep === 0 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={853} EditAttachments={3255} ShowDropBox={3567} ShowGoogleDrive={3568} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                      {this.state.CurrentStep === 0 ? this.viewAttachments() : null}
                       {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            {this.props.changeStatus === true && this.state.CurrentStep === 1 ? (
+            {this.props.changeStatus === true && this.state.CurrentStep === 0 ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
                   {this.state.isApproveMode === true ? (
@@ -1086,46 +1046,17 @@ class QsAddEdit extends Component {
                 </div>
               </div>
             ) : null}
-
-            {/* step document */}
-            <div className="docstepper-levels">
-              <div className="step-content-foot">
-                <span onClick={this.PreviousStep.bind(this)}
-                  className={this.state.CurrentStep !== 1 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                  <i className="fa fa-caret-left" aria-hidden="true" />
-                  Previous
-                </span>
-                <span
-                  onClick={this.NextStep.bind(this)}
-                  className={this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                  Next
-                  <i className="fa fa-caret-right" aria-hidden="true" />
-                </span>
-              </div>
-              <div className="workflow-sliderSteps">
-                <div className="step-slider">
-                  <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                    <div className="steps-timeline">
-                      <span>1</span>
-                    </div>
-                    <div className="steps-info">
-                      <h6>{Resources["quantitySurvey"][currentLanguage]}</h6>
-                    </div>
-                  </div>
-                  <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                    <div className="steps-timeline">
-                      <span>2</span>
-                    </div>
-                    <div className="steps-info">
-                      <h6>
-                        {Resources["quantitySurveyItems"][currentLanguage]}
-                      </h6>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div>
+              <Steps
+                steps_defination={steps_defination}
+                exist_link="/qs/"
+                docId={this.state.docId}
+                changeCurrentStep={stepNo =>
+                  this.changeCurrentStep(stepNo)
+                }
+                stepNo={this.state.CurrStep}
+              />
             </div>
-
           </div>
         </div>
         <div>

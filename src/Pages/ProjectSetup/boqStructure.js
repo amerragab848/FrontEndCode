@@ -27,8 +27,8 @@ const validationSchema = Yup.object().shape({
     titleEn: Yup.string().test('projectNameEn', 'Name cannot be arabic', value => {
         return !en.test(value);
     }).required(Resources["titleEnRequired"][currentLanguage]),
-    titleAr: Yup.string().test('projectNameAr', 'Name cannot be english', value => { 
-        return  ar.test(value)
+    titleAr: Yup.string().test('projectNameAr', 'Name cannot be english', value => {
+        return ar.test(value)
     }).required(Resources["titleArRequired"][currentLanguage]),
 });
 
@@ -43,7 +43,7 @@ class boqStructure extends Component {
         super(props);
 
         this.state = {
-            projectId: this.props.projectId,
+            projectId: localStorage.getItem("lastSelectedProject"),
             trees: [],
             childerns: [],
             rowIndex: null,
@@ -88,44 +88,41 @@ class boqStructure extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.projectId !== this.props.projectId) {
-
-            dataservice.GetDataGrid("GetAllBoqStructure?projectId=" + this.state.projectId).then(result => {
-                this.setState({
-                    trees: result,
-                    projectId: nextProps.projectId
-                });
+        if (nextProps.projectId !== this.state.projectId) {
+            this.setState({ isLoading: true });
+            dataservice.GetDataGrid("GetAllBoqStructure?projectId=" + nextProps.projectId).then(result => {
+                if (result) {
+                    this.setState({ trees: result, projectId: nextProps.projectId, isLoading: false });
+                }
+                else {
+                    this.setState({ trees: [], projectId: nextProps.projectId, isLoading: false });
+                }
             }).catch(ex => {
-            })
-            // dataservice.GetDataGrid("GetAllBoqStructure?projectId=" + nextProps.projectId).then(result => {
-            //     this.setState({
-            //         trees: result,
-            //         projectId: nextProps.projectId
-            //     })
-            // }).catch(ex => {
-            // })
+                this.setState({ isLoading: false, trees: [] });
+            });
         }
-
     }
 
     componentWillMount() {
 
         this.props.actions.documentForAdding();
+        this.setState({ isLoading: true });
         dataservice.GetDataGrid("GetAllBoqStructure?projectId=" + this.state.projectId).then(result => {
-            this.setState({
-                trees: result,
-            });
+            if (result) {
+                this.setState({ trees: result, isLoading: false });
+            }
+            else {
+                this.setState({ trees: [], isLoading: false });
+            }
         }).catch(ex => {
+            this.setState({ trees: [], isLoading: false });
         })
 
         dataservice.GetDataList('GetAccountsProjects', 'projectName', 'projectId').then(
             res => {
-                this.setState({
-                    ProjectsData: res
-                })
+                this.setState({ ProjectsData: res });
             }
-        ).catch(ex => {
-        })
+        ).catch(ex => { })
     }
 
     AddNode(item) {
@@ -454,7 +451,7 @@ class boqStructure extends Component {
 
                     {/* ParentNode */}
                     <div className="Eps__list">
-                        {this.state.trees.length < 0 ? null :
+                        {this.state.trees.length < 0 ? this.setState({ isLoading: false }) :
                             <Fragment>
                                 {this.state.trees.map((item, i) => {
                                     return (
