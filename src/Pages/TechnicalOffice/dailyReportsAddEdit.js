@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
-
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -27,7 +26,7 @@ import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import Api from "../../api";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-
+import Steps from "../../Componants/publicComponants/Steps";
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let docId = 0;
@@ -38,6 +37,12 @@ let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
 const _ = require("lodash");
+
+var steps_defination = [];
+steps_defination = [
+    { name: "dailyReports", callBackFn: null },
+    { name: "items", callBackFn: null }
+];
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
@@ -114,10 +119,7 @@ class dailyReportsAddEdit extends Component {
         }
         this.state = {
             selectedRows: [],
-            CurrentStep: 1,
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
+            CurrentStep: 0,
             showDeleteModal: false,
             isLoading: false,
             isEdit: false,
@@ -415,29 +417,6 @@ class dailyReportsAddEdit extends Component {
             })
         }
 
-    }
-
-    NextStep() {
-        if (this.state.CurrentStep === 1) {
-            this.setState({ CurrentStep: this.state.CurrentStep + 1, FirstStep: false, SecondStep: true, SecondStepComplate: true, });
-        }
-        else { this.props.history.push("/dailyReports/" + this.state.projectId) }
-    }
-
-    PreviousStep() {
-        if (this.state.CurrentStep === 2) {
-            this.setState({ CurrentStep: this.state.CurrentStep - 1, FirstStep: true, SecondStep: false, SecondStepComplate: false })
-        }
-    }
-
-    StepOneLink = () => {
-        if (docId !== 0) { this.setState({ FirstStep: true, SecondStepComplate: false, CurrentStep: 1 }) }
-    }
-
-    StepTwoLink = () => {
-        if (docId !== 0) {
-            this.setState({ FirstStep: true, SecondStepComplate: true, CurrentStep: 2 });
-        }
     }
 
     changeTab = tabName => {
@@ -798,6 +777,9 @@ class dailyReportsAddEdit extends Component {
         });
     }
 
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrentStep: stepNo });
+    };
     render() {
 
         let actions = [
@@ -817,12 +799,12 @@ class dailyReportsAddEdit extends Component {
                             if (this.props.showModal) { return; }
 
                             if (this.state.IsAddMood) {
-                                this.NextStep();
+                               this.changeCurrentStep(1);
                             }
                             else {
                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                     this.SaveDoc('EditMood');
-                                    this.NextStep();
+                                   this.changeCurrentStep(1);
                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                     this.SaveDoc('AddMood');
                                 }
@@ -987,7 +969,7 @@ class dailyReportsAddEdit extends Component {
                     <div className="doc-pre-cycle letterFullWidth">
                         <div className="precycle-grid">
                             <div className="slider-Btns">
-                                <button className="primaryBtn-1 btn meduimBtn " type="button" onClick={() => this.NextStep()}>
+                                <button className="primaryBtn-1 btn meduimBtn " type="button" onClick={() =>  this.changeCurrentStep(2)}>
                                     {Resources.next[currentLanguage]}
                                 </button>
                             </div>
@@ -1905,40 +1887,20 @@ class dailyReportsAddEdit extends Component {
                                 </header>
                             ) : null}
                             {this.state.isLoading ? <LoadingSection /> : null}
-                            {this.state.CurrentStep === 1 ? <Fragment>{stepOne()}</Fragment> : <Fragment> {stepTwo()}</Fragment>}
+                            {this.state.CurrentStep === 0 ? <Fragment>{stepOne()}</Fragment> : <Fragment> {stepTwo()}</Fragment>}
                         </div>
 
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep.bind(this)}
-                                    className={this.state.CurrentStep !== 1 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                                    <i className="fa fa-caret-left" aria-hidden="true" /> Previous</span>
-                                <span onClick={this.NextStep.bind(this)} className={this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                                    Next<i className="fa fa-caret-right" aria-hidden="true" /></span>
-                            </div>
-
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["dailyReports"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["items"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/dailyReports/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrentStep}
+                            />
+                        </Fragment>
 
                     </div>
                 </div>
