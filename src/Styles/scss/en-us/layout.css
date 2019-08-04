@@ -21090,4 +21090,13 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 
 .letterFullWidth.multiDrop .reactSelect >div:first-of-type {
     width: 100% !important;
+    max-width: 850px !important;
+}
+
+.skylight-dialog .reactSelect >div:first-of-type {
+    width: auto !important;
+}
+
+.dropWrapper .letterFullWidth .fillter-item-c, .letterFullWidth .ReactTable  {
+    width: 100%;
 }
