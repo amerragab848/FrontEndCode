@@ -108,7 +108,6 @@ class Index extends Component {
 
       return <Fragment key={index + "DIVBriteCharts"}>
         <Britecharts api={Details.widgets[widget.title].props.api}
-          //topicName={widget.topicNames}
           topicName={Details.widgets[widget.title].props.topicNames}
           title={language[widget.title][currentLanguage]} />
       </Fragment>
