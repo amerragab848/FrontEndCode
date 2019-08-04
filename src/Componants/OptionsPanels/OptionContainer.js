@@ -34,6 +34,7 @@ const actionPanel = {
         width: '115px',
         backgroundColor: isFocused ? '#fafbfc' : 'rgba(255, 255, 255, 0)',
         border: isFocused ? 'solid 1px #858d9e' : ' solid 1px #ccd2db',
+        cursor: 'pointer',
         '&:hover': {
             border: 'solid 1px #a8b0bf',
             backgroundColor: ' #fafbfc'

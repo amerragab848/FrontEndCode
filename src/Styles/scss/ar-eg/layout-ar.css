@@ -15544,14 +15544,6 @@ body {
     padding: 4px 0;
 }
 
-.dropWrapper .borderError .css-1aya2g8 {
-    border: 1px solid #d13e2e;
-}
-
-.dropWrapper .borderValid .css-1aya2g8 {
-    border: 1px solid #2AA832;
-}
-
 .dropWrapper .fillter-item-c {
     min-width: 48%;
     margin-bottom: 10px;
@@ -15572,15 +15564,6 @@ body {
 
 .dropWrapper .filterWrapper .fillter-item-c .ui.selection.dropdown.singleDropDown {
     height: auto;
-}
-
-.dropWrapper .css-d8oujb {
-    width: 0 !important;
-}
-
-.dropWrapper .css-19bqh2r {
-    width: 15px;
-    height: 18px;
 }
 
 .dropWrapper {
@@ -15923,10 +15906,6 @@ table edition
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-}
-
-.customD_Menu .css-1hwfws3 {
-    max-height: 40px;
 }
 
 .has-error .spanValidation label {
@@ -16680,14 +16659,6 @@ table edition
     position: relative;
 }
 
-/**/
-/* .customD_Menu .css-vj8t7z {
-  z-index: 12;
-} */
-/* .customD_Menu .css-15k3avv {
-    z-index: 155;
-    
-} */
 .approveReject {
     display: flex;
     align-items: center;
@@ -16881,10 +16852,6 @@ tfoot tr td p {
     width: 50%;
     overflow-y: auto;
     height: 400px;
-}
-
-.customD_Menu .css-15k3avv {
-    z-index: 155;
 }
 
 .table__inputs {
@@ -17190,11 +17157,6 @@ tfoot tr td p {
     margin-top: 0;
 }
 
-.dropdownMulti .customD_Menu .css-1hwfws3,
-.multiChoice .customD_Menu .css-1hwfws3 {
-    max-height: inherit;
-}
-
 .dropdownMulti.letterFullWidth .fillter-status.fillter-item-c {
     display: flex;
     flex-flow: column;
@@ -17334,38 +17296,6 @@ tfoot tr td p {
 }
 
 /* new css notabs */
-/* noTabs */
-.document__action--menu .customD_Menu .css-10nd86i .css-15k3avv {
-    height: 145px;
-    overflow-y: auto;
-    top: -155px;
-}
-
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-10nd86i .css-15k3avv {
-    height: auto;
-    overflow-y: auto;
-    top: 100%;
-}
-
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-vj8t7z,
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw {
-    height: 48px;
-    border: solid 2px !important;
-    transition: all 0.5s ease-in-out;
-}
-
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-vj8t7z {
-    border-color: #E9ECF0 !important;
-}
-
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-vj8t7z:hover {
-    border-color: #A8B0BF !important;
-}
-
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw,
-.document__action--menu .skylight-wrapper .skylight-dialog .customD_Menu .css-2o5izw:hover {
-    border-color: #83B4FC !important;
-}
 
 .document__action--menu .skylight-dialog .spanValidation {
     display: block;
@@ -17779,11 +17709,6 @@ button.companies_icon {
     }
 }
 
-.document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z,
-.document__action--menu .skylight-dialog .customD_Menu .css-2o5izw {
-    background: #fff;
-}
-
 .summerisItem__number {
     position: relative;
     padding: 20px 0;
@@ -17848,26 +17773,6 @@ button.companies_icon {
     z-index: 2;
 }
 
-.errorClass.customD_Menu .css-vj8t7z {
-    border: solid 2px #e74c3c !important;
-}
-
-.errorClass.customD_Menu .css-vj8t7z:hover {
-    border: solid 2px #e74c3c !important;
-}
-
-.css-15k3avv {
-    border-radius: 4px;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
-    border: solid 1px #ccd2db;
-}
-
-.css-15k3avv:hover {
-    border-radius: 4px;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
-    border: solid 1px #ccd2db;
-}
-
 .SummeriesContainer .SummeriesContainerContent.numbersContainerContent {
     background-color: transparent;
     border: 0;
@@ -17928,10 +17833,6 @@ button.companies_icon {
 
 .datepickerContainer.proForm .passWrapperInput .ui.input.inputDev input {
     width: 360px;
-}
-
-.customD_Menu .css-d8oujb {
-    display: none;
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput.daysCheckbox {
@@ -18033,81 +17934,6 @@ button.companies_icon {
     width: 271px !important;
 }
 
-.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
-    font-family: cairo-r;
-    font-size: 14px;
-    line-height: 1.71;
-    letter-spacing: -0.2px;
-    color: #3e4352;
-}
-
-.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before,
-.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before {
-    content: '';
-    position: absolute;
-    right: -20px;
-    background-image: url(../../images/dropdownPerson.png);
-    width: 16px;
-    height: 16px;
-    background-repeat: no-repeat;
-    top: 2px;
-}
-
-.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-1492t68,
-.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
-    right: 27px;
-    overflow: visible;
-}
-
-.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-1492t68::before,
-.supervisor__company .super_name .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy::before {
-    content: '';
-    position: absolute;
-    right: -20px;
-    background-image: url(../../images/companyDropdown.png);
-    width: 16px;
-    height: 16px;
-    background-repeat: no-repeat;
-    top: 2px;
-}
-
-.fillter-status.fillter-item-c .customD_Menu .css-1492t68:empty::before,
-.fillter-status.fillter-item-c .customD_Menu .css-xp4uvy:empty::before {
-    display: none;
-}
-
-.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
-    font-family: cairo-b;
-    font-size: 14px;
-    line-height: 1.43;
-    letter-spacing: -0.2px;
-    color: #252833;
-}
-
-.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-1492t68,
-.supervisor__company .super_company .fillter-status.fillter-item-c .customD_Menu .css-xp4uvy {
-    right: 27px;
-    overflow: visible;
-}
-
-.supervisor__company .super_name .customD_Menu .css-vj8t7z {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-left: 0;
-}
-
-.supervisor__company .super_name .customD_Menu .css-vj8t7z .css-1ep9fjw,
-.supervisor__company .super_name .customD_Menu .css-10nd86i .css-2o5izw .css-1wy0on6 {
-    display: none;
-}
-
-.supervisor__company .super_company .customD_Menu .css-vj8t7z {
-    border-radius: 3px;
-    background-color: #e9ecf0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
 .supervisor__company .super_name .spanValidation,
 .supervisor__company .super_company .spanValidation {
     display: none;
@@ -18122,11 +17948,6 @@ button.companies_icon {
 
 .proForm .mix_dropdown label {
     font-family: cairo-b;
-}
-
-.css-2o5izw,
-.css-10nd86i {
-    border-color: transparent !important;
 }
 
 @media (max-width: 1200px) {
@@ -18204,30 +18025,6 @@ button.companies_icon {
     color: #fff;
 }
 
-.customD_Menu .css-vj8t7z, .customD_Menu .css-2o5izw, .customD_Menu .css-162g8z5 {
-    min-height: 48px;
-    border: solid 2px !important;
-    transition: all 0.5s ease-in-out;
-}
-
-.customD_Menu .css-vj8t7z, .customD_Menu .css-162g8z5 {
-    border-color: #E9ECF0 !important;
-}
-
-.customD_Menu .css-vj8t7z:hover {
-    min-height: 48px;
-    border-color: #A8B0BF !important;
-}
-
-.customD_Menu .css-2o5izw, .customD_Menu .css-2o5izw:hover {
-    border-color: #83B4FC !important;
-    box-shadow: none !important;
-}
-
-.supervisor__company .super_name .customD_Menu.errorClass .css-vj8t7z:hover {
-    border: solid 2px #e74c3c !important;
-}
-
 .main-header.dashboard__header {
     padding-right: 40px;
 }
@@ -18278,12 +18075,6 @@ button.companies_icon {
         flex: 0.3 1 !important;
         flex-shrink: 0;
     }
-}
-
-.css-1g6gooi {
-    max-height: 30px;
-    display: flex;
-    align-items: center;
 }
 
 .griddata__load .react-grid-Cell .react-grid-Cell__value span div {
@@ -19113,14 +18904,6 @@ button.companies_icon {
 
 .tableSelctedBTNs button:nth-child(2) {
     margin-left: 16px;
-}
-
-.document__action--menu .skylight-dialog .customD_Menu .css-xp4uvy {
-    font-size: 14px;
-    font-weight: 400;
-    text-transform: capitalize;
-    text-align: right;
-    padding-right: 16px;
 }
 
 .noTabs__document .doc-container .step-content .document-fields .skylight-dialog .proForm.datepickerContainer {
@@ -20464,12 +20247,6 @@ line.horizontal-grid-line {
     margin-top: 15px;
 }
 
-.ReactTable .customD_Menu .css-vj8t7z,
-.ReactTable .customD_Menu .css-2o5izw,
-.ReactTable .customD_Menu .css-162g8z5 {
-    min-height: 38px;
-}
-
 .nav-right li {
     cursor: pointer;
 }
@@ -20545,127 +20322,6 @@ body.noScrolling {
     margin-right: 88px;
 }
 
-.default__dropdown .css-10nd86i {
-    min-width: 166px;
-}
-
-.default__dropdown .css-10nd86i .css-vj8t7z {
-    background-color: rgba(255, 255, 255, 0) !important;
-    border-radius: 4px;
-    border: solid 1px #5f98fa !important;
-    min-height: 36px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.default__dropdown .css-10nd86i .css-1492t68 {
-    font-family: cairo-b;
-    font-size: 13px;
-    font-weight: bold;
-    line-height: 1.54;
-    letter-spacing: 0.4px;
-    color: #ffffff;
-    width: 100%;
-    text-transform: uppercase;
-}
-
-.default__dropdown .css-10nd86i .css-xp4uvy {
-    font-family: cairo-b;
-    font-size: 13px;
-    line-height: 1.54;
-    letter-spacing: 0.4px;
-    color: #ffffff;
-    width: 100%;
-    text-transform: capitalize;
-    text-align: center;
-}
-
-/* .default__dropdown .css-10nd86i .css-1hwfws3 {
-    padding: 0;
-} */
-
-.default__dropdown .css-10nd86i .css-19bqh2r {
-    display: inline-block;
-    fill: white;
-    line-height: 1;
-    stroke: white;
-    stroke-width: 0px;
-}
-
-.default__dropdown .css-10nd86i .css-d8oujb {
-    opacity: 0.3;
-    background-color: #83b4fc !important;
-    margin-bottom: 4px;
-    margin-top: 4px;
-    width: 1px;
-    display: block;
-}
-
-.default__dropdown .css-10nd86i .css-2o5izw {
-    background-color: rgba(255, 255, 255, 0);
-    min-height: 36px !important;
-    border: solid 1px #5f98fa !important;
-    border-width: 0;
-    border-radius: 4px;
-}
-
-.default__dropdown .css-10nd86i .css-2o5izw:hover {
-    border-radius: 4px;
-    border: solid 1px #4382f9 !important;
-    background-color: #fafcff !important;
-    border-color: #4382f9 !important;
-    border-color: transparent;
-}
-
-.default__dropdown .css-10nd86i .css-1g6gooi input {
-    color: #3570e6 !important;
-    font-size: 13px !important;
-}
-
-.default__dropdown .css-10nd86i .css-xp4uvy {
-    color: #3570e6 !important;
-    font-size: 13px !important;
-}
-
-.default__dropdown .css-10nd86i .css-15k3avv {
-    margin-top: 0;
-    font-size: 13px !important;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
-    background-color: #ffffff;
-
-    /* border: solid 1px #4382f9 !important; */
-    margin: 0;
-    border-top: 2px;
-    border-radius: 4px;
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
-    max-width: 202px;
-}
-
-.default__dropdown .css-10nd86i .css-1ep9fjw {
-    position: relative;
-}
-
-.default__dropdown .css-10nd86i .css-1ep9fjw:last-child::after,
-.default__dropdown .css-10nd86i .css-1uq0kb5:last-child::after {
-    content: '';
-    background-image: url(../../images/primarybtn-2Menu-arrow.png);
-    width: 16px;
-    height: 16px;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.default__dropdown .css-10nd86i .css-1ep9fjw- svg,
-.default__dropdown .css-10nd86i .css-1uq0kb5 svg {
-    opacity: 0.6;
-}
-
-.default__dropdown .css-10nd86i .css-1ep9fjw:last-child svg,
-.default__dropdown .css-10nd86i .css-1uq0kb5:last-child svg {
-    display: none;
-}
-
 .britechart-tooltip {
     z-index: 9999;
 }
@@ -20726,16 +20382,6 @@ body.noScrolling {
 
 .document__action--menu .skylight-dialog .spanValidation {
     display: block;
-}
-
-.document__action--menu .customD_Menu .css-vj8t7z,
-.document__action--menu .customD_Menu .css-2o5izw {
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
-}
-
-.document__action--menu .skylight-dialog .customD_Menu .css-vj8t7z,
-.document__action--menu .skylight-dialog .customD_Menu .css-2o5izw {
-    box-shadow: none;
 }
 
 button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button .ck-button__label,
@@ -20949,125 +20595,6 @@ div#markup-panel {
 /* new Menu panel */
 .document__action--menu {
     width: 115px;
-}
-
-.document__action--menu .css-10nd86i {
-    min-width: 115px;
-}
-
-.document__action--menu .css-10nd86i .css-vj8t7z,
-.document__action--menu .css-10nd86i .css-2o5izw {
-    background-color: rgba(255, 255, 255, 0) !important;
-    border-radius: 4px;
-    min-height: 36px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: solid 1px #ccd2db !important;
-}
-
-.document__action--menu .customD_Menu .css-vj8t7z,
-.document__action--menu .customD_Menu .css-2o5izw {
-    min-width: 115px;
-    height: 36px;
-}
-
-.document__action--menu .css-10nd86i .css-1492t68 {
-    font-family: cairo-b;
-    font-size: 13px;
-    font-weight: bold;
-    line-height: 1.54;
-    letter-spacing: 0.4px;
-    color: #ffffff;
-    width: 100%;
-    text-transform: uppercase;
-}
-
-.document__action--menu .css-10nd86i .css-xp4uvy {
-    font-family: cairo-b;
-    font-size: 13px;
-    line-height: 1.54;
-    letter-spacing: 0.4px;
-    width: 100%;
-    text-transform: capitalize;
-    text-align: center;
-}
-
-.document__action--menu .css-10nd86i .css-1hwfws3 {
-    padding: 0;
-}
-
-.document__action--menu .css-10nd86i .css-19bqh2r {
-    display: inline-block;
-    fill: white;
-    line-height: 1;
-    stroke: white;
-    stroke-width: 0px;
-}
-
-.document__action--menu .css-10nd86i .css-d8oujb {
-    opacity: 0.3;
-    background-color: #83b4fc !important;
-    margin-bottom: 4px;
-    margin-top: 4px;
-    width: 1px;
-    display: block;
-}
-
-.document__action--menu .css-10nd86i .css-2o5izw {
-    background-color: rgba(255, 255, 255, 0);
-    border: solid 1px #5f98fa !important;
-    border-width: 0;
-    border-radius: 4px;
-}
-
-.document__action--menu .css-10nd86i .css-2o5izw:hover {
-    border-radius: 4px;
-    border: solid 1px #4382f9 !important;
-    background-color: #fafcff !important;
-    border-color: #4382f9 !important;
-    border-color: transparent;
-}
-
-.document__action--menu .css-10nd86i .css-1g6gooi input {
-    color: #5e6475 !important;
-    font-size: 13px !important;
-}
-
-.document__action--menu .css-10nd86i .css-xp4uvy {
-    color: #5e6475 !important;
-    font-size: 13px !important;
-}
-
-.document__action--menu .css-10nd86i .css-1ep9fjw {
-    position: relative;
-}
-
-.document__action--menu .css-10nd86i .css-1ep9fjw:last-child::after,
-.document__action--menu .css-10nd86i .css-1uq0kb5:last-child::after {
-    content: '';
-    background-image: url(../../images/greyArrow.png);
-    width: 16px;
-    height: 16px;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.document__action--menu .css-10nd86i .css-1ep9fjw- svg,
-.document__action--menu .css-10nd86i .css-1uq0kb5 svg {
-    opacity: 0.6;
-}
-
-.document__action--menu .css-10nd86i .css-1ep9fjw:last-child svg,
-.document__action--menu .css-10nd86i .css-1uq0kb5:last-child svg {
-    display: none;
-}
-
-.document__action--menu .customD_Menu .css-1hwfws3 {
-    min-width: 80px;
-}
-
-.document__action--menu .customD_Menu .css-15k3avv {
-    min-width: 180px;
 }
 
 .linebylineInput .fillter-status.fillter-item-c.new_height,
@@ -21361,12 +20888,6 @@ div#markup-panel {
     display: flex;
 }
 
-.dropdownMulti .css-1hwfws3,
-.multiChoice .css-1hwfws3 {
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
-}
-
 .attachmentTableAuto.attachmentTable thead tr th:nth-child(2),
 .attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
     width: auto;
@@ -21431,18 +20952,6 @@ div#markup-panel {
     border-bottom: 1px solid #DADEE6;
 }
 
-.filter__input-wrapper .customD_Menu .css-vj8t7z,
-.filter__input-wrapper .customD_Menu .css-2o5izw,
-.filter__input-wrapper .customD_Menu .css-162g8z5,
-.filter__input-wrapper .letterFullWidth .customD_Menu .css-1hwfws3 {
-    min-height: 36px;
-}
-
-.filter__input-wrapper .letterFullWidth .multiChoice .css-1hwfws3 {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-}
-
 .datepickerContainer.proForm .ui.input.inputDev {
     max-width: 100%;
 }
@@ -21471,16 +20980,6 @@ div#markup-panel {
 .linebylineInput__checkbox .ui.checkbox,
 .linebylineInput__checkbox label {
     margin: 0 !important;
-}
-
-.filter__input-wrapper .customD_Menu .css-vj8t7z,
-.filter__input-wrapper .customD_Menu .css-2o5izw,
-.filter__input-wrapper .customD_Menu .css-162g8z5 {
-    height: 36px;
-}
-
-.filter__input-wrapper .customD_Menu .css-1492t68 {
-    top: 44%;
 }
 
 .filter__input-wrapper .linebylineInput .fillter-status.fillter-item-c {
@@ -21627,13 +21126,6 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     flex-flow: row;
 }
 
-.filter__showmore .customD_Menu .css-vj8t7z,
-.filter__showmore .customD_Menu .css-vj8t7z:hover,
-.filter__showmore .customD_Menu .css-2o5izw {
-    min-height: 36px;
-    height: 36px;
-}
-
 .filter__showmore .customDatepicker .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate > div::after {
     top: 9px;
 }
@@ -21659,11 +21151,6 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
 
 .linebylineInput .ck.ck-button, .linebylineInput .ck.ck-dropdown {
     margin: 0 !important;
-}
-
-.gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c .customD_Menu .css-vj8t7z, .gridfillter-container .fillter-status-container .fillter-item-c .fillter-item-c .customD_Menu .css-2o5izw, .customD_Menu .css-162g8z5 {
-    min-height: 36px;
-    height: 36px;
 }
 
 .gridfillter-container .fillter-status-container label {
@@ -21854,4 +21341,19 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 
 .drop__hasError >div {
     border : solid 2px #e74c3c !important
+}
+
+.proForm .ui.input.inputDev .customD_Menu input {
+    height: auto !important
+}
+
+.customDatepicker.fillter-status .proForm.datepickerContainer {
+    align-items: flex-start
+}
+.fullWidthWrapper .reactSelect >div:first-of-type, .letterFullWidth .reactSelect >div:first-of-type {
+    width: 96% !important;
+}
+
+.letterFullWidth.multiDrop .reactSelect >div:first-of-type {
+    width: 100% !important;
 }

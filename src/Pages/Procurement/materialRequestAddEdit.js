@@ -68,6 +68,7 @@ const actionPanel = {
     input: styles => ({ ...styles, maxWidth: '100%' }),
     placeholder: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700' }),
     singleValue: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700', textAlign: 'center' }),
+    menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db' }),
     indicatorSeparator: styles => ({ ...styles, backgroundColor: '#dadee6' }),
 };
 

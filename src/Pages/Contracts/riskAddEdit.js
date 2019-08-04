@@ -31,10 +31,10 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import numeral from 'numeral';
 import RiskCategorisation from "../../Componants/publicComponants/RiskCategorisation";
-
+import Steps from "../../Componants/publicComponants/Steps"; 
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
-
+var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -104,28 +104,13 @@ class riskAddEdit extends Component {
             consequenceDataPost: [],
             currency: [],
             updateConsequence: false,
-            FirstStep: true,
-            SecondStep: false,
-            ThirdStep: false,
-            FourthStep: false,
-            FivethStep: false,
-            SixthStep: false,
-            SevenStep: false,
-            EightStep: false,
-            FourthStepComplate: false,
-            FivethStepComplate: false,
-            SixthStepComplate: false,
-            SecondStepComplate: false,
-            ThirdStepComplate: false,
-            SeventhStepComplate: false,
-            EightthStepComplate: false,
             postQuantitifactionStepComplate: false,
             addDocStepComplate: false,
             postQuantitifactionStep: false,
             addDocStep: false,
             analysisStepComplate: false,
             analysisStep: false,
-            CurrentStep: 1,
+            CurrentStep: 0,
             CycleEditLoading: false,
             CycleAddLoading: false,
             DocLoading: false,
@@ -177,7 +162,7 @@ class riskAddEdit extends Component {
             selectedPriorityId: { label: Resources.prioritySelect[currentLanguage], value: "0" },
             description: '',
             descriptionMitigation: '',
-            
+
         }
 
         if (!Config.IsAllow(10000) && !Config.IsAllow(10001) && !Config.IsAllow(10003)) {
@@ -186,6 +171,33 @@ class riskAddEdit extends Component {
                 this.state.perviousRoute
             );
         }
+        steps_defination = [
+            {
+                name: "information",
+                callBackFn: null
+            },
+            {
+                name: "mitigation",
+                callBackFn: null
+            }, {
+                name: "consequence",
+                callBackFn: null
+            },
+            {
+                name: "proposeMitigation",
+                callBackFn: null
+            }, {
+                name: "postQuantitifaction",
+                callBackFn: null
+            },
+            {
+                name: "riskAnalysis",
+                callBackFn: null
+            }, {
+                name: "addDocAttachment",
+                callBackFn: null
+            }
+        ];
     }
 
     componentDidMount() {
@@ -289,13 +301,13 @@ class riskAddEdit extends Component {
 
                 this.setState({
                     totalProposedMit: totalProposedMit,
-                    totalResidualRisk: totalResidualRisk, 
+                    totalResidualRisk: totalResidualRisk,
 
                     IRCyclesPre: IRCyclesPre,
                     IRCyclesPost: IRCyclesPost
                 });
 
-                let data = { items: result  ? result : [] };
+                let data = { items: result ? result : [] };
                 this.props.actions.ExportingData(data);
             });
             this.fillDropDownsCycle(true);
@@ -432,16 +444,16 @@ class riskAddEdit extends Component {
         //likelihoods
         dataservice.GetDataGrid("GetaccountsDefaultListForList?listType=likelihoods").then(result => {
             let data = [];
-            if(result){
-            result.map(i => {
-                data.push({
-                    label: i['title'], value: i['id'], action: i['value']
+            if (result) {
+                result.map(i => {
+                    data.push({
+                        label: i['title'], value: i['id'], action: i['value']
+                    })
                 })
-            })
-            this.setState({
-                likelihoods: [...data]
-            });
-        }
+                this.setState({
+                    likelihoods: [...data]
+                });
+            }
         });
 
         //consequencesScores
@@ -617,9 +629,7 @@ class riskAddEdit extends Component {
 
     }
 
-    saveAndExit(event) {
-        this.props.history.push("/Risk/" + this.state.projectId);
-    }
+
 
     showBtnsSaving() {
         let btn = null;
@@ -653,76 +663,8 @@ class riskAddEdit extends Component {
         }
     }
 
-    NextStep = () => {
-        if (this.state.CurrentStep === 1) {
-            if (this.props.changeStatus == true) {
-                this.editRisk();
-            }
-            window.scrollTo(0, 0);
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrentStep: 2
-            });
-        }
-    }
-
-    NextTopStep = () => {
-        if (this.state.CurrentStep === 1) {
-            window.scrollTo(0, 0);
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrentStep: 2
-            });
-        } else if (this.state.CurrentStep === 2) {
-            window.scrollTo(0, 0);
-            this.setState({
-                SecondStep: false,
-                ThirdStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
-                CurrentStep: 3
-            });
-        } else if (this.state.CurrentStep === 3) {
-            window.scrollTo(0, 0);
-            this.setState({
-                FourthStep: true,
-                ThirdStep: false,
-                FourthStepComplate: true,
-                CurrentStep: 4
-            });
-        } else if (this.state.CurrentStep === 4) {
-            window.scrollTo(0, 0);
-            this.setState({
-                FourthStep: false,
-                FivethStep: true,
-                FivethStepComplate: true,
-                CurrentStep: 5
-            });
-        } else if (this.state.CurrentStep === 5) {
-            window.scrollTo(0, 0);
-            this.setState({
-                FivethStep: false,
-                SixthStep: true,
-                SixthStepComplate: true,
-                CurrentStep: 6
-            });
-        } else if (this.state.CurrentStep === 6) {
-            window.scrollTo(0, 0);
-            this.setState({
-                SixthStep: false,
-                SeventhStep: true,
-                SeventhStepComplate: true,
-                CurrentStep: 7
-            });
-        } else if (this.state.CurrentStep === 7) {
-            this.props.history.push({
-                pathname: "/Risk/" + projectId + ""
-            });
-        }
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrentStep: stepNo });
 
         let consequenceData = this.state.consequenceData;
         if (consequenceData.length == 0) {
@@ -730,59 +672,8 @@ class riskAddEdit extends Component {
         }
     };
 
-    PreviousStep = () => {
-        if (this.state.docId !== 0) {
-            if (this.state.CurrentStep === 2) {
-                window.scrollTo(0, 0);
-                this.setState({
-                    FirstStep: true,
-                    SecondStep: false,
-                    SecondStepComplate: false,
-                    CurrentStep: 1
-                });
-            } else if (this.state.CurrentStep === 3) {
-                window.scrollTo(0, 0);
-                this.setState({
-                    SecondStep: true,
-                    ThirdStep: false,
-                    ThirdStepComplate: false,
-                    CurrentStep: 2
-                });
-            } else if (this.state.CurrentStep === 4) {
-                window.scrollTo(0, 0);
-                this.setState({
-                    FourthStep: false,
-                    ThirdStep: true,
-                    FourthStepComplate: false,
-                    CurrentStep: 3
-                });
-            } else if (this.state.CurrentStep === 5) {
-                window.scrollTo(0, 0);
-                this.setState({
-                    FourthStep: true,
-                    FivethStep: false,
-                    FivethStepComplate: false,
-                    CurrentStep: 4
-                });
-            } else if (this.state.CurrentStep === 6) {
-                window.scrollTo(0, 0);
-                this.setState({
-                    FivethStep: true,
-                    SixthStep: false,
-                    SixthStepComplate: false,
-                    CurrentStep: 5
-                });
-            } else if (this.state.CurrentStep === 7) {
-                window.scrollTo(0, 0);
-                this.setState({
-                    SixthStep: true,
-                    SeventhStep: false,
-                    SeventhStepComplate: false,
-                    CurrentStep: 6
-                });
-            }
-        }
-    };
+
+
 
     handleChangeCycle(e, field) {
 
@@ -1538,7 +1429,7 @@ class riskAddEdit extends Component {
                             </th>
                             <th>
                                 <div className="headCell" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {'Consequence Score'}</div>
-                            </th> 
+                            </th>
                             <th>
                                 <div className="headCell tableCell-1"> {'Risk Ranking'}</div>
                             </th>
@@ -1573,7 +1464,7 @@ class riskAddEdit extends Component {
                                             selectedValue={original.SelectedLikelihood}
                                             index={original.id} />
                                     </div>
-                                </td> 
+                                </td>
                                 <td>
                                     <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskRanking}</div>
                                 </td>
@@ -1714,162 +1605,8 @@ class riskAddEdit extends Component {
         );
     }
 
-    StepOneLink = () => {
-        if (this.props.changeStatus === true) {
-            this.setState({
-                FirstStep: true,
-                SecondStep: false,
-                SecondStepComplate: false,
-                CurrentStep: 1,
-                ThirdStepComplate: false,
-                FourthStepComplate: false,
-                FivethStepComplate: false,
-                FivethStep: false,
-                SixthStep: false,
-                SeventhStep: false,
-                SixthStepComplate: false,
-                SeventhStepComplate: false
-            });
-        }
-    };
 
-    StepTwoLink = () => {
-        if (this.props.changeStatus === true) {
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrentStep: 2,
-                ThirdStepComplate: false,
-                FourthStepComplate: false,
-                FivethStepComplate: false,
-                FivethStep: false,
-                SixthStep: false,
-                SeventhStep: false,
-                SixthStepComplate: false,
-                SeventhStepComplate: false
-            });
-        }
-    };
 
-    StepThreeLink = () => {
-        if (this.props.changeStatus === true) {
-            this.setState({
-                ThirdStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
-                CurrentStep: 3,
-                FourthStepComplate: false,
-                FivethStepComplate: false,
-                FourthStep: false,
-                FivethStep: false,
-                FirstStep: false,
-                SecondStep: false,
-                SixthStep: false,
-                SeventhStep: false,
-                SixthStepComplate: false,
-                SeventhStepComplate: false
-            });
-
-            let consequenceData = this.state.consequenceData;
-            if (consequenceData.length == 0) {
-                this.fillConsequence();
-            }
-        }
-    };
-
-    StepFourLink = () => {
-        if (this.props.changeStatus === true) {
-            this.setState({
-                FourthStep: true,
-                FourthStepComplate: true,
-                ThirdStepComplate: true,
-                SecondStepComplate: true,
-                ThirdStep: false,
-                FirstStep: false,
-                SecondStep: false,
-                CurrentStep: 4,
-                FivethStepComplate: false,
-                FivethStep: false,
-                SixthStep: false,
-                SeventhStep: false,
-                SixthStepComplate: false,
-                SeventhStepComplate: false
-            });
-        }
-    };
-
-    StepFiveLink = () => {
-        if (this.props.changeStatus === true) {
-            this.setState({
-                FourthStep: false,
-                FivethStep: true,
-                FivethStepComplate: true,
-                CurrentStep: 5,
-                ThirdStepComplate: true,
-                SecondStepComplate: true,
-                FourthStepComplate: true,
-                SecondStep: false,
-                ThirdStep: false,
-                FirstStep: false,
-                SixthStep: false,
-                SeventhStep: false,
-                SixthStepComplate: false,
-                SeventhStepComplate: false
-            });
-
-            let consequenceData = this.state.consequenceData;
-            if (consequenceData.length == 0) {
-                this.fillConsequence();
-            }
-        }
-    };
-
-    StepSixLink = () => {
-        if (this.props.changeStatus === true) {
-            this.setState({
-                SixthStep: true,
-                FourthStep: false,
-                FivethStep: false,
-                CurrentStep: 6,
-                FivethStepComplate: true,
-                ThirdStepComplate: true,
-                SecondStepComplate: true,
-                FourthStepComplate: true,
-                SecondStep: false,
-                ThirdStep: false,
-                FirstStep: false,
-                SeventhStep: false,
-                SixthStepComplate: true,
-                SeventhStepComplate: false
-            });
-
-            let consequenceData = this.state.consequenceData;
-            if (consequenceData.length == 0) {
-                this.fillConsequence();
-            }
-        }
-    };
-
-    StepSevenLink = () => {
-        if (this.props.changeStatus === true) {
-            this.setState({
-                FourthStep: false,
-                FivethStepComplate: true,
-                CurrentStep: 7,
-                ThirdStepComplate: true,
-                SecondStepComplate: true,
-                FourthStepComplate: true,
-                SecondStep: false,
-                ThirdStep: false,
-                FirstStep: false,
-                SixthStep: false,
-                SeventhStep: true,
-                SixthStepComplate: true,
-                SeventhStepComplate: true
-            });
-        }
-    };
 
     render() {
         let actions = [
@@ -1877,7 +1614,7 @@ class riskAddEdit extends Component {
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
             { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
             { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
-        ]; 
+        ];
         let numberFormats =
             <div className="proForm datepickerContainer ">
                 <div className="linebylineInput linebylineInput__checkbox ">
@@ -1903,7 +1640,7 @@ class riskAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.risk[currentLanguage]} moduleTitle={Resources['costControl'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            {this.state.FirstStep ?
+                            {this.state.CurrentStep==0 ?
                                 <div id="step1" className="step-content-body">
                                     <div className="subiTabsContent">
                                         <div className="document-fields">
@@ -1916,7 +1653,10 @@ class riskAddEdit extends Component {
                                                     if (this.props.changeStatus === false && this.state.docId === 0) {
                                                         this.saveRisk();
                                                     } else {
-                                                        this.NextStep();
+                                                        if (this.props.changeStatus == true)
+                                                            this.editRisk();
+                                                        this.changeCurrentStep(1);
+
                                                     }
                                                 }}>
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -1959,17 +1699,17 @@ class riskAddEdit extends Component {
                                                                     name="riskType"
                                                                     id="riskType" />
                                                             </div>
-                                                            {this.state.docId >0 ? 
-                                                            <div className="linebylineInput valid-input">
-                                                                <label className="control-label">{Resources.raisedBy[currentLanguage]}</label>
-                                                                <div className="ui input inputDev">
-                                                                    <input type="text" className="form-control" id="createdBy" readOnly
-                                                                        value={this.state.document.createdBy}
-                                                                        name="createdBy"
-                                                                        placeholder={Resources.raisedBy[currentLanguage]}  />
-                                                                </div>
-                                                            </div>:
-                                                            null
+                                                            {this.state.docId > 0 ?
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.raisedBy[currentLanguage]}</label>
+                                                                    <div className="ui input inputDev">
+                                                                        <input type="text" className="form-control" id="createdBy" readOnly
+                                                                            value={this.state.document.createdBy}
+                                                                            name="createdBy"
+                                                                            placeholder={Resources.raisedBy[currentLanguage]} />
+                                                                    </div>
+                                                                </div> :
+                                                                null
                                                             }
 
                                                             <div className="linebylineInput valid-input alternativeDate">
@@ -2005,8 +1745,8 @@ class riskAddEdit extends Component {
                                                                     <TextEditor value={this.state.description} onChange={event => this.onChangeMessage(event, 'description')} />
                                                                 </div>
                                                             </div>
-                                                            </div>
-                                                            
+                                                        </div>
+
                                                         <div className="proForm first-proform">
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources['riskCause'][currentLanguage]}</label>
@@ -2052,13 +1792,13 @@ class riskAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                       
+
                                                         </div>
-                                                        {this.state.docId > 0 ? 
-                                                        <Fragment>
-                                                                <RiskConesquence riskId={this.state.docId} /> 
+                                                        {this.state.docId > 0 ?
+                                                            <Fragment>
+                                                                <RiskConesquence riskId={this.state.docId} />
                                                                 <RiskCategorisation riskId={this.state.docId} />
-                                                        </Fragment>
+                                                            </Fragment>
                                                             : null
                                                         }
                                                         <div className="slider-Btns">
@@ -2087,17 +1827,17 @@ class riskAddEdit extends Component {
                                 </div>
                                 :
                                 <Fragment>
-                                    {this.state.SecondStep ?
+                                    {this.state.CurrentStep == 1 ?
                                         <div className="subiTabsContent feilds__top">
-                                            {this.CurrentMit()}  
+                                            {this.CurrentMit()}
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextTopStep}>{Resources['next'][currentLanguage]}</button>
+                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
                                                 </div>
                                             </div>
                                         </div>
                                         :
-                                        this.state.ThirdStep ?
+                                        this.state.CurrentStep == 2 ?
                                             <Fragment>
                                                 <div className="subiTabsContent feilds__top">
                                                     <div className="document-fields">
@@ -2115,24 +1855,24 @@ class riskAddEdit extends Component {
 
                                                     <div className="doc-pre-cycle">
                                                         <div className="slider-Btns">
-                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextTopStep}>{Resources['next'][currentLanguage]}</button>
+                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(3)}>{Resources['next'][currentLanguage]}</button>
                                                         </div>
 
                                                     </div>
                                                 </div>
                                             </Fragment>
                                             :
-                                            this.state.FourthStep ?
+                                            this.state.CurrentStep == 3 ?
                                                 <div className="subiTabsContent feilds__top">
                                                     {this.ProposedMit(false)}
                                                     <div className="doc-pre-cycle">
                                                         <div className="slider-Btns">
-                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextTopStep}>{Resources['next'][currentLanguage]}</button>
+                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(4)}>{Resources['next'][currentLanguage]}</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 :
-                                                this.state.FivethStep ?
+                                                this.state.CurrentStep == 4 ?
                                                     <div className="subiTabsContent feilds__top">
                                                         <div className="document-fields">
                                                             {numberFormats}
@@ -2147,13 +1887,13 @@ class riskAddEdit extends Component {
                                                         </div>
                                                         <div className="doc-pre-cycle">
                                                             <div className="slider-Btns">
-                                                                <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextTopStep}>{Resources['next'][currentLanguage]}</button>
+                                                                <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(5)}>{Resources['next'][currentLanguage]}</button>
                                                             </div>
 
                                                         </div>
                                                     </div>
                                                     :
-                                                    this.state.SixthStep ?
+                                                    this.state.CurrentStep == 5 ?
                                                         <div className="document-fields">
                                                             <div className="datepickerContainer proForm">
                                                                 <header>
@@ -2224,7 +1964,7 @@ class riskAddEdit extends Component {
 
                                                             <div className="doc-pre-cycle">
                                                                 <div className="slider-Btns">
-                                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextTopStep}>{Resources['next'][currentLanguage]}</button>
+                                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(6)}>{Resources['next'][currentLanguage]}</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2235,124 +1975,23 @@ class riskAddEdit extends Component {
                                                             </div>
                                                             <div className="doc-pre-cycle">
                                                                 <div className="slider-Btns">
-                                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextTopStep}>{Resources['next'][currentLanguage]}</button>
+                                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(7)}>{Resources['next'][currentLanguage]}</button>
                                                                 </div>
                                                             </div>
                                                         </Fragment>
                                     }
                                 </Fragment>}
                         </div>
-                        <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.props.changeStatus === true ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
-
-                                <span onClick={this.NextTopStep} className={this.props.changeStatus === true ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            {/* Steps Active  */}
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={"step-slider-item " + (this.state.SecondStepComplate ? "active" : "current__step")}>
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 onClick={e => this.setState({ CurrentStep: 1 })}>
-                                                {Resources.information[currentLanguage]}
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={"step-slider-item " + (this.state.ThirdStepComplate ? "active" : this.state.SecondStepComplate ? "current__step" : "")}>
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["mitigation"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                    <div onClick={this.StepThreeLink} data-id="step3" className={"step-slider-item " + (this.state.FourthStepComplate ? "active" : this.state.ThirdStepComplate ? "current__step" : "")}>
-                                        <div className="steps-timeline">
-                                            <span>3</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>
-                                                {Resources["consequence"][currentLanguage]}
-                                            </h6>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        onClick={this.StepFourLink}
-                                        data-id="step4" className={"step-slider-item " + (this.state.FivethStepComplate ? "active" : this.state.FourthStepComplate ? "current__step" : "")}>
-                                        <div className="steps-timeline">
-                                            <span>4</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["proposeMitigation"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        onClick={this.StepFiveLink}
-                                        data-id="step5"
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.SixthStepComplate
-                                                ? "active"
-                                                : this.state.FivethStepComplate
-                                                    ? "current__step"
-                                                    : "")
-                                        }
-                                    >
-                                        <div className="steps-timeline">
-                                            <span>5</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["postQuantitifaction"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        onClick={this.StepSixLink}
-                                        data-id="step6"
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.SeventhStepComplate
-                                                ? "active"
-                                                : this.state.SixthStepComplate
-                                                    ? "current__step"
-                                                    : "")
-                                        }
-                                    >
-                                        <div className="steps-timeline">
-                                            <span>6</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["riskAnalysis"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        onClick={this.StepSevenLink}
-                                        data-id="step7"
-                                        className={
-                                            this.state.SeventhStep
-                                                ? "step-slider-item  current__step"
-                                                : "step-slider-item"
-                                        }
-                                    >
-                                        <div className="steps-timeline">
-                                            <span>7</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["addDocAttachment"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div  >
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/Risk/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrentStep}
+                            />
                         </div>
                         {
                             this.props.changeStatus === true ?

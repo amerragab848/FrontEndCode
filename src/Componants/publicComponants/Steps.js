@@ -16,7 +16,7 @@ class Steps extends Component {
     }
 
     componentWillReceiveProps(props) {
-        if (props.stepNo != this.state.stepNo)
+        if (props.stepNo&&props.stepNo != this.state.stepNo)
             this.setCurrentStep(props.stepNo);
     }
 
@@ -82,8 +82,8 @@ class Steps extends Component {
                         (this.state.completedTabs[index]
                             ? "active"
                             : this.state.stepNo == index
-                            ? "current__step"
-                            : "")
+                                ? "current__step"
+                                : "")
                     }>
                     <div className="steps-timeline">
                         <span>{index + 1}</span>
@@ -102,7 +102,7 @@ class Steps extends Component {
                     <span
                         onClick={e => this.nxt_prev(-1)}
                         className={
-                            this.props.changeStatus == true
+                            this.props.changeStatus == true && this.state.stepNo !== 0
                                 ? "step-content-btn-prev "
                                 : "step-content-btn-prev disabled"
                         }>

@@ -29,9 +29,9 @@ import EditItemDescription from "../../Componants/OptionsPanels/editItemDescript
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
-import XSLfile from "../../Componants/OptionsPanels/XSLfiel"; 
+import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 import dataservice from "../../Dataservice";
-
+import Steps from "../../Componants/publicComponants/Steps";
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -93,7 +93,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = 0;
 let arrange = 0;
-
+var steps_defination = [];
 class bogAddEdit extends Component {
     constructor(props) {
         super(props);
@@ -294,7 +294,7 @@ class bogAddEdit extends Component {
             selectedRow: {},
             pageNumber: 0,
             pageSize: 2000,
-            CurrStep: 1,
+            CurrStep: 0,
             firstComplete: false,
             secondComplete: false,
             thirdComplete: false,
@@ -404,6 +404,21 @@ class bogAddEdit extends Component {
             toast.warning(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(this.state.perviousRoute);
         }
+        steps_defination = [
+            {
+                name: "boq",
+                callBackFn: null
+            },
+            {
+                name: "items",
+                callBackFn: null
+            },
+            {
+                name: "changeBoqIntoContractOrPO",
+                callBackFn: null
+            }
+        ];
+
     }
 
     customButton = () => {
@@ -702,7 +717,7 @@ class bogAddEdit extends Component {
     viewAttachments() {
         return this.state.docId > 0 ? (
             Config.IsAllow(3295) === true ? (
-               <ViewAttachment isApproveMode={this.state.isViewMode}
+                <ViewAttachment isApproveMode={this.state.isViewMode}
                     docTypeId={this.state.docTypeId}
                     docId={this.state.docId}
                     projectId={this.state.projectId}
@@ -745,11 +760,10 @@ class bogAddEdit extends Component {
 
     editBoq = values => {
         if (this.state.isViewMode) {
-            this.NextStep();
+            this.changeCurrentStep(1);
         } else {
             this.setState({
-                isLoading: true,
-                firstComplete: true
+                isLoading: true
             });
 
             let documentObj = {
@@ -765,7 +779,7 @@ class bogAddEdit extends Component {
                 ShowInSiteRequest: values.showInSiteRequest,
                 ShowOptimization: values.showOptimization
             };
-
+            this.changeCurrentStep(1);
             Api.post("EditBoq", documentObj).then(result => {
                 this.setState({
                     isLoading: false
@@ -773,7 +787,6 @@ class bogAddEdit extends Component {
                 toast.success(
                     Resources["operationSuccess"][currentLanguage]
                 );
-                this.NextStep();
             }).catch(() => {
                 toast.error(
                     Resources["operationCanceled"][currentLanguage]
@@ -802,7 +815,7 @@ class bogAddEdit extends Component {
 
     ConfirmDelete = () => {
         this.setState({ isLoading: true });
-        if (this.state.CurrStep == 2) {
+        if (this.state.CurrStep == 1) {
             Api.post("ContractsBoqItemsMultipleDelete?", this.state.selectedRow)
                 .then(res => {
                     let data = [];
@@ -827,55 +840,10 @@ class bogAddEdit extends Component {
         }
     };
 
-    NextStep = () => {
-        window.scrollTo(0, 0);
-        switch (this.state.CurrStep) {
-            case 1:
-                this.setState({
-                    CurrStep: this.state.CurrStep + 1,
-                    firstComplete: true
-                });
-                break;
-            case 2:
-                if (this.state.docId > 0) {
-                    this.setState({ isLoading: true, LoadingPage: true });
-                    this.props.actions
-                        .documentForEdit("GetBoqForEdit?id=" + this.state.docId)
-                        .then(() => {
-                            this.setState({ LoadingPage: false });
-                        });
-                }
-                this.setState({
-                    CurrStep: this.state.CurrStep + 1,
-                    secondComplete: true,
-                    isLoading: false
-                });
-                break;
-            case 3:
-                this.props.history.push({
-                    pathname: "/boq/" + this.state.projectId
-                });
-                break;
-        }
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrStep: stepNo });
     };
 
-    PreviousStep = () => {
-        window.scrollTo(0, 0);
-        switch (this.state.CurrStep) {
-            case 2:
-                this.setState({
-                    CurrStep: this.state.CurrStep - 1,
-                    secondComplete: false
-                });
-                break;
-            case 3:
-                this.setState({
-                    CurrStep: this.state.CurrStep - 1,
-                    thirdComplete: false
-                });
-                break;
-        }
-    };
 
     handleShowAction = item => {
         if (item.title == "sendToWorkFlow") {
@@ -900,7 +868,7 @@ class bogAddEdit extends Component {
         } else if (column.key == "customBtn") {
             this.itemization(value);
         } else if (column.key != "select-row" && column.key != "unitPrice") {
-            if (this.state.CurrStep == 2) {
+            if (this.state.CurrStep == 1) {
                 this.setState({
                     showPopUp: true,
                     btnText: "save",
@@ -1156,39 +1124,8 @@ class bogAddEdit extends Component {
             }
         );
     };
- 
-    StepOneLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                firstComplete: true,
-                secondComplete: false,
-                CurrStep: 1,
-                thirdComplete: false
-            });
-        }
-    };
 
-    StepTwoLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                firstComplete: true,
-                secondComplete: true,
-                CurrStep: 2,
-                thirdComplete: false
-            });
-        }
-    };
 
-    StepThreeLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                thirdComplete: true,
-                CurrStep: 3,
-                firstComplete: true,
-                secondComplete: true
-            });
-        }
-    };
 
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
@@ -2469,7 +2406,7 @@ class bogAddEdit extends Component {
                                         this.props.changeStatus === false &&
                                         this.state.docId > 0
                                     ) {
-                                        this.NextStep();
+                                        this.changeCurrentStep(1);
                                     }
                                 }}>
                                 {({
@@ -2917,7 +2854,7 @@ class bogAddEdit extends Component {
                             {ItemsGrid}
                         </div>
                         <div className="slider-Btns">
-                            <button className="primaryBtn-1 btn meduimBtn  " type="submit" onClick={this.NextStep}>
+                            <button className="primaryBtn-1 btn meduimBtn  " type="submit" onClick={() => this.changeCurrentStep(2)}>
                                 {Resources.next[currentLanguage]}
                             </button>
                         </div>
@@ -2973,7 +2910,7 @@ class bogAddEdit extends Component {
                             <button
                                 className="primaryBtn-1 btn meduimBtn  "
                                 type="submit"
-                                onClick={this.NextStep}>
+                                onClick={() => this.changeCurrentStep(3)}>
                                 {Resources.next[currentLanguage]}
                             </button>
                         </div>
@@ -2987,7 +2924,7 @@ class bogAddEdit extends Component {
                     <div
                         className={
                             this.state.isViewMode === true &&
-                                this.state.CurrStep != 3
+                                this.state.CurrStep != 2
                                 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
                                 : "documents-stepper noTabs__document one__tab one_step"
                         }>
@@ -3006,9 +2943,9 @@ class bogAddEdit extends Component {
                                     <LoadingSection />
                                 ) : (
                                         <Fragment>
-                                            {this.state.CurrStep == 1
+                                            {this.state.CurrStep == 0
                                                 ? Step_1
-                                                : this.state.CurrStep == 2
+                                                : this.state.CurrStep == 1
                                                     ? Step_2
                                                     : Step_3}
                                             <div
@@ -3136,7 +3073,7 @@ class bogAddEdit extends Component {
                                             ) : null}
                                         </Fragment>
                                     )}
-                                {this.state.CurrStep == 1 ? (
+                                {this.state.CurrStep == 0 ? (
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
                                             {this.state.docId > 0 &&
@@ -3177,91 +3114,15 @@ class bogAddEdit extends Component {
                             </div>
 
                             <div>
-                                <div className="docstepper-levels">
-                                    <div className="step-content-foot">
-                                        <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
-                                            "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
-                                        <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
-                                            : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
-                                        </span>
-                                    </div>
-                                    <div className="workflow-sliderSteps">
-                                        <div className="step-slider">
-                                            <div
-                                                onClick={this.StepOneLink}
-                                                data-id="step1"
-                                                className={
-                                                    "step-slider-item " +
-                                                    (this.state.CurrStep == 1
-                                                        ? "current__step"
-                                                        : this.state
-                                                            .firstComplete
-                                                            ? "active"
-                                                            : "")
-                                                }>
-                                                <div className="steps-timeline">
-                                                    <span>1</span>
-                                                </div>
-                                                <div className="steps-info">
-                                                    <h6>
-                                                        {
-                                                            Resources.boq[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                            <div
-                                                onClick={this.StepTwoLink}
-                                                data-id="step2 "
-                                                className={
-                                                    "step-slider-item " +
-                                                    (this.state.CurrStep == 2
-                                                        ? "current__step"
-                                                        : this.state
-                                                            .secondComplete
-                                                            ? "active"
-                                                            : "")
-                                                }>
-                                                <div className="steps-timeline">
-                                                    <span>2</span>
-                                                </div>
-                                                <div className="steps-info">
-                                                    <h6>
-                                                        {
-                                                            Resources.items[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                            <div
-                                                onClick={this.StepThreeLink}
-                                                data-id="step3"
-                                                className={
-                                                    this.state.CurrStep == 3
-                                                        ? "step-slider-item  current__step"
-                                                        : "step-slider-item"
-                                                }>
-                                                <div className="steps-timeline">
-                                                    <span>3</span>
-                                                </div>
-                                                <div className="steps-info">
-                                                    <h6>
-                                                        {
-                                                            Resources
-                                                                .changeBoqIntoContractOrPO[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <Steps
+                                    steps_defination={steps_defination}
+                                    exist_link="/boq/"
+                                    docId={this.state.docId}
+                                    changeCurrentStep={stepNo =>
+                                        this.changeCurrentStep(stepNo)
+                                    }
+                                    stepNo={this.state.CurrStep}
+                                />
                             </div>
                         </div>
                     </div>

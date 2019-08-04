@@ -28,7 +28,13 @@ import Api from "../../api";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import { SkyLightStateless } from 'react-skylight';
+import Steps from "../../Componants/publicComponants/Steps";
 
+var steps_defination = [];
+steps_defination = [
+    { name: "equipmentDelivery", callBackFn: null },
+    { name: "items", callBackFn: null }
+];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
 let projectId = 0;
@@ -88,10 +94,7 @@ class equipmentDeliveryAddEdit extends Component {
         }
         this.state = {
             selectedRows: [],
-            CurrentStep: 1,
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
+            CurrentStep: 0,
             showDeleteModal: false,
             isLoading: false,
             isEdit: false,
@@ -404,34 +407,9 @@ class equipmentDeliveryAddEdit extends Component {
                 (<ViewAttachment isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={854} />) : null) : null;
     }
 
-    NextStep() {
-        if (this.state.CurrentStep === 1) {
-
-            this.setState({
-                CurrentStep: this.state.CurrentStep + 1, FirstStep: false,
-                SecondStep: true, SecondStepComplate: true,
-            })
-        }
-        else { this.props.history.push("/equipmentDelivery/" + this.state.projectId) }
-    }
-
-    PreviousStep() {
-        if (this.state.CurrentStep === 2) {
-            this.setState({ CurrentStep: this.state.CurrentStep - 1, FirstStep: true, SecondStep: false, SecondStepComplate: false })
-        }
-    }
-
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({ docId: 0 })
-    }
-
-    StepOneLink = () => {
-        if (docId !== 0) { this.setState({ FirstStep: true, SecondStepComplate: false, CurrentStep: 1 }) }
-    }
-
-    StepTwoLink = () => {
-        if (docId !== 0) { this.setState({ FirstStep: true, SecondStepComplate: true, CurrentStep: 2 }) }
     }
 
     handleChangeDate(e, field) {
@@ -458,9 +436,9 @@ class equipmentDeliveryAddEdit extends Component {
             // console.log(projectIds)
             let doc = { ...this.state.document };
             doc.selectedProjects = ProjectIds
-            doc.docDate = moment(doc.docDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.ticketDate = moment(doc.ticketDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.deliveryDate = moment(doc.deliveryDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.ticketDate = moment(doc.ticketDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.deliveryDate = moment(doc.deliveryDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             dataservice.addObject('EditLogsEquipmentsDelivery', doc).then(result => {
 
                 this.setState({ isLoading: false })
@@ -474,9 +452,9 @@ class equipmentDeliveryAddEdit extends Component {
         } else {
 
             let doc = { ...this.state.document };
-            doc.docDate = moment(doc.docDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.ticketDate = moment(doc.ticketDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-            doc.deliveryDate = moment(doc.deliveryDate,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.docDate = moment(doc.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.ticketDate = moment(doc.ticketDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+            doc.deliveryDate = moment(doc.deliveryDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
             doc.selectedProjects = ProjectIds
             //doc.docId =this.state.
             dataservice.addObject('AddLogsEquipmentsDelivery', doc).then(result => {
@@ -548,7 +526,7 @@ class equipmentDeliveryAddEdit extends Component {
         this.setState({ isLoading: true })
         let obj = {
             equipmentDeliveryId: this.state.docId,
-            receivedDate: moment(this.state.receivedDateItem,'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+            receivedDate: moment(this.state.receivedDateItem, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
             deliveryTime: '',
             quantity: this.state.seletedItem.quantity,
             description: this.state.seletedItem.details,
@@ -621,6 +599,10 @@ class equipmentDeliveryAddEdit extends Component {
         }
     }
 
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrentStep: stepNo });
+    };
+
     render() {
 
         let actions = [
@@ -646,11 +628,11 @@ class equipmentDeliveryAddEdit extends Component {
                             if (this.props.showModal) { return; }
                             if (this.props.changeStatus === true && this.state.docId > 0) {
                                 this.SaveDoc('EditMood');
-                                //this.NextStep();
+                                this.changeCurrentStep(1);
                             } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                 this.SaveDoc('AddMood');
                             } else {
-
+                                this.changeCurrentStep(1);
                             }
                         }}>
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -1016,6 +998,12 @@ class equipmentDeliveryAddEdit extends Component {
                             </div>
 
                         </div>
+                        <div className="doc-pre-cycle">
+                            <div className="slider-Btns">
+                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>NEXT STEP</button>
+                            </div>
+                        </div>
+
 
                     </div>
 
@@ -1110,7 +1098,7 @@ class equipmentDeliveryAddEdit extends Component {
                                     </div>
                                 </header> : null}
                             {this.state.isLoading ? <LoadingSection /> : null}
-                            {this.state.CurrentStep === 1 ?
+                            {this.state.CurrentStep === 0 ?
                                 <Fragment>
                                     {StepOne()}
 
@@ -1118,37 +1106,17 @@ class equipmentDeliveryAddEdit extends Component {
 
                         </div>
 
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep.bind(this)}
-                                    className={this.state.CurrentStep !== 1 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                                    <i className="fa fa-caret-left" aria-hidden="true" /> Previous</span>
-                                <span onClick={this.NextStep.bind(this)} className={this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                                    Next<i className="fa fa-caret-right" aria-hidden="true" /></span>
-                            </div>
-
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["equipmentDelivery"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources["items"][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/equipmentDelivery/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrentStep}
+                            />
+                        </Fragment>
                     </div>
                 </div>
 
