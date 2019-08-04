@@ -23,6 +23,47 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const _ = require("lodash")
 
+let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
+const actionPanel = {
+    control: (styles, { isFocused }) => ({
+        ...styles,
+        height: '36px',
+        borderRadius: '4px',
+        boxShadow: 'none',
+        transition: ' all 0.4s ease-in-out',
+        width: '115px',
+        backgroundColor: isFocused ? '#fafbfc' : 'rgba(255, 255, 255, 0)',
+        border: isFocused ? 'solid 1px #858d9e' : ' solid 1px #ccd2db',
+        cursor: 'pointer',
+        '&:hover': {
+            border: 'solid 1px #a8b0bf',
+            backgroundColor: ' #fafbfc'
+        }
+    }),
+    option: (styles, { isDisabled, isFocused, isSelected }) => {
+        return {
+            ...styles,
+            backgroundColor: isDisabled ? '#fff' : isSelected ? '#e9ecf0' : isFocused ? '#f2f6fa' : "#fff",
+            color: '#3e4352',
+            fontSize: '14px',
+            cursor: isDisabled ? 'not-allowed' : 'pointer',
+            textTransform: 'capitalize',
+            fontFamily: publicFonts,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            fontWeight: '700',
+            textOverflow: 'ellipsis',
+            zIndex: '155'
+        };
+    },
+    input: styles => ({ ...styles, maxWidth: '100%' }),
+    placeholder: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700' }),
+    singleValue: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700', textAlign: 'center' }),
+    indicatorSeparator: styles => ({ ...styles, backgroundColor: '#dadee6' }),
+    menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db', top: '-155px', minWidth: '180px' }),
+    menuList: styles => ({ ...styles, color: 'red', height: '145px' }),
+};
+
 class OptionContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -51,7 +92,8 @@ class OptionContainer extends React.Component {
     };
 
     handleChange = (item) => {
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
+        if (item.value != "0") {
+            this.props.actions.showOptionPanel(false);
             this.props.actions.showOptionPanel(true);
             this.setState({
                 currentComponent: item.value,
@@ -62,7 +104,7 @@ class OptionContainer extends React.Component {
         }
     }
 
-    executeBeforeModalClose = (e) => { 
+    executeBeforeModalClose = (e) => {
         this.props.actions.showOptionPanel(false);
     }
 
@@ -89,9 +131,9 @@ class OptionContainer extends React.Component {
     render() {
         return (
             <div>
-                <DropDown data={this.state.selectedPanels} name="ddlActions" handleChange={this.handleChange} index='ddlActions' selectedValue={this.state.defualtValue} />
+                <DropDown data={this.state.selectedPanels} name="ddlActions" handleChange={this.handleChange} index='ddlActions' selectedValue={this.state.defualtValue} styles={actionPanel} />
                 <div className="largePopup" style={{ display: this.state.showModal ? 'block' : 'none' }} key="opActions">
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]} beforeClose={() => {this.executeBeforeModalClose()}}>
+                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]} beforeClose={() => { this.executeBeforeModalClose() }}>
                         {this.state.currentComponent}
                     </SkyLight>
                 </div>

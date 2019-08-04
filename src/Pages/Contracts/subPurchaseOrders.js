@@ -3,8 +3,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import Resources from "../../resources.json";
-//import ModernDatepicker from 'react-modern-datepicker';
+import Resources from "../../resources.json"; 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -24,9 +23,7 @@ const validationSchema = Yup.object().shape({
   toCompanyId: Yup.string().required(Resources['toCompany'][currentLanguage]).nullable(true),
   toContactId: Yup.string().required(Resources['ToContact'][currentLanguage]).nullable(true)
 });
-
-let originalData = [];
-
+ 
 class SubPurchaseOrders extends Component {
 
   constructor(props) {
@@ -62,14 +59,11 @@ class SubPurchaseOrders extends Component {
     }
   };
 
-  componentWillUnmount() {
-    this.props.actions.clearCashDocument();
+  componentWillUnmount() { 
   }
 
   componentWillMount() {
-
-    let type = this.props.type;
-
+ 
     const objDocument = {
       //field
       id: 0,
@@ -92,8 +86,7 @@ class SubPurchaseOrders extends Component {
     });
 
     this.fillDropDowns(false);
-
-    this.props.actions.documentForAdding();
+ 
   }
 
   fillDropDowns(isEdit) {
@@ -349,25 +342,7 @@ class SubPurchaseOrders extends Component {
                               </label>
                             </div>
                           </div>
-                        </div>
-                        {/* <div className="linebylineInput valid-input">
-                          <div className="inputDev ui input input-group date NormalInputDate">
-                            <div className="customDatepicker fillter-status fillter-item-c ">
-                              <div className="proForm datepickerContainer">
-                                <label className="control-label">
-                                  {Resources.docDate[currentLanguage]}
-                                </label>
-                                <div className="linebylineInput">
-                                  <div className="inputDev ui input input-group date NormalInputDate">
-                                    <ModernDatepicker date={this.state.document.docDate} format={"DD/MM/YYYY"} showBorder
-                                      onChange={e => this.handleChangeDate(e, "docDate")} placeholder={"Select a date"} />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div> */}
-
+                        </div> 
                         <div className="linebylineInput valid-input">
                           <div className="inputDev ui input input-group date NormalInputDate">
                             <div className="customDatepicker fillter-status fillter-item-c ">
@@ -421,26 +396,7 @@ class SubPurchaseOrders extends Component {
                               </div>
                             </div>
                           </div>
-                        </div>
-
-                          {/* <div className="linebylineInput valid-input">
-                            <div className="inputDev ui input input-group date NormalInputDate">
-                              <div className="customDatepicker fillter-status fillter-item-c ">
-                                <div className="proForm datepickerContainer">
-                                  <label className="control-label">
-                                    {Resources.completionDate[currentLanguage]}
-                                  </label>
-                                  <div className="linebylineInput">
-                                    <div className="inputDev ui input input-group date NormalInputDate">
-                                      <ModernDatepicker date={this.state.document.completionDate} format={"DD/MM/YYYY"} showBorder
-                                        onChange={e => this.handleChangeDate(e, "completionDate")} placeholder={"Select a date"} />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div> */}
-
+                        </div> 
 
                           <div className="linebylineInput valid-input">
                             <Dropdown title="CompanyName"

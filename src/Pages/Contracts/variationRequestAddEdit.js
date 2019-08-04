@@ -12,6 +12,9 @@ import Resources from "../../resources.json";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { withRouter } from "react-router-dom";
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 //import RichTextEditor from 'react-rte';
 
 import { connect } from 'react-redux';
@@ -595,7 +598,7 @@ class VariationRequestAdd extends Component {
 
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
-                                                                        id="fromCompanyId" />
+                                                                        id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -611,7 +614,7 @@ class VariationRequestAdd extends Component {
                                                                         isClear={false}
                                                                         index="letter-fromContactId"
                                                                         name="fromContactId"
-                                                                        id="fromContactId" />
+                                                                        id="fromContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -634,7 +637,7 @@ class VariationRequestAdd extends Component {
 
                                                                         index="letter-toCompany"
                                                                         name="toCompanyId"
-                                                                        id="toCompanyId" />
+                                                                        id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -650,7 +653,7 @@ class VariationRequestAdd extends Component {
 
                                                                         index="letter-toContactId"
                                                                         name="toContactId"
-                                                                        id="toContactId" />
+                                                                        id="toContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                                 </div>
                                                             </div>
                                                         </div>

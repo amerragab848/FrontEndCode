@@ -27,6 +27,9 @@ import Api from '../../api'
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -543,7 +546,7 @@ class reportsAddEdit extends Component {
                                                                         handleChange={event => this.handleChange('fromCompany', event)}
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
-                                                                        id="fromCompanyId" />
+                                                                        id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -557,7 +560,7 @@ class reportsAddEdit extends Component {
                                                                         error={errors.fromContact}
                                                                         touched={touched.fromContact}
                                                                         index="fromContact"
-                                                                        id="fromContact" />
+                                                                        id="fromContact" classDrop=" contactName1" styles={ContactDropdown}/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -570,7 +573,7 @@ class reportsAddEdit extends Component {
                                                                         selectedValue={this.state.selectedToCompany}
                                                                         handleChange={event => this.handleChange('toCompany', event)}
                                                                         name="toCompanyId"
-                                                                        id="toCompanyId" />
+                                                                        id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -582,7 +585,7 @@ class reportsAddEdit extends Component {
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContact}
-                                                                        touched={touched.toContact} />
+                                                                        touched={touched.toContact} classDrop=" contactName1" styles={ContactDropdown}/>
                                                                 </div>
                                                             </div>
                                                         </div>

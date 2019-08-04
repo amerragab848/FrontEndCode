@@ -24,7 +24,8 @@ import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
-
+import Steps from "../../Componants/publicComponants/Steps";
+var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
@@ -167,9 +168,6 @@ class variationOrderAddEdit extends Component {
       pageNumber: 0,
       pageSize: 500,
       itemsColumns: itemsColumns,
-      FirstStep: true,
-      SecondStep: false,
-      SecondStepComplate: false,
       currentTitle: "sendToWorkFlow",
       showModal: false,
       isViewMode: false,
@@ -192,7 +190,7 @@ class variationOrderAddEdit extends Component {
       pcos: [],
       contractsPos: [],
       voItems: [],
-      CurrentStep: 1
+      CurrentStep: 0
     }
 
     if (!Config.IsAllow(159) && !Config.IsAllow(158) && !Config.IsAllow(160)) {
@@ -202,6 +200,16 @@ class variationOrderAddEdit extends Component {
       });
     }
     index++;
+    steps_defination = [
+      {
+        name: "changeOrder",
+        callBackFn: null
+      },
+      {
+        name: "items",
+        callBackFn: null
+      }
+    ];
   }
 
   componentDidMount() {
@@ -512,7 +520,7 @@ class variationOrderAddEdit extends Component {
   viewAttachments() {
     return this.state.docId > 0 ? (
       Config.IsAllow(3298) === true ? (
-       <ViewAttachment isApproveMode={this.state.isViewMode}
+        <ViewAttachment isApproveMode={this.state.isViewMode}
           docTypeId={this.state.docTypeId}
           docId={this.state.docId}
           projectId={this.state.projectId}
@@ -537,79 +545,6 @@ class variationOrderAddEdit extends Component {
       });
 
       this.simpleDialog.show();
-    }
-  };
-
-  NextStep = () => {
-    if (this.state.CurrentStep === 1) {
-      if (this.props.changeStatus == true) {
-        this.editVariationOrder();
-      }
-      window.scrollTo(0, 0);
-      this.setState({
-        FirstStep: false,
-        SecondStep: true,
-        SecondStepComplate: true,
-        ThirdStepComplate: false,
-        CurrentStep: this.state.CurrentStep + 1,
-        ThirdStep: false,
-        items: this.props.items,
-      });
-    } else if (this.state.CurrentStep === 2) {
-      window.scrollTo(0, 0);
-      this.setState({
-        FirstStep: false,
-        SecondStep: false,
-        ThirdStep: true,
-        CurrentStep: this.state.CurrentStep + 1,
-        ThirdStepComplate: true
-      });
-    } else {
-      this.props.history.push({
-        pathname: "/changeOrder/" + projectId
-      });
-    }
-  };
-
-  NextTopStep = () => {
-    if (this.state.CurrentStep === 1) {
-      window.scrollTo(0, 0);
-      this.setState({
-        FirstStep: false,
-        SecondStep: true,
-        SecondStepComplate: true,
-        CurrentStep: this.state.CurrentStep + 1,
-        ThirdStep: false,
-        items: this.props.items
-      });
-    } else if (this.state.CurrentStep === 2) {
-      this.props.history.push({
-        pathname: "/changeOrder/" + projectId
-      });
-    }
-  };
-
-  PreviousStep = () => {
-    if (this.state.docId !== 0) {
-      if (this.state.CurrentStep === 3) {
-        window.scrollTo(0, 0);
-        this.setState({
-          FirstStep: false,
-          SecondStep: true,
-          CurrentStep: this.state.CurrentStep - 1,
-          SecondStepComplate: true
-        });
-      } else {
-        if (this.state.CurrentStep === 2) {
-          window.scrollTo(0, 0);
-          this.setState({
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
-            CurrentStep: this.state.CurrentStep - 1
-          });
-        }
-      }
     }
   };
 
@@ -668,29 +603,7 @@ class variationOrderAddEdit extends Component {
       });
     }
   }
-
-  StepOneLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        FirstStep: true,
-        SecondStep: false,
-        SecondStepComplate: false,
-        CurrentStep: 1
-      });
-    }
-  };
-
-  StepTwoLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        FirstStep: false,
-        SecondStep: true,
-        SecondStepComplate: true,
-        CurrentStep: 2,
-        items: this.props.items
-      });
-    }
-  };
+ 
 
   GetPrevoiusData() {
 
@@ -746,6 +659,10 @@ class variationOrderAddEdit extends Component {
       });
     });
   }
+
+  changeCurrentStep = stepNo => {
+    this.setState({ CurrentStep: stepNo });
+};
 
   render() {
     let actions = [
@@ -807,7 +724,7 @@ class variationOrderAddEdit extends Component {
           <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} docTitle={Resources.changeOrder[currentLanguage]} moduleTitle={Resources["contracts"][currentLanguage]} />
           <div className="doc-container">
             <div className="step-content">
-              {this.state.FirstStep ?
+              {this.state.CurrentStep == 0 ?
                 <Fragment>
                   <div id="step1" className="step-content-body">
                     <div className="subiTabsContent">
@@ -820,7 +737,9 @@ class variationOrderAddEdit extends Component {
                             if (this.props.changeStatus === false && this.state.docId === 0) {
                               this.saveVariationOrder();
                             } else {
-                              this.NextStep();
+                              if (this.props.changeStatus)
+                                this.editVariationOrder();
+                              this.changeCurrentStep(1);
                             }
                           }}>
                           {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -1031,8 +950,8 @@ class variationOrderAddEdit extends Component {
                                 </div>
 
                                 {this.props.changeStatus === true ? (
-                                  <div className="proForm first-proform letterFullWidth proform__twoInput">
-                                    <div className="linebylineInput valid-input">
+                                  <div className="proForm letterFullWidth">
+                                    <div className="letterFullWidth fullInputWidth">
                                       <label className="control-label">
                                         {Resources.pco[currentLanguage]}
                                       </label>
@@ -1048,7 +967,7 @@ class variationOrderAddEdit extends Component {
                                       </div>
                                     </div>
 
-                                    <div className="linebylineInput valid-input">
+                                    <div className="letterFullWidth fullInputWidth">
                                       <label className="control-label">
                                         {Resources.contractPo[currentLanguage]}
                                       </label>
@@ -1249,7 +1168,7 @@ class variationOrderAddEdit extends Component {
                     </div>
                     <div className="doc-pre-cycle">
                       <div className="slider-Btns">
-                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>
+                        <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(2)}>
                           {Resources["next"][currentLanguage]}
                         </button>
                       </div>
@@ -1258,60 +1177,15 @@ class variationOrderAddEdit extends Component {
                 </Fragment>
               }
             </div>
-            <div className="docstepper-levels">
-              {/* Next & Previous */}
-              <div className="step-content-foot">
-                <span
-                  onClick={this.PreviousStep}
-                  className={!this.state.FirstStep && this.state.docId !== 0 ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                  <i className="fa fa-caret-left" aria-hidden="true" />
-                  {Resources.previous[currentLanguage]}
-                </span>
-
-                <span
-                  onClick={this.NextTopStep}
-                  className={
-                    !this.state.ThirdStepComplate && this.state.docId !== 0
-                      ? "step-content-btn-prev "
-                      : "step-content-btn-prev disabled"
-                  }
-                >
-                  {Resources.next[currentLanguage]}
-                  <i className="fa fa-caret-right" aria-hidden="true" />
-                </span>
-              </div>
-              {/* Steps Active  */}
-              <div className="workflow-sliderSteps">
-                <div className="step-slider">
-                  <div
-                    onClick={this.StepOneLink}
-                    data-id="step1"
-                    className={
-                      "step-slider-item " +
-                      (this.state.SecondStepComplate
-                        ? "active"
-                        : "current__step")
-                    }
-                  >
-                    <div className="steps-timeline">
-                      <span>1</span>
-                    </div>
-                    <div className="steps-info">
-                      <h6>{Resources.changeOrder[currentLanguage]}</h6>
-                    </div>
-                  </div>
-
-                  <div onClick={this.StepTwoLink} data-id="step2 " className={"step-slider-item " + (this.state.ThirdStepComplate ? "active" : this.state.SecondStepComplate ? "current__step" : "")}>
-                    <div className="steps-timeline">
-                      <span>2</span>
-                    </div>
-                    <div className="steps-info">
-                      <h6>{Resources.items[currentLanguage]}</h6>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Steps
+              steps_defination={steps_defination}
+              exist_link="/changeOrder/"
+              docId={this.state.docId}
+              changeCurrentStep={stepNo =>
+                this.changeCurrentStep(stepNo)
+              }
+              stepNo={this.state.CurrentStep}
+            />
             {this.props.changeStatus === true ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">

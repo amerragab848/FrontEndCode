@@ -25,6 +25,9 @@ import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment
 import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -648,7 +651,7 @@ class TransmittalAddEdit extends Component {
                                                                         error={errors.fromCompanyId}
                                                                         touched={touched.fromCompanyId}
                                                                         name="fromCompanyId"
-                                                                        id="fromCompanyId" />
+                                                                        id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown isMulti={false} data={this.state.fromContacts}
@@ -659,7 +662,7 @@ class TransmittalAddEdit extends Component {
                                                                         error={errors.fromContactId}
                                                                         touched={touched.fromContactId}
                                                                         name="fromContactId"
-                                                                        id="fromContactId" />
+                                                                        id="fromContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -675,7 +678,7 @@ class TransmittalAddEdit extends Component {
                                                                         error={errors.toCompanyId}
                                                                         touched={touched.toCompanyId}
                                                                         name="toCompanyId"
-                                                                        id="toCompanyId" />
+                                                                        id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown isMulti={false} data={this.state.ToContacts}
@@ -686,7 +689,7 @@ class TransmittalAddEdit extends Component {
                                                                         error={errors.toContactId}
                                                                         touched={touched.toContactId}
                                                                         name="toContactId"
-                                                                        id="toContactId" />
+                                                                        id="toContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                                 </div>
                                                             </div>
                                                         </div>

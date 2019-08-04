@@ -361,6 +361,7 @@ class CommonLog extends Component {
 
     var filtersColumns = [];
 
+    if(documentObj.documentColumns){
     documentObj.documentColumns.map((item, index) => {
 
       var obj = {
@@ -384,6 +385,7 @@ class CommonLog extends Component {
         }
       }
     });
+  }
 
    filtersColumns = documentObj.filters;
 

@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import moment from "moment";
-import Resources from "../../resources.json";
-import _ from "lodash";
+import Resources from "../../resources.json"; 
 import dataservice from "../../Dataservice";
 import SkyLight from "react-skylight";
 import { withRouter } from "react-router-dom";
@@ -10,8 +9,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"); 
-
-
+ 
 class subPurchaseOrderLog extends Component {
   constructor(props) {
     super(props);

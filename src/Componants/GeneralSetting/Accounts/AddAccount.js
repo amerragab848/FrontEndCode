@@ -12,8 +12,9 @@ import * as AdminstrationActions from '../../../store/actions/Adminstration'
 import { bindActionCreators } from 'redux';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../publicComponants/LoadingSection';
-import Eyepw from '../../../Styles/images/eyepw.svg';
 import { toast } from "react-toastify";
+import CompanyDropdown from '../../publicComponants/CompanyDropdown'
+import ContactDropdown from '../../publicComponants/ContactDropdown'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const publicConfiguarion = config.getPayload();
@@ -81,6 +82,8 @@ class AddAccount extends Component {
             SupervisorNameValidation: true,
             CompanyValidation: true,
             ContactValidation: true,
+            togglePass: false,
+            showHide: false
         }
     }
 
@@ -272,6 +275,13 @@ class AddAccount extends Component {
 
     }
 
+    handlePasswordtype = () => {
+        this.setState({
+            togglePass: !this.state.togglePass,
+            showHide: !this.state.showHide
+        })
+    }
+
     render() {
 
         return (
@@ -359,21 +369,30 @@ class AddAccount extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className="linebylineInput valid-input passWrapperInput">
+                                                <div className="linebylineInput passwordInputs showPasswordArea fullInputWidth">
                                                     <label className="control-label">{Resources['password'][currentLanguage]} </label>
-                                                    <div className={'ui input inputDev ' + (errors.Password && touched.Password ? 'has-error' : null) + ' '}>
-                                                        <span className="inputsideNote togglePW">
-                                                            <img src={Eyepw} alt="" />
-                                                            <span className="show"> Show</span>
-                                                            <span className="hide"> Hide</span>
+                                                    <div className={'ui input inputDev ' + (errors.Password && touched.Password ? 'has-error' : ' ') + ' '} style={{ maxWidth: '360px' }}>
+                                                        <span className={"inputsideNote togglePW " + (this.state.showHide ? 'active-pw' : ' ')} onClick={this.handlePasswordtype}>
+                                                            <svg class="show" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                                                <path fill="#BCC4D1" fill-rule="evenodd" d="M8 6.406c.288 0 .558.073.81.218.253.145.454.341.602.589.148.247.222.512.222.793 0 .282-.074.547-.222.794a1.64 1.64 0 0 1-.602.589 1.602 1.602 0 0 1-.81.217c-.288 0-.558-.072-.81-.217a1.64 1.64 0 0 1-.602-.589 1.52 1.52 0 0 1-.222-.794c0-.281.074-.546.222-.793a1.64 1.64 0 0 1 .602-.589c.252-.145.522-.218.81-.218zm0 4.276c.497 0 .954-.12 1.373-.359.418-.239.749-.563.993-.973.244-.41.366-.857.366-1.344 0-.486-.122-.934-.366-1.344a2.688 2.688 0 0 0-.993-.972A2.72 2.72 0 0 0 8 5.33c-.497 0-.954.12-1.373.359-.418.239-.749.563-.993.972-.244.41-.366.858-.366 1.344 0 .487.122.935.366 1.344.244.41.575.734.993.973A2.72 2.72 0 0 0 8 10.682zM8 4c.898 0 1.752.17 2.562.512a6.378 6.378 0 0 1 2.072 1.408A6.249 6.249 0 0 1 14 8.006a6.18 6.18 0 0 1-1.366 2.08 6.428 6.428 0 0 1-2.072 1.402A6.534 6.534 0 0 1 8 12c-.898 0-1.752-.17-2.562-.512a6.428 6.428 0 0 1-2.072-1.402A6.18 6.18 0 0 1 2 8.006c.314-.785.77-1.48 1.366-2.086a6.378 6.378 0 0 1 2.072-1.408A6.534 6.534 0 0 1 8 4z"
+                                                                />
+                                                            </svg>
+
+                                                            <svg class="hide" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                                                <path fill="#BCC4D1" fill-rule="evenodd" d="M7.934 6.16h.08c.287 0 .558.072.811.215.254.144.454.338.603.582.148.244.223.506.223.784v.101L7.934 6.161zm-2.344.418c-.21.387-.315.775-.315 1.163 0 .48.122.923.367 1.327a2.756 2.756 0 0 0 2.371 1.315 2.66 2.66 0 0 0 1.205-.303l-.851-.81a1.33 1.33 0 0 1-.354.051c-.288 0-.559-.072-.812-.215a1.633 1.633 0 0 1-.603-.581 1.484 1.484 0 0 1-.222-.784c0-.11.017-.224.052-.342l-.838-.821zM2.563 3.67L3.258 3l9.668 9.33-.695.67a129.295 129.295 0 0 1-1.834-1.757 6.267 6.267 0 0 1-2.384.442c-.9 0-1.755-.168-2.568-.505A6.447 6.447 0 0 1 3.37 9.795 6.097 6.097 0 0 1 2 7.741c.42-1.012 1.1-1.884 2.044-2.617L2.564 3.67zm5.45 1.429c-.34 0-.672.067-.996.202L5.838 4.163a6.13 6.13 0 0 1 2.175-.38c.9 0 1.751.17 2.555.507A6.324 6.324 0 0 1 14 7.74a6.335 6.335 0 0 1-1.86 2.491l-1.599-1.53c.14-.311.21-.631.21-.96 0-.48-.122-.923-.367-1.328a2.756 2.756 0 0 0-2.371-1.315z"
+                                                                />
+                                                            </svg>
+                                                            <span class="show"> Show</span>
+                                                            <span class="hide"> Hide</span>
                                                         </span>
-                                                        <input name='Password' className="form-control" id="Password" placeholder={Resources['password'][currentLanguage]} autoComplete='off'
+
+                                                        <input style={{ width: '100%' }} name='Password' className="form-control" id="Password" placeholder={Resources['password'][currentLanguage]} autoComplete='off'
                                                             onBlur={(e) => {
                                                                 this.passwordChangeHandler(e)
                                                                 handleBlur(e)
-                                                            }} onChange={handleChange} />
+                                                            }} onChange={handleChange} type={this.state.togglePass ? 'text' : 'password'} />
                                                         {/* {errors.Password && touched.Password ? (<em className="pError">{errors.Password}</em>) : null} */}
-                                                        <em class="formInputP">Password must include:
+                                                        <em style={{ display: 'block' }} class="formInputP">Password must include:
                                                             <span class="charsNumber">8 characters </span>|
                                                             <span class="capsSpan">Capital letter</span>
                                                         </em>
@@ -408,14 +427,14 @@ class AddAccount extends Component {
                                                                 onBlur={setFieldTouched} error={errors.ContactName} id="ContactName"
                                                                 touched={touched.ContactName} index="IR-ContactName"
                                                                 handleChange={this.ContactNamehandleChange}
-                                                                selectedValue={this.state.ContactId}
+                                                                selectedValue={this.state.ContactId} styles={CompanyDropdown} classDrop="contactName1 "
                                                             />
                                                         </div>
 
                                                         <div className="super_company">
                                                             <DropdownMelcous data={this.state.CompanyData} name="CompanyName"
                                                                 selectedValue={this.state.selectedFromCompany}
-                                                                handleChange={this.CompanyNamehandleChange} selectedValue={this.state.CompanyId} />
+                                                                handleChange={this.CompanyNamehandleChange} selectedValue={this.state.CompanyId} classDrop="companyName1" styles={ContactDropdown} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -429,14 +448,14 @@ class AddAccount extends Component {
                                                                 onBlur={setFieldTouched} error={errors.SupervisorName} id="SupervisorName"
                                                                 touched={touched.SupervisorName} index="IR-SupervisorName"
                                                                 handleChange={this.SupervisorNamehandleChange}
-                                                                selectedValue={this.state.SupervisorId}
+                                                                selectedValue={this.state.SupervisorId} styles={CompanyDropdown} classDrop="contactName1 "
                                                             />
                                                         </div>
 
                                                         <div className="super_company">
                                                             <DropdownMelcous data={this.state.CompanyData} name="SupervisorCompany"
                                                                 selectedValue={this.state.selectedFromCompany}
-                                                                handleChange={this.SupervisorCompanyhandleChange} selectedValue={this.state.SupervisorCompanyId} />
+                                                                handleChange={this.SupervisorCompanyhandleChange} selectedValue={this.state.SupervisorCompanyId} classDrop=" companyName1" styles={ContactDropdown} />
                                                         </div>
                                                     </div>
                                                 </div>

@@ -31,7 +31,10 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
-
+import Steps from "../../Componants/publicComponants/Steps"; 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 let docId = 0;
@@ -199,15 +202,12 @@ class punchListAddEdit extends Component {
             }
             index++;
         }
-
+ 
         this.state = {
             Loading: true,
-            IsAddModel: false,
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
+            IsAddModel: false, 
             isLoading: false,
-            CurrStep: 1,
+            CurrentStep: 0,
             rows: [],
             showDeleteModal: false,
             selectedRows: [],
@@ -279,6 +279,16 @@ class punchListAddEdit extends Component {
                 this.state.perviousRoute
               );
         }
+        steps_defination = [
+            {
+                name: "punchList",
+                callBackFn: null
+            },
+            {
+                name: "items",
+                callBackFn: null
+            }
+        ];
     }
 
     componentWillReceiveProps(nextProps) {
@@ -378,36 +388,13 @@ class punchListAddEdit extends Component {
         }
     }
 
-    NextStep = () => {
-        if (this.state.CurrStep === 1) {
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: this.state.CurrStep + 1,
-            })
-        }
-        else {
-            this.saveAndExit()
-        }
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrentStep: stepNo });
+    };
 
+ 
 
-    }
-
-    PreviousStep = () => {
-        if (this.state.IsEditMode) {
-            if (this.state.CurrStep === 2) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: true,
-                    SecondStep: false,
-                    SecondStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1
-                })
-            }
-        }
-    }
+   
 
     FillDropDowns = () => {
 
@@ -590,28 +577,7 @@ class punchListAddEdit extends Component {
         this.setState({ showDeleteModal: false });
     }
 
-    StepOneLink = () => {
-        if (this.state.IsEditMode) {
-            this.setState({
-                FirstStep: true,
-                SecondStep: false,
-                SecondStepComplate: false,
-                CurrStep: 1,
-            })
-        }
-    }
-
-    StepTwoLink = () => {
-        if (this.state.IsEditMode) {
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: 2,
-            })
-        }
-    }
-
+ 
     clickHandlerDeleteRowsMain = (selectedRows) => {
         this.setState({
             selectedRows,
@@ -649,19 +615,19 @@ class punchListAddEdit extends Component {
 
     SaveAddEditSnagList = () => {
         if (this.state.IsAddModel) {
-            this.NextStep()
+           this.changeCurrentStep(1);
         }
         else {
             let SnagListObj = this.state.document
             SnagListObj.docDate = moment(SnagListObj.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
             this.setState({ isLoading: true })
             if (docId > 0) {
-
+this.changeCurrentStep(1);
                 dataservice.addObject('EditLogsPunchLists', SnagListObj).then(
                     res => {
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                         this.setState({ isLoading: false })
-                        this.NextStep()
+                         
                     }).catch(ex => {
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     });
@@ -679,8 +645,7 @@ class punchListAddEdit extends Component {
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                     }).catch(ex => {
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                    });
-                //this.NextStep()
+                    }); 
             }
         }
     }
@@ -831,12 +796,7 @@ class punchListAddEdit extends Component {
             OpenedDateItem: moment(),
         })
     }
-
-    saveAndExit = () => {
-        this.props.history.push({
-            pathname: '/punchList/' + projectId + '',
-        })
-    }
+ 
 
     render() {
 
@@ -946,7 +906,7 @@ class punchListAddEdit extends Component {
                                                             touched={touched.bicCompanyId} name="bicCompanyId"
                                                             handleChange={event =>
                                                                 this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
-                                                        />
+                                                                styles={CompanyDropdown} classDrop="companyName1 " />
                                                     </div>
 
                                                     <div className="super_company">
@@ -954,7 +914,7 @@ class punchListAddEdit extends Component {
                                                             handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
                                                             onChange={setFieldValue} onBlur={setFieldTouched}
                                                             error={errors.bicContactId} touched={touched.bicContactId}
-                                                            index="IR-bicContactId" name="bicContactId" id="bicContactId" />
+                                                            index="IR-bicContactId" name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1132,7 +1092,7 @@ class punchListAddEdit extends Component {
                                                                 touched={touched.ActionByCompanyIdItem} name="ActionByCompanyIdItem"
                                                                 handleChange={event =>
                                                                     this.handleChangeDropDown(event, 'ActionByCompanyIdItem', true, 'ToContactsItem', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyIdItem', 'selectedActionByContactItem')}
-                                                            />
+                                                                    styles={CompanyDropdown} classDrop="companyName1 " />
                                                         </div>
 
                                                         <div className="super_company">
@@ -1140,7 +1100,7 @@ class punchListAddEdit extends Component {
                                                                 handleChange={event => this.handleChangeDropDown(event, 'ActionByContactItem', false, '', '', '', 'selectedActionByContactItem')}
                                                                 onChange={setFieldValue} onBlur={setFieldTouched}
                                                                 error={errors.ActionByContactItem} touched={touched.ActionByContactItem}
-                                                                index="IR-ActionByContactItem" name="ActionByContactItem" id="ActionByContactItem" />
+                                                                index="IR-ActionByContactItem" name="ActionByContactItem" id="ActionByContactItem" classDrop=" contactName1" styles={ContactDropdown}/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1275,7 +1235,7 @@ class punchListAddEdit extends Component {
                                                 touched={touched.bicCompanyId} name="bicCompanyId"
                                                 handleChange={event =>
                                                     this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
-                                            />
+                                                    styles={CompanyDropdown} classDrop="companyName1 " />
                                         </div>
 
                                         <div className="super_company">
@@ -1283,7 +1243,7 @@ class punchListAddEdit extends Component {
                                                 handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
                                                 onChange={setFieldValue} onBlur={setFieldTouched}
                                                 error={errors.bicContactId} touched={touched.bicContactId}
-                                                index="IR-bicContactId" name="bicContactId" id="bicContactId" />
+                                                index="IR-bicContactId" name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                         </div>
                                     </div>
                                 </div>
@@ -1320,7 +1280,7 @@ class punchListAddEdit extends Component {
                         </div>
 
                         <div className="step-content">
-                            {this.state.FirstStep ?
+                            {this.state.CurrentStep==0 ?
                                 <Fragment>
                                     {RenderSnagListAddEdit()}
                                 </Fragment>
@@ -1334,48 +1294,20 @@ class punchListAddEdit extends Component {
                                         </header>
                                         {dataGrid}
                                         <div className="slider-Btns">
-                                            <button className="primaryBtn-1 btn meduimBtn" onClick={this.saveAndExit}>{Resources['next'][currentLanguage]}</button>
+                                            <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
                                         </div>
                                     </div>
                                 </div>}
                         </div>
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.IsEditMode ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}>{Resources['previous'][currentLanguage]}<i className="fa fa-caret-left" aria-hidden="true"></i></span>
-
-                                <span onClick={this.NextStep} className={!this.state.ThirdStepComplate && this.state.IsEditMode ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            {/* Steps Active  */}
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources['punchList'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources['items'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-
+                        <Steps
+                            steps_defination={steps_defination}
+                            exist_link="/punchList/"
+                            docId={this.state.docId}
+                            changeCurrentStep={stepNo =>
+                                this.changeCurrentStep(stepNo)
+                            }
+                            stepNo={this.state.CurrentStep}
+                        />
                     </div>
 
                     {this.state.showDeleteModal == true ? (

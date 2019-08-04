@@ -32,6 +32,9 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -802,7 +805,7 @@ class addEditModificationDrawing extends Component {
 
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
-                                                                        id="fromCompanyId" />
+                                                                        id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -816,7 +819,7 @@ class addEditModificationDrawing extends Component {
                                                                         isClear={false}
                                                                         index="clientSelection-fromContactId"
                                                                         name="fromContactId"
-                                                                        id="fromContactId" />
+                                                                        id="fromContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -960,7 +963,7 @@ class addEditModificationDrawing extends Component {
                                                                             }}
                                                                             index="flowCompanyId"
                                                                             name="flowCompanyId"
-                                                                            id="flowCompanyId" />
+                                                                            id="flowCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                     </div>
                                                                     <div className="super_company">
                                                                         <Dropdown
@@ -971,7 +974,7 @@ class addEditModificationDrawing extends Component {
                                                                             isClear={false}
                                                                             index="drawing-flowContactId"
                                                                             name="flowContactId"
-                                                                            id="flowContactId" />
+                                                                            id="flowContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -989,7 +992,7 @@ class addEditModificationDrawing extends Component {
                                                                     touched={touched.approvalStatusId}
                                                                     index="approvalStatusId"
                                                                     name="approvalStatusId"
-                                                                    id="approvalStatusId" />
+                                                                    id="approvalStatusId"/>
                                                             </div>
 
                                                             <div className="linebylineInput valid-input">

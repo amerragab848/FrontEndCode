@@ -27,13 +27,15 @@ import "react-table/react-table.css";
 import Select from 'react-select';
 import Api from "../../api";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import Steps from "../../Componants/publicComponants/Steps";
+var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -56,7 +58,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -73,15 +75,12 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
         this.state = {
             rows: [],
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
             isLoading: true,
-            CurrStep: 1,
+            CurrentStep: 0,
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -104,10 +103,21 @@ class projectPrimaveraScheduleAddEdit extends Component {
         }
         if (!Config.IsAllow(583) && !Config.IsAllow(582) && !Config.IsAllow(585)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
-          }
+            );
+        }
+
+        steps_defination = [
+            {
+                name: "primaveraLog",
+                callBackFn: null
+            },
+            {
+                name: "primaveraShceduleItems",
+                callBackFn: null
+            }
+        ];
     }
 
     checkDocumentIsView() {
@@ -156,40 +166,10 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
     }
 
-    NextStep = () => {
-
-        if (this.state.CurrStep === 1) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: this.state.CurrStep + 1,
-            })
-        }
-        else if (this.state.CurrStep === 2) {
-            this.saveAndExit()
-        }
-
-    }
-
-    PreviousStep = () => {
-
-        if (this.state.IsEditMode) {
-            if (this.state.CurrStep === 2) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: true,
-                    SecondStep: false,
-                    SecondStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1
-                })
-            }
-        }
-
-    }
-
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrentStep: stepNo });
+    };
+ 
     componentWillMount() {
         if (docId > 0) {
 
@@ -276,18 +256,12 @@ class projectPrimaveraScheduleAddEdit extends Component {
         return (
             this.state.docId !== 0 ? (
                 Config.IsAllow(3291) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
         )
     }
-
-    saveAndExit = () => {
-        this.props.history.push({
-            pathname: '/projectPrimaveraSchedule/' + projectId + '',
-        })
-    }
-
+ 
     showBtnsSaving() {
         let btn = null;
 
@@ -301,7 +275,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
     AddEditDoc = () => {
         if (this.state.IsAddModel) {
-            this.NextStep()
+            this.changeCurrentStep(1);
         }
         else {
             this.setState({
@@ -309,7 +283,8 @@ class projectPrimaveraScheduleAddEdit extends Component {
             })
 
             let Doc = { ...this.state.document }
-            Doc.docDate = moment(Doc.docDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            Doc.docDate = moment(Doc.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+            this.changeCurrentStep(1);
 
             if (this.state.docId > 0) {
                 dataservice.addObject('EditPrimaveraSchedule', Doc).then(
@@ -321,7 +296,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                     }).catch(ex => {
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     })
-                this.NextStep()
+
 
             }
             else {
@@ -386,29 +361,10 @@ class projectPrimaveraScheduleAddEdit extends Component {
         }
     }
 
-    StepOneLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                FirstStep: true,
-                SecondStepComplate: false,
-                CurrStep: 1,
-            })
-        }
-    }
 
-    StepTwoLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: 2,
-            })
-        }
-    }
 
     render() {
- 
+
         const columnsCycles = [
             {
                 Header: Resources["numberAbb"][currentLanguage],
@@ -531,7 +487,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                     <div className="doc-container">
 
                         <div className="step-content">
-                            {this.state.FirstStep ?
+                            {this.state.CurrentStep == 0 ?
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
                                         <Formik
@@ -656,7 +612,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                 </div>
                                 :
                                 <Fragment>
- 
+
                                     <XSLfile CustomAccept={true} key='gen_primavera_schedule_items' docId={this.state.docId}
                                         docType='gen_primavera_schedule_items' CantDownload={true} CustomUpload={true} projectId={this.state.projectId}
                                         afterUpload={() => this.getTabelData()}
@@ -670,43 +626,15 @@ class projectPrimaveraScheduleAddEdit extends Component {
                                 </Fragment>
                             }
                         </div>
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.IsEditMode ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}>{Resources['previous'][currentLanguage]}<i className="fa fa-caret-left" aria-hidden="true"></i></span>
-
-                                <span onClick={this.NextStep} className={this.state.IsEditMode ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources['next'][currentLanguage]} <i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            {/* Steps Active  */}
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources['primaveraLog'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources['primaveraShceduleItems'][currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-
+                        <Steps
+                            steps_defination={steps_defination}
+                            exist_link="/projectPrimaveraSchedule/"
+                            docId={this.state.docId}
+                            changeCurrentStep={stepNo =>
+                                this.changeCurrentStep(stepNo)
+                            }
+                            stepNo={this.state.CurrentStep}
+                        />
                     </div>
 
                 </div>

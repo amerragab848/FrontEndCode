@@ -15,6 +15,10 @@ import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import 'react-table/react-table.css'
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
+
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const poqSchema = Yup.object().shape({
@@ -432,7 +436,7 @@ class SubContract extends Component {
                                                         selectedValue={this.state.contractTo}
                                                         handleChange={event => { this.ChangeContract(event) }}
                                                         name="contractTo"
-                                                        index="contractTo" />
+                                                        index="contractTo" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                 </div>
                                                 <div className="super_company">
                                                     <Dropdown
@@ -446,7 +450,7 @@ class SubContract extends Component {
                                                         error={errors.contractWithContact}
                                                         touched={touched.contractWithContact}
                                                         name="contractWithContact"
-                                                        index="contractWithContact" />
+                                                        index="contractWithContact" classDrop=" contactName1" styles={ContactDropdown}/>
                                                 </div>
                                             </div>
                                         </div>

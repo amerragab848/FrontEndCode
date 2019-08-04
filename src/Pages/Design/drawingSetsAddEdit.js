@@ -25,7 +25,10 @@ import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
+import Steps from "../../Componants/publicComponants/Steps"; 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+var steps_defination = [];
 const _ = require("lodash");
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -83,10 +86,7 @@ class DrawingSetsAddEdit extends Component {
     }
 
     this.state = {
-      CurrentStep: 1,
-      FirstStep: true,
-      SecondStep: false,
-      SecondStepComplate: false,
+      CurrentStep: 0, 
       showDeleteModal: false,
       isLoading: false,
       isEdit: false,
@@ -142,6 +142,16 @@ class DrawingSetsAddEdit extends Component {
         this.state.perviousRoute
       );
     }
+    steps_defination = [
+      {
+          name: "Submittal",
+          callBackFn: ()=>this.getLogsSubmittalItems
+      },
+      {
+          name: "items",
+          callBackFn: null
+      }
+  ];
   }
 
   componentDidMount() {
@@ -520,21 +530,10 @@ class DrawingSetsAddEdit extends Component {
         toast.error(Resources["failError"][currentLanguage]);
       });
     } else {
-      this.setState({
-        CurrentStep: this.state.CurrentStep + 1
-      });
+      this.changeCurrentStep(1);
     }
   }
-
-  saveAndExit(event) {
-
-    if (this.state.CurrentStep === 1) {
-      this.setState({
-        CurrentStep: this.state.CurrentStep + 1
-      });
-    }
-  }
-
+ 
   showBtnsSaving() {
 
     let btn = null;
@@ -577,36 +576,18 @@ class DrawingSetsAddEdit extends Component {
     }
   };
 
-  NextStep() {
-
-    if (this.state.CurrentStep === 1) {
-
-      dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
-
-        this.setState({
-
-          itemData: data,
-          CurrentStep: this.state.CurrentStep + 1,
-          FirstStep: false,
-          SecondStep: true,
-          SecondStepComplate: true,
-        });
-      }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-    } else {
-      this.props.history.push("/drawingSets/" + this.state.projectId);
-    }
+  changeCurrentStep = stepNo => {
+    this.setState({ CurrentStep: stepNo });
+};
+ 
+  getLogsSubmittalItems = () => {
+    dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
+      this.setState({ itemData: data });
+    }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
   }
+ 
 
-  PreviousStep() {
-    if (this.state.CurrentStep === 2) {
-      this.setState({
-        CurrentStep: this.state.CurrentStep - 1,
-        FirstStep: true,
-        SecondStep: false,
-        SecondStepComplate: false,
-      });
-    }
-  }
+ 
 
   finishDocument() {
     this.props.history.push("/drawingSets/" + this.state.projectId);
@@ -679,25 +660,7 @@ class DrawingSetsAddEdit extends Component {
     });
   }
 
-  StepOneLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        FirstStep: true,
-        SecondStepComplate: false,
-        CurrentStep: 1,
-      })
-    }
-  }
-
-  StepTwoLink = () => {
-    if (docId !== 0) {
-      this.setState({
-        FirstStep: true,
-        SecondStepComplate: true,
-        CurrentStep: 2,
-      })
-    }
-  }
+ 
 
   render() {
     const columns = [
@@ -783,7 +746,7 @@ class DrawingSetsAddEdit extends Component {
             <div className="step-content">
               <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
-                  {this.state.CurrentStep === 1 ? (
+                  {this.state.CurrentStep === 0 ? (
                     <div className="document-fields">
                       <Formik initialValues={this.state.document}
                         validationSchema={validationSchema}
@@ -797,7 +760,7 @@ class DrawingSetsAddEdit extends Component {
                           } else if (this.props.changeStatus === false && this.state.docId === 0) {
                             this.saveDrawing();
                           } else {
-                            this.saveAndExit();
+                            this.changeCurrentStep(1);
                           }
                         }}>
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -903,13 +866,14 @@ class DrawingSetsAddEdit extends Component {
                                   <div className="super_name">
                                     <Dropdown data={this.state.companies} isMulti={false} selectedValue={this.state.selectedFromCompany}
                                       handleChange={event => { this.handleChangeDropDown(event, "bicCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
-                                      onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromCompanyId} touched={touched.fromCompanyId} name="fromCompanyId" id="fromCompanyId" />
+                                      onChange={setFieldValue} onBlur={setFieldTouched} error={errors.fromCompanyId} touched={touched.fromCompanyId} name="fromCompanyId" id="fromCompanyId"
+                                      styles={CompanyDropdown} classDrop="companyName1 " />
                                   </div>
                                   <div className="super_company">
                                     <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
                                       handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedFromContact")}
                                       onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId}
-                                      name="bicContactId" id="bicContactId" />
+                                      name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                   </div>
                                 </div>
                               </div>
@@ -989,8 +953,8 @@ class DrawingSetsAddEdit extends Component {
                         <div className="document-fields">
                           <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
                             validationSchema={validationSchemaItems}
-                            onSubmit={values => { this.addDrawingItems(); }}>
-                            {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                            onSubmit={() => { this.addDrawingItems(); }}>
+                            {({ errors, touched,  handleSubmit, setFieldTouched, setFieldValue }) => (
                               <Form onSubmit={handleSubmit}>
                                 <div className="proForm datepickerContainer">
                                   <div className="linebylineInput valid-input">
@@ -1032,7 +996,7 @@ class DrawingSetsAddEdit extends Component {
                       </Fragment>
                     )}
                   <div className="slider-Btns">
-                    {this.state.CurrentStep === 2 ? (
+                    {this.state.CurrentStep === 1 ? (
                       <button className="primaryBtn-1 btn meduimBtn" onClick={this.finishDocument.bind(this)}>
                         {Resources["finish"][currentLanguage]}
                       </button>
@@ -1041,14 +1005,14 @@ class DrawingSetsAddEdit extends Component {
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
                       {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={895} EditAttachments={3237} ShowDropBox={3637} ShowGoogleDrive={3638} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-                      {this.state.CurrentStep === 1 ? this.viewAttachments() : null}
+                      {this.state.CurrentStep === 0 ? this.viewAttachments() : null}
                       {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            {this.props.changeStatus === true && this.state.CurrentStep === 1 ? (
+            {this.props.changeStatus === true && this.state.CurrentStep === 0 ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
                   {this.state.isApproveMode === true ? (
@@ -1074,42 +1038,16 @@ class DrawingSetsAddEdit extends Component {
                 </div>
               </div>
             ) : null}
-            {/* step document */}
-            <div className="docstepper-levels">
-              <div className="step-content-foot">
-                <span onClick={this.PreviousStep.bind(this)}
-                  className={this.state.CurrentStep != 1 && this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                  <i className="fa fa-caret-left" aria-hidden="true" />
-                  Previous
-                </span>
-                <span onClick={this.NextStep.bind(this)}
-                  className={this.state.isEdit === true ? "step-content-btn-prev " : "step-content-btn-prev disabled"}>
-                  Next
-                  <i className="fa fa-caret-right" aria-hidden="true" />
-                </span>
-              </div>
-              <div className="workflow-sliderSteps">
-                <div className="step-slider">
-                  <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                    <div className="steps-timeline">
-                      <span>1</span>
-                    </div>
-                    <div className="steps-info">
-                      <h6>{Resources["Submittal"][currentLanguage]}</h6>
-                    </div>
-                  </div>
-                  <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                    <div className="steps-timeline">
-                      <span>2</span>
-                    </div>
-                    <div className="steps-info">
-                      <h6>{Resources["items"][currentLanguage]}</h6>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                    <Steps
+                            steps_defination={steps_defination}
+                            exist_link="/drawingSets/"
+                            docId={this.state.docId}
+                            changeCurrentStep={stepNo =>
+                                this.changeCurrentStep(stepNo)
+                            }
+                            stepNo={this.state.CurrentStep}
+                        />
+           </div>
         </div>
         <div>
           <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>

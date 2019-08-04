@@ -34,7 +34,10 @@ import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
-
+import Steps from "../../Componants/publicComponants/Steps"; 
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -139,13 +142,7 @@ class materialInspectionRequestAddEdit extends Component {
             index++;
         }
 
-        this.state = {
-            FirstStep: true,
-            SecondStep: false,
-            ThirdStep: false,
-
-            SecondStepComplate: false,
-            ThirdStepComplate: false,
+        this.state = { 
             currentTitle: "sendToWorkFlow",
             showModal: false,
             isViewMode: false,
@@ -185,7 +182,7 @@ class materialInspectionRequestAddEdit extends Component {
             buildings: [],
             answer: '',
             rfi: '',
-            CurrentStep: 1,
+            CurrentStep: 0,
             CycleEditLoading: false,
             CycleAddLoading: false,
             DocLoading: false
@@ -200,6 +197,20 @@ class materialInspectionRequestAddEdit extends Component {
 
         this.newCycle = this.newCycle.bind(this);
         this.editCycle = this.editCycle.bind(this);
+        steps_defination = [
+            {
+                name: "materialInspectionRequest",
+                callBackFn: null
+            },
+            {
+                name: "newCycle",
+                callBackFn: null
+            },
+            {
+                name: "addDocAttachment",
+                callBackFn: null
+            }
+        ];
 
     }
 
@@ -688,100 +699,10 @@ class materialInspectionRequestAddEdit extends Component {
         }
     }
 
-    NextStep = () => {
-
-        if (this.state.CurrentStep === 1) {
-            if (this.props.changeStatus == true) {
-                this.editInspectionRequest();
-            }
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: false,
-                CurrentStep: this.state.CurrentStep + 1,
-                ThirdStep: false
-            })
-        }
-        else if (this.state.CurrentStep === 2) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: true,
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: true
-            })
-        } else {
-            this.props.history.push({
-                pathname: "/materialInspectionRequest/" + projectId
-            });
-        }
-
-    }
-
-    NextTopStep = () => {
-
-        if (this.state.CurrentStep === 1) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: false,
-                CurrentStep: this.state.CurrentStep + 1,
-                ThirdStep: false
-            })
-        }
-        else if (this.state.CurrentStep === 2) {
-
-            window.scrollTo(0, 0)
-            this.setState({
-                FirstStep: false,
-                SecondStep: false,
-                ThirdStep: true,
-                CurrentStep: (this.state.CurrentStep + 1),
-                ThirdStepComplate: true
-            })
-        } else {
-            this.props.history.push({
-                pathname: "/materialInspectionRequest/" + projectId
-            });
-        }
-
-    }
-
-    PreviousStep = () => {
-        if (this.state.docId !== 0) {
-            if (this.state.CurrentStep === 3) {
-                window.scrollTo(0, 0)
-                this.setState({
-                    FirstStep: false,
-                    SecondStep: true,
-                    ThirdStep: false,
-                    CurrentStep: (this.state.CurrentStep - 1),
-                    ThirdStepComplate: false,
-                    SecondStepComplate: true
-                })
-            }
-            else {
-                if (this.state.CurrentStep === 2) {
-                    window.scrollTo(0, 0)
-                    this.setState({
-                        FirstStep: true,
-                        SecondStep: false,
-                        SecondStepComplate: false,
-                        ThirdStep: false,
-                        CurrentStep: (this.state.CurrentStep - 1)
-                    })
-                }
-            }
-        }
-    }
-
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrentStep: stepNo });
+    }; 
+ 
     saveInspectionRequestCycle(event) {
 
 
@@ -1002,42 +923,7 @@ class materialInspectionRequestAddEdit extends Component {
         )
     }
 
-    StepOneLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                FirstStep: true,
-                SecondStep: false,
-                SecondStepComplate: false,
-                ThirdStepComplate: false,
-                CurrentStep: 1,
-            })
-        }
-    }
-
-    StepTwoLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: false,
-                CurrentStep: 2,
-            })
-        }
-    }
-
-    StepThreeLink = () => {
-        if (docId !== 0) {
-            this.setState({
-                ThirdStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
-                CurrentStep: 3,
-                FirstStep: false,
-                SecondStep: false,
-            })
-        }
-    }
+  
 
     render() {
         let actions = [
@@ -1063,7 +949,7 @@ class materialInspectionRequestAddEdit extends Component {
                     <div className="doc-container">
 
                         <div className="step-content">
-                            {this.state.FirstStep ?
+                            {this.state.CurrentStep==0 ?
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
                                         <div className="subiTabsContent">
@@ -1078,7 +964,11 @@ class materialInspectionRequestAddEdit extends Component {
                                                         if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveInspectionRequest();
                                                         } else {
-                                                            this.NextStep();
+                                                            if (this.props.changeStatus == true) {
+                                                                this.editInspectionRequest();
+                                                            }
+                                                            this.changeCurrentStep(1);
+                                                
                                                         }
                                                     }}  >
 
@@ -1205,7 +1095,7 @@ class materialInspectionRequestAddEdit extends Component {
 
                                                                                 index="fromCompanyId"
                                                                                 name="fromCompanyId"
-                                                                                id="fromCompanyId" />
+                                                                                id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                         </div>
                                                                         <div className="super_company">
                                                                             <Dropdown
@@ -1221,7 +1111,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 isClear={false}
                                                                                 index="IR-fromContactId"
                                                                                 name="fromContactId"
-                                                                                id="fromContactId" />
+                                                                                id="fromContactId" classDrop=" contactName1" styles={ContactDropdown}/>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1240,7 +1130,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.toCompanyId}
                                                                                 touched={touched.toCompanyId}
-                                                                                name="toCompanyId" />
+                                                                                name="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                         </div>
                                                                         <div className="super_company">
                                                                             <Dropdown
@@ -1256,7 +1146,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 isClear={false}
                                                                                 index="IR-toContactId"
                                                                                 name="toContactId"
-                                                                                id="toContactId"
+                                                                                id="toContactId" classDrop=" contactName1" styles={ContactDropdown}
                                                                             />
                                                                         </div>
                                                                     </div>
@@ -1272,7 +1162,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 selectedValue={this.state.selectedActionByCompanyId}
                                                                                 handleChange={event =>
                                                                                     this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
-                                                                                name="bicCompanyId" />
+                                                                                name="bicCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
                                                                         </div>
                                                                         <div className="super_company">
                                                                             <Dropdown
@@ -1288,7 +1178,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 isClear={false}
                                                                                 index="IR-bicContactId"
                                                                                 name="bicContactId"
-                                                                                id="bicContactId" />
+                                                                                id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}/>
 
                                                                         </div>
                                                                     </div>
@@ -1416,7 +1306,7 @@ class materialInspectionRequestAddEdit extends Component {
                                 </Fragment>
                                 :
                                 <Fragment>
-                                    {this.state.SecondStep ?
+                                    {this.state.CurrentStep==1 ?
                                         <div className="subiTabsContent feilds__top">
 
                                             {this.AddNewCycle()}
@@ -1441,16 +1331,13 @@ class materialInspectionRequestAddEdit extends Component {
 
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
                                                 </div>
 
                                             </div>
                                         </div>
-                                        :
-                                        //Third Step
-                                        <Fragment>
-                                            {/* <div className='document-fields'> 
-                                            </div> */}
+                                        : 
+                                        <Fragment> 
 
 
                                             <div className="document-fields tableBTnabs">
@@ -1460,7 +1347,7 @@ class materialInspectionRequestAddEdit extends Component {
 
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextStep}>{Resources['next'][currentLanguage]}</button>
+                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(3)}>{Resources['next'][currentLanguage]}</button>
                                                 </div>
 
                                             </div>
@@ -1469,47 +1356,15 @@ class materialInspectionRequestAddEdit extends Component {
                                 </Fragment>}
 
                         </div>
-                        <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={!this.state.FirstStep && this.state.docId !== 0 ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
-
-                                <span onClick={this.NextTopStep} className={this.state.docId !== 0 ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            {/* Steps Active  */}
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.SecondStepComplate ? "active" : 'current__step')} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources.materialInspectionRequest[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.ThirdStepComplate ? 'active' : this.state.SecondStepComplate ? "current__step" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources.newCycle[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                    <div onClick={this.StepThreeLink} data-id="step3" className={this.state.ThirdStepComplate ? "step-slider-item  current__step" : "step-slider-item"}>
-                                        <div className="steps-timeline">
-                                            <span>3</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources.addDocAttachment[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <Steps
+                            steps_defination={steps_defination}
+                            exist_link="/materialInspectionRequest/"
+                            docId={this.state.docId}
+                            changeCurrentStep={stepNo =>
+                                this.changeCurrentStep(stepNo)
+                            }
+                            stepNo={this.state.CurrentStep}
+                        />
                         {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">

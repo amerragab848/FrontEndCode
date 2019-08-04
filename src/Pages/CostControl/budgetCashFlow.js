@@ -132,18 +132,8 @@ class budgetCashFlow extends Component {
         }
     }
 
-    componentWillMount() {
-        this.setState({
-            isLoading: true
-        })
-        this.props.actions.FillGridLeftMenu();
-        dataservice.GetDataGrid('GetAllBudgetCashFlowForGrid?projectId=' + this.state.projectId).then(res => {
-            this.setState({
-                rows: res,
-                totalRows: res.length,
-                isLoading: false
-            })
-        })
+    componentWillMount() { 
+        this.props.actions.FillGridLeftMenu(); 
     }
 
     componentWillReceiveProps(nextProps) {
@@ -151,7 +141,7 @@ class budgetCashFlow extends Component {
             this.setState({
                 isLoading: true
             })
-            dataservice.GetDataGrid('GetAllBudgetCashFlowForGrid?projectId=' + this.state.projectId).then(data => {
+            dataservice.GetDataGrid('GetAllBudgetCashFlowForGrid?projectId=' + nextProps.projectId).then(data => {
                 this.setState({
                     rows: data,
                     projectId: nextProps.projectId,

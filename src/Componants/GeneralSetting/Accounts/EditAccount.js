@@ -15,6 +15,9 @@ import { Formik, Form, withFormik } from 'formik';
 import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../publicComponants/LoadingSection';
+import CompanyDropdown from '../../publicComponants/CompanyDropdown'
+import ContactDropdown from '../../publicComponants/ContactDropdown'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const publicConfiguarion = config.getPayload();
 const getPublicConfiguartion = config.getPublicConfiguartion();
@@ -444,14 +447,14 @@ class EditAccount extends Component {
                                                                 data={this.state.SupervisorNameData}
                                                                 handleChange={this.SupervisorNamehandleChange}
                                                                 placeholder='SupervisorName'
-                                                                selectedValue={this.state.DefaultSupervisorName} />
+                                                                selectedValue={this.state.DefaultSupervisorName} styles={CompanyDropdown} classDrop="contactName1 "/>
                                                         </div>
                                                         <div className="super_company">
                                                             <DropdownMelcous 
                                                                 selectedValue={this.state.DefaultSupervisorCompanyData}
                                                                 data={this.state.CompanyData}
                                                                 handleChange={this.SupervisorCompanyhandleChange}
-                                                                placeholder='SupervisorCompany' />
+                                                                placeholder='SupervisorCompany' classDrop=" companyName1" styles={ContactDropdown}/>
                                                         </div>
                                                     </div>
                                                 </div>
