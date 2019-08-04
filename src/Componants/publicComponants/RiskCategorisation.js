@@ -5,9 +5,7 @@ import Resources from "../../resources.json";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import { toast } from "react-toastify";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import ReactTable from "react-table";
-import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection"; 
 
 const _ = require('lodash');
 
@@ -61,15 +59,7 @@ class RiskCategorisation extends Component {
                 });
 
             }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-
-            dataservice.GetDataGrid("GetCommunicationRiskCategorisationByRiskId?riskId=" + this.props.riskId).then(result => {
-
-                this.setState({
-                    riskCategorisation: [...result]
-                });
-
-            }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-
+ 
             let document = {
                 projectPhase: "",
                 organisation: "",
@@ -169,39 +159,7 @@ class RiskCategorisation extends Component {
     };
 
     render() {
-        const columns = [
-            // {
-            //   Header: Resources["delete"][currentLanguage],
-            //   accessor: "id",
-            //   Cell: ({ row }) => {
-            //     return (
-            //       <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={() => this.viewConfirmDeleteCycle(row.id)}>
-            //         <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
-            //       </div>
-            //     );
-            //   },
-            //   width: 70
-            // },
-            {
-                Header: Resources["projectPhase"][currentLanguage],
-                accessor: "projectPhase",
-                sortabel: true,
-                width: 200
-            },
-            {
-                Header: Resources["organisation"][currentLanguage],
-                accessor: "organisation",
-                width: 200,
-                sortabel: true
-            },
-            {
-                Header: Resources["managementlevel"][currentLanguage],
-                accessor: "managementlevel",
-                width: 200,
-                sortabel: true
-            }
-        ];
-
+      
         return (
             <div className="doc-pre-cycle letterFullWidth">
                 <div className="document-fields">
@@ -284,16 +242,8 @@ class RiskCategorisation extends Component {
                             </Formik>
                         </Fragment>
                     }
-                    <ReactTable data={this.state.riskCategorisation}
-                        columns={columns}
-                        defaultPageSize={5}
-                        noDataText={Resources["noData"][currentLanguage]}
-                        className="-striped -highlight" />
-                </div>
-                {this.state.showDeleteModal == true ? (
-                    <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
-                        showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
-                        clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />) : null}
+                    
+                </div> 
             </div>
         );
     }

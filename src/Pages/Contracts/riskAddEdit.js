@@ -2201,7 +2201,7 @@ class riskAddEdit extends Component {
                                                                         <label className="control-label">{'Cost Effectiveness'}</label>
                                                                     </div>
                                                                     <div className="ui left pointing label labelWithArrowBorder basic">
-                                                                        <span>{this.state.totalResidualRisk > this.state.totalPretRiskEmv ? 'Cost Effective' : 'Not Cost Effective'}</span>
+                                                                        <span>{(this.state.totalProposedMit + this.state.totalPostRiskEmv) > this.state.totalPretRiskEmv ?  'Not Cost Effective': 'Cost Effective' }</span>
                                                                     </div>
 
                                                                     <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
@@ -2218,7 +2218,6 @@ class riskAddEdit extends Component {
 
                                                             </div>
                                                             <RiskRealisation riskId={this.state.docId} />
-
                                                             <div className="doc-pre-cycle">
                                                                 <div className="slider-Btns">
                                                                     <button className="primaryBtn-1 btn meduimBtn" onClick={this.NextTopStep}>{Resources['next'][currentLanguage]}</button>

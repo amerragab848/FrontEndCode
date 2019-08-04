@@ -1329,9 +1329,7 @@ class LettersAddEdit extends Component {
                                                                                     }
                                                                                 </button>
                                                                             )}
-                                                                        {this.state
-                                                                            .isApproveMode ===
-                                                                            true ? (
+                                                                        {this.state.isApproveMode === true ? (
                                                                                 <div>
                                                                                     <button
                                                                                         className="primaryBtn-1 btn "
@@ -1395,6 +1393,7 @@ class LettersAddEdit extends Component {
                                                                                 ]
                                                                             }
                                                                         </button>
+                                                                       
                                                                         <span className="border" />
                                                                         <div className="document__action--menu">
                                                                             <OptionContainer
