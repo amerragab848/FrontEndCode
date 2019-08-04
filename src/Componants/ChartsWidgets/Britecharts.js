@@ -1,7 +1,7 @@
-import React, { Component} from 'react'
+import React, { Component } from 'react';
 import Api from '../../api';
-import {  Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecharts-react'
-import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
+import { Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecharts-react';
+import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css';
 const ResponsiveLineChart = withResponsiveness(Line);
 
 const _ = require('lodash')
@@ -29,8 +29,7 @@ class Britecharts extends Component {
                         dates: [{
                             date: null,
                             value: null
-                        }
-                        ]
+                        }]
                     }]
             }
         }
@@ -40,14 +39,7 @@ class Britecharts extends Component {
         <ResponsiveContainer
             render={
                 ({ width }) =>
-                    <ResponsiveLineChart
-                        margin={marginObject}
-                        lineCurve="basis"
-                        height={400}
-                        width={width}
-                        colorSchema={colorSchema}
-                        grid='horizontal'
-                        {...props} />
+                    <ResponsiveLineChart margin={marginObject} lineCurve="basis" height={400} width={width} colorSchema={colorSchema} grid='horizontal' {...props} />
             }
         />
     );

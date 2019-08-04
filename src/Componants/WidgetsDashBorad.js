@@ -547,7 +547,7 @@ var widgets = [
         checked: false,
         permission: 10043,
         order: 10,
-        title: 'countinspectionApproved',
+        title: 'countinspectionApprovedChar',
         props: {
           'api': 'GetStatusIspectionRequest?status=true',
           'name': 'projectName',
@@ -1231,6 +1231,7 @@ var widgets = [
         barContent: []
       },
       {
+        id: 'wt-Name7',
         key: "2-1-3",
         checked: false,
         permission: 0,
@@ -1249,6 +1250,7 @@ var widgets = [
         barContent: []
       },
       {
+        id: 'wt-Name09',
         key: "2-1-4",
         checked: false,
         permission: 0,
