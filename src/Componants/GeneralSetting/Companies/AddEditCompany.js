@@ -164,7 +164,7 @@ class AddEditCompany extends Component {
         if (this.state.companyID == 0) {
             Api.post('AddCompanyContact', SendingObject).then(() => {
                 this.setState({ isLoading: false })
-                this.props.actions.routeToTabIndex(1)
+                this.props.actions.routeToTabIndex(2)
                 this.props.history.push({ pathname: '/TemplatesSettings' })
                 toast.success("operation complete sucessful")
             })
@@ -172,7 +172,7 @@ class AddEditCompany extends Component {
         else {
             Api.post('EditProjectCompanies', SendingObject).then(() => {
                 this.setState({ isLoading: false })
-                this.props.actions.routeToTabIndex(1)
+                this.props.actions.routeToTabIndex(2)
                 this.props.history.push({ pathname: '/TemplatesSettings' })
                 toast.success("operation complete sucessful");
             })
