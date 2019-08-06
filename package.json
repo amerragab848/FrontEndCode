@@ -71,7 +71,6 @@
     "react-validation": "^3.0.7",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "rodal": "^1.6.3",
     "semantic-ui-css": "^2.4.1",
     "simple-react-validator": "^1.0.3",
     "xlsx": "^0.14.1",

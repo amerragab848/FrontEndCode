@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import CryptoJS from 'crypto-js';
 import { SortablePane, Pane } from "react-sortable-pane";
- import Rodal from "../Styles/js/rodal";
+import Rodal from "../Styles/js/rodal";
 import dashBoardLogo from "../Styles/images/dashboardDots.png";
 import widgets from "./WidgetsDashBoradProject";
 import Resources from "../resources.json";
-let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const _ = require('lodash');
 
@@ -27,7 +27,7 @@ class DashBoardProject extends Component {
   }
 
   componentWillMount() {
-   
+
     let original_widgets = [...widgets];
 
     var refrence = original_widgets.filter(function (i) {
@@ -82,7 +82,7 @@ class DashBoardProject extends Component {
   }
 
   onClickTabItem(tabIndex) {
- 
+
     let original_widgets = [...this.state.widgets];
 
     var refrence = original_widgets.filter(function (i) {
@@ -419,9 +419,9 @@ class DashBoardProject extends Component {
       });
     }
   }
- 
+
   parentChageOrder(order) {
-     
+
     let widgets_Order = CryptoJS.enc.Base64.parse(this.getFromLS("Widgets_Project_Order")).toString(CryptoJS.enc.Utf8)
 
     widgets_Order = widgets_Order != "" ? JSON.parse(widgets_Order) : {};
@@ -946,7 +946,7 @@ class DashBoardProject extends Component {
 
     var paneChild = "";
 
-    if (this.state.viewChild) { 
+    if (this.state.viewChild) {
       paneChild = this.state.childRef.map((widget, index) => {
         return (
           <Pane key={widget.key} defaultSize={{ width: "50%" }} resizable={{ x: false, y: false, xy: false }}>
@@ -966,44 +966,38 @@ class DashBoardProject extends Component {
     }
 
     return (
-      <div className="customeTabs">
-        <Rodal visible={this.props.opened} onClose={this.props.closed}>
-          <div className="dashboard__modal">
-            <div className="dashboard__container">
-              <div className="modalTitle">
-                <h2>Dashboard Project</h2>
-              </div>
-              <Tabs className="dashboard__Project" selectedIndex={this.state.dashBoardIndex} onSelect={dashBoardIndex => this.onClickTabItem(dashBoardIndex)}>
-                <div className="project__tabs subitTabs">
-                  <TabList className="zero dashDragCustom">
-                    <Tab>
-                      <span className="subUlTitle">
-                        {Resources["counters"][currentLanguage]}
-                      </span>
-                    </Tab>
-                
-                  </TabList>
-                </div> 
-                <TabPanel>
-                  <div className="dash__content ui tab active">
-                    <div className="project__content">
-                      <SortablePane direction="vertical" order={this.state.parent_widgets_order} onOrderChange={order => this.parentChageOrder(order)}>
-                        {pane}
-                      </SortablePane>
-                    </div>
-                    <div className="project__content">
-                      {this.state.viewChild ? (
-                        <SortablePane direction="vertical" order={this.state.child_widgets_order} onOrderChange={order => this.ChildchageOrder(order)}>
-                          {paneChild}
-                        </SortablePane>
-                      ) : null}
-                    </div>
-                  </div>
-                </TabPanel> 
-              </Tabs>
-            </div>
+      <div className="dashboard__container">
+        <div className="modalTitle">
+          <h2>Dashboard Project</h2>
+        </div>
+        <Tabs className="dashboard__Project" selectedIndex={this.state.dashBoardIndex} onSelect={dashBoardIndex => this.onClickTabItem(dashBoardIndex)}>
+          <div className="project__tabs subitTabs">
+            <TabList className="zero dashDragCustom">
+              <Tab>
+                <span className="subUlTitle">
+                  {Resources["counters"][currentLanguage]}
+                </span>
+              </Tab>
+
+            </TabList>
           </div>
-        </Rodal>
+          <TabPanel>
+            <div className="dash__content ui tab active">
+              <div className="project__content">
+                <SortablePane direction="vertical" order={this.state.parent_widgets_order} onOrderChange={order => this.parentChageOrder(order)}>
+                  {pane}
+                </SortablePane>
+              </div>
+              <div className="project__content">
+                {this.state.viewChild ? (
+                  <SortablePane direction="vertical" order={this.state.child_widgets_order} onOrderChange={order => this.ChildchageOrder(order)}>
+                    {paneChild}
+                  </SortablePane>
+                ) : null}
+              </div>
+            </div>
+          </TabPanel>
+        </Tabs>
       </div>
     );
   }

@@ -14,6 +14,7 @@ import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import * as Yup from "yup";
+import SkyLight from "react-skylight";
 
 const SignupSchema = Yup.object().shape({
   password: Yup.string().required("Required"),
@@ -163,7 +164,7 @@ class TimeSheetWorkFlow extends Component {
       password: "",
       comment: "",
       viewMessage: false,
-      Message:"",
+      Message: "",
       Ids: []
     };
 
@@ -180,7 +181,7 @@ class TimeSheetWorkFlow extends Component {
       timeSheetId = param[1];
     }
 
-    Api.get("GetExpensesUserByContactIdType?requestFromUserId=" + id + "&type=timeSheet" ).then(result => {
+    Api.get("GetExpensesUserByContactIdType?requestFromUserId=" + id + "&type=timeSheet").then(result => {
       this.setState({
         rows: result != null ? result : [],
         isLoading: false
@@ -230,10 +231,14 @@ class TimeSheetWorkFlow extends Component {
         approvalStatus: status,
         isApprove: !this.state.isApprove
       });
+
+      if (this.state.isApprove === true) {
+        this.simpleDialog.show();
+      }
     } else {
-    this.setState({
-       viewMessage:true
-    });
+      this.setState({
+        viewMessage: true
+      });
     }
   }
 
@@ -248,7 +253,7 @@ class TimeSheetWorkFlow extends Component {
     rows.map(item => {
       listSelectedRows.push(item);
     });
-    this.setState({Ids: listSelectedRows})
+    this.setState({ Ids: listSelectedRows })
   }
 
   onRowsDeselected(rows) {
@@ -257,45 +262,45 @@ class TimeSheetWorkFlow extends Component {
     rows.map(item => {
       listSelectedRows.push(item);
     });
-    this.setState({Ids: listSelectedRows})
+    this.setState({ Ids: listSelectedRows })
   }
 
   approveTimeSheet(values) {
     if (values["password"]) {
       this.setState({
         isLoading: true
-      }); 
+      });
       Api.getPassword("GetPassWordEncrypt", values["password"]).then(res => {
-          if (res) {
-            listSelectedRows.map((id, index) => {
-              Api.post("ApproveRejectedTimesheet?id=" +id +"&status=" + this.state.approvalStatus+ "&comment=" + values["comment"]).then(res => {
-                  if (index + 1 == listSelectedRows.length) {
-                    listSelectedRows = [];
-                    Api.get( "GetExpensesUserByContactIdType?requestFromUserId=" + timeSheetId + "&type=timeSheet").then(result => {
-                      this.setState({
-                        rows: result != null ? result : [],
-                        isLoading: false,
-                        isApprove: false,
-                        viewMessage: true
-                      });
-                    });
-                  }
-                })
-                .catch(() =>
+        if (res) {
+          listSelectedRows.map((id, index) => {
+            Api.post("ApproveRejectedTimesheet?id=" + id + "&status=" + this.state.approvalStatus + "&comment=" + values["comment"]).then(res => {
+              if (index + 1 == listSelectedRows.length) {
+                listSelectedRows = [];
+                Api.get("GetExpensesUserByContactIdType?requestFromUserId=" + timeSheetId + "&type=timeSheet").then(result => {
                   this.setState({
+                    rows: result != null ? result : [],
                     isLoading: false,
+                    isApprove: false,
                     viewMessage: true
-                  })
-                );
-            });
-          } else {
-            this.setState({
-              Message:Resources["invalidPassword"][currentLanguage],
-              isLoading: false,
-              viewMessage: true
-            });
-          }
-        })
+                  });
+                });
+              }
+            })
+              .catch(() =>
+                this.setState({
+                  isLoading: false,
+                  viewMessage: true
+                })
+              );
+          });
+        } else {
+          this.setState({
+            Message: Resources["invalidPassword"][currentLanguage],
+            isLoading: false,
+            viewMessage: true
+          });
+        }
+      })
         .catch(res => {
           this.setState({
             isLoading: false
@@ -321,10 +326,10 @@ class TimeSheetWorkFlow extends Component {
           NoShowToolBar={true}
         />
       ) : (
-        <LoadingSection />
-      );
+          <LoadingSection />
+        );
 
-      const alert =this.state.viewMessage === true ? (<NotifiMsg statusClass="animationBlock" IsSuccess="false" Msg={this.state.Message}/> ) : null
+    const alert = this.state.viewMessage === true ? (<NotifiMsg statusClass="animationBlock" IsSuccess="false" Msg={this.state.Message} />) : null
 
     const btnExport =
       this.state.isLoading === false ? (
@@ -334,8 +339,8 @@ class TimeSheetWorkFlow extends Component {
           fileName={this.state.pageTitle}
         />
       ) : (
-        <LoadingSection />
-      );
+          <LoadingSection />
+        );
 
     const ComponantFilter =
       this.state.isLoading === false ? (
@@ -345,8 +350,8 @@ class TimeSheetWorkFlow extends Component {
           filterMethod={this.filterMethodMain}
         />
       ) : (
-        <LoadingSection />
-      );
+          <LoadingSection />
+        );
 
     return (
       <div className="mainContainer">
@@ -409,20 +414,20 @@ class TimeSheetWorkFlow extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
           <div className="filterBTNS">{btnExport}</div>
         </div>
-       
+
         {this.state.Ids.length > 0 ? <Approval ApproveHandler={this.ApproveHandler.bind(this)} /> : null}
 
         <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
@@ -431,8 +436,8 @@ class TimeSheetWorkFlow extends Component {
         <div>{dataGrid}</div>
         <Fragment>{alert}</Fragment>
         {this.state.isApprove ? (
-          <Rodal visible={true} onClose={this.closeModal.bind(this)}>
-            <Formik  initialValues={{ password: "", comment: "" }} validationSchema={SignupSchema} onSubmit={values => this.approveTimeSheet(values)}>
+          <SkyLight ref={ref => (this.simpleDialog = ref)}>
+            <Formik initialValues={{ password: "", comment: "" }} validationSchema={SignupSchema} onSubmit={values => this.approveTimeSheet(values)}>
               {({ errors, touched, handleBlur, handleChange }) => (
                 <Form id="signupForm1" className="proForm" noValidate="novalidate">
                   <div className="approvalDocument">
@@ -444,8 +449,8 @@ class TimeSheetWorkFlow extends Component {
                         <div className="form-group passwordInputs showPasswordArea">
                           <label className="control-label">Password *</label>
                           <div className="inputPassContainer">
-                            <div className={ errors.password && touched.password ? "ui input inputDev has-error" : !errors.password && touched.password ? "ui input inputDev has-success" : "ui input inputDev"}>
-                              <span className={ this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW " } onClick={this.toggle}>
+                            <div className={errors.password && touched.password ? "ui input inputDev has-error" : !errors.password && touched.password ? "ui input inputDev has-success" : "ui input inputDev"}>
+                              <span className={this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "} onClick={this.toggle}>
                                 <img src={eyeShow} />
                                 <span className="show"> Show</span>
                                 <span className="hide"> Hide</span>
@@ -484,21 +489,21 @@ class TimeSheetWorkFlow extends Component {
                             Save
                           </button>
                         ) : (
-                          <button className="primaryBtn-2 btn smallBtn fillter-item-c">
-                            <div className="spinner">
-                              <div className="bounce1" />
-                              <div className="bounce2" />
-                              <div className="bounce3" />
-                            </div>
-                          </button>
-                        )}
+                            <button className="primaryBtn-2 btn smallBtn fillter-item-c">
+                              <div className="spinner">
+                                <div className="bounce1" />
+                                <div className="bounce2" />
+                                <div className="bounce3" />
+                              </div>
+                            </button>
+                          )}
                       </div>
                     </div>
                   </div>
                 </Form>
               )}
             </Formik>
-          </Rodal>
+          </SkyLight>
         ) : null}
       </div>
     );
