@@ -283,7 +283,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                 })
                 break;
             case 3:
-                this.props.actions.routeToTabIndex(3)
+                this.props.actions.routeToTabIndex(4)
                 this.props.history.push({ pathname: '/TemplatesSettings' })
                 break;
         }
@@ -613,7 +613,7 @@ class ExpensesWorkFlowAddEdit extends Component {
             toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
 
         )
-        this.props.actions.routeToTabIndex(3)
+        this.props.actions.routeToTabIndex(4)
         this.props.history.push({ pathname: '/TemplatesSettings' })
     }
 
