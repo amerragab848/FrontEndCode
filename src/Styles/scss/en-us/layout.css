@@ -15628,6 +15628,10 @@ table edition
     top: 100%;
 }
 
+em {
+    font-style: normal;
+}
+
 /* error text new */
 /* .pError {
   display: block;

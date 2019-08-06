@@ -324,8 +324,8 @@ class budgetCashFlow extends Component {
 
     cashFlowDiff = (obj, e) => {
 
-        var finishDate1 = moment(this.state.finishDate, 'DD/MM/YYYY').format('YYYY-MM-DD')
-        var startDate1 = moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD')
+        var finishDate1 = moment(this.state.finishDate, ["MM-DD-YYYY", "YYYY-MM-DD"]).format('YYYY-MM-DD')
+        var startDate1 = moment(this.state.startDate, ["MM-DD-YYYY", "YYYY-MM-DD"]).format('YYYY-MM-DD')
         var end = finishDate1;
 
         var start = startDate1;
