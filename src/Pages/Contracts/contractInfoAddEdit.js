@@ -325,14 +325,14 @@ class ContractInfoAddEdit extends Component {
       {
         accessor: 'id',
         show: false,
-        
+
       }, {
         Header: Resources.arrange[currentLanguage],
         accessor: 'arrange',
         width: 25
       }, {
         Header: Resources.description[currentLanguage],
-        accessor: 'description'   ,
+        accessor: 'description',
         width: 120
       }, {
         Header: Resources.changeOrder[currentLanguage],
@@ -349,7 +349,7 @@ class ContractInfoAddEdit extends Component {
       }, {
         Header: Resources.days[currentLanguage],
         accessor: 'days',
-        width: 70 
+        width: 70
       }, {
         Header: Resources.itemType[currentLanguage],
         accessor: 'itemType',
@@ -394,14 +394,14 @@ class ContractInfoAddEdit extends Component {
     }
     steps_defination = [
       {
-          name: "contract",
-          callBackFn: null
+        name: "contract",
+        callBackFn: null
       },
       {
-          name: "details",
-          callBackFn: null
-      } 
-  ];
+        name: "details",
+        callBackFn: null
+      }
+    ];
   }
 
   statusButton = ({ value, row }) => {
@@ -611,7 +611,7 @@ class ContractInfoAddEdit extends Component {
   viewAttachments() {
     return this.state.docId > 0 ? (
       Config.IsAllow(3297) === true ? (
-       <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={860} />
+        <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={860} />
       ) : null
     ) : null;
   }
@@ -687,7 +687,7 @@ class ContractInfoAddEdit extends Component {
           isLoading: false
         });
         toast.success(Resources["operationSuccess"][currentLanguage]);
-        
+
       })
         .catch(() => {
           toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -718,7 +718,7 @@ class ContractInfoAddEdit extends Component {
       this.setState({ CurrStep: stepNo });
   };
 
-  
+
   handleShowAction = item => {
     if (item.title == "sendToWorkFlow") {
       this.props.actions.SendingWorkFlow(true);
@@ -741,6 +741,7 @@ class ContractInfoAddEdit extends Component {
         viewItemPopUp: true,
         objItems: value
       });
+      this.simpleDialogForEdit.show();
     }
   };
 
@@ -760,7 +761,7 @@ class ContractInfoAddEdit extends Component {
   getVoItems = () => {
     if (this.state.voItems.length == 0) {
       this.setState({ isLoading: true })
-      Api.get('GetChangeOrderItemsByContractId?contractId='+this.state.docId+'&pageNumber=' + this.state.voPageNumber + '&pageSize='+this.state.voPageSize).then(result => {
+      Api.get('GetChangeOrderItemsByContractId?contractId=' + this.state.docId + '&pageNumber=' + this.state.voPageNumber + '&pageSize=' + this.state.voPageSize).then(result => {
         let voItems = [];
         if (result.resultList.length > 0)
           voItems = result.resultList;
@@ -830,7 +831,7 @@ class ContractInfoAddEdit extends Component {
       }
     );
   };
- 
+
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
 
     if (event == null) return;
@@ -939,7 +940,7 @@ class ContractInfoAddEdit extends Component {
           showPopUp: true
         });
 
-        this.simpleDialog.show();
+        this.simpleDialogHistoryData.show()
       });
     }
   }
@@ -1009,18 +1010,18 @@ class ContractInfoAddEdit extends Component {
       });
     }
     else {
-      let voPageNumber = this.state.voPageNumber + 1; 
+      let voPageNumber = this.state.voPageNumber + 1;
       this.setState({
         isLoading: true,
         voPageNumber: voPageNumber
       });
       let oldRows = [...this.state.voItems];
       this.setState({ isLoading: true })
-      Api.get('GetChangeOrderItemsByContractId?contractId='+this.state.docId+'&pageNumber=' + voPageNumber + '&pageSize='+this.state.voPageSize).then(result => {
+      Api.get('GetChangeOrderItemsByContractId?contractId=' + this.state.docId + '&pageNumber=' + voPageNumber + '&pageSize=' + this.state.voPageSize).then(result => {
         let voItems = [];
         if (result.resultList.length > 0)
           voItems = result.resultList;
-        this.setState({ voItems , isLoading: false });
+        this.setState({ voItems, isLoading: false });
       }).catch(ex => {
         this.setState({
           voItems: oldRows,
@@ -1067,11 +1068,11 @@ class ContractInfoAddEdit extends Component {
         });
         let oldRows = [...this.state.voItems];
         this.setState({ isLoading: true })
-        Api.get('GetChangeOrderItemsByContractId?contractId='+this.state.docId+'&pageNumber=' + voPageNumber + '&pageSize='+this.state.voPageSize).then(result => {
+        Api.get('GetChangeOrderItemsByContractId?contractId=' + this.state.docId + '&pageNumber=' + voPageNumber + '&pageSize=' + this.state.voPageSize).then(result => {
           let voItems = [];
           if (result.resultList.length > 0)
             voItems = result.resultList;
-          this.setState({ voItems,  isLoading: false });
+          this.setState({ voItems, isLoading: false });
         }).catch(ex => {
           this.setState({
             voItems: oldRows,
@@ -1140,8 +1141,6 @@ class ContractInfoAddEdit extends Component {
           )}
         </Formik>
       </div>
-
-
     </Fragment>
 
     const columnsDetails = [
@@ -1266,7 +1265,7 @@ class ContractInfoAddEdit extends Component {
         <Fragment>
           <GridSetup rows={this.state.rows} showCheckbox={this.state.isViewMode === false ? true : false}
             clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain.bind(this)}
-            pageSize={this.state.pageSize} onRowClick={this.onRowClick} columns={columnsGrid}
+            pageSize={this.state.pageSize} onRowClick={this.onRowClick.bind(this)} columns={columnsGrid}
             onGridRowsUpdated={this._onGridRowsUpdated} key='rows' />
         </Fragment>
       ) : (
@@ -1300,7 +1299,7 @@ class ContractInfoAddEdit extends Component {
               <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                 <i className="angle left icon" />
               </button>
-              <button className={this.state.totalRows !==this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
+              <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
                 <i className="angle right icon" />
               </button>
             </div>
@@ -1767,7 +1766,7 @@ class ContractInfoAddEdit extends Component {
         <div className="doc-pre-cycle letterFullWidth">
           <div className="precycle-grid">
             <div className="slider-Btns">
-              <button className="primaryBtn-1 btn meduimBtn " type="submit" onClick={()=>this.changeCurrentStep(2)}>
+              <button className="primaryBtn-1 btn meduimBtn " type="submit" onClick={() => this.changeCurrentStep(2)}>
                 {Resources.next[currentLanguage]}
               </button>
             </div>
@@ -1821,7 +1820,7 @@ class ContractInfoAddEdit extends Component {
                   )}
               </div>
               <div>
-              <Steps
+                <Steps
                   steps_defination={steps_defination}
                   exist_link="/contractInfo/"
                   docId={this.state.docId}
@@ -1834,23 +1833,20 @@ class ContractInfoAddEdit extends Component {
             </div>
           </div>
 
-          <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? 'block' : 'none' }}>
-            <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources["viewHistory"][currentLanguage]}>
-              <Fragment>
-                <ReactTable data={this.state.viewHistoryData}
-                  columns={columnsDetails}
-                  defaultPageSize={5}
-                  noDataText={Resources["noData"][currentLanguage]}
-                  className="-striped -highlight" />
-              </Fragment>
-            </SkyLight>
-          </div>
+          <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogHistoryData = ref} title={Resources["viewHistory"][currentLanguage]}>
+            <Fragment>
+              <ReactTable data={this.state.viewHistoryData}
+                columns={columnsDetails}
+                defaultPageSize={5}
+                noDataText={Resources["noData"][currentLanguage]}
+                className="-striped -highlight" />
+            </Fragment>
+          </SkyLight>
 
-          <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-            <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-              {this.state.currentComponent}
-            </SkyLight>
-          </div>
+          <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
+            {this.state.currentComponent}
+          </SkyLight>
+
           <div className="largePopup largeModal " style={{ display: this.state.showItemEdit ? 'block' : 'none' }}>
             <SkyLight hideOnOverlayClicked ref={ref => this.itemDialog = ref} title={Resources.goEdit[currentLanguage]}>
               {editVoItemForm}
@@ -1862,102 +1858,100 @@ class ContractInfoAddEdit extends Component {
               buttonName="delete" clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />
           ) : null}
         </div>
-        {this.state.viewItemPopUp ?
-          (<Fragment>
-            <Rodal visible={this.state.viewItemPopUp} onClose={this.onCloseModal.bind(this)}>
-              <div className="ui modal largeModal ">
-                <Formik initialValues={{ ...this.state.objItems }}
-                  validationSchema={itemSchema} enableReinitialize={true}
-                  onSubmit={values => { this.editItems(); }}>
-                  {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                    <Form className="dropWrapper" onSubmit={handleSubmit}>
-                      <div className=" proForm customProform">
-                        <div className="fillter-status fillter-item-c">
-                          <label className="control-label">
-                            {Resources["description"][currentLanguage]}
-                          </label>
-                          <div className="inputDev ui input">
-                            <input name="description" className="form-control fsadfsadsa" id="description" placeholder={Resources.description[currentLanguage]}
-                              autoComplete="off" value={this.state.objItems.details}
-                              onBlur={e => { handleBlur(e); handleChange(e); }}
-                              onChange={e => this.handleChangeItems(e, "details")} />
-                            {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
-                          </div>
-                        </div>
-                        <div className="fillter-status fillter-item-c">
-                          <label className="control-label">
-                            {Resources.quantity[currentLanguage]}
-                          </label>
-                          <div className={"ui input inputDev " + (errors.originalQuantity && touched.originalQuantity ? " has-error" : " ")}>
-                            <input type="text" className="form-control"
-                              id="originalQuantity"
-                              value={this.state.objItems.originalQuantity}
-                              name="originalQuantity"
-                              placeholder={Resources.originalQuantity[currentLanguage]}
-                              onBlur={e => { handleChange(e); handleBlur(e); }}
-                              onChange={e => this.handleChangeItems(e, "originalQuantity")} />
-                            {errors.originalQuantity && touched.originalQuantity ? (<em className="pError">{errors.originalQuantity}</em>) : null}
-                          </div>
-                        </div>
-                        <div className="fillter-status fillter-item-c">
-                          <label className="control-label">
-                            {Resources.numberAbb[currentLanguage]}
-                          </label>
-                          <div className={"ui input inputDev" + (errors.numberAbb && touched.numberAbb ? " has-error" : "ui input inputDev")}>
-                            <input type="text" className="form-control" id="numberAbb"
-                              value={this.state.objItems.arrange}
-                              name="numberAbb" placeholder={Resources.refDoc[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
-                              onChange={e => this.handleChangeItems(e, "arrange")} />
-                            {errors.numberAbb && touched.numberAbb ? (<em className="pError">{errors.numberAbb}</em>) : null}
-                          </div>
-                        </div>
-                        <div className="fillter-status fillter-item-c">
-                          <label className="control-label">
-                            {Resources.unit[currentLanguage]}
-                          </label>
-                          <div className={"ui input inputDev" + (errors.unit && touched.unit ? " has-error" : "ui input inputDev")}>
-                            <input type="text" className="form-control" id="unit"
-                              value={this.state.objItems.unit}
-                              name="unit" placeholder={Resources.unit[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
-                              onChange={e => this.handleChangeItems(e, "unit")} />
-                            {errors.unit && touched.unit ? (<em className="pError">{errors.unit}</em>) : null}
-                          </div>
-                        </div>
-                        <div className="fillter-status fillter-item-c">
-                          <label className="control-label">
-                            {Resources.unitPrice[currentLanguage]}
-                          </label>
-                          <div className={"ui input inputDev" + (errors.unitPrice && touched.unitPrice ? " has-error" : "ui input inputDev")}>
-                            <input type="text" className="form-control" id="unitPrice"
-                              value={this.state.objItems.unitPrice}
-                              name="unitPrice" placeholder={Resources.refDoc[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
-                              onChange={e => this.handleChangeItems(e, "unitPrice")} />
-                            {errors.unitPrice && touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
-                          </div>
-                        </div>
-                        <div className="slider-Btns fullWidthWrapper">
-                          {this.state.isLoading === false ? (
-                            <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                              {Resources["goEdit"][currentLanguage]}
-                            </button>
-                          ) :
-                            (<button className="primaryBtn-1 btn disabled">
-                              <div className="spinner">
-                                <div className="bounce1" />
-                                <div className="bounce2" />
-                                <div className="bounce3" />
-                              </div>
-                            </button>
-                            )}
-                        </div>
+
+
+        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogForEdit = ref} beforeClose={this.onCloseModal.bind(this)}>
+          <div className="ui modal largeModal ">
+            <Formik initialValues={{ ...this.state.objItems }}
+              validationSchema={itemSchema} enableReinitialize={true}
+              onSubmit={values => { this.editItems(); }}>
+              {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                <Form className="dropWrapper" onSubmit={handleSubmit}>
+                  <div className=" proForm customProform">
+                    <div className="fillter-status fillter-item-c">
+                      <label className="control-label">
+                        {Resources["description"][currentLanguage]}
+                      </label>
+                      <div className="inputDev ui input">
+                        <input name="description" className="form-control fsadfsadsa" id="description" placeholder={Resources.description[currentLanguage]}
+                          autoComplete="off" value={this.state.objItems.details}
+                          onBlur={e => { handleBlur(e); handleChange(e); }}
+                          onChange={e => this.handleChangeItems(e, "details")} />
+                        {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
                       </div>
-                    </Form>
-                  )}
-                </Formik>
-              </div>
-            </Rodal>
-          </Fragment>
-          ) : null}
+                    </div>
+                    <div className="fillter-status fillter-item-c">
+                      <label className="control-label">
+                        {Resources.quantity[currentLanguage]}
+                      </label>
+                      <div className={"ui input inputDev " + (errors.originalQuantity && touched.originalQuantity ? " has-error" : " ")}>
+                        <input type="text" className="form-control"
+                          id="originalQuantity"
+                          value={this.state.objItems.originalQuantity}
+                          name="originalQuantity"
+                          placeholder={Resources.originalQuantity[currentLanguage]}
+                          onBlur={e => { handleChange(e); handleBlur(e); }}
+                          onChange={e => this.handleChangeItems(e, "originalQuantity")} />
+                        {errors.originalQuantity && touched.originalQuantity ? (<em className="pError">{errors.originalQuantity}</em>) : null}
+                      </div>
+                    </div>
+                    <div className="fillter-status fillter-item-c">
+                      <label className="control-label">
+                        {Resources.numberAbb[currentLanguage]}
+                      </label>
+                      <div className={"ui input inputDev" + (errors.numberAbb && touched.numberAbb ? " has-error" : "ui input inputDev")}>
+                        <input type="text" className="form-control" id="numberAbb"
+                          value={this.state.objItems.arrange}
+                          name="numberAbb" placeholder={Resources.refDoc[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
+                          onChange={e => this.handleChangeItems(e, "arrange")} />
+                        {errors.numberAbb && touched.numberAbb ? (<em className="pError">{errors.numberAbb}</em>) : null}
+                      </div>
+                    </div>
+                    <div className="fillter-status fillter-item-c">
+                      <label className="control-label">
+                        {Resources.unit[currentLanguage]}
+                      </label>
+                      <div className={"ui input inputDev" + (errors.unit && touched.unit ? " has-error" : "ui input inputDev")}>
+                        <input type="text" className="form-control" id="unit"
+                          value={this.state.objItems.unit}
+                          name="unit" placeholder={Resources.unit[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
+                          onChange={e => this.handleChangeItems(e, "unit")} />
+                        {errors.unit && touched.unit ? (<em className="pError">{errors.unit}</em>) : null}
+                      </div>
+                    </div>
+                    <div className="fillter-status fillter-item-c">
+                      <label className="control-label">
+                        {Resources.unitPrice[currentLanguage]}
+                      </label>
+                      <div className={"ui input inputDev" + (errors.unitPrice && touched.unitPrice ? " has-error" : "ui input inputDev")}>
+                        <input type="text" className="form-control" id="unitPrice"
+                          value={this.state.objItems.unitPrice}
+                          name="unitPrice" placeholder={Resources.refDoc[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
+                          onChange={e => this.handleChangeItems(e, "unitPrice")} />
+                        {errors.unitPrice && touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                      </div>
+                    </div>
+                    <div className="slider-Btns fullWidthWrapper">
+                      {this.state.isLoading === false ? (
+                        <button className="primaryBtn-1 btn meduimBtn" type="submit">
+                          {Resources["goEdit"][currentLanguage]}
+                        </button>
+                      ) :
+                        (<button className="primaryBtn-1 btn disabled">
+                          <div className="spinner">
+                            <div className="bounce1" />
+                            <div className="bounce2" />
+                            <div className="bounce3" />
+                          </div>
+                        </button>
+                        )}
+                    </div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </SkyLight>
       </Fragment>
     );
   }
