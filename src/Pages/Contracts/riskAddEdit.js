@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -18,9 +17,6 @@ import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-import Distribution from '../../Componants/OptionsPanels/DistributionList';
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
 //import RiskCause from '../../Componants/OptionsPanels/RiskCause';
 import RiskConesquence from '../../Componants/publicComponants/RiskConesquence';
 import RiskRealisation from '../../Componants/publicComponants/RiskRealisation';
@@ -31,8 +27,9 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import numeral from 'numeral';
 import RiskCategorisation from "../../Componants/publicComponants/RiskCategorisation";
-import Steps from "../../Componants/publicComponants/Steps"; 
+import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -120,8 +117,6 @@ class riskAddEdit extends Component {
             preMedigation: 0,
             EMV: 0,
             documentCycle: {},
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
             viewModel: false,
             isApproveMode: isApproveMode,
@@ -243,9 +238,6 @@ class riskAddEdit extends Component {
             this.checkDocumentIsView();
         }
 
-        if (this.state.showModal != nextProps.showModal) {
-            this.setState({ showModal: nextProps.showModal });
-        }
     };
 
     componentDidUpdate(prevProps) {
@@ -647,20 +639,8 @@ class riskAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-
-        if (item.value != "0") {
-            this.props.actions.showOptionPanel(false);
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true,
-                viewModel: false
-            })
-
-            this.simpleDialog.show()
-        }
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
     }
 
     changeCurrentStep = stepNo => {
@@ -965,7 +945,7 @@ class riskAddEdit extends Component {
                                                         error={errors.fromCompanyId}
                                                         touched={touched.fromCompanyId}
                                                         name="fromCompanyId"
-                                                        id="actionOwnerId" styles={CompanyDropdown} classDrop="companyName1 "/>
+                                                        id="actionOwnerId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                 </div>
                                                 <div className="super_company">
                                                     <Dropdown isMulti={false} data={this.state.fromContacts}
@@ -976,7 +956,7 @@ class riskAddEdit extends Component {
                                                         error={errors.actionOwnerContactId}
                                                         touched={touched.actionOwnerContactId}
                                                         name="actionOwnerContactId"
-                                                        id="actionOwnerContactId" classDrop=" contactName1" styles={ContactDropdown}/>
+                                                        id="actionOwnerContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                                 </div>
                                             </div>
                                         </div>
@@ -1609,12 +1589,6 @@ class riskAddEdit extends Component {
 
 
     render() {
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
-        ];
         let numberFormats =
             <div className="proForm datepickerContainer ">
                 <div className="linebylineInput linebylineInput__checkbox ">
@@ -1640,7 +1614,7 @@ class riskAddEdit extends Component {
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.risk[currentLanguage]} moduleTitle={Resources['costControl'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            {this.state.CurrentStep==0 ?
+                            {this.state.CurrentStep == 0 ?
                                 <div id="step1" className="step-content-body">
                                     <div className="subiTabsContent">
                                         <div className="document-fields">
@@ -1777,7 +1751,7 @@ class riskAddEdit extends Component {
                                                                             error={errors.ownerCompanyId}
                                                                             touched={touched.ownerCompanyId}
                                                                             name="ownerCompanyId"
-                                                                            id="ownerCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
+                                                                            id="ownerCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                     </div>
                                                                     <div className="super_company">
                                                                         <Dropdown isMulti={false} data={this.state.ToContacts}
@@ -1788,7 +1762,7 @@ class riskAddEdit extends Component {
                                                                             error={errors.ownerContactId}
                                                                             touched={touched.ownerContactId}
                                                                             name="ownerContactId"
-                                                                            id="ownerContactId" classDrop=" contactName1" styles={ContactDropdown}/>
+                                                                            id="ownerContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1832,7 +1806,7 @@ class riskAddEdit extends Component {
                                             {this.CurrentMit()}
                                             <div className="doc-pre-cycle">
                                                 <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
+                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1855,7 +1829,7 @@ class riskAddEdit extends Component {
 
                                                     <div className="doc-pre-cycle">
                                                         <div className="slider-Btns">
-                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(3)}>{Resources['next'][currentLanguage]}</button>
+                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>{Resources['next'][currentLanguage]}</button>
                                                         </div>
 
                                                     </div>
@@ -1867,7 +1841,7 @@ class riskAddEdit extends Component {
                                                     {this.ProposedMit(false)}
                                                     <div className="doc-pre-cycle">
                                                         <div className="slider-Btns">
-                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(4)}>{Resources['next'][currentLanguage]}</button>
+                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(4)}>{Resources['next'][currentLanguage]}</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1887,7 +1861,7 @@ class riskAddEdit extends Component {
                                                         </div>
                                                         <div className="doc-pre-cycle">
                                                             <div className="slider-Btns">
-                                                                <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(5)}>{Resources['next'][currentLanguage]}</button>
+                                                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(5)}>{Resources['next'][currentLanguage]}</button>
                                                             </div>
 
                                                         </div>
@@ -1964,7 +1938,7 @@ class riskAddEdit extends Component {
 
                                                             <div className="doc-pre-cycle">
                                                                 <div className="slider-Btns">
-                                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(6)}>{Resources['next'][currentLanguage]}</button>
+                                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(6)}>{Resources['next'][currentLanguage]}</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1975,7 +1949,7 @@ class riskAddEdit extends Component {
                                                             </div>
                                                             <div className="doc-pre-cycle">
                                                                 <div className="slider-Btns">
-                                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(7)}>{Resources['next'][currentLanguage]}</button>
+                                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(7)}>{Resources['next'][currentLanguage]}</button>
                                                                 </div>
                                                             </div>
                                                         </Fragment>
@@ -1997,30 +1971,24 @@ class riskAddEdit extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
-                                        {this.state.isApproveMode === true ?
-                                            <div >
-                                                <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                            </div>
-                                            : null
-                                        }
-                                        <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                        <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                        <span className="border"></span>
-                                        <div className="document__action--menu">
-                                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                        </div>
+                                        <DocumentActions
+                                            isApproveMode={this.state.isApproveMode}
+                                            docTypeId={this.state.docTypeId}
+                                            docId={this.state.docId}
+                                            projectId={this.state.projectId}
+                                            previousRoute={this.state.previousRoute}
+                                            docApprovalId={this.state.docApprovalId}
+                                            currentArrange={this.state.currentArrange}
+                                            showModal={this.props.showModal}
+                                            showOptionPanel={this.showOptionPanel}
+                                            permission={this.state.permission}
+                                        />
                                     </div>
                                 </div>
                                 : null
                         }
                     </div>
-                </div>
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
-                    </SkyLight>
-                </div>
+                </div> 
             </div>
         );
     }
@@ -2034,7 +2002,8 @@ function mapStateToProps(state, ownProps) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        viewModel: state.communication.viewModel
+        viewModel: state.communication.viewModel,
+        showModal: state.communication.showModal
     }
 }
 

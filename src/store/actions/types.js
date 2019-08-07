@@ -15,6 +15,7 @@ export const Show_OptionPanel = 'Show_OptionPanel';
 export const Update_Field = 'Update_Field';
 export const Delete_File = 'Delete_File';
 export const SendByEmail_Inbox = 'SendByEmail_Inbox';
+export const CopyTo = 'CopyTo';
 export const Add_Contact = 'AddContact';
 export const edit_Contact = 'edit_Contact';
 export const Get_Contacts = 'Get_Contacts';

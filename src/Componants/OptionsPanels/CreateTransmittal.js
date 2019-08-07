@@ -33,7 +33,7 @@ class CreateTransmittal extends Component {
                 arrange: "",
                 priorityId: null,
                 toCompanyId: null,
-                subject: "sasASa",
+                subject: this.props.document.subject,
                 toContactId: null,
                 status: true,
                 submittFor: null
@@ -134,7 +134,7 @@ class CreateTransmittal extends Component {
                                                 handleBlur(e)
                                                 handleChange(e)
                                             }}
-                                            onChange={(e) => this.inputChangeHandler} />
+                                            onChange={(e) => this.inputChangeHandler(e)} />
                                         {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                     </div>
                                 </div>
@@ -233,6 +233,7 @@ class CreateTransmittal extends Component {
 function mapStateToProps(state) {
 
     return {
+        document: state.communication.document,
         showModal: state.communication.showModal
     }
 }

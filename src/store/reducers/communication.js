@@ -157,6 +157,11 @@ export default function (state = initialState.app.communication, action) {
                 ...state,
                 showModal: action.showModal
             };
+        case types.CopyTo:
+            return {
+                ...state,
+                showModal: action.showModal
+            };
 
 
         case types.Update_Field:
