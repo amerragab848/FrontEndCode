@@ -458,9 +458,7 @@ class MeetingMinutesAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
-        if (prevProps.showModal != this.props.showModal) {
-            this.setState({ showModal: this.props.showModal });
-        }
+
     }
 
     componentWillReceiveProps(props, state) {
