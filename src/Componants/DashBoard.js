@@ -298,128 +298,135 @@ class DashBoard extends Component {
 
     return (
       <div className="customeTabs">
-        <Rodal visible={this.props.opened} onClose={this.props.closed}>
-          <div className="dashboard__modal">
-            <div className="dashboard__container">
-              <div className="modalTitle">
-                <h2>{Resources.dashboardCenter[currentLanguage]}</h2>
-              </div>
-              {this.state.categoryOrder.length ? <Tabs className="dashboard__Project" selectedIndex={this.state.dashBoardIndex} onSelect={dashBoardIndex => this.toggleTab(dashBoardIndex + 1)}>
-                <div className="project__tabs subitTabs">
-                  <TabList className="zero dashDragCustom">
-                    <Tab>
-                      {/* general */}
-                      <span className="subUlTitle">
-                        {Resources["general"][currentLanguage]}
-                      </span>
-                    </Tab>
-                    <Tab>
-                      {/* counters */}
-                      <span className="subUlTitle">
-                        {Resources["counters"][currentLanguage]}
-                      </span>
-                    </Tab>
-                    <Tab>
-                      {/* chart */}
-                      <span className="subUlTitle">
-                        {Resources["chart"][currentLanguage]}
-                      </span>
-                    </Tab>
-                  </TabList>
-                </div>
-                <TabPanel>
-                  {this.state.type === 1 ? <div className="dash__content ui tab active">
-                    <div className="project__content">
-                      {/* general */}
-                      <SortablePane direction="vertical" order={this.state.categoryOrder[0]} onDragStop={(e, key, el, order) => this.categoryOrderChanged(order)} onOrderChange={order => this.changeCategoryOrder(order, 1)}>
-                        {categoryPanes[1]}
-                      </SortablePane>
-                    </div>
-                    <div className="project__content">
-                      {widgets ? <Fragment>
-                        <Pane>
-                          <div className="secondTabs project__select ui-state-default">
-                            <img src={dashBoardLogo} />
-                            <div className={"ui checkbox checkBoxGray300 count" + (currentCategoryChecked ? " checked" : '')} onClick={event => this.toggleCheckAll(this.state.type, this.state.category)}>
-                              <input name="CheckBox" type="checkbox" id="terms" tabIndex={0} className="hidden" checked={currentCategoryChecked} />
-                              <label />
-                            </div>
-                            <div className="project__title">
-                              <h3>{Resources["selectAll"][currentLanguage]}</h3>
-                            </div>
-                          </div>
-                        </Pane>
-                        <SortablePane direction="vertical" order={this.state.widgetOrders[this.state.type][this.state.category].order} onDragStop={(e, key, el, order) => this.widgetOrderChanged(order)} onOrderChange={order => this.changeWidgetCategoryOrder(order)}>
-                          {widgets}
-                        </SortablePane>
-                      </Fragment> : null}
-                    </div>
-                  </div> : null}
-                </TabPanel>
-                <TabPanel>
-                  {this.state.type === 2 ? <div className="dash__content ui tab">
-                    <div className="project__content">
-                      {/* counters */}
-                      <SortablePane direction="vertical" order={this.state.categoryOrder[1]} onDragStop={(e, key, el, order) => this.categoryOrderChanged(order)} onOrderChange={order => this.changeCategoryOrder(order, 2)}>
-                        {categoryPanes[2]}
-                      </SortablePane>
-                    </div>
-                    <div className="project__content">
-                      {widgets ? <Fragment>
-                        <Pane>
-                          <div className="secondTabs project__select ui-state-default">
-                            <img src={dashBoardLogo} />
-                            <div className={"ui checkbox checkBoxGray300 count" + (currentCategoryChecked ? " checked" : '')} onClick={event => this.toggleCheckAll(this.state.type, this.state.category)}>
-                              <input name="CheckBox" type="checkbox" id="terms" tabIndex={1} className="hidden" checked={currentCategoryChecked} />
-                              <label />
-                            </div>
-                            <div className="project__title">
-                              <h3>{Resources["selectAll"][currentLanguage]}</h3>
-                            </div>
-                          </div>
-                        </Pane>
-                        <SortablePane direction="vertical" order={this.state.widgetOrders[this.state.type][this.state.category].order} onDragStop={(e, key, el, order) => this.widgetOrderChanged(order)} onOrderChange={order => this.changeWidgetCategoryOrder(order)}>
-                          {widgets}
-                        </SortablePane>
-                      </Fragment> : null}
-                    </div>
-                  </div> : null}
-                </TabPanel>
-                <TabPanel>
-                  {this.state.type === 3 ? <div className="dash__content ui tab">
-                    <div className="project__content">
-                      {/* chart */}
-                      <SortablePane direction="vertical" order={this.state.categoryOrder[2]} onDragStop={(e, key, el, order) => this.categoryOrderChanged(order)} onOrderChange={order => this.changeCategoryOrder(order, 3)}>
-                        {categoryPanes[3]}
-                      </SortablePane>
-                    </div>
-                    <div className="project__content">
-                      {widgets ? <Fragment>
-                        <Pane>
-                          {this.state.widgetOrders[this.state.type][this.state.category].order.length > 0 ?
-                            <div className="secondTabs project__select ui-state-default">
-                              <img src={dashBoardLogo} />
-                              <div className={"ui checkbox checkBoxGray300 count" + (currentCategoryChecked ? " checked" : '')} onClick={event => this.toggleCheckAll(this.state.type, this.state.category)}>
-                                <input name="CheckBox" type="checkbox" id="terms" tabIndex={2} className="hidden" checked={currentCategoryChecked} />
-                                <label />
-                              </div>
-                              <div className="project__title">
-                                <h3>{Resources["selectAll"][currentLanguage]}</h3>
-                              </div>
-                            </div> : null}
-                        </Pane>
-                        {this.state.widgetOrders[this.state.type][this.state.category].order.length > 0 ?
-                          <SortablePane direction="vertical" order={this.state.widgetOrders[this.state.type][this.state.category].order} onDragStop={(e, key, el, order) => this.widgetOrderChanged(order)} onOrderChange={order => this.changeWidgetCategoryOrder(order)}>
-                            {widgets}
-                          </SortablePane> : null}
-                      </Fragment> : null}
-                    </div>
-                  </div> : null}
-                </TabPanel>
-              </Tabs> : null}
+        <div className="dashboard__modal" style={{
+          display: this.props.opened ? ' flex' : 'none',
+           position: 'fixed',
+          top: '0',
+          right: '0',
+          left: '0',
+          bottom: '0',
+          zIndex: '99999',
+        }}>
+          <button onClick={this.props.closed} style={{ cursor: 'pointer',position: 'absolute', top: '15px', right: '15px', background: 'transparent', border: 'none', fontSize: '18px', color: '#fff' }}>X</button>
+          <div className="dashboard__container">
+            <div className="modalTitle">
+              <h2>{Resources.dashboardCenter[currentLanguage]}</h2>
             </div>
+            {this.state.categoryOrder.length ? <Tabs className="dashboard__Project" selectedIndex={this.state.dashBoardIndex} onSelect={dashBoardIndex => this.toggleTab(dashBoardIndex + 1)}>
+              <div className="project__tabs subitTabs">
+                <TabList className="zero dashDragCustom">
+                  <Tab>
+                    {/* general */}
+                    <span className="subUlTitle">
+                      {Resources["general"][currentLanguage]}
+                    </span>
+                  </Tab>
+                  <Tab>
+                    {/* counters */}
+                    <span className="subUlTitle">
+                      {Resources["counters"][currentLanguage]}
+                    </span>
+                  </Tab>
+                  <Tab>
+                    {/* chart */}
+                    <span className="subUlTitle">
+                      {Resources["chart"][currentLanguage]}
+                    </span>
+                  </Tab>
+                </TabList>
+              </div>
+              <TabPanel>
+                {this.state.type === 1 ? <div className="dash__content ui tab active">
+                  <div className="project__content">
+                    {/* general */}
+                    <SortablePane direction="vertical" order={this.state.categoryOrder[0]} onDragStop={(e, key, el, order) => this.categoryOrderChanged(order)} onOrderChange={order => this.changeCategoryOrder(order, 1)}>
+                      {categoryPanes[1]}
+                    </SortablePane>
+                  </div>
+                  <div className="project__content">
+                    {widgets ? <Fragment>
+                      <Pane>
+                        <div className="secondTabs project__select ui-state-default">
+                          <img src={dashBoardLogo} />
+                          <div className={"ui checkbox checkBoxGray300 count" + (currentCategoryChecked ? " checked" : '')} onClick={event => this.toggleCheckAll(this.state.type, this.state.category)}>
+                            <input name="CheckBox" type="checkbox" id="terms" tabIndex={0} className="hidden" checked={currentCategoryChecked} />
+                            <label />
+                          </div>
+                          <div className="project__title">
+                            <h3>{Resources["selectAll"][currentLanguage]}</h3>
+                          </div>
+                        </div>
+                      </Pane>
+                      <SortablePane direction="vertical" order={this.state.widgetOrders[this.state.type][this.state.category].order} onDragStop={(e, key, el, order) => this.widgetOrderChanged(order)} onOrderChange={order => this.changeWidgetCategoryOrder(order)}>
+                        {widgets}
+                      </SortablePane>
+                    </Fragment> : null}
+                  </div>
+                </div> : null}
+              </TabPanel>
+              <TabPanel>
+                {this.state.type === 2 ? <div className="dash__content ui tab">
+                  <div className="project__content">
+                    {/* counters */}
+                    <SortablePane direction="vertical" order={this.state.categoryOrder[1]} onDragStop={(e, key, el, order) => this.categoryOrderChanged(order)} onOrderChange={order => this.changeCategoryOrder(order, 2)}>
+                      {categoryPanes[2]}
+                    </SortablePane>
+                  </div>
+                  <div className="project__content">
+                    {widgets ? <Fragment>
+                      <Pane>
+                        <div className="secondTabs project__select ui-state-default">
+                          <img src={dashBoardLogo} />
+                          <div className={"ui checkbox checkBoxGray300 count" + (currentCategoryChecked ? " checked" : '')} onClick={event => this.toggleCheckAll(this.state.type, this.state.category)}>
+                            <input name="CheckBox" type="checkbox" id="terms" tabIndex={1} className="hidden" checked={currentCategoryChecked} />
+                            <label />
+                          </div>
+                          <div className="project__title">
+                            <h3>{Resources["selectAll"][currentLanguage]}</h3>
+                          </div>
+                        </div>
+                      </Pane>
+                      <SortablePane direction="vertical" order={this.state.widgetOrders[this.state.type][this.state.category].order} onDragStop={(e, key, el, order) => this.widgetOrderChanged(order)} onOrderChange={order => this.changeWidgetCategoryOrder(order)}>
+                        {widgets}
+                      </SortablePane>
+                    </Fragment> : null}
+                  </div>
+                </div> : null}
+              </TabPanel>
+              <TabPanel>
+                {this.state.type === 3 ? <div className="dash__content ui tab">
+                  <div className="project__content">
+                    {/* chart */}
+                    <SortablePane direction="vertical" order={this.state.categoryOrder[2]} onDragStop={(e, key, el, order) => this.categoryOrderChanged(order)} onOrderChange={order => this.changeCategoryOrder(order, 3)}>
+                      {categoryPanes[3]}
+                    </SortablePane>
+                  </div>
+                  <div className="project__content">
+                    {widgets ? <Fragment>
+                      <Pane>
+                        {this.state.widgetOrders[this.state.type][this.state.category].order.length > 0 ?
+                          <div className="secondTabs project__select ui-state-default">
+                            <img src={dashBoardLogo} />
+                            <div className={"ui checkbox checkBoxGray300 count" + (currentCategoryChecked ? " checked" : '')} onClick={event => this.toggleCheckAll(this.state.type, this.state.category)}>
+                              <input name="CheckBox" type="checkbox" id="terms" tabIndex={2} className="hidden" checked={currentCategoryChecked} />
+                              <label />
+                            </div>
+                            <div className="project__title">
+                              <h3>{Resources["selectAll"][currentLanguage]}</h3>
+                            </div>
+                          </div> : null}
+                      </Pane>
+                      {this.state.widgetOrders[this.state.type][this.state.category].order.length > 0 ?
+                        <SortablePane direction="vertical" order={this.state.widgetOrders[this.state.type][this.state.category].order} onDragStop={(e, key, el, order) => this.widgetOrderChanged(order)} onOrderChange={order => this.changeWidgetCategoryOrder(order)}>
+                          {widgets}
+                        </SortablePane> : null}
+                    </Fragment> : null}
+                  </div>
+                </div> : null}
+              </TabPanel>
+            </Tabs> : null}
           </div>
-        </Rodal>
+        </div>
       </div>
     );
   }
