@@ -17,10 +17,7 @@ import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import { SkyLightStateless } from 'react-skylight';
@@ -132,8 +129,6 @@ class invoicesForPoAddEdit extends Component {
 
         this.state = {
             CurrStep: 0,
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -214,7 +209,7 @@ class invoicesForPoAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
+        if (nextProps.document.id != this.props.document.id) {
             let document = nextProps.document
             document.docDate = document.docDate === null ? moment().format('YYYY-MM-DD') : moment(document.docDate).format('YYYY-MM-DD')
             this.setState({
@@ -239,11 +234,11 @@ class invoicesForPoAddEdit extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+        if (
+            this.props.hasWorkflow !== prevProps.hasWorkflow ||
+            this.props.changeStatus !== prevProps.changeStatus
+        ) {
             this.checkDocumentIsView();
-        }
-        if (this.state.showModal != this.props.showModal) {
-            this.setState({ showModal: this.props.showModal });
         }
     }
 
@@ -588,19 +583,6 @@ class invoicesForPoAddEdit extends Component {
                     : null)
                 : null
         )
-    }
-
-    handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") {
-            this.props.actions.showOptionPanel(false);
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-            this.simpleDialog.show()
-        }
     }
 
     ShowCostTree = () => {
@@ -961,6 +943,10 @@ class invoicesForPoAddEdit extends Component {
         this.setState({ CurrStep: stepNo });
     };
 
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
+    }
+
     render() {
 
         let columnsDeduction = [
@@ -993,19 +979,6 @@ class invoicesForPoAddEdit extends Component {
                 Header: Resources['factor'][currentLanguage],
                 accessor: 'factorName',
                 width: 200,
-            }
-        ]
-
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
             }
         ]
 
@@ -1369,6 +1342,7 @@ class invoicesForPoAddEdit extends Component {
                                         {this.props.changeStatus === true ?
                                             <div className="approveDocument">
                                                 <div className="approveDocumentBTNS">
+
                                                     {this.state.isLoading ?
                                                         <button className="primaryBtn-1 btn disabled">
                                                             <div className="spinner">
@@ -1377,20 +1351,21 @@ class invoicesForPoAddEdit extends Component {
                                                                 <div className="bounce3" />
                                                             </div>
                                                         </button> :
-                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
+                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
                                                     }
-                                                    {this.state.isApproveMode === true ?
-                                                        <div >
-                                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                                        </div>
-                                                        : null}
-                                                    <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                                    <span className="border"></span>
-                                                    <div className="document__action--menu">
-                                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                    </div>
+                                                    <DocumentActions
+                                                        isApproveMode={this.state.isApproveMode}
+                                                        docTypeId={this.state.docTypeId}
+                                                        docId={this.state.docId}
+                                                        projectId={this.state.projectId}
+                                                        previousRoute={this.state.previousRoute}
+                                                        docApprovalId={this.state.docApprovalId}
+                                                        currentArrange={this.state.currentArrange}
+                                                        showModal={this.props.showModal}
+                                                        showOptionPanel={this.showOptionPanel}
+                                                        permission={this.state.permission}
+                                                    />
+
                                                 </div>
                                             </div>
                                             : null}
@@ -2016,12 +1991,6 @@ class invoicesForPoAddEdit extends Component {
                         </Fragment>
 
                     </div>
-                </div>
-
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
-                    </SkyLight>
                 </div>
 
                 {this.state.showDeleteModal == true ? (

@@ -25,13 +25,11 @@ import CryptoJS from 'crypto-js';
 import moment from "moment";
 
 import SkyLight, { SkyLightStateless } from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
-import Steps from "../../Componants/publicComponants/Steps"; 
+import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 var steps_defination = [];
@@ -42,7 +40,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -188,7 +186,7 @@ class punchListAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -202,10 +200,10 @@ class punchListAddEdit extends Component {
             }
             index++;
         }
- 
+
         this.state = {
             Loading: true,
-            IsAddModel: false, 
+            IsAddModel: false,
             isLoading: false,
             CurrentStep: 0,
             rows: [],
@@ -213,10 +211,8 @@ class punchListAddEdit extends Component {
             selectedRows: [],
             showCheckbox: true,
             columns: columnsGrid.filter(column => column.visible !== false),
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -275,9 +271,9 @@ class punchListAddEdit extends Component {
 
         if (!Config.IsAllow(274) && !Config.IsAllow(275) && !Config.IsAllow(277)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push( 
+            this.props.history.push(
                 this.state.perviousRoute
-              );
+            );
         }
         steps_defination = [
             {
@@ -302,9 +298,6 @@ class punchListAddEdit extends Component {
             });
 
             this.checkDocumentIsView();
-        }
-        if (this.state.showModal != nextProps.showModal) {
-            this.setState({ showModal: nextProps.showModal });
         }
     }
 
@@ -334,7 +327,7 @@ class punchListAddEdit extends Component {
                     this.FillDropDowns()
                     let data = { items: res };
                     this.props.actions.ExportingData(data);
-    
+
                 }
             )
             this.GetMaxArrageItem()
@@ -391,10 +384,6 @@ class punchListAddEdit extends Component {
     changeCurrentStep = stepNo => {
         this.setState({ CurrentStep: stepNo });
     };
-
- 
-
-   
 
     FillDropDowns = () => {
 
@@ -577,7 +566,7 @@ class punchListAddEdit extends Component {
         this.setState({ showDeleteModal: false });
     }
 
- 
+
     clickHandlerDeleteRowsMain = (selectedRows) => {
         this.setState({
             selectedRows,
@@ -615,19 +604,19 @@ class punchListAddEdit extends Component {
 
     SaveAddEditSnagList = () => {
         if (this.state.IsAddModel) {
-           this.changeCurrentStep(1);
+            this.changeCurrentStep(1);
         }
         else {
             let SnagListObj = this.state.document
             SnagListObj.docDate = moment(SnagListObj.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
             this.setState({ isLoading: true })
             if (docId > 0) {
-this.changeCurrentStep(1);
+                this.changeCurrentStep(1);
                 dataservice.addObject('EditLogsPunchLists', SnagListObj).then(
                     res => {
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                         this.setState({ isLoading: false })
-                         
+
                     }).catch(ex => {
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     });
@@ -645,7 +634,7 @@ this.changeCurrentStep(1);
                         toast.success(Resources["operationSuccess"][currentLanguage]);
                     }).catch(ex => {
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
-                    }); 
+                    });
             }
         }
     }
@@ -762,26 +751,10 @@ this.changeCurrentStep(1);
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3311) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={888} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={888} />
                     : null)
                 : null
         )
-    }
-
-    handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        console.log(item);
-        if (item.value != "0") {
-            this.props.actions.showOptionPanel(false);
-
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-
-            this.simpleDialog.show()
-        }
     }
 
     ClosePopup = () => {
@@ -796,22 +769,12 @@ this.changeCurrentStep(1);
             OpenedDateItem: moment(),
         })
     }
- 
+
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
+    }
 
     render() {
-
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-
-        ]
 
         //Render First Step 
         let RenderSnagListAddEdit = () => {
@@ -906,7 +869,7 @@ this.changeCurrentStep(1);
                                                             touched={touched.bicCompanyId} name="bicCompanyId"
                                                             handleChange={event =>
                                                                 this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
-                                                                styles={CompanyDropdown} classDrop="companyName1 " />
+                                                            styles={CompanyDropdown} classDrop="companyName1 " />
                                                     </div>
 
                                                     <div className="super_company">
@@ -914,7 +877,7 @@ this.changeCurrentStep(1);
                                                             handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
                                                             onChange={setFieldValue} onBlur={setFieldTouched}
                                                             error={errors.bicContactId} touched={touched.bicContactId}
-                                                            index="IR-bicContactId" name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}/>
+                                                            index="IR-bicContactId" name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -1092,7 +1055,7 @@ this.changeCurrentStep(1);
                                                                 touched={touched.ActionByCompanyIdItem} name="ActionByCompanyIdItem"
                                                                 handleChange={event =>
                                                                     this.handleChangeDropDown(event, 'ActionByCompanyIdItem', true, 'ToContactsItem', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyIdItem', 'selectedActionByContactItem')}
-                                                                    styles={CompanyDropdown} classDrop="companyName1 " />
+                                                                styles={CompanyDropdown} classDrop="companyName1 " />
                                                         </div>
 
                                                         <div className="super_company">
@@ -1100,7 +1063,7 @@ this.changeCurrentStep(1);
                                                                 handleChange={event => this.handleChangeDropDown(event, 'ActionByContactItem', false, '', '', '', 'selectedActionByContactItem')}
                                                                 onChange={setFieldValue} onBlur={setFieldTouched}
                                                                 error={errors.ActionByContactItem} touched={touched.ActionByContactItem}
-                                                                index="IR-ActionByContactItem" name="ActionByContactItem" id="ActionByContactItem" classDrop=" contactName1" styles={ContactDropdown}/>
+                                                                index="IR-ActionByContactItem" name="ActionByContactItem" id="ActionByContactItem" classDrop=" contactName1" styles={ContactDropdown} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1235,7 +1198,7 @@ this.changeCurrentStep(1);
                                                 touched={touched.bicCompanyId} name="bicCompanyId"
                                                 handleChange={event =>
                                                     this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedToContact')}
-                                                    styles={CompanyDropdown} classDrop="companyName1 " />
+                                                styles={CompanyDropdown} classDrop="companyName1 " />
                                         </div>
 
                                         <div className="super_company">
@@ -1243,7 +1206,7 @@ this.changeCurrentStep(1);
                                                 handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
                                                 onChange={setFieldValue} onBlur={setFieldTouched}
                                                 error={errors.bicContactId} touched={touched.bicContactId}
-                                                index="IR-bicContactId" name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}/>
+                                                index="IR-bicContactId" name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                         </div>
                                     </div>
                                 </div>
@@ -1280,7 +1243,7 @@ this.changeCurrentStep(1);
                         </div>
 
                         <div className="step-content">
-                            {this.state.CurrentStep==0 ?
+                            {this.state.CurrentStep == 0 ?
                                 <Fragment>
                                     {RenderSnagListAddEdit()}
                                 </Fragment>
@@ -1294,7 +1257,7 @@ this.changeCurrentStep(1);
                                         </header>
                                         {dataGrid}
                                         <div className="slider-Btns">
-                                            <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
+                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
                                         </div>
                                     </div>
                                 </div>}
@@ -1325,30 +1288,32 @@ this.changeCurrentStep(1);
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
-                                        {this.state.isApproveMode === true ?
-                                            <div >
-                                                <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-
-
-                                            </div>
-                                            : null
+                                        {this.state.isLoading ?
+                                            <button className="primaryBtn-1 btn disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button> :
+                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
                                         }
-                                        <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                        <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                        <span className="border"></span>
-                                        <div className="document__action--menu">
-                                            <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                        </div>
+                                        <DocumentActions
+                                            isApproveMode={this.state.isApproveMode}
+                                            docTypeId={this.state.docTypeId}
+                                            docId={this.state.docId}
+                                            projectId={this.state.projectId}
+                                            previousRoute={this.state.previousRoute}
+                                            docApprovalId={this.state.docApprovalId}
+                                            currentArrange={this.state.currentArrange}
+                                            showModal={this.props.showModal}
+                                            showOptionPanel={this.showOptionPanel}
+                                            permission={this.state.permission}
+                                        />
                                     </div>
                                 </div>
                                 : null
                         }
-                        <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                            <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                                {this.state.currentComponent}
-                            </SkyLight>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1364,7 +1329,8 @@ function mapStateToProps(state) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId
+        projectId: state.communication.projectId,
+        showModal: state.communication.showModal
     }
 }
 

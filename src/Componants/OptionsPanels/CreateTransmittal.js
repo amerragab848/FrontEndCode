@@ -33,7 +33,7 @@ class CreateTransmittal extends Component {
                 arrange: "",
                 priorityId: null,
                 toCompanyId: null,
-                subject: "",
+                subject: "sasASa",
                 toContactId: null,
                 status: true,
                 submittFor: null

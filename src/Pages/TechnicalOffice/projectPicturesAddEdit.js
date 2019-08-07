@@ -16,9 +16,7 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList';
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
@@ -37,11 +35,8 @@ let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 
-
 const validationSchema = Yup.object().shape({
-
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
 })
@@ -49,9 +44,7 @@ const validationSchema = Yup.object().shape({
 class projectPicturesAddEdit extends Component {
 
     constructor(props) {
-
         super(props)
-
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
@@ -74,8 +67,6 @@ class projectPicturesAddEdit extends Component {
             index++;
         }
         this.state = {
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -142,9 +133,6 @@ class projectPicturesAddEdit extends Component {
             });
 
             this.checkDocumentIsView();
-        }
-        if (this.state.showModal != nextProps.showModal) {
-            this.setState({ showModal: nextProps.showModal });
         }
     }
 
@@ -234,7 +222,6 @@ class projectPicturesAddEdit extends Component {
         this.setState({
             docId: 0
         });
-
     }
 
     componentDidUpdate(prevProps) {
@@ -262,22 +249,6 @@ class projectPicturesAddEdit extends Component {
             document: updated_document
         });
 
-    }
-
-    handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        console.log(item);
-        if (item.value != "0") {
-            this.props.actions.showOptionPanel(false);
-
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-
-            this.simpleDialog.show()
-        }
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
@@ -373,20 +344,11 @@ class projectPicturesAddEdit extends Component {
         this.checkDocumentIsView();
     }
 
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
+    }
+
     render() {
-
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-
-        ]
 
         return (
 
@@ -397,7 +359,6 @@ class projectPicturesAddEdit extends Component {
 
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.projectPictures[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
-
 
                     <div className="doc-container">
                         <div className="step-content">
@@ -502,23 +463,29 @@ class projectPicturesAddEdit extends Component {
                                                 {this.state.IsEditMode === true && docId !== 0 ?
                                                     <div className="approveDocument">
                                                         <div className="approveDocumentBTNS">
-                                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR}>{Resources.save[currentLanguage]}</button>
-
-                                                            {this.state.isApproveMode === true ?
-                                                                <div >
-                                                                    <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                    <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-
-
-                                                                </div>
-                                                                : null
+                                                           
+                                                            {this.state.isLoading ?
+                                                                <button className="primaryBtn-1 btn disabled">
+                                                                    <div className="spinner">
+                                                                        <div className="bounce1" />
+                                                                        <div className="bounce2" />
+                                                                        <div className="bounce3" />
+                                                                    </div>
+                                                                </button> :
+                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}onClick={this.saveNCR} type="submit">{Resources.save[currentLanguage]}</button>
                                                             }
-                                                            <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                            <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                                            <span className="border"></span>
-                                                            <div className="document__action--menu">
-                                                                <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                            </div>
+                                                            <DocumentActions
+                                                                isApproveMode={this.state.isApproveMode}
+                                                                docTypeId={this.state.docTypeId}
+                                                                docId={this.state.docId}
+                                                                projectId={this.state.projectId}
+                                                                previousRoute={this.state.previousRoute}
+                                                                docApprovalId={this.state.docApprovalId}
+                                                                currentArrange={this.state.currentArrange}
+                                                                showModal={this.props.showModal}
+                                                                showOptionPanel={this.showOptionPanel}
+                                                                permission={this.state.permission}
+                                                            />
                                                         </div>
                                                     </div>
                                                     : null
@@ -538,14 +505,7 @@ class projectPicturesAddEdit extends Component {
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
-                </div>
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
-                    </SkyLight>
                 </div>
             </div>
         )
