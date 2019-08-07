@@ -230,6 +230,23 @@ export function SendByEmail_Inbox(url, formData) {
     }
 }
 
+export function copyTo(url, formData) {
+    return (dispatch, getState) => {
+        return Api.post(url, formData).then(resp => {
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+            dispatch({
+                type: types.CopyTo,
+                showModal: false
+            });
+        }).catch((ex) => {
+            toast.success(Resources["failError"][currentLanguage]);
+            dispatch({
+                type: types.SendByEmail_Inbox,
+                showModal: true
+            });
+        });
+    }
+}
 
 
 export function GetNextArrange(urlAction) {

@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
@@ -18,13 +17,12 @@ import CryptoJS from "crypto-js";
 import moment from "moment";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import SkyLight from "react-skylight";
-import Distribution from "../../Componants/OptionsPanels/DistributionList";
-import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
-import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
+
 var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -168,8 +166,6 @@ class variationOrderAddEdit extends Component {
       pageNumber: 0,
       pageSize: 500,
       itemsColumns: itemsColumns,
-      currentTitle: "sendToWorkFlow",
-      showModal: false,
       isViewMode: false,
       isApproveMode: isApproveMode,
       perviousRoute: perviousRoute,
@@ -239,9 +235,7 @@ class variationOrderAddEdit extends Component {
       this.fillDropDowns(nextProps.document.id > 0 ? true : false);
       this.checkDocumentIsView();
     }
-    if (this.state.showModal != nextProps.showModal) {
-      this.setState({ showModal: nextProps.showModal });
-    }
+
   }
 
   componentDidUpdate(prevProps) {
@@ -265,7 +259,6 @@ class variationOrderAddEdit extends Component {
             this.setState({ isViewMode: true });
           }
         } else {
-          alert("not have edit and hasWorkflow = " + this.props.hasWorkflow);
           this.setState({ isViewMode: true });
         }
       }
@@ -530,23 +523,9 @@ class variationOrderAddEdit extends Component {
     ) : null;
   }
 
-  handleShowAction = item => {
-    if (item.title == "sendToWorkFlow") {
-      this.props.actions.SendingWorkFlow(true);
-    }
-
-    if (item.value != "0") {
-      this.props.actions.showOptionPanel(false);
-
-      this.setState({
-        currentComponent: item.value,
-        currentTitle: item.title,
-        showModal: true
-      });
-
-      this.simpleDialog.show();
-    }
-  };
+  showOptionPanel = () => {
+    this.props.actions.showOptionPanel(true);
+  }
 
   saveVariationOrderItem(event) {
     let saveDocument = { ...this.state.voItem };
@@ -603,7 +582,7 @@ class variationOrderAddEdit extends Component {
       });
     }
   }
- 
+
 
   GetPrevoiusData() {
 
@@ -662,62 +641,9 @@ class variationOrderAddEdit extends Component {
 
   changeCurrentStep = stepNo => {
     this.setState({ CurrentStep: stepNo });
-};
+  };
 
   render() {
-    let actions = [
-      {
-        title: "distributionList",
-        value: (
-          <Distribution
-            docTypeId={this.state.docTypeId}
-            docId={this.state.docId}
-            projectId={this.state.projectId}
-          />
-        ),
-        label: Resources["distributionList"][currentLanguage]
-      },
-      {
-        title: "sendToWorkFlow",
-        value: (
-          <SendToWorkflow
-            docTypeId={this.state.docTypeId}
-            docId={this.state.docId}
-            projectId={this.state.projectId}
-          />
-        ),
-        label: Resources["sendToWorkFlow"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (
-          <DocumentApproval
-            docTypeId={this.state.docTypeId}
-            docId={this.state.docId}
-            approvalStatus={true}
-            projectId={this.state.projectId}
-            docApprovalId={this.state.docApprovalId}
-            currentArrange={this.state.arrange}
-          />
-        ),
-        label: Resources["documentApproval"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (
-          <DocumentApproval
-            docTypeId={this.state.docTypeId}
-            docId={this.state.docId}
-            approvalStatus={false}
-            projectId={this.state.projectId}
-            docApprovalId={this.state.docApprovalId}
-            currentArrange={this.state.arrange}
-          />
-        ),
-        label: Resources["documentApproval"][currentLanguage]
-      }
-    ];
-
     return (
       <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
@@ -1168,7 +1094,7 @@ class variationOrderAddEdit extends Component {
                     </div>
                     <div className="doc-pre-cycle">
                       <div className="slider-Btns">
-                        <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(2)}>
+                        <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>
                           {Resources["next"][currentLanguage]}
                         </button>
                       </div>
@@ -1189,63 +1115,22 @@ class variationOrderAddEdit extends Component {
             {this.props.changeStatus === true ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
-                  {this.state.isApproveMode === true ? (
-                    <div>
-                      <button
-                        className="primaryBtn-1 btn "
-                        type="button"
-                        onClick={e => this.handleShowAction(actions[2])}
-                      >
-                        {Resources.approvalModalApprove[currentLanguage]}
-                      </button>
-                      <button
-                        className="primaryBtn-2 btn middle__btn"
-                        type="button"
-                        onClick={e => this.handleShowAction(actions[3])}
-                      >
-                        {Resources.approvalModalReject[currentLanguage]}
-                      </button>
-                    </div>
-                  ) : null}
-                  <button
-                    type="button"
-                    className="primaryBtn-2 btn middle__btn"
-                    onClick={e => this.handleShowAction(actions[1])}
-                  >
-                    {Resources.sendToWorkFlow[currentLanguage]}
-                  </button>
-                  <button
-                    type="button"
-                    className="primaryBtn-2 btn"
-                    onClick={e => this.handleShowAction(actions[0])}
-                  >
-                    {Resources.distributionList[currentLanguage]}
-                  </button>
-                  <span className="border" />
-                  <div className="document__action--menu">
-                    <OptionContainer
-                      permission={this.state.permission}
-                      docTypeId={this.state.docTypeId}
-                      docId={this.state.docId}
-                      projectId={this.state.projectId}
-                    />
-                  </div>
+                  <DocumentActions
+                    isApproveMode={this.state.isApproveMode}
+                    docTypeId={this.state.docTypeId}
+                    docId={this.state.docId}
+                    projectId={this.state.projectId}
+                    previousRoute={this.state.previousRoute}
+                    docApprovalId={this.state.docApprovalId}
+                    currentArrange={this.state.currentArrange}
+                    showModal={this.props.showModal}
+                    showOptionPanel={this.showOptionPanel}
+                    permission={this.state.permission}
+                  />
                 </div>
               </div>
             ) : null}
           </div>
-        </div>
-        <div
-          className="largePopup largeModal "
-          style={{ display: this.state.showModal ? "block" : "none" }}
-        >
-          <SkyLight
-            hideOnOverlayClicked
-            ref={ref => (this.simpleDialog = ref)}
-            title={Resources[this.state.currentTitle][currentLanguage]}
-          >
-            {this.state.currentComponent}
-          </SkyLight>
         </div>
       </div>
     );
@@ -1261,7 +1146,8 @@ function mapStateToProps(state) {
     files: state.communication.files,
     hasWorkflow: state.communication.hasWorkflow,
     projectId: state.communication.projectId,
-    items: state.communication.items
+    items: state.communication.items,
+    showModal: state.communication.showModal
   };
 }
 

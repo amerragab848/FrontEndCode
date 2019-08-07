@@ -12,20 +12,15 @@ import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import DataService from '../../Dataservice'
 import CryptoJS from 'crypto-js';
 import { toast } from "react-toastify";
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import Config from "../../Services/Config.js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
@@ -75,8 +70,6 @@ class phoneAddEdit extends Component {
         }
 
         this.state = {
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -268,9 +261,7 @@ class phoneAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
-        if (prevProps.showModal != this.props.showModal) {
-            this.setState({ showModal: this.props.showModal });
-        }
+
     }
 
     componentWillReceiveProps(props, state) {
@@ -291,9 +282,6 @@ class phoneAddEdit extends Component {
             this.fillDropDowns(true);
         }
 
-        if (this.state.showModal != props.showModal) {
-            this.setState({ showModal: props.showModal });
-        }
     }
 
     editPhone = () => {
@@ -340,30 +328,16 @@ class phoneAddEdit extends Component {
         this.props.history.push({ pathname: "/Phone/" + this.state.projectId });
     }
 
-    handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") {
-            this.props.actions.showOptionPanel(false);
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-            this.simpleDialog.show()
-        }
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
     }
 
     viewAttachments() {
-        return (this.state.docId > 0 ? (Config.IsAllow(3320) === true ?<ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={834} /> : null) : null)
+        return (this.state.docId > 0 ? (Config.IsAllow(3320) === true ? <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={projectId} deleteAttachments={834} /> : null) : null)
     }
 
     render() {
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
-        ];
+
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
@@ -396,7 +370,6 @@ class phoneAddEdit extends Component {
                                         validationSchema={validationSchema}
                                         onSubmit={(values) => {
                                             if (this.props.showModal) { return; }
-
                                             if (this.props.changeStatus === true && this.state.docId > 0) {
                                                 this.editPhone();
                                             } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -469,7 +442,7 @@ class phoneAddEdit extends Component {
                                                                 data={this.state.CompanyData}
                                                                 handleChange={e => this.handleChange('fromCompany', e)}
                                                                 placeholder='fromCompany'
-                                                                selectedValue={this.state.selectedFromCompany} styles={CompanyDropdown} classDrop="companyName1 "/>
+                                                                selectedValue={this.state.selectedFromCompany} styles={CompanyDropdown} classDrop="companyName1 " />
                                                         </div>
                                                         <div className="super_company">
                                                             <DropdownMelcous
@@ -496,7 +469,7 @@ class phoneAddEdit extends Component {
                                                                 data={this.state.CompanyData}
                                                                 handleChange={(e) => this.handleChange("toCompany", e)}
                                                                 placeholder='toCompany'
-                                                                selectedValue={this.state.selectedToCompany} styles={CompanyDropdown} classDrop="companyName1 "/>
+                                                                selectedValue={this.state.selectedToCompany} styles={CompanyDropdown} classDrop="companyName1 " />
                                                         </div>
                                                         <div className="super_company">
                                                             <DropdownMelcous
@@ -508,7 +481,7 @@ class phoneAddEdit extends Component {
                                                                 onChange={setFieldValue}
                                                                 onBlur={setFieldTouched}
                                                                 error={errors.toContact}
-                                                                touched={touched.toContact} classDrop=" contactName1" styles={ContactDropdown}/>
+                                                                touched={touched.toContact} classDrop=" contactName1" styles={ContactDropdown} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -543,20 +516,18 @@ class phoneAddEdit extends Component {
                                                     this.props.changeStatus === true ?
                                                         <div className="approveDocument">
                                                             <div className="approveDocumentBTNS">
-                                                                <button type="submit" className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
-                                                                {this.state.isApproveMode === true ?
-                                                                    <div>
-                                                                        <button type="button" className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                        <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                                                    </div>
-                                                                    : null
-                                                                }
-                                                                <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                                                <span className="border"></span>
-                                                                <div className="document__action--menu">
-                                                                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                </div>
+                                                                <DocumentActions
+                                                                    isApproveMode={this.state.isApproveMode}
+                                                                    docTypeId={this.state.docTypeId}
+                                                                    docId={this.state.docId}
+                                                                    projectId={this.state.projectId}
+                                                                    previousRoute={this.state.previousRoute}
+                                                                    docApprovalId={this.state.docApprovalId}
+                                                                    currentArrange={this.state.currentArrange}
+                                                                    showModal={this.props.showModal}
+                                                                    showOptionPanel={this.showOptionPanel}
+                                                                    permission={this.state.permission}
+                                                                />
                                                             </div>
                                                         </div>
                                                         : null
@@ -577,11 +548,6 @@ class phoneAddEdit extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
-                    </SkyLight>
                 </div>
             </div>
 

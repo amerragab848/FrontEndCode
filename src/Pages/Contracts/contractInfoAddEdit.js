@@ -2,8 +2,7 @@ import React, { Component, Fragment } from "react";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import Api from "../../api";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
-import moment from "moment";
-import Rodal from "../../Styles/js/rodal";
+import moment from "moment"; 
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Resources from "../../resources.json";
@@ -14,8 +13,7 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import DataService from "../../Dataservice";
 import CryptoJS from "crypto-js";
-import { toast } from "react-toastify";
-import Distribution from "../../Componants/OptionsPanels/DistributionList";
+import { toast } from "react-toastify"; 
 import AmendmentList from "./AmendmentList";
 import PaymentRequisitionList from "./PaymentRequisitionList";
 import ContractsDeductions from "./ContractsDeductions";
@@ -23,13 +21,10 @@ import ContractsConditions from "./ContractsConditions";
 import ContractInsurance from "./ContractInsurance";
 import Schedule from "./Schedule";
 import SubContract from "./SubContractLog";
-import SubPurchaseOrderLog from "./subPurchaseOrderLog";
-import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
-import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
+import SubPurchaseOrderLog from "./subPurchaseOrderLog"; 
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
-import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
+import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow"; 
 import Config from "../../Services/Config.js";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -39,6 +34,8 @@ import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetup from "../Communication/GridSetup";
 import Steps from "../../Componants/publicComponants/Steps";
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
+
 var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -719,21 +716,9 @@ class ContractInfoAddEdit extends Component {
   };
 
 
-  handleShowAction = item => {
-    if (item.title == "sendToWorkFlow") {
-      this.props.actions.SendingWorkFlow(true);
-    }
-    if (item.value != "0") {
-      this.props.actions.showOptionPanel(false);
-      this.setState({
-        currentComponent: item.value,
-        currentTitle: item.title,
-        showModal: true
-      });
-
-      this.simpleDialog.show();
-    }
-  };
+  showOptionPanel = () => {
+    this.props.actions.showOptionPanel(true);
+  }
 
   onRowClick = (value, index, column) => {
     if (column.name != "Actions" && column.key != "revisedQuantity") {
@@ -1398,29 +1383,7 @@ class ContractInfoAddEdit extends Component {
         </div>
       </Fragment>
     );
-
-    let actions = [
-      {
-        title: "distributionList",
-        value: (<Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-        label: Resources["distributionList"][currentLanguage]
-      },
-      {
-        title: "sendToWorkFlow",
-        value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-        label: Resources["sendToWorkFlow"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} previousRoute={this.state.perviousRoute} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-        label: Resources["documentApproval"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} previousRoute={this.state.perviousRoute} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-        label: Resources["documentApproval"][currentLanguage]
-      }
-    ];
+ 
 
     let Step_1 = (
       <Fragment>
@@ -1790,29 +1753,18 @@ class ContractInfoAddEdit extends Component {
                       {this.props.changeStatus === true ? (
                         <div className="approveDocument">
                           <div className="approveDocumentBTNS">
-                            {this.state.isApproveMode === true ? (
-                              <div>
-                                <button type="button" className="primaryBtn-1 btn " onClick={e => this.handleShowAction(actions[2])}>
-                                  {
-                                    Resources.approvalModalApprove[currentLanguage]
-                                  }
-                                </button>
-                                <button type="button" className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[3])}>
-                                  {Resources.approvalModalReject[currentLanguage]}
-                                </button>
-                              </div>
-                            ) : null}
-                            <button type="button" className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[1])}>
-                              {Resources.sendToWorkFlow[currentLanguage]}
-                            </button>
-                            <button type="button" className="primaryBtn-2 btn" onClick={e => this.handleShowAction(actions[0])}>
-                              {Resources.distributionList[currentLanguage]}
-                            </button>
-                            <span className="border" />
-                            <div className="document__action--menu">
-                              <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId}
-                                projectId={this.state.projectId} />
-                            </div>
+                            <DocumentActions
+                              isApproveMode={this.state.isApproveMode}
+                              docTypeId={this.state.docTypeId}
+                              docId={this.state.docId}
+                              projectId={this.state.projectId}
+                              previousRoute={this.state.previousRoute}
+                              docApprovalId={this.state.docApprovalId}
+                              currentArrange={this.state.currentArrange}
+                              showModal={this.props.showModal}
+                              showOptionPanel={this.showOptionPanel}
+                              permission={this.state.permission}
+                            />
                           </div>
                         </div>
                       ) : null}
@@ -1841,11 +1793,7 @@ class ContractInfoAddEdit extends Component {
                 noDataText={Resources["noData"][currentLanguage]}
                 className="-striped -highlight" />
             </Fragment>
-          </SkyLight>
-
-          <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-            {this.state.currentComponent}
-          </SkyLight>
+          </SkyLight> 
 
           <div className="largePopup largeModal " style={{ display: this.state.showItemEdit ? 'block' : 'none' }}>
             <SkyLight hideOnOverlayClicked ref={ref => this.itemDialog = ref} title={Resources.goEdit[currentLanguage]}>
