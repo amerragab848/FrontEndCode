@@ -1270,7 +1270,7 @@ class SubmittalAddEdit extends Component {
     });
   }
 
-  closeModal() {
+  _executeBeforeModalClose = () => {
 
     let maxArrange = _.maxBy(this.state.itemData, "arrange");
 
@@ -1314,6 +1314,7 @@ class SubmittalAddEdit extends Component {
               itemsDocumentSubmital: submittalItem,
               viewForEdit: true
             });
+            this.simpleDialog1.show();
           }).catch(ex => {
             toast.error(Resources["failError"][currentLanguage]);
           });
@@ -1405,6 +1406,7 @@ class SubmittalAddEdit extends Component {
       addCycleSubmital: submittalCycle,
       addNewCycle: true
     });
+    this.simpleDialog2.show();
   }
 
   saveNewCycle() {
@@ -1462,10 +1464,6 @@ class SubmittalAddEdit extends Component {
       })
     }
   }
-
-
-
-
 
   render() {
 
@@ -2237,237 +2235,230 @@ class SubmittalAddEdit extends Component {
           </div>
         </div>
         <div>
-          <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>
-            <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)} title={Resources[this.state.currentTitle][currentLanguage]}>
-              {this.state.currentComponent}
-            </SkyLight>
-          </div>
+
+          <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)} title={Resources[this.state.currentTitle][currentLanguage]}>
+            {this.state.currentComponent}
+          </SkyLight>
+
           {this.state.showDeleteModal == true ? (
             <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
               clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />) : null}
-          {this.state.viewForEdit ?
-            (<Fragment>
-              <Rodal visible={this.state.viewForEdit} onClose={this.closeModal.bind(this)}>
-                <div className="ui modal largeModal ">
-                  <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
-                    validationSchema={validationSchemaForCyclePopUp}
-                    enableReinitialize={true}
-                    onSubmit={values => { this.editItems(); }}>
-                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                      <Form className="dropWrapper" onSubmit={handleSubmit}>
-                        <div className=" proForm customProform">
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources["description"][currentLanguage]}
-                            </label>
-                            <div className="inputDev ui input">
-                              <input name="description" className="form-control fsadfsadsa" id="description" placeholder={Resources.description[currentLanguage]}
-                                autoComplete="off" value={this.state.itemsDocumentSubmital.description}
-                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                onChange={e => this.handleChangeItems(e, "description")} />
-                              {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
-                            </div>
-                          </div>
-                          <Dropdown title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
-                            handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")}
-                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reviewResult}
-                            touched={touched.reviewResult} name="reviewResult" id="reviewResult" />
-                          {JSON.stringify(errors)}
-                          <div className="fillter-status fillter-item-c">
-                            <div className="inputDev ui input input-group date NormalInputDate">
-                              <div className="customDatepicker fillter-status fillter-item-c ">
-                                <div className="proForm datepickerContainer">
-                                  <div className="linebylineInput">
-                                    <div className="inputDev ui input input-group date NormalInputDate">
-                                      <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
-                                        handleChange={e => this.handleChangeDateItems(e, "submitalDate")} />
-                                    </div>
-                                  </div>
+
+          <SkyLight ref={ref => (this.simpleDialog1 = ref)} beforeClose={this._executeBeforeModalClose}>
+            <div className="ui modal largeModal">
+              <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
+                validationSchema={validationSchemaForCyclePopUp}
+                enableReinitialize={true}
+                onSubmit={values => { this.editItems(); }}>
+                {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                  <Form className="dropWrapper" onSubmit={handleSubmit}>
+                    <div className=" proForm customProform">
+                      <div className="fillter-status fillter-item-c">
+                        <label className="control-label">
+                          {Resources["description"][currentLanguage]}
+                        </label>
+                        <div className="inputDev ui input">
+                          <input name="description" className="form-control fsadfsadsa" id="description" placeholder={Resources.description[currentLanguage]}
+                            autoComplete="off" value={this.state.itemsDocumentSubmital.description}
+                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                            onChange={e => this.handleChangeItems(e, "description")} />
+                          {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
+                        </div>
+                      </div>
+                      <Dropdown title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
+                        handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")}
+                        onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reviewResult}
+                        touched={touched.reviewResult} name="reviewResult" id="reviewResult" />
+                      <div className="fillter-status fillter-item-c">
+                        <div className="inputDev ui input input-group date NormalInputDate">
+                          <div className="customDatepicker fillter-status fillter-item-c ">
+                            <div className="proForm datepickerContainer">
+                              <div className="linebylineInput">
+                                <div className="inputDev ui input input-group date NormalInputDate">
+                                  <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
+                                    handleChange={e => this.handleChangeDateItems(e, "submitalDate")} />
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources.arrange[currentLanguage]}
-                            </label>
-                            <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? " has-error" : " ")}>
-                              <input type="text" className="form-control"
-                                id="arrange" readOnly
-                                value={this.state.itemsDocumentSubmital.arrange}
-                                name="arrange"
-                                placeholder={Resources.arrange[currentLanguage]}
-                                onBlur={e => { handleChange(e); handleBlur(e); }}
-                                onChange={e => this.handleChangeDateItems(e, "arrange")} />
-                              {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
+                        </div>
+                      </div>
+                      <div className="fillter-status fillter-item-c">
+                        <label className="control-label">
+                          {Resources.arrange[currentLanguage]}
+                        </label>
+                        <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? " has-error" : " ")}>
+                          <input type="text" className="form-control"
+                            id="arrange" readOnly
+                            value={this.state.itemsDocumentSubmital.arrange}
+                            name="arrange"
+                            placeholder={Resources.arrange[currentLanguage]}
+                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                            onChange={e => this.handleChangeDateItems(e, "arrange")} />
+                          {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
+                        </div>
+                      </div>
+                      <div className="fillter-status fillter-item-c">
+                        <label className="control-label">
+                          {Resources.refDoc[currentLanguage]}
+                        </label>
+                        <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? " has-error" : "ui input inputDev")}>
+                          <input type="text" className="form-control" id="refDoc"
+                            value={this.state.itemsDocumentSubmital.refDoc}
+                            name="refDoc" placeholder={Resources.refDoc[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
+                            onChange={e => this.handleChangeItems(e, "refDoc")} />
+                          {errors.refDoc && touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
+                        </div>
+                      </div>
+                      <div className="slider-Btns fullWidthWrapper">
+                        {this.state.isLoading === false ? (
+                          <button className="primaryBtn-1 btn meduimBtn" type="submit">
+                            {Resources["goEdit"][currentLanguage]}
+                          </button>
+                        ) :
+                          (<button className="primaryBtn-1 btn disabled">
+                            <div className="spinner">
+                              <div className="bounce1" />
+                              <div className="bounce2" />
+                              <div className="bounce3" />
                             </div>
-                          </div>
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources.refDoc[currentLanguage]}
-                            </label>
-                            <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? " has-error" : "ui input inputDev")}>
-                              <input type="text" className="form-control" id="refDoc"
-                                value={this.state.itemsDocumentSubmital.refDoc}
-                                name="refDoc" placeholder={Resources.refDoc[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
-                                onChange={e => this.handleChangeItems(e, "refDoc")} />
-                              {errors.refDoc && touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
-                            </div>
-                          </div>
-                          <div className="slider-Btns fullWidthWrapper">
-                            {this.state.isLoading === false ? (
-                              <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                                {Resources["goEdit"][currentLanguage]}
-                              </button>
-                            ) :
-                              (<button className="primaryBtn-1 btn disabled">
-                                <div className="spinner">
-                                  <div className="bounce1" />
-                                  <div className="bounce2" />
-                                  <div className="bounce3" />
-                                </div>
-                              </button>
-                              )}
-                          </div>
-                        </div>
-                      </Form>
-                    )}
-                  </Formik>
-                </div>
-              </Rodal>
-            </Fragment>
-            ) : null}
-          {this.state.addNewCycle ? (
-            <Fragment>
-              <Rodal visible={this.state.addNewCycle} onClose={this.closeModalCycle.bind(this)}>
-                <div className="ui modal largeModal proForm ">
-                  <Formik initialValues={{ ...this.state.addCycleSubmital }}
-                    validationSchema={validationSchemaForCyclePopUp}
-                    enableReinitialize={true}
-                    onSubmit={values => { this.saveNewCycle(); }}>
-                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                      <Form className="dropWrapper" onSubmit={handleSubmit}>
-                        <div className="fullWidthWrapper textLeft">
-                          <header>
-                            <h2 className="zero">
-                              {Resources["CycleDetails"][currentLanguage]}
-                            </h2>
-                          </header>
-                        </div>
-                        <div className="fillter-status fillter-item-c">
-                          <label className="control-label">
-                            {Resources.description[currentLanguage]}
-                          </label>
-                          <div className={"ui input inputDev " + (errors.description && touched.description ? "has-error" : !errors.description && touched.description ? "has-success" : "")}>
-                            <input name="description" className="form-control fsadfsadsa"
-                              placeholder={Resources.description[currentLanguage]} autoComplete="off"
-                              value={this.state.addCycleSubmital.description} onBlur={e => { handleBlur(e); handleChange(e); }}
-                              onChange={e => this.handleChangeCyclesPopUp(e, "description")} />
-                            {errors.description && touched.description ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) : !errors.description && touched.description ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
-                            {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
+                          </button>
+                          )}
+                      </div>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </SkyLight>
+ 
+          <SkyLight ref={ref => (this.simpleDialog2 = ref)}>
+            <div className="ui modal largeModal proForm ">
+              <Formik initialValues={{ ...this.state.addCycleSubmital }}
+                validationSchema={validationSchemaForCyclePopUp}
+                enableReinitialize={true}
+                onSubmit={values => { this.saveNewCycle(); }}>
+                {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                  <Form className="dropWrapper" onSubmit={handleSubmit}>
+                    <div className="fullWidthWrapper textLeft">
+                      <header>
+                        <h2 className="zero">
+                          {Resources["CycleDetails"][currentLanguage]}
+                        </h2>
+                      </header>
+                    </div>
+                    <div className="fillter-status fillter-item-c">
+                      <label className="control-label">
+                        {Resources.description[currentLanguage]}
+                      </label>
+                      <div className={"ui input inputDev " + (errors.description && touched.description ? "has-error" : !errors.description && touched.description ? "has-success" : "")}>
+                        <input name="description" className="form-control fsadfsadsa"
+                          placeholder={Resources.description[currentLanguage]} autoComplete="off"
+                          value={this.state.addCycleSubmital.description} onBlur={e => { handleBlur(e); handleChange(e); }}
+                          onChange={e => this.handleChangeCyclesPopUp(e, "description")} />
+                        {errors.description && touched.description ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) : !errors.description && touched.description ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+                        {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
+                      </div>
+                    </div>
+                    <div className="fillter-status fillter-item-c radioBtnDrop">
+                      <label className="control-label">
+                        {Resources.status[currentLanguage]}
+                      </label>
+                      <div className="ui checkbox radio radioBoxBlue">
+                        <input type="radio" name="cycleStatus" defaultChecked={this.state.addCycleSubmital.CycleStatus === false ? null : "checked"}
+                          value="true" onChange={e => this.handleChangeCyclesPopUp(e, "CycleStatus")} />
+                        <label>{Resources.oppened[currentLanguage]}</label>
+                      </div>
+                      <div className="ui checkbox radio radioBoxBlue">
+                        <input type="radio" name="cycleStatus" defaultChecked={this.state.addCycleSubmital.CycleStatus === false ? "checked" : null}
+                          value="false" onChange={e => this.handleChangeCyclesPopUp(e, "CycleStatus")} />
+                        <label>{Resources.closed[currentLanguage]}</label>
+                      </div>
+                    </div>
+                    <div className="customDatepicker fillter-status fillter-item-c " style={{ marginBottom: '0' }}>
+                      <div className="proForm datepickerContainer fillter-status fillter-item-c ">
+                        <label className="control-label">
+                          {Resources.cycleDate[currentLanguage]}
+                        </label>
+                        <div className="linebylineInput">
+                          <div className="inputDev ui input input-group date NormalInputDate">
+                            <ModernDatepicker startDate={this.state.addCycleSubmital.docDate}
+                              handleChange={e => this.handleChangeDateCyclesPopUp(e, "docDate")} />
                           </div>
                         </div>
-                        <div className="fillter-status fillter-item-c radioBtnDrop">
-                          <label className="control-label">
-                            {Resources.status[currentLanguage]}
-                          </label>
-                          <div className="ui checkbox radio radioBoxBlue">
-                            <input type="radio" name="cycleStatus" defaultChecked={this.state.addCycleSubmital.CycleStatus === false ? null : "checked"}
-                              value="true" onChange={e => this.handleChangeCyclesPopUp(e, "CycleStatus")} />
-                            <label>{Resources.oppened[currentLanguage]}</label>
-                          </div>
-                          <div className="ui checkbox radio radioBoxBlue">
-                            <input type="radio" name="cycleStatus" defaultChecked={this.state.addCycleSubmital.CycleStatus === false ? "checked" : null}
-                              value="false" onChange={e => this.handleChangeCyclesPopUp(e, "CycleStatus")} />
-                            <label>{Resources.closed[currentLanguage]}</label>
-                          </div>
+                      </div>
+                    </div>
+                    <div className="fillter-status fillter-item-c">
+                      <label className="control-label">
+                        {Resources.arrange[currentLanguage]}
+                      </label>
+                      <div className={"ui input inputDev fillter-item-c " + (errors.arrange && touched.arrange ? "has-error" : !errors.arrange && touched.arrange ? "has-success" : "")} >
+                        <input type="text" className="form-control" readOnly value={this.state.addCycleSubmital.arrange}
+                          name="arrange" placeholder={Resources.arrange[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
+                          onChange={e => this.handleChangeCyclesPopUp(e, "arrange")} />
+                        {errors.arrange && touched.arrange ?
+                          (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
+                          !errors.arrange && touched.arrange ?
+                            (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+                        {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
+                      </div>
+                    </div>
+                    <Dropdown title="approvalStatus" data={this.state.approvales}
+                      selectedValue={this.state.selectedCycleAprrovalStatus}
+                      handleChange={event => this.handleChangeDropDownCyclesPopUp(event, "approvalStatusId", false, "", "", "", "selectedCycleAprrovalStatus")}
+                      onChange={setFieldValue} onBlur={setFieldTouched}
+                      error={errors.approvalStatusId} touched={touched.approvalStatusId}
+                      name="approvalStatusId" id="approvalStatusId" />
+                    <div className="linebylineInput valid-input mix_dropdown">
+                      <label className="control-label">
+                        {Resources.fromCompany[currentLanguage]}
+                      </label>
+                      <div className="supervisor__company">
+                        <div className="super_name">
+                          <Dropdown data={this.state.companies}
+                            isMulti={false}
+                            selectedValue={this.state.selectedNewFromCompanyCycles}
+                            styles={CompanyDropdown}
+                            classDrop="companyName1"
+                            handleChange={event => { this.handleChangeDropDownCyclesPopUp(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedNewFromCompanyCycles", "selectedFromContact"); }}
+                            id="fromCompanyIdCycle" />
                         </div>
-                        <div className="customDatepicker fillter-status fillter-item-c " style={{ marginBottom: '0' }}>
-                          <div className="proForm datepickerContainer fillter-status fillter-item-c ">
-                            <label className="control-label">
-                              {Resources.cycleDate[currentLanguage]}
-                            </label>
-                            <div className="linebylineInput">
-                              <div className="inputDev ui input input-group date NormalInputDate">
-                                <ModernDatepicker startDate={this.state.addCycleSubmital.docDate}
-                                  handleChange={e => this.handleChangeDateCyclesPopUp(e, "docDate")} />
-                              </div>
-                            </div>
+                        <div className="super_company">
+                          <Dropdown name="fromContactId"
+                            data={this.state.fromContactsCycles}
+                            handleChange={event => this.handleChangeDropDownCyclesPopUp(event, "flowContactId", false, "", "", "", "selectedNewFromContactCycles")}
+                            selectedValue={this.state.selectedNewFromContactCycles}
+                            onChange={setFieldValue}
+                            onBlur={setFieldTouched}
+                            error={errors.flowContactId}
+                            touched={touched.flowContactId}
+                            id="flowContactId"
+                            classDrop="contactName1"
+                            styles={ContactDropdown}
+                            name="flowContactId" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="fullWidthWrapper">
+                      {this.state.isLoading === false ?
+                        (<button className="primaryBtn-1 btn middle__btn" type="submit">
+                          {Resources["save"][currentLanguage]}
+                        </button>) :
+                        (<button className="primaryBtn-1 btn disabled">
+                          <div className="spinner">
+                            <div className="bounce1" />
+                            <div className="bounce2" />
+                            <div className="bounce3" />
                           </div>
-                        </div>
-                        <div className="fillter-status fillter-item-c">
-                          <label className="control-label">
-                            {Resources.arrange[currentLanguage]}
-                          </label>
-                          <div className={"ui input inputDev fillter-item-c " + (errors.arrange && touched.arrange ? "has-error" : !errors.arrange && touched.arrange ? "has-success" : "")} >
-                            <input type="text" className="form-control" readOnly value={this.state.addCycleSubmital.arrange}
-                              name="arrange" placeholder={Resources.arrange[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
-                              onChange={e => this.handleChangeCyclesPopUp(e, "arrange")} />
-                            {errors.arrange && touched.arrange ?
-                              (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                              !errors.arrange && touched.arrange ?
-                                (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
-                            {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
-                          </div>
-                        </div>
-                        <Dropdown title="approvalStatus" data={this.state.approvales}
-                          selectedValue={this.state.selectedCycleAprrovalStatus}
-                          handleChange={event => this.handleChangeDropDownCyclesPopUp(event, "approvalStatusId", false, "", "", "", "selectedCycleAprrovalStatus")}
-                          onChange={setFieldValue} onBlur={setFieldTouched}
-                          error={errors.approvalStatusId} touched={touched.approvalStatusId}
-                          name="approvalStatusId" id="approvalStatusId" />
-                        <div className="linebylineInput valid-input mix_dropdown">
-                          <label className="control-label">
-                            {Resources.fromCompany[currentLanguage]}
-                          </label>
-                          <div className="supervisor__company">
-                            <div className="super_name">
-                              <Dropdown data={this.state.companies}
-                                isMulti={false}
-                                selectedValue={this.state.selectedNewFromCompanyCycles}
-                                styles={CompanyDropdown}
-                                classDrop="companyName1"
-                                handleChange={event => { this.handleChangeDropDownCyclesPopUp(event, "flowCompanyId", true, "fromContactsCycles", "GetContactsByCompanyId", "companyId", "selectedNewFromCompanyCycles", "selectedFromContact"); }}
-                                id="fromCompanyIdCycle" />
-                            </div>
-                            <div className="super_company">
-                              <Dropdown name="fromContactId"
-                                data={this.state.fromContactsCycles}
-                                handleChange={event => this.handleChangeDropDownCyclesPopUp(event, "flowContactId", false, "", "", "", "selectedNewFromContactCycles")}
-                                selectedValue={this.state.selectedNewFromContactCycles}
-                                onChange={setFieldValue}
-                                onBlur={setFieldTouched}
-                                error={errors.flowContactId}
-                                touched={touched.flowContactId}
-                                id="flowContactId"
-                                classDrop="contactName1"
-                                styles={ContactDropdown}
-                                name="flowContactId" />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="fullWidthWrapper">
-                          {this.state.isLoading === false ?
-                            (<button className="primaryBtn-1 btn middle__btn" type="submit">
-                              {Resources["save"][currentLanguage]}
-                            </button>) :
-                            (<button className="primaryBtn-1 btn disabled">
-                              <div className="spinner">
-                                <div className="bounce1" />
-                                <div className="bounce2" />
-                                <div className="bounce3" />
-                              </div>
-                            </button>
-                            )}
-                        </div>
-                      </Form>
-                    )}
-                  </Formik>
-                </div>
-              </Rodal>
-            </Fragment>
-          ) : null}
+                        </button>
+                        )}
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </SkyLight>
         </div>
       </div>
     );

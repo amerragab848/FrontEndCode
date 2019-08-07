@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import Rodal from "../../Styles/js/rodal";
 import "../../Styles/css/rodal.css";
 import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import SkyLight from "react-skylight";
+
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class ConfirmationModal extends Component {
 
@@ -23,11 +24,19 @@ class ConfirmationModal extends Component {
     this.props.closed();
   }
 
+  componentDidMount() {
+    this.simpleDialog.show();
+  }
+
+  componentWillReceiveProps() {
+    this.simpleDialog.show();
+  }
+
   render() {
     return (
       <div>
-        <Rodal visible={true} onClose={this.closeModal.bind(this)}>
-          <div className="ui modal smallModal" id="smallModal">
+        <SkyLight ref={ref => (this.simpleDialog = ref)}>
+          <div className="ui modal smallModal ConfirmationModal" id="smallModal">
             <div className="header zero">
               {this.props.title}
             </div>
@@ -41,7 +50,7 @@ class ConfirmationModal extends Component {
               </button>
             </div>
           </div>
-        </Rodal>
+        </SkyLight>
       </div>
     );
   }

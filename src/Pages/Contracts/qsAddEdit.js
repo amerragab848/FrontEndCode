@@ -29,6 +29,8 @@ import Rodal from "../../Styles/js/rodal";
 import "../../Styles/css/rodal.css";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Steps from "../../Componants/publicComponants/Steps";
+
+
 var steps_defination = [];
 
 const _ = require("lodash");
@@ -94,7 +96,7 @@ class QsAddEdit extends Component {
     }
 
     this.state = {
-      CurrentStep: 0, 
+      CurrentStep: 0,
       showDeleteModal: false,
       isLoading: false,
       isEdit: false,
@@ -624,6 +626,7 @@ class QsAddEdit extends Component {
         addItemDocument: rows,
         viewForEdit: true
       });
+      this.simpleDialogForEdit.show();
     }
   }
 
@@ -845,7 +848,7 @@ class QsAddEdit extends Component {
                                   {Resources.subject[currentLanguage]}
                                 </label>
                                 <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")}>
-                                  <input name="subject" className="form-control fsadfsadsa" placeholder={Resources.subject[currentLanguage]}
+                                  <input type="text" name="subject" className="form-control fsadfsadsa" placeholder={Resources.subject[currentLanguage]}
                                     autoComplete="off" value={this.state.document.subject} onBlur={e => { handleBlur(e); handleChange(e); }}
                                     onChange={e => this.handleChange(e, "subject")} />
                                   {errors.subject && touched.subject ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
@@ -1071,144 +1074,141 @@ class QsAddEdit extends Component {
               clickHandlerCancel={this.clickHandlerCancelMain}
               clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />
           ) : null}
-          {this.state.viewForEdit ? (
-            /* AddItems */
-            <Fragment>
-              <Rodal visible={this.state.viewForEdit} onClose={this.closeModal.bind(this)}>
-                <div className="ui modal largeModal ">
-                  <Formik initialValues={{ ...this.state.addItemDocument }}
-                    validationSchema={validationSchemaItems}
-                    enableReinitialize={true}
-                    onSubmit={values => { this.editItems(); }}>
-                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                      <Form className="dropWrapper" onSubmit={handleSubmit}>
-                        <div className=" proForm customProform">
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources["description"][currentLanguage]}
-                            </label>
-                            <div className="inputDev ui input">
-                              <input name="details" className="form-control fsadfsadsa" id="details"
-                                placeholder={Resources.details[currentLanguage]} autoComplete="off"
-                                value={this.state.addItemDocument.details}
-                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                onChange={e => this.handleChangeItems(e, "details")} />
-                              {errors.details && touched.details ? (<em className="pError">{errors.details}</em>) : null}
-                            </div>
-                          </div>
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources["quantity"][currentLanguage]}
-                            </label>
-                            <div className="inputDev ui input">
-                              <input name="quantity" className="form-control fsadfsadsa" id="quantity"
-                                placeholder={Resources.quantity[currentLanguage]} autoComplete="off"
-                                value={this.state.addItemDocument.quantity}
-                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                onChange={e => this.handleChangeItems(e, "quantity")} />
-                              {errors.Quantity && touched.Quantity ? (<em className="pError">{errors.Quantity}</em>) : null}
-                            </div>
-                          </div>
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources["arrange"][currentLanguage]}
-                            </label>
-                            <div className="inputDev ui input">
-                              <input name="arrange" className="form-control fsadfsadsa" id="arrange"
-                                placeholder={Resources.arrange[currentLanguage]} autoComplete="off"
-                                value={this.state.addItemDocument.arrange}
-                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                onChange={e => this.handleChangeItems(e, "arrange")} />
-                              {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
-                            </div>
-                          </div>
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources["unit"][currentLanguage]}
-                            </label>
-                            <div className="inputDev ui input">
-                              <input name="unit" className="form-control fsadfsadsa" id="unit"
-                                placeholder={Resources.unit[currentLanguage]} autoComplete="off"
-                                value={this.state.addItemDocument.unit}
-                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                onChange={e => this.handleChangeItems(e, "unit")} />
-                              {errors.unit && touched.unit ? (<em className="pError">{errors.unit}</em>) : null}
-                            </div>
-                          </div>
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources["unitPrice"][currentLanguage]}
-                            </label>
-                            <div className="inputDev ui input">
-                              <input name="unitPrice" className="form-control fsadfsadsa" id="unitPrice"
-                                placeholder={Resources.unitPrice[currentLanguage]} autoComplete="off"
-                                value={this.state.addItemDocument.unitPrice}
-                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                onChange={e => this.handleChangeItems(e, "unitPrice")} />
-                              {errors.unitPrice && touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
-                            </div>
-                          </div>
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources["revQuantity"][currentLanguage]}
-                            </label>
-                            <div className="inputDev ui input">
-                              <input name="revQuantity" className="form-control fsadfsadsa" id="revQuantity"
-                                placeholder={Resources.revQuantity[currentLanguage]} autoComplete="off"
-                                value={this.state.addItemDocument.revQuantity}
-                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                onChange={e => this.handleChangeItems(e, "revQuantity")} />
-                              {errors.revQuantity && touched.revQuantity ? (<em className="pError">{errors.revQuantity}</em>) : null}
-                            </div>
-                          </div>
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources["itemCode"][currentLanguage]}
-                            </label>
-                            <div className="inputDev ui input">
-                              <input name="itemCode" className="form-control fsadfsadsa" id="itemCode"
-                                placeholder={Resources.itemCode[currentLanguage]} autoComplete="off"
-                                value={this.state.addItemDocument.itemCode}
-                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                onChange={e => this.handleChangeItems(e, "itemCode")} />
-                              {errors.itemCode && touched.itemCode ? (<em className="pError">{errors.itemCode}</em>) : null}
-                            </div>
-                          </div>
-                          <div className="fillter-status fillter-item-c">
-                            <label className="control-label">
-                              {Resources["resourceCode"][currentLanguage]}
-                            </label>
-                            <div className="inputDev ui input">
-                              <input name="resourceCode" className="form-control fsadfsadsa" id="resourceCode"
-                                placeholder={Resources.resourceCode[currentLanguage]} autoComplete="off"
-                                value={this.state.addItemDocument.resourceCode}
-                                onBlur={e => { handleBlur(e); handleChange(e); }}
-                                onChange={e => this.handleChangeItems(e, "resourceCode")} />
-                            </div>
-                          </div>
-                          <div className="slider-Btns fullWidthWrapper">
-                            {this.state.isLoading === false ? (
-                              <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                                {Resources["goEdit"][currentLanguage]}
-                              </button>
-                            ) : (
-                                <button className="primaryBtn-1 btn disabled">
-                                  <div className="spinner">
-                                    <div className="bounce1" />
-                                    <div className="bounce2" />
-                                    <div className="bounce3" />
-                                  </div>
-                                </button>
-                              )}
-                          </div>
+
+          <SkyLight ref={ref => (this.simpleDialogForEdit = ref)}>
+            <div className="ui modal largeModal ">
+              <Formik initialValues={{ ...this.state.addItemDocument }}
+                validationSchema={validationSchemaItems}
+                enableReinitialize={true}
+                onSubmit={values => { this.editItems(); }}>
+                {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                  <Form className="dropWrapper" onSubmit={handleSubmit}>
+                    <div className=" proForm customProform">
+                      <div className="fillter-status fillter-item-c">
+                        <label className="control-label">
+                          {Resources["description"][currentLanguage]}
+                        </label>
+                        <div className="inputDev ui input">
+                          <input name="details" className="form-control fsadfsadsa" id="details"
+                            placeholder={Resources.details[currentLanguage]} autoComplete="off"
+                            value={this.state.addItemDocument.details}
+                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                            onChange={e => this.handleChangeItems(e, "details")} />
+                          {errors.details && touched.details ? (<em className="pError">{errors.details}</em>) : null}
                         </div>
-                      </Form>
-                    )}
-                  </Formik>
-                </div>
-              </Rodal>
-            </Fragment>
-          ) : null}
+                      </div>
+                      <div className="fillter-status fillter-item-c">
+                        <label className="control-label">
+                          {Resources["quantity"][currentLanguage]}
+                        </label>
+                        <div className="inputDev ui input">
+                          <input name="quantity" className="form-control fsadfsadsa" id="quantity"
+                            placeholder={Resources.quantity[currentLanguage]} autoComplete="off"
+                            value={this.state.addItemDocument.quantity}
+                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                            onChange={e => this.handleChangeItems(e, "quantity")} />
+                          {errors.Quantity && touched.Quantity ? (<em className="pError">{errors.Quantity}</em>) : null}
+                        </div>
+                      </div>
+                      <div className="fillter-status fillter-item-c">
+                        <label className="control-label">
+                          {Resources["arrange"][currentLanguage]}
+                        </label>
+                        <div className="inputDev ui input">
+                          <input name="arrange" className="form-control fsadfsadsa" id="arrange"
+                            placeholder={Resources.arrange[currentLanguage]} autoComplete="off"
+                            value={this.state.addItemDocument.arrange}
+                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                            onChange={e => this.handleChangeItems(e, "arrange")} />
+                          {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
+                        </div>
+                      </div>
+                      <div className="fillter-status fillter-item-c">
+                        <label className="control-label">
+                          {Resources["unit"][currentLanguage]}
+                        </label>
+                        <div className="inputDev ui input">
+                          <input name="unit" className="form-control fsadfsadsa" id="unit"
+                            placeholder={Resources.unit[currentLanguage]} autoComplete="off"
+                            value={this.state.addItemDocument.unit}
+                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                            onChange={e => this.handleChangeItems(e, "unit")} />
+                          {errors.unit && touched.unit ? (<em className="pError">{errors.unit}</em>) : null}
+                        </div>
+                      </div>
+                      <div className="fillter-status fillter-item-c">
+                        <label className="control-label">
+                          {Resources["unitPrice"][currentLanguage]}
+                        </label>
+                        <div className="inputDev ui input">
+                          <input name="unitPrice" className="form-control fsadfsadsa" id="unitPrice"
+                            placeholder={Resources.unitPrice[currentLanguage]} autoComplete="off"
+                            value={this.state.addItemDocument.unitPrice}
+                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                            onChange={e => this.handleChangeItems(e, "unitPrice")} />
+                          {errors.unitPrice && touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                        </div>
+                      </div>
+                      <div className="fillter-status fillter-item-c">
+                        <label className="control-label">
+                          {Resources["revQuantity"][currentLanguage]}
+                        </label>
+                        <div className="inputDev ui input">
+                          <input name="revQuantity" className="form-control fsadfsadsa" id="revQuantity"
+                            placeholder={Resources.revQuantity[currentLanguage]} autoComplete="off"
+                            value={this.state.addItemDocument.revQuantity}
+                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                            onChange={e => this.handleChangeItems(e, "revQuantity")} />
+                          {errors.revQuantity && touched.revQuantity ? (<em className="pError">{errors.revQuantity}</em>) : null}
+                        </div>
+                      </div>
+                      <div className="fillter-status fillter-item-c">
+                        <label className="control-label">
+                          {Resources["itemCode"][currentLanguage]}
+                        </label>
+                        <div className="inputDev ui input">
+                          <input name="itemCode" className="form-control fsadfsadsa" id="itemCode"
+                            placeholder={Resources.itemCode[currentLanguage]} autoComplete="off"
+                            value={this.state.addItemDocument.itemCode}
+                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                            onChange={e => this.handleChangeItems(e, "itemCode")} />
+                          {errors.itemCode && touched.itemCode ? (<em className="pError">{errors.itemCode}</em>) : null}
+                        </div>
+                      </div>
+                      <div className="fillter-status fillter-item-c">
+                        <label className="control-label">
+                          {Resources["resourceCode"][currentLanguage]}
+                        </label>
+                        <div className="inputDev ui input">
+                          <input name="resourceCode" className="form-control fsadfsadsa" id="resourceCode"
+                            placeholder={Resources.resourceCode[currentLanguage]} autoComplete="off"
+                            value={this.state.addItemDocument.resourceCode}
+                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                            onChange={e => this.handleChangeItems(e, "resourceCode")} />
+                        </div>
+                      </div>
+                      <div className="slider-Btns fullWidthWrapper">
+                        {this.state.isLoading === false ? (
+                          <button className="primaryBtn-1 btn meduimBtn" type="submit">
+                            {Resources["goEdit"][currentLanguage]}
+                          </button>
+                        ) : (
+                            <button className="primaryBtn-1 btn disabled">
+                              <div className="spinner">
+                                <div className="bounce1" />
+                                <div className="bounce2" />
+                                <div className="bounce3" />
+                              </div>
+                            </button>
+                          )}
+                      </div>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </SkyLight>
+
         </div>
       </div>
     );

@@ -2,17 +2,14 @@ import React, { Component, Fragment } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import CryptoJS from 'crypto-js';
 import "react-tabs/style/react-tabs.css";
-
 import { Widgets, WidgetsWithText } from "./Componants/CounterWidget";
 import DashBoardWidgets from "./Componants/WidgetsDashBoradProject";
 import DashBoard from "./Componants/DashBoardProject";
 import _ from "lodash";
 import language from "./resources.json";
 import { connect } from 'react-redux';
-import {
-  bindActionCreators
-} from 'redux';
-
+import { bindActionCreators } from 'redux';
+import SkyLight from "react-skylight";
 import * as dashboardComponantActions from './store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -124,7 +121,7 @@ class DashboardProject extends Component {
                       widget.widgets.map(panel => {
 
                         let api = panel.props.api + this.state.projectId
-                         //panel.props.api = api
+                        //panel.props.api = api
                         let panelData = panel
                         panelData.props.api = api
 
@@ -163,8 +160,8 @@ class DashboardProject extends Component {
 
                       let api = panel.props.api + this.state.projectId
                       //panel.props.api = api
-                     let panelData = panel
-                     panelData.props.api = api
+                      let panelData = panel
+                      panelData.props.api = api
 
                       if (panel.type === "twoWidget") {
                         return (<WidgetsWithText key={panel.key} title={panel.title} {...panelData} />);
@@ -195,9 +192,7 @@ class DashboardProject extends Component {
   }
 
   viewDashBoardHandler() {
-    this.setState({
-      viewDashBoard: !this.state.viewDashBoard
-    });
+    this.simpleDialog.show();
   }
 
   closeModal() {
@@ -231,7 +226,9 @@ class DashboardProject extends Component {
           </div>
           <TabPanel>{this.renderThreeCard(0)}</TabPanel>
         </Tabs>
-        {this.state.viewDashBoard ? (<DashBoard opened={this.state.viewDashBoard} closed={this.closeModal.bind(this)} />) : null}
+        <SkyLight ref={ref => (this.simpleDialog = ref)}>
+          <DashBoard opened={this.state.viewDashBoard} closed={this.closeModal.bind(this)} />
+        </SkyLight>
       </div>
     );
   }

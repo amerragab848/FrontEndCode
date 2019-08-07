@@ -14,6 +14,7 @@ import GridSetup from "../../Pages/Communication/GridSetup";
 import { Toolbar, Data, Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import * as Yup from "yup";
+import SkyLight from "react-skylight";
 
 const SignupSchema = Yup.object().shape({
     password: Yup.string().required("Required"),
@@ -213,6 +214,10 @@ class RejectedTimesheetsDetails extends Component {
                 approvalStatus: status,
                 isApprove: !this.state.isApprove
             });
+
+            if (this.state.isApprove === true) {
+                this.simpleDialog.show();
+            }
         } else {
             this.setState({
                 viewMessage: true
@@ -313,9 +318,7 @@ class RejectedTimesheetsDetails extends Component {
 
         return (
             <div className="mainContainer main__withouttabs">
-
                 <div className="submittalFilter">
-
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>
                         <span>{this.state.rows.length}</span>
@@ -347,7 +350,6 @@ class RejectedTimesheetsDetails extends Component {
                                     <span className="hide-fillter">{Resources["hideFillter"][currentLanguage]}</span>
                                 </span>
                             }
-
                         </div>
 
                     </div>
@@ -366,78 +368,75 @@ class RejectedTimesheetsDetails extends Component {
 
                 {alert}
 
-                {this.state.isApprove ? (
-                    <Rodal visible={true} onClose={this.closeModal.bind(this)}>
-                        <Formik initialValues={{ password: "", comment: "" }} validationSchema={SignupSchema} onSubmit={values => this.approveTimeSheet(values)}>
-                            {({ errors, touched, handleBlur, handleChange }) => (
-                                <Form id="signupForm1" className="proForm" noValidate="novalidate">
-                                    <div className="approvalDocument">
-                                        <div className="approvalWrapper">
-                                            <div className="approvalTitle">
-                                                <h3>Document Approval</h3>
-                                            </div>
-                                            <div className="inputPassContainer">
-                                                <div className="form-group passwordInputs showPasswordArea">
-                                                    <label className="control-label">Password *</label>
-                                                    <div className="inputPassContainer">
-                                                        <div className={errors.password && touched.password ? "ui input inputDev has-error" : !errors.password && touched.password ? "ui input inputDev has-success" : "ui input inputDev"}>
-                                                            <span className={this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "} onClick={this.toggle}>
-                                                                <img src={eyeShow} />
-                                                                <span className="show"> Show</span>
-                                                                <span className="hide"> Hide</span>
-                                                            </span>
-                                                            <input name="password" type={this.state.type ? "text" : "password"} className="form-control"
-                                                                id="password"
-                                                                placeholder="password"
-                                                                autoComplete="off"
-                                                                onChange={handleChange} />
-                                                            {errors.password && touched.password ? (
-                                                                <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                                                            ) : !errors.password && touched.password ? (
-                                                                <span className="glyphicon form-control-feedback glyphicon-ok" />
-                                                            ) : null}
-                                                            {errors.password && touched.password ? (
-                                                                <em className="pError">{errors.password}</em>
-                                                            ) : null}
-                                                        </div>
+                <SkyLight ref={ref => (this.simpleDialog = ref)} >
+                    <Formik initialValues={{ password: "", comment: "" }} validationSchema={SignupSchema} onSubmit={values => this.approveTimeSheet(values)}>
+                        {({ errors, touched, handleBlur, handleChange }) => (
+                            <Form id="signupForm1" className="proForm" noValidate="novalidate">
+                                <div className="approvalDocument">
+                                    <div className="approvalWrapper">
+                                        <div className="approvalTitle">
+                                            <h3>Document Approval</h3>
+                                        </div>
+                                        <div className="inputPassContainer">
+                                            <div className="form-group passwordInputs showPasswordArea">
+                                                <label className="control-label">Password *</label>
+                                                <div className="inputPassContainer">
+                                                    <div className={errors.password && touched.password ? "ui input inputDev has-error" : !errors.password && touched.password ? "ui input inputDev has-success" : "ui input inputDev"}>
+                                                        <span className={this.state.type ? "inputsideNote togglePW active-pw" : "inputsideNote togglePW "} onClick={this.toggle}>
+                                                            <img src={eyeShow} />
+                                                            <span className="show"> Show</span>
+                                                            <span className="hide"> Hide</span>
+                                                        </span>
+                                                        <input name="password" type={this.state.type ? "text" : "password"} className="form-control"
+                                                            id="password"
+                                                            placeholder="password"
+                                                            autoComplete="off"
+                                                            onChange={handleChange} />
+                                                        {errors.password && touched.password ? (
+                                                            <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                                                        ) : !errors.password && touched.password ? (
+                                                            <span className="glyphicon form-control-feedback glyphicon-ok" />
+                                                        ) : null}
+                                                        {errors.password && touched.password ? (
+                                                            <em className="pError">{errors.password}</em>
+                                                        ) : null}
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="textarea-group">
-                                                <label>Comment</label>
-                                                <textarea
-                                                    defaultValue={this.state.approvalStatus ? 'Approved' : 'Rejected'}
-                                                    name="comment"
-                                                    className="form-control"
-                                                    id="comment"
-                                                    placeholder="comment"
-                                                    autoComplete="off"
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                            <div className="fullWidthWrapper">
-                                                {this.state.isLoading != true ? (
-                                                    <button className="primaryBtn-1 btn largeBtn" type="submit">
-                                                        Save
+                                        </div>
+                                        <div className="textarea-group">
+                                            <label>Comment</label>
+                                            <textarea
+                                                defaultValue={this.state.approvalStatus ? 'Approved' : 'Rejected'}
+                                                name="comment"
+                                                className="form-control"
+                                                id="comment"
+                                                placeholder="comment"
+                                                autoComplete="off"
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                        <div className="fullWidthWrapper">
+                                            {this.state.isLoading != true ? (
+                                                <button className="primaryBtn-1 btn largeBtn" type="submit">
+                                                    Save
                           </button>
-                                                ) : (
-                                                        <button className="primaryBtn-2 btn smallBtn fillter-item-c">
-                                                            <div className="spinner">
-                                                                <div className="bounce1" />
-                                                                <div className="bounce2" />
-                                                                <div className="bounce3" />
-                                                            </div>
-                                                        </button>
-                                                    )}
-                                            </div>
+                                            ) : (
+                                                    <button className="primaryBtn-2 btn smallBtn fillter-item-c">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>
+                                                )}
                                         </div>
                                     </div>
-                                </Form>
-                            )}
-                        </Formik>
-                    </Rodal>
-                ) : null}
-
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </SkyLight>
             </div>
         );
     }
