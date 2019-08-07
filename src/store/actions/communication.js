@@ -1,22 +1,26 @@
 import * as types from './types';
 import Api from '../../api';
+import { toast } from "react-toastify";
+import Resources from "../../resources.json";
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
 
-export function documentForEdit(urlAction, docTypeId,docName) {
+export function documentForEdit(urlAction, docTypeId, docName) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
-
+            toast.success(Resources["operationSuccess"][currentLanguage]);
             dispatch({
                 type: types.Document_for_Edit,
                 document: resp,
                 docId: resp.id,
                 docTypeId: docTypeId,
                 showLeftReportMenu: false,
-                docName:docName
+                docName: docName
             });
 
         }).catch((ex) => {
+            toast.error(Resources["failError"][currentLanguage]);
             dispatch({
                 type: types.Document_for_Edit,
                 document: [],
@@ -65,7 +69,7 @@ export function documentForAdding(doc) {
         dispatch({
             type: types.Document_Adding
         });
-    } 
+    }
 }
 
 export function ExportingData(data) {
@@ -208,21 +212,25 @@ export function updateField(field, value, document) {
     }
 }
 
-export function SendByEmail(url, formData) {
+export function SendByEmail_Inbox(url, formData) {
     return (dispatch, getState) => {
         return Api.post(url, formData).then(resp => {
+            toast.success(Resources["operationSuccess"][currentLanguage]);
             dispatch({
-                type: types.SendByEmail,
+                type: types.SendByEmail_Inbox,
                 showModal: false
             });
         }).catch((ex) => {
+            toast.success(Resources["failError"][currentLanguage]);
             dispatch({
-                type: types.SendByEmail,
+                type: types.SendByEmail_Inbox,
                 showModal: true
             });
         });
     }
 }
+
+
 
 export function GetNextArrange(urlAction) {
     return (dispatch, getState) => {
@@ -426,7 +434,7 @@ function BuildWorkFlowCycleStracture(result) {
     let hasWorkFlow = poolLevels.filter((t) => t.statusVal == null).length > 0 ? true : false;
 
     returnObj.hasWorkFlow = hasWorkFlow;
- 
+
     workFlowCycles.forEach(function (item) {
         var obj = {};
 
@@ -449,7 +457,7 @@ function BuildWorkFlowCycleStracture(result) {
     });
 
     returnObj.cycles = cycles;
-    
+
     return returnObj;
 };
 

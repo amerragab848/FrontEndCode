@@ -12,15 +12,15 @@ export default function (state = initialState.app.communication, action) {
             state.attachDocuments = action.attachDocuments
             return {
                 ...state
-            } 
-
-        case types.Export_Document: 
-            let _items=state.items.length>0? state.items:action.items.length>0?action.items:[]
-            return {
-                ...state, items: _items 
             }
 
-        case types.Document_for_Edit: 
+        case types.Export_Document:
+            let _items = state.items.length > 0 ? state.items : action.items.length > 0 ? action.items : []
+            return {
+                ...state, items: _items
+            }
+
+        case types.Document_for_Edit:
             return {
                 ...state,
                 document: action.document,
@@ -30,11 +30,11 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: true,
                 showSelectProject: false,
                 showLeftReportMenu: false,
-                documentTitle:action.docName
+                documentTitle: action.docName
             };
 
         case types.Clear_Cash_Document:
-            
+
             return {
                 ...state,
                 document: {},
@@ -45,19 +45,19 @@ export default function (state = initialState.app.communication, action) {
                 workFlowCycles: []
             };
 
-            case types.Show_OptionPanel:
-            
-                return {
-                    ...state, 
-                    showModal: action.showModal
-                };
+        case types.Show_OptionPanel:
+
+            return {
+                ...state,
+                showModal: action.showModal
+            };
 
         case types.Document_Adding:
             return {
                 ...state,
                 document: {},
                 showLeftMenu: true,
-                showSelectProject: false, 
+                showSelectProject: false,
                 changeStatus: false,
                 items: [],
                 projectId: state.projectId == 0 ? localStorage.getItem('lastSelectedProject') : state.projectId,
@@ -72,18 +72,18 @@ export default function (state = initialState.app.communication, action) {
             };
 
         case types.add_item:
-            let docId = state.docId == 0 ? action.docId : state.docId; 
+            let docId = state.docId == 0 ? action.docId : state.docId;
             return {
                 ...state,
                 docId,
                 items: [...state.items, ...action.item]
             };
 
-            case types.reset_items: 
-                return {
-                    ...state, 
-                    items: action.data
-                };
+        case types.reset_items:
+            return {
+                ...state,
+                items: action.data
+            };
 
         case types.edit_item:
             let updateRow = action.item;
@@ -152,11 +152,12 @@ export default function (state = initialState.app.communication, action) {
                 showModal: action.showModal
             };
 
-        case types.SendByEmail:
+        case types.SendByEmail_Inbox:
             return {
                 ...state,
                 showModal: action.showModal
             };
+
 
         case types.Update_Field:
             return {
