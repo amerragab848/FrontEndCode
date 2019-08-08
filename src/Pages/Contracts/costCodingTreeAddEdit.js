@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
@@ -11,12 +11,12 @@ import * as communicationActions from "../../store/actions/communication";
 import Edit from "../../Styles/images/epsActions/edit.png";
 import Plus from "../../Styles/images/epsActions/plus.png";
 import Delete from "../../Styles/images/epsActions/delete.png";
-import Rodal from "../../Styles/js/rodal";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import _ from "lodash";
 import Api from '../../api'
 import { toast } from "react-toastify";
+import SkyLight from "react-skylight";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -39,12 +39,12 @@ const validationSchema = Yup.object().shape({
 });
 
 var treeContainer = []
+
 class CostCodingTreeAddEdit extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      mode:'add',
+      mode: 'add',
       projectId: props.match.params.projectId,
       trees: [],
       childerns: [],
@@ -59,7 +59,7 @@ class CostCodingTreeAddEdit extends Component {
       docId: "",
       IsFirstParent: false,
       finish: false,
-
+      document: {}
     };
 
     if (!Config.IsAllow(134) || !Config.IsAllow(135) || !Config.IsAllow(137)) {
@@ -72,9 +72,7 @@ class CostCodingTreeAddEdit extends Component {
   }
 
   componentDidMount() {
-    var links = document.querySelectorAll(
-      ".noTabs__document .doc-container .linebylineInput"
-    );
+    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
 
     for (var i = 0; i < links.length; i++) {
       if ((i + 1) % 2 == 0) {
@@ -83,15 +81,16 @@ class CostCodingTreeAddEdit extends Component {
         links[i].classList.add("odd");
       }
     }
-
   }
+
   componentDidUpdate = () => {
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.projectId !== this.props.projectId ||nextProps.showActions==false) {
+    if (nextProps.projectId !== this.props.projectId || nextProps.showActions == false) {
       this.getTree(nextProps.projectId)
     }
   }
+
   getTree = (projectId) => {
     this.setState({ isLoading: true })
     dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + projectId).then(result => {
@@ -128,6 +127,7 @@ class CostCodingTreeAddEdit extends Component {
       objDocument: item,
       mode: 'add'
     });
+    this.simpleDialog.show();
     this.clear();
   }
 
@@ -138,6 +138,7 @@ class CostCodingTreeAddEdit extends Component {
       document: item,
       mode: 'goEdit'
     });
+    this.simpleDialog.show();
   }
 
   GetNodeData = (item) => {
@@ -164,15 +165,13 @@ class CostCodingTreeAddEdit extends Component {
         if (treeContainer != null)
           treeContainer[item.id] = item
         return (
-          <Fragment>
+          <Fragment key={i}>
             <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === true ? 'epsTitle active' : 'epsTitle'} key={item.id} onClick={() => this.viewChild(item)}
               style={{ display: this.state[item.id] == -1 ? 'none' : '' }} >
               <div className="listTitle">
-
                 <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }}>
                   <i className="dropdown icon" />
                 </span>
-
                 <span className="accordionTitle" onClick={this.props.GetNodeData ? () => this.GetNodeData(item) : null}>{this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}
                 </span>
               </div>
@@ -319,27 +318,33 @@ class CostCodingTreeAddEdit extends Component {
       treeContainer.forEach(item => {
         state[item.id] = item
       })
-      this.setState({ state,isLoading:true })
+      this.setState({ state, isLoading: true })
     }
     Api.post("DeleteCostCodeTree?id=" + this.state.docId).then(result => {
       let state = this.state
       state[this.state.docId] = -1
       if (result != null)
-        this.setState({ trees: result, showDeleteModal: false, state,isLoading:false })
+        this.setState({ trees: result, showDeleteModal: false, state, isLoading: false })
       else
-        this.setState({ showDeleteModal: false, state,isLoading:false });
+        this.setState({ showDeleteModal: false, state, isLoading: false });
       treeContainer = null;
       toast.success(Resources["operationSuccess"][currentLanguage]);
 
     }).catch(ex => {
       toast.success(Resources["operationSuccess"][currentLanguage]);
-      this.setState({ showDeleteModal: false,isLoading:false });
+      this.setState({ showDeleteModal: false, isLoading: false });
 
     });
   }
 
   clickHandlerCancelMain = () => {
     this.setState({ showDeleteModal: false });
+  }
+
+  viewModalForFirst = () => {
+    this.setState({ mode: 'goAdd', viewPopUp: true, isEdit: true, IsFirstParent: true });
+    this.clear();
+    this.simpleDialog.show();
   }
 
   render() {
@@ -349,7 +354,7 @@ class CostCodingTreeAddEdit extends Component {
           {this.props.showActions == false ? null :
             <div className="tree__header">
               <h2 className="zero">{Resources.costCodingTree[currentLanguage]}</h2>
-              <button className="primaryBtn-1 btn" onClick={() => this.setState({mode:'goAdd', viewPopUp: true, isEdit: true, IsFirstParent: true })}>
+              <button className="primaryBtn-1 btn" onClick={this.viewModalForFirst.bind(this)}>
                 {Resources["goAdd"][currentLanguage]}
               </button>
             </div>
@@ -361,7 +366,7 @@ class CostCodingTreeAddEdit extends Component {
                   if (treeContainer != null)
                     treeContainer[item.id] = item
                   return (
-                    <Fragment>
+                    <Fragment key={i}>
                       <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === true ? 'epsTitle active' : 'epsTitle'} key={item.id}
                         style={{ display: this.state[item.id] == -1 ? 'none' : '' }} onClick={() => this.viewChild(item)} >
                         <div className="listTitle">
@@ -392,283 +397,275 @@ class CostCodingTreeAddEdit extends Component {
                       </div>
                     </Fragment>
                   )
-
                 })
-
               }
             </div>
           }
         </div>
-        {this.state.viewPopUp ? (
-          <Fragment>
-            <Rodal
-              visible={this.state.viewPopUp}
-              onClose={this.closePopUp.bind(this)}
+
+        <SkyLight ref={ref => (this.simpleDialog = ref)} >
+          <div className="ui modal largeModal ">
+            <header className="costHeader">
+              <h2 className="zero">
+                {Resources[this.state.mode][currentLanguage]}
+              </h2>
+            </header>
+            <Formik
+              initialValues={{ ...this.state.document }}
+              validationSchema={validationSchema}
+              onSubmit={values => {
+                if (this.state.isEdit === false) {
+                  this.editTree();
+                } else if (this.state.isEdit) {
+                  this.saveTree();
+                }
+              }}
             >
-              <div className="ui modal largeModal ">
-                <header className="costHeader">
-                  <h2 className="zero">
-                    {Resources[this.state.mode][currentLanguage]}
-                  </h2>
-                </header>
-                <Formik
-                  initialValues={{ ...this.state.document }}
-                  validationSchema={validationSchema}
-                  onSubmit={values => {
-                    if (this.state.isEdit === false) {
-                      this.editTree();
-                    } else if (this.state.isEdit) {
-                      this.saveTree();
-                    }
-                  }}
-                >
-                  {({
-                    errors,
-                    touched,
-                    handleBlur,
-                    handleChange,
-                    values,
-                    handleSubmit,
-                    setFieldTouched,
-                    setFieldValue
-                  }) => (
+              {({
+                errors,
+                touched,
+                handleBlur,
+                handleChange,
+                values,
+                handleSubmit,
+                setFieldTouched,
+                setFieldValue
+              }) => (
 
-                      <Form className="dropWrapper proForm" onSubmit={handleSubmit}>
-                        <div className="fullWidthWrapper textLeft">
+                  <Form className="dropWrapper proForm" onSubmit={handleSubmit}>
+                    <div className="fullWidthWrapper textLeft">
 
-                        </div>
-                        <div className="fillter-status fillter-item-c fullInputWidth ">
-                          <label className="control-label">
-                            {Resources.codeTitle[currentLanguage]}
-                          </label>
-                          <div
-                            className={
-                              "ui input inputDev fullInputWidth " +
-                              (errors.codeTreeTitle && touched.codeTreeTitle
-                                ? "has-error"
-                                : !errors.codeTreeTitle && touched.codeTreeTitle
-                                  ? "has-success"
-                                  : "")
-                            }
-                          >
-                            <input
-                              name="codeTreeTitle"
-                              className="form-control fsadfsadsa"
-                              placeholder={Resources.codeTitle[currentLanguage]}
-                              autoComplete="off"
-                              value={this.state.document.codeTreeTitle}
-                              onBlur={e => {
-                                handleBlur(e);
-                                handleChange(e);
-                              }}
-                              onChange={e =>
-                                this.handleChange(e, "codeTreeTitle")
-                              }
-                            />
-                            {errors.codeTreeTitle && touched.codeTreeTitle ? (
-                              <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                            ) : !errors.codeTreeTitle && touched.codeTreeTitle ? (
+                    </div>
+                    <div className="fillter-status fillter-item-c fullInputWidth ">
+                      <label className="control-label">
+                        {Resources.codeTitle[currentLanguage]}
+                      </label>
+                      <div
+                        className={
+                          "ui input inputDev fullInputWidth " +
+                          (errors.codeTreeTitle && touched.codeTreeTitle
+                            ? "has-error"
+                            : !errors.codeTreeTitle && touched.codeTreeTitle
+                              ? "has-success"
+                              : "")
+                        }
+                      >
+                        <input
+                          name="codeTreeTitle"
+                          className="form-control fsadfsadsa"
+                          placeholder={Resources.codeTitle[currentLanguage]}
+                          autoComplete="off"
+                          value={this.state.document.codeTreeTitle}
+                          onBlur={e => {
+                            handleBlur(e);
+                            handleChange(e);
+                          }}
+                          onChange={e =>
+                            this.handleChange(e, "codeTreeTitle")
+                          }
+                        />
+                        {errors.codeTreeTitle && touched.codeTreeTitle ? (
+                          <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                        ) : !errors.codeTreeTitle && touched.codeTreeTitle ? (
+                          <span className="glyphicon form-control-feedback glyphicon-ok" />
+                        ) : null}
+                        {errors.codeTreeTitle && touched.codeTreeTitle ? (
+                          <em className="pError">{errors.codeTreeTitle}</em>
+                        ) : null}
+                      </div>
+                    </div>
+                    <div className="fillter-status fillter-item-c fullInputWidth">
+                      <label className="control-label">
+                        {Resources.budgetThisPeriod[currentLanguage]}
+                      </label>
+                      <div
+                        className={
+                          "ui input inputDev " +
+                          (errors.budgetThisPeriod && touched.budgetThisPeriod
+                            ? "has-error"
+                            : !errors.budgetThisPeriod &&
+                              touched.budgetThisPeriod
+                              ? "has-success"
+                              : "")
+                        }
+                      >
+                        <input
+                          name="budgetThisPeriod"
+                          className="form-control fsadfsadsa"
+                          placeholder={
+                            Resources.budgetThisPeriod[currentLanguage]
+                          }
+                          autoComplete="off"
+                          value={this.state.document.budgetThisPeriod}
+                          onBlur={e => {
+                            handleBlur(e);
+                            handleChange(e);
+                          }}
+                          onChange={e =>
+                            this.handleChange(e, "budgetThisPeriod")
+                          }
+                        />
+                        {errors.budgetThisPeriod &&
+                          touched.budgetThisPeriod ? (
+                            <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                          ) : !errors.budgetThisPeriod &&
+                            touched.budgetThisPeriod ? (
                               <span className="glyphicon form-control-feedback glyphicon-ok" />
                             ) : null}
-                            {errors.codeTreeTitle && touched.codeTreeTitle ? (
-                              <em className="pError">{errors.codeTreeTitle}</em>
-                            ) : null}
-                          </div>
-                        </div>
-                        <div className="fillter-status fillter-item-c fullInputWidth">
-                          <label className="control-label">
-                            {Resources.budgetThisPeriod[currentLanguage]}
-                          </label>
-                          <div
-                            className={
-                              "ui input inputDev " +
-                              (errors.budgetThisPeriod && touched.budgetThisPeriod
-                                ? "has-error"
-                                : !errors.budgetThisPeriod &&
-                                  touched.budgetThisPeriod
-                                  ? "has-success"
-                                  : "")
-                            }
-                          >
-                            <input
-                              name="budgetThisPeriod"
-                              className="form-control fsadfsadsa"
-                              placeholder={
-                                Resources.budgetThisPeriod[currentLanguage]
-                              }
-                              autoComplete="off"
-                              value={this.state.document.budgetThisPeriod}
-                              onBlur={e => {
-                                handleBlur(e);
-                                handleChange(e);
-                              }}
-                              onChange={e =>
-                                this.handleChange(e, "budgetThisPeriod")
-                              }
-                            />
-                            {errors.budgetThisPeriod &&
-                              touched.budgetThisPeriod ? (
-                                <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                              ) : !errors.budgetThisPeriod &&
-                                touched.budgetThisPeriod ? (
-                                  <span className="glyphicon form-control-feedback glyphicon-ok" />
-                                ) : null}
-                            {errors.budgetThisPeriod &&
-                              touched.budgetThisPeriod ? (
-                                <em className="pError">
-                                  {errors.budgetThisPeriod}
-                                </em>
-                              ) : null}
-                          </div>
-                        </div>
-                        <div className="fillter-status fillter-item-c fullInputWidth">
-                          <label className="control-label">
-                            {Resources.budgetAtComplete[currentLanguage]}
-                          </label>
-                          <div
-                            className={
-                              "ui input inputDev " +
-                              (errors.budgetAtComplete && touched.budgetAtComplete
-                                ? "has-error"
-                                : !errors.budgetAtComplete &&
-                                  touched.budgetAtComplete
-                                  ? "has-success"
-                                  : "")
-                            }
-                          >
-                            <input
-                              name="budgetAtComplete"
-                              className="form-control fsadfsadsa"
-                              placeholder={
-                                Resources.budgetAtComplete[currentLanguage]
-                              }
-                              autoComplete="off"
-                              value={this.state.document.budgetAtComplete}
-                              onBlur={e => {
-                                handleBlur(e);
-                                handleChange(e);
-                              }}
-                              onChange={e =>
-                                this.handleChange(e, "budgetAtComplete")
-                              }
-                            />
-                            {errors.budgetAtComplete &&
-                              touched.budgetAtComplete ? (
-                                <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                              ) : !errors.budgetAtComplete &&
-                                touched.budgetAtComplete ? (
-                                  <span className="glyphicon form-control-feedback glyphicon-ok" />
-                                ) : null}
-                            {errors.budgetAtComplete &&
-                              touched.budgetAtComplete ? (
-                                <em className="pError">
-                                  {errors.budgetAtComplete}
-                                </em>
-                              ) : null}
-                          </div>
-                        </div>
-                        <div className="fillter-status fillter-item-c fullInputWidth">
-                          <label className="control-label">
-                            {Resources.originalBudget[currentLanguage]}
-                          </label>
-                          <div
-                            className={
-                              "ui input inputDev " +
-                              (errors.originalBudget && touched.originalBudget
-                                ? "has-error"
-                                : !errors.originalBudget && touched.originalBudget
-                                  ? "has-success"
-                                  : "")
-                            }
-                          >
-                            <input
-                              name="originalBudget"
-                              className="form-control fsadfsadsa"
-                              placeholder={
-                                Resources.originalBudget[currentLanguage]
-                              }
-                              autoComplete="off"
-                              value={this.state.document.originalBudget}
-                              onBlur={e => {
-                                handleBlur(e);
-                                handleChange(e);
-                              }}
-                              onChange={e =>
-                                this.handleChange(e, "originalBudget")
-                              }
-                            />
-                            {errors.originalBudget && touched.originalBudget ? (
-                              <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                            ) : !errors.originalBudget &&
-                              touched.originalBudget ? (
-                                  <span className="glyphicon form-control-feedback glyphicon-ok" />
-                                ) : null}
-                            {errors.originalBudget && touched.originalBudget ? (
-                              <em className="pError">{errors.originalBudget}</em>
-                            ) : null}
-                          </div>
-                        </div>
-                        <div className="fillter-status fillter-item-c fullInputWidth">
-                          <label className="control-label">
-                            {Resources.costForcast[currentLanguage]}
-                          </label>
-                          <div
-                            className={
-                              "ui input inputDev " +
-                              (errors.costForcast && touched.costForcast
-                                ? "has-error"
-                                : !errors.costForcast && touched.costForcast
-                                  ? "has-success"
-                                  : "")
-                            }
-                          >
-                            <input
-                              name="costForcast"
-                              className="form-control fsadfsadsa"
-                              placeholder={Resources.costForcast[currentLanguage]}
-                              autoComplete="off"
-                              value={this.state.document.costForcast}
-                              onBlur={e => {
-                                handleBlur(e);
-                                handleChange(e);
-                              }}
-                              onChange={e => this.handleChange(e, "costForcast")}
-                            />
-                            {errors.costForcast && touched.costForcast ? (
-                              <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                            ) : !errors.costForcast && touched.costForcast ? (
+                        {errors.budgetThisPeriod &&
+                          touched.budgetThisPeriod ? (
+                            <em className="pError">
+                              {errors.budgetThisPeriod}
+                            </em>
+                          ) : null}
+                      </div>
+                    </div>
+                    <div className="fillter-status fillter-item-c fullInputWidth">
+                      <label className="control-label">
+                        {Resources.budgetAtComplete[currentLanguage]}
+                      </label>
+                      <div
+                        className={
+                          "ui input inputDev " +
+                          (errors.budgetAtComplete && touched.budgetAtComplete
+                            ? "has-error"
+                            : !errors.budgetAtComplete &&
+                              touched.budgetAtComplete
+                              ? "has-success"
+                              : "")
+                        }
+                      >
+                        <input
+                          name="budgetAtComplete"
+                          className="form-control fsadfsadsa"
+                          placeholder={
+                            Resources.budgetAtComplete[currentLanguage]
+                          }
+                          autoComplete="off"
+                          value={this.state.document.budgetAtComplete}
+                          onBlur={e => {
+                            handleBlur(e);
+                            handleChange(e);
+                          }}
+                          onChange={e =>
+                            this.handleChange(e, "budgetAtComplete")
+                          }
+                        />
+                        {errors.budgetAtComplete &&
+                          touched.budgetAtComplete ? (
+                            <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                          ) : !errors.budgetAtComplete &&
+                            touched.budgetAtComplete ? (
                               <span className="glyphicon form-control-feedback glyphicon-ok" />
                             ) : null}
-                            {errors.costForcast && touched.costForcast ? (
-                              <em className="pError">{errors.costForcast}</em>
+                        {errors.budgetAtComplete &&
+                          touched.budgetAtComplete ? (
+                            <em className="pError">
+                              {errors.budgetAtComplete}
+                            </em>
+                          ) : null}
+                      </div>
+                    </div>
+                    <div className="fillter-status fillter-item-c fullInputWidth">
+                      <label className="control-label">
+                        {Resources.originalBudget[currentLanguage]}
+                      </label>
+                      <div
+                        className={
+                          "ui input inputDev " +
+                          (errors.originalBudget && touched.originalBudget
+                            ? "has-error"
+                            : !errors.originalBudget && touched.originalBudget
+                              ? "has-success"
+                              : "")
+                        }
+                      >
+                        <input
+                          name="originalBudget"
+                          className="form-control fsadfsadsa"
+                          placeholder={
+                            Resources.originalBudget[currentLanguage]
+                          }
+                          autoComplete="off"
+                          value={this.state.document.originalBudget}
+                          onBlur={e => {
+                            handleBlur(e);
+                            handleChange(e);
+                          }}
+                          onChange={e =>
+                            this.handleChange(e, "originalBudget")
+                          }
+                        />
+                        {errors.originalBudget && touched.originalBudget ? (
+                          <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                        ) : !errors.originalBudget &&
+                          touched.originalBudget ? (
+                              <span className="glyphicon form-control-feedback glyphicon-ok" />
                             ) : null}
-                          </div>
-                        </div>
-                        <div className="fullWidthWrapper">
-                          {this.state.isLoading === false ? (
-                            <button
-                              className="primaryBtn-1 btn middle__btn"
-                              type="submit"
-                            >
-                              {Resources["save"][currentLanguage]}
-                            </button>
-                          ) : (
-                              <button className="primaryBtn-1 btn middle__btn disabled">
-                                <div className="spinner">
-                                  <div className="bounce1" />
-                                  <div className="bounce2" />
-                                  <div className="bounce3" />
-                                </div>
-                              </button>
-                            )}
-                        </div>
-                      </Form>
-                    )}
-                </Formik>
-              </div>
-            </Rodal>
-          </Fragment>
-        ) : null}
+                        {errors.originalBudget && touched.originalBudget ? (
+                          <em className="pError">{errors.originalBudget}</em>
+                        ) : null}
+                      </div>
+                    </div>
+                    <div className="fillter-status fillter-item-c fullInputWidth">
+                      <label className="control-label">
+                        {Resources.costForcast[currentLanguage]}
+                      </label>
+                      <div
+                        className={
+                          "ui input inputDev " +
+                          (errors.costForcast && touched.costForcast
+                            ? "has-error"
+                            : !errors.costForcast && touched.costForcast
+                              ? "has-success"
+                              : "")
+                        }
+                      >
+                        <input
+                          name="costForcast"
+                          className="form-control fsadfsadsa"
+                          placeholder={Resources.costForcast[currentLanguage]}
+                          autoComplete="off"
+                          value={this.state.document.costForcast}
+                          onBlur={e => {
+                            handleBlur(e);
+                            handleChange(e);
+                          }}
+                          onChange={e => this.handleChange(e, "costForcast")}
+                        />
+                        {errors.costForcast && touched.costForcast ? (
+                          <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                        ) : !errors.costForcast && touched.costForcast ? (
+                          <span className="glyphicon form-control-feedback glyphicon-ok" />
+                        ) : null}
+                        {errors.costForcast && touched.costForcast ? (
+                          <em className="pError">{errors.costForcast}</em>
+                        ) : null}
+                      </div>
+                    </div>
+                    <div className="fullWidthWrapper">
+                      {this.state.isLoading === false ? (
+                        <button
+                          className="primaryBtn-1 btn middle__btn"
+                          type="submit"
+                        >
+                          {Resources["save"][currentLanguage]}
+                        </button>
+                      ) : (
+                          <button className="primaryBtn-1 btn middle__btn disabled">
+                            <div className="spinner">
+                              <div className="bounce1" />
+                              <div className="bounce2" />
+                              <div className="bounce3" />
+                            </div>
+                          </button>
+                        )}
+                    </div>
+                  </Form>
+                )}
+            </Formik>
+          </div>
+        </SkyLight>
 
         {this.state.showDeleteModal == true ? (
           <ConfirmationModal

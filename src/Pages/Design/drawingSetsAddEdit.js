@@ -17,15 +17,13 @@ import { bindActionCreators } from "redux";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
 import moment from "moment";
-import SkyLight from "react-skylight";
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import * as communicationActions from "../../store/actions/communication";
-import Distribution from "../../Componants/OptionsPanels/DistributionList";
-import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
-import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
+
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import Steps from "../../Componants/publicComponants/Steps"; 
+import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 var steps_defination = [];
@@ -86,13 +84,11 @@ class DrawingSetsAddEdit extends Component {
     }
 
     this.state = {
-      CurrentStep: 0, 
+      CurrentStep: 0,
       showDeleteModal: false,
       isLoading: false,
       isEdit: false,
       perviousRoute: perviousRoute,
-      currentTitle: "sendToWorkFlow",
-      showModal: false,
       isViewMode: false,
       isApproveMode: isApproveMode,
       isView: false,
@@ -144,14 +140,14 @@ class DrawingSetsAddEdit extends Component {
     }
     steps_defination = [
       {
-          name: "Submittal",
-          callBackFn: ()=>this.getLogsSubmittalItems
+        name: "Submittal",
+        callBackFn: () => this.getLogsSubmittalItems
       },
       {
-          name: "items",
-          callBackFn: null
+        name: "items",
+        callBackFn: null
       }
-  ];
+    ];
   }
 
   componentDidMount() {
@@ -190,9 +186,7 @@ class DrawingSetsAddEdit extends Component {
 
       this.checkDocumentIsView();
     }
-    if (this.state.showModal != nextProps.showModal) {
-      this.setState({ showModal: nextProps.showModal });
-    }
+
   }
 
   componentDidUpdate(prevProps) {
@@ -533,7 +527,7 @@ class DrawingSetsAddEdit extends Component {
       this.changeCurrentStep(1);
     }
   }
- 
+
   showBtnsSaving() {
 
     let btn = null;
@@ -561,33 +555,16 @@ class DrawingSetsAddEdit extends Component {
         (<ViewAttachment isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={896} />) : null) : null;
   }
 
-  handleShowAction = item => {
-
-    if (item.value != "0") {
-      this.props.actions.showOptionPanel(false);
-
-      this.setState({
-        currentComponent: item.value,
-        currentTitle: item.title,
-        showModal: true
-      });
-
-      this.simpleDialog.show();
-    }
-  };
 
   changeCurrentStep = stepNo => {
     this.setState({ CurrentStep: stepNo });
-};
- 
+  };
+
   getLogsSubmittalItems = () => {
     dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
       this.setState({ itemData: data });
     }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
   }
- 
-
- 
 
   finishDocument() {
     this.props.history.push("/drawingSets/" + this.state.projectId);
@@ -660,7 +637,9 @@ class DrawingSetsAddEdit extends Component {
     });
   }
 
- 
+  showOptionPanel = () => {
+    this.props.actions.showOptionPanel(true);
+  }
 
   render() {
     const columns = [
@@ -710,29 +689,6 @@ class DrawingSetsAddEdit extends Component {
         accessor: "status",
         width: 200,
         sortabel: true
-      }
-    ];
-
-    let actions = [
-      {
-        title: "distributionList",
-        value: (<Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-        label: Resources["distributionList"][currentLanguage]
-      },
-      {
-        title: "sendToWorkFlow",
-        value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-        label: Resources["sendToWorkFlow"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} previousRoute={this.state.perviousRoute} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-        label: Resources["documentApproval"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-        label: Resources["documentApproval"][currentLanguage]
       }
     ];
 
@@ -873,7 +829,7 @@ class DrawingSetsAddEdit extends Component {
                                     <Dropdown isMulti={false} data={this.state.fromContacts} selectedValue={this.state.selectedFromContact}
                                       handleChange={event => this.handleChangeDropDown(event, "bicContactId", false, "", "", "", "selectedFromContact")}
                                       onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicContactId} touched={touched.bicContactId}
-                                      name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown}/>
+                                      name="bicContactId" id="bicContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                   </div>
                                 </div>
                               </div>
@@ -954,7 +910,7 @@ class DrawingSetsAddEdit extends Component {
                           <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
                             validationSchema={validationSchemaItems}
                             onSubmit={() => { this.addDrawingItems(); }}>
-                            {({ errors, touched,  handleSubmit, setFieldTouched, setFieldValue }) => (
+                            {({ errors, touched, handleSubmit, setFieldTouched, setFieldValue }) => (
                               <Form onSubmit={handleSubmit}>
                                 <div className="proForm datepickerContainer">
                                   <div className="linebylineInput valid-input">
@@ -1015,46 +971,46 @@ class DrawingSetsAddEdit extends Component {
             {this.props.changeStatus === true && this.state.CurrentStep === 0 ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
-                  {this.state.isApproveMode === true ? (
-                    <div>
-                      <button className="primaryBtn-1 btn " onClick={e => this.handleShowAction(actions[2])}>
-                        {Resources.approvalModalApprove[currentLanguage]}
-                      </button>
-                      <button className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[3])}>
-                        {Resources.approvalModalReject[currentLanguage]}
-                      </button>
-                    </div>
-                  ) : null}
-                  <button className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[1])}>
-                    {Resources.sendToWorkFlow[currentLanguage]}
-                  </button>
-                  <button className="primaryBtn-2 btn" onClick={e => this.handleShowAction(actions[0])}>
-                    {Resources.distributionList[currentLanguage]}
-                  </button>
-                  <span className="border" />
-                  <div className="document__action--menu">
-                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                  </div>
+
+                  {this.state.isLoading ?
+                    <button className="primaryBtn-1 btn disabled">
+                      <div className="spinner">
+                        <div className="bounce1" />
+                        <div className="bounce2" />
+                        <div className="bounce3" />
+                      </div>
+                    </button> :
+                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
+                  }
+                  <DocumentActions
+                    isApproveMode={this.state.isApproveMode}
+                    docTypeId={this.state.docTypeId}
+                    docId={this.state.docId}
+                    projectId={this.state.projectId}
+                    previousRoute={this.state.previousRoute}
+                    docApprovalId={this.state.docApprovalId}
+                    currentArrange={this.state.currentArrange}
+                    showModal={this.props.showModal}
+                    showOptionPanel={this.showOptionPanel}
+                    permission={this.state.permission}
+                  />
+
                 </div>
               </div>
             ) : null}
-                    <Steps
-                            steps_defination={steps_defination}
-                            exist_link="/drawingSets/"
-                            docId={this.state.docId}
-                            changeCurrentStep={stepNo =>
-                                this.changeCurrentStep(stepNo)
-                            }
-                            stepNo={this.state.CurrentStep}
-                        />
-           </div>
+            <Steps
+              steps_defination={steps_defination}
+              exist_link="/drawingSets/"
+              docId={this.state.docId}
+              changeCurrentStep={stepNo =>
+                this.changeCurrentStep(stepNo)
+              }
+              stepNo={this.state.CurrentStep}
+            />
+          </div>
         </div>
         <div>
-          <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>
-            <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)} title={Resources[this.state.currentTitle][currentLanguage]}>
-              {this.state.currentComponent}
-            </SkyLight>
-          </div>
+
           {this.state.showDeleteModal == true ? (
             <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
@@ -1072,7 +1028,8 @@ function mapStateToProps(state, ownProps) {
     changeStatus: state.communication.changeStatus,
     file: state.communication.file,
     files: state.communication.files,
-    hasWorkflow: state.communication.hasWorkflow
+    hasWorkflow: state.communication.hasWorkflow,
+    showModal: state.communication.showModal
   };
 }
 

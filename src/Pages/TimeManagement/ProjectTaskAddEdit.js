@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
@@ -17,22 +16,18 @@ import CryptoJS from "crypto-js";
 import moment from "moment";
 import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
-import Distribution from "../../Componants/OptionsPanels/DistributionList";
-import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
-import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
-
 import { toast } from "react-toastify";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
-   fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]),
-   bicContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage])
+  fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]),
+  bicContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage])
 });
 
 const validationSchemaForCycle = Yup.object().shape({
@@ -104,8 +99,6 @@ class ProjectTaskAddEdit extends Component {
     }
 
     this.state = {
-      currentTitle: "sendToWorkFlow",
-      showModal: false,
       isViewMode: false,
       isApproveMode: isApproveMode,
       isView: false,
@@ -455,7 +448,7 @@ class ProjectTaskAddEdit extends Component {
   }
 
   editTask(event) {
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
 
     let saveDocument = { ...this.state.document };
 
@@ -533,24 +526,14 @@ class ProjectTaskAddEdit extends Component {
   viewAttachments() {
     return this.state.docId > 0 ? (
       Config.IsAllow(3292) === true ? (
-       <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={868} />
+        <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={868} />
       ) : null
     ) : null;
   }
 
-  handleShowAction = item => {
-    if (item.value != "0") {
-      this.props.actions.showOptionPanel(false);
-      this.setState({
-        currentComponent: item.value,
-        currentTitle: item.title,
-        showModal: true,
-        viewModal: false
-      });
-
-      this.simpleDialog.show();
-    }
-  };
+  showOptionPanel = () => {
+    this.props.actions.showOptionPanel(true);
+  }
 
   viewCycle() {
 
@@ -618,28 +601,7 @@ class ProjectTaskAddEdit extends Component {
   }
 
   render() {
-    let actions = [
-      {
-        title: "distributionList",
-        value: (<Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-        label: Resources["distributionList"][currentLanguage]
-      },
-      {
-        title: "sendToWorkFlow",
-        value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-        label: Resources["sendToWorkFlow"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-        label: Resources["documentApproval"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-        label: Resources["documentApproval"][currentLanguage]
-      }
-    ];
+
 
     return (
       <div className="mainContainer">
@@ -668,10 +630,13 @@ class ProjectTaskAddEdit extends Component {
               <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
                   <div className="document-fields">
-                    <Formik initialValues={{ ...this.state.document }} 
-                    validationSchema={validationSchema}
-                    enableReinitialize={true}
+                    <Formik initialValues={{ ...this.state.document }}
+                      validationSchema={validationSchema}
+                      enableReinitialize={true}
                       onSubmit={values => {
+                        if (this.props.showModal) {
+                          return;
+                        }
                         if (this.props.changeStatus === true && this.state.docId > 0) {
                           this.editTask();
                         } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -751,7 +716,7 @@ class ProjectTaskAddEdit extends Component {
                                     handleChange={event => { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
                                     onChange={setFieldValue} onBlur={setFieldTouched}
                                     error={errors.fromCompanyId} touched={touched.fromCompanyId}
-                                    name="fromCompanyId" id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
+                                    name="fromCompanyId" id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                 </div>
                                 <div className="super_company">
                                   <Dropdown isMulti={false} data={this.state.fromContacts}
@@ -773,7 +738,7 @@ class ProjectTaskAddEdit extends Component {
                                     selectedValue={this.state.selectedBicCompany}
                                     handleChange={event => this.handleChangeDropDown(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompany", "selectedToContact")}
                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.bicCompanyId}
-                                    touched={touched.bicCompanyId} name="bicCompanyId" id="bicCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
+                                    touched={touched.bicCompanyId} name="bicCompanyId" id="bicCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                 </div>
                                 <div className="super_company">
                                   <Dropdown isMulti={false} data={this.state.ToContacts} selectedValue={this.state.selectedToContact}
@@ -861,29 +826,18 @@ class ProjectTaskAddEdit extends Component {
                           {this.props.changeStatus === true ? (
                             <div className="approveDocument">
                               <div className="approveDocumentBTNS">
-                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
-                                  {Resources.save[currentLanguage]}
-                                </button>
-                                {this.state.isApproveMode === true ? (
-                                  <div>
-                                    <button className="primaryBtn-1 btn " onClick={e => this.handleShowAction(actions[2])}>
-                                      {Resources.approvalModalApprove[currentLanguage]}
-                                    </button>
-                                    <button  className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[3])}>
-                                      {Resources.approvalModalReject[currentLanguage]}
-                                    </button>
-                                  </div>
-                                ) : null}
-                                <button className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[1])}>
-                                  {Resources.sendToWorkFlow[currentLanguage]}
-                                </button>
-                                <button className="primaryBtn-2 btn" onClick={e => this.handleShowAction(actions[0])}>
-                                  {Resources.distributionList[currentLanguage]}
-                                </button>
-                                <span className="border" />
-                                <div className="document__action--menu">
-                                  <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                </div>
+                                <DocumentActions
+                                  isApproveMode={this.state.isApproveMode}
+                                  docTypeId={this.state.docTypeId}
+                                  docId={this.state.docId}
+                                  projectId={this.state.projectId}
+                                  previousRoute={this.state.previousRoute}
+                                  docApprovalId={this.state.docApprovalId}
+                                  currentArrange={this.state.currentArrange}
+                                  showModal={this.props.showModal}
+                                  showOptionPanel={this.showOptionPanel}
+                                  permission={this.state.permission}
+                                />
                               </div>
                             </div>
                           ) : null}
@@ -905,11 +859,6 @@ class ProjectTaskAddEdit extends Component {
             </div>
 
           </div>
-        </div>
-        <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }}>
-          <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)} title={Resources[this.state.currentTitle][currentLanguage]}>
-            {this.state.currentComponent}
-          </SkyLight>
         </div>
         {this.state.viewModal === true ? (
           <div className="largePopup largeModal " style={{ display: this.state.viewModal ? "block" : "none" }}>
@@ -991,7 +940,7 @@ class ProjectTaskAddEdit extends Component {
                               <Dropdown data={this.state.companies} isMulti={false}
                                 selectedValue={this.state.selectedBicCompanyCycle}
                                 handleChange={event => { this.handleChangeDropDownCycle(event, "bicCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedBicCompanyCycle", "selectedFromContact"); }}
-                                name="bicCompanyId" id="bicCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
+                                name="bicCompanyId" id="bicCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                             </div>
                             <div className="super_company">
                               <Dropdown isMulti={false} data={this.state.ToContacts}
@@ -1102,7 +1051,8 @@ function mapStateToProps(state, ownProps) {
     changeStatus: state.communication.changeStatus,
     file: state.communication.file,
     files: state.communication.files,
-    hasWorkflow: state.communication.hasWorkflow
+    hasWorkflow: state.communication.hasWorkflow,
+    showModal: state.communication.showModal
   };
 }
 

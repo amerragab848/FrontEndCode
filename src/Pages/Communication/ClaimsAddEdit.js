@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -17,13 +16,10 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList';
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow';
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
-
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
@@ -74,8 +70,6 @@ class ClaimsAddEdit extends Component {
         }
 
         this.state = {
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -136,9 +130,6 @@ class ClaimsAddEdit extends Component {
             this.checkDocumentIsView();
         }
 
-        if (this.state.showModal != nextProps.showModal) {
-            this.setState({ showModal: nextProps.showModal });
-        }
     };
 
     componentWillUnmount() {
@@ -428,35 +419,19 @@ class ClaimsAddEdit extends Component {
         return (
             this.state.docId > 0 ? (
                 Config.IsAllow(3317) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
         )
     }
 
-    handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
 
-        if (item.value != "0") {
-            this.props.actions.showOptionPanel(false);
-
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-
-            this.simpleDialog.show()
-        }
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
     }
 
     render() {
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
-        ];
+
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
@@ -587,9 +562,9 @@ class ClaimsAddEdit extends Component {
                                                                         touched={touched.fromCompanyId}
                                                                         index="fromCompanyId"
                                                                         name="fromCompanyId"
-                                                                        id="fromCompanyId" 
+                                                                        id="fromCompanyId"
                                                                         styles={CompanyDropdown} classDrop="companyName1 "
-                                                                        />
+                                                                    />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -606,7 +581,7 @@ class ClaimsAddEdit extends Component {
                                                                         name="fromContactId"
                                                                         id="fromContactId"
                                                                         classDrop=" contactName1" styles={ContactDropdown}
-                                                                        />
+                                                                    />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -626,9 +601,9 @@ class ClaimsAddEdit extends Component {
                                                                         touched={touched.toCompanyId}
                                                                         index="letter-toCompany"
                                                                         name="toCompanyId"
-                                                                        id="toCompanyId" 
+                                                                        id="toCompanyId"
                                                                         styles={CompanyDropdown} classDrop="companyName1 "
-                                                                        />
+                                                                    />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -642,9 +617,9 @@ class ClaimsAddEdit extends Component {
                                                                         touched={touched.toContactId}
                                                                         index="letter-toContactId"
                                                                         name="toContactId"
-                                                                        id="toContactId" 
+                                                                        id="toContactId"
                                                                         classDrop=" contactName1" styles={ContactDropdown}
-                                                                        />
+                                                                    />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -682,20 +657,18 @@ class ClaimsAddEdit extends Component {
                                                             <div className="approveDocument">
                                                                 <div className="approveDocumentBTNS">
                                                                     <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
-
-                                                                    {this.state.isApproveMode === true ?
-                                                                        <div >
-                                                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                                                        </div>
-                                                                        : null
-                                                                    }
-                                                                    <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                                                    <span className="border"></span>
-                                                                    <div className="document__action--menu">
-                                                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                    </div>
+                                                                    <DocumentActions
+                                                                        isApproveMode={this.state.isApproveMode}
+                                                                        docTypeId={this.state.docTypeId}
+                                                                        docId={this.state.docId}
+                                                                        projectId={this.state.projectId}
+                                                                        previousRoute={this.state.previousRoute}
+                                                                        docApprovalId={this.state.docApprovalId}
+                                                                        currentArrange={this.state.currentArrange}
+                                                                        showModal={this.props.showModal}
+                                                                        showOptionPanel={this.showOptionPanel}
+                                                                        permission={this.state.permission}
+                                                                    />
                                                                 </div>
                                                             </div>
                                                             : null
@@ -723,11 +696,6 @@ class ClaimsAddEdit extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
-                    </SkyLight>
-                </div>
             </div>
         );
     }
@@ -741,7 +709,9 @@ function mapStateToProps(state, ownProps) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId, showModal: state.communication.showModal
+        projectId: state.communication.projectId,
+        showModal: state.communication.showModal
+
     }
 }
 

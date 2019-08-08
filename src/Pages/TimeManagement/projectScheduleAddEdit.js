@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -7,7 +6,6 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import InputMelcous from "../../Componants/OptionsPanels/InputMelcous";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -19,9 +17,6 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import XSLfiel from '../../Componants/OptionsPanels/XSLfiel'
 import { toast } from "react-toastify";
@@ -31,6 +26,7 @@ import ReactTable from "react-table";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Api from "../../api";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -193,8 +189,6 @@ class projectScheduleAddEdit extends Component {
             SecondStepComplate: false,
             isLoading: false,
             CurrStep: 1,
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -254,7 +248,7 @@ class projectScheduleAddEdit extends Component {
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedToContactEdit: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedToCompanyEdit: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
-            tabHover : false
+            tabHover: false
         }
         if (!Config.IsAllow(583) && !Config.IsAllow(358) && !Config.IsAllow(360)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
@@ -539,17 +533,8 @@ class projectScheduleAddEdit extends Component {
 
     }
 
-    handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-
-        if (item.value !== "0") {
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-            this.simpleDialog.show()
-        }
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
@@ -595,7 +580,7 @@ class projectScheduleAddEdit extends Component {
         return (
             this.state.docId !== 0 ? (
                 Config.IsAllow(3290) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
         )
@@ -824,13 +809,13 @@ class projectScheduleAddEdit extends Component {
 
     openTabs = () => {
         this.setState({
-            tabHover : true
+            tabHover: true
         })
     }
 
     closeTabs = () => {
         this.setState({
-            tabHover : false
+            tabHover: false
         })
     }
 
@@ -1161,7 +1146,7 @@ class projectScheduleAddEdit extends Component {
 
                                                         index="letter-bicContactId"
                                                         name="bicContactId"
-                                                        id="bicContactId" styles={CompanyDropdown} classDrop="companyName1 "/>
+                                                        id="bicContactId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                 </div>
                                                 <div className="super_company">
                                                     <Dropdown
@@ -1178,7 +1163,7 @@ class projectScheduleAddEdit extends Component {
 
                                                         index="letter-bicCompanyId"
                                                         name="bicCompanyId"
-                                                        id="bicCompanyId" classDrop=" contactName1" styles={ContactDropdown}/>
+                                                        id="bicCompanyId" classDrop=" contactName1" styles={ContactDropdown} />
                                                 </div>
                                             </div>
                                         </div>
@@ -1216,19 +1201,6 @@ class projectScheduleAddEdit extends Component {
                 </div>
             )
         }
-
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
-        ]
-
         return (
 
             <div className="mainContainer">
@@ -1262,7 +1234,7 @@ class projectScheduleAddEdit extends Component {
                         }
 
 
-                        <div className="step-content" style={{width : '100%', paddingLeft : '98px'}}>
+                        <div className="step-content" style={{ width: '100%', paddingLeft: '98px' }}>
                             {this.state.FirstStep ?
 
                                 <div className="subiTabsContent">
@@ -1335,21 +1307,18 @@ class projectScheduleAddEdit extends Component {
                                                     {this.state.IsEditMode === true && docId !== 0 ?
                                                         <div className="approveDocument">
                                                             <div className="approveDocumentBTNS">
-                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR}>{Resources.save[currentLanguage]}</button>
-
-                                                                {this.state.isApproveMode === true ?
-                                                                    <div >
-                                                                        <button type="button" className="primaryBtn-1 btn " onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                        <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                                                    </div>
-                                                                    : null
-                                                                }
-                                                                <button className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                <button className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                                                <span className="border"></span>
-                                                                <div className="document__action--menu">
-                                                                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                </div>
+                                                                <DocumentActions
+                                                                    isApproveMode={this.state.isApproveMode}
+                                                                    docTypeId={this.state.docTypeId}
+                                                                    docId={this.state.docId}
+                                                                    projectId={this.state.projectId}
+                                                                    previousRoute={this.state.previousRoute}
+                                                                    docApprovalId={this.state.docApprovalId}
+                                                                    currentArrange={this.state.currentArrange}
+                                                                    showModal={this.props.showModal}
+                                                                    showOptionPanel={this.showOptionPanel}
+                                                                    permission={this.state.permission}
+                                                                />
                                                             </div>
                                                         </div>
                                                         : null
@@ -1436,11 +1405,6 @@ class projectScheduleAddEdit extends Component {
                     ) : null
                 }
 
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
-                    </SkyLight>
-                </div>
             </div>
         )
     }
@@ -1474,7 +1438,8 @@ function mapStateToProps(state) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId
+        projectId: state.communication.projectId,
+        showModal: state.communication.showModal
     }
 }
 

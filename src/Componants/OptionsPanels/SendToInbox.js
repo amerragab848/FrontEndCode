@@ -1,19 +1,26 @@
 import React, { Component } from 'react'
 import Api from '../../api'
-import Dropdown from "./DropdownMelcous";
-import InputMelcous from './InputMelcous'
+import Dropdown from "./DropdownMelcous"; 
 import Resources from '../../resources.json';
 import { Formik, Form } from 'formik';
+import { connect } from 'react-redux';
+import * as communicationActions from '../../store/actions/communication';
+import { bindActionCreators } from 'redux'
+import dataservice from "../../Dataservice";
+import * as Yup from 'yup';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
+const validationSchema = Yup.object().shape({
+    priorityId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
+    toCompanyId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
+    toContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
+})
 const _ = require('lodash')
 
 class SendToInbox extends Component {
     constructor(props) {
         super(props)
         this.state = {
-
             sendingData: {
                 projectId: this.props.projectId,
                 docId: this.props.docId,
@@ -32,47 +39,9 @@ class SendToInbox extends Component {
             AttentionData: [],
             Cc_ContactData: [],
             Cc_Selected: [],
-
-            validPriority: true,
-            validToCompany: true,
-            validAttention: true,
-            submitLoading: false 
         }
     }
-    Priority_handelChange = (item) => {
-        this.setState({
-            selectedValue: item,
-            sendingData: { ...this.state.sendingData, priorityId: item.value },
-            validPriority: false  });
-    }
-    Attention_handleChange = (item) => {
-        this.setState({
-            selectedConatctId: item,
-            sendingData: { ...this.state.sendingData, toContactId: item.value },
-            validAttention: false })
-    }
-    To_company_handleChange = (selectedOption) => {
-        let url = "GetContactsByCompanyIdForOnlyUsers?companyId=" + selectedOption.value;
-        this.GetData(url, "contactName", "id", "AttentionData", 3);
-        this.setState({
-            selectedCompanyId: selectedOption,
-            sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },
-            validToCompany: false});
-    }
-    Cc_company_handleChange = (selectedOption) => {
-        let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
-        this.setState({
-            selectedCCCompanyId: selectedOption,
-            sendingData: { ...this.state.sendingData, ccCompanyId: selectedOption.value } });
-        this.GetData(url, "contactName", "id", "Cc_ContactData");
-    }
-    Cc_Contact_handleChange = (selectedOption) => {
-        this.setState({
-            sendingData: {
-                ...this.state.sendingData, cc: _.map(selectedOption, function (item) { return item.value })
-            }
-        })
-    }
+
     componentDidMount = () => {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
         this.GetData(url, 'companyName', 'companyId', 'To_Cc_CompanyData', 2);
@@ -82,28 +51,66 @@ class SendToInbox extends Component {
     inputChangeHandler = (e) => {
         this.setState({ sendingData: { ...this.state.sendingData, Comment: e.target.value } });
     }
+    sendInbox = (values) => {
+        let obj = this.state.sendingData
+        obj.Comment = values.Comment
+        let cc = []
+        this.state.ccContactsdd.map(i => {
+            let ia = i.value
+            cc.push(ia)
+        });
+        obj.cc = cc;
+        this.setState({ submitLoading: true })
+        values.Comment = '';
+        values.priorityId = '';
+        values.toCompanyId = '';
+        values.toContactId = '';
+        values.ccCompanydd = '';
+        values.ccContactsdd = '';
+        this.props.actions.SendByEmail_Inbox("SendByInbox", obj);
+    }
+
+    componentWillReceiveProps = (props) => {
+        if (props.showModal == false)
+            this.resetState();
+    }
+
+    resetState = () => {
+        this.setState({ submitLoading: false, priorityId: "", toContactId: "", toCompanyId: "", ccCompanydd: "", ccContactsdd: [] });
+    }
+
+    handleChange = (state, event, isSubscribe, targetState, calledApi) => {
+        if (isSubscribe == true) {
+            dataservice.GetDataList(calledApi, "contactName", "id").then(result => {
+                this.setState({ [targetState]: result });
+            });
+        }
+        let sendingData = this.state.sendingData;
+        sendingData[state] = event.value;
+        this.setState({ [state]: event, sendingData });
+    }
+    handleChangeCC = (values) => {
+        this.setState({ ccContactsdd: values })
+    }
+
     render() {
         return (
             <div className="dropWrapper">
                 <Formik
                     initialValues={{
-                        priority: '',
-                        toCompany: '',
-                        Attention: ''
-
+                        priorityId: " ",
+                        toCompanyId: " ",
+                        toContactId: " ",
+                        Comment: '',
+                        ccCompanydd: '',
+                        ccContactsdd: []
                     }}
-
+                    validationSchema={validationSchema}
                     onSubmit={values => {
-                        if (!this.state.validAttention && !this.state.validPriority && !this.state.validToCompany) {
-                            this.setState({submitLoading:true})
-                            Api.post("SendByInbox", this.state.sendingData).then(
-                                this.setState({submitLoading:false})
-                            )
-                        }
+                        this.sendInbox(values);
                     }}
-
                 >
-                    {({ errors, touched, handleBlur, handleChange }) => (
+                    {({ errors, touched, setFieldValue, setFieldTouched, values, handleBlur, handleChange, }) => (
                         <Form id="signupForm1" className="proForm customProform" noValidate="novalidate">
                             <div className={this.state.validPriority && touched.priority ? (
                                 "ui input inputDev fillter-item-c has-error"
@@ -111,57 +118,89 @@ class SendToInbox extends Component {
                                 "ui input inputDev fillter-item-c has-success"
                             ) : "ui input inputDev fillter-item-c"}
                             >
-                                <Dropdown title="priority" data={this.state.PriorityData} handleChange={this.Priority_handelChange}
-                                    index='Priorityddinbox' name="priority" />
-                                {this.state.validPriority && touched.priority ? (
-                                    <em className="pError">{this.state.validPriority}</em>
-                                ) : null}
+                                <Dropdown title="priority"
+                                    data={this.state.PriorityData}
+                                    handleChange={event => this.handleChange('priorityId', event, false, null, null)}
+                                    index='priorityId'
+                                    name="priorityId"
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.priorityId}
+                                    touched={touched.priorityId}
+                                    selectedValue={this.state.priorityId} />
                             </div>
-                            <InputMelcous title="comments" placeholderText="discussionPanelCommentPlaceholder" inputChangeHandler={this.inputChangeHandler} fullwidth="false" />
-                            <div className={this.state.validToCompany&& touched.toCompany ? (
+                            <div className={this.props.fullwidth == "true" ? "letterFullWidth fullInputWidth linebylineInput" : "fillter-status fillter-item-c"}>
+                                <label className="control-label">
+                                    {Resources["comments"][currentLanguage]}
+                                </label>
+                                <div className="inputDev ui input">
+                                    <input
+                                        type={this.props.type === undefined ? "text" : this.props.type}
+                                        className="form-control"
+                                        id="lastname1"
+                                        value={values.Comment} onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+                            <div className={this.state.validToCompany && touched.toCompany ? (
                                 "ui input inputDev fillter-item-c has-error"
-                            ) : !this.state.validToCompany&& touched.toCompany ? (
+                            ) : !this.state.validToCompany && touched.toCompany ? (
                                 "ui input inputDev fillter-item-c has-success"
                             ) : "ui input inputDev fillter-item-c"}
                             >
-                                <Dropdown title="toCompanyName" data={this.state.To_Cc_CompanyData} name="toCompanydd" handleChange={this.To_company_handleChange}
-                                    index='toCompanyddinbox' name="toCompany" />
-                                {this.state.validToCompany&& touched.toCompany ? (
-                                    <em className="pError">{this.state.validPriority}</em>
-                                ) : null}
+                                <Dropdown title="toCompanyName" data={this.state.To_Cc_CompanyData}
+                                    index='toCompanyId' name="toCompanyId"
+                                    onChange={setFieldValue}
+                                    handleChange={event => this.handleChange('toCompanyId', event, true, "AttentionData", "GetContactsByCompanyIdForOnlyUsers?companyId=" + event.value)}
+                                    onBlur={setFieldTouched}
+                                    error={errors.toCompanyId}
+                                    touched={touched.toCompanyId}
+                                    selectedValue={this.state.toCompanyId} />
                             </div>
-                            <div className={this.state.validAttention && touched.Attention? (
+                            <div className={this.state.validAttention && touched.Attention ? (
                                 "ui input inputDev fillter-item-c has-error"
-                            ) : !this.state.validAttention && touched.Attention? (
+                            ) : !this.state.validAttention && touched.Attention ? (
                                 "ui input inputDev fillter-item-c has-success"
                             ) : "ui input inputDev fillter-item-c"}
                             >
-                                <Dropdown title="ToContact" data={this.state.AttentionData}  handleChange={this.Attention_handleChange}
-                                    index='Attentionddinbox' name="Attention" />
-                                {this.state.validAttention && touched.Attention? (
-                                    <em className="pError">{this.state.validPriority}</em>
-                                ) : null}
+                                <Dropdown title="ToContact" data={this.state.AttentionData}
+                                    index='toContactId' name="toContactId"
+                                    onChange={setFieldValue}
+                                    handleChange={event => this.handleChange('toContactId', event, false, null, null)}
+                                    onBlur={setFieldTouched}
+                                    error={errors.toContactId}
+                                    touched={touched.toContactId}
+                                    selectedValue={this.state.toContactId}
+                                />
                             </div>
-                            <Dropdown title="ccCompany" data={this.state.To_Cc_CompanyData} name="ccCompanydd" handleChange={this.Cc_company_handleChange}
-                                index='ccCompanyddinbox' />
+                            <Dropdown title="ccCompany" data={this.state.To_Cc_CompanyData}
+                                name="ccCompanydd"
+                                handleChange={event => this.handleChange('ccCompanyId', event, true, "Cc_ContactData", "GetContactsByCompanyId?companyId=" + event.value)}
+                                index='ccCompanyddinbox'
+                                selectedValue={this.state.ccCompanydd}
+                            />
                             <div className="filterWrapper">
-                                <Dropdown title="ccContact" data={this.state.Cc_ContactData} name="ccContactsdd" handleChange={this.Cc_Contact_handleChange}
-                                    index='ccContactsddinbox' isMulti="true" />
+                                <Dropdown title="ccContact" data={this.state.Cc_ContactData}
+                                    name="ccContactsdd"
+                                    handleChange={event => this.handleChangeCC(event)}
+                                    index='ccContactsddinbox' isMulti={true}
+                                    selectedValue={this.state.ccContactsdd}
+                                />
 
                             </div>
-                            { ! this.state.submitLoading ?
-                            <div className="fullWidthWrapper">
-                                <button className="primaryBtn-1 btn" type="submit">{Resources['send'][currentLanguage]}</button>
-                            </div>
-                              :   (
-                                <span className="primaryBtn-1 btn largeBtn disabled">
-                                    <div className="spinner">
-                                        <div className="bounce1" />
-                                        <div className="bounce2" />
-                                        <div className="bounce3" />
-                                    </div>
-                                </span>
-                            )}
+                            {!this.state.submitLoading ?
+                                <div className="fullWidthWrapper">
+                                    <button className="primaryBtn-1 btn" type="submit">{Resources['send'][currentLanguage]}</button>
+                                </div>
+                                : (
+                                    <span className="primaryBtn-1 btn largeBtn disabled">
+                                        <div className="spinner">
+                                            <div className="bounce1" />
+                                            <div className="bounce2" />
+                                            <div className="bounce3" />
+                                        </div>
+                                    </span>
+                                )}
                         </Form>
                     )}
                 </Formik>
@@ -210,7 +249,18 @@ class SendToInbox extends Component {
 
         }).catch(ex => {
         });
-    } 
+    }
+}
+function mapStateToProps(state) {
+
+    return {
+        showModal: state.communication.showModal
+    }
 }
 
-export default SendToInbox;
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(communicationActions, dispatch)
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SendToInbox); 

@@ -7,9 +7,7 @@ import DatePicker from './DatePicker'
 import moment from 'moment';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
-//const _ = require('lodash')
-
+ 
 class SendTask extends Component {
 
     constructor(props) {

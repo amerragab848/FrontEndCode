@@ -4,8 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import Resources from "../../resources.json";
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage =    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class Steps extends Component {
     constructor(props) {
         super(props);

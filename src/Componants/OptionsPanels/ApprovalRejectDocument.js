@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-
+let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+ 
 class ApprovalRejectDocument extends Component {
   constructor(props) {
     super(props);

@@ -386,7 +386,7 @@ class AddAccount extends Component {
                                                             <span class="hide"> Hide</span>
                                                         </span>
 
-                                                        <input style={{ width: '100%' }} name='Password' className="form-control" id="Password" placeholder={Resources['password'][currentLanguage]} autoComplete='off'
+                                                        <input style={{ width: '100%' }} autoComplete='new-password' name='Password' className="form-control" id="Password" placeholder={Resources['password'][currentLanguage]} 
                                                             onBlur={(e) => {
                                                                 this.passwordChangeHandler(e)
                                                                 handleBlur(e)

@@ -17,17 +17,15 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument' 
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'); 
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
@@ -71,15 +69,13 @@ class emailAddEdit extends Component {
         }
 
         this.state = {
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
             docTypeId: 77,
-            projectId:projectId,
+            projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
             document: this.props.document ? Object.assign({}, this.props.document) : {},
@@ -127,10 +123,10 @@ class emailAddEdit extends Component {
                 fromCompanyId: '',
                 fromContactId: '',
                 toCompanyId: '',
-                toContactId: '', 
+                toContactId: '',
                 docDate: moment(),
-                status: true, 
-                refDoc: '', 
+                status: true,
+                refDoc: '',
                 message: ''
             };
             this.setState({ document: email });
@@ -142,19 +138,17 @@ class emailAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id !== this.props.document.id) { 
+        if (nextProps.document.id !== this.props.document.id) {
             this.setState({
-                document:nextProps.document,
+                document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: nextProps.document.message
-            }); 
+            });
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
-        } 
-        if (this.state.showModal != nextProps.showModal) {
-            this.setState({ showModal: nextProps.showModal });
         }
+
     };
 
     componentWillUnmount() {
@@ -194,7 +188,7 @@ class emailAddEdit extends Component {
     }
 
     componentWillMount() {
-     
+
     };
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
@@ -202,7 +196,7 @@ class emailAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; }); 
+                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -233,35 +227,35 @@ class emailAddEdit extends Component {
             this.setState({
                 companies: [...result]
             });
-        }); 
+        });
     }
 
     onChangeMessage = (value) => {
         if (value != null) {
             this.setState({ message: value });
             let original_document = { ...this.state.document };
-            let updated_document = {}; 
-            updated_document.message = value; 
-            updated_document = Object.assign(original_document, updated_document); 
+            let updated_document = {};
+            updated_document.message = value;
+            updated_document = Object.assign(original_document, updated_document);
             this.setState({
                 document: updated_document
             });
         }
     };
 
-    handleChange(e, field) { 
-        let original_document = { ...this.state.document }; 
-        let updated_document = {}; 
-        updated_document[field] = e.target.value; 
-        updated_document = Object.assign(original_document, updated_document); 
-        this.setState({  document: updated_document });
+    handleChange(e, field) {
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+        updated_document[field] = e.target.value;
+        updated_document = Object.assign(original_document, updated_document);
+        this.setState({ document: updated_document });
     }
 
-    handleChangeDate(e, field) { 
-        let original_document = { ...this.state.document }; 
-        let updated_document = {}; 
-        updated_document[field] = e; 
-        updated_document = Object.assign(original_document, updated_document); 
+    handleChangeDate(e, field) {
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+        updated_document[field] = e;
+        updated_document = Object.assign(original_document, updated_document);
         this.setState({
             document: updated_document
         });
@@ -272,16 +266,16 @@ class emailAddEdit extends Component {
         let original_document = { ...this.state.document };
         let updated_document = {};
         updated_document[field] = event.value;
-        updated_document = Object.assign(original_document, updated_document); 
+        updated_document = Object.assign(original_document, updated_document);
         this.setState({
             document: updated_document,
             [selectedValue]: event
-        }); 
+        });
         if (field == "fromContactId") {
             let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
             dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
-                updated_document = Object.assign(original_document, updated_document); 
+                updated_document = Object.assign(original_document, updated_document);
                 this.setState({
                     document: updated_document
                 });
@@ -298,7 +292,7 @@ class emailAddEdit extends Component {
     }
 
     editEmail(event) {
-        this.setState({  isLoading: true   });
+        this.setState({ isLoading: true });
         dataservice.addObject('EditCommunicationEmails', this.state.document).then(result => {
             this.setState({
                 isLoading: false
@@ -311,10 +305,10 @@ class emailAddEdit extends Component {
         });
     }
 
-    saveEmail(event) { 
-        this.setState({   isLoading: true });
-        let saveDocument = { ...this.state.document }; 
-        saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY'); 
+    saveEmail(event) {
+        this.setState({ isLoading: true });
+        let saveDocument = { ...this.state.document };
+        saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
         dataservice.addObject('AddCommunicationEmails', saveDocument).then(result => {
             this.setState({
                 docId: result.id,
@@ -350,32 +344,12 @@ class emailAddEdit extends Component {
         )
     }
 
-    handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") {
-            this.props.actions.SendingWorkFlow(true);
-        }
-        if (item.value != "0") {
-            this.props.actions.showOptionPanel(false);
-            this.setState({
-                currentComponantDocument: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-            this.simpleDialog.show()
-
-        }
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
     }
 
-    executeBeforeModalClose = (e) => {
-        this.setState({ showModal: false });
-    }
     render() {
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
-        ];
+
 
         return (
             <div className="mainContainer" id={'mainContainer'}>
@@ -469,7 +443,7 @@ class emailAddEdit extends Component {
                                                                     onChange={(e) => this.handleChange(e, 'refDoc')} />
                                                             </div>
                                                         </div>
-                                                      
+
                                                         <div className="linebylineInput valid-input mix_dropdown">
                                                             <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                             <div className="supervisor__company">
@@ -500,7 +474,7 @@ class emailAddEdit extends Component {
                                                                         isClear={false}
                                                                         index="letter-fromContactId"
                                                                         name="fromContactId"
-                                                                        id="fromContactId" classDrop=" contactName1" styles={ContactDropdown}/>
+                                                                        id="fromContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -522,7 +496,7 @@ class emailAddEdit extends Component {
 
                                                                         index="letter-toCompany"
                                                                         name="toCompanyId"
-                                                                        id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
+                                                                        id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -536,10 +510,10 @@ class emailAddEdit extends Component {
                                                                         touched={touched.toContactId}
                                                                         index="letter-toContactId"
                                                                         name="toContactId"
-                                                                        id="toContactId" classDrop=" contactName1" styles={ContactDropdown}/>
+                                                                        id="toContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                                                 </div>
                                                             </div>
-                                                        </div> 
+                                                        </div>
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
@@ -547,7 +521,7 @@ class emailAddEdit extends Component {
                                                                     value={this.state.message}
                                                                     onChange={this.onChangeMessage} />
                                                             </div>
-                                                        </div> 
+                                                        </div>
                                                     </div>
                                                     <div className="slider-Btns">
                                                         {this.state.isLoading ?
@@ -573,21 +547,19 @@ class emailAddEdit extends Component {
                                                                             </div>
                                                                         </button> :
                                                                         <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
-                                                                    } 
-                                                                    {
-                                                                        this.state.isApproveMode === true ?
-                                                                        <div>
-                                                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                                                        </div>
-                                                                        : null
                                                                     }
-                                                                    <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                    <button type="submit" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                                                    <span className="border"></span>
-                                                                    <div className="document__action--menu">
-                                                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                    </div>
+                                                                    <DocumentActions
+                                                                        isApproveMode={this.state.isApproveMode}
+                                                                        docTypeId={this.state.docTypeId}
+                                                                        docId={this.state.docId}
+                                                                        projectId={this.state.projectId}
+                                                                        previousRoute={this.state.previousRoute}
+                                                                        docApprovalId={this.state.docApprovalId}
+                                                                        currentArrange={this.state.currentArrange}
+                                                                        showModal={this.props.showModal}
+                                                                        showOptionPanel={this.showOptionPanel}
+                                                                        permission={this.state.permission}
+                                                                    />
                                                                 </div>
                                                             </div>
                                                             : null
@@ -598,7 +570,7 @@ class emailAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 && this.state.isViewMode === false  ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={843} EditAttachments={3228} ShowDropBox={3617} ShowGoogleDrive={3618} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={843} EditAttachments={3228} ShowDropBox={3617} ShowGoogleDrive={3618} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                         </div>
@@ -606,14 +578,9 @@ class emailAddEdit extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }} key="opActionsLetter">
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]} beforeClose={() => { this.executeBeforeModalClose() }}>
-                        {this.state.currentComponantDocument}
-                    </SkyLight>
-                </div>
-            </div> 
+            </div>
         );
     }
 }

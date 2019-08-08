@@ -21100,3 +21100,15 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .dropWrapper .letterFullWidth .fillter-item-c, .letterFullWidth .ReactTable  {
     width: 100%;
 }
+
+
+.ConfirmationModal {
+    position: absolute !important;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+
+.ConfirmationModal .actions button:first-of-type {
+    margin: 0 10px 
+}

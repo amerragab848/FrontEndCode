@@ -12,10 +12,8 @@ import dataservice from "../../Dataservice";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import { toast } from "react-toastify";
 import { connect } from 'react-redux';
-import {
-  bindActionCreators
-} from 'redux';
-
+import { bindActionCreators } from 'redux';
+import SkyLight from "react-skylight";
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -182,8 +180,8 @@ class AddDocAttachment extends Component {
 
     let obj = {
       docId: row.docId,
-      projectId: row.projectId ?  row.projectId: this.props.projectId,
-      projectName: row.projectName ? row.projectName: this.props.projectName,
+      projectId: row.projectId ? row.projectId : this.props.projectId,
+      projectName: row.projectName ? row.projectName : this.props.projectName,
       arrange: 0,
       docApprovalId: 0,
       isApproveMode: false
@@ -196,11 +194,7 @@ class AddDocAttachment extends Component {
     return <a href={doc_view}>{row.subject}</a>;
   }
 
-  viewAttach() {
-    this.setState({
-      viewModel: true
-    });
-  }
+
 
   closeModal() {
     this.setState({
@@ -292,7 +286,7 @@ class AddDocAttachment extends Component {
 
     return (
       <Fragment>
-        <button className="primaryBtn-2 btn meduimBtn" type="button" onClick={this.viewAttach.bind(this)}>
+        <button className="primaryBtn-2 btn meduimBtn" type="button" onClick={() => this.simpleDialog.show()}>
           {Resources["addDocAttachment"][currentLanguage]}
         </button>
         <br />
@@ -318,39 +312,33 @@ class AddDocAttachment extends Component {
             />
           ) : null}
         </div>
-        {this.state.viewModel ? (
-          <div>
-            <Rodal visible={this.state.viewModel} onClose={this.closeModal.bind(this)}>
-              <div className="ui modal largeModal" id="largeModal">
-                <div className="dropWrapper">
-                  <Dropdown name="Module" title="selectModule" data={this.state.moduls} selectedValue={this.state.selectModule}
-                    handleChange={event => this.fillDropDowns(event, "GetDocsTypeByModuleId?moduleId=", "docType", "id")} />
-                  <Dropdown title="docType" data={this.state.documents} selectedValue={this.state.selectDocument} handleChange={event => this.getDocuments(event)} />
-                  {this.state.documentData.length > 0 ? (
-                    <Fragment>
-                      {selectedRows.length > 0 ?
-                        <div className="fullWidthWrapper">
-                          <button className="primaryBtn-1 btn meduimBtn" onClick={this.saveDocument.bind(this)}>
-                            {Resources["save"][currentLanguage]}
-                          </button>
-                        </div>
-                        : null
-                      }
-                      <div className="precycle-grid modalTable">
-                        <ReactTable data={this.state.documentData}
-                          columns={columns}
-                          defaultPageSize={10}
-                          noDataText={Resources["noData"][currentLanguage]}
-                          className="-striped -highlight" />
-                      </div>
-                    </Fragment>
-                  ) : null}
+        <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref}>
+          <div className="dropWrapper">
+            <Dropdown name="Module" title="selectModule" data={this.state.moduls} selectedValue={this.state.selectModule}
+              handleChange={event => this.fillDropDowns(event, "GetDocsTypeByModuleId?moduleId=", "docType", "id")} />
+            <Dropdown title="docType" data={this.state.documents} selectedValue={this.state.selectDocument} handleChange={event => this.getDocuments(event)} />
+            {this.state.documentData.length > 0 ? (
+              <Fragment>
+                {selectedRows.length > 0 ?
+                  <div className="fullWidthWrapper">
+                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.saveDocument.bind(this)}>
+                      {Resources["save"][currentLanguage]}
+                    </button>
+                  </div>
+                  : null
+                }
+                <div className="precycle-grid modalTable">
+                  <ReactTable data={this.state.documentData}
+                    columns={columns}
+                    defaultPageSize={10}
+                    noDataText={Resources["noData"][currentLanguage]}
+                    className="-striped -highlight" />
                 </div>
-              </div>
-            </Rodal>
+              </Fragment>
+            ) : null}
           </div>
-        ) : null}
-      </Fragment>
+        </SkyLight>
+      </Fragment >
     );
   }
 }
