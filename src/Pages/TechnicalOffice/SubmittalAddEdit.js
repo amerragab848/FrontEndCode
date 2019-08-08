@@ -1117,7 +1117,6 @@ class SubmittalAddEdit extends Component {
   };
 
   getLogsSubmittalItems = () => {
-    this.changeCurrentStep(2);
     dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
       let maxArrange = _.maxBy(data, "arrange");
       let submittalItem = {};
