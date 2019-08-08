@@ -14,15 +14,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
-import SkyLight from 'react-skylight';
-import * as communicationActions from '../../store/actions/communication';
-//import RiskCause from '../../Componants/OptionsPanels/RiskCause';
+import moment from "moment"; 
+import * as communicationActions from '../../store/actions/communication'; 
 import RiskConesquence from '../../Componants/publicComponants/RiskConesquence';
 import RiskRealisation from '../../Componants/publicComponants/RiskRealisation';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
-import { toast } from "react-toastify";
-import ReactTable from "react-table";
+import { toast } from "react-toastify"; 
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import numeral from 'numeral';
@@ -31,6 +28,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -1918,7 +1916,7 @@ class riskAddEdit extends Component {
                                                                         <label className="control-label">{'Cost Effectiveness'}</label>
                                                                     </div>
                                                                     <div className="ui left pointing label labelWithArrowBorder basic">
-                                                                        <span>{this.state.totalResidualRisk > this.state.totalPretRiskEmv ? 'Cost Effective' : 'Not Cost Effective'}</span>
+                                                                        <span>{(this.state.totalProposedMit + this.state.totalPostRiskEmv) > this.state.totalPretRiskEmv ?  'Not Cost Effective': 'Cost Effective' }</span>
                                                                     </div>
 
                                                                     <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
@@ -1935,7 +1933,6 @@ class riskAddEdit extends Component {
 
                                                             </div>
                                                             <RiskRealisation riskId={this.state.docId} />
-
                                                             <div className="doc-pre-cycle">
                                                                 <div className="slider-Btns">
                                                                     <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(6)}>{Resources['next'][currentLanguage]}</button>

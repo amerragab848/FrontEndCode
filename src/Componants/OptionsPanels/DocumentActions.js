@@ -29,7 +29,9 @@ const importedPaths = [
         title: "createTransmittal", path: "./CreateTransmittal", value: 9
     }
 ]
+
 let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
+
 const actionPanel = {
     control: (styles, { isFocused }) => ({
         ...styles,
@@ -113,6 +115,7 @@ class DocumentActions extends Component {
         }
     }
 
+    
     componentDidMount = () => {
         ///fillter importedPath array to fill dropdowns (actions) with coorect panels bassed on permmsion given from props  (without reject,approved,workFlow anddistribution panels)
         let dropActions = importedPaths.slice(4, 10);

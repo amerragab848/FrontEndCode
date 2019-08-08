@@ -280,7 +280,7 @@ let originalRoutes = [
     , <Route path="/costCodingTreeAddEdit/:projectId" component={costCodingTreeAddEdit} />
     , <Route path="/Itemize" component={Itemize} />
     , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
-    , <Route path="/rptCostCodingTree" component={rptCostCodingTree} />
+    , <Route path="/rptCostCodingTree/:projectId" component={rptCostCodingTree} />
     , <Route path="/projectScheduleAddEdit" component={projectScheduleAddEdit} />
     , <Route path="/WFActivityReport" component={WFActivityReport} />
     , <Route path="/boqStructure" component={boqStructure} />
