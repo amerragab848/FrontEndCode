@@ -41,6 +41,7 @@ export default class IndexedDb {
             addColumn('order', lf.Type.INTEGER).
             addColumn('permission', lf.Type.INTEGER).
             addColumn('checked', lf.Type.BOOLEAN).
+            addColumn('type', lf.Type.STRING).
             addPrimaryKey(['id']);
     }
 
@@ -79,7 +80,8 @@ export default class IndexedDb {
                         'title': wid.title,
                         'order': +`${category_order}${wid.order}`,
                         'permission': wid.permission,
-                        'checked': wid.checked
+                        'checked': wid.checked,
+                        'type': wid.type
                     });
 
                     widgetRows.push(widRow);

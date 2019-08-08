@@ -3,8 +3,7 @@ import Resources from "../../resources.json";
 import Api from "../../api";
 import { withRouter } from "react-router-dom";
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class WidgetsWithText extends Component {
   constructor(props) {
@@ -18,25 +17,17 @@ class WidgetsWithText extends Component {
   }
 
   componentDidMount() {
-//    this.abortController = new AbortController();
-
-//    let signal = this.abortController.signal;
-
     Api.get(this.props.props.api).then(data => {
-       if (data) { 
+      if (data) {
         let _value = this.props.props.value.split("-");
         let _total = this.props.props.total.split("-");
 
         this.setState({
           count: data[_value[1]][_value[0]] != null ? data[_value[1]][_value[0]] : 0,
           total: data[_total[1]][_total[0]] != null ? data[_total[1]][_total[0]] : 0
-        }); 
+        });
       }
     });
-  }
-
-  componentWillUnmount() {    
-   // this.abortController.abort();
   }
 
   onOpenModal() {

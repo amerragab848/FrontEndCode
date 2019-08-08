@@ -39,6 +39,7 @@ class Index extends Component {
   }
 
   async getWidgets() {
+
     const data = orderBy(await IndexedDb.getSelectedWidgets(), 'order', 'asc');
 
     const categoryOrder = await IndexedDb.getCategoryOrder();
@@ -85,6 +86,7 @@ class Index extends Component {
   };
 
   renderWidget(widget, index) {
+    console.log(widget.title + " : " + Details.widgets);
     if (Details.widgets[widget.title].props.type === "threeWidget") {
       return <ApprovedWidget key={index + "DIV"} {...Details.widgets[widget.title]} title={language[widget.title][currentLanguage]} />
     }
@@ -105,13 +107,14 @@ class Index extends Component {
     else if (Details.widgets[widget.title].props.type === "line") {
 
       return <Fragment key={index + "DIVBriteCharts"}>
-        <Britecharts api={Details.widgets[widget.title].props.api} topicName={widget.topicNames}
+        <Britecharts api={Details.widgets[widget.title].props.api}
+          topicName={Details.widgets[widget.title].props.topicNames}
           title={language[widget.title][currentLanguage]} />
       </Fragment>
     }
     else {
       return <Fragment key={index + "DIVBarChart"}>
-        <BarChartComp api={Details.widgets[widget.title].props.api} ukey={"wt-Name0" + index} catagName={widget.title}
+        <BarChartComp api={Details.widgets[widget.title].props.api} ukey={Details.widgets[widget.title].props.id} catagName={Details.widgets[widget.title].props.catagName}
           name={Details.widgets[widget.title].props.name} y={Details.widgets[widget.title].props.data}
           title={language[widget.title][currentLanguage]} stack={Details.widgets[widget.title].props.stack}
           yTitle={language[Details.widgets[widget.title].props.yTitle][currentLanguage]}

@@ -57,7 +57,6 @@ class ApprovedWidget extends Component {
       var low = widgetes.find(function (i) {
         return i.action === 3;
       });
-      //console.log(this.props.props.listType);
       return (
 
         <div className="summerisItem">
