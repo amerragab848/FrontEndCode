@@ -112,24 +112,32 @@ class DocumentActions extends Component {
 
         }
     }
+
     componentDidMount = () => {
         ///fillter importedPath array to fill dropdowns (actions) with coorect panels bassed on permmsion given from props  (without reject,approved,workFlow anddistribution panels)
-        let allowPanel = importedPaths.slice(4, 10).map((item) => {
-            if (item.title != 'documentApproval' && item.title != 'distributionList' && item.title != 'sendToWorkFlow' && item.title != 'export' && item.title != 'copyTo') {
-                if (this.IsAllow(item.title))
-                    return { label: item.title, value: item.value };
+        let dropActions = importedPaths.slice(4, 10);
+        let allowActions = []
+        dropActions.map(i => {
+            if (this.IsAllow(i.title)) {
+                let obj = { label: i.title, value: i.value };
+                allowActions.push(obj);
             }
-            else if (item.title == 'export' || item.title == 'copyTo') {
-                return { label: item.title, value: item.value };
-            }
-        })
-        this.setState({ selectedPanels: allowPanel })
+        });
+        this.setState({ selectedPanels: allowActions });
     }
 
     ///check validity of permissin to show or not panel
-    IsAllow = (permission) => {
-        let obj = find(this.props.permission, function (o) { return o.name == permission; });
-        return Config.IsAllow(obj.code);
+    IsAllow = (name) => {
+        let obj = find(this.props.permission, function (o) { return o.name == name; });
+        if (obj) {
+            return Config.IsAllow(obj.code);
+        }
+        else {
+            if (name === 'export' || name === 'copyTo')
+                return true;
+            else
+                return false;
+        }
     }
 
     render() {
@@ -143,11 +151,29 @@ class DocumentActions extends Component {
                             <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(importedPaths[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                         </div> : null
                 }
-                <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(importedPaths[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(importedPaths[0])}>{Resources.distributionList[currentLanguage]}</button>
+
+                <Fragment>
+                    {this.IsAllow(importedPaths[1]['title']) ?
+                        <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(importedPaths[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
+                        : null}
+                </Fragment>
+
+                <Fragment>
+                    {this.IsAllow(importedPaths[0]['title']) ?
+                        <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(importedPaths[0])}>{Resources.distributionList[currentLanguage]}</button>
+                        : null}
+                </Fragment>
+
                 <span className="border"></span>
                 <div className="document__action--menu">
-                    <DropDown data={this.state.selectedPanels} name="ddlActions" handleChange={item => this.handleShowAction(importedPaths[item.value])} index='ddlActions' selectedValue={this.state.defualtValue} styles={actionPanel} />
+                    <Fragment>
+                        {this.IsAllow(importedPaths[6]['title']) || this.IsAllow(importedPaths[7]['title'])
+                            || this.IsAllow(importedPaths[9]['title']) || this.IsAllow(importedPaths[8]['title'])
+                          //  && this.IsAllow(importedPaths[4]['title']) && this.IsAllow(importedPaths[5]['title']) 
+                            ?
+                            <DropDown data={this.state.selectedPanels} name="ddlActions" handleChange={item => this.handleShowAction(importedPaths[item.value])} index='ddlActions' selectedValue={this.state.defualtValue} styles={actionPanel} />
+                            : null}
+                    </Fragment>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.props.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>

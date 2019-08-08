@@ -9,7 +9,6 @@ const _ = require('lodash')
 export function documentForEdit(urlAction, docTypeId, docName) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
             dispatch({
                 type: types.Document_for_Edit,
                 document: resp,
@@ -233,7 +232,7 @@ export function SendByEmail_Inbox(url, formData) {
 export function copyTo(url, formData) {
     return (dispatch, getState) => {
         return Api.post(url, formData).then(resp => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
+           toast.success(Resources["operationSuccess"][currentLanguage]);
             dispatch({
                 type: types.CopyTo,
                 showModal: false

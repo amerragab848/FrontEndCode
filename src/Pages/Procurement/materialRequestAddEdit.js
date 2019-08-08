@@ -27,7 +27,7 @@ import "react-table/react-table.css";
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-
+import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
@@ -123,8 +123,14 @@ let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
 const _ = require("lodash");
+var steps_defination = [];
+steps_defination = [
+    { name: "siteRequest", callBackFn: null },
+    { name: "items", callBackFn: null }
+];
 
 class materialRequestAddEdit extends Component {
+
     constructor(props) {
         super(props);
         const query = new URLSearchParams(this.props.location.search);
@@ -389,9 +395,7 @@ class materialRequestAddEdit extends Component {
                 label: Resources.apartmentNumberSelection[currentLanguage],
                 value: "0"
             },
-            CurrStep: 1,
-            firstComplete: false,
-            secondComplete: false,
+            CurrStep: 0,
             updatedItem: null,
             contractLoading: false,
             showPoModal: false
@@ -979,10 +983,8 @@ class materialRequestAddEdit extends Component {
             .addObject("EditContractsSiteRequest", saveDocument)
             .then(result => {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-                let CurrStep = this.state.CurrStep + 1;
+                this.changeCurrentStep(1);
                 this.setState({
-                    firstComplete: true,
-                    CurrStep,
                     isLoading: false
                 });
             })
@@ -1126,35 +1128,6 @@ class materialRequestAddEdit extends Component {
                 break;
         }
     }
-
-    PreviousStep = () => {
-        window.scrollTo(0, 0);
-        switch (this.state.CurrStep) {
-            case 2:
-                this.setState({
-                    CurrStep: this.state.CurrStep - 1,
-                    secondComplete: false
-                });
-                break;
-        }
-    };
-
-    NextStep = next => {
-        window.scrollTo(0, 0);
-        switch (this.state.CurrStep) {
-            case 1:
-                if (this.state.docId > 0) {
-                    let CurrStep = this.state.CurrStep + 1;
-                    this.setState({ firstComplete: true, CurrStep });
-                }
-                break;
-            case 2:
-                this.props.history.push({
-                    pathname: "/siteRequest/" + this.state.projectId
-                });
-                break;
-        }
-    };
 
     addItem = () => {
         let length = this.state.updatedItems.length;
@@ -1483,26 +1456,6 @@ class materialRequestAddEdit extends Component {
         document.body.classList.remove("noScrolling");
     }
 
-    StepOneLink = () => {
-        if (this.state.docId !== 0) {
-            this.setState({
-                firstComplete: true,
-                secondComplete: false,
-                CurrStep: 1
-            });
-        }
-    };
-
-    StepTwoLink = () => {
-        if (this.state.docId !== 0) {
-            this.setState({
-                firstComplete: true,
-                secondComplete: true,
-                CurrStep: 2
-            });
-        }
-    };
-
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
 
@@ -1580,6 +1533,10 @@ class materialRequestAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
+
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrStep: stepNo });
+    };
 
     render() {
         const childerns =
@@ -3046,7 +3003,7 @@ class materialRequestAddEdit extends Component {
                                     ) : null}
                                     <div className="document-fields">
                                         <React.Fragment>
-                                            {this.state.CurrStep == 1
+                                            {this.state.CurrStep == 0
                                                 ? Step_1
                                                 : Step_2}
                                             <div
@@ -3189,69 +3146,22 @@ class materialRequestAddEdit extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="docstepper-levels">
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={(this.props.changeStatus == true && this.state.CurrStep > 1) ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
-                                <span onClick={this.NextStep} className={this.state.docId > 0 ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div
-                                        onClick={this.StepOneLink}
-                                        data-id="step1"
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.CurrStep == 1
-                                                ? "current__step"
-                                                : this.state.firstComplete
-                                                    ? "active"
-                                                    : "")
-                                        }>
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>
-                                                {
-                                                    Resources.siteRequest[
-                                                    currentLanguage
-                                                    ]
-                                                }
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div
-                                        onClick={this.StepTwoLink}
-                                        data-id="step2 "
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.CurrStep == 2
-                                                ? "current__step"
-                                                : this.state.secondComplete
-                                                    ? "active"
-                                                    : "")
-                                        }>
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>
-                                                {
-                                                    Resources.items[
-                                                    currentLanguage
-                                                    ]
-                                                }
-                                            </h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/siteRequest/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrStep}
+                            />
+                        </Fragment>
+
                     </div>
                 </div>
+
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={

@@ -24,7 +24,7 @@ import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-
+import Steps from "../../Componants/publicComponants/Steps";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let docId = 0;
 let projectId = 0;
@@ -34,6 +34,14 @@ let docApprovalId = 0;
 let arrange = 0;
 let perviousRoute = "";
 const _ = require("lodash");
+var steps_defination = [];
+steps_defination = [
+    { name: "procurement", callBackFn: null },
+    { name: "procurementItems", callBackFn: null },
+    { name: "procurementContractors", callBackFn: null },
+    { name: "procurementContractorsItems", callBackFn: null },
+    { name: "ordering", callBackFn: null },
+];
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
@@ -73,6 +81,7 @@ const documentItemValidationSchema = Yup.object().shape({
 });
 
 class procurementAddEdit extends Component {
+
     constructor(props) {
         super(props);
         const query = new URLSearchParams(this.props.location.search);
@@ -101,18 +110,9 @@ class procurementAddEdit extends Component {
         }
         this.state = {
             selectedRows: [],
-            FirstStep: true,
-            SecondStep: false,
-            SecondStepComplate: false,
-            ThirdStep: false,
-            ThirdStepComplate: false,
-            FourthStepComplate: false,
-            FourthStep: false,
-            FivethStepComplate: false,
-            FivethStep: false,
             isLoading: false,
             perviousRoute: perviousRoute,
-            CurrStep: 1,
+            CurrStep: 0,
             showDeleteModal: false,
             isEdit: false,
             isViewMode: false,
@@ -453,173 +453,10 @@ class procurementAddEdit extends Component {
         ) : null;
     }
 
-    PreviousStep = () => {
-        if (this.state.docId !== 0) {
-            if (this.state.CurrStep === 2) {
-                window.scrollTo(0, 0);
-                this.setState({
-                    FirstStep: true,
-                    SecondStep: false,
-                    SecondStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1
-                });
-            } else if (this.state.CurrStep === 3) {
-                window.scrollTo(0, 0);
-                this.setState({
-                    SecondStep: true,
-                    ThirdStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1
-                });
-            } else if (this.state.CurrStep === 4) {
-                window.scrollTo(0, 0);
-                this.setState({
-                    FourthStep: false,
-                    FivethStep: false,
-                    ThirdStep: true,
-                    FourthStepComplate: false,
-                    FivethStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1
-                });
-            } else if (this.state.CurrStep === 5) {
-                window.scrollTo(0, 0);
-                this.setState({
-                    FourthStep: true,
-                    FivethStep: false,
-                    FivethStepComplate: false,
-                    CurrStep: this.state.CurrStep - 1
-                });
-            }
-        }
-    };
-
-    NextStep = () => {
-        if (this.state.CurrStep === 1) {
-            window.scrollTo(0, 0);
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: this.state.CurrStep + 1
-            });
-        } else if (this.state.CurrStep === 2) {
-            window.scrollTo(0, 0);
-            this.setState({
-                SecondStep: false,
-                ThirdStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
-                CurrStep: this.state.CurrStep + 1
-            });
-        } else if (this.state.CurrStep === 3) {
-            window.scrollTo(0, 0);
-            this.setState({
-                FourthStep: true,
-                ThirdStep: false,
-                FourthStepComplate: true,
-                CurrStep: this.state.CurrStep + 1
-            });
-        } else if (this.state.CurrStep === 4) {
-            window.scrollTo(0, 0);
-            this.setState({
-                FourthStep: false,
-                FivethStep: true,
-                FivethStepComplate: true,
-                CurrStep: this.state.CurrStep + 1
-            });
-        } else if (this.state.CurrStep === 5) {
-            this.props.history.push({
-                pathname: "/procurement/" + projectId + ""
-            });
-        }
-    };
-
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({ docId: 0 });
     }
-
-    StepOneLink = () => {
-        if (this.state.docId !== 0) {
-            this.setState({
-                FirstStep: true,
-                SecondStep: false,
-                SecondStepComplate: false,
-                CurrStep: 1,
-                ThirdStepComplate: false,
-                FourthStepComplate: false,
-                FivethStepComplate: false,
-                FivethStep: false
-            });
-        }
-    };
-
-    StepTwoLink = () => {
-        if (this.state.docId !== 0) {
-            this.setState({
-                FirstStep: false,
-                SecondStep: true,
-                SecondStepComplate: true,
-                CurrStep: 2,
-                ThirdStepComplate: false,
-                FourthStepComplate: false,
-                FivethStepComplate: false,
-                FivethStep: false
-            });
-        }
-    };
-
-    StepThreeLink = () => {
-        if (this.state.docId !== 0) {
-            this.setState({
-                ThirdStep: true,
-                SecondStepComplate: true,
-                ThirdStepComplate: true,
-                CurrStep: 3,
-                FourthStepComplate: false,
-                FivethStepComplate: false,
-                FourthStep: false,
-                FivethStep: false,
-                FirstStep: false,
-                SecondStep: false
-            });
-        }
-    };
-
-    StepFourLink = () => {
-        if (this.state.docId !== 0) {
-            this.setState({
-                FourthStep: true,
-                ThirdStep: false,
-                FirstStep: false,
-                SecondStep: false,
-                FourthStepComplate: true,
-                CurrStep: 4,
-                FivethStepComplate: false,
-                FivethStep: false,
-                ThirdStepComplate: true,
-                SecondStepComplate: true
-            });
-        }
-    };
-
-    StepFiveLink = () => {
-        if (this.state.docId !== 0) {
-            this.setState({
-                FourthStep: false,
-                FivethStep: true,
-                FivethStepComplate: true,
-                CurrStep: 5,
-                FivethStepComplate: true,
-                FivethStep: true,
-                ThirdStepComplate: true,
-                SecondStepComplate: true,
-                FourthStepComplate: true,
-                SecondStep: false,
-                ThirdStep: false,
-                FirstStep: false
-            });
-        }
-    };
 
     handleChangeDate(e, field) {
         let original_document = { ...this.state.document };
@@ -837,8 +674,13 @@ class procurementAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
 
+    changeCurrentStep = stepNo => {
+        this.setState({ CurrStep: stepNo });
+    };
+
+
     render() {
-      
+
         let StepOne = () => {
             return (
                 <div className="document-fields">
@@ -852,14 +694,14 @@ class procurementAddEdit extends Component {
                             }
 
                             if (this.state.IsAddMood) {
-                                this.NextStep();
+                                this.changeCurrentStep(1);
                             } else {
                                 if (
                                     this.props.changeStatus === true &&
                                     this.state.docId > 0
                                 ) {
                                     this.SaveDoc("EditMood");
-                                    this.NextStep();
+                                    this.changeCurrentStep(1);
                                 } else if (
                                     this.props.changeStatus === false &&
                                     this.state.docId === 0
@@ -1132,6 +974,7 @@ class procurementAddEdit extends Component {
         };
 
         let StepTwo = () => {
+    
             let columnsItem = [
                 {
                     Header: Resources["arrange"][currentLanguage],
@@ -1691,7 +1534,7 @@ class procurementAddEdit extends Component {
                             <div className="slider-Btns">
                                 <button
                                     className="primaryBtn-1 btn meduimBtn"
-                                    onClick={this.NextStep}>
+                                    onClick={()=>this.changeCurrentStep(2)}>
                                     NEXT STEP
                                 </button>
                             </div>
@@ -1870,7 +1713,7 @@ class procurementAddEdit extends Component {
                             <div className="slider-Btns">
                                 <button
                                     className="primaryBtn-1 btn meduimBtn"
-                                    onClick={this.NextStep}>
+                                    onClick={()=>this.changeCurrentStep(3)}>
                                     NEXT STEP
                                 </button>
                             </div>
@@ -1948,186 +1791,25 @@ class procurementAddEdit extends Component {
                             ) : null}
                             {this.state.isLoading ? <LoadingSection /> : null}
                             <div className="step-content">
-                                {this.state.FirstStep ? (
-                                    <Fragment>{StepOne()}</Fragment>
-                                ) : (
-                                        <Fragment>
-                                            {this.state.SecondStep
-                                                ? StepTwo()
-                                                : this.state.ThirdStep
-                                                    ? StepThree()
-                                                    : this.state.FourthStep
-                                                        ? StepFour()
-                                                        : StepFive()}
-                                        </Fragment>
-                                    )}
-                            </div>
+                            {this.state.CurrStep === 0 ? <Fragment>{StepOne()}</Fragment> :
+                                this.state.CurrStep === 1 ? <Fragment> {StepTwo()}</Fragment> :
+                                    this.state.CurrStep === 2 ? <Fragment> {StepThree()}</Fragment> :
+                                        this.state.CurrStep === 3 ? <Fragment> {StepFour()}</Fragment> :
+                                            <Fragment> {StepFive()}</Fragment>}
                         </div>
-
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
-                            {/* Next & Previous */}
-                            <div className="step-content-foot">
-                                <span
-                                    onClick={this.PreviousStep}
-                                    className={
-                                        this.state.CurrStep !== 1 &&
-                                            this.state.docId !== 0
-                                            ? "step-content-btn-prev "
-                                            : "step-content-btn-prev disabled"
-                                    }>
-                                    <i
-                                        className="fa fa-caret-left"
-                                        aria-hidden="true"
-                                    />
-                                    {Resources["previous"][currentLanguage]}
-                                </span>
-
-                                <span
-                                    onClick={this.NextStep}
-                                    className={
-                                        this.state.docId !== 0
-                                            ? "step-content-btn-prev "
-                                            : "step-content-btn-prev disabled"
-                                    }>
-                                    {Resources["next"][currentLanguage]}{" "}
-                                    <i
-                                        className="fa fa-caret-right"
-                                        aria-hidden="true"
-                                    />
-                                </span>
-                            </div>
-
-                            {/* Steps Active  */}
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div
-                                        onClick={this.StepOneLink}
-                                        data-id="step1"
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.SecondStepComplate
-                                                ? "active"
-                                                : "current__step")
-                                        }>
-                                        <div className="steps-timeline">
-                                            <span>1</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6
-                                                onClick={e =>
-                                                    this.setState({
-                                                        CurrStep: 1
-                                                    })
-                                                }>
-                                                {
-                                                    Resources["procurement"][
-                                                    currentLanguage
-                                                    ]
-                                                }
-                                            </h6>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        onClick={this.StepTwoLink}
-                                        data-id="step2 "
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.ThirdStepComplate
-                                                ? "active"
-                                                : this.state.SecondStepComplate
-                                                    ? "current__step"
-                                                    : "")
-                                        }>
-                                        <div className="steps-timeline">
-                                            <span>2</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>
-                                                {
-                                                    Resources[
-                                                    "procurementItems"
-                                                    ][currentLanguage]
-                                                }
-                                            </h6>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        onClick={this.StepThreeLink}
-                                        data-id="step3"
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.FourthStepComplate
-                                                ? "active"
-                                                : this.state.ThirdStepComplate
-                                                    ? "current__step"
-                                                    : "")
-                                        }>
-                                        <div className="steps-timeline">
-                                            <span>3</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>
-                                                {
-                                                    Resources[
-                                                    "procurementContractors"
-                                                    ][currentLanguage]
-                                                }
-                                            </h6>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        onClick={this.StepFourLink}
-                                        data-id="step4"
-                                        className={
-                                            "step-slider-item " +
-                                            (this.state.FivethStepComplate
-                                                ? "active"
-                                                : this.state.FourthStepComplate
-                                                    ? "current__step"
-                                                    : "")
-                                        }>
-                                        <div className="steps-timeline">
-                                            <span>4</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>
-                                                {
-                                                    Resources[
-                                                    "procurementContractorsItems"
-                                                    ][currentLanguage]
-                                                }
-                                            </h6>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        onClick={this.StepFiveLink}
-                                        data-id="step5"
-                                        className={
-                                            this.state.FivethStep
-                                                ? "step-slider-item  current__step"
-                                                : "step-slider-item"
-                                        }>
-                                        <div className="steps-timeline">
-                                            <span>5</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>
-                                                {
-                                                    Resources["ordering"][
-                                                    currentLanguage
-                                                    ]
-                                                }
-                                            </h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
+                        <Fragment>
+                            <Steps
+                                steps_defination={steps_defination}
+                                exist_link="/procurement/"
+                                docId={this.state.docId}
+                                changeCurrentStep={stepNo =>
+                                    this.changeCurrentStep(stepNo)
+                                }
+                                stepNo={this.state.CurrStep}
+                            />
+                        </Fragment>
+
                     </div>
                 </div>
 
