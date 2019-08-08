@@ -667,6 +667,7 @@ class materialReleaseAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
+    
     render() {
 
         let StepOne = () => {
