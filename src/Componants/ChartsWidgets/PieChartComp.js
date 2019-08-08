@@ -1,9 +1,6 @@
-import React, { Component } from 'react';
-//import { Donut, ResponsiveContainer } from 'britecharts-react'
+import React, { Component } from 'react'; 
 
-import { Donut, ResponsiveContainer } from 'britecharts-react'
-
-
+import { Donut, ResponsiveContainer } from 'britecharts-react' 
 import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
 import Api from '../../api';
 
@@ -35,7 +32,9 @@ class PieChartComp extends Component {
     componentDidMount() {
 
         let dataChart = [];
+
         this.setState({ isLoading: true });
+        console.log(this.props.api);
         Api.get(this.props.api).then(res => {
             if (res) {
                 let total = 0;

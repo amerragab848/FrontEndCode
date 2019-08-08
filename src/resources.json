@@ -5159,6 +5159,14 @@
         "en": "Risk Status Yearly",
         "ar": "Risk Status Yearly"
     },
+    "riskStatus": {
+        "en": "Risk Status  ",
+        "ar": "Risk Status  "
+    },
+    "riskPeriority": {
+        "en": "Risk Periority  ",
+        "ar": "Risk Periority  "
+    },
     "letterStatusYearly": {
         "en": "Letter Status Yearly",
         "ar": "Letter Status Yearly"

@@ -3,7 +3,6 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { Widgets, WidgetsWithText } from "./CounterWidget";
 import { ChartWidgetsData, BarChartComp, PieChartComp, Britecharts } from "./ChartsWidgets";
 import { ThreeWidgetsData, ApprovedWidget } from "./ThreeWidgets";
-import DashBoardWidgets from "./WidgetsDashBorad";
 import DashBoard from "./DashBoard";
 import language from "../resources.json";
 import Config from "../Services/Config";
@@ -11,9 +10,10 @@ import IndexedDb from '../IndexedDb';
 import Details from './widgetsDetails';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
-import value from 'lodash/value';
 import mapValues from 'lodash/mapValues';
-import { type } from "os";
+//import { type } from "os";
+//import DashBoardWidgets from "./WidgetsDashBorad";
+//import value from 'lodash/value';
 import orderBy from 'lodash/orderBy';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -80,13 +80,14 @@ class Index extends Component {
     this.setState({
       generalCategories: types['1'] || [],
       counterCategories: types['2'] || [],
-      chartCategories: types['3'] || []
+      chartCategories: types['3'] || [],
+      chartCategories: types['4'] || []
     });
 
   };
 
   renderWidget(widget, index) {
-    console.log(widget.title + " : " + Details.widgets);
+     
     if (Details.widgets[widget.title].props.type === "threeWidget") {
       return <ApprovedWidget key={index + "DIV"} {...Details.widgets[widget.title]} title={language[widget.title][currentLanguage]} />
     }
@@ -96,12 +97,15 @@ class Index extends Component {
     else if (Details.widgets[widget.title].props.type === "oneWidget") {
       return <Widgets key={index + "DIV"} title={widget.title} {...Details.widgets[widget.title]} />
     }
-    else if (Details.widgets[widget.title].props.type === "pie") {
-
-      return <div className="col-lg-4 col-md-6" key={index + "DIVPie"}>
-        <PieChartComp api={Details.widgets[widget.title].props.api} y={Details.widgets[widget.title].props.y}
-          name={Details.widgets[widget.title].props.name} title={language[widget.title][currentLanguage]}
-          seriesName={language[Details.widgets[widget.title].props.seriesName][currentLanguage]} />
+    else if (Details.widgets[widget.title].props.type === "pie") {  
+      return <div className="col-lg-4 col-md-6" key={Details.widgets[widget.title].props.key + "DIVPie"}>
+        <PieChartComp 
+          key={Details.widgets[widget.title].props.key}
+          api={Details.widgets[widget.title].props.api} 
+          y={Details.widgets[widget.title].props.y}
+          name={Details.widgets[widget.title].props.name}
+          title={language[widget.title][currentLanguage]} 
+          />
       </div>
     }
     else if (Details.widgets[widget.title].props.type === "line") {
@@ -133,6 +137,7 @@ class Index extends Component {
           </h2>
           <div className={"SummeriesContainerContent " + (category.title == "mainAlerts" ? " numbersContainerContent" : " ")}>
             {category.widgets.map((widget, widgetIndex) => {
+              console.log(widget);
               if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
                 return this.renderWidget(widget, widgetIndex);
               }
