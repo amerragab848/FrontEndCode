@@ -1,13 +1,11 @@
 import React, { Component, Fragment } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import { SortablePane, Pane } from "react-sortable-pane";
-import Rodal from "../Styles/js/rodal";
+import { SortablePane, Pane } from "react-sortable-pane"; 
 import dashBoardLogo from "../Styles/images/dashboardDots.png";
 import widgets from "./WidgetsDashBorad";
 import Resources from "../resources.json";
 import Config from "../Services/Config";
-import IndexedDb from '../IndexedDb';
-import orderBy from 'lodash/orderBy';
+import IndexedDb from '../IndexedDb'; 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
