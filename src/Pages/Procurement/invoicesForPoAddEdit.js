@@ -1157,16 +1157,17 @@ class invoicesForPoAddEdit extends Component {
                                 initialValues={{ ...this.state.document }}
                                 validationSchema={validationSchema}
                                 enableReinitialize={true}
-                                onSubmit={(values) => {
-
+                                onSubmit={values => {
+                                    if (this.props.showModal) { return; }
                                     if (this.props.changeStatus === true && this.state.docId > 0) {
                                         this.EditDoc();
+                                        this.changeCurrentStep(1);
                                     } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                         this.AddDoc();
                                     } else {
-                                       //// this.changeCurrentStep(1);
+                                        this.changeCurrentStep(1);
                                     }
-                                }}  >
+                                }}>
 
                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                     <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
