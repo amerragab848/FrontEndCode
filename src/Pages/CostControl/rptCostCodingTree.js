@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -12,15 +12,19 @@ import Api from '../../api'
 import Export from "../../Componants/OptionsPanels/Export";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 class rptCostCodingTree extends Component {
   constructor(props) {
     super(props);
+     
+
     if (!Config.IsAllow(400)) {
       toast.warn(Resources['missingPermissions'][currentLanguage])
       this.props.history.goBack()
     }
+    
     this.state = {
-      projectId: this.props.projectId,
+      projectId: props.match.params.projectId,
       NodeData: {},
       isLoading: false
     }
@@ -31,12 +35,7 @@ class rptCostCodingTree extends Component {
       projectId: props.projectId
     })
   }
-
-  componentWillMount = () => {
-
-  }
-
-
+  
   GetNodeData = (item) => { 
     this.setState({ isLoading: true })
     Api.get('GetSummaryOfCostCoding?id=' + item.id + '').then(

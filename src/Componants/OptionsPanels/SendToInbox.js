@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Api from '../../api'
-import Dropdown from "./DropdownMelcous";
-import InputMelcous from './InputMelcous'
+import Dropdown from "./DropdownMelcous"; 
 import Resources from '../../resources.json';
 import { Formik, Form } from 'formik';
 import { connect } from 'react-redux';

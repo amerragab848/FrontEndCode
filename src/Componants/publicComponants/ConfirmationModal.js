@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Rodal from "../../Styles/js/rodal";
-import "../../Styles/css/rodal.css";
+ 
+// import "../../Styles/css/rodal.css";
 import Resources from "../../resources.json";
 import SkyLight from "react-skylight";
 

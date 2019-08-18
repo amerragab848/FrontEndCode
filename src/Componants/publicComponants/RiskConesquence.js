@@ -142,15 +142,14 @@ class RiskConesquence extends Component {
     render() {
         return (
             <div className="doc-pre-cycle letterFullWidth">
-                <div className="document-fields">
-                    <header style={{ paddingTop: '0' }}>
+                 <header style={{ padding:'0'}} > 
                         <h2 className="zero">{Resources['riskConesquence'][currentLanguage]}</h2>
                     </header>
                     <div className="riskConContainer">
                         {this.state.isLoading == true ? <LoadingSection /> :
-                            <Fragment> 
+                           
                                 <div className="doc-pre-cycle letterFullWidth">
-                                    <div className='document-fields'>
+                                    
                                         <table className="attachmentTable">
                                             <thead>
                                                 <tr>
@@ -203,11 +202,9 @@ class RiskConesquence extends Component {
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>
-                            </Fragment>
+                            
                         }
                     </div>
-                </div>
             </div>
         );
     }

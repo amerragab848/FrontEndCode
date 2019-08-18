@@ -153,7 +153,8 @@ class LeftReportMenu extends Component {
                 {this.state.selectedReport.value == '0' ? null :
                   <div className="reports__content" id='ren'>
                     {Component != null ? <Component /> : null}
-                  </div>}
+                  </div>
+                }
               </ErrorHandler >
             </div>
           </React.Fragment>

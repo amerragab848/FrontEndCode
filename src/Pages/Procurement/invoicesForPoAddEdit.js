@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from "react";
-
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -220,10 +218,6 @@ class invoicesForPoAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
-
-        if (this.state.showModal != nextProps.showModal) {
-            this.setState({ showModal: nextProps.showModal });
-        }
     }
 
     componentWillUnmount() {
@@ -234,10 +228,7 @@ class invoicesForPoAddEdit extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (
-            this.props.hasWorkflow !== prevProps.hasWorkflow ||
-            this.props.changeStatus !== prevProps.changeStatus
-        ) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -513,8 +504,6 @@ class invoicesForPoAddEdit extends Component {
             this.changeCurrentStep(1);
         }
         else {
-
-
             this.setState({
                 isLoading: true
             });
@@ -1168,15 +1157,17 @@ class invoicesForPoAddEdit extends Component {
                                 initialValues={{ ...this.state.document }}
                                 validationSchema={validationSchema}
                                 enableReinitialize={true}
-                                onSubmit={(values) => {
+                                onSubmit={values => {
+                                    if (this.props.showModal) { return; }
                                     if (this.props.changeStatus === true && this.state.docId > 0) {
                                         this.EditDoc();
+                                        this.changeCurrentStep(1);
                                     } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                         this.AddDoc();
                                     } else {
                                         this.changeCurrentStep(1);
                                     }
-                                }}  >
+                                }}>
 
                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                     <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -1369,25 +1360,38 @@ class invoicesForPoAddEdit extends Component {
                                                 </div>
                                             </div>
                                             : null}
+
+                                        <div className="doc-pre-cycle letterFullWidth">
+                                            <div>
+                                                {this.state.docId > 0 ?
+                                                    <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={857} EditAttachments={3245} ShowDropBox={3545}
+                                                        ShowGoogleDrive={3546} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                    : null}
+                                                {this.viewAttachments()}
+                                                {this.props.changeStatus === true ?
+                                                    <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                    : null}
+                                            </div>
+                                        </div>
+
+                                        <div className="slider-Btns">
+                                            {this.state.isLoading ?
+                                                <button className="primaryBtn-1 btn disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button>
+                                                :
+                                                this.showBtnsSaving()}
+                                        </div>
                                     </Form>
                                 )}
                             </Formik>
                         </div>
 
-                        <div className="doc-pre-cycle letterFullWidth">
-                            <div>
-                                {this.state.docId > 0 ?
-                                    <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                    : null
-                                }
-                                {this.viewAttachments()}
 
-                                {this.props.changeStatus === true ?
-                                    <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                    : null
-                                }
-                            </div>
-                        </div>
 
                     </div>
                 </div>

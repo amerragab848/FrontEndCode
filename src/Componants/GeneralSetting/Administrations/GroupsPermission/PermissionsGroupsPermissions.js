@@ -59,7 +59,7 @@ class PermissionsGroupsPermissions extends Component {
 
     }
     checkedAll = () => {
-        alert(this.state.checkedAll)
+
         this.state[this.state.selectedDocument.value].forEach(item => {
             this.setState({ [item.code]: !this.state.checkedAll })
         })
@@ -67,7 +67,6 @@ class PermissionsGroupsPermissions extends Component {
 
     }
     handleCheck = (code) => {
-        alert()
         this.setState({ [code]: !this.state[code] })
     }
 

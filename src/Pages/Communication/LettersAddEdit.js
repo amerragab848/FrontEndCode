@@ -194,9 +194,6 @@ class LettersAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
-
-        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
-
     }
 
     componentWillUnmount() {

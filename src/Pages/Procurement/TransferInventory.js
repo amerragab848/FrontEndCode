@@ -16,7 +16,7 @@ import SkyLight from 'react-skylight';
 import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
 import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
@@ -66,8 +66,6 @@ class TransferInventory extends Component {
         this.state = {
             isLoading: false,
             isEdit: false,
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -79,9 +77,10 @@ class TransferInventory extends Component {
             document: this.props.document ? Object.assign({}, this.props.document) : {},
             selectedProject: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
             ProjectsData: [],
-            permission: [
-                { name: "sendToWorkFlow", code: 3775 },
-            ],
+            permission: [{ name: 'sendByEmail', code: '0' }, { name: 'sendByInbox', code: '0' },
+            { name: 'sendTask', code: '0' }, { name: 'distributionList', code: '0' },
+            { name: 'createTransmittal', code: '0' }, { name: 'sendToWorkFlow', code: '3775' },
+            { name: 'viewAttachments', code: '0' }, { name: 'deleteAttachments', code: '0' }],
             approvedQuantity: 0,
             rejectedQuantity: 0,
             pendingQuantity: 0,
@@ -116,10 +115,6 @@ class TransferInventory extends Component {
           
             this.setState({ projectId: nextProps.projectId, })
         }
-        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
-        if (this.state.showModal != nextProps.showModal) {
-            this.setState({ showModal: nextProps.showModal });
-        }
     }
 
     componentDidUpdate(prevProps) {
@@ -148,19 +143,6 @@ class TransferInventory extends Component {
         })
     }
 
-    handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") {
-            this.props.actions.showOptionPanel(false);
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-            this.simpleDialog.show()
-        }
-    }
-
     handleChangeDropDown = (event) => {
         if (event == null) return
         let original_document = { ...this.state.document }
@@ -181,10 +163,6 @@ class TransferInventory extends Component {
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({ docId: 0 })
-    }
-
-    executeBeforeModalClose = (e) => {
-        this.setState({ showModal: false });
     }
 
     showBtnsSaving() {
@@ -227,12 +205,11 @@ class TransferInventory extends Component {
         })
     }
 
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
+    }
+
     render() {
-
-        let actions = [
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-        ]
-
 
         let StepOne = () => {
             return (
@@ -307,24 +284,32 @@ class TransferInventory extends Component {
                                 {this.props.changeStatus === true ?
                                     <div className="approveDocument">
                                         <div className="approveDocumentBTNS">
-                                            {this.state.isLoading ?
-                                                <button className="primaryBtn-1 btn disabled">
-                                                    <div className="spinner">
-                                                        <div className="bounce1" />
-                                                        <div className="bounce2" />
-                                                        <div className="bounce3" />
-                                                    </div>
-                                                </button> :
-                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
-                                            }
+                                        {this.state.isLoading ?
+                                                        <button className="primaryBtn-1 btn disabled">
+                                                            <div className="spinner">
+                                                                <div className="bounce1" />
+                                                                <div className="bounce2" />
+                                                                <div className="bounce3" />
+                                                            </div>
+                                                        </button> :
+                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
+                                                    }
+                                                    <DocumentActions
+                                                        isApproveMode={this.state.isApproveMode}
+                                                        docTypeId={this.state.docTypeId}
+                                                        docId={this.state.docId}
+                                                        projectId={this.state.projectId}
+                                                        previousRoute={this.state.previousRoute}
+                                                        docApprovalId={this.state.docApprovalId}
+                                                        currentArrange={this.state.currentArrange}
+                                                        showModal={this.props.showModal}
+                                                        showOptionPanel={this.showOptionPanel}
+                                                        permission={this.state.permission}
+                                                    />
 
-                                            <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-
-                                            <span className="border"></span>
-
-                                        </div>
-                                    </div>
-                                    : null}
+                                                </div>
+                                            </div>
+                                            : null}
 
                                 <div className="doc-pre-cycle letterFullWidth">
                                     <div>
@@ -366,11 +351,7 @@ class TransferInventory extends Component {
                             {StepOne()}
 
                         </div>
-                        <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                            <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}
-                                beforeClose={() => { this.executeBeforeModalClose() }}>  {this.state.currentComponent}
-                            </SkyLight>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

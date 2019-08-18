@@ -612,6 +612,61 @@ var widgets = [
     ]
   },
   {
+    widgetCategory: "risk",
+    refrence: 0,
+    key: "0-4",
+    canView: false,
+    checked: false,
+    order: 4,
+    widgets: [
+      {
+        id: 'wt-riskStatus01',
+        checked: false,
+        permission: 1377,
+        key: "0-4-1",
+        title: 'riskStatus',
+        order: 1,
+        props: {
+          'api': 'RiskByStatus',
+          'name': 'item',
+          'y': 'total'
+        },
+        type: 'pie',
+        seriesName: "riskStatus"
+      }, {
+        id: 'wt-riskPeriority02',
+        permission: 3500,
+        key: "0-4-2",
+        checked: false,
+        title: 'riskPeriority',
+        order: 2,
+        props: {
+          'api': 'RiskByPeriodrity',
+          'name': 'item',
+          'y': 'total'
+        },
+        type: 'pie',
+        seriesName: "riskPeriority"
+
+      }, {
+        id: 'wt-riskType03',
+        key: "0-4-3",
+        checked: false,
+        permission: 3507,
+        title: 'riskType',
+        order: 3,
+        props: {
+          'api': 'RiskByRiskType',
+          'name': 'item',
+          'y': 'total'
+        },
+        type: 'pie',
+        seriesName: "riskType"
+
+      }
+    ]
+  },
+  {
     widgetCategory: "counters",
     refrence: 1,
     key: "1-1",
