@@ -19,9 +19,7 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
@@ -36,7 +34,7 @@ let projectId = 0;
 let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
-let perviousRoute='';
+let perviousRoute = '';
 let arrange = 0;
 const _ = require('lodash')
 
@@ -120,7 +118,7 @@ class drawingListAddEdit extends Component {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
-                     docId = obj.docId;
+                    docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
                     isApproveMode = obj.isApproveMode;
@@ -138,13 +136,11 @@ class drawingListAddEdit extends Component {
         this.state = {
             showCheckbox: true,
             columns: columnsGrid.filter(column => column.visible !== false),
-            rows: [], 
+            rows: [],
             isLoading: true,
             CurrentStep: 0,
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
-            isApproveMode: isApproveMode, 
+            isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
             docId: docId,
@@ -195,8 +191,8 @@ class drawingListAddEdit extends Component {
 
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/drawingList/" + this.state.projectId);
-          }
-          steps_defination = [
+        }
+        steps_defination = [
             {
                 name: "drawingList",
                 callBackFn: null
@@ -242,9 +238,6 @@ class drawingListAddEdit extends Component {
             });
             this.checkDocumentIsView();
         }
-        if (this.state.showModal != nextProps.showModal) {
-          this.setState({ showModal: nextProps.showModal });
-        }
     }
 
     handleChange(e, field) {
@@ -275,12 +268,12 @@ class drawingListAddEdit extends Component {
         this.setState({ CurrentStep: stepNo });
     };
 
-    
+
     componentWillMount() {
         if (docId > 0) {
 
             let url = "GetDesignDrawingListForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId ,'drawingList');
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'drawingList');
             this.setState({
                 IsEditMode: true
             })
@@ -298,18 +291,18 @@ class drawingListAddEdit extends Component {
             ///Is Add Mode
             dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then
                 (
-                res => {
-                    let Doc = {
-                        id: undefined, status: true, subject: '',
-                        arrange: res, projectTypeId: '',
-                        docDate: moment(), projectId: projectId,
+                    res => {
+                        let Doc = {
+                            id: undefined, status: true, subject: '',
+                            arrange: res, projectTypeId: '',
+                            docDate: moment(), projectId: projectId,
 
+                        }
+                        this.setState({
+                            document: Doc,
+
+                        })
                     }
-                    this.setState({
-                        document: Doc,
-
-                    })
-                }
                 )
 
 
@@ -338,7 +331,8 @@ class drawingListAddEdit extends Component {
         )
     }
 
-    componentWillUnmount() {   this.props.actions.clearCashDocument();
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
         this.setState({
             docId: 0
         });
@@ -434,19 +428,6 @@ class drawingListAddEdit extends Component {
 
     }
 
-    handleShowAction = (item) => { 
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-
-        if (item.value != "0") { this.props.actions.showOptionPanel(false); 
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-            this.simpleDialog.show()
-        }
-    }
-
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         if (event == null) return;
         let original_document = { ...this.state.document };
@@ -464,12 +445,11 @@ class drawingListAddEdit extends Component {
         return (
             this.state.docId !== 0 ? (
                 Config.IsAllow(3732) === true ?
-                   <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3733} />
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={3733} />
                     : null)
                 : null
         )
     }
- 
 
     showBtnsSaving() {
         let btn = null;
@@ -609,12 +589,12 @@ class drawingListAddEdit extends Component {
         dataservice.GetNextArrangeMainDocument('GetNextArrangeItems?docId=' + this.state.docId + '&docType=' + this.state.docTypeId + '').then(
             res => {
                 let ObjItem =
-                    {
-                        id: undefined, disciplineId: this.state.selectDescipline.value,
-                        arrange: res, details: '',
-                        scale: '', paper: '', estimatedTime: '',
-                        drawingListId: this.state.docId
-                    }
+                {
+                    id: undefined, disciplineId: this.state.selectDescipline.value,
+                    arrange: res, details: '',
+                    scale: '', paper: '', estimatedTime: '',
+                    drawingListId: this.state.docId
+                }
                 this.setState({
                     arrangeItems: res,
                     ItemForEdit: ObjItem
@@ -681,8 +661,10 @@ class drawingListAddEdit extends Component {
         });
     }
 
-  
-    
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
+    }
+
     render() {
 
         const dataGrid =
@@ -721,7 +703,7 @@ class drawingListAddEdit extends Component {
                         {dataGrid}
                     </div>
                     <div className="slider-Btns">
-                        <button className="primaryBtn-1 btn meduimBtn" onClick={()=>this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
+                        <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
                     </div>
                 </div>
             )
@@ -836,18 +818,7 @@ class drawingListAddEdit extends Component {
             )
         }
 
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
 
-        ]
 
         return (
 
@@ -904,10 +875,10 @@ class drawingListAddEdit extends Component {
                 {/* {this.state.isLoading ? <LoadingSection /> : null} */}
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                <HeaderDocument projectName={projectName}  isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.drawingList[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.drawingList[currentLanguage]} moduleTitle={Resources['designCoordination'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            {this.state.CurrentStep==0 ?
+                            {this.state.CurrentStep == 0 ?
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
                                         <Formik
@@ -990,23 +961,29 @@ class drawingListAddEdit extends Component {
                                                     {this.state.IsEditMode === true && docId !== 0 ?
                                                         <div className="approveDocument">
                                                             <div className="approveDocumentBTNS">
-                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR}>{Resources.save[currentLanguage]}</button>
 
-                                                                {this.state.isApproveMode === true ?
-                                                                    <div >
-                                                                        <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                        <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-
-
-                                                                    </div>
-                                                                    : null
+                                                                {this.state.isLoading ?
+                                                                    <button className="primaryBtn-1 btn disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button> :
+                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR} type="submit">{Resources.save[currentLanguage]}</button>
                                                                 }
-                                                                <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                                                <span className="border"></span>
-                                                                <div className="document__action--menu">
-                                                                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                </div>
+                                                                <DocumentActions
+                                                                    isApproveMode={this.state.isApproveMode}
+                                                                    docTypeId={this.state.docTypeId}
+                                                                    docId={this.state.docId}
+                                                                    projectId={this.state.projectId}
+                                                                    previousRoute={this.state.previousRoute}
+                                                                    docApprovalId={this.state.docApprovalId}
+                                                                    currentArrange={this.state.currentArrange}
+                                                                    showModal={this.props.showModal}
+                                                                    showOptionPanel={this.showOptionPanel}
+                                                                    permission={this.state.permission}
+                                                                />
                                                             </div>
                                                         </div>
                                                         : null
@@ -1021,9 +998,9 @@ class drawingListAddEdit extends Component {
 
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                        {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3730} EditAttachments={3731} ShowDropBox={3734} ShowGoogleDrive={3735} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId}/>) : null}
-                                        {this.viewAttachments()}
-                                        {this.props.changeStatus === true && docId !== 0 ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null }
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3730} EditAttachments={3731} ShowDropBox={3734} ShowGoogleDrive={3735} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                            {this.viewAttachments()}
+                                            {this.props.changeStatus === true && docId !== 0 ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>
                                     </div>
                                 </div>
@@ -1041,7 +1018,7 @@ class drawingListAddEdit extends Component {
                                 this.changeCurrentStep(stepNo)
                             }
                             stepNo={this.state.CurrentStep}
-                            />
+                        />
                     </div>
 
                 </div>
@@ -1055,13 +1032,6 @@ class drawingListAddEdit extends Component {
                         buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
                     />
                 ) : null}
-
-
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
-                    </SkyLight>
-                </div>
             </div>
         )
     }
@@ -1095,7 +1065,8 @@ function mapStateToProps(state) {
         file: state.communication.file,
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
-        projectId: state.communication.projectId
+        projectId: state.communication.projectId,
+        showModal: state.communication.showModal
     }
 }
 

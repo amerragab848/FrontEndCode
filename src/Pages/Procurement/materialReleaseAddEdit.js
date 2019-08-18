@@ -17,9 +17,7 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
@@ -117,8 +115,6 @@ class materialReleaseAddEdit extends Component {
             isLoading: false,
             isEdit: false,
             perviousRoute: perviousRoute,
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             isView: false,
@@ -224,18 +220,13 @@ class materialReleaseAddEdit extends Component {
                     this.setState({ descriptionDropData: ListData, descriptionList: res })
                 }
             )
-
-
             dataservice.GetDataGrid('GetLogsMaterialReleaseTickets?releaseId=' + doc.id).then(
                 res => {
                     this.setState({ Items: res })
                 }
             )
         }
-        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
-        if (this.state.showModal != nextProps.showModal) {
-            this.setState({ showModal: nextProps.showModal });
-        }
+
     }
 
     componentDidUpdate(prevProps) {
@@ -350,19 +341,6 @@ class materialReleaseAddEdit extends Component {
             this.setState({ MaterialReleaseType: [...result] })
         })
 
-    }
-
-    handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        if (item.value != "0") {
-            this.props.actions.showOptionPanel(false);
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-            this.simpleDialog.show()
-        }
     }
 
     handleChangeDropDown(event, field, isSubscrib, selectedValue) {
@@ -576,10 +554,6 @@ class materialReleaseAddEdit extends Component {
         })
     }
 
-    executeBeforeModalClose = (e) => {
-        this.setState({ showModal: false });
-    }
-
     ShowCostTree = () => {
         this.setState({ ShowTree: true })
     }
@@ -690,15 +664,10 @@ class materialReleaseAddEdit extends Component {
         this.setState({ CurrentStep: stepNo });
     };
 
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
+    }
     render() {
-
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
-
-        ]
 
         let StepOne = () => {
             return (
@@ -801,6 +770,7 @@ class materialReleaseAddEdit extends Component {
                                 {this.props.changeStatus === true ?
                                     <div className="approveDocument">
                                         <div className="approveDocumentBTNS">
+
                                             {this.state.isLoading ?
                                                 <button className="primaryBtn-1 btn disabled">
                                                     <div className="spinner">
@@ -809,20 +779,21 @@ class materialReleaseAddEdit extends Component {
                                                         <div className="bounce3" />
                                                     </div>
                                                 </button> :
-                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
+                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
                                             }
-                                            {this.state.isApproveMode === true ?
-                                                <div >
-                                                    <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                    <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                                </div>
-                                                : null}
-                                            <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                            <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                            <span className="border"></span>
-                                            <div className="document__action--menu">
-                                                <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                            </div>
+                                            <DocumentActions
+                                                isApproveMode={this.state.isApproveMode}
+                                                docTypeId={this.state.docTypeId}
+                                                docId={this.state.docId}
+                                                projectId={this.state.projectId}
+                                                previousRoute={this.state.previousRoute}
+                                                docApprovalId={this.state.docApprovalId}
+                                                currentArrange={this.state.currentArrange}
+                                                showModal={this.props.showModal}
+                                                showOptionPanel={this.showOptionPanel}
+                                                permission={this.state.permission}
+                                            />
+
                                         </div>
                                     </div>
                                     : null}
@@ -1291,12 +1262,6 @@ class materialReleaseAddEdit extends Component {
                         </Fragment>
 
                     </div>
-                </div>
-
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}
-                        beforeClose={() => { this.executeBeforeModalClose() }}> {this.state.currentComponent}>
-                    </SkyLight>
                 </div>
 
                 {this.state.showDeleteModal == true ? (

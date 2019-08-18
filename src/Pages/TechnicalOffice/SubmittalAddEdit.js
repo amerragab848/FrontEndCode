@@ -19,9 +19,7 @@ import CryptoJS from "crypto-js";
 import moment from "moment";
 import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
-import Distribution from "../../Componants/OptionsPanels/DistributionList";
-import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
-import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import Rodal from "../../Styles/js/rodal";
@@ -111,7 +109,6 @@ class SubmittalAddEdit extends Component {
       showDeleteModal: false,
       isLoading: false,
       isEdit: false,
-      currentTitle: "sendToWorkFlow",
       showModal: false,
       isViewMode: false,
       isApproveMode: isApproveMode,
@@ -277,9 +274,6 @@ class SubmittalAddEdit extends Component {
       });
 
       this.checkDocumentIsView();
-    }
-    if (this.state.showModal != nextProps.showModal) {
-      this.setState({ showModal: nextProps.showModal });
     }
   }
 
@@ -1101,20 +1095,6 @@ class SubmittalAddEdit extends Component {
     return this.state.docId > 0 ? (Config.IsAllow(3302) === true ? (<ViewAttachment isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={884} />) : null) : null;
   }
 
-  handleShowAction = item => {
-
-    if (item.value != "0") {
-      this.props.actions.showOptionPanel(false);
-
-      this.setState({
-        currentComponent: item.value,
-        currentTitle: item.title,
-        showModal: true
-      });
-
-      this.simpleDialog.show();
-    }
-  };
 
   getLogsSubmittalItems = () => {
     dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
@@ -1465,6 +1445,10 @@ class SubmittalAddEdit extends Component {
     }
   }
 
+  showOptionPanel = () => {
+    this.props.actions.showOptionPanel(true);
+  }
+
   render() {
 
     const columnsCycles = [
@@ -1572,29 +1556,6 @@ class SubmittalAddEdit extends Component {
             <span>{moment(row.value).format("DD/MM/YYYY")}</span>
           </span>
         )
-      }
-    ];
-
-    let actions = [
-      {
-        title: "distributionList",
-        value: (<Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-        label: Resources["distributionList"][currentLanguage]
-      },
-      {
-        title: "sendToWorkFlow",
-        value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-        label: Resources["sendToWorkFlow"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-        label: Resources["documentApproval"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (<DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-        label: Resources["documentApproval"][currentLanguage]
       }
     ];
 
@@ -2200,26 +2161,28 @@ class SubmittalAddEdit extends Component {
             {this.props.changeStatus === true && this.state.currentStep === 0 ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
-                  {this.state.isApproveMode === true ? (
-                    <div>
-                      <button className="primaryBtn-1 btn " onClick={e => this.handleShowAction(actions[2])}>
-                        {Resources.approvalModalApprove[currentLanguage]}
-                      </button>
-                      <button className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[3])}>
-                        {Resources.approvalModalReject[currentLanguage]}
-                      </button>
-                    </div>
-                  ) : null}
-                  <button className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[1])}>
-                    {Resources.sendToWorkFlow[currentLanguage]}
-                  </button>
-                  <button className="primaryBtn-2 btn" onClick={e => this.handleShowAction(actions[0])}>
-                    {Resources.distributionList[currentLanguage]}
-                  </button>
-                  <span className="border" />
-                  <div className="document__action--menu">
-                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                  </div>
+                  {this.state.isLoading ?
+                    <button className="primaryBtn-1 btn disabled">
+                      <div className="spinner">
+                        <div className="bounce1" />
+                        <div className="bounce2" />
+                        <div className="bounce3" />
+                      </div>
+                    </button> :
+                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
+                  }
+                  <DocumentActions
+                    isApproveMode={this.state.isApproveMode}
+                    docTypeId={this.state.docTypeId}
+                    docId={this.state.docId}
+                    projectId={this.state.projectId}
+                    previousRoute={this.state.previousRoute}
+                    docApprovalId={this.state.docApprovalId}
+                    currentArrange={this.state.currentArrange}
+                    showModal={this.props.showModal}
+                    showOptionPanel={this.showOptionPanel}
+                    permission={this.state.permission}
+                  />
                 </div>
               </div>
             ) : null}
@@ -2235,10 +2198,6 @@ class SubmittalAddEdit extends Component {
           </div>
         </div>
         <div>
-
-          <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)} title={Resources[this.state.currentTitle][currentLanguage]}>
-            {this.state.currentComponent}
-          </SkyLight>
 
           {this.state.showDeleteModal == true ? (
             <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
@@ -2332,7 +2291,7 @@ class SubmittalAddEdit extends Component {
               </Formik>
             </div>
           </SkyLight>
- 
+
           <SkyLight ref={ref => (this.simpleDialog2 = ref)}>
             <div className="ui modal largeModal proForm ">
               <Formik initialValues={{ ...this.state.addCycleSubmital }}
@@ -2473,7 +2432,8 @@ function mapStateToProps(state, ownProps) {
     file: state.communication.file,
     files: state.communication.files,
     hasWorkflow: state.communication.hasWorkflow,
-    documentCycle: state.communication.documentCycle
+    documentCycle: state.communication.documentCycle,
+    showModal: state.communication.showModal
   };
 }
 

@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import Api from "../../api";
 import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as communicationActions from '../../store/actions/communication';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class CopyTo extends Component {
@@ -13,8 +16,13 @@ class CopyTo extends Component {
         docId: this.props.docId,
         docType: this.props.docTypeId,
       },
+      isLoading: false,
       Projects: []
     };
+  }
+  componentWillReceiveProps = (props) => {
+    if (props.showModal == false)
+      this.setState({ isLoading: false })
   }
 
   componentDidMount = () => {
@@ -48,24 +56,44 @@ class CopyTo extends Component {
 
   saveCopyTo() {
     if (this.state.objCopyTo.projectId != undefined) {
-      Api.post("CopyDocument", this.state.objCopyTo).then(result => {
-        console.log(result);
-      });
+      this.props.actions.copyTo("CopyDocument", this.state.objCopyTo);
     }
   }
 
   render() {
-    return ( 
+    return (
       <div className="proForm">
         <Dropdown title="Projects" data={this.state.Projects} handleChange={value => this.selectValue(value)} placeholder="Projects" />
         <div className="fullWidthWrapper">
-          <button className="primaryBtn-1 btn" onClick={() => this.saveCopyTo()}>
-            {Resources["save"][currentLanguage]}
-          </button>
-        </div>  
+          {this.state.isLoading === false ? (
+            <button className="primaryBtn-1 btn" onClick={() => this.saveCopyTo()}>
+              {Resources["save"][currentLanguage]}
+            </button>
+          ) :
+            (
+              <button className="primaryBtn-1 btn mediumBtn disabled" disabled="disabled">
+                <div className="spinner">
+                  <div className="bounce1" />
+                  <div className="bounce2" />
+                  <div className="bounce3" />
+                </div>
+              </button>
+            )}
+        </div>
       </div>
     );
   }
 }
+function mapStateToProps(state) {
 
-export default CopyTo;
+  return {
+    showModal: state.communication.showModal
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(CopyTo); 
