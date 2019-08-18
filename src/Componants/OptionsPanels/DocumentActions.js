@@ -117,7 +117,7 @@ class DocumentActions extends Component {
     componentDidMount = () => {
         ///fillter importedPath array to fill dropdowns (actions) with coorect panels bassed on permmsion given from props  (without reject,approved,workFlow anddistribution panels)
         let dropActions = importedPaths.slice(4, 10);
-        let allowActions = []
+        let allowActions = [];
         dropActions.map(i => {
             if (this.IsAllow(i.title)) {
                 let obj = { label: i.title, value: i.value };
@@ -131,7 +131,7 @@ class DocumentActions extends Component {
     IsAllow = (name) => {
         let obj = find(this.props.permission, function (o) { return o.name == name; });
         if (obj) {
-            if (obj.code === '0')
+            if (obj.code === 0)
                 return false;
             else
                 return Config.IsAllow(obj.code);
@@ -172,7 +172,7 @@ class DocumentActions extends Component {
                 <div className="document__action--menu">
                     <Fragment>
                         {this.IsAllow(importedPaths[6]['title']) || this.IsAllow(importedPaths[7]['title'])
-                            || this.IsAllow(importedPaths[9]['title']) || this.IsAllow(importedPaths[8]['title'])   ?
+                            || this.IsAllow(importedPaths[9]['title']) || this.IsAllow(importedPaths[8]['title']) ?
                             <DropDown data={this.state.selectedPanels} name="ddlActions" handleChange={item => this.handleShowAction(importedPaths[item.value])} index='ddlActions' selectedValue={this.state.defualtValue} styles={actionPanel} />
                             : null}
                     </Fragment>

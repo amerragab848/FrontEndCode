@@ -39,7 +39,6 @@ let projectName = "";
 let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
-let actions = [];
 let perviousRoute = 0;
 class phoneAddEdit extends Component {
     constructor(props) {
