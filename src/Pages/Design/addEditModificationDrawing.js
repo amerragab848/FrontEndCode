@@ -791,7 +791,7 @@ class addEditModificationDrawing extends Component {
     clearCyclingAdd = () => {
         let drawingCycleAddObj = {
             drawingId: this.state.docId,
-            subject: 'Cycle No. R ' + this.state.arrange,
+            subject: this.state.cyclesData ? 'Cycle No. R ' + Math.max.apply(Math, this.state.cyclesData.map(function (o) { return o.arrange + 1 })) : 'Cycle No. R 1',
             status: 'true',
             approvalStatusId: '',
             docDate: moment(),
@@ -834,17 +834,17 @@ class addEditModificationDrawing extends Component {
     }
 
     viewConfirmDeleteCycle = (selectedRows) => {
-        let _selectedRows=[selectedRows]
-        this.setState({ selectedRow:_selectedRows, showDeleteModal: true });
-        console.log("this.state.selectedRow",selectedRows)
+        let _selectedRows = [selectedRows]
+        this.setState({ selectedRow: _selectedRows, showDeleteModal: true });
+        console.log("this.state.selectedRow", selectedRows)
     }
 
 
     ConfirmDeletetion = () => {
         this.setState({ isLoading: true });
-        dataservice.addObject('DeleteMultipleLogsDrawingsCyclesById' , this.state.selectedRow).then(res => {
+        dataservice.addObject('DeleteMultipleLogsDrawingsCyclesById', this.state.selectedRow).then(res => {
             let id = this.state.selectedRow
-            let rows = this.state.cyclesData.filter(function(r){return r.id !== id[0] } );
+            let rows = this.state.cyclesData.filter(function (r) { return r.id !== id[0] });
             this.setState({ cyclesData: rows, showDeleteModal: false, isLoading: false });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(ex => {
@@ -1373,7 +1373,7 @@ class addEditModificationDrawing extends Component {
                                     <div className="fillter-status fillter-item-c ">
                                         <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                            <input name='subject' className="form-control fsadfsadsa"
+                                            <input name='subject' className="form-control "
                                                 id="subject" name='subject'
                                                 placeholder={Resources.subject[currentLanguage]}
                                                 autoComplete='off'
