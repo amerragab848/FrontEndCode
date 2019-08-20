@@ -20665,7 +20665,9 @@ div#markup-panel {
 }
 
 .linebylineInput__checkbox .ui.checkbox {
-    margin: 0;
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 0;
 }
 
 .linebylineInput__checkbox label {
@@ -20724,7 +20726,6 @@ div#markup-panel {
     align-items: center !important;
 }
 
-.linebylineInput__checkbox .ui.checkbox,
 .linebylineInput__checkbox label {
     margin: 0 !important;
 }
@@ -21118,11 +21119,20 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     margin: 0 10px 
 }
 
-.filter__input-wrapper .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate .sc-bxivhb.hPEdlB::after {
+/* .filter__input-wrapper .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate .sc-bxivhb.hPEdlB::after {
     right: -10px;
-}
+} */
 
 .customDatepicker .NormalInputDate input {
     max-width: 192px !important;
     width: 192px
+}
+
+.filter__input-wrapper .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate input {
+    max-width: 100% !important;
+}
+
+.filter__input-wrapper .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
+    max-width: 100% !important;
+    width: auto;
 }

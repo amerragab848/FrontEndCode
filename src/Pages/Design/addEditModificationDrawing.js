@@ -1330,16 +1330,13 @@ class addEditModificationDrawing extends Component {
             return (
                 <Fragment>
                     {LastCycle()}
-                    <header className="main__header">
+                    <header className="main__header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '40px' }}>
                         <div className="main__header--div">
                             <h2 className="zero">
                                 {Resources["previousCycle"][currentLanguage]}
                             </h2>
                         </div>
-
-                        <div className="slider-Btns">
-                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.FirePopup()} >   {Resources["addTitle"][currentLanguage]} </button>
-                        </div>
+                        <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.FirePopup()} >   {Resources["addTitle"][currentLanguage]} </button>
                     </header>
                     {this.state.isLoading ? <LoadingSection /> :
                         <ReactTable data={this.state.cyclesData}
