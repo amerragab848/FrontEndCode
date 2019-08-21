@@ -26,20 +26,16 @@ class DatePicker extends Component {
 
     render() {
         return (
-            <div className="customDatepicker fillter-status fillter-item-c ">
-                <div className="proForm datepickerContainer">
-                    <label className="control-label">{this.props.title ? Resources[this.props.title][currentLanguage] : ""}</label>
-                    <div className="linebylineInput" >
-                        <div className="inputDev ui input input-group date NormalInputDate">
-                            <ModernDatepicker
-                                date={this.state.Date}
-                                format={'YYYY-MM-DD'}
-                                showBorder
-                                onChange={this.props.handleChange}
-                                placeholder={'Select a date'}
-                            />
-                        </div>
-                    </div>
+            <div className="customDatepicker fillter-status fillter-item-c " style={{ display: 'flex', flexFlow: 'column', alignItems: 'flex-start', }}>
+                <label className="control-label">{this.props.title ? Resources[this.props.title][currentLanguage] : ""}</label>
+                <div className="inputDev ui input input-group date NormalInputDate" style={{maxWidth: '192px'}}>
+                    <ModernDatepicker
+                        date={this.state.Date}
+                        format={'YYYY-MM-DD'}
+                        showBorder
+                        onChange={this.props.handleChange}
+                        placeholder={'Select a date'}
+                    />
                 </div>
             </div>
         )

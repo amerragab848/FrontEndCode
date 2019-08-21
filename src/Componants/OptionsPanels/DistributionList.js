@@ -122,11 +122,17 @@ class DistributionList extends Component {
     DistributionHanleChange = (item) => {
         let url = "GetProjectDistributionListItemsByDistributionId?distributionId=" + item.value;
         this.GetDistributionData(url);
-        
+
         setTimeout(() => {
-            let state = { sendingData: { ...this.state.sendingData, DistributionListId: item.value }, DistributionValidation: false, showTabel: true };
+            let state = {
+                sendingData: {
+                    ...this.state.sendingData,
+                    DistributionListId: item.value
+                },
+                DistributionValidation: false, showTabel: true
+            };
             this.state.sendingData.itemContacts.forEach((it) => {
-                state[it.contactId + '-drop'] = this.state.ActionData[3];
+                state[it.contactId + '-drop'] = it.SelectedAction;
             });
             this.setState(state);
         }, 400);
@@ -190,7 +196,7 @@ class DistributionList extends Component {
                 accessor: 'contactName',
                 width: 250,
                 sortabel: true,
-                filterable: false 
+                filterable: false
             }, {
                 Header: Resources['action'][currentLanguage],
                 accessor: 'action',
@@ -267,24 +273,24 @@ class DistributionList extends Component {
                     {({ errors, touched, setFieldValue, setFieldTouched }) => (
                         <Form id="distributionForm1" className="proForm customProform" noValidate="novalidate" >
 
-                                <Dropdown title="distributionList" data={this.state.DistributionListDate}
-                                    handleChange={this.DistributionHanleChange}
-                                    onChange={setFieldValue}
-                                    onBlur={setFieldTouched}
-                                    error={errors.DistributionValidation}
-                                    touched={touched.DistributionValidation}
-                                    name="DistributionValidation" />
-                         
+                            <Dropdown title="distributionList" data={this.state.DistributionListDate}
+                                handleChange={this.DistributionHanleChange}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.DistributionValidation}
+                                touched={touched.DistributionValidation}
+                                name="DistributionValidation" />
+
                             <DatePicker startDate={this.state.sendingData.RequiredDate} handleChange={this.DatehandleChange} />
-                          
-                                <Dropdown title="priority"
-                                    data={this.state.PriorityData}
-                                    handleChange={this.Priority_handelChange}
-                                    onChange={setFieldValue}
-                                    onBlur={setFieldTouched}
-                                    error={errors.PriorityValidation}
-                                    touched={touched.PriorityValidation}
-                                    name="PriorityValidation" />
+
+                            <Dropdown title="priority"
+                                data={this.state.PriorityData}
+                                handleChange={this.Priority_handelChange}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.PriorityValidation}
+                                touched={touched.PriorityValidation}
+                                name="PriorityValidation" />
 
                             {!this.state.DistributionValidation && <this.ContactSection />}
                             <div className="fullWidthWrapper">
@@ -304,7 +310,7 @@ class DistributionList extends Component {
 
                         </Form>
                     )}
-                </Formik> 
+                </Formik>
             </div >
         );
     }

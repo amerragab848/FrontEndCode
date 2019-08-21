@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
@@ -11,7 +11,6 @@ import * as communicationActions from "../../store/actions/communication";
 import Edit from "../../Styles/images/epsActions/edit.png";
 import Plus from "../../Styles/images/epsActions/plus.png";
 import Delete from "../../Styles/images/epsActions/delete.png";
-import Rodal from "../../Styles/js/rodal";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import _ from "lodash";
@@ -40,10 +39,10 @@ const validationSchema = Yup.object().shape({
 });
 
 var treeContainer = []
+
 class CostCodingTreeAddEdit extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       mode: 'add',
       projectId: props.match.params.projectId,
@@ -91,6 +90,7 @@ class CostCodingTreeAddEdit extends Component {
       this.getTree(nextProps.projectId)
     }
   }
+
   getTree = (projectId) => {
     this.setState({ isLoading: true })
     dataservice.GetDataGrid("GetCostTreeByProjectId?projectId=" + projectId).then(result => {

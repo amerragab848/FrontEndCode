@@ -455,6 +455,47 @@ let widgets = {
             "key": "0-3-13"
         }
     },
+    "riskStatus":{
+        "title": "riskStatus",
+        "props": {
+            "id": "wt-riskStatus01",
+            "permission": 1377,
+            "type": "pie",
+            "seriesName": "riskStatus", 
+            "api": "RiskByStatus",
+            "key": "0-3-14", 
+            "name": "item",
+            "y": "total"
+        }
+      }, 
+      "riskPeriority":{
+      "title": "riskPeriority", 
+        "props": {
+        "id": 'wt-riskPeriority02',
+        "permission": 3500,
+        "type": 'pie',
+        "seriesName": "riskPeriority",
+        "api": 'RiskByPeriodrity',
+        "key": "0-3-15", 
+        "name": 'item',
+        "y": 'total'
+        }
+
+      }, 
+      "riskType":{
+        "title": "riskType",
+        "props": {
+          "id":  "wt-riskType03",
+          "permission": 3507, 
+          "type": "pie",
+          "seriesName": "riskType", 
+          "api": "RiskByRiskType",
+          "key": "0-3-16",
+          "name": "item",
+          "y": "total"
+        }
+
+      },
     "monthlyPo": {
         "title": "monthlyPo",
         "props": {

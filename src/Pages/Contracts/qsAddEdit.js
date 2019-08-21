@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from "formik";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
@@ -19,15 +18,12 @@ import CryptoJS from "crypto-js";
 import moment from "moment";
 import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
-import Distribution from "../../Componants/OptionsPanels/DistributionList";
-import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
-import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import AddItemDescription from '../../Componants/OptionsPanels/addItemDescription';
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import Rodal from "../../Styles/js/rodal";
 import "../../Styles/css/rodal.css";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import Steps from "../../Componants/publicComponants/Steps";
 
 
@@ -100,8 +96,6 @@ class QsAddEdit extends Component {
       showDeleteModal: false,
       isLoading: false,
       isEdit: false,
-      currentTitle: "sendToWorkFlow",
-      showModal: false,
       isViewMode: false,
       isApproveMode: isApproveMode,
       isView: false,
@@ -187,9 +181,7 @@ class QsAddEdit extends Component {
 
       this.checkDocumentIsView();
     }
-    if (this.state.showModal != nextProps.showModal) {
-      this.setState({ showModal: nextProps.showModal });
-    }
+
   }
 
   componentDidUpdate(prevProps) {
@@ -522,18 +514,9 @@ class QsAddEdit extends Component {
         (<ViewAttachment isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={854} />) : null) : null;
   }
 
-  handleShowAction = item => {
-    if (item.value != "0") {
-      this.props.actions.showOptionPanel(false);
-      this.setState({
-        currentComponent: item.value,
-        currentTitle: item.title,
-        showModal: true
-      });
-
-      this.simpleDialog.show();
-    }
-  };
+  showOptionPanel = () => {
+    this.props.actions.showOptionPanel(true);
+  }
 
   changeCurrentStep = stepNo => {
     if (stepNo == 1) {
@@ -791,30 +774,6 @@ class QsAddEdit extends Component {
         sortabel: true
       }
     ];
-
-    let actions = [
-      {
-        title: "distributionList",
-        value: (<Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-        label: Resources["distributionList"][currentLanguage]
-      },
-      {
-        title: "sendToWorkFlow",
-        value: (<SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />),
-        label: Resources["sendToWorkFlow"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (<DocumentApproval previousRoute={this.state.perviousRoute} docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-        label: Resources["documentApproval"][currentLanguage]
-      },
-      {
-        title: "documentApproval",
-        value: (<DocumentApproval previousRoute={this.state.perviousRoute} docTypeId={this.state.docTypeId} docId={this.state.docId} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />),
-        label: Resources["documentApproval"][currentLanguage]
-      }
-    ];
-
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document one__tab one_step">
@@ -1026,26 +985,18 @@ class QsAddEdit extends Component {
             {this.props.changeStatus === true && this.state.CurrentStep === 0 ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
-                  {this.state.isApproveMode === true ? (
-                    <div>
-                      <button type="button" className="primaryBtn-1 btn " onClick={e => this.handleShowAction(actions[2])}>
-                        {Resources.approvalModalApprove[currentLanguage]}
-                      </button>
-                      <button type="button" className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[3])}>
-                        {Resources.approvalModalReject[currentLanguage]}
-                      </button>
-                    </div>
-                  ) : null}
-                  <button type="button" className="primaryBtn-2 btn middle__btn" onClick={e => this.handleShowAction(actions[1])}>
-                    {Resources.sendToWorkFlow[currentLanguage]}
-                  </button>
-                  <button type="button" className="primaryBtn-2 btn" onClick={e => this.handleShowAction(actions[0])}>
-                    {Resources.distributionList[currentLanguage]}
-                  </button>
-                  <span className="border" />
-                  <div className="document__action--menu">
-                    <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                  </div>
+                  <DocumentActions
+                    isApproveMode={this.state.isApproveMode}
+                    docTypeId={this.state.docTypeId}
+                    docId={this.state.docId}
+                    projectId={this.state.projectId}
+                    previousRoute={this.state.previousRoute}
+                    docApprovalId={this.state.docApprovalId}
+                    currentArrange={this.state.currentArrange}
+                    showModal={this.props.showModal}
+                    showOptionPanel={this.showOptionPanel}
+                    permission={this.state.permission}
+                  />
                 </div>
               </div>
             ) : null}
@@ -1063,11 +1014,6 @@ class QsAddEdit extends Component {
           </div>
         </div>
         <div>
-          <div className="largePopup largeModal " style={{ display: this.state.showModal ? "block" : "none" }} >
-            <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog = ref)} title={Resources[this.state.currentTitle][currentLanguage]}>
-              {this.state.currentComponent}
-            </SkyLight>
-          </div>
           {this.state.showDeleteModal == true ? (
             <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal}
@@ -1224,7 +1170,8 @@ function mapStateToProps(state, ownProps) {
     files: state.communication.files,
     hasWorkflow: state.communication.hasWorkflow,
     items: state.communication.items,
-    docId: state.communication.docId
+    docId: state.communication.docId,
+    showModal: state.communication.showModal
   };
 }
 

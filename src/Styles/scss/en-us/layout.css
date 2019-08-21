@@ -13170,6 +13170,7 @@ h1, h2, h3, h4, h5 {
     background-color: #ffffff;
     font-size: 14px;
     text-align: left;
+    padding: 0 14px;
 }
 
 .proForm .ui.input.inputDev input:hover {
@@ -15375,7 +15376,7 @@ body {
     z-index: 14;
 }
 
-.proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate .sc-bxivhb.hPEdlB::after {
+.proForm .customDatepicker .inputDev.ui.input.input-group.date.NormalInputDate .sc-bxivhb.hPEdlB::after {
     content: '';
     position: absolute;
     background-image: url(../../images/icons/date-pickericon.svg);
@@ -15626,6 +15627,10 @@ table edition
     position: absolute;
     left: 0;
     top: 100%;
+}
+
+em {
+    font-style: normal;
 }
 
 /* error text new */
@@ -21112,17 +21117,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .ConfirmationModal .actions button:first-of-type {
     margin: 0 10px 
 }
-
-
-
-
-
-
-
-
-
-
-
+ 
 .discussion__panel {
     padding: 56px 40px 0;
     display: flex;
@@ -21514,3 +21509,11 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
           height: 25px;
           cursor: pointer;
           z-index: 99; }
+.filter__input-wrapper .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate .sc-bxivhb.hPEdlB::after {
+    right: -10px;
+}
+
+.customDatepicker .NormalInputDate input {
+    max-width: 192px !important;
+    width: 192px
+}

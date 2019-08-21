@@ -14,7 +14,8 @@ export const Show_OptionPanel = 'Show_OptionPanel';
 
 export const Update_Field = 'Update_Field';
 export const Delete_File = 'Delete_File';
-export const SendByEmail = 'SendByEmail';
+export const SendByEmail_Inbox = 'SendByEmail_Inbox';
+export const CopyTo = 'CopyTo';
 export const Add_Contact = 'AddContact';
 export const edit_Contact = 'edit_Contact';
 export const Get_Contacts = 'Get_Contacts';
@@ -30,7 +31,7 @@ export const routeToTabIndex = 'routeToTabIndex';
 export const ViewDocumentAttach = 'ViewDocumentAttach';
 export const GetDocumentCycle = 'GetDocumentCycle';
 export const ViewDocsAttachment = 'ViewDocsAttachment';
-export const Set_DocId = 'Set_DocId'; 
+export const Set_DocId = 'Set_DocId';
 export const add_item = 'add_item';
 export const edit_item = 'edit_item';
 export const delete_item = 'delete_item';
@@ -55,11 +56,11 @@ export const DeleteContactExpensesWorkFlow = 'DeleteContactExpensesWorkFlow';
 //dashboardComponant 
 export const RouteToDashboardProject = 'RouteToDashboardProject';
 export const AboveSelectProject = 'AboveSelectProject';
-export const LeftMenuClick = 'LeftMenuClick'; 
-export const ReportCenterMenu = 'ReportCenterMenu'; 
-export const RouteToMainDashboard = 'RouteToMainDashboard';  
-export const RouteToTemplate = 'RouteToTemplate'; 
-export const FillGridLeftMenu = 'FillGridLeftMenu'; 
+export const LeftMenuClick = 'LeftMenuClick';
+export const ReportCenterMenu = 'ReportCenterMenu';
+export const RouteToMainDashboard = 'RouteToMainDashboard';
+export const RouteToTemplate = 'RouteToTemplate';
+export const FillGridLeftMenu = 'FillGridLeftMenu';
 
 //Steps
 export const Set_Step = 'Set_Step';

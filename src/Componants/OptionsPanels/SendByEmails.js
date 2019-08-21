@@ -3,15 +3,12 @@ import Api from "../../api";
 import Dropdown from "./DropdownMelcous";
 import "react-table/react-table.css";
 import Resources from "../../resources.json";
-
+import dataservice from "../../Dataservice";
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
-
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 
-let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class SendByEmails extends Component {
   constructor(props) {
@@ -19,8 +16,8 @@ class SendByEmails extends Component {
     this.state = {
       emailObj: {
         projectId: this.props.projectId,
-        docType:  this.props.docTypeId,
-        docId:  this.props.docId,
+        docType: this.props.docTypeId,
+        docId: this.props.docId,
         priorityId: null,
         submittedFor: null,
         toCompanyId: null,
@@ -36,8 +33,12 @@ class SendByEmails extends Component {
       ToCompanies: [],
       ToContacts: [],
       CCCompanies: [],
-      CCContact: []
+      CCContact: [],
+      isLoading: false
     };
+  }
+  resetState = () => {
+    this.setState({ isLoading: false });
   }
 
   componentWillMount = () => {
@@ -72,7 +73,7 @@ class SendByEmails extends Component {
       });
     });
 
-    Api.get( "GetProjectProjectsCompaniesForList?projectId=" +  this.state.emailObj.projectId ).then(result => {
+    Api.get("GetProjectProjectsCompaniesForList?projectId=" + this.state.emailObj.projectId).then(result => {
       var data = [];
 
       result.map(item => {
@@ -88,7 +89,7 @@ class SendByEmails extends Component {
       });
     });
 
-    Api.get("GetProjectProjectsCompaniesForList?projectId=" +this.state.emailObj.projectId).then(result => {
+    Api.get("GetProjectProjectsCompaniesForList?projectId=" + this.state.emailObj.projectId).then(result => {
       var data = [];
 
       result.map(item => {
@@ -105,171 +106,115 @@ class SendByEmails extends Component {
     });
   };
 
-  PrioritiesHanleChange = event => {
-    var emailObj = { ...this.state.emailObj };
-    emailObj.priorityId = event.value;
-    this.setState(state => {
-      return { emailObj: emailObj };
-    });
-  };
-
-  SubmittedHandelChange = event => {
-    var emailObj = { ...this.state.emailObj };
-    emailObj.submittedFor = event.value;
-    this.setState(state => {
-      return { emailObj: emailObj };
-    });
-  };
-
-  ToCompanyHandleChangeHandler = event => {
-    var emailObj = { ...this.state.emailObj };
-    emailObj.toCompanyId = event.value;
-    this.setState(state => {
-      return { emailObj: emailObj };
-    });
-
-    if (emailObj.toCompanyId) {
-      Api.get("GetContactsByCompanyId?companyId=" + emailObj.toCompanyId).then(
-        result => {
-          var data = [];
-
-          result.map(item => {
-            var obj = {};
-            obj.label = item["contactName"];
-            obj.value = item["id"];
-
-            data.push(obj);
-          });
-
-          this.setState({
-            ToContacts: data
-          });
-        }
-      );
-    }
-  };
-
-  AttentionHandleChange = event => {
-    var emailObj = { ...this.state.emailObj };
-    emailObj.ToContactId = event.value;
-    this.setState(state => {
-      return { emailObj: emailObj };
-    });
-  };
-
-  CCCompanyHandleChange = event => {
-    var emailObj = { ...this.state.emailObj };
-    emailObj.ccCompanyId = event.value;
-    this.setState(state => {
-      return { emailObj: emailObj };
-    });
-
-    if (emailObj.ccCompanyId) {
-      Api.get("GetContactsByCompanyId?companyId=" + emailObj.ccCompanyId).then(
-        result => {
-          var emailCC = { ...this.state.emailObj };
-
-          emailCC.cc = [];
-
-          this.setState(state => {
-            return { emailObj: emailCC };
-          });
-
-          var data = [];
-
-          result.map(item => {
-            var obj = {};
-            obj.label = item["contactName"];
-            obj.value = item["id"];
-
-            data.push(obj);
-          });
-
-          this.setState({
-            CCContact: data
-          });
-        }
-      );
-    }
-  };
-
-  CCContactHandleChange = constacts => {
-    var emailObj = { ...this.state.emailObj };
-
-    emailObj.cc = [];
-
-    constacts.map(constact => {
-      emailObj.cc.push(constact.value);
-    });
-
-    this.setState(state => {
-      return { emailObj: emailObj };
-    });
-  };
+  componentWillReceiveProps = (props) => {
+    if (props.showModal == false)
+      this.resetState();
+  }
 
   SendEmailHandler() {
     var emailObj = { ...this.state.emailObj };
-      
-    this.props.actions.SendByEmail("SendByEmail",emailObj);
+    this.setState({ isLoading: true })
+    this.props.actions.SendByEmail_Inbox("SendByEmail", emailObj);
 
+  }
+
+  handleChange = (state, event, isSubscribe, targetState, calledApi) => {
+    if (isSubscribe == true) {
+      dataservice.GetDataList(calledApi, "contactName", "id").then(result => {
+        this.setState({ [targetState]: result });
+      });
+    }
+    let emailObj = this.state.emailObj;
+    emailObj[state] = event.value;
+    this.setState({ [state]: event.value, emailObj });
+  }
+  handleChangeCC = (values) => {
+    let cc = values.map(item => {
+      return item.value;
+    })
+    let emailObj = this.state.emailObj;
+    emailObj.cc = cc;
+    this.setState({ cc, emailObj });
   }
 
   render() {
     return (
       <div className="dropWrapper proForm">
- 
+
         <Dropdown
-          name="color"
+          name="priority"
           title="priority"
-          data={this.state.Priorities} 
-          handleChange={event => this.PrioritiesHanleChange(event)}
+          data={this.state.Priorities}
+          handleChange={event => this.handleChange('priorityId', event, false, null, null)}
           index="priority"
+          defaultValue={this.state.priorityId}
         />
         <Dropdown
           title="submittedFor"
-          data={this.state.Submitted} 
-          handleChange={this.SubmittedHandelChange}
+          data={this.state.Submitted}
+          handleChange={event => this.handleChange('submittedFor', event, false, null, null)}
           index="submittedFor"
+          defaultValue={this.state.submittedFor}
         />
 
         <Dropdown
           title="toCompany"
-          data={this.state.ToCompanies} 
-          handleChange={event => this.ToCompanyHandleChangeHandler(event)}
+          data={this.state.ToCompanies}
+          handleChange={event => this.handleChange('toCompanyId', event, true, "ToContacts", "GetContactsByCompanyId?companyId=" + event.value)}
           index="toCompany"
+          defaultValue={this.state.toCompanyId}
+
         />
 
         <Dropdown
           title="attention"
-          data={this.state.ToContacts} 
-          handleChange={event => this.AttentionHandleChange(event)}
+          data={this.state.ToContacts}
+          handleChange={event => this.handleChange('ToContactId', event, false, null, null)}
           index="attention"
+          defaultValue={this.state.ToContactId}
+
         />
 
         <Dropdown
           title="ccCompany"
-          data={this.state.CCCompanies} 
-          handleChange={event => this.CCCompanyHandleChange(event)}
+          data={this.state.CCCompanies}
+          handleChange={event => this.handleChange('ccCompanyId', event, true, "CCContact", "GetContactsByCompanyId?companyId=" + event.value)}
           index="ccCompany"
+          defaultValue={this.state.ccCompanyId}
+
         />
 
         <div className="fullWidthWrapper">
           <Dropdown
             title="ccContact"
-            data={this.state.CCContact} 
-            handleChange={event => this.CCContactHandleChange(event)}
+            data={this.state.CCContact}
+            handleChange={event => this.handleChangeCC(event)}
             index="ccContact"
             isMulti="true"
+            defaultValue={this.state.cc}
+
           />
         </div>
 
         <div className="fullWidthWrapper">
-          <button
-            className="primaryBtn-1 btn"
-            onClick={() => this.SendEmailHandler()}
-          >
-            {Resources["send"][currentLanguage]}
-          </button>
+          {this.state.isLoading === false ? (
+            <button
+              className="primaryBtn-1 btn "
+              type="submit"
+              onClick={() => this.SendEmailHandler()}
+            >  {Resources['send'][currentLanguage]}
+            </button>
+          ) :
+            (
+              <button className="primaryBtn-1 btn mediumBtn disabled" disabled="disabled">
+                <div className="spinner">
+                  <div className="bounce1" />
+                  <div className="bounce2" />
+                  <div className="bounce3" />
+                </div>
+              </button>
+            )}
+
         </div>
       </div>
     );
@@ -277,18 +222,18 @@ class SendByEmails extends Component {
 }
 
 function mapStateToProps(state) {
-    
-    return {
-      showModal: false
-    }
+
+  return {
+    showModal: state.communication.showModal
+  }
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(communicationActions, dispatch)
-    };
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
 }
-export default  connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(SendByEmails);

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
@@ -16,15 +15,12 @@ import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
 import moment from "moment";
-import SkyLight from "react-skylight";
-import Distribution from "../../Componants/OptionsPanels/DistributionList";
-import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
-import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -79,8 +75,6 @@ class LettersAddEdit extends Component {
         }
 
         this.state = {
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -199,11 +193,6 @@ class LettersAddEdit extends Component {
 
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
-        }
-
-        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
-        if (this.state.showModal != nextProps.showModal) {
-            this.setState({ showModal: nextProps.showModal });
         }
     }
 
@@ -556,80 +545,12 @@ class LettersAddEdit extends Component {
         ) : null;
     }
 
-    handleShowAction = item => {
-        if (item.title == "sendToWorkFlow") {
-            this.props.actions.SendingWorkFlow(true);
-        }
-        if (item.value != "0") {
-            this.props.actions.showOptionPanel(false);
-            this.setState({
-                currentComponantDocument: item.value,
-                currentTitle: item.title,
-                showModal: true
-            });
-            this.simpleDialog.show();
-        }
-    };
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
+    }
 
-    executeBeforeModalClose = e => {
-        this.setState({ showModal: false });
-    };
+
     render() {
-        let actions = [
-            {
-                title: "distributionList",
-                value: (
-                    <Distribution
-                        docTypeId={this.state.docTypeId}
-                        docId={this.state.docId}
-                        projectId={this.state.projectId}
-                    />
-                ),
-                label: Resources["distributionList"][currentLanguage]
-            },
-            {
-                title: "sendToWorkFlow",
-                value: (
-                    <SendToWorkflow
-                        docTypeId={this.state.docTypeId}
-                        docId={this.state.docId}
-                        projectId={this.state.projectId}
-                    />
-                ),
-                label: Resources["sendToWorkFlow"][currentLanguage]
-            },
-            {
-                title: "documentApproval",
-                value: (
-                    <DocumentApproval
-                        docTypeId={this.state.docTypeId}
-                        docId={this.state.docId}
-                        previousRoute={this.state.perviousRoute}
-                        approvalStatus={true}
-                        projectId={this.state.projectId}
-                        docApprovalId={this.state.docApprovalId}
-                        currentArrange={this.state.arrange}
-                    />
-                ),
-                label: Resources["documentApproval"][currentLanguage]
-            },
-            {
-                title: "documentApproval",
-                value: (
-                    <DocumentApproval
-                        docTypeId={this.state.docTypeId}
-                        docId={this.state.docId}
-                        previousRoute={this.state.perviousRoute}
-                        approvalStatus={false}
-                        projectId={this.state.projectId}
-                        docApprovalId={this.state.docApprovalId}
-                        currentArrange={this.state.arrange}
-                    />
-                ),
-                label: Resources["documentApproval"][currentLanguage]
-            }
-        ];
-
         return (
             <div className="mainContainer" id={"mainContainer"}>
                 <div
@@ -1340,97 +1261,18 @@ class LettersAddEdit extends Component {
                                                                                     }
                                                                                 </button>
                                                                             )}
-                                                                        {this.state
-                                                                            .isApproveMode ===
-                                                                            true ? (
-                                                                                <div>
-                                                                                    <button
-                                                                                        className="primaryBtn-1 btn "
-                                                                                        type="button"
-                                                                                        onClick={e =>
-                                                                                            this.handleShowAction(
-                                                                                                actions[2]
-                                                                                            )
-                                                                                        }>
-                                                                                        {
-                                                                                            Resources
-                                                                                                .approvalModalApprove[
-                                                                                            currentLanguage
-                                                                                            ]
-                                                                                        }
-                                                                                    </button>
-                                                                                    <button
-                                                                                        className="primaryBtn-2 btn middle__btn"
-                                                                                        type="button"
-                                                                                        onClick={e =>
-                                                                                            this.handleShowAction(
-                                                                                                actions[3]
-                                                                                            )
-                                                                                        }>
-                                                                                        {
-                                                                                            Resources
-                                                                                                .approvalModalReject[
-                                                                                            currentLanguage
-                                                                                            ]
-                                                                                        }
-                                                                                    </button>
-                                                                                </div>
-                                                                            ) : null}
-                                                                        <button
-                                                                            type="button"
-                                                                            className="primaryBtn-2 btn middle__btn"
-                                                                            onClick={e =>
-                                                                                this.handleShowAction(
-                                                                                    actions[1]
-                                                                                )
-                                                                            }>
-                                                                            {
-                                                                                Resources
-                                                                                    .sendToWorkFlow[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                        </button>
-                                                                        <button
-                                                                            type="button"
-                                                                            className="primaryBtn-2 btn"
-                                                                            onClick={e =>
-                                                                                this.handleShowAction(
-                                                                                    actions[0]
-                                                                                )
-                                                                            }>
-                                                                            {
-                                                                                Resources
-                                                                                    .distributionList[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                        </button>
-                                                                        <span className="border" />
-                                                                        <div className="document__action--menu">
-                                                                            <OptionContainer
-                                                                                permission={
-                                                                                    this
-                                                                                        .state
-                                                                                        .permission
-                                                                                }
-                                                                                docTypeId={
-                                                                                    this
-                                                                                        .state
-                                                                                        .docTypeId
-                                                                                }
-                                                                                docId={
-                                                                                    this
-                                                                                        .state
-                                                                                        .docId
-                                                                                }
-                                                                                projectId={
-                                                                                    this
-                                                                                        .state
-                                                                                        .projectId
-                                                                                }
-                                                                            />
-                                                                        </div>
+                                                                        <DocumentActions
+                                                                            isApproveMode={this.state.isApproveMode}
+                                                                            docTypeId={this.state.docTypeId}
+                                                                            docId={this.state.docId}
+                                                                            projectId={this.state.projectId}
+                                                                            previousRoute={this.state.previousRoute}
+                                                                            docApprovalId={this.state.docApprovalId}
+                                                                            currentArrange={this.state.currentArrange}
+                                                                            showModal={this.props.showModal}
+                                                                            showOptionPanel={this.showOptionPanel}
+                                                                            permission={this.state.permission}
+                                                                        />
                                                                     </div>
                                                                 </div>
                                                             ) : null}
@@ -1449,22 +1291,6 @@ class LettersAddEdit extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div
-                    className="largePopup largeModal "
-                    style={{ display: this.state.showModal ? "block" : "none" }}
-                    key="opActionsLetter">
-                    <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.simpleDialog = ref)}
-                        title={
-                            Resources[this.state.currentTitle][currentLanguage]
-                        }
-                        beforeClose={() => {
-                            this.executeBeforeModalClose();
-                        }}>
-                        {this.state.currentComponantDocument}
-                    </SkyLight>
                 </div>
             </div>
         );

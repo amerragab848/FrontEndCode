@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -17,13 +16,10 @@ import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-import Distribution from '../../Componants/OptionsPanels/DistributionList'
-import SendToWorkflow from '../../Componants/OptionsPanels/SendWorkFlow'
-import DocumentApproval from '../../Componants/OptionsPanels/wfApproval' 
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { toast } from "react-toastify";
-import TextEditor from '../../Componants/OptionsPanels/TextEditor' 
-
+import TextEditor from '../../Componants/OptionsPanels/TextEditor'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
@@ -77,8 +73,6 @@ class InternalMemoAddEdit extends Component {
         }
 
         this.state = {
-            currentTitle: "sendToWorkFlow",
-            showModal: false,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -133,9 +127,9 @@ class InternalMemoAddEdit extends Component {
     componentWillReceiveProps(nextProps, prevProps) {
         if (nextProps.document.id !== this.props.document.id) {
             let serverInspectionRequest = { ...nextProps.document };
-            
-            serverInspectionRequest.docDate =serverInspectionRequest.docDate != null ? moment(serverInspectionRequest.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-            serverInspectionRequest.requiredDate =serverInspectionRequest.requiredDate != null ? moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD'): moment().format('YYYY-MM-DD');
+
+            serverInspectionRequest.docDate = serverInspectionRequest.docDate != null ? moment(serverInspectionRequest.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate != null ? moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
 
             this.setState({
                 document: serverInspectionRequest,
@@ -147,10 +141,7 @@ class InternalMemoAddEdit extends Component {
             this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
-        //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
-        if (this.state.showModal != nextProps.showModal) {
-            this.setState({ showModal: nextProps.showModal });
-        }
+
     };
 
     componentDidUpdate(prevProps) {
@@ -348,8 +339,8 @@ class InternalMemoAddEdit extends Component {
 
         let saveDocument = this.state.document;
 
-        saveDocument.docDate = moment(saveDocument.docDate,  'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate,  'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('EditCommunicationInternalMemo', saveDocument).then(result => {
             this.setState({
@@ -369,8 +360,8 @@ class InternalMemoAddEdit extends Component {
 
         let saveDocument = this.state.document;
 
-        saveDocument.docDate = moment(saveDocument.docDate,  'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        saveDocument.requiredDate = moment(saveDocument.requiredDate,  'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('AddCommunicationInternalMemo', saveDocument).then(result => {
             this.setState({
@@ -399,23 +390,11 @@ class InternalMemoAddEdit extends Component {
 
     viewAttachments() {
         return (
-            this.state.docId > 0 ? (Config.IsAllow(3323) === true ?<ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={842} /> : null) : null
+            this.state.docId > 0 ? (Config.IsAllow(3323) === true ? <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={842} /> : null) : null
         )
     }
-
-    handleShowAction = (item) => {
-        if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-
-        if (item.value != "0") {
-            this.props.actions.showOptionPanel(false);
-            this.setState({
-                currentComponent: item.value,
-                currentTitle: item.title,
-                showModal: true
-            })
-
-            this.simpleDialog.show()
-        }
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
     }
 
 
@@ -425,15 +404,8 @@ class InternalMemoAddEdit extends Component {
             docId: 0
         });
     }
- 
-    render() {
-        let actions = [
-            { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
-            { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
-            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]}
-        ];
 
+    render() {
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
@@ -458,14 +430,15 @@ class InternalMemoAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
                                             onSubmit={(values) => {
-                                                if (this.props.showModal) { return; } 
+                                                if (this.props.showModal) { return; }
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editInternalMemo();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                                     this.saveInternalMemo();
                                                 } else {
                                                     this.saveAndExit();
-                                                }}}>
+                                                }
+                                            }}>
                                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                 <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                     <div className="proForm first-proform">
@@ -492,17 +465,17 @@ class InternalMemoAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="proForm datepickerContainer"> 
+                                                    <div className="proForm datepickerContainer">
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='docDate'
                                                                 startDate={this.state.document.docDate}
-                                                                handleChange={e => this.handleChangeDate(e,'docDate')} /> 
+                                                                handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                         </div>
- 
+
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='requiredDate'
                                                                 startDate={this.state.document.requiredDate}
-                                                                handleChange={e => this.handleChangeDate(e,'requiredDate')} />
+                                                                handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
@@ -540,7 +513,7 @@ class InternalMemoAddEdit extends Component {
                                                                         error={errors.fromCompanyId}
                                                                         touched={touched.fromCompanyId}
                                                                         name="fromCompanyId"
-                                                                        id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
+                                                                        id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown isMulti={false} data={this.state.fromContacts}
@@ -567,7 +540,7 @@ class InternalMemoAddEdit extends Component {
                                                                         error={errors.toCompanyId}
                                                                         touched={touched.toCompanyId}
                                                                         name="toCompanyId"
-                                                                        id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 "/>
+                                                                        id="toCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown isMulti={false} data={this.state.ToContacts}
@@ -578,7 +551,7 @@ class InternalMemoAddEdit extends Component {
                                                                         error={errors.toContactId}
                                                                         touched={touched.toContactId}
                                                                         name="toContactId"
-                                                                        id="toContactId" classDrop=" contactName1" styles={ContactDropdown}/>
+                                                                        id="toContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -600,7 +573,7 @@ class InternalMemoAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="slider-Btns">
-                                                    {this.state.isLoading ?
+                                                        {this.state.isLoading ?
                                                             <button className="primaryBtn-1 btn disabled">
                                                                 <div className="spinner">
                                                                     <div className="bounce1" />
@@ -614,19 +587,18 @@ class InternalMemoAddEdit extends Component {
                                                         this.props.changeStatus === true ?
                                                             <div className="approveDocument">
                                                                 <div className="approveDocumentBTNS">
-                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type='submit'>{Resources.save[currentLanguage]}</button>
-                                                                    {this.state.isApproveMode === true ?
-                                                                        <div >
-                                                                            <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
-                                                                            <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
-                                                                        </div> : null
-                                                                    }
-                                                                    <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(actions[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
-                                                                    <button type="button" className="primaryBtn-2 btn" onClick={(e) => this.handleShowAction(actions[0])}>{Resources.distributionList[currentLanguage]}</button>
-                                                                    <span className="border"></span>
-                                                                    <div className="document__action--menu">
-                                                                        <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                    </div>
+                                                                    <DocumentActions
+                                                                        isApproveMode={this.state.isApproveMode}
+                                                                        docTypeId={this.state.docTypeId}
+                                                                        docId={this.state.docId}
+                                                                        projectId={this.state.projectId}
+                                                                        previousRoute={this.state.previousRoute}
+                                                                        docApprovalId={this.state.docApprovalId}
+                                                                        currentArrange={this.state.currentArrange}
+                                                                        showModal={this.props.showModal}
+                                                                        showOptionPanel={this.showOptionPanel}
+                                                                        permission={this.state.permission}
+                                                                    />
                                                                 </div>
                                                             </div> : null
                                                     }
@@ -635,7 +607,7 @@ class InternalMemoAddEdit extends Component {
                                         </Formik>
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
-                                        <div> 
+                                        <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={841} EditAttachments={3229} ShowDropBox={3619} ShowGoogleDrive={3620} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
@@ -645,11 +617,6 @@ class InternalMemoAddEdit extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
-                        {this.state.currentComponent}
-                    </SkyLight>
                 </div>
             </div>
         );
@@ -663,7 +630,9 @@ function mapStateToProps(state, ownProps) {
         changeStatus: state.communication.changeStatus,
         file: state.communication.file,
         files: state.communication.files,
-        hasWorkflow: state.communication.hasWorkflow
+        hasWorkflow: state.communication.hasWorkflow,
+        showModal: state.communication.showModal
+
     }
 }
 
@@ -673,4 +642,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(InternalMemoAddEdit))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(InternalMemoAddEdit))
