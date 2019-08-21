@@ -7134,7 +7134,7 @@ h1, h2, h3, h4, h5 {
     border-radius: 50%;
 }
 
-.StepperNum .StepNumber {
+.docstepper-levels .StepperNum .StepNumber {
     display: -webkit-flex;
     display: flex;
     -webkit-align-items: center;
