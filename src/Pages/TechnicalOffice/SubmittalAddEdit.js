@@ -2084,6 +2084,13 @@ class SubmittalAddEdit extends Component {
                                 </Formik>
                               </div>
                               <div className="precycle-grid">
+                                <header className="main__header">
+                                  <div className="main__header--div">
+                                    <h2 className="zero">
+                                      {Resources["listDetails"][currentLanguage]}
+                                    </h2>
+                                  </div>
+                                </header>
                                 <div className="reactTableActions">
                                   {selectedRows.length > 0 ? (
                                     <div className={"gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} >
@@ -2100,13 +2107,6 @@ class SubmittalAddEdit extends Component {
                                       </div>
                                     </div>
                                   ) : null}
-                                  <header className="main__header">
-                                    <div className="main__header--div">
-                                      <h2 className="zero">
-                                        {Resources["listDetails"][currentLanguage]}
-                                      </h2>
-                                    </div>
-                                  </header>
                                   <ReactTable data={this.state.itemData} columns={columns} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]}
                                     className="-striped -highlight"
                                     getTrProps={(state, rowInfo, column, instance) => {

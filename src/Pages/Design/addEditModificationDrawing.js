@@ -41,22 +41,11 @@ const validationSchema = Yup.object().shape({
 
 const validationSchemaNewCycle = Yup.object().shape({
     flowContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
-    approvalStatusId: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
+    approvalStatusId: Yup.string().required(Resources['approvalStatusSelection'][currentLanguage]),
 })
 
-
-// drawingId: null,
-// subject: '  ',
-// status: 'true',
-// approvalStatusId: '',
-// docDate: moment(),
-// approvedDate: moment(),
-// flowCompanyId: '',
-// flowContactId: '',
-// progressPercent: 0
-
 var steps_defination = [];
-
+let selectedRows = [];
 
 let docId = 0;
 let projectId = 0;
@@ -138,8 +127,9 @@ class addEditModificationDrawing extends Component {
             EditModeForCycles: false,
             editId: 0,
             ItemForEdit: {},
+            selectedRow: [],
+            selected: [],
             showDeleteModal: false,
-            selectedRow: []
         }
         steps_defination = [
 
@@ -721,7 +711,6 @@ class addEditModificationDrawing extends Component {
 
     AddNewCycle = (id) => {
 
-
         let addDrawing = { ...this.state.drawingCycleAdd }
         addDrawing.docDate = moment(addDrawing.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
         addDrawing.projectId = this.state.projectId;
@@ -759,8 +748,14 @@ class addEditModificationDrawing extends Component {
         }
     }
 
-    handleChangeCycleAddDrops = (value, selectedValue) => {
+    handleChangeCycleAddDrops = (value, field, selectedValue) => {
+        let original_document = { ...this.state.drawingCycleAdd };
 
+        let updated_document = {};
+
+        updated_document[field] = value.value;
+
+        updated_document = Object.assign(original_document, updated_document);
         if (selectedValue === 'selectedFlowCompanyAdd') {
             dataservice.GetDataList('GetContactsByCompanyId?companyId=' + value.value, 'contactName', 'id').then(result => {
                 this.setState({
@@ -768,7 +763,11 @@ class addEditModificationDrawing extends Component {
                 });
             });
         }
-        this.setState({ [selectedValue]: value });
+
+        this.setState({
+            [selectedValue]: value,
+            drawingCycleAdd: updated_document
+        });
 
     }
 
@@ -791,14 +790,14 @@ class addEditModificationDrawing extends Component {
     clearCyclingAdd = () => {
         let drawingCycleAddObj = {
             drawingId: this.state.docId,
-            subject: this.state.cyclesData ? 'Cycle No. R ' + Math.max.apply(Math, this.state.cyclesData.map(function (o) { return o.arrange + 1 })) : 'Cycle No. R 1',
+            subject: this.state.cyclesData.length ? 'Cycle No. R ' + Math.max.apply(Math, this.state.cyclesData.map(function (o) { return o.arrange + 1 })) : 'Cycle No. R 1',
             status: 'true',
             approvalStatusId: '',
             docDate: moment(),
             flowCompanyId: '',
             flowContactId: '',
             progressPercent: 0,
-            arrange: this.state.cyclesData ? Math.max.apply(Math, this.state.cyclesData.map(function (o) { return o.arrange + 1 })) : 1,
+            arrange: this.state.cyclesData.length ? Math.max.apply(Math, this.state.cyclesData.map(function (o) { return o.arrange + 1 })) : 1,
         }
 
         this.setState({
@@ -833,24 +832,53 @@ class addEditModificationDrawing extends Component {
 
     }
 
-    viewConfirmDeleteCycle = (selectedRows) => {
-        let _selectedRows = [selectedRows]
-        this.setState({ selectedRow: _selectedRows, showDeleteModal: true });
-        console.log("this.state.selectedRow", selectedRows)
+    ConfirmDeletetion = () => {
+        if (selectedRows.length > 0) {
+            this.setState({ isLoading: true });
+            let listIds = selectedRows.map(rows => rows.id);
+
+            dataservice.addObject("DeleteMultipleLogsDrawingsCyclesById", listIds).then(result => {
+                let originalData = this.state.cyclesData;
+                selectedRows.forEach(item => {
+                    let getIndex = originalData.findIndex(x => x.id === item.id);
+                    originalData.splice(getIndex, 1);
+                });
+                selectedRows = [];
+                this.setState({
+                    cyclesData: originalData,
+                    showDeleteModal: false,
+                    isLoading: false
+                });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }).catch(ex => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            });
+        }
     }
 
+    viewConfirmDeleteCycle() {
+        this.setState({
+            showDeleteModal: true,
+            type: "Items"
+        });
+        console.log(this.state.selected)
+    }
 
-    ConfirmDeletetion = () => {
-        this.setState({ isLoading: true });
-        dataservice.addObject('DeleteMultipleLogsDrawingsCyclesById', this.state.selectedRow).then(res => {
-            let id = this.state.selectedRow
-            let rows = this.state.cyclesData.filter(function (r) { return r.id !== id[0] });
-            this.setState({ cyclesData: rows, showDeleteModal: false, isLoading: false });
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-        }).catch(ex => {
-            this.setState({ isLoading: false });
-            toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
-        })
+    toggleRow(obj) {
+
+        if (this.state.isViewMode === false) {
+            const newSelected = Object.assign({}, this.state.selected);
+            newSelected[obj.id] = !this.state.selected[obj.id];
+            let setIndex = selectedRows.findIndex(x => x.id === obj.id);
+            if (setIndex > -1) {
+                selectedRows.splice(setIndex, 1);
+            } else {
+                selectedRows.push(obj);
+            }
+            this.setState({
+                selected: newSelected
+            });
+        }
     }
 
     render() {
@@ -1277,8 +1305,9 @@ class addEditModificationDrawing extends Component {
                     id: "button",
                     Cell: ({ row }) => {
                         return (
-                            <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }} onClick={(e) => this.viewConfirmDeleteCycle(row._original.id)}>
-                                <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
+                            <div className="ui checked checkbox  checkBoxGray300 ">
+                                <input type="checkbox" className="checkbox" checked={this.state.selected[row._original.id] === true} onChange={() => this.toggleRow(row._original)} />
+                                <label />
                             </div>
                         );
                     },
@@ -1339,15 +1368,35 @@ class addEditModificationDrawing extends Component {
                         <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.FirePopup()} >   {Resources["addTitle"][currentLanguage]} </button>
                     </header>
                     {this.state.isLoading ? <LoadingSection /> :
-                        <ReactTable data={this.state.cyclesData}
-                            columns={columnsCycles}
-                            defaultPageSize={5}
-                            noDataText={Resources["noData"][currentLanguage]}
-                            className="-striped -highlight"
-                            getTrProps={(state, rowInfo, column, instance) => {
-                                return { onClick: e => { this.viewModelToEdit(rowInfo.original, e.target.className); } };
-                            }}
-                        />}
+                        <div className="reactTableActions">
+                            {selectedRows.length > 0 ? (
+                                <div className={"gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} style={{ top: '0', width: '100% !important', left: '0 !important' }}>
+                                    <div className="tableselcted-items">
+                                        <span id="count-checked-checkboxes">
+                                            {selectedRows.length}
+                                        </span>
+                                        <span>Selected</span>
+                                    </div>
+                                    <div className="tableSelctedBTNs">
+                                        <button className="defaultBtn btn smallBtn" onClick={this.viewConfirmDeleteCycle.bind(this)}>
+                                            {Resources["delete"][currentLanguage]}
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : null}
+
+                            <ReactTable data={this.state.cyclesData}
+                                columns={columnsCycles}
+                                defaultPageSize={10}
+                                minRows={2}
+                                noDataText={Resources["noData"][currentLanguage]}
+                                className="-striped -highlight"
+                                getTrProps={(state, rowInfo, column, instance) => {
+                                    return { onClick: e => { this.viewModelToEdit(rowInfo.original, e.target.className); } };
+                                }}
+                            />
+                        </div>
+                    }
                 </Fragment>
             )
         }
@@ -1430,7 +1479,7 @@ class addEditModificationDrawing extends Component {
 
                                                     selectedValue={this.state.selectedFlowCompanyAdd}
                                                     handleChange={event => {
-                                                        this.handleChangeCycleAddDrops(event, 'selectedFlowCompanyAdd')
+                                                        this.handleChangeCycleAddDrops(event, 'flowCompanyId', 'selectedFlowCompanyAdd')
                                                     }}
                                                     index="flowCompanyId"
                                                     name="flowCompanyId"
@@ -1441,7 +1490,7 @@ class addEditModificationDrawing extends Component {
                                                     data={this.state.flowContactsAddCycle}
                                                     selectedValue={this.state.selectedFlowContactAdd}
                                                     handleChange={event => {
-                                                        this.handleChangeCycleAddDrops(event, 'selectedFlowContactAdd')
+                                                        this.handleChangeCycleAddDrops(event, "flowContactId", 'selectedFlowContactAdd')
                                                     }}
                                                     onChange={setFieldValue}
                                                     onBlur={setFieldTouched}
@@ -1458,7 +1507,7 @@ class addEditModificationDrawing extends Component {
                                         data={this.state.approvalstatusList}
                                         selectedValue={this.state.selectedApprovalStatusIdAdd}
                                         handleChange={event => {
-                                            this.handleChangeCycleAddDrops(event, 'selectedApprovalStatusIdAdd')
+                                            this.handleChangeCycleAddDrops(event, 'approvalStatusId', 'selectedApprovalStatusIdAdd')
                                         }}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
@@ -1478,11 +1527,9 @@ class addEditModificationDrawing extends Component {
                                                     handleBlur(e)
                                                 }}
                                                 onChange={(e) => this.handleChangeCycleAdd(e, 'progressPercent')} />
-                                            {touched.progressPercent ? (<em className="pError">{errors.progressPercent}</em>) : null}
 
                                         </div>
                                     </div>
-
                                     <div className=" fullWidthWrapper">
                                         {this.state.EditModeForCycles ?
                                             <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources["editTitle"][currentLanguage]} </button>

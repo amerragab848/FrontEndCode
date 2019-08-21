@@ -17920,8 +17920,8 @@ button.companies_icon {
     line-height: 1.71;
     letter-spacing: -0.2px;
     color: #3e4352;
-    min-height: 50px;
-    border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+    min-height: 49px;
+    /* border-bottom: 1px solid rgba(34, 36, 38, 0.1); */
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: pre-wrap;
@@ -21103,7 +21103,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     width: auto !important;
 }
 
-.dropWrapper .letterFullWidth .fillter-item-c, .letterFullWidth .ReactTable  {
+.dropWrapper .letterFullWidth .fillter-item-c, .letterFullWidth .ReactTable {
     width: 100%;
 }
 
