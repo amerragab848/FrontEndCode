@@ -45,7 +45,7 @@ const loadingStyle = {
   }
 }
 
-const store = configureStore(); 
+const store = configureStore();
 const IsAuthorize = Config.IsAuthorized();
 
 class App extends Component {
@@ -53,6 +53,7 @@ class App extends Component {
     super(props);
 
     IndexedDb.initialize();
+    IndexedDb.initializeCounterDB();
   };
 
   state = {
@@ -61,28 +62,29 @@ class App extends Component {
   }
 
   async componentDidMount() {
+
     await IndexedDb.seed();
+    await IndexedDb.seedWidgetCounter();
 
     let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
     fetch("/assets/IP_Configrations.json")
-    .then(r => r.json())
-    .then(data => {
-      Config.SetConfigObject(data);
-    }).then(e => {
-      currentLanguage === "ar" ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => {
-        this.setState({
-          cssLoaded: true,
-          isComplete: true
-        })
-      }) : import("./Styles/scss/en-us/layout.css").then(css => {
-        this.setState({
-          cssLoaded: true,
-          isComplete: true
-        })
+      .then(r => r.json())
+      .then(data => {
+        Config.SetConfigObject(data);
+      }).then(e => {
+        currentLanguage === "ar" ? import("./Styles/scss/ar-eg/layout-ar.css").then(css => {
+          this.setState({
+            cssLoaded: true,
+            isComplete: true
+          })
+        }) : import("./Styles/scss/en-us/layout.css").then(css => {
+          this.setState({
+            cssLoaded: true,
+            isComplete: true
+          })
+        });
       });
-    });
-
   }
 
   render() {

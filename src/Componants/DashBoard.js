@@ -297,15 +297,9 @@ class DashBoard extends Component {
     return (
       <div className="customeTabs">
         <div className="dashboard__modal" style={{
-          display: this.props.opened ? ' flex' : 'none',
-           position: 'fixed',
-          top: '0',
-          right: '0',
-          left: '0',
-          bottom: '0',
-          zIndex: '99999',
+          display: this.props.opened ? ' flex' : 'none', position: 'fixed', top: '0', right: '0', left: '0', bottom: '0', zIndex: '99999'
         }}>
-          <button onClick={this.props.closed} style={{ cursor: 'pointer',position: 'absolute', top: '15px', right: '15px', background: 'transparent', border: 'none', fontSize: '18px', color: '#fff' }}>X</button>
+          <button onClick={this.props.closed} style={{ cursor: 'pointer', position: 'absolute', top: '15px', right: '15px', background: 'transparent', border: 'none', fontSize: '18px', color: '#fff' }}>X</button>
           <div className="dashboard__container">
             <div className="modalTitle">
               <h2>{Resources.dashboardCenter[currentLanguage]}</h2>

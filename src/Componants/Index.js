@@ -80,10 +80,8 @@ class Index extends Component {
     this.setState({
       generalCategories: types['1'] || [],
       counterCategories: types['2'] || [],
-      chartCategories: types['3'] || [],
-      chartCategories: types['4'] || []
-    });
-
+      chartCategories: types['3'] || []
+    }); 
   };
 
   renderWidget(widget, index) {
