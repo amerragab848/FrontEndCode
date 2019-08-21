@@ -1,16 +1,24 @@
 import lf from 'lovefield';
 import WidgetStructure from './Componants/WidgetsDashBorad';
+import WidgetsDashBoradProject from './Componants/WidgetsDashBoradProject';
 import keyBy from 'lodash/keyBy';
 
 const schemaBuilder = lf.schema.create('widgets', 1);
+const schemaBuilderDashBoardProjects = lf.schema.create('widgetsDashBoardProjects', 1);
 
 let db = null;
+let dbDashBoard = null;
 
 const tables = {
     'widgetType': null,
     'widgetCategory': null,
     'widget': null
 };
+
+const tableProjects = {
+    'widgetCategory': null,
+    'widget': null
+}
 
 export default class IndexedDb {
     static initialize() {
@@ -42,6 +50,26 @@ export default class IndexedDb {
             addColumn('permission', lf.Type.INTEGER).
             addColumn('checked', lf.Type.BOOLEAN).
             addColumn('type', lf.Type.STRING).
+            addPrimaryKey(['id']);
+    }
+
+    static initializeCounterDB() {
+        schemaBuilderDashBoardProjects.createTable('WidgetCategory').
+            addColumn('id', lf.Type.INTEGER).
+            addColumn('order', lf.Type.INTEGER).
+            addColumn('title', lf.Type.STRING).
+            addPrimaryKey(['id']);
+
+        schemaBuilderDashBoardProjects.createTable('Widget').
+            addColumn('id', lf.Type.INTEGER).
+            addColumn('categoryId', lf.Type.INTEGER).
+            addForeignKey('fk_CategoryId', {
+                local: 'categoryId',
+                ref: 'WidgetCategory.id'
+            }).
+            addColumn('title', lf.Type.STRING).
+            addColumn('order', lf.Type.INTEGER).
+            addColumn('checked', lf.Type.BOOLEAN).
             addPrimaryKey(['id']);
     }
 
@@ -101,6 +129,49 @@ export default class IndexedDb {
         };
     }
 
+    static async seedWidgetCounter() {
+
+        dbDashBoard = await schemaBuilderDashBoardProjects.connect();
+
+        tableProjects.widgetCategory = dbDashBoard.getSchema().table('WidgetCategory');
+        tableProjects.widget = dbDashBoard.getSchema().table('Widget');
+
+        let rows = await dbDashBoard.select().from(tableProjects.widgetCategory).exec();
+
+        if (rows.length === 0) {
+
+            let widgetRows = [];
+
+            let widgetCategoryRows = WidgetsDashBoradProject.map((category, index) => {
+                let id = index + 1;
+
+                let category_order = +`${category.refrence + 1}${category.order}`;
+
+                category.widgets.forEach((wid, widIndex) => {
+                    let widRow = tableProjects.widget.createRow({
+                        'id': +`${id}${widIndex + 1}`,
+                        'categoryId': id,
+                        'title': wid.title,
+                        'order': +`${category_order}${wid.order}`,
+                        'checked': wid.checked,
+                        'type': wid.type
+                    });
+
+                    widgetRows.push(widRow);
+                });
+
+                return tableProjects.widgetCategory.createRow({
+                    'id': id,
+                    'title': category.widgetCategory,
+                    'order': category_order
+                });
+            });
+
+            await dbDashBoard.insertOrReplace().into(tableProjects.widgetCategory).values(widgetCategoryRows).exec();
+            await dbDashBoard.insertOrReplace().into(tableProjects.widget).values(widgetRows).exec();
+        };
+    }
+
     static async getTypes() {
         let types = await db.select().from(tables.widgetType).exec();
 
@@ -145,8 +216,22 @@ export default class IndexedDb {
         return data;
     }
 
+    static async getSelectedDashBoardWidgets() {
+        let data = await dbDashBoard.select().from(tableProjects.widget).where(tableProjects.widget.checked.eq(true)).exec();
+
+        return data;
+    }
+
     static async getCategoryOrder() {
         let data = await db.select().from(tables.widgetCategory).exec();
+
+        data = data.map(category => ({ id: category.id, order: category.order }));
+
+        return keyBy(data, category => category.id);
+    }
+
+    static async getDashBoardCategoryOrder() {
+        let data = await dbDashBoard.select().from(tableProjects.widgetCategory).exec();
 
         data = data.map(category => ({ id: category.id, order: category.order }));
 
@@ -159,6 +244,38 @@ export default class IndexedDb {
         return data;
     }
 
+    static async getAllDashBoradProject(table) {
+        let data = await db.select().from(tables[table]).exec();
+
+        return data;
+    }
+
+    static async getDashBoardProjectCategoryOrder() {
+        let data = await dbDashBoard.select().from(tableProjects.widgetCategory).exec();
+
+        data = data.map(category => ({ id: category.id, order: category.order }));
+
+        return keyBy(data, category => category.id);
+    }
+ 
+
+    static async getCategory() {
+
+        let Category = await dbDashBoard.select().from(tableProjects.widgetCategory).exec();
+
+        for (let index = 0; index < Category.length; index++) {
+
+            let category = Category[index];
+
+            let widgets = await dbDashBoard.select().from(tableProjects.widget).where(tableProjects.widget.categoryId.eq(category.id))
+                .orderBy(tableProjects.widget.order).exec();
+
+            category.widgets = widgets;
+        }
+
+        return Category;
+    }
+
     static async update(table, id, params) {
         let query = db.update(tables[table]);
 
@@ -166,7 +283,17 @@ export default class IndexedDb {
             query.set(tables[table][key], params[key]);
         });
 
-        return await query.where(tables[table].id.eq(id)).
-            exec();
+        return await query.where(tables[table].id.eq(id)).exec();
+    }
+ 
+
+    static async updateDashBoardProject(table, id, params) {
+        let query = dbDashBoard.update(tableProjects[table]);
+
+        Object.keys(params).forEach(key => {
+            query.set(tableProjects[table][key], params[key]);
+        });
+
+        return await query.where(tableProjects[table].id.eq(id)).exec();
     }
 }

@@ -53,6 +53,7 @@ class Menu extends Component {
       if (result) {
         config.contactName = result.contactName;
         localStorage.setItem('contactName', result.contactName)
+       
         this.setState({
           contactName: result.contactName,
           profilePath: config.getPublicConfiguartion().downloads + "/" + result.profilePath,
@@ -61,6 +62,8 @@ class Menu extends Component {
           wfSettings: result.wfSettings,
           isLoading: false
         });
+
+        localStorage.setItem('profilePath', this.state.profilePath);
       }
     });
     this.setState({ isLoadingComponants: true });

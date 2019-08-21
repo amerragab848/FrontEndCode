@@ -21112,3 +21112,405 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .ConfirmationModal .actions button:first-of-type {
     margin: 0 10px 
 }
+
+
+
+
+
+
+
+
+
+
+
+.discussion__panel {
+    padding: 56px 40px 0;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative; }
+    .discussion__panel .post__panel {
+      width: 100%;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: center; }
+      .discussion__panel .post__panel .post__panel--box {
+        width: 553px;
+        border-radius: 2px;
+        border: solid 1px #e9ebf0;
+        background-color: #ffffff;
+        padding: 12px 0; }
+        .discussion__panel .post__panel .post__panel--box .post__input {
+          display: flex;
+          padding: 0 24px; }
+          .discussion__panel .post__panel .post__panel--box .post__input figure {
+            margin: 12px 0 21px  0;
+            margin-right: 16px;
+            flex-shrink: 0; }
+          .discussion__panel .post__panel .post__panel--box .post__input input {
+            width: 100%;
+            border: 1px solid transparent;
+            font-family: 'Muli';
+            font-size: 16px;
+            font-weight: bold;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.5;
+            letter-spacing: -0.2px;
+            color: #252833; }
+            .discussion__panel .post__panel .post__panel--box .post__input input::placeholder {
+              color: #adbccc; }
+        .discussion__panel .post__panel .post__panel--box .post__attachment--container {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 24px; }
+          .discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment {
+            display: flex;
+            align-items: center; }
+            .discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment .border {
+              width: 1px;
+              height: 21px;
+              background-color: #ccd2db;
+              margin: 0 18px; }
+            .discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment h3 {
+              font-family: 'Muli';
+              font-size: 16px;
+              font-weight: bold;
+              font-style: normal;
+              font-stretch: normal;
+              line-height: 1.5;
+              letter-spacing: -0.2px;
+              color: #adbccc; }
+            .discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment .file__upload {
+              display: flex;
+              align-items: center;
+              margin: 0 4px;
+              cursor: pointer;
+              position: relative; }
+              .discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment .file__upload label {
+                font-family: 'Muli';
+                font-size: 12px;
+                font-weight: bold;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.33;
+                letter-spacing: -0.2px;
+                color: #a8b0bf;
+                margin: 0 4px;
+                cursor: pointer; }
+              .discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment .file__upload input {
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                overflow: hidden;
+                position: absolute;
+                z-index: 2;
+                cursor: pointer; }
+    .discussion__panel .timeline {
+      width: 100%;
+      position: relative;
+      padding-bottom: 80px; }
+      .discussion__panel .timeline .timeline__month--container {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        position: relative;
+        width: 100%; }
+        .discussion__panel .timeline .timeline__month--container.overlay::after {
+          content: '';
+          position: fixed;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          background: rgba(0, 0, 0, 0.6);
+          z-index: 99999; }
+        .discussion__panel .timeline .timeline__month--container .month__container {
+          position: absolute;
+          top: 0;
+          left: 60px;
+          bottom: 0; }
+          @media screen and (max-width: 1200px) {
+            .discussion__panel .timeline .timeline__month--container .month__container {
+              left: 8px; } }
+          .discussion__panel .timeline .timeline__month--container .month__container span {
+            opacity: 0.05;
+            font-family: 'Muli';
+            font-size: 56px;
+            font-weight: bold;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.14;
+            letter-spacing: -1.15px;
+            color: #252833;
+            position: sticky;
+            top: 180px;
+            text-transform: capitalize; }
+            @media screen and (max-width: 1200px) {
+              .discussion__panel .timeline .timeline__month--container .month__container span {
+                font-size: 30px; } }
+        .discussion__panel .timeline .timeline__month--container .timeline__posts {
+          width: 553px;
+          border-radius: 2px;
+          border: solid 1px #e9ebf0;
+          background-color: #ffffff;
+          padding-top: 18px;
+          padding-bottom: 24px;
+          margin-bottom: 16px; }
+          .discussion__panel .timeline .timeline__month--container .timeline__posts.overlay {
+            position: relative;
+            z-index: 999999; }
+          .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--header {
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 13px; }
+            .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--header .header__info {
+              margin-left: 12px; }
+              .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--header .header__info h2 {
+                font-family: 'Muli';
+                font-size: 14px;
+                font-weight: bold;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.43;
+                letter-spacing: -0.2px;
+                color: #252833; }
+                .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--header .header__info h2 span {
+                  font-family: 'Muli';
+                  font-size: 12px;
+                  font-weight: 600;
+                  font-style: normal;
+                  font-stretch: normal;
+                  line-height: 1.33;
+                  letter-spacing: -0.2px;
+                  color: #a8b0bf; }
+              .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--header .header__info p {
+                font-family: 'Muli';
+                font-size: 12px;
+                font-weight: 600;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.33;
+                letter-spacing: -0.2px;
+                color: #a8b0bf; }
+          .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--body {
+            border-bottom: 1px solid #e9ecf0;
+            margin-bottom: 19px; }
+            .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--body p {
+              margin: 0  24px 20px;
+              font-family: 'Open Sans', sans-serif;
+              font-size: 14px;
+              font-weight: normal;
+              font-style: normal;
+              font-stretch: normal;
+              line-height: 1.71;
+              letter-spacing: -0.2px;
+              color: #3e4352; }
+              .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--body p a {
+                font-family: 'Muli';
+                font-size: 12px;
+                font-weight: bold;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.33;
+                letter-spacing: -0.2px;
+                cursor: pointer;
+                color: #4382f9;
+                text-decoration: underline; }
+            .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--body .items__uploades, #preview.file_upload  {
+              position: relative;
+              height: 274px;
+              background: #fafbfc; }
+              .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--body .items__uploades svg , #preview.file_upload svg{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                cursor: pointer; }
+            .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--body img {
+              width: 100%;
+              max-height: 274px; }
+          .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment_number {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap; }
+            .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment_number svg {
+              margin-left: 24px; }
+            .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment_number > span {
+              font-family: Muli;
+              font-size: 14px;
+              font-weight: bold;
+              font-style: normal;
+              font-stretch: normal;
+              line-height: 1.43;
+              letter-spacing: -0.2px;
+              color: #252833;
+              margin-left: 8px;
+              margin-right: 24px;
+              cursor: pointer; }
+            .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment_number .comments__number--list {
+              width: 100%;
+              margin: 17px 0 0;
+              height: 0;
+              overflow: hidden;
+              overflow-x: hidden;
+              transition: all 0.5s ease-in-out; }
+              .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment_number .comments__number--list::-webkit-scrollbar {
+                width: 0px; }
+              .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment_number .comments__number--list.active {
+                height: auto;
+                max-height: 650px;
+                overflow: auto;
+                overflow-x: hidden; }
+              .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment_number .comments__number--list .timeline__posts {
+                padding-bottom: 0;
+                margin-bottom: 0;
+                border-bottom: 0; }
+                .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment_number .comments__number--list .timeline__posts .timeline__posts--body {
+                  border-bottom: none;
+                  margin-bottom: 0; }
+          .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment__field {
+            display: flex;
+            border-radius: 24px;
+            border: solid 2px #e9ecf0;
+            margin: 0 24px;
+            margin-top: 13px;
+            overflow: hidden;
+            position: relative; }
+            .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment__field figure {
+              flex-shrink: 0; }
+            .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment__field input {
+              height: 40px;
+              border: none;
+              background-color: #fafbfc;
+              padding-left: 8px;
+              font-family: 'Open Sans', sans-serif;
+              font-size: 14px;
+              font-weight: normal;
+              font-style: normal;
+              font-stretch: normal;
+              line-height: 1.71;
+              letter-spacing: -0.2px;
+              color: #252833;
+              width: 100%; }
+              .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment__field input::placeholder {
+                color: #a8b0bf; }
+            .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment__field button {
+              background: transparent;
+              border: none;
+              opacity: 0;
+              position: absolute;
+              right: 8px;
+              top: 4px;
+              height: 32px;
+              padding: 0;
+              transition: all 0.4s ease-in-out;
+              cursor: pointer; }
+              .discussion__panel .timeline .timeline__month--container .timeline__posts .timeline__posts--comments .comment__field button.active {
+                opacity: 1; }
+    .discussion__panel .discussion__panel--months {
+      display: flex;
+      justify-content: flex-end;
+      position: absolute;
+      right: 48px;
+      top: 0;
+      bottom: 0;
+      align-items: flex-start; }
+      @media screen and (max-width: 1200px) {
+        .discussion__panel .discussion__panel--months {
+          right: -43px; } }
+      .discussion__panel .discussion__panel--months .years__list {
+        margin: 0 12px;
+        position: sticky;
+        top: 180px; }
+        .discussion__panel .discussion__panel--months .years__list li {
+          font-family: 'Muli';
+          font-size: 16px;
+          font-weight: bold;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: 1.88;
+          letter-spacing: -0.2px;
+          color: #adbccc;
+          margin-bottom: 10px;
+          cursor: pointer; }
+          .discussion__panel .discussion__panel--months .years__list li.active {
+            color: #252833; }
+      .discussion__panel .discussion__panel--months .months__list {
+        margin: 0 12px;
+        position: sticky;
+        top: 180px; }
+        .discussion__panel .discussion__panel--months .months__list li {
+          margin-bottom: 10px; }
+          .discussion__panel .discussion__panel--months .months__list li a {
+            font-family: 'Muli';
+            font-size: 20px;
+            font-weight: 800;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.4;
+            letter-spacing: -0.2px;
+            color: #adbccc;
+            cursor: pointer;
+            text-transform: capitalize; }
+          .discussion__panel .discussion__panel--months .months__list li.active a {
+            color: #252833; }
+          .discussion__panel .discussion__panel--months .months__list li.disable__month {
+            pointer-events: none; }
+            .discussion__panel .discussion__panel--months .months__list li.disable__month a {
+              opacity: 0.4;
+              color: #ccd2db; }
+    .discussion__panel .empty__discussion {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      margin: 72px 0;
+      width: 100%; }
+      .discussion__panel .empty__discussion p {
+        opacity: 0.1;
+        font-family: 'Muli';
+        font-size: 32px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.25;
+        letter-spacing: -1.08px;
+        text-align: center;
+        color: #252833; }
+  
+  #preview {
+    position: relative; }
+    #preview ul {
+      padding-top: 20px; }
+      #preview ul li {
+        max-width: 100%; }
+        #preview ul li img {
+          max-width: 100%;
+          display: block;
+          margin: auto;
+          margin-bottom: 19px; }
+        #preview ul li video {
+          max-width: 100%;
+          margin: auto; }
+        #preview ul li span {
+          font-size: 12px;
+          font-family: 'Muli';
+          font-weight: 500; }
+          #preview ul li span:first-of-type {
+            color: #252833; }
+          #preview ul li span:nth-of-type(2) {
+            color: #858d9e; }
+        #preview ul li button, #previewBtn {
+          display: block;
+          position: absolute;
+          top: 0;
+          right: 4px;
+          background: #fff;
+          border: none;
+          font-size: 15px;
+          border-radius: 15px;
+          width: 25px;
+          height: 25px;
+          cursor: pointer;
+          z-index: 99; }

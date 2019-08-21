@@ -1863,7 +1863,7 @@ class requestPaymentsAddEdit extends Component {
         } else if (event.label === "AddMissingItems") {
             dataservice
                 .GetDataGrid(
-                    "v4_addMissingRequestPaymentItem?requestId=" +
+                    "AddMissingItems?requestId=" +
                         this.state.docId +
                         "&contractId=" +
                         this.state.document.contractId
@@ -3812,18 +3812,9 @@ class requestPaymentsAddEdit extends Component {
                                                                     </button>
                                                                 )}
 
-                                                                {this.props
-                                                                    .changeStatus ===
-                                                                true ? (
-                                                                    this.state
-                                                                        .userType !=
-                                                                    "user" ? (
-                                                                        <div
-                                                                            className="default__dropdown"
-                                                                            style={{
-                                                                                minWidth:
-                                                                                    "225px"
-                                                                            }}>
+                                                                {this.props.changeStatus ===true ? (
+                                                                    this.state.userType !="user" ? (
+                                                                        <div className="default__dropdown" style={{ minWidth: "225px" }}>
                                                                             <Dropdown
                                                                                 data={
                                                                                     this

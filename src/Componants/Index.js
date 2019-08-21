@@ -81,8 +81,7 @@ class Index extends Component {
       generalCategories: types['1'] || [],
       counterCategories: types['2'] || [],
       chartCategories: types['3'] || []
-    });
-
+    }); 
   };
 
   renderWidget(widget, index) {

@@ -168,10 +168,10 @@ class CostCodingTreeAddEdit extends Component {
           <Fragment key={i}>
             <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === true ? 'epsTitle active' : 'epsTitle'} key={item.id} onClick={() => this.viewChild(item)}
               style={{ display: this.state[item.id] == -1 ? 'none' : '' }} >
-              <div className="listTitle"> 
+              <div className="listTitle">
                 <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }}>
                   <i className="dropdown icon" />
-                </span> 
+                </span>
                 <span className="accordionTitle" onClick={this.props.GetNodeData ? () => this.GetNodeData(item) : null}>{this.state[item.id] ? this.state[item.id].codeTreeTitle : item.codeTreeTitle}
                 </span>
               </div>
