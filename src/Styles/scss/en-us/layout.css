@@ -7134,7 +7134,7 @@ h1, h2, h3, h4, h5 {
     border-radius: 50%;
 }
 
-.StepperNum .StepNumber {
+.docstepper-levels .StepperNum .StepNumber {
     display: -webkit-flex;
     display: flex;
     -webkit-align-items: center;
@@ -17920,8 +17920,8 @@ button.companies_icon {
     line-height: 1.71;
     letter-spacing: -0.2px;
     color: #3e4352;
-    min-height: 50px;
-    border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+    min-height: 49px;
+    /* border-bottom: 1px solid rgba(34, 36, 38, 0.1); */
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: pre-wrap;
@@ -20665,7 +20665,9 @@ div#markup-panel {
 }
 
 .linebylineInput__checkbox .ui.checkbox {
-    margin: 0;
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 0;
 }
 
 .linebylineInput__checkbox label {
@@ -20724,7 +20726,6 @@ div#markup-panel {
     align-items: center !important;
 }
 
-.linebylineInput__checkbox .ui.checkbox,
 .linebylineInput__checkbox label {
     margin: 0 !important;
 }
@@ -21102,7 +21103,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     width: auto !important;
 }
 
-.dropWrapper .letterFullWidth .fillter-item-c, .letterFullWidth .ReactTable  {
+.dropWrapper .letterFullWidth .fillter-item-c, .letterFullWidth .ReactTable {
     width: 100%;
 }
 
@@ -21122,66 +21123,85 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     padding: 56px 40px 0;
     display: flex;
     flex-wrap: wrap;
-    position: relative; }
-    .discussion__panel .post__panel {
-      width: 100%;
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: center; }
-      .discussion__panel .post__panel .post__panel--box {
-        width: 553px;
-        border-radius: 2px;
-        border: solid 1px #e9ebf0;
-        background-color: #ffffff;
-        padding: 12px 0; }
-        .discussion__panel .post__panel .post__panel--box .post__input {
-          display: flex;
-          padding: 0 24px; }
-          .discussion__panel .post__panel .post__panel--box .post__input figure {
-            margin: 12px 0 21px  0;
-            margin-right: 16px;
-            flex-shrink: 0; }
-          .discussion__panel .post__panel .post__panel--box .post__input input {
-            width: 100%;
-            border: 1px solid transparent;
-            font-family: 'Muli';
-            font-size: 16px;
-            font-weight: bold;
-            font-style: normal;
-            font-stretch: normal;
-            line-height: 1.5;
-            letter-spacing: -0.2px;
-            color: #252833; }
-            .discussion__panel .post__panel .post__panel--box .post__input input::placeholder {
-              color: #adbccc; }
-        .discussion__panel .post__panel .post__panel--box .post__attachment--container {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 24px; }
-          .discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment {
-            display: flex;
-            align-items: center; }
-            .discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment .border {
-              width: 1px;
-              height: 21px;
-              background-color: #ccd2db;
-              margin: 0 18px; }
-            .discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment h3 {
-              font-family: 'Muli';
-              font-size: 16px;
-              font-weight: bold;
-              font-style: normal;
-              font-stretch: normal;
-              line-height: 1.5;
-              letter-spacing: -0.2px;
-              color: #adbccc; }
+    position: relative;
+}
+
+.discussion__panel .post__panel {
+    width: 100%;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.discussion__panel .post__panel .post__panel--box {
+    width: 553px;
+    border-radius: 2px;
+    border: solid 1px #e9ebf0;
+    background-color: #ffffff;
+    padding: 12px 0; 
+}
+
+.discussion__panel .post__panel .post__panel--box .post__input {
+    display: flex;
+    padding: 0 24px;
+}
+
+.discussion__panel .post__panel .post__panel--box .post__input figure {
+    margin: 12px 0 21px  0;
+    margin-right: 16px;
+    flex-shrink: 0;
+}
+
+.discussion__panel .post__panel .post__panel--box .post__input input {
+    width: 100%;
+    border: 1px solid transparent;
+    font-family: 'Muli';
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+    color: #252833; 
+}
+
+.discussion__panel .post__panel .post__panel--box .post__input input::placeholder {
+    color: #adbccc; 
+}
+
+.discussion__panel .post__panel .post__panel--box .post__attachment--container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+.discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment {
+    display: flex;
+    align-items: center;
+}
+.discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment .border {
+    width: 1px;
+    height: 21px;
+    background-color: #ccd2db;
+    margin: 0 18px;
+    }
+.discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment h3 {
+    font-family: 'Muli';
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+    color: #adbccc;
+}
             .discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment .file__upload {
               display: flex;
               align-items: center;
               margin: 0 4px;
               cursor: pointer;
-              position: relative; }
+              position: relative;
+            }
               .discussion__panel .post__panel .post__panel--box .post__attachment--container .post__attachment .file__upload label {
                 font-family: 'Muli';
                 font-size: 12px;
@@ -21511,9 +21531,18 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
           z-index: 99; }
 .filter__input-wrapper .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate .sc-bxivhb.hPEdlB::after {
     right: -10px;
-}
+} */
 
 .customDatepicker .NormalInputDate input {
     max-width: 192px !important;
     width: 192px
+}
+
+.filter__input-wrapper .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate input {
+    max-width: 100% !important;
+}
+
+.filter__input-wrapper .proForm .linebylineInput .inputDev.ui.input.input-group.date.NormalInputDate {
+    max-width: 100% !important;
+    width: auto;
 }

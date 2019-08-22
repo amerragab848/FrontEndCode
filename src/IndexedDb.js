@@ -245,7 +245,7 @@ export default class IndexedDb {
     }
 
     static async getAllDashBoradProject(table) {
-        let data = await db.select().from(tables[table]).exec();
+        let data = await dbDashBoard.select().from(tableProjects[table]).exec();
 
         return data;
     }

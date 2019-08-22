@@ -1624,25 +1624,22 @@ class projectWorkFlowAddEdit extends Component {
 
                                 <div className="proForm datepickerContainer">
 
-                                    <div className="linebylineInput valid-input">
-                                        <div className="inputDev ui input">
-                                            <Dropdown title="company" data={this.state.CompanyData} name="SelectedCompanyForEditContacts"
-                                                selectedValue={this.state.SelectedCompanyForEditContacts} onChange={setFieldValue}
-                                                handleChange={(e) => this.handleChangeDrops(e, "SelectedCompanyForEditContacts")} touched={touched.SelectedCompanyForEditContacts}
-                                                onBlur={setFieldTouched} error={errors.SelectedCompanyForEditContacts} value={values.SelectedCompanyForEditContacts} />
-                                        </div>
+                                    <div className="linebylineInput">
+
+                                        <Dropdown title="company" data={this.state.CompanyData} name="SelectedCompanyForEditContacts"
+                                            selectedValue={this.state.SelectedCompanyForEditContacts} onChange={setFieldValue}
+                                            handleChange={(e) => this.handleChangeDrops(e, "SelectedCompanyForEditContacts")} touched={touched.SelectedCompanyForEditContacts}
+                                            onBlur={setFieldTouched} error={errors.SelectedCompanyForEditContacts} value={values.SelectedCompanyForEditContacts} />
                                     </div>
 
-                                    <div className="linebylineInput valid-input">
-                                        <div className="inputDev ui input">
-                                            <Dropdown title="ContactName" data={this.state.ContactData} name="SelectedContactForEditContacts"
-                                                selectedValue={values.SelectedContactForEditContacts} onChange={setFieldValue} value={values.SelectedContactForEditContacts}
-                                                handleChange={(e) => this.handleChangeDrops(e, "SelectedContactForEditContacts")}
-                                                onBlur={setFieldTouched} error={errors.SelectedContactForEditContacts} touched={touched.SelectedContactForEditContacts} />
-                                        </div>
+                                    <div className="linebylineInput">
+                                        <Dropdown title="ContactName" data={this.state.ContactData} name="SelectedContactForEditContacts"
+                                            selectedValue={values.SelectedContactForEditContacts} onChange={setFieldValue} value={values.SelectedContactForEditContacts}
+                                            handleChange={(e) => this.handleChangeDrops(e, "SelectedContactForEditContacts")}
+                                            onBlur={setFieldTouched} error={errors.SelectedContactForEditContacts} touched={touched.SelectedContactForEditContacts} />
                                     </div>
 
-                                    <div className="linebylineInput valid-input">
+                                    <div className="linebylineInput fullInputWidth">
                                         <label className="control-label">{Resources['levelNo'][currentLanguage]}</label>
                                         <div className={'ui input inputDev ' + (errors.levelNoForEdit && touched.levelNoForEdit ? 'has-error' : null) + ' '}>
                                             <input autoComplete="off" value={values.levelNoForEdit} className="form-control" name="levelNoForEdit"
@@ -1652,7 +1649,7 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="linebylineInput valid-input">
+                                    <div className="linebylineInput fullInputWidth">
                                         <label className="control-label">{Resources['description'][currentLanguage]}</label>
                                         <div className="inputDev ui input">
                                             <input autoComplete="off" className="form-control" value={values.DescriptionForEdit} name="DescriptionForEdit"
@@ -1660,7 +1657,7 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="slider-Btns">
+                                    <div className="fullWidthWrapper">
                                         <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['save'][currentLanguage]}</button>
                                     </div>
                                 </div>
