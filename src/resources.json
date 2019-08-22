@@ -2261,7 +2261,7 @@
     },
     "ownerRisk": {
         "en": " Risk Owner",
-        "ar": "Owner Risk"
+        "ar": "الشركة المسئولة"
     },
     "pleaseSelectGeneralContractor": {
         "en": "Please Select a General Contractor",
@@ -8110,5 +8110,17 @@
     "image": {
         "en": "Image",
         "ar": "صورة"
-    }
+    },
+    "reportsRisk": {
+        "en": "Reports Risk",
+        "ar": " تقرير الخطورة"
+    } ,
+    "open": {
+        "en": "Open",
+        "ar": " مفتوح"
+    }  ,
+    "riskCategory": {
+        "en": "Risk Category",
+        "ar": " أقسام الخطورة"
+    } 
 }

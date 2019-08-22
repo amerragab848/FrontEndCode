@@ -14825,6 +14825,47 @@
         },
         {
           "title": {
+            "en": "Reports Risk",
+            "ar": "تقرير الخطورة"
+          },
+          "id": 1234,
+          "permissions": [
+            {
+              "code": 4022,
+              "title": {
+                "en": "Risk Status",
+                "ar": "حالة الخطورة"
+              },
+              "value": false
+            },
+            {
+              "code": 4023,
+              "title": {
+                "en": "Risk Periority",
+                "ar": "أولوية الخطورة"
+              },
+              "value": false
+            },
+            {
+              "code": 4024,
+              "title": {
+                "en": "Risk Owner ",
+                "ar": "الشركة المسئولة"
+              },
+              "value": false
+            },
+            {
+              "code": 4025,
+              "title": {
+                "en": "Risk Category",
+                "ar": "أقسام الخطورة"
+              },
+              "value": false
+            } 
+          ]
+        },
+        {
+          "title": {
             "en": "Dashboard",
             "ar": "الملخصات"
           },
