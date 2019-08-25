@@ -641,13 +641,12 @@ var widgets = [
         title: 'riskPeriority',
         order: 2,
         props: {
-          'api': 'RiskByPeriodrity',
+          'api': 'RiskByPriority',
           'name': 'item',
           'y': 'total'
         },
         type: 'pie',
-        seriesName: "riskPeriority"
-
+        seriesName: "riskPeriority" 
       }, {
         id: 'wt-riskType03',
         key: "0-4-3",
