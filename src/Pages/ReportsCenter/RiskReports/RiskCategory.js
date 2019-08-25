@@ -14,6 +14,10 @@ import dataService from "../../../../src/Dataservice";
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
+    const dateFormate = ({ value }) => {
+    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
 class RiskCategory extends Component {
     constructor(props) {
         super(props);
@@ -85,7 +89,8 @@ class RiskCategory extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "requiredDate",
@@ -95,7 +100,8 @@ class RiskCategory extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "emv",
@@ -125,7 +131,8 @@ class RiskCategory extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "oppenedBy",
@@ -165,7 +172,8 @@ class RiskCategory extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             }
         ];
     }

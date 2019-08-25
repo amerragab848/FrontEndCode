@@ -13,6 +13,10 @@ import dataService from "../../../../src/Dataservice";
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
+const dateFormate = ({ value }) => {
+    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
 class RiskOwner extends Component {
     constructor(props) {
         super(props);
@@ -84,7 +88,8 @@ class RiskOwner extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "requiredDate",
@@ -94,7 +99,8 @@ class RiskOwner extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "emv",
@@ -124,7 +130,8 @@ class RiskOwner extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "oppenedBy",
@@ -164,10 +171,10 @@ class RiskOwner extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             }
         ];
-   
     }
 
     handleChange = (name, value) => {
@@ -201,7 +208,7 @@ class RiskOwner extends Component {
 
         dataService
             .GetDataGrid(
-                "GetRiskByTypeStatus?companyId=" +
+                "GetRiskByCompanyId?companyId=" +
                     this.state.selectedStatus.value +
                     "&startDate=" +
                     startDate +
