@@ -374,20 +374,8 @@ class DashboardProject extends Component {
                                                             : null
                                                     }>
                                                     {this.state[item.id]
-                                                        ? `${
-                                                              this.state[
-                                                                  item.id
-                                                              ].contactName
-                                                          } - ${
-                                                              this.state[
-                                                                  item.id
-                                                              ].companyName
-                                                          }`
-                                                        : `${
-                                                              item.contactName
-                                                          } - ${
-                                                              item.companyName
-                                                          }`}
+                                                        ? `${this.state[item.id].contactName} - ${this.state[item.id].companyName}`
+                                                        : `${item.contactName} - ${item.companyName}`}
                                                 </span>
                                             </div>
                                             {this.props.showActions ==
@@ -1466,9 +1454,9 @@ class DashboardProject extends Component {
                                             this.handleChangeDropDown(
                                                 event,
                                                 "contactId",
-                                                true,
+                                                false,
                                                 "contacts",
-                                                "GetContactsByCompanyId",
+                                                "",
                                                 "contactId",
                                                 "selectedFromContact",
                                                 ""

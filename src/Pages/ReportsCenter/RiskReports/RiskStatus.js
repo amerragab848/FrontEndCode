@@ -13,6 +13,9 @@ import dataService from "../../../../src/Dataservice";
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
+const dateFormate = ({ value }) => {
+    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
 const StatusDropData = [
     { label: Resources.open[currentLanguage], value: true },
     { label: Resources.close[currentLanguage], value: false },
@@ -89,7 +92,8 @@ class RiskStatus extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate 
             },
             {
                 key: "requiredDate",
@@ -99,7 +103,8 @@ class RiskStatus extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "emv",
@@ -129,7 +134,8 @@ class RiskStatus extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "oppenedBy",
@@ -169,7 +175,8 @@ class RiskStatus extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             }
         ];
     }

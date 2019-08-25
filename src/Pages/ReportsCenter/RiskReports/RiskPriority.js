@@ -13,6 +13,10 @@ import dataService from "../../../../src/Dataservice";
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
+const dateFormate = ({ value }) => {
+    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+};
+
 class RiskPriority extends Component {
     constructor(props) {
         super(props);
@@ -85,7 +89,8 @@ class RiskPriority extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "requiredDate",
@@ -95,7 +100,8 @@ class RiskPriority extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "emv",
@@ -125,7 +131,8 @@ class RiskPriority extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             },
             {
                 key: "oppenedBy",
@@ -165,7 +172,8 @@ class RiskPriority extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                formatter: dateFormate
             }
         ];
     }
@@ -189,8 +197,7 @@ class RiskPriority extends Component {
         this.setState({ [name]: value });
     };
 
-    getGridRows = () => { 
-
+    getGridRows = () => {
         this.setState({ isLoading: true });
 
         let startDate = moment(this.state.startDate, "YYYY-MM-DD").format(
@@ -203,15 +210,14 @@ class RiskPriority extends Component {
 
         dataService
             .GetDataGrid(
-                "GetRiskByTypeStatus?priorityId=" +
+                "GetRiskByPriorityId?priorityId=" +
                     this.state.selectedStatus.value +
                     "&startDate=" +
                     startDate +
                     "&finishDate=" +
                     finishDate
             )
-            .then(res => {  
-
+            .then(res => {
                 this.setState({
                     rows: res || [],
                     isLoading: false
