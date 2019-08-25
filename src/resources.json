@@ -5164,8 +5164,8 @@
         "ar": "Risk Status  "
     },
     "riskPeriority": {
-        "en": "Risk Periority  ",
-        "ar": "Risk Periority  "
+        "en": "Risk Priority  ",
+        "ar": "Risk Priority  "
     },
     "letterStatusYearly": {
         "en": "Letter Status Yearly",
@@ -8126,5 +8126,5 @@
     "riskCategory": {
         "en": "Risk Category",
         "ar": " فئات الخطورة"
-    } 
+    }
 }
