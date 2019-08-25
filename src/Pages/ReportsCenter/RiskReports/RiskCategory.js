@@ -9,34 +9,27 @@ import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup";
 import moment from "moment";
 import DatePicker from "../../../Componants/OptionsPanels/DatePicker";
-import Api from "../../../api";
+import dataService from "../../../../src/Dataservice";
 
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const StatusDropData = [
-    { label: Resources.open[currentLanguage], value: true },
-    { label: Resources.close[currentLanguage], value: false },
-    { label: Resources.pending[currentLanguage], value: null }
-];
 
 class RiskCategory extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoading: false,
-            selectedStatus: {
-                label: Resources.selectAll[currentLanguage],
+            selectedCategory: {
+                label: Resources.selectCategorisation[currentLanguage],
                 value: ""
             },
+            Categorisation: [],
             rows: [],
             finishDate: moment(),
-            startDate: moment(),
-            noClicks: 0,
-            showChart: false
+            startDate: moment()
         };
 
-        if (!Config.IsAllow(3686)) {
+        if (!Config.IsAllow(4025)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -133,8 +126,56 @@ class RiskCategory extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
+            },
+            {
+                key: "oppenedBy",
+                name: Resources["openedBy"][currentLanguage],
+                width: 250,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "closedBy",
+                name: Resources["closedBy"][currentLanguage],
+                width: 250,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "lastEditBy",
+                name: Resources["lastEdit"][currentLanguage],
+                width: 250,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
+            },
+            {
+                key: "lastEditDate",
+                name: Resources["lastEditDate"][currentLanguage],
+                width: 250,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true
             }
         ];
+    }
+
+    componentDidMount() {
+        dataService
+            .GetDataList("GetRiskCategoriesForDrop", "categoryName", "id")
+            .then(res => {
+                this.setState({ Categorisation: [...res], isLoading: false });
+            });
     }
 
     handleChange = (name, value) => {
@@ -143,43 +184,28 @@ class RiskCategory extends Component {
 
     getGridRows = () => {
         this.setState({ isLoading: true });
-        let noClicks = this.state.noClicks;
-        Api.get(
-            "ActiveProjectReport?status=" + this.state.selectedStatus.value + ""
-        )
+
+        let startDate = moment(this.state.startDate, "YYYY-MM-DD").format(
+            "YYYY-MM-DD[T]HH:mm:ss.SSS"
+        );
+
+        let finishDate = moment(this.state.finishDate, "YYYY-MM-DD").format(
+            "YYYY-MM-DD[T]HH:mm:ss.SSS"
+        );
+
+        dataService
+            .GetDataGrid(
+                "GetRiskByCategoryId?companyId=" +
+                    this.state.selectedCategory.value +
+                    "&startDate=" +
+                    startDate +
+                    "&finishDate=" +
+                    finishDate
+            )
             .then(res => {
-                this.setState({ showChart: true });
-                let hold = 0;
-                let unhold = 0;
-                res.map(i => {
-                    if (i.statusName === "UnHold") unhold = unhold + 1;
-
-                    if (i.statusName === "Hold") hold = hold + 1;
-                });
-
-                let series = [
-                    {
-                        name:
-                            Resources["activeProjectsReport"][currentLanguage],
-                        data: [
-                            {
-                                y: hold,
-                                name: Resources["holded"][currentLanguage]
-                            },
-                            {
-                                y: unhold,
-                                name: Resources["unHolded"][currentLanguage]
-                            }
-                        ],
-                        type: "pie"
-                    }
-                ];
-
                 this.setState({
-                    noClicks: noClicks + 1,
-                    rows: res,
-                    isLoading: false,
-                    showChart: true
+                    rows: res || [],
+                    isLoading: false
                 });
             })
             .catch(() => {
@@ -213,16 +239,16 @@ class RiskCategory extends Component {
             <div className="reports__content">
                 <header>
                     <h2 className="zero">
-                        {Resources.riskStatus[currentLanguage]}
+                        {Resources.riskCategory[currentLanguage]}
                     </h2>
                     {btnExport}
                 </header>
                 <div className="proForm reports__proForm">
                     <div className="linebylineInput valid-input">
                         <Dropdown
-                            title="status"
-                            data={StatusDropData}
-                            selectedValue={this.state.selectedStatus}
+                            title="categorisation"
+                            data={this.state.Categorisation}
+                            selectedValue={this.state.selectedCategory}
                             handleChange={e =>
                                 this.setState({ selectedStatus: e })
                             }
@@ -257,4 +283,4 @@ class RiskCategory extends Component {
         );
     }
 }
-export default withRouter(RiskCategory);
+export default RiskCategory;

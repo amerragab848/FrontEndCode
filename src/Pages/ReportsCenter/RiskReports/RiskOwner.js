@@ -167,6 +167,7 @@ class RiskOwner extends Component {
                 sortDescendingFirst: true
             }
         ];
+   
     }
 
     handleChange = (name, value) => {

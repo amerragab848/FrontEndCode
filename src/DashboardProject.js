@@ -1193,7 +1193,7 @@ class DashboardProject extends Component {
                                         </figure>
                                         <div className="header__info">
                                             <h2 className="zero">
-                                                {item.name}{" "}
+                                                {item.name}
                                                 <span>@Procoor</span>
                                             </h2>
                                             <p className="zero">

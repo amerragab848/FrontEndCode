@@ -8067,6 +8067,10 @@
         "en": "Categorisation",
         "ar": "Categorisation"
     },
+    "selectCategorisation": {
+        "en": "Please Select Categorisation",
+        "ar": "برجاء إختيار الفئة"
+    },
     "seeAll": {
         "en": "See All",
         "ar": "عرض الجميع"
@@ -8121,6 +8125,6 @@
     }  ,
     "riskCategory": {
         "en": "Risk Category",
-        "ar": " أقسام الخطورة"
+        "ar": " فئات الخطورة"
     } 
 }
