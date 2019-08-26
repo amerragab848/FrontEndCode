@@ -64,6 +64,8 @@ class Index extends Component {
 
       const getAllWidgets = await IndexedDb.getAll("widget");
 
+      console.log("getAllWidgets",getAllWidgets);
+
       widgets = map(groupBy(getAllWidgets, widget => widget.categoryId), (widgets, categoryId) => {
         return {
           typeId: Details.categories[categoryId].type,
@@ -106,15 +108,14 @@ class Index extends Component {
           />
       </div>
     }
-    else if (Details.widgets[widget.title].props.type === "line") {
-
+    else if (Details.widgets[widget.title].props.type === "line") { 
       return <Fragment key={index + "DIVBriteCharts"}>
         <Britecharts api={Details.widgets[widget.title].props.api}
           topicName={Details.widgets[widget.title].props.topicNames}
           title={language[widget.title][currentLanguage]} />
       </Fragment>
     }
-    else {
+    else { 
       return <Fragment key={index + "DIVBarChart"}>
         <BarChartComp api={Details.widgets[widget.title].props.api} ukey={Details.widgets[widget.title].props.id} catagName={Details.widgets[widget.title].props.catagName}
           name={Details.widgets[widget.title].props.name} y={Details.widgets[widget.title].props.data}
