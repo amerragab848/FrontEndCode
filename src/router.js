@@ -353,11 +353,11 @@ let originalRoutes = [
     , <Route path="/RiskConesquence" component={RiskConesquence} />
     , <Route path="/GlobalSearch" component={GlobalSearch} />
     , <Route path="/currencyExchangeRates" component={currencyExchangeRates} />
-    , <Route path="/specSectionChild" component={specSectionChild} /> 
+    , <Route path="/specSectionChild" component={specSectionChild} />
     , <Route path="/RiskRealisation" component={RiskRealisation} />
     , <Route path="/WeeklyReportsAddEdit" component={WeeklyReportsAddEdit} />
     , <Route path="/dailyReportsAddEdit" component={dailyReportsAddEdit} />
-    
+
     , <Route path="/emailAddEdit" component={emailAddEdit} />
 ];
 

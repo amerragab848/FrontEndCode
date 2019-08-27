@@ -102,7 +102,7 @@ class Login extends Component {
                         if (primeData.contactName) {
                             tokenStore.setItem('contactName', primeData.contactName)
                         }
-                        window.location.reload();
+                      //  window.location.reload();
                     })
                 })
             }
