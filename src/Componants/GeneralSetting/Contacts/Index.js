@@ -40,7 +40,7 @@ class Index extends Component {
             {
                 key: "address",
                 name: Resources["title"][currentLanguage],
-                width: 100,
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -50,7 +50,7 @@ class Index extends Component {
             {
                 key: "contactName",
                 name: Resources["ContactName"][currentLanguage],
-                width: 100,
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -80,7 +80,7 @@ class Index extends Component {
             {
                 key: "email",
                 name: Resources["email"][currentLanguage],
-                width: 100,
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -204,12 +204,12 @@ class Index extends Component {
     componentDidMount() {
         let url = 'GetCompanyContacts?companyId=' + this.state.companyID
         this.props.actions.GetCompaniesContact(url);
-         Dataservice.GetDataList('GetAccountsDefaultList?listType=contacttitle&pageNumber=0&pageSize=10000', 'title', 'id').then(res=>{
-                 this.setState({ titleData: res })
-         })
-         
-        this.props.actions.GetCompaniesList('GetProjectCompanies?accountOwnerId=2')        
-       
+        Dataservice.GetDataList('GetAccountsDefaultList?listType=contacttitle&pageNumber=0&pageSize=10000', 'title', 'id').then(res => {
+            this.setState({ titleData: res })
+        })
+
+        this.props.actions.GetCompaniesList('GetProjectCompanies?accountOwnerId=2')
+
 
     }
     changeKeyContact = (id) => {
@@ -296,19 +296,19 @@ class Index extends Component {
 
     render() {
         const companiesList =
-         <div className="dropWrapper">
-            <DropdownMelcous title="CompanyName" data={this.props.Adminstration.companyList}
-                value={this.props.Adminstration.companyList[0]}
-                handleChange={(e) => this.setState({ transferCompany: e.value })} />
-            <div className="fullWidthWrapper">
-                <button
-                    className="primaryBtn-1 btn mediumBtn"
-                    type="submit"
-                    onClick={this.changeCompany}
-                >  {Resources['save'][currentLanguage]}
-                </button>
+            <div className="dropWrapper">
+                <DropdownMelcous title="CompanyName" data={this.props.Adminstration.companyList}
+                    value={this.props.Adminstration.companyList[0]}
+                    handleChange={(e) => this.setState({ transferCompany: e.value })} />
+                <div className="fullWidthWrapper">
+                    <button
+                        className="primaryBtn-1 btn mediumBtn"
+                        type="submit"
+                        onClick={this.changeCompany}
+                    >  {Resources['save'][currentLanguage]}
+                    </button>
+                </div>
             </div>
-        </div>
 
         const dataGrid = this.props.Adminstration.getingData === false ? (
             <GridSetup rows={this.props.Adminstration.companyContact}

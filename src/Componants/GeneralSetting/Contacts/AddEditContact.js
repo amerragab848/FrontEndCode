@@ -8,7 +8,7 @@ import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux'
 import * as AdminstrationActions from '../../../store/actions/Adminstration'
- 
+
 import {
     bindActionCreators
 } from 'redux';
@@ -22,8 +22,8 @@ const validationSchema = Yup.object().shape({
     contactNameEn: Yup.string().test('contactNameEn', 'Name cannot be arabic', value => {
         return !en.test(value);
     }).required(Resources['contactNameRequired'][currentLanguage]),
-    contactNameAr: Yup.string().test('contactNameAr', 'Name cannot be english', value => { 
-        return  ar.test(value)
+    contactNameAr: Yup.string().test('contactNameAr', 'Name cannot be english', value => {
+        return ar.test(value)
     }).required(Resources['contactNameRequired'][currentLanguage]),
     mobile: Yup.number().required(Resources['mobileRequired'][currentLanguage]),
     telephone: Yup.number().required(Resources['telephoneRequired'][currentLanguage])
@@ -187,11 +187,6 @@ class AddNewContact extends Component {
                                     <input autoComplete="off" type='text' className="form-control" name="email" value={values.email}
                                         onBlur={handleBlur} onChange={handleChange} placeholder={Resources['email'][currentLanguage]} />
                                     {errors.email && touched.email ? (
-                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                    ) : !errors.email && touched.email ? (
-                                        <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                    ) : null}
-                                    {errors.email && touched.email ? (
                                         <em className="pError">{errors.email}</em>
                                     ) : null}
                                 </div>
@@ -208,11 +203,7 @@ class AddNewContact extends Component {
                                         }}
 
                                         onChange={handleChange} placeholder={Resources['ContactNameEn'][currentLanguage]} />
-                                    {errors.contactNameEn && touched.contactNameEn || this.state.exitsNameEn ? (
-                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                    ) : !errors.contactNameEn && touched.contactNameEn && !this.state.exitsNameEn ? (
-                                        <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                    ) : null}
+
                                     {errors.contactNameEn && touched.contactNameEn ? (
                                         <em className="pError">{errors.contactNameEn}</em>
                                     ) : null}
@@ -226,16 +217,13 @@ class AddNewContact extends Component {
                                 <div className={"ui input inputDev  " + (errors.contactNameAr && touched.contactNameAr || this.state.exitsNameAr ? (
                                     " has-error") : !errors.contactNameAr && touched.contactNameAr ? (" has-success") : "")}
                                 >
-                                    <input autoComplete="off" type='text' className="form-control" name="contactNameAr" value={values.contactNameAr} 
-                                       onBlur={(e) => {   handleBlur(e)
+                                    <input autoComplete="off" type='text' className="form-control" name="contactNameAr" value={values.contactNameAr}
+                                        onBlur={(e) => {
+                                            handleBlur(e)
                                             this.handleBlur(e.target.value, "ContactNameAr")
                                         }} onChange={handleChange} placeholder={Resources['ContactNameAr'][currentLanguage]} />
-                                    {errors.contactNameAr && touched.contactNameAr || this.state.exitsNameAr ? (
-                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                    ) : !errors.contactNameAr && touched.contactNameAr && !this.state.exitsNameAr ? (
-                                        <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                    ) : null}
-                                    {errors.contactNameAr && touched.contactNameAr   ? (
+
+                                    {errors.contactNameAr && touched.contactNameAr ? (
                                         <em className="pError">{errors.contactNameAr}</em>
                                     ) : null}
                                     {!errors.contactNameAr && this.state.exitsNameAr ? (
@@ -278,11 +266,7 @@ class AddNewContact extends Component {
                                 >
                                     <input autoComplete="off" type='text' className="form-control" name="telephone" value={values.telephone}
                                         onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Telephone'][currentLanguage]} />
-                                    {errors.telephone && touched.telephone ? (
-                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                    ) : !errors.telephone && touched.telephone ? (
-                                        <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                    ) : null}
+
                                     {errors.telephone && touched.telephone ? (
                                         <em className="pError">{errors.telephone}</em>
                                     ) : null}
@@ -295,11 +279,7 @@ class AddNewContact extends Component {
                                 >
                                     <input autoComplete="off" type='text' className="form-control" name="mobile" value={values.mobile}
                                         onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Mobile'][currentLanguage]} />
-                                    {errors.mobile && touched.mobile ? (
-                                        <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                    ) : !errors.mobile && touched.mobile ? (
-                                        <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                    ) : null}
+
                                     {errors.mobile && touched.mobile ? (
                                         <em className="pError">{errors.mobile}</em>
                                     ) : null}
