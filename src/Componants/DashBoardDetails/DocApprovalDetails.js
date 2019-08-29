@@ -49,7 +49,7 @@ let subjectLink = ({ value, row }) => {
 
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view = "/" + row.docLink.replace('/', '') + "?id=" + encodedPaylod
+    doc_view = "/" +(row.docLink !== null ? row.docLink.replace('/', ''):row.docLink) + "?id=" + encodedPaylod
     subject = row.subject;
 
     return <a href={doc_view}> {subject} </a>;
@@ -324,7 +324,7 @@ class DocApprovalDetails extends Component {
   }
 
   componentDidMount() {
-    
+
     this.props.actions.RouteToTemplate();
 
     const query = new URLSearchParams(this.props.location.search);
@@ -523,6 +523,5 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(communicationActions, dispatch)
   };
 }
- 
+
 export default connect(mapStateToProps, mapDispatchToProps)(DocApprovalDetails);
- 

@@ -1,5 +1,5 @@
-var DashBoardWidgets = [ 
-  { 
+var DashBoardWidgets = [
+  {
     widgetCategory: "counters",
     refrence: 0,
     key: "0-1",
@@ -7,7 +7,7 @@ var DashBoardWidgets = [
     checked:false,
     order: 1,
     widgets: [
-       { 
+       {
         title: "monthlyPo",
         key: "0-1-1",
         canView: false,
@@ -23,8 +23,8 @@ var DashBoardWidgets = [
           isModal: false,
           key: "0-1-1"
        }
-      },  
-      { 
+      },
+      {
         title: "materialRequestcount",
         key: "0-1-2",
         canView: false,
@@ -40,8 +40,8 @@ var DashBoardWidgets = [
           isModal: false,
           key: "0-1-2"
        }
-      }, 
-      { 
+      },
+      {
         title: "monthlyPaymentRequisitions",
         key: "0-1-4",
         canView: false,
@@ -60,7 +60,7 @@ var DashBoardWidgets = [
       }
     ]
   },
-  { 
+  {
     widgetCategory: "Submittal",
     refrence: 0,
     key: "0-2",
@@ -68,7 +68,7 @@ var DashBoardWidgets = [
     checked:false,
     order: 2,
     widgets: [
-      { 
+      {
         title: "approvalSubmittals",
         key: "0-2-1",
         canView: false,
@@ -85,7 +85,7 @@ var DashBoardWidgets = [
           key: "0-2-1"
        }
       },
-      { 
+      {
         title: "openedSubmittals",
         key: "0-2-2",
         canView: false,
@@ -102,7 +102,7 @@ var DashBoardWidgets = [
           key: "0-2-2"
        }
       },
-      { 
+      {
         title: "rejectedSubmittals",
         key: "0-2-3",
         canView: false,
@@ -118,10 +118,10 @@ var DashBoardWidgets = [
           isModal: false,
           key: "0-2-3"
        }
-      } 
+      }
     ]
   },
-  { 
+  {
     widgetCategory: "communication",
     refrence: 0,
     key: "0-3",
@@ -129,7 +129,7 @@ var DashBoardWidgets = [
     checked:false,
     order: 3,
     widgets: [
-      { 
+      {
         title: "openedLetters",
         key: "0-3-1",
         canView: false,
@@ -146,7 +146,7 @@ var DashBoardWidgets = [
           key: "0-3-1"
        }
       },
-      { 
+      {
         title: "openedIR",
         key: "0-3-2",
         canView: false,
@@ -163,7 +163,7 @@ var DashBoardWidgets = [
           key: "0-3-2"
        }
       },
-      { 
+      {
         title: "rfiOpen",
         key: "0-3-3",
         canView: false,
@@ -180,7 +180,7 @@ var DashBoardWidgets = [
           key: "0-3-3"
        }
       },
-      { 
+      {
         title: "openedTransmittals",
         key: "0-3-4",
         canView: false,
@@ -196,10 +196,10 @@ var DashBoardWidgets = [
           isModal: false,
           key: "0-3-4"
        }
-      } 
+      }
     ]
   },
-  { 
+  {
     widgetCategory: "inspectionRequest",
     refrence: 0,
     key: "0-4",
@@ -207,7 +207,7 @@ var DashBoardWidgets = [
     checked:false,
     order: 4,
     widgets: [
-      { 
+      {
         title: "countinspectionPanding",
         key: "0-4-1",
         canView: false,
@@ -215,7 +215,7 @@ var DashBoardWidgets = [
         order: 1,
         type:"oneWidget",
         props: {
-          api: "GetCountinspectionForProject?status=null&projectId=",
+          api: "GetCountInspectionForProject?status=null&projectId=",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
@@ -224,7 +224,7 @@ var DashBoardWidgets = [
           key: "0-4-1"
        }
       },
-      { 
+      {
         title: "countinspectionReject",
         key: "0-4-2",
         canView: false,
@@ -232,7 +232,7 @@ var DashBoardWidgets = [
         order: 2,
         type:"oneWidget",
         props: {
-          api: "GetCountinspectionForProject?status=false&projectId=",
+          api: "GetCountInspectionForProject?status=false&projectId=",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
@@ -241,7 +241,7 @@ var DashBoardWidgets = [
           key: "0-4-2"
        }
       },
-      { 
+      {
         title: "countinspectionApproved",
         key: "0-4-3",
         canView: false,
@@ -249,7 +249,7 @@ var DashBoardWidgets = [
         order: 3,
         type:"oneWidget",
         props: {
-          api: "GetCountinspectionForProject?status=true&projectId=",
+          api: "GetCountInspectionForProject?status=true&projectId=",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
@@ -257,10 +257,10 @@ var DashBoardWidgets = [
           isModal: false,
           key: "0-4-3"
        }
-      } 
+      }
     ]
   },
-  { 
+  {
     widgetCategory: "respondTime",
     refrence: 0,
     key: "0-5",
@@ -268,7 +268,7 @@ var DashBoardWidgets = [
     checked:false,
     order: 5,
     widgets: [
-       { 
+       {
         title: "avgRespondTimeLetters",
         key: "0-5-1",
         canView: false,
@@ -284,7 +284,7 @@ var DashBoardWidgets = [
           isModal: false,
           key: "0-5-1"
        }
-      },{ 
+      },{
         title: "avgRespondTimeTransmittals",
         key: "0-5-2",
         canView: false,
@@ -301,7 +301,7 @@ var DashBoardWidgets = [
           key: "0-5-2"
        }
       },
-      { 
+      {
         title: "avgRespondTimeIR",
         key: "0-5-3",
         canView: false,
@@ -318,7 +318,7 @@ var DashBoardWidgets = [
           key: "0-5-3"
        }
       },
-      { 
+      {
         title: "avgRespondTimeMIR",
         key: "0-5-4",
         canView: false,
@@ -335,7 +335,7 @@ var DashBoardWidgets = [
           key: "0-5-4"
        }
       },
-      { 
+      {
         title: "avgRespondTimeRFI",
         key: "0-5-5",
         canView: false,
@@ -352,7 +352,7 @@ var DashBoardWidgets = [
           key: "0-5-5"
        }
       },
-      { 
+      {
         title: "avgRespondTimeSubmittals",
         key: "0-5-6",
         canView: false,
@@ -369,7 +369,7 @@ var DashBoardWidgets = [
           key: "0-5-6"
        }
       },
-      { 
+      {
         title: "avgRespondTimePO",
         key: "0-5-7",
         canView: false,
@@ -387,7 +387,7 @@ var DashBoardWidgets = [
        }
       }
     ]
-  } 
+  }
 ];
- 
+
   export default DashBoardWidgets;

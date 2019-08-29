@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import CryptoJS from 'crypto-js';
-import { SortablePane, Pane } from "react-sortable-pane";
-import Rodal from "../Styles/js/rodal";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs"; 
+import { SortablePane, Pane } from "react-sortable-pane"; 
 import dashBoardLogo from "../Styles/images/dashboardDots.png";
 import widgets from "./WidgetsDashBoradProject";
 import Resources from "../resources.json";
