@@ -3,7 +3,7 @@ import DropdownMelcous from '../../OptionsPanels/DropdownMelcous';
 import Api from '../../../api';
 import NotifiMsg from '../../publicComponants/NotifiMsg'
 import Resources from '../../../resources.json';
-import config from "../../../Services/Config";
+import Config from "../../../Services/Config";
 import _ from "lodash";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -17,8 +17,9 @@ import CompanyDropdown from '../../publicComponants/CompanyDropdown'
 import ContactDropdown from '../../publicComponants/ContactDropdown'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const publicConfiguarion = config.getPayload();
-const getPublicConfiguartion = config.getPublicConfiguartion();
+const publicConfiguarion = Config.getPayload();
+
+let getPublicConfiguartion = Config.getPublicConfiguartion();
 
 let ListOfDays = [];
 
@@ -88,7 +89,7 @@ class AddAccount extends Component {
     }
 
     componentDidMount = () => {
-        if (config.IsAllow(801)) {
+        if (Config.IsAllow(801)) {
             this.GetData('GetCompanies?accountOwnerId=' + publicConfiguarion.aoi + '', 'companyName', 'id', 'CompanyData');
             this.GetData('GetGroup?accountOwnerId=' + publicConfiguarion.aoi + '', 'groupName', 'id', 'GroupNameData');
             this.DesignTeamChange = this.DesignTeamChange.bind(this);
@@ -222,9 +223,15 @@ class AddAccount extends Component {
         this.setState({ checked: !this.state.checked });
     }
 
-    AddAccount = () => {
-        Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password + '&companyId=' + this.state.CompanyId.value + '', null, 'POST').then(res => {
-            if (res !== "Email already exists.") {
+    AddAccount = () => { 
+        let accountCompanyId=getPublicConfiguartion;
+        if(getPublicConfiguartion==null){
+          accountCompanyId=Config.getPublicConfiguartion().accountCompanyId;
+    }
+        Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password 
+        + '&companyId=' + accountCompanyId
+        , null, 'POST',true).then(res => {
+            if (res.status === 200) {
                 Api.post('AddAccount',
                     {
                         'userName': this.state.UserName,
@@ -263,11 +270,9 @@ class AddAccount extends Component {
                     )
             }
             else
-                toast.warn(res)
-        }
+                toast.warn("Email already exists.")
 
-
-        ).catch(ex => {
+        }).catch(ex => {
             this.props.history.push({
                 pathname: '/TemplatesSettings',
             })
