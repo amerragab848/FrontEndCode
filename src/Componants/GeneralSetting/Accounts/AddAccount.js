@@ -223,59 +223,37 @@ class AddAccount extends Component {
         this.setState({ checked: !this.state.checked });
     }
 
-    AddAccount = () => { 
-        let accountCompanyId=getPublicConfiguartion;
-        if(getPublicConfiguartion==null){
-          accountCompanyId=Config.getPublicConfiguartion().accountCompanyId;
-    }
-        Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password 
-        + '&companyId=' + accountCompanyId
-        , null, 'POST',true).then(res => {
+    AddAccount = () => {
+        let accountCompanyId = Config.getPublicConfiguartion().accountCompanyId
+        Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password + '&companyId=' + accountCompanyId, null, 'POST', true).then(res => {
             if (res.status === 200) {
-                Api.post('AddAccount',
-                    {
-                        'userName': this.state.UserName,
-                        'userPassword': this.state.Password,
-                        'accountCompanyId': getPublicConfiguartion.accountCompanyId,
-                        'companyId': this.state.CompanyId.value,
-                        'contactId': this.state.ContactId.value,
-                        'contactSupervisorId': this.state.SupervisorId.value,
-                        'companySupervisorId': this.state.SupervisorCompanyId.value,
-                        'defaultHours': this.state.WorkingHours,
-                        'userRate': this.state.HoursRate,
-                        'groupId': this.state.GroupNameId.value,
-                        'empCode': this.state.EmpCode,
-                        'designTeam': this.state.DesignTeam,
-                        'isTaskAdmin': this.state.TaskAdmin,
-                        'active': this.state.Active,
-                        'passwordEdit': false,
-                        'isHrManager': false,
-                        'usePermissionsOnLogs': this.state.UserPermissiononLogsCreatedbyOthers
-                    }).then(
-                        res => {
-                            //return AccountId  to save Vacations
-                            this.setState({
-                                // AccountId:res.id
-                            })
-                        },
-                        ListOfDays.forEach(function (item) {
-                            var dayId = '';
-                            dayId = item
-                            // Api.post('UpdateVacations?accountId='+this.state.AccountId+'&dayId='+dayId+'').catch(ex => { })
-                        }),
-                        this.props.actions.routeToTabIndex(0),
-                        this.props.history.push({
-                            pathname: '/TemplatesSettings',
-                        })
-                    )
-            }
-            else
-                toast.warn("Email already exists.")
+                let obj = {
+                    userName: this.state.UserName, userPassword: this.state.Password,
+                    accountCompanyId: Config.getPublicConfiguartion().accountCompanyId, companyId: this.state.CompanyId.value,
+                    contactId: this.state.ContactId.value, contactSupervisorId: this.state.SupervisorId.value,
+                    companySupervisorId: this.state.SupervisorCompanyId.value, defaultHours: this.state.WorkingHours,
+                    userRate: this.state.HoursRate, groupId: this.state.GroupNameId.value, empCode: this.state.EmpCode,
+                    designTeam: this.state.DesignTeam,
+                    isTaskAdmin: this.state.TaskAdmin, active: this.state.Active, passwordEdit: false,
+                    isHrManager: false, usePermissionsOnLogs: this.state.UserPermissiononLogsCreatedbyOthers
+                };
+                Api.post('AddAccount', obj).then(res => {
 
+                    // ListOfDays.forEach(function (item) {
+                    //     var dayId = '';
+                    //     dayId = item
+                    //     // Api.post('UpdateVacations?accountId='+this.state.AccountId+'&dayId='+dayId+'').catch(ex => { })
+                    // }),
+                    this.props.actions.routeToTabIndex(0);
+                    this.props.history.push({ pathname: '/TemplatesSettings' });
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                });
+            }
+            else { toast.warn("Email already exists.") }
         }).catch(ex => {
-            this.props.history.push({
-                pathname: '/TemplatesSettings',
-            })
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
         })
 
     }
@@ -391,7 +369,7 @@ class AddAccount extends Component {
                                                             <span class="hide"> Hide</span>
                                                         </span>
 
-                                                        <input style={{ width: '100%' }} autoComplete='new-password' name='Password' className="form-control" id="Password" placeholder={Resources['password'][currentLanguage]} 
+                                                        <input style={{ width: '100%' }} autoComplete='new-password' name='Password' className="form-control" id="Password" placeholder={Resources['password'][currentLanguage]}
                                                             onBlur={(e) => {
                                                                 this.passwordChangeHandler(e)
                                                                 handleBlur(e)

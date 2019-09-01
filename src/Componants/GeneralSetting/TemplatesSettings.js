@@ -33,6 +33,10 @@ class TemplatesSettings extends Component {
             })
         }, 1000);
     }
+
+    componentDidMount=()=>{
+
+    }
     render() {
         return (
             <div className='mainContainer main__fulldash'>
@@ -145,7 +149,9 @@ class TemplatesSettings extends Component {
 }
 
 const mapStateToProps = (state) => {
+  
     let sState = state;
+    console.log(sState.Adminstration.tabIndex)
     return sState;
 }
 export default withRouter(connect(mapStateToProps)(TemplatesSettings));
