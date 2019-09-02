@@ -408,8 +408,14 @@ class Index extends Component {
                 else
                     newRows.push(element)
             })
-            if (selectedRow.deletable == true)
+            if (selectedRow.deletable == true) {
+                this.setState({
+                    isLoading: false,
+                    showDeleteModal: false,
+                    IsActiveShow: false
+                });
                 toast.warning("you can't remove this company !")
+            }
             else {
                 Api.post('ProjectCompaniesDelete?id=' + this.state.selectedRowId)
                     .then(result => {
