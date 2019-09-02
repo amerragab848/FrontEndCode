@@ -9,22 +9,22 @@ import { toast } from "react-toastify";
 import { connect } from 'react-redux';
 import ConfirmationModal from '../../Componants/publicComponants/ConfirmationModal'
 import CryptoJS from 'crypto-js'
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import SkyLight from 'react-skylight';
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 import * as communicationActions from '../../store/actions/communication';
 import Config from '../../Services/Config';
 import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous'
 import Dataservice from '../../Dataservice';
+import { withRouter } from "react-router-dom";
+
 const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const validationSchema = Yup.object().shape({
-    englishTitle: Yup.string().required(Resources['titleEnValid'][currentLanguage]),
-    arabicTitle: Yup.string().required(Resources['titleArValid'][currentLanguage])
+const validationSchema = object().shape({
+    englishTitle: string().required(Resources['titleEnValid'][currentLanguage]),
+    arabicTitle: string().required(Resources['titleArValid'][currentLanguage])
 
 });
 
@@ -62,7 +62,12 @@ class EpsPermission extends Component {
             }
             else {
                 this.setState({ isLoading: true })
-                let item = Object.assign(this.state.item, { title: this.state.values.englishTitle }, { titleAr: this.state.values.arabicTitle }, { titleEn: this.state.values.englishTitle })
+                let item = Object.assign(this.state.item,
+                    { title: this.state.values.englishTitle },
+                    { titleAr: this.state.values.arabicTitle },
+                    { titleEn: this.state.values.englishTitle },
+                    { showInReport: this.state.values.showInReport }
+                )
                 Dataservice.addObject("EditEpsById", item).then((res) => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                     this.setState({ isLoading: false, showModal: false, type: '' })
@@ -90,7 +95,7 @@ class EpsPermission extends Component {
                 this.setState({ isLoading: true })
                 Dataservice.addObject("AddEps", Eps).then((res) => {
                     toast.success(Resources["operationSuccess"][currentLanguage]);
-                    this.setState({ isLoading: false, showModal: false, type: '',eps:res })
+                    this.setState({ isLoading: false, showModal: false, type: '', eps: res })
                 }).catch(res => {
                     this.setState({ isLoading: false, showModal: false })
 
@@ -115,7 +120,7 @@ class EpsPermission extends Component {
         })
         this.getData()
     }
-  
+
     deleteRecord(recod) {
         if (!Config.IsAllow(1264)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
@@ -193,7 +198,7 @@ class EpsPermission extends Component {
             setTimeout(() => this.simpleDialog.show(), 300)
         }
         else {
-            this.setState({ showModal: true, values: { ...this.state.values, englishTitle: '', arabicTitle: '', showInReport: '' }, })
+            this.setState({ showModal: true, values: { ...this.state.values, englishTitle: '', arabicTitle: '', showInReport: false }, })
             this.simpleDialog.show()
         }
     }
@@ -234,22 +239,7 @@ class EpsPermission extends Component {
 
 
     viewChild(item) {
-
-
-        // let trees = [...this.state.trees];
-        // let state = this.state;
-        // state['_' + item.id] = !state['_' + item.id];
-        // this.search(item.id, trees, [], item.parentId);
-        // this.setState({
-        //   trees, state
-        // });
-
-        // this.setState({
-        //     isLoadingEps: true
-        // });
-
         let eps = [...this.state.eps];
-
         let state = this.state;
         state['_' + item.id] = !state['_' + item.id];
         this.search(item.id, eps, [], item.parentId);
@@ -263,7 +253,7 @@ class EpsPermission extends Component {
         return (
             children.map((item, i) => {
                 return (
-                    <Fragment>
+                    <Fragment key={item.id}>
                         <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === true ? 'epsTitle active' : 'epsTitle'} key={item.id} onClick={() => this.viewChild(item)}
                             style={{ display: this.state[item.id] == -1 ? 'none' : '' }} >
                             <div className="listTitle">
@@ -306,7 +296,7 @@ class EpsPermission extends Component {
         let treeDocument = {
             parentId: "",
             titleEn: "",
-            showInReport: "",
+            showInReport: false,
             titleAr: "",
             parentId: ""
         };
@@ -401,7 +391,7 @@ class EpsPermission extends Component {
                                     if (treeContainer != null)
                                         treeContainer[item.id] = item
                                     return (
-                                        <Fragment>
+                                        <Fragment key={item.id}>
                                             <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === true ? 'epsTitle active' : 'epsTitle'} key={item.id}
                                                 style={{ display: this.state[item.id] == -1 ? 'none' : '' }} onClick={() => this.viewChild(item)} >
                                                 <div className="listTitle">
@@ -484,7 +474,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(EpsPermission)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EpsPermission))

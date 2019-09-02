@@ -13,6 +13,7 @@ import config from "../../Services/Config";
 import Resources from "../../resources.json";
 import { connect } from 'react-redux'
 import * as actions from '../../store/actions/Adminstration'
+import EpsPermission from "../../Pages/Eps/EpsPermission"
 import { bindActionCreators } from 'redux';
 
 
@@ -66,11 +67,13 @@ class TemplatesSettings extends Component {
                                 <Tab>
                                     <span className="subUlTitle">{Resources['currencyExchangeRates'][currentLanguage]}</span>
                                 </Tab> : null}
-
-
                             <li className="title">
                                 <h4 className="zero">{Resources['Project'][currentLanguage]}</h4>
                             </li>
+                            {(config.IsAllow(1260)) ?
+                                <Tab>
+                                    <span className="subUlTitle">{Resources['EPS'][currentLanguage]}</span>
+                                </Tab> : null}
                             {(config.IsAllow(1179)) ?
                                 <Tab>
                                     <span className="subUlTitle">{Resources['expensesWorkFlow'][currentLanguage]}</span>
@@ -120,7 +123,11 @@ class TemplatesSettings extends Component {
                                 <CurrencyExchangeRates />
                             </TabPanel>
                             : null}
-
+                        {(config.IsAllow(1260)) ?
+                            <TabPanel>
+                                <EpsPermission />
+                            </TabPanel>
+                            : null}
                         {(config.IsAllow(1001105)) ?
                             <TabPanel>
                                 <ExpensesWorkFlowLog />
@@ -155,7 +162,6 @@ class TemplatesSettings extends Component {
 const mapStateToProps = (state) => {
 
     let sState = state;
-    console.log(sState.Adminstration.tabIndex)
     return sState;
 }
 
