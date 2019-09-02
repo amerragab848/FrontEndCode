@@ -124,7 +124,7 @@ class ExpensesWorkFlowAddEdit extends Component {
 
     constructor(props) {
         super(props)
-        if (!config.IsAllow(3664)) {
+        if (!config.IsAllow(3661) && !config.IsAllow(3662)) {
             toast.warn(Resources['missingPermissions'][currentLanguage])
             this.props.history.goBack()
         }
@@ -210,7 +210,8 @@ class ExpensesWorkFlowAddEdit extends Component {
             SelectedContactForEdit: '',
             selectedRows: [],
             showDeleteModal: false,
-            MoveSteps: false
+            MoveSteps: false,
+            btnLoading: false
         }
 
     }
@@ -348,10 +349,8 @@ class ExpensesWorkFlowAddEdit extends Component {
 
         dataservice.GetDataList('GetProjectCompanies?accountOwnerId=' + publicConfiguarion.aoi + '', 'companyName', 'id').then(
             res => {
-                this.setState({
-                    CompanyData: res,
-                })
-            })
+                this.setState({ CompanyData: res, });
+            });
 
         if (idEdit !== 0) {
             dataservice.GetDataGrid('getExpensesWorkFlowItemsByWorkFlowId?WorkFlowId=' + idEdit + '').then(
@@ -510,7 +509,8 @@ class ExpensesWorkFlowAddEdit extends Component {
         }
     }
 
-    AddEditWorkFlow = (values, actions) => {
+    saveDocment = (values, actions) => {
+        this.setState({ btnLoading: true })
         if (this.state.IsEditMode) {
             let doc = {
                 id: idEdit, projectId: values.ProjectName.value, status: this.state.Status,
@@ -518,11 +518,11 @@ class ExpensesWorkFlowAddEdit extends Component {
                 creationDate: moment(this.state.DocumentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
             }
             dataservice.addObject('EditExpensesWorkFlow', doc).then(result => {
-                this.setState({ isLoading: false, MoveSteps: true })
+                this.setState({ isLoading: false, MoveSteps: true, btnLoading: false })
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
                 this.NextStep()
             }).catch(ex => {
-                this.setState({ isLoading: false })
+                this.setState({ isLoading: false, btnLoading: false })
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             });
 
@@ -535,11 +535,11 @@ class ExpensesWorkFlowAddEdit extends Component {
                 creationDate: moment(this.state.DocumentDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
             }
             dataservice.addObject('AddExpensesWorkFlow', doc).then(result => {
-                this.setState({ isLoading: false, ExpensesWorkFlowDataForEdit: result, MoveSteps: true })
+                this.setState({ isLoading: false, ExpensesWorkFlowDataForEdit: result, MoveSteps: true, btnLoading: false })
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
                 this.NextStep()
             }).catch(ex => {
-                this.setState({ isLoading: false })
+                this.setState({ isLoading: false, btnLoading: false })
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             });
 
@@ -743,7 +743,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
                                             <div className={'ui input inputDev ' + (errors.ArrangeContact && touched.ArrangeContact ? 'has-error' : null) + ' '}>
-                                                <input autoComplete="off" value={values.ArrangeContact} className="form-control" name="ArrangeContact"
+                                                <input readOnly autoComplete="off" value={values.ArrangeContact} className="form-control" name="ArrangeContact"
                                                     onBlur={(e) => { handleBlur(e) }}
                                                     onChange={(e) => {
                                                         handleChange(e)
@@ -863,7 +863,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
                                                             <div className={'ui input inputDev ' + (errors.ArrangeContact && touched.ArrangeContact ? 'has-error' : null) + ' '}>
-                                                                <input autoComplete="off" value={values.ArrangeContactForEdit}
+                                                                <input readOnly autoComplete="off" value={values.ArrangeContactForEdit}
                                                                     className="form-control" name="ArrangeContactForEdit" onBlur={(e) => { handleBlur(e) }}
                                                                     onChange={(e) => {
                                                                         handleChange(e)
@@ -912,7 +912,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                                         validationSchema={ValidtionSchemaExpensesWorkFlow}
 
                                         onSubmit={(values, actions) => {
-                                            this.AddEditWorkFlow(values, actions)
+                                            this.saveDocment(values, actions)
                                         }}
                                     >
 
@@ -979,7 +979,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                                                         <div className={'ui input inputDev linebylineInput  ' + (errors.ArrangeExpensesWorkFlow && touched.ArrangeExpensesWorkFlow ? 'has-error' : null) + ' '}>
                                                             <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
                                                             <div className="inputDev ui input">
-                                                                <input autoComplete="off" className="form-control" name="ArrangeExpensesWorkFlow"
+                                                                <input readOnly autoComplete="off" className="form-control" name="ArrangeExpensesWorkFlow"
                                                                     value={this.state.IsEditMode ? this.state.ExpensesWorkFlowDataForEdit.arrange : values.ArrangeExpensesWorkFlow}
                                                                     onBlur={(e) => { handleBlur(e) }}
                                                                     onChange={(e) => {
@@ -998,9 +998,17 @@ class ExpensesWorkFlowAddEdit extends Component {
 
                                                 </div>
                                                 <div className="doc-pre-cycle">
-                                                    <div className="slider-Btns">
-                                                        <button className="primaryBtn-1 btn meduimBtn" type='submit'>NEXT STEP</button>
-                                                    </div>
+                                                    {this.state.btnLoading ?
+                                                        <button className="primaryBtn-1 btn disabled">
+                                                            <div className="spinner">
+                                                                <div className="bounce1" />
+                                                                <div className="bounce2" />
+                                                                <div className="bounce3" />
+                                                            </div>
+                                                        </button> :
+                                                        <div className="slider-Btns">
+                                                            <button className="primaryBtn-1 btn meduimBtn" type='submit'>NEXT STEP</button>
+                                                        </div>}
                                                 </div>
 
                                             </Form>
@@ -1062,7 +1070,9 @@ class ExpensesWorkFlowAddEdit extends Component {
                                                 </table>
                                             </div>
                                             <div className="doc-pre-cycle">
+
                                                 <div className="slider-Btns">
+
                                                     <button className="primaryBtn-1 btn meduimBtn" onClick={this.SaveMultiApproval} >Save STEP</button>
                                                 </div>
                                             </div>

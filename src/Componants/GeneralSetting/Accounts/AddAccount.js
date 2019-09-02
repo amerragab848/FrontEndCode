@@ -492,7 +492,7 @@ class AddAccount extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="linebylineInput fullWidthWrapper daysCheckbox">
+                                                        <div className="linebylineInput daysCheckbox">
                                                             <label> HR Vacation Days</label>
                                                             <div className="three__daysCheck--flex">
                                                                 <div className="three__daysCheck">
