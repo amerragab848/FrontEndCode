@@ -97,8 +97,8 @@ class AddNewContact extends Component {
     Save = (values) => {
         this.setState({ isLoading: true })
         let SendingObject = {
-            titleId: this.state.values.selectedTitle.value,
-            title: this.state.values.selectedTitle.label,
+            titleId: this.state.values.selectedTitle ? this.state.values.selectedTitle.value : "",
+            title: this.state.values.selectedTitleselectedTitle ? this.state.values.selectedTitle : "",
             contactNameEn: values.contactNameEn,
             contactNameAr: values.contactNameAr,
             positionEn: values.positionEn,
@@ -135,10 +135,10 @@ class AddNewContact extends Component {
                         contactNameEn: res.contactNameEn,
                         contactNameAr: res.contactNameAr,
                         mobile: res.mobile,
-                        positionEn: res.positionEn,
-                        positionAr: res.positionAr,
-                        addressEn: res.addressEn,
-                        addressAr: res.addressAr,
+                        positionEn: res.positionEn !== "null" ? res.positionEn : '',
+                        positionAr: res.positionAr !== "null" ? res.positionAr : '',
+                        addressEn: res.addressEn !== "null" ? res.addressEn : '',
+                        addressAr: res.addressAr !== "null" ? res.addressAr : '',
                         telephone: res.telephone
                     }
                 })
@@ -153,7 +153,7 @@ class AddNewContact extends Component {
 
                 <Formik
                     initialValues={{
-                        email: this.state.values.email,
+                        email: this.state.values.email || '',
                         contactNameEn: this.state.values.contactNameEn,
                         contactNameAr: this.state.values.contactNameAr,
                         mobile: this.state.values.mobile,
@@ -274,7 +274,7 @@ class AddNewContact extends Component {
                             </div>
                             <div className="fillter-item-c">
                                 <label className="control-label"> {Resources['Mobile'][currentLanguage]} </label>
-                                <div className={"ui input inputDev " + (errors.Mobile && touched.mobile ? (
+                                <div className={"ui input inputDev " + (errors.mobile && touched.mobile ? (
                                     " has-error") : !errors.mobile && touched.mobile ? ("has-success") : "")}
                                 >
                                     <input autoComplete="off" type='text' className="form-control" name="mobile" value={values.mobile}

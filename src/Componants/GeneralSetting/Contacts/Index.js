@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import Api from "../../../api";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Export from "../../OptionsPanels/Export";
 import GridSetup from "../../../Pages/Communication/GridSetup";
@@ -13,8 +12,17 @@ import * as AdminstrationActions from '../../../store/actions/Adminstration'
 import { SkyLightStateless } from 'react-skylight';
 import { toast } from "react-toastify";
 import { bindActionCreators } from 'redux';
-import DropdownMelcous from "../../OptionsPanels/DropdownMelcous";
+import Dropdown from "../../OptionsPanels/DropdownMelcous";
 import Dataservice from "../../../Dataservice";
+import { Formik, Form } from "formik";
+import { object, string } from "yup";
+
+
+const validationSchema = object().shape({
+    CompanyName: string().required(
+        Resources["fromCompanyRequired"][currentLanguage]
+    )
+});
 const _ = require('lodash')
 
 let currentLanguage =
@@ -220,8 +228,6 @@ class Index extends Component {
             modelMessage: Resources['smartDeleteMessage'][currentLanguage].title,
             modelType: 'keyContact'
         });
-
-
     }
     changeCompany = () => {
         this.setState({ showTransferpopUp: false })
@@ -296,20 +302,48 @@ class Index extends Component {
 
     render() {
         const companiesList =
-            <div className="dropWrapper">
-                <DropdownMelcous title="CompanyName" data={this.props.Adminstration.companyList}
-                    value={this.props.Adminstration.companyList[0]}
-                    handleChange={(e) => this.setState({ transferCompany: e.value })} />
-                <div className="fullWidthWrapper">
-                    <button
-                        className="primaryBtn-1 btn mediumBtn"
-                        type="submit"
-                        onClick={this.changeCompany}
-                    >  {Resources['save'][currentLanguage]}
-                    </button>
-                </div>
-            </div>
-
+            <Formik
+                initialValues={{
+                    CompanyName: ''
+                }}
+                validationSchema={validationSchema}
+                onSubmit={values => {
+                    this.changeCompany();
+                }}>
+                {({
+                    errors,
+                    touched,
+                    handleSubmit,
+                    setFieldValue,
+                    setFieldTouched
+                }) => (
+                        <Form
+                            id="letterForm"
+                            className="customProform"
+                            noValidate="novalidate"
+                            onSubmit={handleSubmit}>
+                            <div className="dropWrapper">
+                                <Dropdown
+                                    data={this.props.Adminstration.companyList}
+                                    handleChange={(e) => this.setState({ transferCompany: e.value })}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.CompanyName}
+                                    touched={touched.CompanyName}
+                                    title="CompanyName"
+                                    name="CompanyName"
+                                />
+                                <div className="fullWidthWrapper">
+                                    <button
+                                        className="primaryBtn-1 btn mediumBtn"
+                                        type="submit"
+                                    >  {Resources['save'][currentLanguage]}
+                                    </button>
+                                </div>
+                            </div>
+                        </Form>
+                    )}
+            </Formik>
         const dataGrid = this.props.Adminstration.getingData === false ? (
             <GridSetup rows={this.props.Adminstration.companyContact}
                 columns={this.columnsGrid}

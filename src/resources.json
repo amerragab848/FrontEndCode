@@ -2071,7 +2071,7 @@
         "en": "Correspondence Received Addition",
         "ar": "إضافة المراسلات الواردة"
     },
-    "sendingMethod": { 
+    "sendingMethod": {
         "en": "Sending Method",
         "ar": "طريقة الارسال"
     },
@@ -5107,7 +5107,7 @@
         "en": "Sub Order Unit",
         "ar": " اسعار الوحدات من الباطن"
     },
-    "newUnitPrice": { 
+    "newUnitPrice": {
         "en": "New UnitPrice",
         "ar": " السعر الجديد"
     },
@@ -6162,6 +6162,10 @@
     "profile": {
         "en": "Profile Setting",
         "ar": "اعدادات الحساب"
+    },
+    "settings": {
+        "en": "Setting",
+        "ar": "اعدادات"
     },
     "privacySettings": {
         "en": "Privacy Settings",
@@ -8042,7 +8046,7 @@
     "newRiskRef": {
         "en": "New risk ref",
         "ar": "بحث"
-    }, 
+    },
     "riskRealisation": {
         "en": "Risk Realisation",
         "ar": "بحث"
@@ -8090,11 +8094,11 @@
     "line": {
         "en": "Line",
         "ar": "Line"
-    } ,
+    },
     "dashboardCenter": {
         "en": "Dashboard center",
         "ar": "لوحة التحكم"
-    } ,
+    },
     "raisedBy": {
         "en": "Raised By",
         "ar": "اُعِدَ بواسطة"
