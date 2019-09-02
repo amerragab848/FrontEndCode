@@ -461,36 +461,36 @@ let widgets = {
             "id": "wt-riskStatus01",
             "permission": 1377,
             "type": "pie",
-            "seriesName": "riskStatus", 
+            "seriesName": "riskStatus",
             "api": "RiskByStatus",
-            "key": "0-3-14", 
+            "key": "0-4-1",
             "name": "item",
             "y": "total"
         }
-      }, 
+      },
       "riskPeriority":{
-      "title": "riskPeriority", 
+      "title": "riskPeriority",
         "props": {
         "id": 'wt-riskPeriority02',
         "permission": 3500,
         "type": 'pie',
         "seriesName": "riskPeriority",
-        "api": 'RiskByPeriodrity',
-        "key": "0-3-15", 
+        "api": 'RiskByPriority',
+        "key": "0-4-2",
         "name": 'item',
         "y": 'total'
         }
 
-      }, 
+      },
       "riskType":{
         "title": "riskType",
         "props": {
           "id":  "wt-riskType03",
-          "permission": 3507, 
+          "permission": 3507,
           "type": "pie",
-          "seriesName": "riskType", 
+          "seriesName": "riskType",
           "api": "RiskByRiskType",
-          "key": "0-3-16",
+          "key": "0-4-3",
           "name": "item",
           "y": "total"
         }
@@ -1001,42 +1001,46 @@ let categories = {
         type: 1
     },
     '4': {
+        title: 'risk',
+        type: 1
+    },
+    '5': {
         title: 'counters',
         type: 2
     },
-    '5': {
+    '6': {
         title: 'Submittal',
         type: 2
     },
-    '6': {
+    '7': {
         title: 'communication',
         type: 2
     },
-    '7': {
+    '8': {
         title: 'inspectionRequest',
         type: 2
     },
-    '8': {
+    '9': {
         title: 'respondTime',
         type: 2
     },
-    '9': {
+    '10': {
         title: 'qualityControl',
         type: 2
     },
-    '10': {
+    '11': {
         title: 'po',
         type: 2
     },
-    '11': {
+    '12': {
         title: 'bar',
         type: 3
     },
-    '12': {
+    '13': {
         title: 'pie',
         type: 3
     },
-    '13': {
+    '14': {
         title: 'line',
         type: 3
     }

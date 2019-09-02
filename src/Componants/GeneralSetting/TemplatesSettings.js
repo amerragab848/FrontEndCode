@@ -37,8 +37,9 @@ class TemplatesSettings extends Component {
             })
         }, 1000);
     }
-    componentWillReceiveProps(props) {
-        console.log(props)
+
+    componentDidMount = () => {
+
     }
     render() {
         return (
@@ -152,7 +153,9 @@ class TemplatesSettings extends Component {
 }
 
 const mapStateToProps = (state) => {
+
     let sState = state;
+    console.log(sState.Adminstration.tabIndex)
     return sState;
 }
 

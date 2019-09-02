@@ -2261,7 +2261,7 @@
     },
     "ownerRisk": {
         "en": " Risk Owner",
-        "ar": "Owner Risk"
+        "ar": "الشركة المسئولة"
     },
     "pleaseSelectGeneralContractor": {
         "en": "Please Select a General Contractor",
@@ -2540,7 +2540,7 @@
         "ar": "المراجع"
     },
     "document": {
-        "en": "documents",
+        "en": "Documents",
         "ar": "الوثائق"
     },
     "mode": {
@@ -5164,8 +5164,8 @@
         "ar": "Risk Status  "
     },
     "riskPeriority": {
-        "en": "Risk Periority  ",
-        "ar": "Risk Periority  "
+        "en": "Risk Priority  ",
+        "ar": "Risk Priority  "
     },
     "letterStatusYearly": {
         "en": "Letter Status Yearly",
@@ -8071,6 +8071,10 @@
         "en": "Categorisation",
         "ar": "Categorisation"
     },
+    "selectCategorisation": {
+        "en": "Please Select Categorisation",
+        "ar": "برجاء إختيار الفئة"
+    },
     "seeAll": {
         "en": "See All",
         "ar": "عرض الجميع"
@@ -8102,5 +8106,29 @@
     "raisedBy": {
         "en": "Raised By",
         "ar": "اُعِدَ بواسطة"
+    },
+    "adddiscussion": {
+        "en": "Add discussion",
+        "ar": "إضافة محادثة"
+    },
+    "video": {
+        "en": "Video",
+        "ar": "ملف فيديو"
+    },
+    "image": {
+        "en": "Image",
+        "ar": "صورة"
+    },
+    "reportsRisk": {
+        "en": "Reports Risk",
+        "ar": " تقرير الخطورة"
+    } ,
+    "open": {
+        "en": "Open",
+        "ar": " مفتوح"
+    }  ,
+    "riskCategory": {
+        "en": "Risk Category",
+        "ar": " فئات الخطورة"
     }
 }

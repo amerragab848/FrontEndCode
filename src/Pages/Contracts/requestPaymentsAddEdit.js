@@ -1845,10 +1845,10 @@ class requestPaymentsAddEdit extends Component {
         } else if (event.label === "AddMissingItems") {
             dataservice
                 .GetDataGrid(
-                    "v4_addMissingRequestPaymentItem?requestId=" +
-                    this.state.docId +
-                    "&contractId=" +
-                    this.state.document.contractId
+                    "AddMissingItems?requestId=" +
+                        this.state.docId +
+                        "&contractId=" +
+                        this.state.document.contractId
                 )
                 .then(result => {
                     toast.success(

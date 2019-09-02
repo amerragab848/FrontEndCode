@@ -1072,46 +1072,86 @@ class ExpensesWorkFlowAddEdit extends Component {
                         </div>
 
 
-                        {/* Right Menu */}
-                        <div className="docstepper-levels">
 
-                            <div className="step-content-foot">
-                                <span onClick={this.PreviousStep} className={(idEdit !== 0 && this.state.CurrStep > 1) ? "step-content-btn-prev " :
-                                    "step-content-btn-prev disabled"}><i className="fa fa-caret-left" aria-hidden="true"></i>{Resources.previous[currentLanguage]}</span>
-                                <span onClick={this.NextStep} className={this.state.MoveSteps ? "step-content-btn-prev "
-                                    : "step-content-btn-prev disabled"}>{Resources.next[currentLanguage]}<i className="fa fa-caret-right" aria-hidden="true"></i>
-                                </span>
+
+                        {/* {this.state.IsEditMode ?
+                            <div className="editView__tabs">
+                                <div onClick={this.StepOneLink} className={this.state.FirstStep ? "editView__tabs--title active" : "editView__tabs--title "}>
+                                    <h3 className="zero">{Resources["schedule"][currentLanguage]}</h3>
+                                </div>
+                                <div onClick={this.StepTwoLink} className={this.state.SecondStep ? "editView__tabs--title active" : "editView__tabs--title "}>
+                                    <h3 className="zero">{Resources["items"][currentLanguage]}</h3>
+                                </div>
                             </div>
+                            :
 
-                            <div className="workflow-sliderSteps">
-                                <div className="step-slider">
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'step-slider-item ' + (this.state.CurrStep == 1 ? 'current__step' : this.state.firstComplete ? "active" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>1</span>
+                            <div className="docstepper-levels" style={{ boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2)', width: '100%', background: '#fff', zIndex: '14' }}>
+                                <div class="StepperNum1 StepperNum" style={{ justifyContent: 'center', marginTop: '40px' }}>
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'StepNumber ' + (this.state.FirstStep ? "current__step active" : ' active')}>
+                                        <div class="StepNum">
+                                            <p class="StepN zero" >1</p>
+                                            <p class="StepTrue zero">✔</p>
                                         </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources.expensesWorkFlow[currentLanguage]}</h6>
-                                        </div>
+                                        <div class="stepWord">{Resources["schedule"][currentLanguage]}</div>
                                     </div>
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'step-slider-item ' + (this.state.CurrStep == 2 ? 'current__step' : this.state.secondComplete ? "active" : "")} >
-                                        <div className="steps-timeline">
-                                            <span>2</span>
+                                    <span class="Step-Line"></span>
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'StepNumber ' + (this.state.SecondStepComplate ? " active current__step" : " ")}>
+                                        <div class="StepNum">
+                                            <p class="StepN zero">2</p>
+                                            <p class="StepTrue zero">✔</p>
                                         </div>
-                                        <div className="steps-info">
-                                            <h6 >{Resources.contacts[currentLanguage]}</h6>
-                                        </div>
-                                    </div>
-                                    <div onClick={this.StepThreeLink} data-id="step3" className={this.state.CurrStep == 3 ? "step-slider-item  current__step" : "step-slider-item"}>
-                                        <div className="steps-timeline">
-                                            <span>3</span>
-                                        </div>
-                                        <div className="steps-info">
-                                            <h6>{Resources.multiApproval[currentLanguage]}</h6>
-                                        </div>
+                                        <div class="stepWord">{Resources["items"][currentLanguage]}</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        } */}
+                        {/* Right Menu */}
+
+                        {idEdit !== 0 ?
+                            <div className="editView__tabs">
+                                <div onClick={this.StepOneLink} className={this.state.CurrStep == 1 ? "editView__tabs--title active" : "editView__tabs--title "}>
+                                    <p className="zero">{Resources.expensesWorkFlow[currentLanguage]}</p>
+                                </div>
+                                <div onClick={this.StepTwoLink} className={this.state.CurrStep == 2 ? "editView__tabs--title active" : "editView__tabs--title "}>
+                                    <p className="zero">{Resources.contacts[currentLanguage]}</p>
+                                </div>
+                                <div onClick={this.StepThreeLink} className={this.state.CurrStep == 3 ? "editView__tabs--title active" : "editView__tabs--title "}>
+                                    <p className="zero">{Resources.multiApproval[currentLanguage]}</p>
+                                </div>
+                            </div>
+                            :
+                            <div className="docstepper-levels" style={{ width: '100%', background: '#fff', zIndex: '14' }}>
+
+                                <div class="StepperNum1 StepperNum" style={{ justifyContent: 'center', marginTop: '40px' }}>
+
+                                    <div data-id="step1" className={'StepNumber ' + (this.state.CurrStep == 1 ? "current__step active" : this.state.firstComplete ? "activea" : "")}>
+                                        <div class="StepNum">
+                                            <p class="StepN zero" >1</p>
+                                            <p class="StepTrue zero">✔</p>
+                                        </div>
+                                        <div class="stepWord">{Resources.expensesWorkFlow[currentLanguage]}</div>
+                                    </div>
+                                    <span class="Step-Line"></span>
+
+                                    <div data-id="step1" className={'StepNumber ' + (this.state.CurrStep == 2 ? "current__step active" : this.state.secondComplete ? "activea" : "")}>
+                                        <div class="StepNum">
+                                            <p class="StepN zero" >2</p>
+                                            <p class="StepTrue zero">✔</p>
+                                        </div>
+                                        <div class="stepWord">{Resources.contacts[currentLanguage]}</div>
+                                    </div>
+                                    <span class="Step-Line"></span>
+
+                                    <div data-id="step1" className={'StepNumber ' + (this.state.CurrStep == 3 ? "current__step active" : "")}>
+                                        <div class="StepNum">
+                                            <p class="StepN zero" >3</p>
+                                            <p class="StepTrue zero">✔</p>
+                                        </div>
+                                        <div class="stepWord">{Resources.multiApproval[currentLanguage]}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal

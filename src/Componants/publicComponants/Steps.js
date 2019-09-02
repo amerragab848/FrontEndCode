@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import * as StepsActions from "../../store/actions/Steps";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import Resources from "../../resources.json";
-let currentLanguage =    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class Steps extends Component {
     constructor(props) {
         super(props);
@@ -15,7 +15,7 @@ class Steps extends Component {
     }
 
     componentWillReceiveProps(props) {
-        if (props.stepNo&&props.stepNo != this.state.stepNo)
+        if (props.stepNo && props.stepNo != this.state.stepNo)
             this.setCurrentStep(props.stepNo);
     }
 
@@ -62,68 +62,57 @@ class Steps extends Component {
     }
 
     toggleNextStep(e, step, index) {
+
         if (step.callBackFn) {
             step.callBackFn();
         }
         this.setCurrentStep(index);
+
     }
 
     render() {
         let renderSteps = this.props.steps_defination.map((step, index) => {
             return (
-                <div
-                    key={"index-" + index}
-                    onClick={e => {
-                        this.toggleNextStep(e, step, index);
-                    }}
-                    className={
-                        "step-slider-item " +
-                        (this.state.completedTabs[index]
-                            ? "active"
-                            : this.state.stepNo == index
-                                ? "current__step"
-                                : "")
-                    }>
-                    <div className="steps-timeline">
-                        <span>{index + 1}</span>
-                    </div>
-                    <div className="steps-info">
-                        <h6>{Resources[step.name][currentLanguage]}</h6>
-                    </div>
-                </div>
+                this.props.changeStatus == true ?
+                    <Fragment>
+                        <div key={"index-" + index} onClick={e => { this.toggleNextStep(e, step, index); }} className={'editView__tabs--title ' + (this.state.completedTabs[index] ? " " : this.state.stepNo == index ? " active" : "")}>
+                            <p>{Resources[step.name][currentLanguage]}</p>
+                        </div>
+                    </Fragment>
+                    :
+                    <Fragment>
+                        <div key={"index-" + index} className={'StepNumber ' + (this.state.completedTabs[index] ? " activea" : this.state.stepNo == index ? "current__step active" : "")}>
+                            <div class="StepNum">
+                                <p class="StepN zero" >{index + 1}</p>
+                                <p class="StepTrue zero">✔</p>
+                            </div>
+                            <div class="stepWord">{Resources[step.name][currentLanguage]}</div>
+                        </div>
+                        <span class="Step-Line"></span>
+                    </Fragment>
+
+
             );
         });
 
+
         return (
-            <div className="docstepper-levels">
+            <Fragment>
                 {/* Next & Previous */}
-                <div className="step-content-foot">
-                    <span
-                        onClick={e => this.nxt_prev(-1)}
-                        className={
-                            this.props.changeStatus == true && this.state.stepNo !== 0
-                                ? "step-content-btn-prev "
-                                : "step-content-btn-prev disabled"
-                        }>
-                        <i className="fa fa-caret-left" aria-hidden="true" />
-                        {Resources["previous"][currentLanguage]}
-                    </span>
-                    <span
-                        onClick={e => this.nxt_prev(1)}
-                        className={
-                            this.props.changeStatus == true
-                                ? "step-content-btn-prev "
-                                : "step-content-btn-prev disabled"
-                        }>
-                        {Resources["next"][currentLanguage]}{" "}
-                        <i className="fa fa-caret-right" aria-hidden="true" />
-                    </span>
-                </div>
+
                 {/* Steps Active  */}
-                <div className="workflow-sliderSteps">
-                    <div className="step-slider">{renderSteps}</div>
-                </div>
-            </div>
+                {this.props.changeStatus == true ?
+                    <div class="editView__tabs">
+                        {renderSteps}
+                    </div>
+                    :
+                    <div className="docstepper-levels" style={{ width: '100%', background: '#fff', zIndex: '14' }}>
+                        <div class="StepperNum1 StepperNum" style={{ justifyContent: 'center', marginTop: '40px' }}>
+                            {renderSteps}
+                        </div>
+                    </div>
+                }
+            </Fragment>
         );
     }
 }

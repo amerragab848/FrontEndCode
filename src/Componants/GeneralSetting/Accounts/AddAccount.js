@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import DropdownMelcous from '../../OptionsPanels/DropdownMelcous';
 import Api from '../../../api';
-import NotifiMsg from '../../publicComponants/NotifiMsg'
 import Resources from '../../../resources.json';
-import config from "../../../Services/Config";
+import Config from "../../../Services/Config";
+import dataservice from "../../../Dataservice";
 import _ from "lodash";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -17,9 +17,7 @@ import CompanyDropdown from '../../publicComponants/CompanyDropdown'
 import ContactDropdown from '../../publicComponants/ContactDropdown'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const publicConfiguarion = config.getPayload();
-const getPublicConfiguartion = config.getPublicConfiguartion();
-
+const publicConfiguarion = Config.getPayload();
 let ListOfDays = [];
 
 const validationSchema = Yup.object().shape({
@@ -50,157 +48,128 @@ class AddAccount extends Component {
     constructor(props) {
         super(props)
 
-        this.state = {
-            UserName: '',
-            Password: '',
-            CompanyData: [],
-            CompanyId: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-            ContactData: [],
-            ContactId: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
-            WorkingHours: '',
-            HoursRate: '',
-            SupervisorCompanyData: [],
-            SupervisorCompanyId: { label: Resources.supervisorCompanyRequired[currentLanguage], value: "0" },
-            SupervisorNameData: [],
-            SupervisorId: { label: Resources.supervisorNameRequired[currentLanguage], value: "0" },
-            GroupNameData: [],
-            GroupNameId: '',
-            EmpCode: '',
-            DesignTeam: 'false',
-            TaskAdmin: false,
-            Active: true,
-            UserPermissiononLogsCreatedbyOthers: false,
-            HRVacationDays: [],
-            checked: false,
-            AccountId: '6',
-            ErrorSameUserName: false,
-            ErrorSameEmpCode: false,
-            statusClass: "disNone",
-            LoadingVaildation: false,
-            SaveMSG: false,
-            SupervisorCompanyValidation: true,
-            SupervisorNameValidation: true,
-            CompanyValidation: true,
-            ContactValidation: true,
-            togglePass: false,
-            showHide: false
+        if (Config.IsAllow(801)) {
+            this.state = {
+                UserName: '',
+                Password: '',
+                CompanyData: [],
+                CompanyId: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+                ContactData: [],
+                ContactId: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
+                WorkingHours: '',
+                HoursRate: '',
+                SupervisorCompanyData: [],
+                SupervisorCompanyId: { label: Resources.supervisorCompanyRequired[currentLanguage], value: "0" },
+                SupervisorNameData: [],
+                SupervisorId: { label: Resources.supervisorNameRequired[currentLanguage], value: "0" },
+                GroupNameData: [],
+                GroupNameId: '',
+                EmpCode: '',
+                DesignTeam: 'false',
+                TaskAdmin: false,
+                Active: true,
+                UserPermissiononLogsCreatedbyOthers: false,
+                HRVacationDays: [],
+                checked: false,
+                LoadingVaildation: false,
+                togglePass: false,
+                showHide: false,
+                saveLoading: false
+            }
         }
+        else { this.props.history.goBack() }
     }
 
     componentDidMount = () => {
-        if (config.IsAllow(801)) {
-            this.GetData('GetCompanies?accountOwnerId=' + publicConfiguarion.aoi + '', 'companyName', 'id', 'CompanyData');
-            this.GetData('GetGroup?accountOwnerId=' + publicConfiguarion.aoi + '', 'groupName', 'id', 'GroupNameData');
-            this.DesignTeamChange = this.DesignTeamChange.bind(this);
-        }
-        else {
-            this.props.history.goBack()
-        }
+        dataservice.GetDataList('GetCompanies?accountOwnerId=' + publicConfiguarion.aoi + '', 'companyName', 'id').then(
+            result => {
+                this.setState({ CompanyData: result });
+            }
+        );
+
+        dataservice.GetDataList('GetGroup?accountOwnerId=' + publicConfiguarion.aoi + '', 'groupName', 'id').then(
+            result => {
+                this.setState({ GroupNameData: result });
+            }
+        );
+        this.designTeamChecked = this.designTeamChecked.bind(this);
     }
 
-    workHoursChangeHandler = (e) => {
-        let workHour = e.target.value;
-        this.setState({ WorkingHours: workHour })
-    }
+    //#region  handle change functions of inputs and dropdown and checkbox
 
     passwordChangeHandler = (e) => {
         let password = e.target.value.replace(/&/g, '%26%')
-        this.setState({ Password: password })
+        this.setState({ Password: password });
     }
 
-    hoursRateChangeHandler = (e) => {
-        let hoursRate = e.target.value;
-        this.setState({ HoursRate: hoursRate })
+    designTeamChecked = (e) => {
+        this.setState({ DesignTeam: e.target.value });
     }
 
-    DesignTeamChange = (e) => {
-        this.setState({
-            DesignTeam: e.target.value
-        })
+    taskAdminChecked = (e) => {
+        this.setState({ TaskAdmin: e.target.value });
     }
 
-    TaskAdminChange = (e) => {
-        this.setState({
-            TaskAdmin: e.target.value
-        })
+    activeChecked = (e) => {
+        this.setState({ Active: e.target.value });
     }
 
-    ActiveChange = (e) => {
-        this.setState({
-            Active: e.target.value
-        })
+    userPermissiononChecked = (e) => {
+        this.setState({ UserPermissiononLogsCreatedbyOthers: e.target.value });
     }
 
-    UserPermissiononLogsChange = (e) => {
-        this.setState({
-            UserPermissiononLogsCreatedbyOthers: e.target.value
-        })
+    companyNamehandleChange = (e) => {
+        this.setState({ CompanyId: e });
+        dataservice.GetDataList('GetContactsNotUsersByCompanyId?companyId=' + e.value + '', 'contactName', 'id').then(
+            result => {
+                this.setState({ ContactData: result });
+            }
+        );
     }
 
-    CompanyNamehandleChange = (e) => {
-        this.setState({ CompanyId: e })
-        this.GetData('GetContactsNotUsersByCompanyId?companyId=' + e.value + '', 'contactName', 'id', 'ContactData')
+    supervisorCompanyhandleChange = (e) => {
+        this.setState({ SupervisorCompanyId: e });
+        dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + e.value + '', 'contactName', 'id').then(
+            result => {
+                this.setState({ SupervisorNameData: result });
+            }
+        );
     }
 
-    SupervisorCompanyhandleChange = (e) => {
-        this.setState({ SupervisorCompanyId: e })
-        this.GetData('GetContactsByCompanyIdForOnlyUsers?companyId=' + e.value + '', 'contactName', 'id', 'SupervisorNameData')
-    }
-
-    SupervisorNamehandleChange = (e) => {
-        this.setState({ SupervisorId: e })
-    }
-
-    ContactNamehandleChange = (e) => {
-        this.setState({ ContactId: e })
-    }
-
-    GroupNameData = (e) => {
-        this.setState({ GroupNameId: e })
-    }
-
-    UserNameChangeHandler = (e) => {
-        this.setState({ LoadingVaildation: true })
+    //check id username is already exists or no 
+    checkUserName = (e) => {
         let username = e.target.value.toLowerCase();
         username.replace(/&/g, '%26%')
         if (username !== "") {
+            this.setState({ LoadingVaildation: true });
             Api.get('CheckUserNameAccount?userName=' + username + '').then(
                 res => {
                     if (res === true) {
-                        this.setState({
-                            LoadingVaildation: false,
-                            UserName: '',
-                            ErrorSameInputs: true,
-                        })
+                        this.setState({ LoadingVaildation: false, UserName: '' });
+                        toast.error(Resources['smartDeleteMessage'][currentLanguage].refCodeExist);
                     }
                     else {
-                        this.setState({ LoadingVaildation: false, UserName: username, ErrorSameInputs: false })
+                        this.setState({ LoadingVaildation: false, UserName: username });
                     }
                 }
             )
         }
-        else {
-            this.setState({ LoadingVaildation: false })
-
-        }
     }
 
-    employeeCodeChangeHandler = (e) => {
-        this.setState({ LoadingVaildation: true })
+    //check id empcode is already exists or no 
+    checkEmpCode = (e) => {
+
         let empcode = e.target.value;
         if (empcode !== "") {
+            this.setState({ LoadingVaildation: true });
             Api.get('CheckRefCodeEmployee?code=' + empcode + '').then(
                 res => {
                     if (res === true) {
-                        this.setState({
-                            LoadingVaildation: false,
-                            ErrorSameEmpCode: true,
-                            ErrorSameInputs: true,
-                            EmpCode: ''
-                        })
+                        this.setState({ LoadingVaildation: false, EmpCode: '' });
+                        toast.error(Resources['userNameAlreadyExisted'][currentLanguage]);
                     }
                     else {
-                        this.setState({ LoadingVaildation: false, EmpCode: empcode, ErrorSameInputs: false })
+                        this.setState({ LoadingVaildation: false, EmpCode: empcode });
                     }
                 }
             )
@@ -209,77 +178,67 @@ class AddAccount extends Component {
         }
     }
 
-    DayVacationhandleCheck = (e) => {
-        let dayId = e.target.value
-        let dayIsInlist = ListOfDays.filter(s => s === dayId).length
+    //week days checked
+    daysHandleChange = (e) => {
+        let dayId = e.target.value;
+        let dayIsInlist = ListOfDays.filter(s => s === dayId).length;
         if (dayIsInlist > 0) {
-            var index = ListOfDays.indexOf(dayId)
-            ListOfDays.splice(index, 1)
+            var index = ListOfDays.indexOf(dayId);
+            ListOfDays.splice(index, 1);
         }
         else {
-            ListOfDays.push(dayId)
+            ListOfDays.push(dayId);
         }
         this.setState({ checked: !this.state.checked });
     }
 
-    AddAccount = () => {
-        Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password + '&companyId=' + this.state.CompanyId.value + '', null, 'POST').then(res => {
-            if (res !== "Email already exists.") {
-                Api.post('AddAccount',
-                    {
-                        'userName': this.state.UserName,
-                        'userPassword': this.state.Password,
-                        'accountCompanyId': getPublicConfiguartion.accountCompanyId,
-                        'companyId': this.state.CompanyId.value,
-                        'contactId': this.state.ContactId.value,
-                        'contactSupervisorId': this.state.SupervisorId.value,
-                        'companySupervisorId': this.state.SupervisorCompanyId.value,
-                        'defaultHours': this.state.WorkingHours,
-                        'userRate': this.state.HoursRate,
-                        'groupId': this.state.GroupNameId.value,
-                        'empCode': this.state.EmpCode,
-                        'designTeam': this.state.DesignTeam,
-                        'isTaskAdmin': this.state.TaskAdmin,
-                        'active': this.state.Active,
-                        'passwordEdit': false,
-                        'isHrManager': false,
-                        'usePermissionsOnLogs': this.state.UserPermissiononLogsCreatedbyOthers
-                    }).then(
-                        res => {
-                            //return AccountId  to save Vacations
-                            this.setState({
-                                // AccountId:res.id
-                            })
-                        },
-                        ListOfDays.forEach(function (item) {
-                            var dayId = '';
-                            dayId = item
-                            // Api.post('UpdateVacations?accountId='+this.state.AccountId+'&dayId='+dayId+'').catch(ex => { })
-                        }),
-                        this.props.actions.routeToTabIndex(0),
-                        this.props.history.push({
-                            pathname: '/TemplatesSettings',
-                        })
-                    )
+    //#endregion
+
+    // in save account calling api authorizationApi 'to check this account userName and password already exists or no'
+    // when result return 'Successfuly created account.' calling api addccount and save account and route to accounts log
+    save = () => {
+        this.setState({ saveLoading: true });
+        let accountCompanyId = Config.getPublicConfiguartion().accountCompanyId;
+        Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password + '&companyId=' + accountCompanyId, null, 'POST', true).then(res => {
+            if (res.status === 200) {
+                let obj = {
+                    userName: this.state.UserName, userPassword: this.state.Password,
+                    accountCompanyId: Config.getPublicConfiguartion().accountCompanyId, companyId: this.state.CompanyId.value,
+                    contactId: this.state.ContactId.value, contactSupervisorId: this.state.SupervisorId.value,
+                    companySupervisorId: this.state.SupervisorCompanyId.value, defaultHours: this.state.WorkingHours,
+                    userRate: this.state.HoursRate, groupId: this.state.GroupNameId.value, empCode: this.state.EmpCode,
+                    designTeam: this.state.DesignTeam,
+                    isTaskAdmin: this.state.TaskAdmin, active: this.state.Active, passwordEdit: false,
+                    isHrManager: false, usePermissionsOnLogs: this.state.UserPermissiononLogsCreatedbyOthers
+                };
+                Api.post('AddAccount', obj).then(res => {
+
+                    // this code from adding account vacation
+                    // ListOfDays.forEach(function (item) {
+                    //     var dayId = '';
+                    //     dayId = item
+                    //     // Api.post('UpdateVacations?accountId='+this.state.AccountId+'&dayId='+dayId+'').catch(ex => { })
+                    // }),
+                    this.props.actions.routeToTabIndex(0);
+                    this.props.history.push({ pathname: '/TemplatesSettings' });
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                    this.setState({ saveLoading: false });
+                }).catch(ex => {
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    this.setState({ saveLoading: false });
+                });
             }
-            else
-                toast.warn(res)
-        }
-
-
-        ).catch(ex => {
-            this.props.history.push({
-                pathname: '/TemplatesSettings',
-            })
+            else { toast.warn("Email already exists.") }
+        }).catch(ex => {
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+            this.setState({ saveLoading: false });
         })
 
     }
 
+    //show password
     handlePasswordtype = () => {
-        this.setState({
-            togglePass: !this.state.togglePass,
-            showHide: !this.state.showHide
-        })
+        this.setState({ togglePass: !this.state.togglePass, showHide: !this.state.showHide });
     }
 
     render() {
@@ -287,6 +246,7 @@ class AddAccount extends Component {
         return (
             <div className="mainContainer main__fulldash">
                 <div className="documents-stepper cutome__inputs noTabs__document">
+
                     <div className="submittalHead">
                         <h2 className="zero">Add Account</h2>
                         <div className="SubmittalHeadClose">
@@ -308,62 +268,52 @@ class AddAccount extends Component {
                             </svg>
                         </div>
                     </div>
+
                     <div className="doc-container">
                         <div className="step-content noBtn__footer">
                             <div className="subiTabsContent">
                                 <div className="document-fields">
 
-                                    <NotifiMsg showNotify={this.state.ErrorSameInputs} IsSuccess={false} Msg={this.state.ErrorSameEmpCode ? Resources['smartDeleteMessage'][currentLanguage].refCodeExist : Resources['userNameAlreadyExisted'][currentLanguage]} />
-
                                     {this.state.LoadingVaildation ? <LoadingSection /> : null}
 
                                     <Formik
-
                                         initialValues={{
-                                            UserName: '',
-                                            Password: '',
-                                            WorkHours: '',
-                                            EmpCode: '',
-                                            RateHours: '',
-                                            SupervisorName: '',
-                                            ContactName: '',
+                                            UserName: '', Password: '', WorkHours: '', EmpCode: '',
+                                            RateHours: '', SupervisorName: '', ContactName: '',
                                         }}
-
+                                        enableReinitialize={true}
                                         validationSchema={validationSchema}
-
-                                        onSubmit={() => {
-                                            this.AddAccount()
-
-                                        }} >
+                                        onSubmit={() => { this.save() }} >
 
                                         {({ errors, touched, handleBlur, values, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                             <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
+
                                                 <div className="proForm first-proform fullProformWrapper">
+
                                                     <div className="linebylineInput valid-input">
-                                                        <Fragment>
-                                                            <label className="control-label">{Resources['UserName'][currentLanguage]} </label>
-                                                            <div className={'ui input inputDev ' + (errors.UserName && touched.UserName ? 'has-error' : null) + ' '}>
-                                                                <input name='UserName' value={this.state.UserName}
-                                                                    className="form-control" id="UserName" placeholder={Resources['UserName'][currentLanguage]} autoComplete='off'
-                                                                    onBlur={(e) => {
-                                                                        this.UserNameChangeHandler(e)
-                                                                        handleBlur(e)
-                                                                    }} onChange={(e) => {
-                                                                        handleChange(e)
-                                                                        this.setState({ UserName: e.target.value, ErrorSameInputs: false, ErrorSameEmpCode: false })
-                                                                    }} />
-                                                                {errors.UserName && touched.UserName ? (<em className="pError">{errors.UserName}</em>) : null}
-                                                            </div>
-                                                        </Fragment>
+                                                        <label className="control-label">{Resources['UserName'][currentLanguage]} </label>
+                                                        <div className={'ui input inputDev ' + (errors.UserName && touched.UserName ? 'has-error' : null) + ' '}>
+                                                            <input name='UserName' value={this.state.UserName}
+                                                                className="form-control" id="UserName" placeholder={Resources['UserName'][currentLanguage]} autoComplete='off'
+                                                                onBlur={(e) => {
+                                                                    this.checkUserName(e)
+                                                                    handleBlur(e)
+                                                                }} onChange={(e) => {
+                                                                    handleChange(e)
+                                                                    this.setState({ UserName: e.target.value })
+                                                                }} />
+                                                            {errors.UserName && touched.UserName ? (<em className="pError">{errors.UserName}</em>) : null}
+                                                        </div>
                                                     </div>
+
                                                     <div className="linebylineInput">
                                                         <label data-toggle="tooltip" title={Resources['active'][currentLanguage]} className="control-label"> {Resources['active'][currentLanguage]} </label>
                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                            <input type="radio" defaultChecked name="active" value="true" onChange={this.ActiveChange} />
+                                                            <input type="radio" defaultChecked name="active" value="true" onChange={this.activeChecked} />
                                                             <label>{Resources['yes'][currentLanguage]}</label>
                                                         </div>
                                                         <div className="ui checkbox radio radioBoxBlue checked">
-                                                            <input type="radio" name="active" value="false" onChange={this.ActiveChange} />
+                                                            <input type="radio" name="active" value="false" onChange={this.activeChecked} />
                                                             <label> {Resources['no'][currentLanguage]}</label>
                                                         </div>
                                                     </div>
@@ -386,7 +336,8 @@ class AddAccount extends Component {
                                                             <span class="hide"> Hide</span>
                                                         </span>
 
-                                                        <input style={{ width: '100%' }} autoComplete='new-password' name='Password' className="form-control" id="Password" placeholder={Resources['password'][currentLanguage]} 
+                                                        <input style={{ width: '100%' }} autoComplete='new-password' name='Password' className="form-control"
+                                                            id="Password" placeholder={Resources['password'][currentLanguage]}
                                                             onBlur={(e) => {
                                                                 this.passwordChangeHandler(e)
                                                                 handleBlur(e)
@@ -400,45 +351,38 @@ class AddAccount extends Component {
                                                 </div>
 
                                                 <div className="linebylineInput valid-input">
-                                                    <Fragment>
-                                                        <label className="control-label">{Resources['employeeCode'][currentLanguage]} </label>
-                                                        <div className={'ui input inputDev ' + (errors.EmpCode && touched.EmpCode ? 'has-error' : null) + ' '}>
-                                                            <input name='EmpCode' value={this.state.EmpCode}
-                                                                className="form-control" id="EmpCode" placeholder={Resources['employeeCode'][currentLanguage]} autoComplete='off'
-                                                                onBlur={(e) => {
-                                                                    this.employeeCodeChangeHandler(e)
-                                                                    handleBlur(e)
-                                                                }} onChange={(e) => {
-                                                                    handleChange(e)
-                                                                    this.setState({ EmpCode: e.target.value, ErrorSameInputs: false, ErrorSameEmpCode: false })
-                                                                }} />
-                                                            {errors.EmpCode && touched.EmpCode ? (<em className="pError">{errors.EmpCode}</em>) : null}
-                                                        </div>
-                                                    </Fragment>
+                                                    <label className="control-label">{Resources['employeeCode'][currentLanguage]} </label>
+                                                    <div className={'ui input inputDev ' + (errors.EmpCode && touched.EmpCode ? 'has-error' : null) + ' '}>
+                                                        <input name='EmpCode' value={this.state.EmpCode}
+                                                            className="form-control" id="EmpCode" placeholder={Resources['employeeCode'][currentLanguage]} autoComplete='off'
+                                                            onBlur={(e) => {
+                                                                this.checkEmpCode(e)
+                                                                handleBlur(e)
+                                                            }} onChange={(e) => {
+                                                                handleChange(e)
+                                                                this.setState({ EmpCode: e.target.value })
+                                                            }} />
+                                                        {errors.EmpCode && touched.EmpCode ? (<em className="pError">{errors.EmpCode}</em>) : null}
+                                                    </div>
                                                 </div>
-
-
 
                                                 <div className="linebylineInput valid-input mix_dropdown">
                                                     <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
                                                             <DropdownMelcous data={this.state.ContactData} onChange={setFieldValue} name="ContactName"
-                                                                onBlur={setFieldTouched} error={errors.ContactName} id="ContactName"
-                                                                touched={touched.ContactName} index="IR-ContactName"
-                                                                handleChange={this.ContactNamehandleChange}
-                                                                selectedValue={this.state.ContactId} styles={CompanyDropdown} classDrop="contactName1 "
-                                                            />
+                                                                onBlur={setFieldTouched} error={errors.ContactName} id="ContactName" index="IR-ContactName"
+                                                                handleChange={e => this.setState({ ContactId: e })} touched={touched.ContactName}
+                                                                selectedValue={this.state.ContactId} styles={CompanyDropdown} classDrop="contactName1 " />
                                                         </div>
 
                                                         <div className="super_company">
                                                             <DropdownMelcous data={this.state.CompanyData} name="CompanyName"
                                                                 selectedValue={this.state.selectedFromCompany}
-                                                                handleChange={this.CompanyNamehandleChange} selectedValue={this.state.CompanyId} classDrop="companyName1" styles={ContactDropdown} />
+                                                                handleChange={this.companyNamehandleChange} selectedValue={this.state.CompanyId} classDrop="companyName1" styles={ContactDropdown} />
                                                         </div>
                                                     </div>
                                                 </div>
-
 
                                                 <div className="linebylineInput valid-input mix_dropdown">
                                                     <label className="control-label">{Resources.SupervisorCompany[currentLanguage]}</label>
@@ -447,27 +391,24 @@ class AddAccount extends Component {
                                                             <DropdownMelcous data={this.state.SupervisorNameData} onChange={setFieldValue} name="SupervisorName"
                                                                 onBlur={setFieldTouched} error={errors.SupervisorName} id="SupervisorName"
                                                                 touched={touched.SupervisorName} index="IR-SupervisorName"
-                                                                handleChange={this.SupervisorNamehandleChange}
+                                                                handleChange={(e) => this.setState({ SupervisorId: e })}
                                                                 selectedValue={this.state.SupervisorId} styles={CompanyDropdown} classDrop="contactName1 "
                                                             />
                                                         </div>
 
                                                         <div className="super_company">
-                                                            <DropdownMelcous data={this.state.CompanyData} name="SupervisorCompany"
-                                                                selectedValue={this.state.selectedFromCompany}
-                                                                handleChange={this.SupervisorCompanyhandleChange} selectedValue={this.state.SupervisorCompanyId} classDrop=" companyName1" styles={ContactDropdown} />
+                                                            <DropdownMelcous data={this.state.CompanyData} name="SupervisorCompany" selectedValue={this.state.SupervisorCompanyId}
+                                                                handleChange={this.supervisorCompanyhandleChange} classDrop=" companyName1" styles={ContactDropdown} />
                                                         </div>
                                                     </div>
                                                 </div>
 
-
                                                 <div className="linebylineInput valid-input">
                                                     <DropdownMelcous title='GroupName'
                                                         data={this.state.GroupNameData}
-                                                        handleChange={this.GroupNameData}
+                                                        handleChange={e => this.setState({ GroupNameId: e })}
                                                         placeholder='GroupName' />
                                                 </div>
-
 
                                                 <div className="fullWidthWrapper account__checkbox">
 
@@ -475,11 +416,11 @@ class AddAccount extends Component {
                                                         <div className="linebylineInput">
                                                             <label data-toggle="tooltip" title={Resources['designTeam'][currentLanguage]} className="control-label"> {Resources['designTeam'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="designTeam" value="true" onChange={this.DesignTeamChange} />
+                                                                <input type="radio" name="designTeam" value="true" onChange={this.designTeamChecked} />
                                                                 <label>{Resources['yes'][currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue checked">
-                                                                <input type="radio" defaultChecked name="designTeam" value="false" onChange={this.DesignTeamChange} />
+                                                                <input type="radio" defaultChecked name="designTeam" value="false" onChange={this.designTeamChecked} />
                                                                 <label> {Resources['no'][currentLanguage]}</label>
                                                             </div>
 
@@ -490,11 +431,11 @@ class AddAccount extends Component {
                                                         <div className="linebylineInput">
                                                             <label data-toggle="tooltip" title={Resources['isTaskAdmin'][currentLanguage]} className="control-label"> {Resources['isTaskAdmin'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="TaskAdmin" value="true" onChange={this.TaskAdminChange} />
+                                                                <input type="radio" name="TaskAdmin" value="true" onChange={this.taskAdminChecked} />
                                                                 <label>{Resources['yes'][currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue checked">
-                                                                <input type="radio" defaultChecked name="TaskAdmin" value="false" onChange={this.TaskAdminChange} />
+                                                                <input type="radio" defaultChecked name="TaskAdmin" value="false" onChange={this.taskAdminChecked} />
                                                                 <label> {Resources['no'][currentLanguage]}</label>
                                                             </div>
 
@@ -505,11 +446,11 @@ class AddAccount extends Component {
                                                         <div className="linebylineInput">
                                                             <label data-toggle="tooltip" title={Resources['usePermissionsOnLogs'][currentLanguage]} className="control-label"> {Resources['usePermissionsOnLogs'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="usePermissionsOnLogs" value="true" onChange={this.UserPermissiononLogsChange} />
+                                                                <input type="radio" name="usePermissionsOnLogs" value="true" onChange={this.userPermissiononChecked} />
                                                                 <label>{Resources['yes'][currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue ">
-                                                                <input type="radio" defaultChecked name="usePermissionsOnLogs" value="false" onChange={this.UserPermissiononLogsChange} />
+                                                                <input type="radio" defaultChecked name="usePermissionsOnLogs" value="false" onChange={this.userPermissiononChecked} />
                                                                 <label> {Resources['no'][currentLanguage]}</label>
                                                             </div>
 
@@ -528,59 +469,63 @@ class AddAccount extends Component {
                                                             <label className="control-label">{Resources['workHours'][currentLanguage]} </label>
                                                             <div className={'ui input inputDev ' + (errors.WorkHours && touched.WorkHours ? 'has-error' : null) + ' '}>
                                                                 <input name='WorkHours' className="form-control" id="WorkHours" placeholder={Resources['workHours'][currentLanguage]}
-                                                                    autoComplete='off' onBlur={(e) => {
-                                                                        this.workHoursChangeHandler(e)
-                                                                        handleBlur(e)
-                                                                    }} onChange={handleChange} />
+                                                                    autoComplete='off' onBlur={handleBlur} onChange={
+                                                                        e => {
+                                                                            handleChange(e)
+                                                                            this.setState({ WorkingHours: e.target.value })
+                                                                        }} />
                                                                 {errors.WorkHours && touched.WorkHours ? (<em className="pError">{errors.WorkHours}</em>) : null}
                                                             </div>
                                                         </div>
+
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources['hoursRate'][currentLanguage]} </label>
                                                             <div className={'ui input inputDev ' + (errors.RateHours && touched.RateHours ? 'has-error' : null) + ' '}>
                                                                 <span className="inputsideNote">Optional</span>
                                                                 <input name='RateHours' className="form-control" id="RateHours" placeholder={Resources['hoursRate'][currentLanguage]}
-                                                                    autoComplete='off' onBlur={(e) => {
-                                                                        this.hoursRateChangeHandler(e)
-                                                                        handleBlur(e)
-                                                                    }} onChange={handleChange} />
+                                                                    autoComplete='off' onBlur={handleBlur}
+                                                                    onChange={(e) => {
+                                                                        handleChange(e)
+                                                                        this.setState({ HoursRate: e.target.value });
+                                                                    }} />
                                                                 {errors.RateHours && touched.RateHours ? (<em className="pError">{errors.RateHours}</em>) : null}
                                                             </div>
                                                         </div>
+
                                                         <div className="linebylineInput fullWidthWrapper daysCheckbox">
                                                             <label> HR Vacation Days</label>
                                                             <div className="three__daysCheck--flex">
                                                                 <div className="three__daysCheck">
                                                                     <div className="ui checkbox checkBoxGray300 checked">
-                                                                        <input type="checkbox" value='1' onChange={this.DayVacationhandleCheck} defaultChecked={this.state.checked} />
+                                                                        <input type="checkbox" value='1' onChange={this.daysHandleChange} defaultChecked={this.state.checked} />
                                                                         <label>Saturday</label>
                                                                     </div>
                                                                     <div className="ui checkbox checkBoxGray300 checked">
-                                                                        <input type="checkbox" value='2' onChange={this.DayVacationhandleCheck} defaultChecked={this.state.checked} />
+                                                                        <input type="checkbox" value='2' onChange={this.daysHandleChange} defaultChecked={this.state.checked} />
                                                                         <label>Sunday</label>
                                                                     </div>
                                                                     <div className="ui checkbox checkBoxGray300 checked">
-                                                                        <input type="checkbox" value='3' onChange={this.DayVacationhandleCheck} defaultChecked={this.state.checked} />
+                                                                        <input type="checkbox" value='3' onChange={this.daysHandleChange} defaultChecked={this.state.checked} />
                                                                         <label>Monday</label>
                                                                     </div>
                                                                 </div>
                                                                 <div className="three__daysCheck">
                                                                     <div className="ui checkbox checkBoxGray300 checked">
-                                                                        <input type="checkbox" value='4' onChange={this.DayVacationhandleCheck} defaultChecked={this.state.checked} />
+                                                                        <input type="checkbox" value='4' onChange={this.daysHandleChange} defaultChecked={this.state.checked} />
                                                                         <label>Tuesday</label>
                                                                     </div>
                                                                     <div className="ui checkbox checkBoxGray300 checked">
-                                                                        <input type="checkbox" value='5' onChange={this.DayVacationhandleCheck} defaultChecked={this.state.checked} />
+                                                                        <input type="checkbox" value='5' onChange={this.daysHandleChange} defaultChecked={this.state.checked} />
                                                                         <label>Wednesday</label>
                                                                     </div>
                                                                     <div className="ui checkbox checkBoxGray300 checked">
-                                                                        <input type="checkbox" value='6' onChange={this.DayVacationhandleCheck} defaultChecked={this.state.checked} />
+                                                                        <input type="checkbox" value='6' onChange={this.daysHandleChange} defaultChecked={this.state.checked} />
                                                                         <label>Thursday</label>
                                                                     </div>
                                                                 </div>
                                                                 <div className="three__daysCheck">
                                                                     <div className="ui checkbox checkBoxGray300 checked">
-                                                                        <input type="checkbox" value='7' onChange={this.DayVacationhandleCheck} defaultChecked={this.state.checked} />
+                                                                        <input type="checkbox" value='7' onChange={this.daysHandleChange} defaultChecked={this.state.checked} />
                                                                         <label>Friday</label>
                                                                     </div>
                                                                 </div>
@@ -590,8 +535,18 @@ class AddAccount extends Component {
                                                 </div>
 
                                                 <div className="dropBtn dropBtnLeft fullWidthWrapper">
-                                                    <button className="primaryBtn-1 btn" type='submit'  >
-                                                        {Resources['save'][currentLanguage]}</button>
+
+                                                    {this.state.saveLoading ?
+                                                        <button className="primaryBtn-1 btn disabled">
+                                                            <div className="spinner">
+                                                                <div className="bounce1" />
+                                                                <div className="bounce2" />
+                                                                <div className="bounce3" />
+                                                            </div>
+                                                        </button> :
+                                                        <button className="primaryBtn-1 btn" type='submit'  >
+                                                            {Resources['save'][currentLanguage]}</button>
+                                                    }
                                                 </div>
                                             </Form>
                                         )}
@@ -603,28 +558,7 @@ class AddAccount extends Component {
                     </div>
                 </div>
             </div>
-
         )
-    }
-
-    GetData = (url, label, value, currState) => {
-        let Data = []
-        Api.get(url).then(result => {
-            (result).forEach(item => {
-                var obj = {};
-                obj.label = item[label];
-                obj.value = item[value];
-
-                Data.push(obj);
-
-            });
-
-            this.setState({
-                [currState]: [...Data]
-            });
-        }).catch(ex => {
-        });
-
     }
 }
 

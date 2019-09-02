@@ -1205,34 +1205,11 @@ class projectScheduleAddEdit extends Component {
 
             <div className="mainContainer">
 
-                <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs cutomEditSchedule" : "documents-stepper noTabs__document one__tab one_step cutomEditSchedule"}>
+                <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs " : "documents-stepper noTabs__document one__tab one_step cutomEditSchedule"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.schedule[currentLanguage]}
                         moduleTitle={Resources['timeCoordination'][currentLanguage]} />
 
                     <div className="doc-container" style={{ flexFlow: this.state.IsEditMode ? 'row' : 'column' }}>
-                        {this.state.IsEditMode ? null :
-
-                            <div className="docstepper-levels" style={{ boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2)', width: '100%', background: '#fff', zIndex: '14' }}>
-                                <div class="StepperNum1 StepperNum" style={{ justifyContent: 'center', marginTop: '40px' }}>
-                                    <div onClick={this.StepOneLink} data-id="step1" className={'StepNumber ' + (this.state.FirstStep ? "current__step active" : ' active')}>
-                                        <div class="StepNum">
-                                            <p class="StepN zero" >1</p>
-                                            <p class="StepTrue zero">✔</p>
-                                        </div>
-                                        <div class="stepWord">{Resources["schedule"][currentLanguage]}</div>
-                                    </div>
-                                    <span class="Step-Line"></span>
-                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'StepNumber ' + (this.state.SecondStepComplate ? " active current__step" : " ")}>
-                                        <div class="StepNum">
-                                            <p class="StepN zero">2</p>
-                                            <p class="StepTrue zero">✔</p>
-                                        </div>
-                                        <div class="stepWord">{Resources["items"][currentLanguage]}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-
 
                         <div className="step-content" style={{ width: '100%', paddingLeft: '98px' }}>
                             {this.state.FirstStep ?
@@ -1378,16 +1355,38 @@ class projectScheduleAddEdit extends Component {
 
 
                         {this.state.IsEditMode ?
-                            <div className={this.state.tabHover ? "section__tabs" : "section__tabs b-hover"} onMouseOut={() => this.closeTabs()} onMouseOver={() => this.openTabs()}>
-                                <div onClick={this.StepOneLink} className={this.state.FirstStep ? "section__tabs--item active" : "section__tabs--item "}>
-                                    <h3 className="zero">{Resources["schedule"][currentLanguage]}</h3>
+
+                            <div className="editView__tabs">
+                                <div onClick={this.StepOneLink} className={this.state.FirstStep ? "editView__tabs--title active" : "editView__tabs--title "}>
+                                    <p className="zero">{Resources["schedule"][currentLanguage]}</p>
                                 </div>
-                                <div onClick={this.StepTwoLink} className={this.state.SecondStep ? "section__tabs--item active" : "section__tabs--item "}>
-                                    <h3 className="zero">{Resources["items"][currentLanguage]}</h3>
+                                <div onClick={this.StepTwoLink} className={this.state.SecondStep ? "editView__tabs--title active" : "editView__tabs--title "}>
+                                    <p className="zero">{Resources["items"][currentLanguage]}</p>
+                                </div>
+
+                            </div>
+
+                            :
+
+                            <div className="docstepper-levels" style={{ boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2)', width: '100%', background: '#fff', zIndex: '14' }}>
+                                <div class="StepperNum1 StepperNum" style={{ justifyContent: 'center', marginTop: '40px' }}>
+                                    <div onClick={this.StepOneLink} data-id="step1" className={'StepNumber ' + (this.state.FirstStep ? "current__step active" : ' active')}>
+                                        <div class="StepNum">
+                                            <p class="StepN zero" >1</p>
+                                            <p class="StepTrue zero">✔</p>
+                                        </div>
+                                        <div class="stepWord">{Resources["schedule"][currentLanguage]}</div>
+                                    </div>
+                                    <span class="Step-Line"></span>
+                                    <div onClick={this.StepTwoLink} data-id="step2 " className={'StepNumber ' + (this.state.SecondStepComplate ? " active current__step" : " ")}>
+                                        <div class="StepNum">
+                                            <p class="StepN zero">2</p>
+                                            <p class="StepTrue zero">✔</p>
+                                        </div>
+                                        <div class="stepWord">{Resources["items"][currentLanguage]}</div>
+                                    </div>
                                 </div>
                             </div>
-                            :
-                            null
                         }
 
                     </div>

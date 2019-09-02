@@ -10,10 +10,7 @@ import IndexedDb from '../IndexedDb';
 import Details from './widgetsDetails';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
-import mapValues from 'lodash/mapValues';
-//import { type } from "os";
-//import DashBoardWidgets from "./WidgetsDashBorad";
-//import value from 'lodash/value';
+import mapValues from 'lodash/mapValues'; 
 import orderBy from 'lodash/orderBy';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -64,6 +61,8 @@ class Index extends Component {
 
       const getAllWidgets = await IndexedDb.getAll("widget");
 
+      console.log("getAllWidgets",getAllWidgets);
+
       widgets = map(groupBy(getAllWidgets, widget => widget.categoryId), (widgets, categoryId) => {
         return {
           typeId: Details.categories[categoryId].type,
@@ -80,14 +79,12 @@ class Index extends Component {
     this.setState({
       generalCategories: types['1'] || [],
       counterCategories: types['2'] || [],
-      chartCategories: types['3'] || [],
-      chartCategories: types['4'] || []
+      chartCategories: types['3'] || []
     });
-
   };
 
   renderWidget(widget, index) {
-     
+
     if (Details.widgets[widget.title].props.type === "threeWidget") {
       return <ApprovedWidget key={index + "DIV"} {...Details.widgets[widget.title]} title={language[widget.title][currentLanguage]} />
     }
@@ -97,19 +94,18 @@ class Index extends Component {
     else if (Details.widgets[widget.title].props.type === "oneWidget") {
       return <Widgets key={index + "DIV"} title={widget.title} {...Details.widgets[widget.title]} />
     }
-    else if (Details.widgets[widget.title].props.type === "pie") {  
+    else if (Details.widgets[widget.title].props.type === "pie") {
       return <div className="col-lg-4 col-md-6" key={Details.widgets[widget.title].props.key + "DIVPie"}>
-        <PieChartComp 
+        <PieChartComp
           key={Details.widgets[widget.title].props.key}
-          api={Details.widgets[widget.title].props.api} 
+          api={Details.widgets[widget.title].props.api}
           y={Details.widgets[widget.title].props.y}
           name={Details.widgets[widget.title].props.name}
-          title={language[widget.title][currentLanguage]} 
+          title={language[widget.title][currentLanguage]}
           />
       </div>
     }
     else if (Details.widgets[widget.title].props.type === "line") {
-
       return <Fragment key={index + "DIVBriteCharts"}>
         <Britecharts api={Details.widgets[widget.title].props.api}
           topicName={Details.widgets[widget.title].props.topicNames}
