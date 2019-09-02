@@ -199,12 +199,11 @@ class currencyExchangeRates extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-
-                                        <div className="linebylineInput valid-input">
-                                            <DatePicker title='addedDate' startDate={this.state.addedDate}
-                                                handleChange={e => this.setState({ addedDate: e })} />
+                                            <div className="linebylineInput valid-input">
+                                                <DatePicker title='addedDate' startDate={this.state.addedDate}
+                                                    handleChange={e => this.setState({ addedDate: e })} />
+                                            </div>
                                         </div>
 
                                         <div className="slider-Btns">

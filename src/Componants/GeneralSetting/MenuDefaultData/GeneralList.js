@@ -18,10 +18,10 @@ var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 
 const ValidtionSchema = Yup.object().shape({
-    ARTitle: Yup.string().test('contactNameAr', 'Name cannot be english', value => {
+    titleAr: Yup.string().test('contactNameAr', 'Name cannot be english', value => {
         return ar.test(value)
     }).required(Resources['titleArValid'][currentLanguage]),
-    EnTitle: Yup.string().test('titleEnCompany', 'Name cannot be arabic', value => {
+    title: Yup.string().test('titleEnCompany', 'Name cannot be arabic', value => {
         return !en.test(value);
     }).required(Resources['titleEnValid'][currentLanguage]),
     value: Yup.number().required(Resources['isRequiredField'][currentLanguage])
@@ -265,10 +265,10 @@ class GeneralList extends Component {
                 Api.get('GetAccountsDefaultListForEdit?id=' + obj.id + '').then(
                     res => {
                         this.setState({
-                            IsEdit: true,
-                            ShowPopup: true,
                             EditListData: res,
+                            IsEdit: true,
                             selectedrow: obj.id,
+                            ShowPopup: true,
                         })
                     }
                 )
@@ -282,59 +282,34 @@ class GeneralList extends Component {
         }
     }
 
-    showAdd = (e) => {
-        this.setState({
-            ShowPopup: true,
-            EditListData: this.state.showValue ? { title: '', titleAr: '', abbreviation: '', listType: this.state.listType, value: 0 }
-                : { title: '', titleAr: '', abbreviation: '', listType: this.state.listType }
-        });
+    showPopup = (e) => {
+        this.setState({ ShowPopup: true, IsEdit: false });
 
     }
 
-    AddEditSave = (values, actions) => {
-        this.setState({
-            isLoading: true,
-        })
+    save(values, resetForm) {
+        this.setState({ isLoading: true });
         if (this.state.IsEdit) {
-            dataservice.addObject('EditAccountsDefaultList', this.state.EditListData).then(
+            dataservice.addObject('EditAccountsDefaultList', values).then(
                 res => {
-                    this.setState({
-                        rows: res, isLoading: false, ShowPopup: false, IsEdit: false
-                    })
+                    this.setState({ rows: res, isLoading: false, ShowPopup: false, IsEdit: false });
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
+                    this.setState({ isLoading: false, ShowPopup: false });
                 })
         }
         else {
-            dataservice.addObject('AddAccountsDefaultList', this.state.EditListData).then(
+            dataservice.addObject('AddAccountsDefaultList', values).then(
                 res => {
-                    this.setState({
-                        rows: res,
-                        isLoading: false,
-                        ShowPopup: false,
-                    })
+                    this.setState({ rows: res, isLoading: false, ShowPopup: false });
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
-                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+                    toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
+                    this.setState({ isLoading: false, ShowPopup: false });
                 })
         }
-        actions.setSubmitting(false);
-        values.EnTitle = ''
-        values.ARTitle = ''
-        values.Abbreviation = ''
-        this.setState({
-            isLoading: true,
-            ShowPopup: false
-        })
-    }
-
-    HandleInputChange = (e, field) => {
-        let originalDoc = { ...this.state.EditListData };
-        let NewDoc = {};
-        NewDoc[field] = e.target.value;
-        NewDoc = Object.assign(originalDoc, NewDoc);
-        this.setState({ EditListData: NewDoc })
+        resetForm();
     }
 
     render() {
@@ -359,15 +334,17 @@ class GeneralList extends Component {
 
                 <Formik
                     initialValues={{
-                        EnTitle: this.state.EditListData.title,
-                        ARTitle: this.state.EditListData.titleAr,
-                        Abbreviation: this.state.EditListData.abbreviation,
-                        value: this.state.showValue ? this.state.EditListData.value : 0,
+                        listType: this.state.listType,
+                        id: this.state.IsEdit ? this.state.EditListData.id : undefined,
+                        title: this.state.IsEdit ? this.state.EditListData.title : '',
+                        titleAr: this.state.IsEdit ? this.state.EditListData.titleAr : '',
+                        abbreviation: this.state.IsEdit ? this.state.EditListData.abbreviation : '',
+                        value: this.state.showValue ? this.state.IsEdit ? this.state.EditListData.value : 0 : 0,
                     }}
                     enableReinitialize={true}
                     validationSchema={ValidtionSchema}
-                    onSubmit={(values, actions) => {
-                        this.AddEditSave(values, actions)
+                    onSubmit={(values, { resetForm }) => {
+                        this.save(values, resetForm);
                     }}>
 
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit }) => (
@@ -378,41 +355,29 @@ class GeneralList extends Component {
 
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
-                                    <div className={"inputDev ui input" + (errors.EnTitle && touched.EnTitle ? (" has-error") : !errors.EnTitle && touched.EnTitle ? (" has-success") : " ")} >
-                                        <input name='EnTitle' autoComplete='off' id='EnTitle'
-                                            value={this.state.EditListData.title} className="form-control" placeholder={Resources['titleEn'][currentLanguage]}
-                                            onBlur={(e) => { handleBlur(e) }}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                this.HandleInputChange(e, 'title')
-                                            }} />
-                                        {errors.EnTitle && touched.EnTitle ? (<em className="pError">{errors.EnTitle}</em>) : null}
+                                    <div className={"inputDev ui input" + (errors.title && touched.title ? (" has-error") : !errors.title && touched.title ? (" has-success") : " ")} >
+                                        <input name='title' autoComplete='off' id='title' placeholder={Resources['titleEn'][currentLanguage]}
+                                            value={values.title} className="form-control" onBlur={handleBlur} onChange={handleChange} />
+                                        {errors.title && touched.title ? (<em className="pError">{errors.title}</em>) : null}
                                     </div>
                                 </div>
 
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
-                                    <div className={'ui input inputDev ' + (errors.ARTitle && touched.ARTitle ? 'has-error' : null) + ' '}>
-                                        <input name='ARTitle' className="form-control" autoComplete='off'
-                                            id='ARTitle' value={this.state.EditListData.titleAr} placeholder={Resources['titleAr'][currentLanguage]}
-                                            onBlur={(e) => { handleBlur(e) }}
-                                            onChange={(e) => {
-                                                handleChange(e)
-                                                this.HandleInputChange(e, 'titleAr')
-                                            }} />
-                                        {errors.ARTitle && touched.ARTitle ? <em className="pError">{errors.ARTitle}</em> : null}
+                                    <div className={'ui input inputDev ' + (errors.titleAr && touched.titleAr ? 'has-error' : null) + ' '}>
+                                        <input name='titleAr' className="form-control" autoComplete='off'
+                                            id='titleAr' value={values.titleAr} placeholder={Resources['titleAr'][currentLanguage]}
+                                            onBlur={handleBlur} onChange={handleChange} />
+                                        {errors.titleAr && touched.titleAr ? <em className="pError">{errors.titleAr}</em> : null}
                                     </div>
                                 </div>
 
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
                                     <div className="ui input inputDev" >
-                                        <input name='Abbreviation' autoComplete='off'
-                                            value={this.state.EditListData.abbreviation} className="form-control" placeholder={Resources['abbreviation'][currentLanguage]}
-                                            onBlur={(e) => { handleBlur(e) }} onChange={(e) => {
-                                                handleChange(e)
-                                                this.HandleInputChange(e, 'abbreviation')
-                                            }} />
+                                        <input name='abbreviation' autoComplete='off' className="form-control"
+                                            value={values.abbreviation} placeholder={Resources['abbreviation'][currentLanguage]}
+                                            onBlur={handleBlur} onChange={handleChange} />
                                     </div>
                                 </div>
 
@@ -421,11 +386,8 @@ class GeneralList extends Component {
                                         <label className="control-label">{Resources['value'][currentLanguage]} </label>
                                         <div className={"inputDev ui input " + (errors.value ? 'has-error' : !errors.value && touched.value ? (" has-success") : " ")}>
                                             <input className="form-control" name='value' id='value' placeholder={Resources['value'][currentLanguage]}
-                                                value={this.state.EditListData.value} onChange={e => this.HandleInputChange(e, 'value')}
-                                                onBlur={(e) => {
-                                                    handleBlur(e)
-                                                    handleChange(e)
-                                                }} />
+                                                value={this.state.EditListData.value} onChange={handleChange}
+                                                onBlur={handleBlur} />
                                             {errors.value ? (<em className="pError">{errors.value}</em>) : null}
                                         </div>
                                     </div>
@@ -466,7 +428,7 @@ class GeneralList extends Component {
 
                     {this.state.listType ?
                         <div className="filterBTNS">
-                            {config.IsAllow(1182) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.showAdd}>New</button>
+                            {config.IsAllow(1182) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.showPopup}>New</button>
                                 : null}
                             {btnExport}
                         </div>
