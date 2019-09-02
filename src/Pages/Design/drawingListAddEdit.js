@@ -268,7 +268,6 @@ class drawingListAddEdit extends Component {
         this.setState({ CurrentStep: stepNo });
     };
 
-
     componentWillMount() {
         if (docId > 0) {
 
@@ -333,9 +332,7 @@ class drawingListAddEdit extends Component {
 
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
-        this.setState({
-            docId: 0
-        });
+        this.setState({ docId: 0 });
     }
 
     componentDidMount = () => {
