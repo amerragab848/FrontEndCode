@@ -26,6 +26,7 @@ import Plus from "./Styles/images/epsActions/plus.png";
 import Delete from "./Styles/images/epsActions/delete.png";
 import { toast } from "react-toastify";
 import moment from "moment";
+import Config from "./Services/Config";
 
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -164,7 +165,7 @@ class DashboardProject extends Component {
         dataService
             .GetDataList(
                 "GetProjectProjectsCompaniesForList?projectId=" +
-                    this.state.projectId,
+                this.state.projectId,
                 "companyName",
                 "companyId"
             )
@@ -250,7 +251,9 @@ class DashboardProject extends Component {
                         </h2>
                         <div className="SummeriesContainerContent">
                             {category.widgets.map((widget, widgetIndex) => {
-                                return this.renderWidget(widget, widgetIndex);
+                                if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
+                                    return this.renderWidget(widget, widgetIndex);
+                                }
                             })}
                         </div>
                     </Fragment>
@@ -325,115 +328,115 @@ class DashboardProject extends Component {
                     {this.state.isLoading == true ? (
                         <LoadingSection />
                     ) : (
-                        <div className="Eps__list">
-                            {this.state.trees.map((item, i) => {
-                                if (treeContainer != null)
-                                    treeContainer[item.id] = item;
-                                return (
-                                    <Fragment key={i}>
-                                        <div
-                                            className={
-                                                this.state[item.id] == -1
-                                                    ? " epsTitle"
-                                                    : this.state[
-                                                          "_" + item.id
-                                                      ] === true
-                                                    ? "epsTitle active"
-                                                    : "epsTitle"
-                                            }
-                                            key={item.id}
-                                            style={{
-                                                display:
+                            <div className="Eps__list">
+                                {this.state.trees.map((item, i) => {
+                                    if (treeContainer != null)
+                                        treeContainer[item.id] = item;
+                                    return (
+                                        <Fragment key={i}>
+                                            <div
+                                                className={
                                                     this.state[item.id] == -1
-                                                        ? "none"
-                                                        : ""
-                                            }}
-                                            onClick={() =>
-                                                this.viewChild(item)
-                                            }>
-                                            <div className="listTitle">
-                                                <span
-                                                    className="dropArrow"
-                                                    style={{
-                                                        visibility:
-                                                            item.charts.length >
-                                                            0
-                                                                ? ""
-                                                                : "hidden"
-                                                    }}>
-                                                    <i className="dropdown icon" />
-                                                </span>
-                                                <span
-                                                    className="accordionTitle"
-                                                    onClick={
-                                                        this.props.GetNodeData
-                                                            ? () =>
-                                                                  this.GetNodeData(
-                                                                      item
-                                                                  )
-                                                            : null
-                                                    }>
-                                                    {this.state[item.id]
-                                                        ? `${this.state[item.id].contactName} - ${this.state[item.id].companyName}`
-                                                        : `${item.contactName} - ${item.companyName}`}
-                                                </span>
-                                            </div>
-                                            {this.props.showActions ==
-                                            false ? null : (
-                                                <div className="Project__num">
-                                                    <div className="eps__actions">
-                                                        <a
-                                                            className="editIcon"
-                                                            onClick={() =>
-                                                                this.EditDocument(
-                                                                    item
-                                                                )
-                                                            }>
-                                                            <img
-                                                                src={Edit}
-                                                                alt="Edit"
-                                                            />
-                                                        </a>
-                                                        <a
-                                                            className="plusIcon"
-                                                            onClick={() =>
-                                                                this.AddDocument(
-                                                                    item
-                                                                )
-                                                            }>
-                                                            <img
-                                                                src={Plus}
-                                                                alt="Add"
-                                                            />
-                                                        </a>
-                                                        <a
-                                                            className="deleteIcon"
-                                                            onClick={() =>
-                                                                this.DeleteDocument(
-                                                                    item.id
-                                                                )
-                                                            }>
-                                                            <img
-                                                                src={Delete}
-                                                                alt="Delete"
-                                                            />
-                                                        </a>
-                                                    </div>
+                                                        ? " epsTitle"
+                                                        : this.state[
+                                                            "_" + item.id
+                                                        ] === true
+                                                            ? "epsTitle active"
+                                                            : "epsTitle"
+                                                }
+                                                key={item.id}
+                                                style={{
+                                                    display:
+                                                        this.state[item.id] == -1
+                                                            ? "none"
+                                                            : ""
+                                                }}
+                                                onClick={() =>
+                                                    this.viewChild(item)
+                                                }>
+                                                <div className="listTitle">
+                                                    <span
+                                                        className="dropArrow"
+                                                        style={{
+                                                            visibility:
+                                                                item.charts.length >
+                                                                    0
+                                                                    ? ""
+                                                                    : "hidden"
+                                                        }}>
+                                                        <i className="dropdown icon" />
+                                                    </span>
+                                                    <span
+                                                        className="accordionTitle"
+                                                        onClick={
+                                                            this.props.GetNodeData
+                                                                ? () =>
+                                                                    this.GetNodeData(
+                                                                        item
+                                                                    )
+                                                                : null
+                                                        }>
+                                                        {this.state[item.id]
+                                                            ? `${this.state[item.id].contactName} - ${this.state[item.id].companyName}`
+                                                            : `${item.contactName} - ${item.companyName}`}
+                                                    </span>
                                                 </div>
-                                            )}
-                                        </div>
-                                        <div
-                                            className="epsContent"
-                                            id={item.id}>
-                                            {item.charts.length > 0
-                                                ? this.printChild(item.charts)
-                                                : null}
-                                        </div>
-                                    </Fragment>
-                                );
-                            })}
-                        </div>
-                    )}
+                                                {this.props.showActions ==
+                                                    false ? null : (
+                                                        <div className="Project__num">
+                                                            <div className="eps__actions">
+                                                                <a
+                                                                    className="editIcon"
+                                                                    onClick={() =>
+                                                                        this.EditDocument(
+                                                                            item
+                                                                        )
+                                                                    }>
+                                                                    <img
+                                                                        src={Edit}
+                                                                        alt="Edit"
+                                                                    />
+                                                                </a>
+                                                                <a
+                                                                    className="plusIcon"
+                                                                    onClick={() =>
+                                                                        this.AddDocument(
+                                                                            item
+                                                                        )
+                                                                    }>
+                                                                    <img
+                                                                        src={Plus}
+                                                                        alt="Add"
+                                                                    />
+                                                                </a>
+                                                                <a
+                                                                    className="deleteIcon"
+                                                                    onClick={() =>
+                                                                        this.DeleteDocument(
+                                                                            item.id
+                                                                        )
+                                                                    }>
+                                                                    <img
+                                                                        src={Delete}
+                                                                        alt="Delete"
+                                                                    />
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                            </div>
+                                            <div
+                                                className="epsContent"
+                                                id={item.id}>
+                                                {item.charts.length > 0
+                                                    ? this.printChild(item.charts)
+                                                    : null}
+                                            </div>
+                                        </Fragment>
+                                    );
+                                })}
+                            </div>
+                        )}
                 </Fragment>
             );
         }
@@ -449,8 +452,8 @@ class DashboardProject extends Component {
                             this.state[item.id] == -1
                                 ? " epsTitle"
                                 : this.state["_" + item.id] === true
-                                ? "epsTitle active"
-                                : "epsTitle"
+                                    ? "epsTitle active"
+                                    : "epsTitle"
                         }
                         key={item.id}
                         onClick={() => this.viewChild(item)}
@@ -1233,54 +1236,54 @@ class DashboardProject extends Component {
                                                 className={
                                                     "comments__number--list " +
                                                     (this.state.rowPosts ===
-                                                    index
+                                                        index
                                                         ? " active "
                                                         : "")
                                                 }>
                                                 {item.comments.length > 0
                                                     ? item.comments.map(
-                                                          (comments, i) => {
-                                                              return (
-                                                                  <div
-                                                                      className="timeline__posts"
-                                                                      key={i}>
-                                                                      <div className="timeline__posts--header">
-                                                                          <figure className="zero avatarProfile ">
-                                                                              <img
-                                                                                  alt=""
-                                                                                  title=""
-                                                                                  src={
-                                                                                      comments.image
-                                                                                  }
-                                                                              />
-                                                                          </figure>
-                                                                          <div className="header__info">
-                                                                              <h2 className="zero">
-                                                                                  {
-                                                                                      comments.name
-                                                                                  }
-                                                                                  <span>
-                                                                                      @Procoor
+                                                        (comments, i) => {
+                                                            return (
+                                                                <div
+                                                                    className="timeline__posts"
+                                                                    key={i}>
+                                                                    <div className="timeline__posts--header">
+                                                                        <figure className="zero avatarProfile ">
+                                                                            <img
+                                                                                alt=""
+                                                                                title=""
+                                                                                src={
+                                                                                    comments.image
+                                                                                }
+                                                                            />
+                                                                        </figure>
+                                                                        <div className="header__info">
+                                                                            <h2 className="zero">
+                                                                                {
+                                                                                    comments.name
+                                                                                }
+                                                                                <span>
+                                                                                    @Procoor
                                                                                   </span>
-                                                                              </h2>
-                                                                              <p className="zero">
-                                                                                  3
-                                                                                  minutes
-                                                                                  ago
+                                                                            </h2>
+                                                                            <p className="zero">
+                                                                                3
+                                                                                minutes
+                                                                                ago
                                                                               </p>
-                                                                          </div>
-                                                                      </div>
-                                                                      <div className="timeline__posts--body">
-                                                                          <p className="zero">
-                                                                              {
-                                                                                  comments.message
-                                                                              }
-                                                                          </p>
-                                                                      </div>
-                                                                  </div>
-                                                              );
-                                                          }
-                                                      )
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="timeline__posts--body">
+                                                                        <p className="zero">
+                                                                            {
+                                                                                comments.message
+                                                                            }
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        }
+                                                    )
                                                     : null}
                                             </div>
                                         </div>
@@ -1309,7 +1312,7 @@ class DashboardProject extends Component {
                                             <button
                                                 className={
                                                     this.state.viewComment ===
-                                                    true
+                                                        true
                                                         ? "active "
                                                         : ""
                                                 }
@@ -1371,7 +1374,7 @@ class DashboardProject extends Component {
                     </TabPanel>
                     <TabPanel>
                         <div className="mainContainer">
-                            {this.renderDiscussions()}{" "}
+                            {this.renderDiscussions()}
                         </div>
                     </TabPanel>
                     <TabPanel>
@@ -1415,83 +1418,83 @@ class DashboardProject extends Component {
                                 setFieldTouched,
                                 setFieldValue
                             }) => (
-                                <Form
-                                    className="dropWrapper proForm"
-                                    onSubmit={handleSubmit}>
-                                    <Dropdown
-                                        title="company"
-                                        data={this.state.companies}
-                                        selectedValue={
-                                            this.state.selectedFromCompany
-                                        }
-                                        handleChange={event => {
-                                            this.handleChangeDropDown(
-                                                event,
-                                                "companyId",
-                                                true,
-                                                "contacts",
-                                                "GetContactsByCompanyId",
-                                                "companyId",
-                                                "selectedFromCompany",
-                                                "selectedFromContact"
-                                            );
-                                        }}
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.companyId}
-                                        touched={touched.companyId}
-                                        name="companyId"
-                                        index="companyId"
-                                    />
+                                    <Form
+                                        className="dropWrapper proForm"
+                                        onSubmit={handleSubmit}>
+                                        <Dropdown
+                                            title="company"
+                                            data={this.state.companies}
+                                            selectedValue={
+                                                this.state.selectedFromCompany
+                                            }
+                                            handleChange={event => {
+                                                this.handleChangeDropDown(
+                                                    event,
+                                                    "companyId",
+                                                    true,
+                                                    "contacts",
+                                                    "GetContactsByCompanyId",
+                                                    "companyId",
+                                                    "selectedFromCompany",
+                                                    "selectedFromContact"
+                                                );
+                                            }}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.companyId}
+                                            touched={touched.companyId}
+                                            name="companyId"
+                                            index="companyId"
+                                        />
 
-                                    <Dropdown
-                                        title="fromContact"
-                                        data={this.state.contacts}
-                                        selectedValue={
-                                            this.state.selectedFromContact
-                                        }
-                                        handleChange={event => {
-                                            this.handleChangeDropDown(
-                                                event,
-                                                "contactId",
-                                                false,
-                                                "contacts",
-                                                "",
-                                                "contactId",
-                                                "selectedFromContact",
-                                                ""
-                                            );
-                                        }}
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.contactId}
-                                        touched={touched.contactId}
-                                        name="contactId"
-                                        index="contactId"
-                                    />
-                                    <div className="fullWidthWrapper">
-                                        {this.state.isLoading === false ? (
-                                            <button
-                                                className="primaryBtn-1 btn middle__btn"
-                                                type="submit">
-                                                {
-                                                    language["save"][
+                                        <Dropdown
+                                            title="fromContact"
+                                            data={this.state.contacts}
+                                            selectedValue={
+                                                this.state.selectedFromContact
+                                            }
+                                            handleChange={event => {
+                                                this.handleChangeDropDown(
+                                                    event,
+                                                    "contactId",
+                                                    false,
+                                                    "contacts",
+                                                    "",
+                                                    "contactId",
+                                                    "selectedFromContact",
+                                                    ""
+                                                );
+                                            }}
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.contactId}
+                                            touched={touched.contactId}
+                                            name="contactId"
+                                            index="contactId"
+                                        />
+                                        <div className="fullWidthWrapper">
+                                            {this.state.isLoading === false ? (
+                                                <button
+                                                    className="primaryBtn-1 btn middle__btn"
+                                                    type="submit">
+                                                    {
+                                                        language["save"][
                                                         currentLanguage
-                                                    ]
-                                                }
-                                            </button>
-                                        ) : (
-                                            <button className="primaryBtn-1 btn middle__btn disabled">
-                                                <div className="spinner">
-                                                    <div className="bounce1" />
-                                                    <div className="bounce2" />
-                                                    <div className="bounce3" />
-                                                </div>
-                                            </button>
-                                        )}
-                                    </div>
-                                </Form>
-                            )}
+                                                        ]
+                                                    }
+                                                </button>
+                                            ) : (
+                                                    <button className="primaryBtn-1 btn middle__btn disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>
+                                                )}
+                                        </div>
+                                    </Form>
+                                )}
                         </Formik>
                     </div>
                 </SkyLight>

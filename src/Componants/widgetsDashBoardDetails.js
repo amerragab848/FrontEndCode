@@ -2,7 +2,7 @@ let widgets = {
     "monthlyPo": {
         "title": "monthlyPo",
         "props": {
-            "permission": 0,
+            "permission":10048,
             "type": "oneWidget",
             "api": "GetTotalPoForProjectId?projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -15,7 +15,7 @@ let widgets = {
     "materialRequestcount": {
         "title": "materialRequestcount",
         "props": {
-            "permission": 0,
+            "permission": 10049,
             "type": "oneWidget",
             "api": "GetMaterialRequestCountingForProject?projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -28,7 +28,7 @@ let widgets = {
     "monthlyPaymentRequisitions": {
         "title": "monthlyPaymentRequisitions",
         "props": {
-            "permission": 0,
+            "permission":10050,
             "type": "oneWidget",
             "api": "GetTotalPaymentForProject?projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -41,7 +41,7 @@ let widgets = {
     "approvalSubmittals": {
         "title": "approvalSubmittals",
         "props": {
-            "permission": 0,
+            "permission": 10051,
             "type": "twoWidget",
             "api": "GetApprocalStatusCount?status=true&projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -54,7 +54,7 @@ let widgets = {
     "openedSubmittals": {
         "title": "openedSubmittals",
         "props": {
-            "permission": 0,
+            "permission": 10052,
             "type": "twoWidget",
             "api": "getOpenedDocumentsCount?docType=42&projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -67,7 +67,7 @@ let widgets = {
     "rejectedSubmittals": {
         "title": "rejectedSubmittals",
         "props": {
-            "permission": 0,
+            "permission": 10053,
             "type": "twoWidget",
             "api": "GetApprocalStatusCount?status=false&projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -80,7 +80,7 @@ let widgets = {
     "openedLetters": {
         "title": "openedLetters",
         "props": {
-            "permission": 0,
+            "permission": 10054,
             "type": "twoWidget",
             "api": "getOpenedDocumentsCount?docType=19&projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -93,7 +93,7 @@ let widgets = {
     "openedIR": {
         "title": "openedIR",
         "props": {
-            "permission": 0,
+            "permission": 10055,
             "type": "twoWidget",
             "api": "getOpenedDocumentsCount?docType=25&projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -106,7 +106,7 @@ let widgets = {
     "rfiOpen": {
         "title": "rfiOpen",
         "props": {
-            "permission": 0,
+            "permission": 10056,
             "type": "twoWidget",
             "api": "GetRfiOpenCount?projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -119,7 +119,7 @@ let widgets = {
     "openedTransmittals": {
         "title": "openedTransmittals",
         "props": {
-            "permission": 0,
+            "permission": 10057,
             "type": "twoWidget",
             "api": "getOpenedDocumentsCount?docType=28&projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -132,7 +132,7 @@ let widgets = {
     "countinspectionPanding": {
         "title": "countinspectionPanding",
         "props": {
-            "permission": 0,
+            "permission": 10058,
             "type": "oneWidget",
             "api": "GetCountinspectionForProject?status=null&projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -145,7 +145,7 @@ let widgets = {
     "countinspectionReject": {
         "title": "countinspectionReject",
         "props": {
-            "permission": 0,
+            "permission": 10059,
             "type": "oneWidget",
             "api": "GetCountinspectionForProject?status=false&projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -158,7 +158,7 @@ let widgets = {
     "countinspectionApproved": {
         "title": "countinspectionApproved",
         "props": {
-            "permission": 0,
+            "permission": 10060,
             "type": "oneWidget",
             "api": "GetCountinspectionForProject?status=true&projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -171,7 +171,7 @@ let widgets = {
     "avgRespondTimeLetters": {
         "title": "avgRespondTimeLetters",
         "props": {
-            "permission": 0,
+            "permission": 10061,
             "type": "oneWidget",
             "api": "GetAvgTimeRespond?isMonthly=false&docType=19&projectId=",
             "route": "",
@@ -184,7 +184,7 @@ let widgets = {
     "avgRespondTimeTransmittals": {
         "title": "avgRespondTimeTransmittals",
         "props": {
-            "permission": 0,
+            "permission": 10062,
             "type": "oneWidget",
             "api": "GetAvgTimeRespond?isMonthly=false&docType=28&projectId=",
             "route": "",
@@ -197,7 +197,7 @@ let widgets = {
     "avgRespondTimeIR": {
         "title": "avgRespondTimeIR",
         "props": {
-            "permission": 0,
+            "permission": 10063,
             "type": "oneWidget",
             "api": "GetAvgTimeRespond?isMonthly=false&docType=25&projectId=",
             "route": "",
@@ -210,7 +210,7 @@ let widgets = {
     "avgRespondTimeMIR": {
         "title": "avgRespondTimeMIR",
         "props": {
-            "permission": 0,
+            "permission": 10064,
             "type": "oneWidget",
             "api": "GetAvgTimeRespond?isMonthly=false&docType=103&projectId=",
             "route": "",
@@ -223,7 +223,7 @@ let widgets = {
     "avgRespondTimeRFI": {
         "title": "avgRespondTimeRFI",
         "props": {
-            "permission": 0,
+            "permission": 10065,
             "type": "oneWidget",
             "api": "GetAvgTimeRespond?isMonthly=false&docType=23&projectId=",
             "route": "",
@@ -236,7 +236,7 @@ let widgets = {
     "avgRespondTimeSubmittals": {
         "title": "avgRespondTimeSubmittals",
         "props": {
-            "permission": 0,
+            "permission": 10066,
             "type": "oneWidget",
             "api": "GetAvgTimeRespond?isMonthly=false&docType=42&projectId=",
             "route": "",
@@ -249,7 +249,7 @@ let widgets = {
     "avgRespondTimePO": {
         "title": "avgRespondTimePO",
         "props": {
-            "permission": 0,
+            "permission": 10067,
             "type": "oneWidget",
             "api": "GetAvgTimeRespond?isMonthly=false&docType=70&projectId=",
             "route": "",
