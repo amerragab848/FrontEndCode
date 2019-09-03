@@ -155,24 +155,12 @@ class DashboardProject extends Component {
                 }
             });
 
-<<<<<<< HEAD
-        dataService
-            .GetDataList(
-                "GetProjectProjectsCompaniesForList?projectId=" +
-                this.state.projectId,
-                "companyName",
-                "companyId"
-            )
-=======
-        dataService.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId,
-            "companyName", "companyId")
->>>>>>> 50773cdf27a933a56cac8b28b7bbb3180ecbe86f
-            .then(result => {
-                this.setState({
-                    companies: result,
-                    isLoading: false
-                });
+        dataService.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId").then(result => {
+            this.setState({
+                companies: result,
+                isLoading: false
             });
+        });
     }
 
     async getWidgets() {
@@ -226,7 +214,7 @@ class DashboardProject extends Component {
 
     renderCategoryWidget() {
         return (
-            <Fragment> 
+            <Fragment>
                 {this.renderCategory()}
             </Fragment>
         );
@@ -816,7 +804,7 @@ class DashboardProject extends Component {
         while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
-        var curFiles = videoInput.files; 
+        var curFiles = videoInput.files;
         for (var i = 0; i < curFiles.length; i++) {
             var btnRemove = document.createElement("button");
 
