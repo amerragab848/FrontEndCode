@@ -3,33 +3,35 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { Widgets, WidgetsWithText } from "./Componants/CounterWidget";
 import DashBoard from "./Componants/DashBoardProject";
-import _ from "lodash";
 import language from "./resources.json";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Details from "./Componants/widgetsDashBoardDetails";
 import * as dashboardComponantActions from "./store/actions/communication";
 import IndexedDb from "./IndexedDb";
+
 import orderBy from "lodash/orderBy";
 import map from "lodash/map";
 import groupBy from "lodash/groupBy";
-import mapValues from "lodash/mapValues";
+
 import SkyLight from "react-skylight";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+
 import ConfirmationModal from "./Componants/publicComponants/ConfirmationModal";
 import Dropdown from "./Componants/OptionsPanels/DropdownMelcous";
 import dataService from "./Dataservice";
 import LoadingSection from "./Componants/publicComponants/LoadingSection";
+
 import Edit from "./Styles/images/epsActions/edit.png";
 import Plus from "./Styles/images/epsActions/plus.png";
 import Delete from "./Styles/images/epsActions/delete.png";
+
 import { toast } from "react-toastify";
 import moment from "moment";
 import Config from "./Services/Config";
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 var treeContainer = [];
 
@@ -119,23 +121,15 @@ class DashboardProject extends Component {
         };
     }
 
-    componentWillMount = () => {
-        let projectId =
-            this.props.projectId == 0
-                ? localStorage.getItem("lastSelectedProject")
-                : this.props.projectId;
+
+    componentDidMount() {
+        let projectId = this.props.projectId == 0 ? localStorage.getItem("lastSelectedProject") : this.props.projectId;
 
         var e = { label: this.props.projectName, value: projectId };
         this.props.actions.RouteToDashboardProject(e);
-    };
-
-    componentDidMount() {
         this.getWidgets();
 
-        dataService
-            .GetDataGrid(
-                "GetProjectOrganizationChart?projectId=" + this.state.projectId
-            )
+        dataService.GetDataGrid("GetProjectOrganizationChart?projectId=" + this.state.projectId)
             .then(result => {
                 let state = this.state;
 
@@ -152,8 +146,7 @@ class DashboardProject extends Component {
                 }
             });
 
-        dataService
-            .GetDataGrid("GetDiscussions?projectId=" + this.state.projectId)
+        dataService.GetDataGrid("GetDiscussions?projectId=" + this.state.projectId)
             .then(result => {
                 if (result) {
                     this.setState({
@@ -162,6 +155,7 @@ class DashboardProject extends Component {
                 }
             });
 
+<<<<<<< HEAD
         dataService
             .GetDataList(
                 "GetProjectProjectsCompaniesForList?projectId=" +
@@ -169,6 +163,10 @@ class DashboardProject extends Component {
                 "companyName",
                 "companyId"
             )
+=======
+        dataService.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId,
+            "companyName", "companyId")
+>>>>>>> 50773cdf27a933a56cac8b28b7bbb3180ecbe86f
             .then(result => {
                 this.setState({
                     companies: result,
@@ -228,20 +226,14 @@ class DashboardProject extends Component {
 
     renderCategoryWidget() {
         return (
-            <Fragment>
-                <div className="dashboard__name">
-                    <button
-                        className="primaryBtn-2 btn mediumBtn"
-                        onClick={this.viewDashBoardHandler.bind(this)}>
-                        Customize
-                    </button>
-                </div>
+            <Fragment> 
                 {this.renderCategory()}
             </Fragment>
         );
     }
 
     renderCategory() {
+        console.log(this.state.widgets, 'categories')
         let categoryWidget = this.state.widgets.map((category, index) => {
             return (
                 <div className="SummeriesContainer" key={index + "DIV"}>
@@ -265,23 +257,28 @@ class DashboardProject extends Component {
     }
 
     renderWidget(widget, index) {
-        Details.widgets[widget.title].props.api =
-            Details.widgets[widget.title].props.api + this.state.projectId;
+        // let widgetsDetails = Details;
+        widget.props.api = widget.props.api + this.state.projectId;
+        console.log(widget);
 
-        if (Details.widgets[widget.title].props.type === "twoWidget") {
+        //   console.log(this.state.projectId);
+        //   console.log(Details.widgets[widget.title].props.api);
+
+        if (widget.props.type === "twoWidget") {
+
             return (
                 <WidgetsWithText
                     key={index + "DIV"}
                     title={widget.title}
-                    {...Details.widgets[widget.title]}
+                    {...widget}
                 />
             );
-        } else if (Details.widgets[widget.title].props.type === "oneWidget") {
+        } else if (widget.props.type === "oneWidget") {
             return (
                 <Widgets
                     key={index + "DIV"}
                     title={widget.title}
-                    {...Details.widgets[widget.title]}
+                    {...widget}
                 />
             );
         }
@@ -819,9 +816,7 @@ class DashboardProject extends Component {
         while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
-        var curFiles = videoInput.files;
-        // preview.classList.add('file_upload');
-
+        var curFiles = videoInput.files; 
         for (var i = 0; i < curFiles.length; i++) {
             var btnRemove = document.createElement("button");
 
@@ -1179,7 +1174,7 @@ class DashboardProject extends Component {
                                             <img
                                                 alt=""
                                                 title=""
-                                                src={item.image}
+                                                src={item.image ? item.image : Plus}
                                             />
                                         </figure>
                                         <div className="header__info">

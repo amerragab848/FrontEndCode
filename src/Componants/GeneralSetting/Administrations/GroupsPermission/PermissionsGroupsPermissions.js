@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Api from "../../../../api";
 import LoadingSection from "../../../publicComponants/LoadingSection";
-import Dropdown from "../../../OptionsPanels/DropdownMelcous"; 
+import Dropdown from "../../../OptionsPanels/DropdownMelcous";
 import Resources from "../../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,8 +12,6 @@ import HeaderDocument from '../../../OptionsPanels/HeaderDocument'
 import _ from "lodash";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-//const filePermissions = JSON.parse(permissions).authorization;
-
 class PermissionsGroupsPermissions extends Component {
     constructor(props) {
         super(props);
@@ -111,13 +109,13 @@ class PermissionsGroupsPermissions extends Component {
                 res.forEach(item => {
                     this.setState({ [item.permissionId]: item.permissionValue })
                 })
-                this.setState({ isLoading: false, disabled: false, status: 1 ,checkedAll:false})
+                this.setState({ isLoading: false, disabled: false, status: 1, checkedAll: false })
             }
             else {
-                this.setState({ isLoading: false, disabled: false, status: 0 ,checkedAll:false})
+                this.setState({ isLoading: false, disabled: false, status: 0, checkedAll: false })
             }
         }).catch(() => {
-            this.setState({ isLoading: false, disabled: false, status: 0,checkedAll:false })
+            this.setState({ isLoading: false, disabled: false, status: 0, checkedAll: false })
         })
     }
 
@@ -138,7 +136,7 @@ class PermissionsGroupsPermissions extends Component {
         return (
             <div className="mainContainer">
                 <div className="documents-stepper noTabs__document">
-                    <HeaderDocument projectName={''} isViewMode={this.state.isViewMode} docTitle={Resources.groupsPermissions[currentLanguage]} moduleTitle='' />
+                    <HeaderDocument perviousRoute={"/TemplatesSettings"} projectName={''} isViewMode={this.state.isViewMode} docTitle={Resources.groupsPermissions[currentLanguage]} moduleTitle='' />
                     {this.state.isLoading == true ? <LoadingSection /> :
                         <div className="doc-container">
                             {/* <!-- Start Submittal Actions --> */}
@@ -158,7 +156,7 @@ class PermissionsGroupsPermissions extends Component {
                                             </div>
                                         </div>
                                         <div className="permissins__btns">
-                                            <button className={"primaryBtn-1 btn mediumBtn " +( this.state.disabled ? "disabled" : '')} disabled={this.state.disabled} onClick={this.addEditPermission}>{Resources.save[currentLanguage]}</button>
+                                            <button className={"primaryBtn-1 btn mediumBtn " + (this.state.disabled ? "disabled" : '')} disabled={this.state.disabled} onClick={this.addEditPermission}>{Resources.save[currentLanguage]}</button>
                                             <button className="primaryBtn-2 btn mediumBtn middle__btn">Revoke All</button>
                                         </div>
                                     </div>

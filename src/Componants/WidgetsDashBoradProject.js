@@ -226,7 +226,7 @@ var DashBoardWidgets = [
         permission: 10058,
         type: "oneWidget",
         props: {
-          api: "GetCountinspectionForProject?status=null&projectId=",
+          api: "GetCountInspectionForProject?status=null&projectId=",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
@@ -244,7 +244,7 @@ var DashBoardWidgets = [
         permission: 10059,
         type: "oneWidget",
         props: {
-          api: "GetCountinspectionForProject?status=false&projectId=",
+          api: "GetCountInspectionForProject?status=false&projectId=",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",
@@ -262,7 +262,7 @@ var DashBoardWidgets = [
         permission: 10060,
         type: "oneWidget",
         props: {
-          api: "GetCountinspectionForProject?status=true&projectId=",
+          api: "GetCountInspectionForProject?status=true&projectId=",
           route: "DashBoardProjectCounterLog",
           value: "total",
           listType: "item",

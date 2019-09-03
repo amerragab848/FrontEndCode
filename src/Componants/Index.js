@@ -11,9 +11,6 @@ import Details from './widgetsDetails';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
 import mapValues from 'lodash/mapValues';
-//import { type } from "os";
-//import DashBoardWidgets from "./WidgetsDashBorad";
-//import value from 'lodash/value';
 import orderBy from 'lodash/orderBy';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");

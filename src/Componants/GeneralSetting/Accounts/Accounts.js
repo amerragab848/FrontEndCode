@@ -245,9 +245,17 @@ class Accounts extends Component {
     };
 
     addRecord = () => {
-        this.props.history.push({
-            pathname: "AddAccount"
-        });
+        Api.get('CheckLimitAccount').then(
+            result => {
+                if (result === 'Done') {
+                    this.props.history.push({ pathname: "AddAccount" });
+                }
+                else {
+                    toast.error('You have exceeded accounts users number please contact the administartor !!!')
+                }
+            }
+        )
+
     }
 
     ConfirmDeleteAccount = () => {

@@ -110,7 +110,7 @@ class Login extends Component {
                             );
                             Api.post(
                                 "UpdateAccountWebDeviceToken?webDeviceToken=" +
-                                    deviceToken,
+                                deviceToken,
                                 null
                             );
                         }
@@ -246,12 +246,12 @@ class Login extends Component {
                                         <div
                                             className={
                                                 errors.userName &&
-                                                touched.userName
+                                                    touched.userName
                                                     ? "ui input inputDev has-error"
                                                     : !errors.userName &&
-                                                      touched.userName
-                                                    ? "ui input inputDev has-success"
-                                                    : "ui input inputDev"
+                                                        touched.userName
+                                                        ? "ui input inputDev has-success"
+                                                        : "ui input inputDev"
                                             }>
                                             <input
                                                 autoComplete="off"
@@ -261,22 +261,22 @@ class Login extends Component {
                                                 name="userName"
                                                 placeholder={
                                                     Resources["UserName"][
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
                                                 }
                                                 onBlur={handleBlur}
                                                 onChange={handleChange}
                                             />
                                             {errors.userName &&
-                                            touched.userName ? (
-                                                <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                                            ) : null}
+                                                touched.userName ? (
+                                                    <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                                                ) : null}
                                             {errors.userName &&
-                                            touched.userName ? (
-                                                <em className="pError">
-                                                    {errors.userName}
-                                                </em>
-                                            ) : null}
+                                                touched.userName ? (
+                                                    <em className="pError">
+                                                        {errors.userName}
+                                                    </em>
+                                                ) : null}
                                         </div>
                                     </div>
                                 </div>
@@ -290,12 +290,12 @@ class Login extends Component {
                                         <div
                                             className={
                                                 errors.password &&
-                                                touched.password
+                                                    touched.password
                                                     ? "ui input inputDev has-error"
                                                     : !errors.password &&
-                                                      touched.password
-                                                    ? "ui input inputDev has-success"
-                                                    : "ui input inputDev"
+                                                        touched.password
+                                                        ? "ui input inputDev has-success"
+                                                        : "ui input inputDev"
                                             }>
                                             <span
                                                 className={
@@ -309,7 +309,7 @@ class Login extends Component {
                                                     {" "}
                                                     {
                                                         Resources["show"][
-                                                            currentLanguage
+                                                        currentLanguage
                                                         ]
                                                     }
                                                 </span>
@@ -317,7 +317,7 @@ class Login extends Component {
                                                     {" "}
                                                     {
                                                         Resources["hide"][
-                                                            currentLanguage
+                                                        currentLanguage
                                                         ]
                                                     }
                                                 </span>
@@ -335,20 +335,20 @@ class Login extends Component {
                                                 onChange={handleChange}
                                                 placeholder={
                                                     Resources["password"][
-                                                        currentLanguage
+                                                    currentLanguage
                                                     ]
                                                 }
                                             />
                                             {errors.password &&
-                                            touched.password ? (
-                                                <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                                            ) : null}
+                                                touched.password ? (
+                                                    <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
+                                                ) : null}
                                             {errors.password &&
-                                            touched.password ? (
-                                                <em className="pError">
-                                                    {errors.password}
-                                                </em>
-                                            ) : null}
+                                                touched.password ? (
+                                                    <em className="pError">
+                                                        {errors.password}
+                                                    </em>
+                                                ) : null}
                                         </div>
                                     </div>
                                 </div>
@@ -374,21 +374,21 @@ class Login extends Component {
                                             {" "}
                                             {
                                                 Resources["logIn"][
-                                                    currentLanguage
+                                                currentLanguage
                                                 ]
                                             }
                                         </button>
                                     ) : (
-                                        <button
-                                            className="primaryBtn-1 btn mediumBtn disabled"
-                                            disabled="disabled">
-                                            <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
-                                            </div>
-                                        </button>
-                                    )}
+                                            <button
+                                                className="primaryBtn-1 btn mediumBtn disabled"
+                                                disabled="disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                        )}
                                 </div>
                             </Form>
                         )}

@@ -12,6 +12,10 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import config from "../../Services/Config";
 import Resources from "../../resources.json";
 import { connect } from 'react-redux'
+import * as actions from '../../store/actions/Adminstration'
+import EpsPermission from "../../Pages/Eps/EpsPermission"
+import { bindActionCreators } from 'redux';
+
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -19,10 +23,11 @@ class TemplatesSettings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabIndex: this.props.Adminstration.tabIndex,
+            //tabIndex: this.props.Adminstration.tabIndex,
             showNotify: false
         };
     }
+
     NoPermission = () => {
         this.setState({
             showNotify: true
@@ -33,11 +38,15 @@ class TemplatesSettings extends Component {
             })
         }, 1000);
     }
+
+    componentDidMount = () => {
+
+    }
     render() {
         return (
             <div className='mainContainer main__fulldash'>
 
-                <Tabs className="settings-container" selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
+                <Tabs className="settings-container" selectedIndex={this.props.Adminstration.tabIndex} onSelect={tabIndex => this.props.actions.routeToTabIndex(tabIndex)}>
                     <div className="settings-tabs-items">
                         <h3 className="zero">Settings</h3>
                         <TabList>
@@ -58,11 +67,13 @@ class TemplatesSettings extends Component {
                                 <Tab>
                                     <span className="subUlTitle">{Resources['currencyExchangeRates'][currentLanguage]}</span>
                                 </Tab> : null}
-
-
                             <li className="title">
                                 <h4 className="zero">{Resources['Project'][currentLanguage]}</h4>
                             </li>
+                            {(config.IsAllow(1260)) ?
+                                <Tab>
+                                    <span className="subUlTitle">{Resources['EPS'][currentLanguage]}</span>
+                                </Tab> : null}
                             {(config.IsAllow(1179)) ?
                                 <Tab>
                                     <span className="subUlTitle">{Resources['expensesWorkFlow'][currentLanguage]}</span>
@@ -112,7 +123,11 @@ class TemplatesSettings extends Component {
                                 <CurrencyExchangeRates />
                             </TabPanel>
                             : null}
-
+                        {(config.IsAllow(1260)) ?
+                            <TabPanel>
+                                <EpsPermission />
+                            </TabPanel>
+                            : null}
                         {(config.IsAllow(1001105)) ?
                             <TabPanel>
                                 <ExpensesWorkFlowLog />
@@ -145,7 +160,14 @@ class TemplatesSettings extends Component {
 }
 
 const mapStateToProps = (state) => {
+
     let sState = state;
     return sState;
 }
-export default withRouter(connect(mapStateToProps)(TemplatesSettings));
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(actions, dispatch)
+    };
+}
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TemplatesSettings));

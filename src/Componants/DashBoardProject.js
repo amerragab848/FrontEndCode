@@ -1,6 +1,11 @@
 import React, { Component, Fragment } from "react";
+<<<<<<< HEAD
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { SortablePane, Pane } from "react-sortable-pane";
+=======
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs"; 
+import { SortablePane, Pane } from "react-sortable-pane"; 
+>>>>>>> 50773cdf27a933a56cac8b28b7bbb3180ecbe86f
 import dashBoardLogo from "../Styles/images/dashboardDots.png";
 import widgets from "./WidgetsDashBoradProject";
 import Resources from "../resources.json";

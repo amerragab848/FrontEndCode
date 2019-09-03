@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import Config from "./Services/Config";
 
 let Authorization = localStorage.getItem("userToken");
- 
+
 export default class Api {
 
     static headers() {
@@ -26,7 +26,7 @@ export default class Api {
         return this.xhr(route, params, "POST");
     }
 
-    static xhr(route, params, verb) { 
+    static xhr(route, params, verb) {
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
         const url = `${host}${route}`;
         let json = null;
@@ -250,32 +250,30 @@ export default class Api {
         );
 
         options.headers = Api.headers();
-
-        return fetch(url, options)
-            .then(resp => {
-                if (resp.status === 200) {
-                    json = resp.json();
-
-                    return json;
-                } else if (resp.status === 500) {
-                    json = null;
-
-                    return json;
-                } else if (resp.status === 401) {
-                    localStorage.removeItem("userToken");
-                }
-                return json.then(err => {
-                    throw err;
-                });
-            })
-            .then(json => (json.result ? json.result : json));
+        var returnObject = {};
+        return fetch(url, options).then(reponse => {
+            if (reponse.status === 200) {
+                returnObject.status = 200;
+                returnObject.msg = "Successfuly created account.";
+                json = returnObject;
+                return json;
+            } else if (reponse.status === 500) {
+                json = null;
+                return json;
+            } else if (reponse.status === 401) {
+                returnObject.status = 401;
+                returnObject.msg = "Email already exists.";
+                json = returnObject;
+                return json;
+            }
+        }).then(json => (json.result ? json.result : json));
     }
 
     static IsAuthorized() {
         let authorize = false;
         if (localStorage.getItem("userToken")) {
             authorize = true;
-        } 
+        }
         return authorize;
     }
 }

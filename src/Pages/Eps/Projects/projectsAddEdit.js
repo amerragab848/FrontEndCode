@@ -14,9 +14,9 @@ import * as communicationActions from '../../../store/actions/communication';
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import { toast } from "react-toastify";
 import Api from '../../../api'
-
 import CompanyDropdown from '../../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../../Componants/publicComponants/ContactDropdown'
+import HeaderDocument from "../../../Componants/OptionsPanels/HeaderDocument";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
@@ -25,8 +25,8 @@ const validationSchema = Yup.object().shape({
     projectNameEn: Yup.string().test('projectNameEn', 'Name cannot be arabic', value => {
         return !en.test(value);
     }).required(Resources['pleaseInsertprojectNameEnglish'][currentLanguage]),
-    projectNameAr: Yup.string().test('projectNameAr', 'Name cannot be english', value => { 
-        return  ar.test(value)
+    projectNameAr: Yup.string().test('projectNameAr', 'Name cannot be english', value => {
+        return ar.test(value)
     }).required(Resources['pleaseInsertprojectNameArabic'][currentLanguage]),
     job: Yup.string().required(Resources['referenceCode'][currentLanguage]),
     projectType: Yup.string().required(Resources['pleaseSelectProjectType'][currentLanguage]),
@@ -110,6 +110,7 @@ class projectsAddEdit extends Component {
             let url = "ProjectProjectsById?id=" + this.state.docId
             this.props.actions.documentForEdit(url).then(() => {
                 this.setState({ isLoading: false })
+                this.props.actions.RouteToMainDashboard();
             })
 
             if (!Config.IsAllow(423) || !Config.IsAllow(424) || !Config.IsAllow(426)) {
@@ -338,26 +339,13 @@ class projectsAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
                     <div className="submittalHead">
-                        <h2 className="zero">{this.state.docId > 0 ? Resources.projectsEdit[currentLanguage] : Resources.projectsAdd[currentLanguage]}
-                        </h2>
-                        <div className="SubmittalHeadClose">
-                            <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                                <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                    <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)">
-                                        <g id="Group-2">
-                                            <g id="Action-icons/Close/Circulated/56px/Light-grey_Normal" transform="translate(1286.000000, 24.000000)">
-                                                <g id="Action-icons/Close/Circulated/20pt/Grey_Normal">
-                                                    <g id="Group">
-                                                        <circle id="Oval" fill="#E9ECF0" cx="28" cy="28" r="28"></circle>
-                                                        <path d="M36.5221303,34.2147712 C37.1592899,34.8519308 37.1592899,35.8849707 36.5221303,36.5221303 C35.8849707,37.1592899 34.8519308,37.1592899 34.2147712,36.5221303 L28,30.3073591 L21.7852288,36.5221303 C21.1480692,37.1592899 20.1150293,37.1592899 19.4778697,36.5221303 C18.8407101,35.8849707 18.8407101,34.8519308 19.4778697,34.2147712 L25.6926409,28 L19.4778697,21.7852288 C18.8407101,21.1480692 18.8407101,20.1150293 19.4778697,19.4778697 C20.1150293,18.8407101 21.1480692,18.8407101 21.7852288,19.4778697 L28,25.6926409 L34.2147712,19.4778697 C34.8519308,18.8407101 35.8849707,18.8407101 36.5221303,19.4778697 C37.1592899,20.1150293 37.1592899,21.1480692 36.5221303,21.7852288 L30.3073591,28 L36.5221303,34.2147712 Z" id="Combined-Shape" fill="#858D9E" fillRule="nonzero"></path>
-                                                    </g>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
-                        </div>
+
+                        <HeaderDocument
+                            projectName=''
+                            isViewMode={false}
+                            perviousRoute={"/projects"}
+                            docTitle={this.state.docId > 0 ? Resources.projectsEdit[currentLanguage] : Resources.projectsAdd[currentLanguage]}
+                        />
                     </div>
                     <div className="doc-container">
                         {
@@ -551,7 +539,7 @@ class projectsAddEdit extends Component {
                                                                         error={errors.executiveManagerContact}
                                                                         touched={touched.executiveManagerContact}
                                                                         index="executiveManagerContact"
-                                                                        id="executiveManagerContact" styles={CompanyDropdown} classDrop="companyName1 "/>
+                                                                        id="executiveManagerContact" styles={CompanyDropdown} classDrop="companyName1 " />
                                                                 </div>
                                                                 <div className="super_company">
                                                                     <Dropdown
@@ -634,7 +622,7 @@ class projectsAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="letterFullWidth">
-                                                        <label style={{margin: '0', marginBottom: '4px'}} data-toggle="tooltip" title="Design Team" className="control-label">{Resources.projectStatus[currentLanguage]} </label>
+                                                        <label style={{ margin: '0', marginBottom: '4px' }} data-toggle="tooltip" title="Design Team" className="control-label">{Resources.projectStatus[currentLanguage]} </label>
                                                         <div className="check__radio">
                                                             <div className="">
                                                                 <div className="ui checkbox radio radioBoxBlue checked">
@@ -642,7 +630,7 @@ class projectsAddEdit extends Component {
                                                                         defaultChecked={values.status === true ? 'checked' : null} value="true" onChange={() => setFieldValue('status', true)} />
                                                                     <label>{Resources.active[currentLanguage]}</label>
                                                                 </div>
-                                                                <div style={{margin : '0 6px'}} className="ui checkbox radio radioBoxBlue checked">
+                                                                <div style={{ margin: '0 6px' }} className="ui checkbox radio radioBoxBlue checked">
                                                                     <input type="radio" name="status" value='false' onChange={() => setFieldValue('status', false)}
                                                                         defaultChecked={values.status == false ? 'checked' : null} />
                                                                     <label>{Resources.inActive[currentLanguage]}</label>
@@ -652,13 +640,13 @@ class projectsAddEdit extends Component {
                                                                         defaultChecked={values.holded == true ? 'checked' : null} />
                                                                     <label>{Resources.holded[currentLanguage]}</label>
                                                                 </div>
-                                                                <div style={{margin : '0 6px'}} className="ui checkbox radio radioBoxBlue">
+                                                                <div style={{ margin: '0 6px' }} className="ui checkbox radio radioBoxBlue">
                                                                     <input type="radio" name="holded" onChange={e => setFieldValue('holded', false)}
                                                                         defaultChecked={values.holded == false ? 'checked' : null} />
                                                                     <label>{Resources.unHolded[currentLanguage]}</label>
                                                                 </div>
                                                             </div>
-                                                            <div style={{marginTop:' 8px'}} className="ui checkbox checkBoxGray300 checked">
+                                                            <div style={{ marginTop: ' 8px' }} className="ui checkbox checkBoxGray300 checked">
                                                                 <input type="checkbox" name='showInReport' defaultChecked={values.showInReport == true ? 'checked' : null} onChange={e => setFieldValue('showInReport', e.target.checked)} />
                                                                 <label>{Resources.showInReport[currentLanguage]}</label>
                                                             </div>

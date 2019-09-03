@@ -6163,6 +6163,10 @@
         "en": "Profile Setting",
         "ar": "اعدادات الحساب"
     },
+    "settings": {
+        "en": "Setting",
+        "ar": "اعدادات"
+    },
     "privacySettings": {
         "en": "Privacy Settings",
         "ar": "الاعدادات الخاصه"
