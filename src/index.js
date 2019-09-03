@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter  as Router } from "react-router-dom";
-import createBrowserHistory from "history/createBrowserHistory";
+import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
- 
+let createBrowserHistory = require("history").createBrowserHistory;
+
 const history = createBrowserHistory();
 
 window.nav_history = history;

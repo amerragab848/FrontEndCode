@@ -1,8 +1,8 @@
-let widgets = {
-    "monthlyPo": {
+let widgets = [
+    {
         "title": "monthlyPo",
         "props": {
-            "permission":10048,
+            "permission": 10048,
             "type": "oneWidget",
             "api": "GetTotalPoForProjectId?projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -12,7 +12,7 @@ let widgets = {
             "key": "0-1-1"
         }
     },
-    "materialRequestcount": {
+    {
         "title": "materialRequestcount",
         "props": {
             "permission": 10049,
@@ -25,10 +25,10 @@ let widgets = {
             "key": "0-1-2"
         }
     },
-    "monthlyPaymentRequisitions": {
+    {
         "title": "monthlyPaymentRequisitions",
         "props": {
-            "permission":10050,
+            "permission": 10050,
             "type": "oneWidget",
             "api": "GetTotalPaymentForProject?projectId=",
             "route": "DashBoardProjectCounterLog",
@@ -38,7 +38,7 @@ let widgets = {
             "key": "0-1-3"
         }
     },
-    "approvalSubmittals": {
+    {
         "title": "approvalSubmittals",
         "props": {
             "permission": 10051,
@@ -51,7 +51,7 @@ let widgets = {
             "key": "0-1-4"
         }
     },
-    "openedSubmittals": {
+    {
         "title": "openedSubmittals",
         "props": {
             "permission": 10052,
@@ -64,7 +64,7 @@ let widgets = {
             "key": "0-1-5"
         }
     },
-    "rejectedSubmittals": {
+    {
         "title": "rejectedSubmittals",
         "props": {
             "permission": 10053,
@@ -77,7 +77,7 @@ let widgets = {
             "key": "0-1-6"
         }
     },
-    "openedLetters": {
+    {
         "title": "openedLetters",
         "props": {
             "permission": 10054,
@@ -90,7 +90,7 @@ let widgets = {
             "key": "0-1-7"
         }
     },
-    "openedIR": {
+    {
         "title": "openedIR",
         "props": {
             "permission": 10055,
@@ -103,7 +103,7 @@ let widgets = {
             "key": "0-1-8"
         }
     },
-    "rfiOpen": {
+    {
         "title": "rfiOpen",
         "props": {
             "permission": 10056,
@@ -116,7 +116,7 @@ let widgets = {
             "key": "0-1-9"
         }
     },
-    "openedTransmittals": {
+    {
         "title": "openedTransmittals",
         "props": {
             "permission": 10057,
@@ -129,7 +129,7 @@ let widgets = {
             "key": "0-2-1"
         }
     },
-    "countinspectionPanding": {
+    {
         "title": "countinspectionPanding",
         "props": {
             "permission": 10058,
@@ -142,7 +142,7 @@ let widgets = {
             "key": "0-2-2"
         }
     },
-    "countinspectionReject": {
+    {
         "title": "countinspectionReject",
         "props": {
             "permission": 10059,
@@ -155,7 +155,7 @@ let widgets = {
             "key": "0-2-3"
         }
     },
-    "countinspectionApproved": {
+    {
         "title": "countinspectionApproved",
         "props": {
             "permission": 10060,
@@ -168,7 +168,7 @@ let widgets = {
             "key": "0-2-4"
         }
     },
-    "avgRespondTimeLetters": {
+    {
         "title": "avgRespondTimeLetters",
         "props": {
             "permission": 10061,
@@ -181,7 +181,7 @@ let widgets = {
             "key": "0-2-5"
         }
     },
-    "avgRespondTimeTransmittals": {
+    {
         "title": "avgRespondTimeTransmittals",
         "props": {
             "permission": 10062,
@@ -194,7 +194,7 @@ let widgets = {
             "key": "0-2-6"
         }
     },
-    "avgRespondTimeIR": {
+    {
         "title": "avgRespondTimeIR",
         "props": {
             "permission": 10063,
@@ -207,7 +207,7 @@ let widgets = {
             "key": "0-2-7"
         }
     },
-    "avgRespondTimeMIR": {
+    {
         "title": "avgRespondTimeMIR",
         "props": {
             "permission": 10064,
@@ -220,7 +220,7 @@ let widgets = {
             "key": "0-2-8"
         }
     },
-    "avgRespondTimeRFI": {
+    {
         "title": "avgRespondTimeRFI",
         "props": {
             "permission": 10065,
@@ -233,7 +233,7 @@ let widgets = {
             "key": "0-2-9"
         }
     },
-    "avgRespondTimeSubmittals": {
+    {
         "title": "avgRespondTimeSubmittals",
         "props": {
             "permission": 10066,
@@ -246,7 +246,7 @@ let widgets = {
             "key": "0-2-10"
         }
     },
-    "avgRespondTimePO": {
+    {
         "title": "avgRespondTimePO",
         "props": {
             "permission": 10067,
@@ -259,7 +259,7 @@ let widgets = {
             "key": "0-2-11"
         }
     }
-}
+]
 
 let categories = {
     '1': {
