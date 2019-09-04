@@ -132,6 +132,14 @@ class ErrorHandler extends React.Component {
     //  logErrorToMyService(error, info);
   }
 
+  ignoreBug() {
+    // Add error to state
+    this.setState({
+      error: {},
+      info: {}
+    });
+  }
+
   render() {
     if (this.state.error) {
       // Some error was thrown. Let's display something helpful to the user
@@ -147,14 +155,14 @@ class ErrorHandler extends React.Component {
                 dispatched to deal with this situation!
                             </p>
             </div>
-            <NavLink to="/">
+            <NavLink to="/" onClick={e => this.ignoreBug()}>
               <span className="goBack">
                 <i
                   className="fa fa-angle-double-left"
                   aria-hidden="true"
                 />
                 Back to Dashboard
-                            </span>
+              </span>
             </NavLink>
           </div>
         </div>

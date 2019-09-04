@@ -51,6 +51,7 @@ class CommonLog extends Component {
       selectedRows: [],
       minimizeClick: false,
       documentObj: {},
+      match: props.match
     };
 
     this.filterMethodMain = this.filterMethodMain.bind(this);
@@ -74,33 +75,67 @@ class CommonLog extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-
-    if (nextProps.match !== this.props.match) {
-
-      this.setState({
+  static getDerivedStateFromProps(nextProps, state) {
+    if (nextProps.match !== state.match) {
+      return {
         isLoading: true,
         isCustom: true,
         documentName: nextProps.match.params.document,
-        projectId: nextProps.projectId
-      });
-
-      this.renderComponent(nextProps.match.params.document, nextProps.projectId, true);
+        projectId: nextProps.projectId,
+        match: nextProps.match
+      };
     }
 
-    if (nextProps.projectId !== this.props.projectId) {
-      if (!this.state.documentObj.documentApi) {
-        this.renderComponent(nextProps.match.params.document, nextProps.projectId, true);
-      } else {
-        this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, nextProps.projectId);
-      }
+    if (nextProps.projectId !== state.projectId) {
 
-      this.setState({
+      return {
         isLoading: true,
         projectId: nextProps.projectId
-      });
+      };
+    }
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.match !== this.props.match) {
+      this.renderComponent(this.props.match.params.document, this.props.projectId, true);
+    }
+
+    if (this.props.projectId !== prevProps.projectId) {
+      if (!this.state.documentObj.documentApi) {
+        this.renderComponent(this.props.match.params.document, this.props.projectId, true);
+      } else {
+        this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
+      }
     }
   }
+  // componentWillReceiveProps(nextProps) {
+
+  //   if (nextProps.match !== this.props.match) {
+
+  //     this.setState({
+  //       isLoading: true,
+  //       isCustom: true,
+  //       documentName: nextProps.match.params.document,
+  //       projectId: nextProps.projectId
+  //     });
+
+  //     this.renderComponent(nextProps.match.params.document, nextProps.projectId, true);
+  //   }
+
+  //   if (nextProps.projectId !== this.props.projectId) {
+  //     if (!this.state.documentObj.documentApi) {
+  //       this.renderComponent(nextProps.match.params.document, nextProps.projectId, true);
+  //     } else {
+  //       this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, nextProps.projectId);
+  //     }
+
+  //     this.setState({
+  //       isLoading: true,
+  //       projectId: nextProps.projectId
+  //     });
+  //   }
+  // }
 
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = this.state.isCustom !== nextProps.isCustom;
@@ -361,33 +396,33 @@ class CommonLog extends Component {
 
     var filtersColumns = [];
 
-    if(documentObj.documentColumns){
-    documentObj.documentColumns.map((item, index) => {
+    if (documentObj.documentColumns) {
+      documentObj.documentColumns.map((item, index) => {
 
-      var obj = {
-        key: item.field,
-        frozen: index < 2 ? true : false,
-        name: Resources[item.friendlyName][currentLanguage],
-        width: item.minWidth,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: false,
-        sortDescendingFirst: true,
-        formatter: item.field === "subject" ? subjectLink : item.dataType === "date" ? dateFormate : ""
-      };
+        var obj = {
+          key: item.field,
+          frozen: index < 2 ? true : false,
+          name: Resources[item.friendlyName][currentLanguage],
+          width: item.minWidth,
+          draggable: true,
+          sortable: true,
+          resizable: true,
+          filterable: false,
+          sortDescendingFirst: true,
+          formatter: item.field === "subject" ? subjectLink : item.dataType === "date" ? dateFormate : ""
+        };
 
-      if (isCustom !== true) {
-        cNames.push(obj);
-      } else {
-        if (item.isCustom === true) {
+        if (isCustom !== true) {
           cNames.push(obj);
+        } else {
+          if (item.isCustom === true) {
+            cNames.push(obj);
+          }
         }
-      }
-    });
-  }
+      });
+    }
 
-   filtersColumns = documentObj.filters;
+    filtersColumns = documentObj.filters;
 
     this.setState({
       pageTitle: Resources[documentObj.documentTitle][currentLanguage],
