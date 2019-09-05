@@ -80,7 +80,8 @@ class UploadAttachment extends Component {
             <Dropzone onDrop={e => this.onDrop(e)} onDragLeave={e => this.setState({ _className: " " })}
                 onDragOver={e => this.setState({ _className: "dragHover" })}
                 onDropAccepted={e => this.onDropAcceptedHandler(e)}
-                onDropRejected={this.onDropRejected}>
+                onDropRejected={this.onDropRejected}
+                onClick={evt => evt.preventDefault()} >
                 {({ getRootProps, getInputProps, isDragActive }) => {
                     return (
                         <Fragment>

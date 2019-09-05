@@ -34,20 +34,27 @@ class ViewWorkFlow extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.state.docId + '&docType=' + this.state.docType + '&projectId=' + this.state.projectId;
 
         if (this.props.workFlowCycles.length === 0 && this.props.changeStatus === true) { //
             this.props.actions.GetWorkFlowCycles(url);
         }
     }
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.workFlowCycles != prevProps.workFlowCycles) {
-            this.setState({ workFlowCycles: nextProps.workFlowCycles });
-            this.renderCycles(nextProps.workFlowCycles);
-        }
-    };
 
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.workFlowCycles != state.workFlowCycles) {
+            return { workFlowCycles: nextProps.workFlowCycles };
+        }
+        return null
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.workFlowCycles !== this.props.workFlowCycles) {
+            this.renderCycles(this.props.workFlowCycles);
+        }
+    }
+ 
     showPopup(e) {
         this.setState({
             showPopup: true,
@@ -63,7 +70,7 @@ class ViewWorkFlow extends Component {
     renderLevels(items) {
 
         let grouped = _.groupBy(items, 'arrange');
- 
+
         let mapLevels = _.map(grouped, (i, index) => {
             return (
                 <div className="StepperNum1 StepperNum workFlowStep" key={index}>
@@ -79,35 +86,35 @@ class ViewWorkFlow extends Component {
                             {i.map((level, idx) => {
                                 return (
                                     <div key={idx} className={level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
-                                    <div className={level.statusVal == null ? "signature-h signaturePendingd" : "signature-h"}>
-                                        <figure className="avatarProfile smallAvatarSize">
-                                            <img alt="" title="" src={Avatar} />
-                                        </figure>
-                                        <div className="avatarName">
-                                            <h6>{level.contactName}</h6>
-                                            <p>{level.companyName}</p>
+                                        <div className={level.statusVal == null ? "signature-h signaturePendingd" : "signature-h"}>
+                                            <figure className="avatarProfile smallAvatarSize">
+                                                <img alt="" title="" src={Avatar} />
+                                            </figure>
+                                            <div className="avatarName">
+                                                <h6>{level.contactName}</h6>
+                                                <p>{level.companyName}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    {level.statusVal != null ?
-                                        <div className="card-signature">
-                                            <img src={level.signature != null ? level.signature : Signature} alt="..." />
-                                        </div>
-                                        : null}
-
-                                    <div className="Status__comment">
                                         {level.statusVal != null ?
-                                            <span>
-                                                {level.comment === null ? null :
-                                                    <img src={CommentImg} alt="Cooment" onClick={e => this.showPopup(level.comment)} />
-                                                }
-                                            </span> : null}
-                                        <div className="box-statue">
-                                            <h5>{level.status}</h5>
-                                            <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>
-                                        </div>
-                                    </div>
+                                            <div className="card-signature">
+                                                <img src={level.signature != null ? level.signature : Signature} alt="..." />
+                                            </div>
+                                            : null}
 
-                                </div>
+                                        <div className="Status__comment">
+                                            {level.statusVal != null ?
+                                                <span>
+                                                    {level.comment === null ? null :
+                                                        <img src={CommentImg} alt="Cooment" onClick={e => this.showPopup(level.comment)} />
+                                                    }
+                                                </span> : null}
+                                            <div className="box-statue">
+                                                <h5>{level.status}</h5>
+                                                <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 );
                             })}
                         </div>
@@ -134,7 +141,7 @@ class ViewWorkFlow extends Component {
         })
         this.setState({
             visualCycle: cycles
-        }); 
+        });
         return cycles
     }
 

@@ -41,7 +41,7 @@ class SendByEmails extends Component {
     this.setState({ isLoading: false });
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     Api.get("GetaccountsDefaultList?listType=priority&pageNumber=0&pageSize=200").then(result => {
       var data = [];
 
@@ -85,25 +85,11 @@ class SendByEmails extends Component {
         data.push(obj);
       });
       this.setState({
-        ToCompanies: data
-      });
-    });
-
-    Api.get("GetProjectProjectsCompaniesForList?projectId=" + this.state.emailObj.projectId).then(result => {
-      var data = [];
-
-      result.map(item => {
-        var obj = {};
-
-        obj.label = item["companyName"];
-        obj.value = item["companyId"];
-
-        data.push(obj);
-      });
-      this.setState({
+        ToCompanies: data,
         CCCompanies: data
       });
     });
+ 
   };
 
   componentWillReceiveProps = (props) => {
@@ -128,6 +114,7 @@ class SendByEmails extends Component {
     emailObj[state] = event.value;
     this.setState({ [state]: event.value, emailObj });
   }
+
   handleChangeCC = (values) => {
     let cc = values.map(item => {
       return item.value;
