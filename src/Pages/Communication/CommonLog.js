@@ -87,13 +87,14 @@ class CommonLog extends Component {
     }
 
     if (nextProps.projectId !== state.projectId) {
-
       return {
         isLoading: true,
         projectId: nextProps.projectId
       };
     }
+
     return null;
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -109,6 +110,7 @@ class CommonLog extends Component {
       }
     }
   }
+  
   // componentWillReceiveProps(nextProps) {
 
   //   if (nextProps.match !== this.props.match) {

@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
+import React, { Component } from "react"; 
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -15,8 +14,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
-import SkyLight from 'react-skylight';
+import moment from "moment"; 
 import * as communicationActions from '../../store/actions/communication';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { toast } from "react-toastify";
@@ -712,7 +710,7 @@ class TransmittalAddEdit extends Component {
                                                             <div className={"inputDev ui input" + (errors.Building && touched.Building ? (" has-error") : !errors.Building && touched.Building ? (" has-success") : " ")} >
                                                                 <input name='Building' className="form-control fsadfsadsa" id="Building"
                                                                     placeholder={Resources.Building[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.building}
+                                                                    autoComplete='off' value={this.state.document.building ? this.state.document.building:''}
                                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                                     onChange={(e) => this.handleChange(e, 'building')} />
                                                                 {errors.Building && touched.Building ? (<em className="pError">{errors.Building}</em>) : null}

@@ -63,31 +63,22 @@ class ViewWorkFlow extends Component {
     renderLevels(items) {
 
         let grouped = _.groupBy(items, 'arrange');
-
-        let groupedLevels = [];
-
-        _.filter(grouped, function (i) {
-            let obj = {};
-            obj.level = i[0].arrange;
-            obj.statusVal = i[0].statusVal;
-            obj.count = i.length;
-            groupedLevels.push(obj);
-        });
-
-        let mapLevels = groupedLevels.map((i, index) => {
+ 
+        let mapLevels = _.map(grouped, (i, index) => {
             return (
                 <div className="StepperNum1 StepperNum workFlowStep" key={index}>
                     <div>
-                        <div className={i.statusVal == null ? 'StepNumber pendingStep' : (i.statusVal === true ? "StepNumber approvalstep" : "StepNumber declineStep")}>
+                        <div className={i[0].statusVal == null ? 'StepNumber pendingStep' : (i[0].statusVal === true ? "StepNumber approvalstep" : "StepNumber declineStep")}>
                             <span className="Step-Line afterLine"></span>
                             <div className="StepNum">
-                                <p className="StepN zero">{i.level}</p>
+                                <p className="StepN zero">{i[0].arrange}</p>
                             </div>
                             <span className="Step-Line"></span>
                         </div>
                         <div className="MultiPeinding">
-                            {items.map((level, idx) => level.arrange === i.level ?
-                                <div key={idx} className={level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
+                            {i.map((level, idx) => {
+                                return (
+                                    <div key={idx} className={level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
                                     <div className={level.statusVal == null ? "signature-h signaturePendingd" : "signature-h"}>
                                         <figure className="avatarProfile smallAvatarSize">
                                             <img alt="" title="" src={Avatar} />
@@ -117,8 +108,8 @@ class ViewWorkFlow extends Component {
                                     </div>
 
                                 </div>
-                                : null
-                            )}
+                                );
+                            })}
                         </div>
                     </div>
                 </div>

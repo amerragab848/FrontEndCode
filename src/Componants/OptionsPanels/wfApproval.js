@@ -31,7 +31,7 @@ class wfApproval extends Component {
       }
     };
   }
-  
+
   toggle = () => {
     const currentType = this.state.type;
     this.setState({ type: !currentType });
@@ -46,26 +46,47 @@ class wfApproval extends Component {
       this.setState({
         approveData: result
       });
-    }).catch(ex => { 
-      toast.error(ex); 
+    }).catch(ex => {
+      toast.error(ex);
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    
-    if (nextProps.approvalStatus != this.props.approvalStatus) {
+  static getDerivedStateFromProps(nextProps, state) {
+    if (nextProps.approvalStatus != state.approvalStatus) {
 
-      let original_updateWorkFlow = { ...this.state.updateWorkFlow };
+      let original_updateWorkFlow = state.updateWorkFlow;
       let updateWorkFlow_new = {};
       updateWorkFlow_new.approvalStatus = nextProps.approvalStatus;
-      updateWorkFlow_new = Object.assign(original_updateWorkFlow, updateWorkFlow_new); 
-      this.setState({
+      updateWorkFlow_new = Object.assign(original_updateWorkFlow, updateWorkFlow_new);
+      return {
         updateWorkFlow: updateWorkFlow_new
-      });
+      };
 
-      this.fillContacts(this.props.docApprovalId, nextProps.approvalStatus);
     }
-  };
+    return null
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.approvalStatus !== this.props.approvalStatus) {
+      this.fillContacts(this.props.docApprovalId, this.props.approvalStatus);
+    }
+  }
+
+  // componentWillReceiveProps(nextProps) {
+
+  //   if (nextProps.approvalStatus != this.props.approvalStatus) {
+
+  //     let original_updateWorkFlow = { ...this.state.updateWorkFlow };
+  //     let updateWorkFlow_new = {};
+  //     updateWorkFlow_new.approvalStatus = nextProps.approvalStatus;
+  //     updateWorkFlow_new = Object.assign(original_updateWorkFlow, updateWorkFlow_new);
+  //     this.setState({
+  //       updateWorkFlow: updateWorkFlow_new
+  //     });
+
+  //     this.fillContacts(this.props.docApprovalId, nextProps.approvalStatus);
+  //   }
+  // };
 
   commentOnBlurHandler = e => {
     this.setState({
@@ -102,9 +123,9 @@ class wfApproval extends Component {
               if (result === true) {
                 this.setState({ submitLoading: true });
                 Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
-                  this.setState({ submitLoading: true }); 
-                  console.log('this.props.perviousRoute',this.props.perviousRoute)
-                  this.props.history.push( 
+                  this.setState({ submitLoading: true });
+                  console.log('this.props.perviousRoute', this.props.perviousRoute)
+                  this.props.history.push(
                     this.props.previousRoute
                   );
 
