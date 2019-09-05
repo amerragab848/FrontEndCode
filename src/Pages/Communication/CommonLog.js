@@ -361,33 +361,33 @@ class CommonLog extends Component {
 
     var filtersColumns = [];
 
-    if(documentObj.documentColumns){
-    documentObj.documentColumns.map((item, index) => {
+    if (documentObj.documentColumns) {
+      documentObj.documentColumns.map((item, index) => {
 
-      var obj = {
-        key: item.field,
-        frozen: index < 2 ? true : false,
-        name: Resources[item.friendlyName][currentLanguage],
-        width: item.minWidth,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: false,
-        sortDescendingFirst: true,
-        formatter: item.field === "subject" ? subjectLink : item.dataType === "date" ? dateFormate : ""
-      };
+        var obj = {
+          key: item.field,
+          frozen: index < 2 ? true : false,
+          name: Resources[item.friendlyName][currentLanguage],
+          width: item.minWidth,
+          draggable: true,
+          sortable: true,
+          resizable: true,
+          filterable: false,
+          sortDescendingFirst: true,
+          formatter: item.field === "subject" ? subjectLink : item.dataType === "date" ? dateFormate : ""
+        };
 
-      if (isCustom !== true) {
-        cNames.push(obj);
-      } else {
-        if (item.isCustom === true) {
+        if (isCustom !== true) {
           cNames.push(obj);
+        } else {
+          if (item.isCustom === true) {
+            cNames.push(obj);
+          }
         }
-      }
-    });
-  }
+      });
+    }
 
-   filtersColumns = documentObj.filters;
+    filtersColumns = documentObj.filters;
 
     this.setState({
       pageTitle: Resources[documentObj.documentTitle][currentLanguage],

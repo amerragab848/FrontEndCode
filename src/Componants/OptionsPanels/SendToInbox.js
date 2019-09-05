@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Api from '../../api'
-import Dropdown from "./DropdownMelcous"; 
+import Dropdown from "./DropdownMelcous";
 import Resources from '../../resources.json';
 import { Formik, Form } from 'formik';
 import { connect } from 'react-redux';
@@ -10,11 +10,7 @@ import dataservice from "../../Dataservice";
 import * as Yup from 'yup';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const validationSchema = Yup.object().shape({
-    priorityId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toCompanyId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-})
+
 const _ = require('lodash')
 
 class SendToInbox extends Component {
@@ -41,7 +37,11 @@ class SendToInbox extends Component {
             Cc_Selected: [],
         }
     }
-
+    validationSchema = Yup.object().shape({
+        priorityId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
+        toCompanyId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
+        toContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
+    })
     componentDidMount = () => {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
         this.GetData(url, 'companyName', 'companyId', 'To_Cc_CompanyData', 2);
@@ -105,19 +105,15 @@ class SendToInbox extends Component {
                         ccCompanydd: '',
                         ccContactsdd: []
                     }}
-                    validationSchema={validationSchema}
+                    validationSchema={this.validationSchema}
+                    enableReinitialize={true}
                     onSubmit={values => {
                         this.sendInbox(values);
                     }}
                 >
                     {({ errors, touched, setFieldValue, setFieldTouched, values, handleBlur, handleChange, }) => (
                         <Form id="signupForm1" className="proForm customProform" noValidate="novalidate">
-                            <div className={this.state.validPriority && touched.priority ? (
-                                "ui input inputDev fillter-item-c has-error"
-                            ) : !this.state.validPriority && touched.priority ? (
-                                "ui input inputDev fillter-item-c has-success"
-                            ) : "ui input inputDev fillter-item-c"}
-                            >
+                            <div className="linebylineInput valid-input">
                                 <Dropdown title="priority"
                                     data={this.state.PriorityData}
                                     handleChange={event => this.handleChange('priorityId', event, false, null, null)}
@@ -142,12 +138,7 @@ class SendToInbox extends Component {
                                     />
                                 </div>
                             </div>
-                            <div className={this.state.validToCompany && touched.toCompany ? (
-                                "ui input inputDev fillter-item-c has-error"
-                            ) : !this.state.validToCompany && touched.toCompany ? (
-                                "ui input inputDev fillter-item-c has-success"
-                            ) : "ui input inputDev fillter-item-c"}
-                            >
+                            <div className="linebylineInput valid-input">
                                 <Dropdown title="toCompanyName" data={this.state.To_Cc_CompanyData}
                                     index='toCompanyId' name="toCompanyId"
                                     onChange={setFieldValue}
@@ -157,12 +148,7 @@ class SendToInbox extends Component {
                                     touched={touched.toCompanyId}
                                     selectedValue={this.state.toCompanyId} />
                             </div>
-                            <div className={this.state.validAttention && touched.Attention ? (
-                                "ui input inputDev fillter-item-c has-error"
-                            ) : !this.state.validAttention && touched.Attention ? (
-                                "ui input inputDev fillter-item-c has-success"
-                            ) : "ui input inputDev fillter-item-c"}
-                            >
+                            <div className="linebylineInput valid-input" >
                                 <Dropdown title="ToContact" data={this.state.AttentionData}
                                     index='toContactId' name="toContactId"
                                     onChange={setFieldValue}
