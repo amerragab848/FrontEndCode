@@ -9,30 +9,26 @@ import { bindActionCreators } from "redux";
 import Details from "./Componants/widgetsDashBoardDetails";
 import * as dashboardComponantActions from "./store/actions/communication";
 import IndexedDb from "./IndexedDb";
-
 import orderBy from "lodash/orderBy";
 import map from "lodash/map";
 import groupBy from "lodash/groupBy";
-
 import SkyLight from "react-skylight";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-
 import ConfirmationModal from "./Componants/publicComponants/ConfirmationModal";
 import Dropdown from "./Componants/OptionsPanels/DropdownMelcous";
 import dataService from "./Dataservice";
 import LoadingSection from "./Componants/publicComponants/LoadingSection";
-
 import Edit from "./Styles/images/epsActions/edit.png";
 import Plus from "./Styles/images/epsActions/plus.png";
 import Delete from "./Styles/images/epsActions/delete.png";
-
 import { toast } from "react-toastify";
 import moment from "moment";
+import Config from "./Services/Config";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-var treeContainer = [];
+let treeContainer = [];
 
 const validationSchema = Yup.object().shape({
     companyId: Yup.string().required(
@@ -120,7 +116,6 @@ class DashboardProject extends Component {
         };
     }
 
-
     componentDidMount() {
         let projectId = this.props.projectId == 0 ? localStorage.getItem("lastSelectedProject") : this.props.projectId;
 
@@ -128,22 +123,21 @@ class DashboardProject extends Component {
         this.props.actions.RouteToDashboardProject(e);
         this.getWidgets();
 
-        dataService.GetDataGrid("GetProjectOrganizationChart?projectId=" + this.state.projectId)
-            .then(result => {
-                let state = this.state;
+        dataService.GetDataGrid("GetProjectOrganizationChart?projectId=" + this.state.projectId).then(result => {
+            let state = this.state;
 
-                if (result) {
-                    result.forEach(item => {
-                        state[item.id] = item;
-                        state["_" + item.id] = false;
-                    });
-                    this.setState({
-                        trees: result,
-                        state,
-                        isLoading: false
-                    });
-                }
-            });
+            if (result) {
+                result.forEach(item => {
+                    state[item.id] = item;
+                    state["_" + item.id] = false;
+                });
+                this.setState({
+                    trees: result,
+                    state,
+                    isLoading: false
+                });
+            }
+        });
 
         dataService.GetDataGrid("GetDiscussions?projectId=" + this.state.projectId)
             .then(result => {
@@ -154,14 +148,12 @@ class DashboardProject extends Component {
                 }
             });
 
-        dataService.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId,
-            "companyName", "companyId")
-            .then(result => {
-                this.setState({
-                    companies: result,
-                    isLoading: false
-                });
+        dataService.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId").then(result => {
+            this.setState({
+                companies: result,
+                isLoading: false
             });
+        });
     }
 
     async getWidgets() {
@@ -215,14 +207,14 @@ class DashboardProject extends Component {
 
     renderCategoryWidget() {
         return (
-            <Fragment> 
+            <Fragment>
                 {this.renderCategory()}
             </Fragment>
         );
     }
 
     renderCategory() {
-        console.log(this.state.widgets, 'categories')
+
         let categoryWidget = this.state.widgets.map((category, index) => {
             return (
                 <div className="SummeriesContainer" key={index + "DIV"}>
@@ -232,8 +224,9 @@ class DashboardProject extends Component {
                         </h2>
                         <div className="SummeriesContainerContent">
                             {category.widgets.map((widget, widgetIndex) => {
-
-                                return this.renderWidget(Details.widgets[widget.title], widgetIndex);
+                                if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
+                                    return this.renderWidget(widget, widgetIndex);
+                                }
                             })}
                         </div>
                     </Fragment>
@@ -245,33 +238,36 @@ class DashboardProject extends Component {
     }
 
     renderWidget(widget, index) {
-        // let widgetsDetails = Details;
-        widget.props.api = widget.props.api + this.state.projectId;
-        console.log(widget);
 
-        //   console.log(this.state.projectId);
-        //   console.log(Details.widgets[widget.title].props.api);
+        if (this.state.tabIndex === 0) {
 
-        if (widget.props.type === "twoWidget") {
+            let widgetss = '';
 
-            return (
-                <WidgetsWithText
-                    key={index + "DIV"}
-                    title={widget.title}
-                    {...widget}
-                />
-            );
-        } else if (widget.props.type === "oneWidget") {
-            return (
-                <Widgets
-                    key={index + "DIV"}
-                    title={widget.title}
-                    {...widget}
-                />
-            );
+            widgetss = Details.widgets.find(x => x.title === widget.title);
+
+            widgetss.props.api += this.state.projectId;
+
+            if (widgetss.props.type === "twoWidget") {
+
+                return (
+                    <WidgetsWithText
+                        key={index + "DIV"}
+                        title={widget.title}
+                        {...widgetss}
+                    />
+                );
+            } else if (widgetss.props.type === "oneWidget") {
+                return (
+                    <Widgets
+                        key={index + "DIV"}
+                        title={widget.title}
+                        {...widgetss}
+                    />
+                );
+            }
         }
-    }
-
+    } 
+    
     viewDashBoardHandler() {
         this.setState({
             viewDashBoard: true
@@ -636,16 +632,8 @@ class DashboardProject extends Component {
             });
     }
 
-    handleChangeDropDown(
-        event,
-        field,
-        isSubscrib,
-        targetState,
-        url,
-        param,
-        selectedValue,
-        subDatasource
-    ) {
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
+
         if (event == null) return;
 
         let original_document = { ...this.state.document };
@@ -658,13 +646,11 @@ class DashboardProject extends Component {
 
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value;
-            dataService
-                .GetDataList(action, "contactName", "id")
-                .then(result => {
-                    this.setState({
-                        [targetState]: result
-                    });
+            dataService.GetDataList(action, "contactName", "id").then(result => {
+                this.setState({
+                    [targetState]: result
                 });
+            });
         }
 
         this.setState({
@@ -788,12 +774,7 @@ class DashboardProject extends Component {
         }
         var buttonPreview = document.getElementById("previewBtn");
         if (buttonPreview !== null) {
-            buttonPreview.addEventListener(
-                "click",
-                this.hideUploadFiles,
-                false
-            );
-            console.log("Moutasem");
+            buttonPreview.addEventListener("click", this.hideUploadFiles, false);
         }
     };
 
@@ -804,7 +785,7 @@ class DashboardProject extends Component {
         while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
-        var curFiles = videoInput.files; 
+        var curFiles = videoInput.files;
         for (var i = 0; i < curFiles.length; i++) {
             var btnRemove = document.createElement("button");
 
@@ -815,12 +796,7 @@ class DashboardProject extends Component {
 
         var buttonPreview = document.getElementById("previewBtn");
         if (buttonPreview !== null) {
-            buttonPreview.addEventListener(
-                "click",
-                this.hideUploadFiles,
-                false
-            );
-            console.log("Moutasem");
+            buttonPreview.addEventListener("click", this.hideUploadFiles, false);
         }
     };
 
@@ -872,32 +848,26 @@ class DashboardProject extends Component {
 
     addComments = () => {
         if (this.state.documentCommentDiscussion.message != "") {
-            let DiscussionId = this.state.documentCommentDiscussion
-                .DiscussionId;
+            let DiscussionId = this.state.documentCommentDiscussion.DiscussionId;
 
-            dataService
-                .addObject(
-                    "AddDiscussionComment",
-                    this.state.documentCommentDiscussion
-                )
-                .then(result => {
-                    let originalData = this.state.Discussions;
+            dataService.addObject("AddDiscussionComment", this.state.documentCommentDiscussion).then(result => {
 
-                    let indexDiscussionId = originalData.findIndex(
-                        x => x.id === DiscussionId
-                    );
+                let originalData = this.state.Discussions;
 
-                    originalData[indexDiscussionId].comments.push(result);
+                let indexDiscussionId = originalData.findIndex(
+                    x => x.id === DiscussionId
+                );
 
-                    this.setState({ Discussions: originalData });
+                originalData[indexDiscussionId].comments.push(result);
 
-                    toast.success(
-                        language["operationSuccess"][currentLanguage]
-                    );
-                })
-                .catch(ex => {
-                    toast.error(language["failError"][currentLanguage]);
-                });
+                this.setState({ Discussions: originalData });
+
+                toast.success(
+                    language["operationSuccess"][currentLanguage]
+                );
+            }).catch(ex => {
+                toast.error(language["failError"][currentLanguage]);
+            });
         }
     };
 
@@ -913,6 +883,7 @@ class DashboardProject extends Component {
 
     addPosts() {
         if (this.state.documentPost.message != "") {
+
             let saveDocument = this.state.documentPost;
 
             saveDocument.projectId = this.state.projectId;
@@ -927,20 +898,16 @@ class DashboardProject extends Component {
                         }
                     }
 
-                    dataService
-                        .addObject(
-                            "UploadDiscussionAttachment",
-                            this.state.attachment
-                        )
-                        .then(data => {
-                            originalData.push(result);
+                    dataService.addObject("UploadDiscussionAttachment", this.state.attachment).then(data => {
 
-                            this.setState({ Discussions: originalData });
+                        originalData.push(result);
 
-                            toast.success(
-                                language["operationSuccess"][currentLanguage]
-                            );
-                        });
+                        this.setState({ Discussions: originalData });
+
+                        toast.success(
+                            language["operationSuccess"][currentLanguage]
+                        );
+                    });
                 });
         }
     }
@@ -1517,7 +1484,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(DashboardProject);
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardProject);

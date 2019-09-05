@@ -1,332 +1,250 @@
 import React, { Component, Fragment } from 'react';
-import DropdownMelcous from '../../OptionsPanels/DropdownMelcous';
+import Dropdown from '../../OptionsPanels/DropdownMelcous';
 import DatePicker from '../../OptionsPanels/DatePicker';
-import InPut from '../../OptionsPanels/InputMelcous';
 import moment from 'moment';
-import Api from '../../../api';
-import NotifiMsg from '../../publicComponants/NotifiMsg'
-import Recycle from '../../../Styles/images/attacheRecycle.png'
 import Resources from '../../../resources.json';
-import ConfirmationModal from "../../../Componants/publicComponants/ConfirmationModal";
 import config from "../../../Services/Config";
 import _ from "lodash";
 import dataservice from "../../../Dataservice";
-import { Formik, Form, withFormik } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { withRouter } from "react-router-dom";
 import LoadingSection from '../../publicComponants/LoadingSection';
-import CompanyDropdown from '../../publicComponants/CompanyDropdown'
-import ContactDropdown from '../../publicComponants/ContactDropdown'
+import CompanyDropdown from '../../publicComponants/CompanyDropdown';
+import ContactDropdown from '../../publicComponants/ContactDropdown';
+import { toast } from "react-toastify";
+import api from "../../../api";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const publicConfiguarion = config.getPayload();
-const getPublicConfiguartion = config.getPublicConfiguartion();
-let id = null;
-let DefaultUserName = '';
-let DefaultEmpCode = '';
+
 const validationSchema = Yup.object().shape({
-    WorkingHours: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .required(Resources['isRequiredField'][currentLanguage]),
-    RateHours: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .required(Resources['isRequiredField'][currentLanguage]),
-    UserName: Yup.string().required(Resources['isRequiredField'][currentLanguage]),
-    EmpCode: Yup.number().required(Resources['isRequiredField'][currentLanguage])
+    userName: Yup.string().required(Resources['isRequiredField'][currentLanguage]),
+    defaultHours: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).required(Resources['isRequiredField'][currentLanguage]),
+    contactSupervisorId: Yup.string().required(Resources['isRequiredField'][currentLanguage]),
+    empCode: Yup.number().required(Resources['isRequiredField'][currentLanguage])
 });
 
 class EditAccount extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
+
+        let id = '';
+
+        const query = new URLSearchParams(this.props.location.search);
+        for (let param of query.entries()) {
+            id = param[1];
+        }
+
+        const payload = config.getPayload();
+
         this.state = {
-            UserName: ' ',
-            WorkingHours: 0,
-            HoursRate: 0,
-            SupervisorNameData: [],
-            GroupNameData: [],
-            GroupNameId: {},
-            EmpCode: ' ',
-            DesignTeam: 'false',
-            TaskAdmin: false,
-            Active: true,
-            UserPermissiononLogsCreatedbyOthers: false,
-            checked: false,
-            ErrorSameUserName: false,
-            ErrorSameEmpCode: false,
-            statusClass: "disNone",
-            LoadingVaildation: false,
-            AccountData: [],
-            ActiveCheck: '',
-            UsePermissionsOnLogCheck: '',
-            TaskAdminCheck: '',
-            DesignTeamCheck: '',
-            DefaultSupervisorCompanyData: {},
-            DefaultGroupName: {},
-            render: false,
-            DefaultSupervisorName: {},
-            AlternativeData: [],
-            AlternativeAccountId: {},
-            AlternativeDate: moment(),
-            Loading: true,
-            RenderAlternative: '',
-            ErrorSameInputs: false
+            accountOwnerId: payload.aoi,
+            docId: id,
+            supervisorCompany: [],
+            groupData: [],
+            accountData: [],
+            loading: true,
+            accountDocument: {},
+            selectedSupervisorCompany: { label: Resources.supervisorCompanyRequired[currentLanguage], value: "0" },
+            selectedSupervisorContact: { label: Resources.selectContact[currentLanguage], value: "0" },
+            selectedGroup: { label: Resources.groupSelection[currentLanguage], value: "0" },
+            selectedAlternative: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
+            alternativeAccounts: [],
+            supervisorContact: [],
+            isExist: false,
+            alternativeDate: moment(),
+            isLoading: false
+        }
+
+        if (!config.IsAllow(797)) {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+            this.props.history.goBack();
         }
     }
-
-    componentWillMount = () => {
-        if (config.IsAllow(797)) {
-            const query = new URLSearchParams(this.props.location.search);
-            for (let param of query.entries()) {
-                id = param[1];
-            }
-
-            Api.get('GetAccountById?id=' + id + '').then(
-                res => {
-                    DefaultUserName = res.userName
-                    DefaultEmpCode = res.empCode
-                    this.setState({
-                        AccountData: res,
-                        UserName: res.userName,
-                        EmpCode: res.empCode,
-                        WorkingHours: res.defaultHours,
-                        HoursRate: res.userRate,
-                        ActiveCheck: res.active,
-                        UsePermissionsOnLogCheck: res.usePermissionsOnLogs,
-                        TaskAdminCheck: res.isTaskAdmin,
-                        DesignTeamCheck: res.designTeam,
-                        RenderAlternative: res.alternativAccountId
-                    })
-                }
-            )
-        }
-        else {
-            alert('You Don`t Have Permissions')
-            this.props.history.goBack()
-        }
-    }
-
 
     componentDidMount = () => {
 
-        this.GetData('SelectAllAccountsActive?id=' + id + '', 'userName', 'id', 'AlternativeAccount')
+        if (this.state.docId > 0) {
 
-        dataservice.GetDataList('GetGroup?accountOwnerId=' + publicConfiguarion.aoi + '', 'groupName', 'id').then(
-            result => {
-                let DefaultGroupId = this.state.AccountData.groupId
-                let selectGroup = _.find(result, function (i) { return i.value == DefaultGroupId });
-                console.log(selectGroup);
-                this.setState({
-                    GroupNameData: result,
-                    GroupNameId: selectGroup,
-                });
-            }
-        )
+            let id = this.state.docId;
 
-        dataservice.GetDataList('GetCompanies?accountOwnerId=' + publicConfiguarion.aoi + '', 'companyName', 'id').then(
-            result => {
-                let selectId = this.state.AccountData.companySupervisorId
-                let selectGroup = _.find(result, function (i) { return i.value == selectId });
+            let accountOwnerId = null;
+            let companyName = null;
+            let companyId = null;
+            let contactName = null;
+            let contactId = null;
+            let groupId = null;
+            let groupName = null;
+            let alternativAccountId = null;
 
-                this.setState({
-                    CompanyData: result,
-                    DefaultSupervisorCompanyData: selectGroup,
-                });
+            dataservice.GetDataGrid('GetAccountById?id=' + id).then(result => {
 
-                dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + selectId + '', 'contactName', 'id').then(
-                    result => {
-                        let selectId = this.state.AccountData.contactSupervisorId
-                        let selectGroup = _.find(result, function (i) { return i.value == selectId });
-                        this.setState({
-                            SupervisorNameData: result,
-                            DefaultSupervisorName: selectGroup
-                        })
-                    }
-                )
-
-                dataservice.GetDataList('SelectAllAccountsActive?id=' + id + '', 'userName', 'id').then(
-                    result => {
-                        let selectId = this.state.AccountData.alternativAccountId
-                        let selectGroup = _.find(result, function (i) { return i.value == selectId });
-                        this.setState({
-                            AlternativeData: result,
-                            AlternativeAccountId: selectGroup,
-                            Loading: false
-                        })
-                    }
-                )
-            }
-        )
-    }
-
-    workHoursChangeHandler = (e) => {
-        let workHour = e.target.value;
-        this.setState({ WorkingHours: workHour })
-    }
-
-
-    hoursRateChangeHandler = (e) => {
-        let hoursRate = e.target.value;
-        this.setState({ HoursRate: hoursRate })
-    }
-
-    DesignTeamChange = (e) => {
-        this.setState({
-            DesignTeam: e.target.value
-        })
-    }
-
-    TaskAdminChange = (e) => {
-        this.setState({
-            TaskAdmin: e.target.value
-        })
-    }
-
-    ActiveChange = (e) => {
-        this.setState({
-            Active: e.target.value
-        })
-    }
-
-    UserPermissiononLogsChange = (e) => {
-        this.setState({
-            UserPermissiononLogsCreatedbyOthers: e.target.value
-        })
-    }
-
-    AlternativeAccounthandleChange = (e) => {
-        this.setState({ AlternativeAccountId: e })
-
-    }
-
-    SupervisorCompanyhandleChange = (e) => {
-        this.setState({ DefaultSupervisorCompanyData: e, RenderAlternative: true })
-        this.GetData('GetContactsByCompanyIdForOnlyUsers?companyId=' + e.value + '', 'contactName', 'id', 'SupervisorNameData')
-    }
-
-    SupervisorNamehandleChange = (e) => {
-
-        this.setState({ DefaultSupervisorName: e })
-    }
-
-    GroupNameData = (e) => {
-        this.setState({ GroupNameId: e })
-    }
-
-    UserNameChangeHandler = (e) => {
-        let username = e.target.value.toLowerCase();
-        username.replace(/&/g, '%26%')
-        if (username !== "") {
-            if (DefaultUserName !== username) {
-                this.setState({ LoadingVaildation: true })
-                Api.get('CheckUserNameAccount?userName=' + username + '').then(
-                    res => {
-                        if (res === true) {
-                            this.setState({
-                                LoadingVaildation: false,
-                                statusClass: "animationBlock",
-                                ErrorSameEmpCode: false,
-                                ErrorSameInputs: true,
-
-                                UserName: ''
-                            })
-                        }
-                        else {
-                            this.setState({ LoadingVaildation: false, UserName: username, ErrorSameInputs: false, ErrorSameEmpCode: false })
-                        }
-                    }
-                )
-            }
-        }
-        else {
-            this.setState({ LoadingVaildation: false })
-
-        }
-    }
-
-    employeeCodeChangeHandler = (e) => {
-        let empcode = parseInt(e.target.value)
-        if (DefaultEmpCode !== empcode) {
-            Api.get('CheckRefCodeEmployee?code=' + empcode + '').then(
-                res => {
-                    if (res === true) {
-                        this.setState({
-                            LoadingVaildation: false,
-                            ErrorSameInputs: true,
-                            ErrorSameEmpCode: true,
-                            EmpCode: ''
-                        })
-                    }
-                    else {
-                        this.setState({ LoadingVaildation: false, EmpCode: empcode, ErrorSameInputs: false, ErrorSameEmpCode: false })
-                    }
+                let document = {
+                    userName: result.userName,
+                    oldUserName: result.userName,
+                    email: result.email,
+                    userPassword: result.userPassword,
+                    accountCompanyId: result.accountCompanyId,
+                    companyId: result.companyId,
+                    contactId: result.contactId,
+                    defaultHours: result.defaultHours,
+                    userRate: result.userRate,
+                    companySupervisorId: result.companySupervisorId,
+                    contactSupervisorId: result.contactSupervisorId,
+                    supervisorAccountId: result.supervisorAccountId,
+                    empCode: result.empCode,
+                    accountOwnerId: result.accountOwnerId,
+                    designTeam: result.designTeam,
+                    isTaskAdmin: result.isTaskAdmin,
+                    active: result.active,
+                    passwordEdit: result.passwordEdit,
+                    isHrManager: result.isHrManager,
+                    usePermissionsOnLogs: result.usePermissionsOnLogs,
+                    alternativAccountId: result.alternativAccountId,
+                    alternativDate: result.alternativDate,
+                    isAlternativeWorkFlow: result.isAlternativeWorkFlow,
+                    groupId: result.groupId
                 }
-            )
+
+                accountOwnerId = result.accountOwnerId;
+                companyName = result.companyName;
+                contactName = result.contactName;
+                companyId = result.companyId;
+                contactId = result.contactId;
+                groupId = result.groupId;
+                groupName = result.groupName;
+                alternativAccountId = result.alternativAccountId;
+
+                dataservice.GetDataList('SelectAllAccountsActive?id=' + id, 'userName', 'id').then(result => {
+                    if (result) {
+                        const index = result.findIndex(x => x.value === alternativAccountId);
+                        this.setState({ alternativeAccounts: result, selectedAlternative: { label: result[index].label, value: alternativAccountId } });
+                    }
+                });
+
+                dataservice.GetDataList('GetGroup?accountOwnerId=' + accountOwnerId, 'groupName', 'id').then(result => {
+                    if (result) {
+                        const index = result.findIndex(x => x.value === groupId);
+                        this.setState({ groupData: result, selectedGroup: { label: result[index].label, value: groupId } });
+                    }
+                });
+
+                dataservice.GetDataList('GetCompanies?accountOwnerId=' + accountOwnerId, 'companyName', 'id').then(result => {
+                    if (result) {
+                        if (companyId != null) {
+                            const doc = {
+                                label: contactName,
+                                value: contactId
+                            }
+                            this.handleDropDown('selectedSupervisorContact', companyId, true, doc);
+                        }
+
+                        this.setState({ supervisorCompany: result, selectedSupervisorCompany: { label: companyName, value: companyId } });
+                    }
+                });
+
+                this.setState({
+                    accountDocument: document,
+                    alternativeDate: document.alternativeDate
+                });
+            });
         }
-
     }
 
-    changeUserName = (e) => {
-        this.setState({ UserName: e.target.value, ErrorSameInputs: false, ErrorSameEmpCode: false })
+    handleDropDown(selectedValue, event, isNew, fillDrop) {
+
+        this.setState({ [selectedValue]: event });
+
+        const selected = isNew === true ? "selectedSupervisorCompany" : "";
+
+        if (selected === "selectedSupervisorCompany") {
+
+            const companyId = isNew === true ? event : companyId.value;
+
+            dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + companyId, 'contactName', 'id').then(result => {
+                let obj = { label: fillDrop.label, value: fillDrop.value };
+                let defaultObj = { label: Resources.selectContact[currentLanguage], value: "0" }
+                let setObj = isNew === true ? obj : defaultObj;
+                this.setState({ supervisorContact: result, selectedSupervisorContact: setObj });
+            });
+        }
     }
 
-    workHoursChange = (e) => {
-        this.setState({ WorkingHours: e.target.value })
-    }
+    editAccount = (value) => {
 
-    changeEmpCode = (e) => {
-        this.setState({ EmpCode: e.target.value, ErrorSameInputs: false, ErrorSameEmpCode: false })
-    }
+        let accountCompanyId = config.getPublicConfiguartion().accountCompanyId;
 
-    hoursRateChange = (e) => {
-        this.setState({ HoursRate: e.target.value })
-    }
+        this.setState({
+            isLoading: true
+        })
+        const alternativeDate = moment(this.state.alternativeDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-    AlternativeDatehandleChange = (date) => {
-        this.setState({ AlternativeDate: date });
-    }
-
-    ReplacmenthandleCheck = (e) => {
-        this.setState({ checked: !this.state.checked });
-    }
-
-    EditAccount = () => {
-        Api.post('EditAccount',
-            {
-                'id': id,
-                'userName': this.state.UserName,
-                'oldUserName': this.state.AccountData.userName,
-                'email': this.state.AccountData.email,
-                'userPassword': this.state.AccountData.userPassword,
-                'accountOwnerId': this.state.AccountData.accountOwnerId,
-                'accountCompanyId': getPublicConfiguartion.accountCompanyId,
-                'companyId': this.state.AccountData.CompanyId,
-                'contactId': this.state.AccountData.contactId,
-                'contactSupervisorId': this.state.DefaultSupervisorName.value,
-                'companySupervisorId': this.state.DefaultSupervisorCompanyData.value,
-                'defaultHours': this.state.WorkingHours,
-                'userRate': this.state.HoursRate,
-                'groupId': this.state.GroupNameId.value,
-                'empCode': this.state.EmpCode,
-                'designTeam': this.state.DesignTeam,
-                'isTaskAdmin': this.state.TaskAdmin,
-                'active': this.state.Active,
-                'passwordEdit': false,
-                'isHrManager': false,
-                'usePermissionsOnLogs': this.state.UserPermissiononLogsCreatedbyOthers,
-                'alternativAccountId': this.state.AlternativeAccountId.value,
-                'alternativDate': this.state.AlternativeDate !== null ? moment().format() : '',
-                'isAlternativeWorkFlow': this.state.checked,
-                'supervisorAccountId': this.state.DefaultSupervisorName.value,
-            }).then(
-                this.props.history.push({
-                    pathname: '/TemplatesSettings',
+        const document = {
+            id: this.state.docId,
+            userName: value.userName,
+            oldUserName: value.userName,
+            email: value.email,
+            userPassword: value.userPassword,
+            accountCompanyId: accountCompanyId,
+            defaultHours: value.defaultHours,
+            userRate: value.userRate,
+            supervisorAccountId: value.supervisorAccountId,
+            empCode: value.empCode,
+            accountOwnerId: value.accountOwnerId,
+            designTeam: value.designTeam,
+            isTaskAdmin: value.isTaskAdmin,
+            active: value.active,
+            passwordEdit: value.passwordEdit,
+            isHrManager: value.isHrManager,
+            usePermissionsOnLogs: value.usePermissionsOnLogs,
+            alternativAccountId: value.alternativAccountId,
+            alternativDate: alternativeDate,
+            isAlternativeWorkFlow: value.isAlternativeWorkFlow,
+            groupId: this.state.selectedGroup.value,
+            companyId: value.companyId,
+            contactSupervisorId: this.state.selectedSupervisorContact.value,
+            companySupervisorId: this.state.selectedSupervisorCompany.value
+        }
+        if (document.userName === document.oldUserName) {
+            dataservice.addObject('EditAccount', document).then(res => {
+                this.setState({
+                    isLoading: false
                 })
+                this.props.history.push({ pathname: '/TemplatesSettings' })
+            }
             ).catch(ex => {
-                this.props.history.push({
-                    pathname: '/TemplatesSettings',
-                })
+                this.props.history.push({ pathname: '/TemplatesSettings' });
             })
+        } else {
+            api.authorizationApi('ProcoorAuthorization?username=' + document.oldUserName + '&emailOrpassword=' + document.userName + '&companyId=' + accountCompanyId + '&changePassword=false', null, 'PUT').then(res => {
+                dataservice.addObject('EditAccount', document).then(res => {
+                    this.setState({
+                        isLoading: false
+                    })
+                    this.props.history.push({ pathname: '/TemplatesSettings' })
+                }
+                ).catch(ex => {
+                    this.props.history.push({ pathname: '/TemplatesSettings' })
+                })
+            });
+        }
+    }
+
+    checkUserNameExist = (userName) => {
+        dataservice.GetDataGrid("CheckUserNameForAccount?userName=" + userName + "&id=" + this.state.docId).then(result => {
+            if (result === true) {
+                toast.warn(Resources.userNameAlreadyExisted[currentLanguage]);
+                this.setState({
+                    isExist: true
+                });
+            }
+        });
+    }
+
+    handleDate = (value) => {
+        this.setState({
+            alternativeDate: value
+        });
     }
 
     render() {
@@ -359,165 +277,165 @@ class EditAccount extends Component {
                         <div className="step-content noBtn__footer">
                             <div className="subiTabsContent">
                                 <div className="document-fields">
-
-                                    <NotifiMsg showNotify={this.state.ErrorSameInputs} IsSuccess={false} Msg={this.state.ErrorSameEmpCode ? Resources['smartDeleteMessage'][currentLanguage].refCodeExist : Resources['userNameAlreadyExisted'][currentLanguage]} />
-
-
-                                    {this.state.LoadingVaildation ? <LoadingSection /> : null}
                                     <Formik
                                         initialValues={{
-                                            UserName: this.state.UserName,
-                                            WorkingHours: this.state.WorkingHours,
-                                            EmpCode: this.state.EmpCode,
-                                            RateHours: this.state.HoursRate,
-                                            // SupervisorCompanyValidation:'',
-                                            // SupervisorNameValidation: '',
-                                            // CompanyValidation: '',
-                                            // ContactValidation: '',
+                                            userName: this.state.isExist === false ? this.state.accountDocument.userName : '',
+                                            oldUserName: this.state.accountDocument.userName,
+                                            email: this.state.accountDocument.email,
+                                            userPassword: this.state.accountDocument.userPassword,
+                                            accountCompanyId: this.state.accountDocument.accountCompanyId,
+                                            companyId: this.state.accountDocument.companyId,
+                                            contactSupervisorId: this.state.accountDocument.contactSupervisorId,
+                                            contactId: this.state.accountDocument.contactId,
+                                            defaultHours: this.state.accountDocument.defaultHours,
+                                            userRate: this.state.accountDocument.userRate,
+                                            companySupervisorId: this.state.accountDocument.companySupervisorId,
+                                            supervisorAccountId: this.state.accountDocument.supervisorAccountId,
+                                            empCode: this.state.accountDocument.empCode,
+                                            accountOwnerId: this.state.accountDocument.accountOwnerId,
+                                            designTeam: this.state.accountDocument.designTeam,
+                                            isTaskAdmin: this.state.accountDocument.isTaskAdmin,
+                                            active: this.state.accountDocument.active,
+                                            passwordEdit: this.state.accountDocument.passwordEdit,
+                                            isHrManager: this.state.accountDocument.isHrManager,
+                                            usePermissionsOnLogs: this.state.accountDocument.usePermissionsOnLogs,
+                                            alternativAccountId: this.state.accountDocument.alternativAccountId,
+                                            alternativDate: this.state.accountDocument.alternativDate,
+                                            isAlternativeWorkFlow: this.state.accountDocument.isAlternativeWorkFlow,
+                                            groupId: this.state.accountDocument.groupId
                                         }}
-
+                                        enableReinitialize={true}
                                         validationSchema={validationSchema}
-
-                                        onSubmit={() => {
-                                            this.EditAccount()
-                                        }}  >
-                                        {({ errors, touched, handleBlur, handleChange, handleSubmit }) => (
+                                        onSubmit={(values) => { this.editAccount(values) }}>
+                                        {({ values, errors, touched, handleBlur, handleChange, setFieldValue, handleSubmit }) => (
                                             <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
                                                 <div className="proForm first-proform fullProformWrapper">
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">{Resources['UserName'][currentLanguage]} </label>
-                                                        <div className={'ui input inputDev ' + (errors.UserName && touched.UserName ? 'has-error' : null) + ' '}>
-                                                            <input name='UserName' value={this.state.UserName} className="form-control" id="UserName"
+                                                        <div className={'ui input inputDev ' + (errors.userName && touched.userName ? 'has-error' : null) + ' '}>
+                                                            <input name='userName' className="form-control" id="userName"
                                                                 placeholder={Resources['UserName'][currentLanguage]} autoComplete='off'
-                                                                onBlur={(e) => {
-                                                                    this.UserNameChangeHandler(e)
-                                                                    handleBlur(e)
-                                                                }}
-                                                                onChange={(e) => {
-                                                                    this.changeUserName(e)
-                                                                    handleChange(e)
-                                                                }} />
-                                                            {errors.UserName && touched.UserName ? (<em className="pError">{errors.UserName}</em>) : null}
+                                                                value={values.userName}
+                                                                onChange={handleChange}
+                                                                onBlur={() => { this.checkUserNameExist(values.userName) }} />
+                                                            {touched.userName ? (<em className="pError">{errors.userName}</em>) : null}
                                                         </div>
                                                     </div>
                                                     <div className="linebylineInput">
                                                         <label data-toggle="tooltip" title={Resources['active'][currentLanguage]} className="control-label"> {Resources['active'][currentLanguage]} </label>
                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                            <input type="radio" defaultChecked name="active" defaultChecked={this.state.ActiveCheck ? 'checked' : null} value="true" onChange={this.ActiveChange} />
+                                                            <input type="radio" defaultChecked name="active" defaultChecked={values.active ? 'checked' : null} value="true" onChange={(e) => { setFieldValue('active', e.target.value) }} />
                                                             <label>{Resources['yes'][currentLanguage]}</label>
                                                         </div>
                                                         <div className="ui checkbox radio radioBoxBlue checked">
-                                                            <input type="radio" name="active" value="false" defaultChecked={this.state.ActiveCheck ? null : 'checked'} onChange={this.ActiveChange} />
+                                                            <input type="radio" name="active" value="false" defaultChecked={values.active ? null : 'checked'} onChange={(e) => { setFieldValue('active', e.target.value) }} />
                                                             <label> {Resources['no'][currentLanguage]}</label>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div className="linebylineInput valid-input">
                                                     <label className="control-label">{Resources['employeeCode'][currentLanguage]} </label>
-                                                    <div className={'ui input inputDev ' + (errors.EmpCode && touched.EmpCode ? 'has-error' : null) + ' '}>
-                                                        <input name='EmpCode' value={this.state.EmpCode}
-                                                            className="form-control" id="EmpCode" placeholder={Resources['employeeCode'][currentLanguage]} autoComplete='off'
-                                                            onBlur={(e) => {
-                                                                this.employeeCodeChangeHandler(e)
-                                                                handleBlur(e)
-                                                            }}
-                                                            onChange={(e) => {
-                                                                this.changeEmpCode(e)
-                                                                handleChange(e)
-                                                            }} />
-                                                        {errors.EmpCode && touched.EmpCode ? (<em className="pError">{errors.EmpCode}</em>) : null}
+                                                    <div className={'ui input inputDev ' + (errors.empCode && touched.empCode ? 'has-error' : null)}>
+                                                        <input name='empCode' className="form-control" id="userName"
+                                                            placeholder={Resources['employeeCode'][currentLanguage]} autoComplete='off'
+                                                            value={values.empCode}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur} />
+                                                        {errors.empCode && touched.empCode ? (<em className="pError">{errors.empCode}</em>) : null}
                                                     </div>
                                                 </div>
-
                                                 <div className="linebylineInput valid-input">
-                                                    <DropdownMelcous title='GroupName'
-                                                        data={this.state.GroupNameData}
-                                                        handleChange={this.GroupNameData}
-                                                        placeholder='GroupName'
-                                                        selectedValue={this.state.GroupNameId} />
+                                                    <Dropdown title='GroupName'
+                                                        data={this.state.groupData}
+                                                        handleChange={(e) => this.handleDropDown('selectedGroup', e, false)}
+                                                        placeholder={Resources['GroupName'][currentLanguage]}
+                                                        value={values.groupId}
+                                                        selectedValue={this.state.selectedGroup} />
                                                 </div>
-
                                                 <div className="linebylineInput valid-input mix_dropdown">
-                                                
-                                                    <label className="control-label">Supervisor</label>
+                                                    <label className="control-label">{Resources['SupervisorCompany'][currentLanguage]}</label>
                                                     <div className="supervisor__company">
                                                         <div className="super_name">
-                                                            <DropdownMelcous 
-                                                                data={this.state.SupervisorNameData}
-                                                                handleChange={this.SupervisorNamehandleChange}
-                                                                placeholder='SupervisorName'
-                                                                selectedValue={this.state.DefaultSupervisorName} styles={CompanyDropdown} classDrop="contactName1 "/>
+                                                            <Dropdown
+                                                                data={this.state.supervisorCompany}
+                                                                handleChange={(e) => this.handleDropDown('selectedSupervisorCompany', e, false)}
+                                                                placeholder={Resources['supervisorCompanyRequired'][currentLanguage]}
+                                                                selectedValue={this.state.selectedSupervisorCompany}
+                                                                styles={CompanyDropdown} classDrop="contactName1 " />
                                                         </div>
-                                                        <div className="super_company">
-                                                            <DropdownMelcous 
-                                                                selectedValue={this.state.DefaultSupervisorCompanyData}
-                                                                data={this.state.CompanyData}
-                                                                handleChange={this.SupervisorCompanyhandleChange}
-                                                                placeholder='SupervisorCompany' classDrop=" companyName1" styles={ContactDropdown}/>
+                                                        <div className={"super_company" + (errors.contactSupervisorId && touched.contactSupervisorId ? ' has-error' : !errors.contactSupervisorId && touched.contactSupervisorId ? ' has-success' : ' ')}>
+                                                            <Dropdown
+                                                                placeholder={Resources['selectContact'][currentLanguage]}
+                                                                selectedValue={this.state.selectedSupervisorContact}
+                                                                data={this.state.supervisorContact}
+                                                                handleChange={(e) => this.handleDropDown('selectedSupervisorContact', e, false)}
+                                                                placeholder='SupervisorCompany' classDrop=" companyName1"
+                                                                styles={ContactDropdown} />
+                                                            {touched.contactSupervisorId ? (<em className="pError"> {errors.contactSupervisorId} </em>) : null}
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div className="linebylineInput valid-input">
-                                                    <DropdownMelcous title='alternativeAccount'
-                                                        data={this.state.AlternativeAccount}
-                                                        handleChange={this.AlternativeAccounthandleChange}
+                                                    <Dropdown title='alternativeAccount'
+                                                        placeholder={Resources['alternativeAccount'][currentLanguage]}
+                                                        data={this.state.alternativeAccounts}
+                                                        handleChange={(e) => this.handleDropDown('selectedAlternative', e, false)}
                                                         placeholder='alternativeAccount'
-                                                        selectedValue={this.state.AlternativeAccountId} />
+                                                        selectedValue={this.state.selectedAlternative} />
                                                 </div>
 
                                                 <Fragment>
-                                                    {this.state.alternativAccountId === null ? null : <div className="linebylineInput valid-input alternativeDate alternativeDate_replacement">
-                                                        <DatePicker title='alternativeDate'
-                                                            startDate={this.state.AccountData.alternativDate === null ? this.state.AlternativeDate : moment(this.state.AccountData.alternativDate).format("DD-MM-YYYY")}
-                                                            handleChange={this.AlternativeDatehandleChange} />
-                                                        <div className="ui checkbox checkBoxGray300 checked">
-                                                            <input type="checkbox" value='1' onChange={this.ReplacmenthandleCheck} defaultChecked={this.state.Acchecked} />
-                                                            <label> {Resources['replacment'][currentLanguage]}</label>
+                                                    {values.alternativAccountId === null ? null :
+                                                        <div className="linebylineInput valid-input alternativeDate alternativeDate_replacement">
+                                                            <DatePicker title='alternativeDate'
+                                                                startDate={this.state.alternativeDate}
+                                                                value={this.state.alternativeDate}
+                                                                handleChange={(e) => this.handleDate(e)} />
+                                                            <div className="ui checkbox checkBoxGray300 checked">
+                                                                <input type="checkbox" onChange={(e) => { setFieldValue('isAlternativeWorkFlow', e.target.checked) }}
+                                                                    defaultChecked={values.isAlternativeWorkFlow} />
+                                                                <label> {Resources['replacment'][currentLanguage]}</label>
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     }
                                                 </Fragment>
-
                                                 <div className="fullWidthWrapper account__checkbox">
                                                     <div className="proForm fullLinearInput">
                                                         <div className="linebylineInput">
                                                             <label data-toggle="tooltip" title={Resources['designTeam'][currentLanguage]} className="control-label"> {Resources['designTeam'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="designTeam" defaultChecked={this.state.DesignTeamCheck ? 'checked' : null} value="true" onChange={this.DesignTeamChange} />
+                                                                <input type="radio" name="designTeam" defaultChecked={this.state.accountDocument.designTeam ? 'checked' : null} value="true" onChange={(e) => { setFieldValue('designTeam', e.target.value) }} />
                                                                 <label>{Resources['yes'][currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue checked">
-                                                                <input type="radio" defaultChecked={this.state.DesignTeamCheck ? null : 'checked'} name="designTeam" value="false" onChange={this.DesignTeamChange} />
+                                                                <input type="radio" defaultChecked={this.state.accountDocument.designTeam ? null : 'checked'} name="designTeam" value="false" onChange={(e) => { setFieldValue('designTeam', e.target.value) }} />
                                                                 <label> {Resources['no'][currentLanguage]}</label>
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                     <div className="proForm fullLinearInput">
                                                         <div className="linebylineInput">
                                                             <label data-toggle="tooltip" title={Resources['isTaskAdmin'][currentLanguage]} className="control-label"> {Resources['isTaskAdmin'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="TaskAdmin" defaultChecked={this.state.TaskAdminCheck ? 'checked' : null} value="true" onChange={this.TaskAdminChange} />
+                                                                <input type="radio" name="TaskAdmin" defaultChecked={this.state.accountDocument.isTaskAdmin ? 'checked' : null} value="true" onChange={(e) => { setFieldValue('isTaskAdmin', e.target.value) }} />
                                                                 <label>{Resources['yes'][currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue checked">
-                                                                <input type="radio" defaultChecked name="TaskAdmin" defaultChecked={this.state.TaskAdminCheck ? null : 'checked'} value="false" onChange={this.TaskAdminChange} />
+                                                                <input type="radio" defaultChecked name="TaskAdmin" defaultChecked={this.state.accountDocument.isTaskAdmin ? null : 'checked'} value="false" onChange={(e) => { setFieldValue('isTaskAdmin', e.target.value) }} />
                                                                 <label> {Resources['no'][currentLanguage]}</label>
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                     <div className="proForm fullLinearInput">
                                                         <div className="linebylineInput">
                                                             <label data-toggle="tooltip" title={Resources['usePermissionsOnLogs'][currentLanguage]} className="control-label"> {Resources['usePermissionsOnLogs'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="usePermissionsOnLogs" defaultChecked={this.state.UsePermissionsOnLogCheck ? 'checked' : null} value="true" onChange={this.UserPermissiononLogsChange} />
+                                                                <input type="radio" name="usePermissionsOnLogs" defaultChecked={this.state.accountDocument.usePermissionsOnLogs ? 'checked' : null} value="true" onChange={(e) => { setFieldValue('usePermissionsOnLogs', e.target.value) }} />
                                                                 <label>{Resources['yes'][currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue ">
-                                                                <input type="radio" defaultChecked name="usePermissionsOnLogs" defaultChecked={this.state.UsePermissionsOnLogCheck ? null : 'checked'} value="false" onChange={this.UserPermissiononLogsChange} />
+                                                                <input type="radio" defaultChecked name="usePermissionsOnLogs" defaultChecked={this.state.accountDocument.usePermissionsOnLogs ? null : 'checked'} value="false" onChange={(e) => { setFieldValue('usePermissionsOnLogs', e.target.value) }} />
                                                                 <label> {Resources['no'][currentLanguage]}</label>
                                                             </div>
                                                         </div>
@@ -530,42 +448,42 @@ class EditAccount extends Component {
                                                     <div className="workingHours__cycle--inputs">
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources['workHours'][currentLanguage]} </label>
-                                                            <div className={'ui input inputDev ' + (errors.WorkingHours && touched.WorkingHours ? 'has-error' : null) + ' '}>
-                                                                <input name='WorkingHours' value={this.state.WorkingHours}
-                                                                    className="form-control" id="WorkingHours" placeholder={Resources['workHours'][currentLanguage]} autoComplete='off'
-                                                                    onBlur={(e) => {
-                                                                        this.workHoursChangeHandler(e)
-                                                                        handleBlur(e)
-                                                                    }}
-                                                                    onChange={(e) => {
-                                                                        this.workHoursChange(e)
-                                                                        handleChange(e)
-                                                                    }} />
-                                                                {errors.WorkingHours && touched.WorkingHours ? (<em className="pError">{errors.WorkingHours}</em>) : null}
+                                                            <div className={'ui input inputDev ' + (errors.defaultHours && touched.defaultHours ? 'has-error' : null) + ' '}>
+                                                                <input name='defaultHours'
+                                                                    className="form-control"
+                                                                    id="defaultHours"
+                                                                    placeholder={Resources['workHours'][currentLanguage]} autoComplete='off'
+                                                                    value={values.defaultHours}
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur} />
+                                                                {errors.defaultHours && touched.defaultHours ? (<em className="pError">{errors.defaultHours}</em>) : null}
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources['hoursRate'][currentLanguage]} </label>
-                                                            <div className={'ui input inputDev ' + (errors.RateHours && touched.RateHours ? 'has-error' : null) + ' '}>
-                                                                <input name='RateHours' value={this.state.HoursRate}
-                                                                    className="form-control" id="RateHours" placeholder={Resources['hoursRate'][currentLanguage]} autoComplete='off'
-                                                                    onBlur={(e) => {
-                                                                        this.hoursRateChangeHandler(e)
-                                                                        handleBlur(e)
-                                                                    }}
-                                                                    onChange={(e) => {
-                                                                        this.hoursRateChange(e)
-                                                                        handleChange(e)
-                                                                    }} />
-                                                                {errors.RateHours && touched.RateHours ? (<em className="pError">{errors.RateHours}</em>) : null}
+                                                            <div className='ui input inputDev '>
+                                                                <input name='userRate'
+                                                                    className="form-control"
+                                                                    id="userRate"
+                                                                    placeholder={Resources['hoursRate'][currentLanguage]} autoComplete='off'
+                                                                    value={values.userRate}
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur} />
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="dropBtn dropBtnLeft fullWidthWrapper">
-                                                    <button className="primaryBtn-1 btn" type="submit"  >
-                                                        {Resources['save'][currentLanguage]}</button>
-                                                </div>
+                                                {this.state.isLoading === false ?
+                                                    <div className="dropBtn dropBtnLeft fullWidthWrapper">
+                                                        <button className="primaryBtn-1 btn" type="submit">
+                                                            {Resources['save'][currentLanguage]}</button>
+                                                    </div> : <button className="primaryBtn-1 btn disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>}
                                             </Form>
                                         )}
                                     </Formik>
@@ -577,19 +495,5 @@ class EditAccount extends Component {
             </div >
         )
     }
-
-    GetData = (url, label, value, currState) => {
-        let Data = []
-        Api.get(url).then(result => {
-            (result).forEach(item => {
-                var obj = {};
-                obj.label = item[label];
-                obj.value = item[value];
-                Data.push(obj);
-            });
-            this.setState({ [currState]: [...Data] });
-        }).catch(ex => {
-        });
-    }
 }
-export default withRouter(EditAccount)
+export default EditAccount;

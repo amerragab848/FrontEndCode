@@ -102,6 +102,8 @@ export default class IndexedDb {
                 let category_order = +`${category.refrence + 1}${category.order}`;
 
                 category.widgets.forEach((wid, widIndex) => {
+                 
+
                     let widRow = tables.widget.createRow({
                         'id': +`${id}${widIndex + 1}`,
                         'categoryId': id,
@@ -111,7 +113,7 @@ export default class IndexedDb {
                         'checked': wid.checked,
                         'type': wid.type
                     });
-
+                      
                     widgetRows.push(widRow);
                 });
 

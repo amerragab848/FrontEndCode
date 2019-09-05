@@ -10,7 +10,7 @@ import IndexedDb from '../IndexedDb';
 import Details from './widgetsDetails';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
-import mapValues from 'lodash/mapValues'; 
+import mapValues from 'lodash/mapValues';
 import orderBy from 'lodash/orderBy';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -61,7 +61,7 @@ class Index extends Component {
 
       const getAllWidgets = await IndexedDb.getAll("widget");
 
-      console.log("getAllWidgets",getAllWidgets);
+
 
       widgets = map(groupBy(getAllWidgets, widget => widget.categoryId), (widgets, categoryId) => {
         return {
@@ -102,7 +102,7 @@ class Index extends Component {
           y={Details.widgets[widget.title].props.y}
           name={Details.widgets[widget.title].props.name}
           title={language[widget.title][currentLanguage]}
-          />
+        />
       </div>
     }
     else if (Details.widgets[widget.title].props.type === "line") {
@@ -133,7 +133,6 @@ class Index extends Component {
           </h2>
           <div className={"SummeriesContainerContent " + (category.title == "mainAlerts" ? " numbersContainerContent" : " ")}>
             {category.widgets.map((widget, widgetIndex) => {
-              console.log(widget);
               if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
                 return this.renderWidget(widget, widgetIndex);
               }

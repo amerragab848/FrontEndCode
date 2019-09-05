@@ -1,11 +1,8 @@
-import React, { Component, Fragment } from "react";
-import language from "../../../resources.json";
+import React, { Component, Fragment } from "react"; 
 import {
   Bar,
-  GroupedBar,
-  Tooltip,
-  ResponsiveContainer,
-  withResponsiveness,
+  GroupedBar, 
+  ResponsiveContainer, 
   StackedBar
 } from "britecharts-react";
 
@@ -19,10 +16,7 @@ const marginObject = {
 const colorSchema = ["#39bd3d", "#dfe2e6"];
 
 const colorSchemaGroup = ["#90ED7D", "#f45b4f", "#95ceff", "#90000f"];
-
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
+ 
 class BarChartComp extends Component {
   constructor(props) {
     super(props);

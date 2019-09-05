@@ -646,7 +646,7 @@ var widgets = [
           'y': 'total'
         },
         type: 'pie',
-        seriesName: "riskPeriority" 
+        seriesName: "riskPeriority"
       }, {
         id: 'wt-riskType03',
         key: "0-4-3",
@@ -1015,7 +1015,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimeIR",
-        permission: 3514,
+        permission: 10044,
         key: "1-5-3",
         canView: false,
         checked: false,
@@ -1034,7 +1034,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimeMIR",
-        permission: 3515,
+        permission: 3485,
         key: "1-5-4",
         canView: false,
         checked: false,
@@ -1053,7 +1053,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimeRFI",
-        permission: 3515,
+        permission: 10045,
         key: "1-5-5",
         canView: false,
         checked: false,
@@ -1072,7 +1072,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimeSubmittals",
-        permission: 3515,
+        permission: 10046,
         key: "1-5-6",
         canView: false,
         checked: false,
@@ -1091,7 +1091,7 @@ var widgets = [
       },
       {
         title: "avgRespondTimePO",
-        permission: 3515,
+        permission: 10047,
         key: "1-5-7",
         canView: false,
         checked: false,

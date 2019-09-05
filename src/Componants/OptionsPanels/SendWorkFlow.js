@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import Api from '../../api'
-import Dropdown from "./DropdownMelcous";
-
-import Resources from '../../resources.json';
-
+import Dropdown from "./DropdownMelcous"; 
+import Resources from '../../resources.json'; 
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -12,9 +10,7 @@ import {
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
-const _ = require('lodash')
-
+ 
 class SendWorkFlow extends Component {
     constructor(props) {
         super(props)
@@ -54,12 +50,13 @@ class SendWorkFlow extends Component {
         this.props.actions.SendingWorkFlow(true);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.showModal !== this.props.showModal) {
-            this.setState({ submitLoading: false })
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.showModal != state.showModal) {
+            return { submitLoading: false };
         }
+        return null
     }
-
+  
     inputChangeHandler = (e) => {
         this.setState({ workFlowData: { ...this.state.workFlowData, Comment: e.target.value } });
     }

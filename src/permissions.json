@@ -14861,7 +14861,7 @@
                 "ar": "أقسام الخطورة"
               },
               "value": false
-            } 
+            }
           ]
         },
         {
@@ -15316,6 +15316,207 @@
               "title": {
                 "en": "View Project Status Chart",
                 "ar": " عرض شجرة المشاريع"
+              },
+              "value": false
+            },
+            {
+              "code": 10044,
+              "title": {
+                "en": "Avg Respond(IR)",
+                "ar": " (متوسط الاستجابه (طلب معاينة"
+              },
+              "value": false
+            },
+            {
+              "code": 10045,
+              "title": {
+                "en": "Avg Respond(RFI)",
+                "ar": " (متوسط الاستجابه (طلبات المعلومات"
+              },
+              "value": false
+            },
+            {
+              "code": 10046,
+              "title": {
+                "en": "Avg Respond(Submittals)",
+                "ar": " (متوسط الاستجابه (التقديمات"
+              },
+              "value": false
+            },
+            {
+              "code": 10047,
+              "title": {
+                "en": "Avg Respond(Submittals)",
+                "ar": " (متوسط الاستجابه (التقديمات"
+              },
+              "value": false
+            }
+          ]
+        },
+        {
+          "title": {
+            "en": "Dashboard Of Project",
+            "ar": "ملخصات المشروع"
+          },
+          "id": 1240,
+          "permissions": [
+            {
+              "code": 10048,
+              "title": {
+                "en": "Monthly Purchase Order",
+                "ar": "أمور الشراء الشهريه"
+              },
+              "value": false
+            },
+            {
+              "code": 10049,
+              "title": {
+                "en": "Material Request Counts",
+                "ar": " مجموع طلبات الموقع"
+              },
+              "value": false
+            },
+            {
+              "code": 10050,
+              "title": {
+                "en": "Monthly P.R",
+                "ar": "طلبات المستخلصات الشهريه"
+              },
+              "value": false
+            },
+            {
+              "code": 10051,
+              "title": {
+                "en": "Approval Submittals",
+                "ar": "التقديمات المقبولة"
+              },
+              "value": false
+            },
+            {
+              "code": 10052,
+              "title": {
+                "en": "Opened Submittal",
+                "ar": " مجموعات تقديمات المفتوحه"
+              },
+              "value": false
+            },
+            {
+              "code": 10053,
+              "title": {
+                "en": "Rejected Submittals",
+                "ar": "التقديمات المرفوضة"
+              },
+              "value": false
+            },
+            {
+              "code": 10054,
+              "title": {
+                "en": "Opened Letters",
+                "ar": " الخطابات المفتوحه"
+              },
+              "value": false
+            },
+            {
+              "code": 10055,
+              "title": {
+                "en": "Opened IRs",
+                "ar": " طلب المعاينات المفتوحه"
+              },
+              "value": false
+            },
+            {
+              "code": 10056,
+              "title": {
+                "en": "RFI Open",
+                "ar": "طلبات المعلومات المفتوحة"
+              },
+              "value": false
+            },
+            {
+              "code": 10057,
+              "title": {
+                "en": "Opened Transmittals",
+                "ar": " التسليمات المفتوحه"
+              },
+              "value": false
+            },
+            {
+              "code": 10058,
+              "title": {
+                "en": "Pending IR Count",
+                "ar": "  عداد طلب معاينة النشاط قيد الأنتظار"
+              },
+              "value": false
+            },
+            {
+              "code": 10059,
+              "title": {
+                "en": "Reject IR Count",
+                "ar": " عداد طلب معاينة النشاط مرفوضة"
+              },
+              "value": false
+            },
+            {
+              "code": 10060,
+              "title": {
+                "en": "Approved IR Count",
+                "ar": " عداد طلب معاينة النشاط معتمدة"
+              },
+              "value": false
+            },
+            {
+              "code": 10061,
+              "title": {
+                "en": "Avg Respond(Letters)",
+                "ar": " (متوسط الاستجابه (الخطابات"
+              },
+              "value": false
+            },
+            {
+              "code": 10062,
+              "title": {
+                "en": "Avg Respond(Transmittals)",
+                "ar": " (متوسط الاستجابه (التسليمات"
+              },
+              "value": false
+            },
+            {
+              "code": 10063,
+              "title": {
+                "en": "Avg Respond(IR)",
+                "ar": " (متوسط الاستجابه (طلب معاينة"
+              },
+              "value": false
+            },
+            {
+              "code": 10064,
+              "title": {
+                "en": "Avg Respond(MIR)",
+                "ar": " (متوسط الاستجابه (معاينة الخامات"
+              },
+              "value": false
+            },
+            {
+              "code": 10065,
+              "title": {
+                "en": "Avg Respond(RFI)",
+                "ar": " (متوسط الاستجابه (طلبات المعلومات"
+              },
+              "value": false
+            },
+            {
+              "code": 10066,
+              "title": {
+                "en": "Avg Respond(Submittals)",
+                "ar": " (متوسط الاستجابه (التقديمات"
+              },
+              "value": false
+            },
+            {
+              "code": 10067,
+              "title": {
+                "en": "Avg Respond(PO)",
+                "ar": " (متوسط الاستجابه (طلبات الشراء"
               },
               "value": false
             }
