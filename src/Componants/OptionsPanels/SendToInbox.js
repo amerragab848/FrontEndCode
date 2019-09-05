@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Api from '../../api'
-import Dropdown from "./DropdownMelcous"; 
+import Dropdown from "./DropdownMelcous";
 import Resources from '../../resources.json';
 import { Formik, Form } from 'formik';
 import { connect } from 'react-redux';
@@ -15,7 +15,6 @@ const validationSchema = Yup.object().shape({
     toCompanyId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
     toContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
 })
-const _ = require('lodash')
 
 class SendToInbox extends Component {
     constructor(props) {
@@ -33,12 +32,11 @@ class SendToInbox extends Component {
                 cc: [],
                 Comment: ""
             },
-
             PriorityData: [],
             To_Cc_CompanyData: [],
             AttentionData: [],
             Cc_ContactData: [],
-            Cc_Selected: [],
+            Cc_Selected: []
         }
     }
 
@@ -55,7 +53,8 @@ class SendToInbox extends Component {
         let obj = this.state.sendingData
         obj.Comment = values.Comment
         let cc = []
-        this.state.ccContactsdd.map(i => {
+        let ccContactsdd = this.state.ccContactsdd ? this.state.ccContactsdd : [];
+        ccContactsdd.map(i => {
             let ia = i.value
             cc.push(ia)
         });
@@ -70,13 +69,11 @@ class SendToInbox extends Component {
         this.props.actions.SendByEmail_Inbox("SendByInbox", obj);
     }
 
-    componentWillReceiveProps = (props) => {
-        if (props.showModal == false)
-            this.resetState();
-    }
-
-    resetState = () => {
-        this.setState({ submitLoading: false, priorityId: "", toContactId: "", toCompanyId: "", ccCompanydd: "", ccContactsdd: [] });
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.showModal == false) {
+            return { submitLoading: false, priorityId: "", toContactId: "", toCompanyId: "", ccCompanydd: "", ccContactsdd: [] };
+        }
+        return null
     }
 
     handleChange = (state, event, isSubscribe, targetState, calledApi) => {
@@ -97,74 +94,60 @@ class SendToInbox extends Component {
         return (
             <div className="dropWrapper">
                 <Formik
+                    validationSchema={validationSchema}
                     initialValues={{
-                        priorityId: " ",
-                        toCompanyId: " ",
-                        toContactId: " ",
+                        priorityId: null,
+                        toCompanyId: null,
+                        toContactId: null,
                         Comment: '',
                         ccCompanydd: '',
                         ccContactsdd: []
                     }}
-                    validationSchema={validationSchema}
                     onSubmit={values => {
                         this.sendInbox(values);
                     }}
                 >
                     {({ errors, touched, setFieldValue, setFieldTouched, values, handleBlur, handleChange, }) => (
-                        <Form id="signupForm1" className="proForm customProform" noValidate="novalidate">
-                            <div className={this.state.validPriority && touched.priority ? (
-                                "ui input inputDev fillter-item-c has-error"
-                            ) : !this.state.validPriority && touched.priority ? (
-                                "ui input inputDev fillter-item-c has-success"
-                            ) : "ui input inputDev fillter-item-c"}
-                            >
-                                <Dropdown title="priority"
-                                    data={this.state.PriorityData}
-                                    handleChange={event => this.handleChange('priorityId', event, false, null, null)}
-                                    index='priorityId'
-                                    name="priorityId"
-                                    onChange={setFieldValue}
-                                    onBlur={setFieldTouched}
-                                    error={errors.priorityId}
-                                    touched={touched.priorityId}
-                                    selectedValue={this.state.priorityId} />
-                            </div>
+                        <Form id="SendToInboxForm" className="proForm customProform" noValidate="novalidate">
+
+                            <Dropdown title="priority"
+                                data={this.state.PriorityData}
+                                handleChange={event => this.handleChange('priorityId', event, false, null, null)}
+                                index='priorityId'
+                                name="priorityId"
+                                id="priorityId"
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.priorityId}
+                                touched={touched.priorityId}
+                                selectedValue={this.state.priorityId} /> 
+
                             <div className={this.props.fullwidth == "true" ? "letterFullWidth fullInputWidth linebylineInput" : "fillter-status fillter-item-c"}>
                                 <label className="control-label">
                                     {Resources["comments"][currentLanguage]}
                                 </label>
                                 <div className="inputDev ui input">
-                                    <input
-                                        type={this.props.type === undefined ? "text" : this.props.type}
-                                        className="form-control"
-                                        id="lastname1"
-                                        value={values.Comment} onChange={handleChange}
-                                    />
+                                    <input type={this.props.type === undefined ? "text" : this.props.type} className="form-control" id="lastname1" value={values.Comment} onChange={handleChange} />
                                 </div>
                             </div>
-                            <div className={this.state.validToCompany && touched.toCompany ? (
-                                "ui input inputDev fillter-item-c has-error"
-                            ) : !this.state.validToCompany && touched.toCompany ? (
-                                "ui input inputDev fillter-item-c has-success"
-                            ) : "ui input inputDev fillter-item-c"}
-                            >
-                                <Dropdown title="toCompanyName" data={this.state.To_Cc_CompanyData}
-                                    index='toCompanyId' name="toCompanyId"
+
+                                <Dropdown
+                                    title="toCompanyName"
+                                    data={this.state.To_Cc_CompanyData}
+                                    index='toCompanyId'
+                                    name="toCompanyId"
+                                    id="toCompanyId"
                                     onChange={setFieldValue}
                                     handleChange={event => this.handleChange('toCompanyId', event, true, "AttentionData", "GetContactsByCompanyIdForOnlyUsers?companyId=" + event.value)}
                                     onBlur={setFieldTouched}
                                     error={errors.toCompanyId}
                                     touched={touched.toCompanyId}
                                     selectedValue={this.state.toCompanyId} />
-                            </div>
-                            <div className={this.state.validAttention && touched.Attention ? (
-                                "ui input inputDev fillter-item-c has-error"
-                            ) : !this.state.validAttention && touched.Attention ? (
-                                "ui input inputDev fillter-item-c has-success"
-                            ) : "ui input inputDev fillter-item-c"}
-                            >
+                             
                                 <Dropdown title="ToContact" data={this.state.AttentionData}
-                                    index='toContactId' name="toContactId"
+                                    index='toContactId'
+                                    name="toContactId"
+                                    id="toContactId"
                                     onChange={setFieldValue}
                                     handleChange={event => this.handleChange('toContactId', event, false, null, null)}
                                     onBlur={setFieldTouched}
@@ -172,8 +155,8 @@ class SendToInbox extends Component {
                                     touched={touched.toContactId}
                                     selectedValue={this.state.toContactId}
                                 />
-                            </div>
-                            <Dropdown title="ccCompany" data={this.state.To_Cc_CompanyData}
+                             <Dropdown title="ccCompany"
+                                data={this.state.To_Cc_CompanyData}
                                 name="ccCompanydd"
                                 handleChange={event => this.handleChange('ccCompanyId', event, true, "Cc_ContactData", "GetContactsByCompanyId?companyId=" + event.value)}
                                 index='ccCompanyddinbox'
@@ -188,9 +171,10 @@ class SendToInbox extends Component {
                                 />
 
                             </div>
+
                             {!this.state.submitLoading ?
                                 <div className="fullWidthWrapper">
-                                    <button className="primaryBtn-1 btn" type="submit">{Resources['send'][currentLanguage]}</button>
+                                    <button className="primaryBtn-1 btn" type="submit" >{Resources['send'][currentLanguage]}</button>
                                 </div>
                                 : (
                                     <span className="primaryBtn-1 btn largeBtn disabled">

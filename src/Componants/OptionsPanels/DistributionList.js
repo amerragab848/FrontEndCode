@@ -21,7 +21,6 @@ import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const _ = require('lodash')
 const validationSchema = Yup.object().shape({
     DistributionValidation: Yup.string().required(Resources['distributionListRequired'][currentLanguage]).nullable(true),
     PriorityValidation: Yup.string().required(Resources['prioritySelect'][currentLanguage]).nullable(true)
@@ -54,8 +53,8 @@ class DistributionList extends Component {
             ContactValidation: true,
             ApiResponse: false,
             removedContact: [],
-            submitLoading: false
-
+            submitLoading: false,
+            showModal: false
         };
     }
 
@@ -154,12 +153,16 @@ class DistributionList extends Component {
 
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.showModal !== this.props.showModal) {
-            this.setState({ submitLoading: false })
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.showModal !== state.showModal) {
+            return {
+                submitLoading: false,
+                showModal: nextProps.showModal
+            };
         }
+        return null;
     }
-
+ 
     DatehandleChange = (date) => {
         this.setState({ sendingData: { ...this.state.sendingData, RequiredDate: date } });
     }
@@ -271,7 +274,7 @@ class DistributionList extends Component {
                     }}
                 >
                     {({ errors, touched, setFieldValue, setFieldTouched }) => (
-                        <Form id="distributionForm1" className="proForm customProform" noValidate="novalidate" >
+                        <Form id="distributionForm" className="proForm customProform" noValidate="novalidate" >
 
                             <Dropdown title="distributionList" data={this.state.DistributionListDate}
                                 handleChange={this.DistributionHanleChange}

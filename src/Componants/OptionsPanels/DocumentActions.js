@@ -71,6 +71,7 @@ const actionPanel = {
     menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db', top: '-155px', minWidth: '180px' }),
     menuList: styles => ({ ...styles, color: 'red', height: '145px' }),
 };
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class DocumentActions extends Component {
@@ -94,23 +95,22 @@ class DocumentActions extends Component {
             docApprovalId: this.props.docApprovalId,
             currentArrange: this.props.arrange,
         }
-
     }
     ////handle button clcik for dynamically import panel component and show popUp model with loaded panel
     //// props => item = object hold dynamic path  and title for panel
     handleShowAction = (item) => {
         if (item.value != "-1") {
-            import(`${item.path}`)
-                .then(module => {
-                    ///cahnage approvalStatus (true or false ) to set correct parameter for document approvel 
-                    if (item.value == 3)
-                        this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: false });
-                    else
-                        this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: true });
-                    this.setState({ module: module.default, currentTitle: item.title })
-                    this.props.showOptionPanel();
-                    this.simpleDialog.show();
-                });
+            import(`${item.path}`).then(module => {
+                ///cahnage approvalStatus (true or false ) to set correct parameter for document approvel 
+                if (item.value == 3)
+                    this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: false });
+                else
+                    this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: true });
+
+                this.setState({ module: module.default, currentTitle: item.title })
+                this.props.showOptionPanel();
+                this.simpleDialog.show();
+            });
         }
     }
 

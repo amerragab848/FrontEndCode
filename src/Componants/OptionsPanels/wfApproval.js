@@ -72,22 +72,6 @@ class wfApproval extends Component {
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-
-  //   if (nextProps.approvalStatus != this.props.approvalStatus) {
-
-  //     let original_updateWorkFlow = { ...this.state.updateWorkFlow };
-  //     let updateWorkFlow_new = {};
-  //     updateWorkFlow_new.approvalStatus = nextProps.approvalStatus;
-  //     updateWorkFlow_new = Object.assign(original_updateWorkFlow, updateWorkFlow_new);
-  //     this.setState({
-  //       updateWorkFlow: updateWorkFlow_new
-  //     });
-
-  //     this.fillContacts(this.props.docApprovalId, nextProps.approvalStatus);
-  //   }
-  // };
-
   commentOnBlurHandler = e => {
     this.setState({
       updateWorkFlow: { ...this.state.updateWorkFlow, comment: e.target.value }
@@ -123,8 +107,7 @@ class wfApproval extends Component {
               if (result === true) {
                 this.setState({ submitLoading: true });
                 Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
-                  this.setState({ submitLoading: true });
-                  console.log('this.props.perviousRoute', this.props.perviousRoute)
+                  this.setState({ submitLoading: true }); 
                   this.props.history.push(
                     this.props.previousRoute
                   );

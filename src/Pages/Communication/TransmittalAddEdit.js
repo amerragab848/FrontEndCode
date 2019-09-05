@@ -1,4 +1,4 @@
-import React, { Component } from "react"; 
+import React, { Component } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -14,14 +14,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
+import moment from "moment";
 import * as communicationActions from '../../store/actions/communication';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
-import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown' 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -38,9 +38,7 @@ let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
-let arrange = 0;
-
-const _ = require('lodash');
+let arrange = 0; 
 
 class TransmittalAddEdit extends Component {
 
@@ -125,76 +123,6 @@ class TransmittalAddEdit extends Component {
     }
 
     componentDidMount() {
-        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-        for (var i = 0; i < links.length; i++) {
-            if ((i + 1) % 2 == 0) {
-                links[i].classList.add('even');
-            }
-            else {
-                links[i].classList.add('odd');
-            }
-        }
-
-        this.checkDocumentIsView();
-    };
-
-    componentWillUnmount() {
-        this.props.actions.clearCashDocument();
-
-        this.setState({
-            docId: 0
-        });
-    }
-
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id) {
-
-            let serverInspectionRequest = { ...nextProps.document };
-
-            serverInspectionRequest.docDate = serverInspectionRequest.docDate != null ? moment(serverInspectionRequest.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate != null ? moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-
-            this.setState({
-                document: serverInspectionRequest,
-                hasWorkflow: nextProps.hasWorkflow,
-                message: serverInspectionRequest.description
-            });
-
-            this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
-            this.checkDocumentIsView();
-        }
-
-    };
-
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-            this.checkDocumentIsView();
-        }
-    }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(85))) {
-                this.setState({ isViewMode: true });
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(85)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(85)) {
-                    if (this.props.document.status == true && Config.IsAllow(85)) {
-                        this.setState({ isViewMode: false });
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            }
-        }
-        else {
-            this.setState({ isViewMode: false });
-        }
-    }
-
-    componentWillMount() {
         if (this.state.docId > 0) {
 
             let url = "GetCommunicationTransmittalForEdit?id=" + this.state.docId;
@@ -235,15 +163,85 @@ class TransmittalAddEdit extends Component {
         }
 
         this.props.actions.documentForAdding();
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+        for (var i = 0; i < links.length; i++) {
+            if ((i + 1) % 2 == 0) {
+                links[i].classList.add('even');
+            }
+            else {
+                links[i].classList.add('odd');
+            }
+        }
+
+        this.checkDocumentIsView();
+    };
+
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
+
+        this.setState({
+            docId: 0
+        });
     }
+
+    componentWillReceiveProps(nextProps, prevProps) {
+        if (nextProps.document.id) {
+
+            let serverInspectionRequest = { ...nextProps.document };
+
+            serverInspectionRequest.docDate = serverInspectionRequest.docDate != null ? moment(serverInspectionRequest.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate != null ? moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+            serverInspectionRequest.subject=serverInspectionRequest.subject ? serverInspectionRequest.subject:'';
+            serverInspectionRequest.building=serverInspectionRequest.building ? serverInspectionRequest.building:'';
+            serverInspectionRequest.apartment=serverInspectionRequest.apartment ? serverInspectionRequest.apartment:'';
+            
+            this.setState({
+                document: serverInspectionRequest,
+                hasWorkflow: nextProps.hasWorkflow,
+                message: serverInspectionRequest.description
+            });
+
+            this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+
+    };
+
+    componentDidUpdate(prevProps) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+            this.checkDocumentIsView();
+        }
+    }
+
+    checkDocumentIsView() {
+        if (this.props.changeStatus === true) {
+            if (!(Config.IsAllow(85))) {
+                this.setState({ isViewMode: true });
+            }
+            if (this.state.isApproveMode != true && Config.IsAllow(85)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(85)) {
+                    if (this.props.document.status == true && Config.IsAllow(85)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            }
+        }
+        else {
+            this.setState({ isViewMode: false });
+        }
+    } 
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+                let targetFieldSelected = result.filter(function (i) { return i.value == toSubField; });
+                
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -536,8 +534,11 @@ class TransmittalAddEdit extends Component {
                                         <Formik initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             enableReinitialize={this.props.changeStatus}
-                                            onSubmit={(values) => {
-                                                if (this.props.showModal) { return; }
+                                            onSubmit={(values) => { 
+                                                
+                                                if (this.props.showModal) {
+                                                    return;
+                                                }
 
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editTransmittal();
@@ -555,7 +556,7 @@ class TransmittalAddEdit extends Component {
                                                             <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                                                 <input name='subject' className="form-control fsadfsadsa" id="subject"
                                                                     placeholder={Resources.subject[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.subject}
+                                                                    autoComplete='off' value={this.state.document.subject ? this.state.document.subject : ''}
                                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                                     onChange={(e) => this.handleChange(e, 'subject')} />
                                                                 {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
@@ -710,7 +711,7 @@ class TransmittalAddEdit extends Component {
                                                             <div className={"inputDev ui input" + (errors.Building && touched.Building ? (" has-error") : !errors.Building && touched.Building ? (" has-success") : " ")} >
                                                                 <input name='Building' className="form-control fsadfsadsa" id="Building"
                                                                     placeholder={Resources.Building[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.building ? this.state.document.building:''}
+                                                                    autoComplete='off' value={this.state.document.building ? this.state.document.building : ''}
                                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                                     onChange={(e) => this.handleChange(e, 'building')} />
                                                                 {errors.Building && touched.Building ? (<em className="pError">{errors.Building}</em>) : null}
