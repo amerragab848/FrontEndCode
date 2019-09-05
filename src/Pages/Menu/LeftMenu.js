@@ -17,7 +17,6 @@ import * as dashboardComponantActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let currentProjectId = localStorage.getItem("lastSelectedProject") == null ? 0 : localStorage.getItem("lastSelectedProject");
-let currentProjectName = localStorage.getItem("lastSelectedprojectName") == null ? null : localStorage.getItem("lastSelectedprojectName");
 
 var viewModules = true;
 var viewEps = false;
@@ -45,7 +44,7 @@ class LeftMenu extends Component {
     General.map(route => {
       if (route.settings) {
         if (route.settings.General === true) {
-          if (Config.IsAllow(route.settings.permission)) { 
+          if (Config.IsAllow(route.settings.permission)) {
             generalMenu.push(route);
           }
         }
@@ -454,13 +453,16 @@ class LeftMenu extends Component {
     return ComponentModule;
   }
 
-  activeLi = (index, length) => {
+  activeLi = (index, length, moduleIndex) => {
+
+    let prevStateLi = this.state.li;
+    let prevStateModule = this.state.moduleIndex;
 
     for (var i = 0; i < length; i++) {
       if (i == index)
-        this.setState({ [i]: true });
+        this.setState({ [i + '-' + moduleIndex]: true, li: index, moduleIndex: moduleIndex, [prevStateLi + '-' + prevStateModule]: false });
       if (i != index)
-        this.setState({ [i]: false });
+        this.setState({ [i + '-' + moduleIndex]: false });
     }
   }
 
@@ -582,7 +584,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 1 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.generalMenu.map((r, index) => {
                               return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 1) ? "active" : " "} onClick={() => this.activeLi(index, this.state.generalMenu.length)} >
+                                <li key={index} className={(this.state[index + '-' + this.state.rowIndex] === true) ? "active" : " "} onClick={() => this.activeLi(index, this.state.generalMenu.length, this.state.rowIndex)} >
                                   <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active">
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -640,7 +642,7 @@ class LeftMenu extends Component {
 
                             {this.state.communication.map((r, index) => {
                               return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 2) ? "active" : " "} onClick={() => this.activeLi(index, this.state.communication.length)}>
+                                <li key={index} className={(this.state[index + '-' + this.state.rowIndex] === true) ? "active" : " "} onClick={() => this.activeLi(index, this.state.communication.length, this.state.rowIndex)}>
                                   <NavLink to={"/" + r.route + "/" + this.props.projectId} >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -678,7 +680,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 4 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.siteMenu.map((r, index) => {
                               return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 4) ? "active" : " "} onClick={() => this.activeLi(index, this.state.siteMenu.length)}>
+                                <li key={index} className={(this.state[index + '-' + this.state.rowIndex] === true) ? "active" : " "} onClick={() => this.activeLi(index, this.state.siteMenu.length, this.state.rowIndex)}>
                                   <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active">
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -733,7 +735,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 5 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.contractMenu.map((r, index) => {
                               return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 5) ? "active" : " "} onClick={() => this.activeLi(index, this.state.contractMenu.length)}>
+                                <li key={index} className={(this.state[index + '-' + this.state.rowIndex] === true) ? "active" : " "} onClick={() => this.activeLi(index, this.state.contractMenu.length, this.state.rowIndex)}>
                                   <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -788,7 +790,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 6 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.timeMenu.map((r, index) => {
                               return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 6) ? "active" : " "} onClick={() => this.activeLi(index, this.state.timeMenu.length)}>
+                                <li key={index} className={(this.state[index + '-' + this.state.rowIndex] === true) ? "active" : " "} onClick={() => this.activeLi(index, this.state.timeMenu.length, this.state.rowIndex)}>
                                   <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -820,7 +822,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 7 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.costControlMenu.map((r, index) => {
                               return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 7) ? "active" : " "} onClick={() => this.activeLi(index, this.state.costControlMenu.length)}>
+                                <li key={index} className={(this.state[index + '-' + this.state.rowIndex] === true) ? "active" : " "} onClick={() => this.activeLi(index, this.state.costControlMenu.length, this.state.rowIndex)}>
                                   <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -875,7 +877,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 9 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.qualityControlMenu.map((r, index) => {
                               return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 9) ? "active" : " "} onClick={() => this.activeLi(index, this.state.qualityControlMenu.length)}>
+                                <li key={index} className={(this.state[index + '-' + this.state.rowIndex] === 9) ? "active" : " "} onClick={() => this.activeLi(index, this.state.qualityControlMenu.length, this.state.rowIndex)}>
                                   <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -950,7 +952,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 10 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.designMenu.map((r, index) => {
                               return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 10) ? "active" : " "} onClick={() => this.activeLi(index, this.state.designMenu.length)}>
+                                <li key={index} className={(this.state[index + '-' + this.state.rowIndex] === true) ? "active" : " "} onClick={() => this.activeLi(index, this.state.designMenu.length, this.state.rowIndex)}>
                                   <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>
@@ -980,7 +982,7 @@ class LeftMenu extends Component {
                           <ul className={this.state.rowIndex === 11 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
                             {this.state.procurementMenu.map((r, index) => {
                               return (
-                                <li key={index} className={(this.state[index] === true && this.state.rowIndex === 11) ? "active" : " "} onClick={() => this.activeLi(index, this.state.procurementMenu.length)}>
+                                <li key={index} className={(this.state[index + '-' + this.state.rowIndex] === true) ? "active" : " "} onClick={() => this.activeLi(index, this.state.procurementMenu.length, this.state.rowIndex)}>
                                   <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
                                     {Resources[r.title][currentLanguage]}
                                   </NavLink>

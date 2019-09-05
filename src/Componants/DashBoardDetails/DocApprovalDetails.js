@@ -49,7 +49,7 @@ let subjectLink = ({ value, row }) => {
 
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view = "/" +(row.docLink !== null ? row.docLink.replace('/', ''):row.docLink) + "?id=" + encodedPaylod
+    doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
     subject = row.subject;
 
     return <a href={doc_view}> {subject} </a>;
@@ -212,8 +212,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        sortDescendingFirst: true,
-        // filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true 
       },
       {
         key: "lastApproveTime",
@@ -222,8 +221,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        sortDescendingFirst: true,
-        //  filterRenderer: SingleSelectFilter
+        sortDescendingFirst: true 
       }
     ];
 
