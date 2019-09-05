@@ -2,29 +2,41 @@ import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
+import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter } = Filters;
+const { SingleSelectFilter } = Filters;
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
- 
 
-let  subjectLink = ({ value, row }) => {
+let subjectLink = ({ value, row }) => {
   let doc_view = "";
   let subject = "";
   if (row) {
-    doc_view ="/"+ row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
+
+    let obj = {
+      docId: row.docId,
+      projectId: row.projectId,
+      projectName: row.projectName,
+      arrange: 0,
+      docApprovalId: 0,
+      isApproveMode: false,
+      perviousRoute: window.location.pathname + window.location.search
+    };
+
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
     subject = row.subject;
+
     return <a href={doc_view}> {subject} </a>;
   }
   return null;
@@ -44,17 +56,7 @@ class workFlowAlerts extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
-      },{
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 100,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
+        filterRenderer: SingleSelectFilter
       },
       {
         key: "subject",
@@ -66,7 +68,17 @@ class workFlowAlerts extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:subjectLink
+        formatter: subjectLink
+      }, {
+        key: "projectName",
+        name: Resources["projectName"][currentLanguage],
+        width: 100,
+        draggable: true,
+        sortable: true,
+        resizable: true,
+        filterable: true,
+        sortDescendingFirst: true,
+        filterRenderer: SingleSelectFilter
       },
       {
         key: "actionByContactName",
@@ -77,7 +89,7 @@ class workFlowAlerts extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
+        filterRenderer: SingleSelectFilter
       },
       {
         key: "docTypeName",
@@ -88,7 +100,7 @@ class workFlowAlerts extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter 
+        filterRenderer: SingleSelectFilter
       },
       {
         key: "delayDuration",
@@ -122,7 +134,7 @@ class workFlowAlerts extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "lastApprovalDate",
@@ -134,7 +146,7 @@ class workFlowAlerts extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       }
     ];
 
@@ -196,7 +208,7 @@ class workFlowAlerts extends Component {
     ];
 
     this.state = {
-      pageTitle:Resources["workFlowAlert"][currentLanguage],
+      pageTitle: Resources["workFlowAlert"][currentLanguage],
       viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
@@ -208,11 +220,12 @@ class workFlowAlerts extends Component {
 
   componentDidMount() {
     Api.get("GetWorkFlowAlertDetails").then(result => {
-  
+
       this.setState({
         rows: result != null ? result : [],
         isLoading: false
       });
+
     });
   }
 
@@ -231,17 +244,17 @@ class workFlowAlerts extends Component {
     });
 
     Api.get("").then(result => {
-        if (result.length > 0) {
-          this.setState({
-            rows: result != null ? result : [],
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
-      })
+      if (result.length > 0) {
+        this.setState({
+          rows: result != null ? result : [],
+          isLoading: false
+        });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
+    })
       .catch(ex => {
         alert(ex);
         this.setState({
@@ -251,48 +264,61 @@ class workFlowAlerts extends Component {
       });
   };
 
-  onRowClick = (obj) => {  
-    if(obj){
-      let objRout = {
-        docId: obj.docId,
-        projectId: obj.projectId,
-        projectName: obj.projectName,
-        arrange: 0,
-        docApprovalId: 0,
-        isApproveMode: false,
-        perviousRoute:window.location.pathname+window.location.search
+  cellClick = (rowId, colID) => {
+
+    if (colID != 0 && colID != 1) { 
+      let rowData = this.state.rows[rowId];
+      if (this.state.columns[colID].key !== "subject") {
+        let obj = {
+          docId: rowData.docId,
+          projectId: rowData.projectId,
+          projectName: rowData.projectName,
+          arrange: 0,
+          docApprovalId: 0,
+          isApproveMode: false,
+          perviousRoute: window.location.pathname + window.location.search
+        };
+
+        if (rowData.docType === 37 || rowData.docType === 114) {
+          obj.isModification = rowData.docTyp === 114 ? true : false;
+        }
+
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+        this.props.history.push({ pathname: "/" + rowData.docLink, search: "?id=" + encodedPaylod });
       }
-      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
-      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-      this.props.history.push({
-        pathname: "/" + obj.docLink,
-        search: "?id=" + encodedPaylod
-      }); 
     }
-}
+  };
 
   render() {
     const dataGrid =
-    this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows} columns={this.state.columns} onRowClick={this.onRowClick} showCheckbox={false}/>
-    ) : <LoadingSection/>;
+      this.state.isLoading === false ? (
 
-    const btnExport = this.state.isLoading === false ? 
-    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-    : <LoadingSection /> ;
+        <GridSetup
+          rows={this.state.rows}
+          showCheckbox={false}
+          columns={this.state.columns}
+          cellClick={this.cellClick} />
+      ) : <LoadingSection />;
 
-    const ComponantFilter= this.state.isLoading === false ?   
-    <Filter
-      filtersColumns={this.state.filtersColumns}
-      apiFilter={this.state.apiFilter}
-      filterMethod={this.filterMethodMain} 
-    /> : <LoadingSection />;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : <LoadingSection />;
+
+    const ComponantFilter = this.state.isLoading === false ?
+      <Filter
+        filtersColumns={this.state.filtersColumns}
+        apiFilter={this.state.apiFilter}
+        filterMethod={this.filterMethodMain}
+      /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
-          <h3 className="zero">{this.state.pageTitle}</h3>
+            <h3 className="zero">{this.state.pageTitle}</h3>
             <span>{this.state.rows.length}</span>
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
@@ -355,22 +381,22 @@ class workFlowAlerts extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
-          <div className="filterBTNS"> 
-          {btnExport}
-          </div> 
+          <div className="filterBTNS">
+            {btnExport}
+          </div>
         </div>
-        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
             {ComponantFilter}
           </div>
