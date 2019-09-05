@@ -110,41 +110,11 @@ class CommonLog extends Component {
       }
     }
   }
-  
-  // componentWillReceiveProps(nextProps) {
-
-  //   if (nextProps.match !== this.props.match) {
-
-  //     this.setState({
-  //       isLoading: true,
-  //       isCustom: true,
-  //       documentName: nextProps.match.params.document,
-  //       projectId: nextProps.projectId
-  //     });
-
-  //     this.renderComponent(nextProps.match.params.document, nextProps.projectId, true);
-  //   }
-
-  //   if (nextProps.projectId !== this.props.projectId) {
-  //     if (!this.state.documentObj.documentApi) {
-  //       this.renderComponent(nextProps.match.params.document, nextProps.projectId, true);
-  //     } else {
-  //       this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, nextProps.projectId);
-  //     }
-
-  //     this.setState({
-  //       isLoading: true,
-  //       projectId: nextProps.projectId
-  //     });
-  //   }
-  // }
-
+ 
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = this.state.isCustom !== nextProps.isCustom;
     return shouldUpdate;
-  }
-
-  componentWillUpdate() { }
+  } 
 
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
@@ -651,6 +621,7 @@ class CommonLog extends Component {
       </Fragment>
     );
   }
+  
 }
 
 function mapStateToProps(state, ownProps) {

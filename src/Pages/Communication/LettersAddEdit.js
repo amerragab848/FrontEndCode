@@ -44,7 +44,6 @@ let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
-const _ = require("lodash");
 
 class LettersAddEdit extends Component {
     constructor(props) {
@@ -135,23 +134,10 @@ class LettersAddEdit extends Component {
         }
     }
     componentDidMount() {
-        var links = document.querySelectorAll(
-            ".noTabs__document .doc-container .linebylineInput"
-        );
-        for (var i = 0; i < links.length; i++) {
-            if ((i + 1) % 2 == 0) {
-                links[i].classList.add("even");
-            } else {
-                links[i].classList.add("odd");
-            }
-        }
+
         if (this.state.docId > 0) {
             let url = "GetLettersById?id=" + this.state.docId;
-            this.props.actions.documentForEdit(
-                url,
-                this.state.docTypeId,
-                "lettertitle"
-            );
+            this.props.actions.documentForEdit(url, this.state.docTypeId, "lettertitle");
         } else {
             let letter = {
                 subject: "",
@@ -175,23 +161,40 @@ class LettersAddEdit extends Component {
             this.props.actions.documentForAdding();
         }
         this.checkDocumentIsView();
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+        for (var i = 0; i < links.length; i++) {
+            if ((i + 1) % 2 == 0) {
+                links[i].classList.add("even");
+            } else {
+                links[i].classList.add("odd");
+            }
+        }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id !== this.props.document.id) {
-            this.setState({
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id) {
+            return {
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: nextProps.document.message
-            });
-            // und 976 --1
-            //976 976 fire modal
-            //976 976 close modal
-            //alert('recieve....');
-            //console.log(this.props.document.id, nextProps.document.id);
-            //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+            };
+        }
+        return null
+    }
 
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id) {
+            //         // und 976 --1
+            //         //976 976 fire modal
+            //         //976 976 close modal
+            //         //alert('recieve....');
+            //         //console.log(this.props.document.id, nextProps.document.id);
+            //         //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -201,16 +204,6 @@ class LettersAddEdit extends Component {
         this.setState({
             docId: 0
         });
-    }
-
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (
-            this.props.hasWorkflow !== prevProps.hasWorkflow ||
-            this.props.changeStatus !== prevProps.changeStatus
-        ) {
-            this.checkDocumentIsView();
-        }
     }
 
     checkDocumentIsView() {
@@ -237,8 +230,6 @@ class LettersAddEdit extends Component {
         }
     }
 
-    componentWillMount() { }
-
     fillSubDropDownInEdit(
         url,
         param,
@@ -251,7 +242,7 @@ class LettersAddEdit extends Component {
         dataservice.GetDataList(action, "contactName", "id").then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) {
+                let targetFieldSelected = result.filter(function (i) {
                     return i.value == toSubField;
                 });
                 console.log(targetFieldSelected);
@@ -326,7 +317,7 @@ class LettersAddEdit extends Component {
                     let disciplineId = this.props.document.disciplineId;
                     let discpline = {};
                     if (disciplineId) {
-                        discpline = _.find(result, function (i) {
+                        discpline = result.filter(function (i) {
                             return i.value == disciplineId;
                         });
 
@@ -347,7 +338,7 @@ class LettersAddEdit extends Component {
                     let replyId = this.props.document.replyId;
                     let replyLetter = {};
                     if (replyId) {
-                        replyLetter = _.find(result, function (i) {
+                        replyLetter = result.filter(function (i) {
                             return i.value == replyId;
                         });
                         this.setState({
@@ -410,16 +401,7 @@ class LettersAddEdit extends Component {
         });
     }
 
-    handleChangeDropDown(
-        event,
-        field,
-        isSubscrib,
-        targetState,
-        url,
-        param,
-        selectedValue,
-        subDatasource
-    ) {
+    handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
         if (event == null) return;
         let original_document = { ...this.state.document };
         let updated_document = {};
@@ -432,15 +414,7 @@ class LettersAddEdit extends Component {
         });
 
         if (field == "fromContactId") {
-            let url =
-                "GetNextArrangeMainDoc?projectId=" +
-                this.state.projectId +
-                "&docType=" +
-                this.state.docTypeId +
-                "&companyId=" +
-                this.state.document.fromCompanyId +
-                "&contactId=" +
-                event.value;
+            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
 
             dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
@@ -456,13 +430,11 @@ class LettersAddEdit extends Component {
         }
         if (isSubscrib) {
             let action = url + "?" + param + "=" + event.value;
-            dataservice
-                .GetDataList(action, "contactName", "id")
-                .then(result => {
-                    this.setState({
-                        [targetState]: result
-                    });
+            dataservice.GetDataList(action, "contactName", "id").then(result => {
+                this.setState({
+                    [targetState]: result
                 });
+            });
         }
     }
 
@@ -611,17 +583,10 @@ class LettersAddEdit extends Component {
                                                 if (this.props.showModal) {
                                                     return;
                                                 }
-                                                if (
-                                                    this.props.changeStatus ===
-                                                    true &&
-                                                    this.state.docId > 0
-                                                ) {
+
+                                                if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
-                                                } else if (
-                                                    this.props.changeStatus ===
-                                                    false &&
-                                                    this.state.docId === 0
-                                                ) {
+                                                } else if (this.props.changeStatus === false && this.state.docId === 0) {
                                                     this.saveLetter();
                                                 } else {
                                                     this.saveAndExit();
@@ -931,10 +896,7 @@ class LettersAddEdit extends Component {
                                                             <div className="linebylineInput valid-input mix_dropdown">
                                                                 <label className="control-label">
                                                                     {
-                                                                        Resources
-                                                                            .fromCompany[
-                                                                        currentLanguage
-                                                                        ]
+                                                                        Resources.fromCompany[currentLanguage]
                                                                     }
                                                                 </label>
                                                                 <div className="supervisor__company">
@@ -1175,15 +1137,7 @@ class LettersAddEdit extends Component {
                                                                             .selectedReplyLetter
                                                                     }
                                                                     handleChange={event =>
-                                                                        this.handleChangeDropDown(
-                                                                            event,
-                                                                            "replyId",
-                                                                            false,
-                                                                            "",
-                                                                            "",
-                                                                            "",
-                                                                            "selectedReplyLetter"
-                                                                        )
+                                                                        this.handleChangeDropDown(event, "replyId", false, "", "", "", "selectedReplyLetter")
                                                                     }
                                                                     index="letter-replyId"
                                                                 />
