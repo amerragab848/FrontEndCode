@@ -123,7 +123,7 @@ class HeaderMenu extends Component {
     this.handleOutsideClickProfile = this.handleOutsideClickProfile.bind(this);
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     dataservice.GetDataList("GetAccountsProjectsByIdForList", "projectName", "projectId").then(result => {
       this.setState({
         projects: result
@@ -1069,9 +1069,8 @@ class HeaderMenu extends Component {
       viewNotification: false
     });
     this.props.history.push("/myTasks");
-  }
-
-
+  } 
+  
   searchClick = () => {
     if (this.state.subjectText) {
       let obj = {
