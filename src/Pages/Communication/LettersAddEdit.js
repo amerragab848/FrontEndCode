@@ -142,7 +142,7 @@ class LettersAddEdit extends Component {
             let letter = {
                 subject: "",
                 id: 0,
-                projectId: this.state.projectId,
+                projectId: this.props.projectId,
                 arrange: "",
                 fromCompanyId: "",
                 fromContactId: "",
@@ -342,7 +342,7 @@ class LettersAddEdit extends Component {
                             return i.value == replyId;
                         });
                         this.setState({
-                            [replyLetter]: replyLetter
+                            selectedReplyLetter: replyLetter
                         });
                     }
                 }
@@ -461,6 +461,7 @@ class LettersAddEdit extends Component {
             isLoading: true
         });
         let saveDocument = { ...this.state.document };
+        saveDocument.projectId = this.props.projectId
 
         saveDocument.docDate = moment(saveDocument.docDate).format(
             "MM/DD/YYYY"
@@ -479,27 +480,13 @@ class LettersAddEdit extends Component {
         this.props.history.push(this.state.perviousRoute);
     }
 
-    showBtnsSaving(submitForm) {
+    showBtnsSaving() {
         let btn = null;
 
         if (this.state.docId === 0) {
-            btn = (
-                <button
-                    onClick={() => submitForm()}
-                    className="primaryBtn-1 btn meduimBtn"
-                    type="button">
-                    {Resources.save[currentLanguage]}
-                </button>
-            );
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = (
-                <button
-                    onClick={() => submitForm()}
-                    className="primaryBtn-1 btn mediumBtn"
-                    type="button">
-                    {Resources.saveAndExit[currentLanguage]}
-                </button>
-            );
+            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
         }
         return btn;
     }
@@ -1167,22 +1154,18 @@ class LettersAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="slider-Btns">
-                                                            {this.state
-                                                                .isLoading ? (
-                                                                    <button className="primaryBtn-1 btn disabled">
-                                                                        <div className="spinner">
-                                                                            <div className="bounce1" />
-                                                                            <div className="bounce2" />
-                                                                            <div className="bounce3" />
-                                                                        </div>
-                                                                    </button>
-                                                                ) : (
-                                                                    this.showBtnsSaving(
-                                                                        () => {
-                                                                            submitForm();
-                                                                        }
-                                                                    )
-                                                                )}
+                                                            {this.state.isLoading ?
+                                                                <button className="primaryBtn-1 btn disabled">
+                                                                    <div className="spinner">
+                                                                        <div className="bounce1" />
+                                                                        <div className="bounce2" />
+                                                                        <div className="bounce3" />
+                                                                    </div>
+                                                                </button>
+                                                                :
+                                                                <div className="slider-Btns">
+                                                                    {this.showBtnsSaving()}
+                                                                </div>}
                                                         </div>
                                                         {this.props.changeStatus ===
                                                             true ? (
