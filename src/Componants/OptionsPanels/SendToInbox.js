@@ -39,7 +39,6 @@ class SendToInbox extends Component {
             Cc_Selected: []
         }
     }
-
     componentDidMount = () => {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
         this.GetData(url, 'companyName', 'companyId', 'To_Cc_CompanyData', 2);
@@ -49,7 +48,7 @@ class SendToInbox extends Component {
     inputChangeHandler = (e) => {
         this.setState({ sendingData: { ...this.state.sendingData, Comment: e.target.value } });
     }
-    sendInbox = (values) => {
+    sendInbox = (values, { resetForm }) => {
         let obj = this.state.sendingData
         obj.Comment = values.Comment
         let cc = []
@@ -67,6 +66,7 @@ class SendToInbox extends Component {
         values.ccCompanydd = '';
         values.ccContactsdd = '';
         this.props.actions.SendByEmail_Inbox("SendByInbox", obj);
+        resetForm();
     }
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -101,10 +101,11 @@ class SendToInbox extends Component {
                         toContactId: null,
                         Comment: '',
                         ccCompanydd: '',
-                        ccContactsdd: []
+                        ccContactsdd: [],
+                        ccCompanyId: null
                     }}
-                    onSubmit={values => {
-                        this.sendInbox(values);
+                    onSubmit={(values, { resetForm }) => {
+                        this.sendInbox(values, { resetForm });
                     }}
                 >
                     {({ errors, touched, setFieldValue, setFieldTouched, values, handleBlur, handleChange, }) => (
@@ -120,47 +121,53 @@ class SendToInbox extends Component {
                                 onBlur={setFieldTouched}
                                 error={errors.priorityId}
                                 touched={touched.priorityId}
-                                selectedValue={this.state.priorityId} /> 
+                                selectedValue={this.state.priorityId} />
 
                             <div className={this.props.fullwidth == "true" ? "letterFullWidth fullInputWidth linebylineInput" : "fillter-status fillter-item-c"}>
                                 <label className="control-label">
                                     {Resources["comments"][currentLanguage]}
                                 </label>
                                 <div className="inputDev ui input">
-                                    <input type={this.props.type === undefined ? "text" : this.props.type} className="form-control" id="lastname1" value={values.Comment} onChange={handleChange} />
+                                    <input type={this.props.type === undefined ? "text" : this.props.type}
+                                        className="form-control" id="Comment" name="Comment"
+                                        defaultValue={values.Comment} onChange={handleChange} />
                                 </div>
                             </div>
 
-                                <Dropdown
-                                    title="toCompanyName"
-                                    data={this.state.To_Cc_CompanyData}
-                                    index='toCompanyId'
-                                    name="toCompanyId"
-                                    id="toCompanyId"
-                                    onChange={setFieldValue}
-                                    handleChange={event => this.handleChange('toCompanyId', event, true, "AttentionData", "GetContactsByCompanyIdForOnlyUsers?companyId=" + event.value)}
-                                    onBlur={setFieldTouched}
-                                    error={errors.toCompanyId}
-                                    touched={touched.toCompanyId}
-                                    selectedValue={this.state.toCompanyId} />
-                             
-                                <Dropdown title="ToContact" data={this.state.AttentionData}
-                                    index='toContactId'
-                                    name="toContactId"
-                                    id="toContactId"
-                                    onChange={setFieldValue}
-                                    handleChange={event => this.handleChange('toContactId', event, false, null, null)}
-                                    onBlur={setFieldTouched}
-                                    error={errors.toContactId}
-                                    touched={touched.toContactId}
-                                    selectedValue={this.state.toContactId}
-                                />
-                             <Dropdown title="ccCompany"
+                            <Dropdown
+                                title="toCompanyName"
                                 data={this.state.To_Cc_CompanyData}
-                                name="ccCompanydd"
+                                index='toCompanyId'
+                                name="toCompanyId"
+                                id="toCompanyId"
+                                onChange={setFieldValue}
+                                handleChange={event => this.handleChange('toCompanyId', event, true, "AttentionData", "GetContactsByCompanyIdForOnlyUsers?companyId=" + event.value)}
+                                onBlur={setFieldTouched}
+                                error={errors.toCompanyId}
+                                touched={touched.toCompanyId}
+                                selectedValue={this.state.toCompanyId} />
+
+                            <Dropdown title="ToContact" data={this.state.AttentionData}
+                                index='toContactId'
+                                name="toContactId"
+                                id="toContactId"
+                                onChange={setFieldValue}
+                                handleChange={event => this.handleChange('toContactId', event, false, null, null)}
+                                onBlur={setFieldTouched}
+                                error={errors.toContactId}
+                                touched={touched.toContactId}
+                                selectedValue={this.state.toContactId}
+                            />
+                            <Dropdown title="ccCompany"
+                                data={this.state.To_Cc_CompanyData}
+                                name="ccCompanyId"
+                                index='ccCompanyId'
+                                id="ccCompanyId"
                                 handleChange={event => this.handleChange('ccCompanyId', event, true, "Cc_ContactData", "GetContactsByCompanyId?companyId=" + event.value)}
-                                index='ccCompanyddinbox'
-                                selectedValue={this.state.ccCompanydd}
+                                onBlur={setFieldTouched}
+                                onChange={setFieldValue}
+                                touched={touched.ccCompanyId}
+                                selectedValue={this.state.ccCompanyId}
                             />
                             <div className="filterWrapper">
                                 <Dropdown title="ccContact" data={this.state.Cc_ContactData}
@@ -172,19 +179,20 @@ class SendToInbox extends Component {
 
                             </div>
 
-                            {!this.state.submitLoading ?
-                                <div className="fullWidthWrapper">
+                            <div className="fullWidthWrapper">
+                                {!this.state.submitLoading ?
                                     <button className="primaryBtn-1 btn" type="submit" >{Resources['send'][currentLanguage]}</button>
-                                </div>
-                                : (
-                                    <span className="primaryBtn-1 btn largeBtn disabled">
-                                        <div className="spinner">
-                                            <div className="bounce1" />
-                                            <div className="bounce2" />
-                                            <div className="bounce3" />
-                                        </div>
-                                    </span>
-                                )}
+                                    : (
+                                        <button className="primaryBtn-1 btn disabled">
+                                            <div className="spinner">
+                                                <div className="bounce1" />
+                                                <div className="bounce2" />
+                                                <div className="bounce3" />
+                                            </div>
+                                        </button>
+                                    )}
+                            </div>
+
                         </Form>
                     )}
                 </Formik>
