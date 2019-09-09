@@ -28,18 +28,20 @@ class Widgets extends Component {
   }
 
   onOpenModal = () => {
-    if (this.state.value > 0) {
-      let arr = this.props.props.route.split('action');
-      if (arr.length > 1) {
-        this.props.history.push(
-          this.props.props.route
-        );
-      }
-      else {
-        this.props.history.push({
-          pathname: this.props.props.route,
-          search: "?key=" + this.props.props.key
-        });
+    if (this.props.props.route != "") {
+      if (this.state.value > 0) {
+        let arr = this.props.props.route.split('action');
+        if (arr.length > 1) {
+          this.props.history.push(
+            this.props.props.route
+          );
+        }
+        else {
+          this.props.history.push({
+            pathname: this.props.props.route,
+            search: "?key=" + this.props.props.key
+          });
+        }
       }
     }
   };

@@ -126,8 +126,8 @@ class Index extends Component {
 
   renderCategory(category, index) {
     return (
-      <div className="SummeriesContainer">
-        <Fragment key={index}>
+      <div className="SummeriesContainer" key={index}>
+        <Fragment>
           <h2 className="SummeriesTitle">
             {language[category.title][currentLanguage]}
           </h2>

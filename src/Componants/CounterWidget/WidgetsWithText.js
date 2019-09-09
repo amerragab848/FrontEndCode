@@ -31,11 +31,13 @@ class WidgetsWithText extends Component {
   }
 
   onOpenModal() {
-    if (this.state.count > 0) {
-      this.props.history.push({
-        pathname: this.props.props.route,
-        search: "?key=" + this.props.props.key
-      });
+    if (this.props.props.route != "") {
+      if (this.state.count > 0) {
+        this.props.history.push({
+          pathname: this.props.props.route,
+          search: "?key=" + this.props.props.key
+        });
+      }
     }
   }
 

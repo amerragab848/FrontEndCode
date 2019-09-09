@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as dashboardComponantActions from "../../store/actions/communication";
 import moment from "moment";
+import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const DashboardArrow = () => {
@@ -172,7 +173,7 @@ class HeaderMenu extends Component {
     window.location.reload();
   }
 
-  handleClearCach(event) {
+  handleClearCach() {
 
     var res = [];
 
@@ -184,9 +185,15 @@ class HeaderMenu extends Component {
         localStorage.removeItem(key);
       }
     }
+
+    toast.success(Resources["operationSuccess"][currentLanguage]);
+
+    this.setState({
+      clearCach: false
+    });
   }
 
-  handleClearSettings(event) {
+  handleClearSettings() {
 
     var res = [];
 
@@ -198,6 +205,11 @@ class HeaderMenu extends Component {
       }
     }
 
+    toast.success(Resources["operationSuccess"][currentLanguage]);
+
+    this.setState({
+      clearSettings: false
+    });
   }
 
   logOutHandler() {
@@ -1069,8 +1081,8 @@ class HeaderMenu extends Component {
       viewNotification: false
     });
     this.props.history.push("/myTasks");
-  } 
-  
+  }
+
   searchClick = () => {
     if (this.state.subjectText) {
       let obj = {
@@ -1345,21 +1357,19 @@ class HeaderMenu extends Component {
               clickHandlerContinue={() => this.logOutHandler()} title="You Will Be Missed, Are You Sure Want to Leave US?" buttonName='logout' />
           ) : null
         }
-
         {
           this.state.clearCach ? (
             <ConfirmationModal closed={event => this.setState({ clearCach: false })} showDeleteModal={this.state.clearCach} clickHandlerCancel={event => this.setState({ clearCach: false })}
               clickHandlerContinue={() => this.handleClearCach()} title={Resources["clearSetting"][currentLanguage]} buttonName='clearCach' />
           ) : null
         }
-
         {
           this.state.clearSettings ? (
             <ConfirmationModal closed={event => this.setState({ clearSettings: false })} showDeleteModal={this.state.clearSettings} clickHandlerCancel={event => this.setState({ clearSettings: false })}
               clickHandlerContinue={() => this.handleClearSettings()} title={Resources["clearSetting"][currentLanguage]} buttonName='clearSettings' />
           ) : null
         }
-      </div >
+      </div>
     );
   }
 }

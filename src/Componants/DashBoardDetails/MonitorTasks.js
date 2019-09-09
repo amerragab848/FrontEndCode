@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection"; 
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Api from "../../api";
 import Resources from "../../resources.json";
 import moment from "moment";
@@ -13,6 +13,33 @@ const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
+
+const subjectLink = ({ value, row }) => {
+  let doc_view = "";
+  let subject = "";
+  if (row) {
+
+    let obj = {
+      docId: row.docId,
+      projectId: row.projectId,
+      projectName: row.projectName,
+      arrange: row.arrange,
+      docApprovalId: row.accountDocWorkFlowId,
+      isApproveMode: true,
+      perviousRoute: window.location.pathname + window.location.search
+    };
+
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    doc_view = "/ProjectTaskAddEdit" + "?id=" + encodedPaylod
+    subject = row.subject;
+
+    return <a href={doc_view}> {subject} </a>;
+  }
+  return null;
+};
+
+
 export default class MonitorTasks extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +52,7 @@ export default class MonitorTasks extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        sortDescendingFirst: true 
+        sortDescendingFirst: true
       },
       {
         key: "subject",
@@ -34,7 +61,8 @@ export default class MonitorTasks extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        sortDescendingFirst: true 
+        sortDescendingFirst: true,
+        formatter: subjectLink
       },
       {
         key: "projectName",
@@ -144,9 +172,9 @@ export default class MonitorTasks extends Component {
         name: "remaining",
         type: "string",
         isCustom: true
-      } 
+      }
     ];
- 
+
     this.state = {
       columns: columnsGrid,
       rows: [],
@@ -156,37 +184,39 @@ export default class MonitorTasks extends Component {
       viewfilter: false,
       filtersColumns: filtersColumns
     };
-
   }
 
   componentDidMount = () => {
+
+    this.props.actions.RouteToTemplate();
+
     Api.get("GetMonitorTaskDetails").then(result => {
       this.setState({
         renderGrid: true,
         rows: result != null ? result : [],
-        isLoading:false
+        isLoading: false
       });
     });
   };
 
   filterMethodMain = (event, query, apiFilter) => {
-    
+
     this.setState({
-      isLoading: true 
+      isLoading: true
     });
 
     Api.get("").then(result => {
-        if (result.length > 0) {
-          this.setState({
-            rows: result != null ? result : [],
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
-      })
+      if (result.length > 0) {
+        this.setState({
+          rows: result != null ? result : [],
+          isLoading: false
+        });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
+    })
       .catch(ex => {
         alert(ex);
         this.setState({
@@ -211,38 +241,38 @@ export default class MonitorTasks extends Component {
         arrange: 0,
         docApprovalId: 0,
         isApproveMode: false,
-        perviousRoute:window.location.pathname+window.location.search
+        perviousRoute: window.location.pathname + window.location.search
       }
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
       this.props.history.push({
-        pathname: "/" +'ProjectTaskAddEdit' ,
+        pathname: '/ProjectTaskAddEdit',
         search: "?id=" + encodedPaylod
       });
     }
   }
 
-  render() { 
+  render() {
 
-    const dataGrid = this.state.isLoading === false ?(<GridSetup onRowClick={this.onRowClick} rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>) : <LoadingSection/>;
+    const dataGrid = this.state.isLoading === false ? (<GridSetup onRowClick={this.onRowClick} rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />) : <LoadingSection />;
 
-    const btnExport = this.state.isLoading === false ? 
-    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-    : <LoadingSection /> ;
- 
-    const ComponantFilter= this.state.isLoading === false ?   
-    <Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain}/> : <LoadingSection />;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : <LoadingSection />;
+
+    const ComponantFilter = this.state.isLoading === false ?
+      <Filter filtersColumns={this.state.filtersColumns} apiFilter={this.state.apiFilter} filterMethod={this.filterMethodMain} /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
-       
-          <div className="submittalFilter">
-            <div className="subFilter">
-              <h3 className="zero">
-                {Resources["monitorTasks"][currentLanguage]}
-              </h3>
-              <span>{this.state.rows.length}</span>
-              <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
+
+        <div className="submittalFilter">
+          <div className="subFilter">
+            <h3 className="zero">
+              {Resources["monitorTasks"][currentLanguage]}
+            </h3>
+            <span>{this.state.rows.length}</span>
+            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"
@@ -298,31 +328,31 @@ export default class MonitorTasks extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
-            </div> 
-            <div className="filterBTNS">{btnExport}</div> 
-            <div className="rowsPaginations">
-              <div className="rowsPagiRange">
-                <span>{this.state.rows.length}</span> of
+          </div>
+          <div className="filterBTNS">{btnExport}</div>
+          <div className="rowsPaginations">
+            <div className="rowsPagiRange">
+              <span>{this.state.rows.length}</span> of
                 <span>{this.state.rows.length}</span>
-              </div>
             </div>
-          </div> 
-          <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
+          </div>
+        </div>
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
             {ComponantFilter}
           </div>
-        </div> 
-        <div>{dataGrid}</div> 
+        </div>
+        <div>{dataGrid}</div>
       </div>
     );
   }

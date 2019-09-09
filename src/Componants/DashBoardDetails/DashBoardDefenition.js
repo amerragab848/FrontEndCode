@@ -426,7 +426,8 @@ let widgets = [
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter" 
+        filterRenderer: "SingleSelectFilter" ,
+        formatter: 'subjectLink'
       },
       {
         key: "statusName",
@@ -733,7 +734,8 @@ let widgets = [
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        filterRenderer: "SingleSelectFilter",
+        formatter: 'subjectLink'
       },
       {
         key: "statusName",
@@ -836,7 +838,8 @@ let widgets = [
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        filterRenderer: "SingleSelectFilter",
+        formatter: 'subjectLink'
       },
       {
         key: "approvalStatusName",
@@ -1121,7 +1124,8 @@ let widgets = [
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter" 
+        filterRenderer: "SingleSelectFilter" ,
+        formatter: 'subjectLink'
       },
       {
         key: "statusName",
@@ -1202,7 +1206,8 @@ let widgets = [
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter" 
+        filterRenderer: "SingleSelectFilter" ,
+        formatter: 'subjectLink'
       },
       {
         key: "statusName",
@@ -1294,7 +1299,8 @@ let widgets = [
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter" 
+        filterRenderer: "SingleSelectFilter" ,
+        formatter: 'subjectLink'
       },
       {
         key: "fromCompanyName",
@@ -1624,7 +1630,8 @@ let widgets = [
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: "SingleSelectFilter"
+        filterRenderer: "SingleSelectFilter",
+        formatter: 'subjectLink'
       },
       {
         key: "statusName",

@@ -8,7 +8,10 @@ import { Filters } from "react-data-grid-addons";
 import moment from "moment";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
-
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -23,6 +26,32 @@ const {
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
+
+const subjectLink = ({ value, row }) => {
+  let doc_view = "";
+  let subject = "";
+  if (row) {
+
+    let obj = {
+      docId: row.docId,
+      projectId: row.projectId,
+      projectName: row.projectName,
+      arrange: row.arrange,
+      docApprovalId: row.accountDocWorkFlowId,
+      isApproveMode: true,
+      perviousRoute: window.location.pathname + window.location.search
+    };
+
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
+    subject = row.subject;
+
+    return <a href={doc_view}> {subject} </a>;
+  }
+  return null;
+};
+
 
 class ClosedSummaryDetails extends Component {
   constructor(props) {
@@ -60,7 +89,8 @@ class ClosedSummaryDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter: subjectLink
       },
       {
         key: "closedBy",
@@ -149,6 +179,9 @@ class ClosedSummaryDetails extends Component {
   }
 
   componentDidMount() {
+
+    this.props.actions.RouteToTemplate();
+
     const query = new URLSearchParams(this.props.location.search);
 
     let action = null;
@@ -230,11 +263,6 @@ class ClosedSummaryDetails extends Component {
       }
     }
   };
-
-
-
-
-
 
   render() {
 
@@ -342,4 +370,16 @@ class ClosedSummaryDetails extends Component {
   }
 }
 
-export default ClosedSummaryDetails;
+function mapStateToProps(state, ownProps) {
+  return {
+    showModal: state.communication.showModal
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ClosedSummaryDetails));

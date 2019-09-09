@@ -3,10 +3,12 @@ import Api from "../../api";
 import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
-import Filter from "../FilterComponent/filterComponent";
-import GridSetup from "../../Pages/Communication/GridSetupWithFilter"; 
+import GridSetup from "../../Pages/Communication/GridSetupWithFilter";
 import Resources from "../../resources.json";
 import CryptoJS from "crypto-js";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -215,7 +217,7 @@ class FollowUpsSummaryDetails extends Component {
     ];
 
     this.state = {
-      pageTitle:Resources["followUpsSummaryDetails"][currentLanguage],
+      pageTitle: Resources["followUpsSummaryDetails"][currentLanguage],
       columns: columnsGrid,
       isLoading: true,
       rows: [],
@@ -224,17 +226,16 @@ class FollowUpsSummaryDetails extends Component {
     };
   }
 
-  componentDidMount() { 
-      Api.get("GetFollowing").then(result => { 
-        this.setState({
-          rows: result != null ? result : [],
-          isLoading: false
-        });
-      }); 
-  }
-
- 
- 
+  componentDidMount() {
+    this.props.actions.RouteToTemplate();
+    Api.get("GetFollowing").then(result => {
+      this.setState({
+        rows: result != null ? result : [],
+        isLoading: false
+      });
+    });
+  } 
+  
   onRowClick = (obj) => {
     if (this.state.RouteEdit !== '') {
       let objRout = {
@@ -256,32 +257,44 @@ class FollowUpsSummaryDetails extends Component {
   }
 
   render() {
-    const dataGrid = this.state.isLoading === false ?(
-    <GridSetup rows={this.state.rows}
-     onRowClick={this.onRowClick} 
-     columns={this.state.columns} 
-     showCheckbox={false}/>) : <LoadingSection/>;
+    const dataGrid = this.state.isLoading === false ? (
+      <GridSetup rows={this.state.rows}
+        onRowClick={this.onRowClick}
+        columns={this.state.columns}
+        showCheckbox={false} />) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
       : <LoadingSection />;
 
-   
+
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
             <span>{this.state.rows.length}</span>
-           </div>
+          </div>
           <div className="filterBTNS">
             {btnExport}
-          </div> 
-        </div> 
+          </div>
+        </div>
         <div>{dataGrid}</div>
       </div>
     );
   }
 }
 
-export default FollowUpsSummaryDetails;
+function mapStateToProps(state, ownProps) {
+  return {
+    showModal: state.communication.showModal
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FollowUpsSummaryDetails);
