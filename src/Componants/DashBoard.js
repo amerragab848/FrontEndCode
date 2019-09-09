@@ -7,8 +7,7 @@ import Resources from "../resources.json";
 import Config from "../Services/Config";
 import IndexedDb from "../IndexedDb";
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class DashBoard extends Component {
     constructor(props) {
@@ -123,6 +122,7 @@ class DashBoard extends Component {
         });
     }
 
+    // category map to number 
     openCategory(category, type) {
         this.setState({ showWidgets: false });
         this.setState({ showWidgets: true, category });
@@ -283,10 +283,7 @@ class DashBoard extends Component {
                                 }
                                 onClick={event => {
                                     this.openCategory(category.id, type.id);
-                                    this.toggleCheckAll(
-                                        category.typeId,
-                                        category.id
-                                    );
+                                    this.toggleCheckAll(category.typeId, category.id);
                                 }}>
                                 <input
                                     readOnly={true}
@@ -318,45 +315,46 @@ class DashBoard extends Component {
     }
 
     render() {
-        let widgets = this.state.showWidgets ? this.state.types[this.state.type - 1].categories.find(category => category.id === this.state.category).widgets.map((widget, index) => {
-            if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
-                let checked = this.state.selected[widget.categoryId].indexOf(widget.id) !== -1;
-                return (
-                    <Pane
-                        key={widget.order}
-                        defaultSize={{ width: "50%" }}
-                        resizable={{ x: false, y: false, xy: false }}>
-                        <div className="secondTabs project__select ui-state-default">
-                            <img src={dashBoardLogo} />
-                            <div className={"ui checkbox checkBoxGray300 count" + (checked ? " checked" : "")}
-                                onClick={event => this.toggleCheck(widget.id, widget.categoryId, checked)}>
-                                <input
-                                    name="CheckBox"
-                                    type="checkbox"
-                                    id="terms"
-                                    tabIndex={index}
-                                    className="hidden"
-                                    checked={checked}
-                                    onChange={() => { }}
-                                />
-                                <label />
+        let widgets = this.state.showWidgets ?
+            this.state.types[this.state.type - 1].categories.find(category => category.id === this.state.category).widgets.map((widget, index) => {
+                if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
+                    let checked = this.state.selected[widget.categoryId].indexOf(widget.id) !== -1;
+                    return (
+                        <Pane
+                            key={widget.order}
+                            defaultSize={{ width: "50%" }}
+                            resizable={{ x: false, y: false, xy: false }}>
+                            <div className="secondTabs project__select ui-state-default">
+                                <img src={dashBoardLogo} />
+                                <div className={"ui checkbox checkBoxGray300 count" + (checked ? " checked" : "")}
+                                    onClick={event => this.toggleCheck(widget.id, widget.categoryId, checked)}>
+                                    <input
+                                        name="CheckBox"
+                                        type="checkbox"
+                                        id="terms"
+                                        tabIndex={index}
+                                        className="hidden"
+                                        checked={checked}
+                                        onChange={() => { }}
+                                    />
+                                    <label />
+                                </div>
+                                <div className="project__title">
+                                    <h3>
+                                        {
+                                            Resources[widget.title][
+                                            currentLanguage
+                                            ]
+                                        }
+                                    </h3>
+                                </div>
                             </div>
-                            <div className="project__title">
-                                <h3>
-                                    {
-                                        Resources[widget.title][
-                                        currentLanguage
-                                        ]
-                                    }
-                                </h3>
-                            </div>
-                        </div>
-                    </Pane>
-                );
-            } else {
-                return null;
-            }
-        }) : null;
+                        </Pane>
+                    );
+                } else {
+                    return null;
+                }
+            }) : null;
 
         let widgetCurrentOrder =
             this.state.showWidgets && this.state.widgetOrders[1]
@@ -419,9 +417,7 @@ class DashBoard extends Component {
                                             {/* general */}
                                             <span className="subUlTitle">
                                                 {
-                                                    Resources["general"][
-                                                    currentLanguage
-                                                    ]
+                                                    Resources["general"][currentLanguage]
                                                 }
                                             </span>
                                         </Tab>
@@ -429,9 +425,7 @@ class DashBoard extends Component {
                                             {/* counters */}
                                             <span className="subUlTitle">
                                                 {
-                                                    Resources["counters"][
-                                                    currentLanguage
-                                                    ]
+                                                    Resources["counters"][currentLanguage]
                                                 }
                                             </span>
                                         </Tab>
@@ -439,9 +433,7 @@ class DashBoard extends Component {
                                             {/* chart */}
                                             <span className="subUlTitle">
                                                 {
-                                                    Resources["chart"][
-                                                    currentLanguage
-                                                    ]
+                                                    Resources["chart"][currentLanguage]
                                                 }
                                             </span>
                                         </Tab>
@@ -449,62 +441,49 @@ class DashBoard extends Component {
                                 </div>
                                 <TabPanel>
                                     {this.state.type === 1 ? (
+
                                         <div className="dash__content ui tab active">
                                             <div className="project__content">
                                                 {/* general */}
                                                 <SortablePane
                                                     direction="vertical"
-                                                    order={
-                                                        this.state
-                                                            .categoryOrder[0]
-                                                    }
-                                                    onDragStop={(
-                                                        e,
-                                                        key,
-                                                        el,
-                                                        order
-                                                    ) =>
-                                                        this.categoryOrderChanged(
-                                                            order
-                                                        )
-                                                    }
-                                                    onOrderChange={order =>
-                                                        this.changeCategoryOrder(
-                                                            order,
-                                                            1
-                                                        )
-                                                    }>
+                                                    order={this.state.categoryOrder[0]}
+                                                    onDragStop={(e, key, el, order) => this.categoryOrderChanged(order)}
+                                                    onOrderChange={order => this.changeCategoryOrder(order, 1)}>
                                                     {categoryPanes[1]}
                                                 </SortablePane>
                                             </div>
-                                            <div className="project__content">
-                                                {widgets ? (
-                                                    <Fragment>
-                                                        <Pane>
-                                                            <div className="secondTabs project__select ui-state-default">
-                                                                <img src={dashBoardLogo} />
-                                                                <div className={"ui checkbox checkBoxGray300 count" + (currentCategoryChecked ? " checked" : "")}
-                                                                    onClick={event => this.toggleCheckAll(this.state.type, this.state.category)}>
-                                                                    <input name="CheckBox" type="checkbox" id="terms" tabIndex={0}
-                                                                        className="hidden"
-                                                                        checked={
-                                                                            currentCategoryChecked
-                                                                        }
-                                                                        onChange={() => { }}
-                                                                    />
-                                                                    <label />
+                                            {this.state.showWidgets ?
+                                                <div className={"project__content" + (this.state.showWidgets ? " widgetsIndex" : " ")}>
+                                                    {widgets ? (
+                                                        <Fragment>
+                                                            <Pane>
+                                                                <div className="secondTabs project__select ui-state-default">
+                                                                    <img src={dashBoardLogo} />
+                                                                    <div className={"ui checkbox checkBoxGray300 count" + (currentCategoryChecked ? " checked" : "")}
+                                                                        onClick={event => this.toggleCheckAll(this.state.type, this.state.category)}>
+                                                                        <input name="CheckBox" type="checkbox" id="terms" tabIndex={0}
+                                                                            className="hidden"
+                                                                            checked={
+                                                                                currentCategoryChecked
+                                                                            }
+                                                                            onChange={() => { }}
+                                                                        />
+                                                                        <label />
+                                                                    </div>
+                                                                    <div className="project__title">
+                                                                        <h3>
+                                                                            {Resources["selectAll"][currentLanguage]}
+                                                                        </h3>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="project__title">
-                                                                    <h3>
-                                                                        {Resources["selectAll"][currentLanguage]}
-                                                                    </h3>
-                                                                </div>
-                                                            </div>
-                                                        </Pane>
-                                                        {widgets}
-                                                    </Fragment>
-                                                ) : null}
-                                            </div>
+                                                            </Pane>
+                                                            {widgets}
+                                                        </Fragment>
+                                                    ) : null}
+                                                </div>
+                                                : null
+                                            }
                                         </div>
                                     ) : null}
                                 </TabPanel>

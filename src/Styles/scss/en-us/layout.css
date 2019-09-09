@@ -21717,3 +21717,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     .docstepper-levels .StepperNum .StepNumber:last-of-type + .Step-Line {
         display: none;
     }
+    
+ .widgetsIndex {
+    display: list-item !important;
+}
