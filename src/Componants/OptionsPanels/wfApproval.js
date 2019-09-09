@@ -6,6 +6,9 @@ import Dropdown from "./DropdownMelcous";
 import Resources from "../../resources.json";
 import { toast } from "react-toastify";
 import dataservice from "../../Dataservice";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as communicationActions from "../../store/actions/communication";
 import { withRouter } from "react-router-dom";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -88,13 +91,30 @@ class wfApproval extends Component {
     });
   };
 
+  sendToWorkFlow(values) {
+    if (values) {
+      Api.getPassword("GetPassWordEncrypt", values.password).then(result => {
+        if (result === true) {
+          this.setState({ submitLoading: true });
+          Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
+            this.setState({ submitLoading: false });
+            this.props.actions.showOptionPanel(false);
+            this.props.history.push("/DocApprovalDetails?action=2");
+          });
+        } else {
+          toast.error(Resources["invalidPassword"][currentLanguage]);
+        }
+      }).catch(ex => {
+        toast.error(ex);
+      });
+    }
+  }
+
   render() {
     return (
       <div className="dropWrapper">
         <Formik
-          initialValues={{
-            password: ""
-          }}
+          initialValues={{ password: "" }}
           validate={values => {
             const errors = {};
             if (values.password.length == 0) {
@@ -103,27 +123,10 @@ class wfApproval extends Component {
             return errors;
           }}
           onSubmit={values => {
-            Api.getPassword("GetPassWordEncrypt", values.password).then(result => {
-              if (result === true) {
-                this.setState({ submitLoading: true });
-                Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
-                  this.setState({ submitLoading: true }); 
-                  this.props.history.push(
-                    this.props.previousRoute
-                  );
-
-                });
-
-              } else {
-                toast.error(Resources["invalidPassword"][currentLanguage]);
-              }
-            }).catch(ex => {
-              toast.error(ex);
-            });
+            this.sendToWorkFlow(values);
           }}>
           {({ errors, touched, handleBlur, handleChange }) => (
-            <Form id="signupForm1" className="proForm customProform" noValidate="novalidate" >
-
+            <Form id="signupForm1" className="proForm customProform" noValidate="novalidate">
               <div className="fillter-status fillter-item-c ">
                 <div className="passwordInputs showPasswordArea">
                   <label className="control-label">Password *</label>
@@ -136,39 +139,21 @@ class wfApproval extends Component {
                       </span>
                       <input name="password" type={this.state.type ? "text" : "password"}
                         className="form-control" id="password" placeholder="password" autoComplete="off"
-                        onBlur={e => {
-                          handleBlur(e);
-                        }}
+                        onBlur={e => { handleBlur(e); }}
                         onChange={handleChange} />
-
-                      {errors.password && touched.password ? (
-                        <span className="glyphicon glyphicon-remove form-control-feedback spanError" />
-                      ) : !errors.password && touched.password ? (
-                        <span className="glyphicon form-control-feedback glyphicon-ok" />
-                      ) : null}
-                      {errors.password && touched.password ? (
-                        <em className="pError">{errors.password}</em>
-                      ) : null}
+                      {errors.password && touched.password ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) : !errors.password && touched.password ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+                      {errors.password && touched.password ? (<em className="pError">{errors.password}</em>) : null}
                     </div>
                   </div>
                 </div>
               </div>
-
-
               <Dropdown title="approveTo" data={this.state.approveData} handleChange={this.selectHandleChange} index="approve" isMulti="true" />
               <div className="textarea-group fullWidthWrapper textLeft">
                 <label>Comment</label>
-                <textarea
-                  className="form-control"
-                  onBlur={e => this.commentOnBlurHandler(e)}
-                />
+                <textarea className="form-control" onBlur={e => this.commentOnBlurHandler(e)} />
               </div>
-
-              {!this.state.submitLoading ? (
-                <div className="fullWidthWrapper">
-                  <button className="primaryBtn-1 btn" type="submit">Save</button>
-                </div>
-              ) : (
+              {!this.state.submitLoading ? (<div className="fullWidthWrapper"> <button className="primaryBtn-1 btn" type="submit">Save</button> </div>) :
+                (
                   <span className="primaryBtn-1 btn largeBtn disabled">
                     <div className="spinner">
                       <div className="bounce1" />
@@ -185,4 +170,18 @@ class wfApproval extends Component {
     );
   }
 }
-export default withRouter(wfApproval);
+
+function mapStateToProps(state, ownProps) {
+  return {
+
+    showModal: state.communication.showModal
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(wfApproval));

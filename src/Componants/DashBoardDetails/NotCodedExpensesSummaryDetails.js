@@ -2,13 +2,16 @@ import React, { Component } from "react";
 import Api from "../../api";
 import moment from "moment";
 import LoadingSection from "../publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
+import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as communicationActions from "../../store/actions/communication";
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const {
   NumericFilter,
@@ -20,6 +23,7 @@ const {
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
+
 
 class NotCodedExpensesSummaryDetails extends Component {
   constructor(props) {
@@ -62,7 +66,7 @@ class NotCodedExpensesSummaryDetails extends Component {
       {
         key: "total",
         name: Resources["total"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -91,7 +95,7 @@ class NotCodedExpensesSummaryDetails extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       }
     ];
 
@@ -135,7 +139,7 @@ class NotCodedExpensesSummaryDetails extends Component {
     ];
 
     this.state = {
-      pageTitle:Resources["notCodedExpensesSummary"][currentLanguage],
+      pageTitle: Resources["notCodedExpensesSummary"][currentLanguage],
       viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
@@ -146,6 +150,9 @@ class NotCodedExpensesSummaryDetails extends Component {
   }
 
   componentDidMount() {
+
+    this.props.actions.RouteToTemplate();
+
     const query = new URLSearchParams(this.props.location.search);
 
     let action = null;
@@ -155,12 +162,12 @@ class NotCodedExpensesSummaryDetails extends Component {
     }
 
     if (action) {
-      Api.get("GetNotCodedExpensesSummaryDetail?action=" + action).then(result => { 
-          this.setState({
-            rows: result != null ? result : [],
-            isLoading: false
-          });
-        }
+      Api.get("GetNotCodedExpensesSummaryDetail?action=" + action).then(result => {
+        this.setState({
+          rows: result != null ? result : [],
+          isLoading: false
+        });
+      }
       );
     }
   }
@@ -173,20 +180,20 @@ class NotCodedExpensesSummaryDetails extends Component {
 
   render() {
     const dataGrid =
-    this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
-    ) : <LoadingSection/>;
+      this.state.isLoading === false ? (
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
+      ) : <LoadingSection />;
 
-    const btnExport = this.state.isLoading === false ? 
-    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-    : <LoadingSection /> ;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : <LoadingSection />;
 
-    const ComponantFilter= this.state.isLoading === false ?   
-    <Filter
-      filtersColumns={this.state.filtersColumns}
-      apiFilter={this.state.apiFilter}
-      filterMethod={this.filterMethodMain} 
-    /> : <LoadingSection />;
+    const ComponantFilter = this.state.isLoading === false ?
+      <Filter
+        filtersColumns={this.state.filtersColumns}
+        apiFilter={this.state.apiFilter}
+        filterMethod={this.filterMethodMain}
+      /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
@@ -195,8 +202,8 @@ class NotCodedExpensesSummaryDetails extends Component {
             <h3 className="zero">
               {this.state.pageTitle}
             </h3>
-             <span>{this.state.rows.length}</span>
-            <div  className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
+            <span>{this.state.rows.length}</span>
+            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"
@@ -253,24 +260,24 @@ class NotCodedExpensesSummaryDetails extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
           <div className="filterBTNS">
             {btnExport}
-          </div> 
+          </div>
         </div>
-        <div  className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
-           {ComponantFilter}
+            {ComponantFilter}
           </div>
         </div>
 
@@ -280,4 +287,16 @@ class NotCodedExpensesSummaryDetails extends Component {
   }
 }
 
-export default NotCodedExpensesSummaryDetails;
+function mapStateToProps(state, ownProps) {
+  return {
+    showModal: state.communication.showModal
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NotCodedExpensesSummaryDetails));

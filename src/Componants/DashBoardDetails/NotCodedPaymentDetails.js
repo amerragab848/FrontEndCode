@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import LoadingSection from "../publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
+import Export from "../OptionsPanels/Export";
 import moment from "moment";
 import Filter from "../FilterComponent/filterComponent";
 import GridSetup from "../../Pages/Communication/GridSetup";
-import {  Filters } from "react-data-grid-addons";
+import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as communicationActions from "../../store/actions/communication";
+
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const {
   NumericFilter,
@@ -79,7 +83,7 @@ class NotCodedPaymentDetails extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "docDate",
@@ -91,8 +95,8 @@ class NotCodedPaymentDetails extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
-      } 
+        formatter: dateFormate
+      }
     ];
 
     const filtersColumns = [
@@ -135,7 +139,7 @@ class NotCodedPaymentDetails extends Component {
     ];
 
     this.state = {
-      pageTitle:Resources["notCodedPaymentSummary"][currentLanguage],
+      pageTitle: Resources["notCodedPaymentSummary"][currentLanguage],
       viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
@@ -156,7 +160,7 @@ class NotCodedPaymentDetails extends Component {
 
     if (action) {
       Api.get("GetPaymentUserByRange?action=" + action).then(
-        result => { 
+        result => {
           this.setState({
             rows: result != null ? result : [],
             isLoading: false
@@ -181,17 +185,17 @@ class NotCodedPaymentDetails extends Component {
     });
 
     Api.get("").then(result => {
-        if (result.length > 0) {
-          this.setState({
-            rows: result != null ? result : [],
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
-      })
+      if (result.length > 0) {
+        this.setState({
+          rows: result != null ? result : [],
+          isLoading: false
+        });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
+    })
       .catch(ex => {
         alert(ex);
         this.setState({
@@ -202,21 +206,21 @@ class NotCodedPaymentDetails extends Component {
   };
 
   render() {
-  const dataGrid =
-    this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}/>
-    ) : <LoadingSection/>;
+    const dataGrid =
+      this.state.isLoading === false ? (
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />
+      ) : <LoadingSection />;
 
-    const btnExport = this.state.isLoading === false ? 
-    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-    : <LoadingSection /> ;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : <LoadingSection />;
 
-    const ComponantFilter= this.state.isLoading === false ?   
-    <Filter
-      filtersColumns={this.state.filtersColumns}
-      apiFilter={this.state.apiFilter}
-      filterMethod={this.filterMethodMain} 
-    /> : <LoadingSection />;
+    const ComponantFilter = this.state.isLoading === false ?
+      <Filter
+        filtersColumns={this.state.filtersColumns}
+        apiFilter={this.state.apiFilter}
+        filterMethod={this.filterMethodMain}
+      /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
@@ -283,24 +287,24 @@ class NotCodedPaymentDetails extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
           <div className="filterBTNS">
-                {btnExport}
-          </div> 
+            {btnExport}
+          </div>
         </div>
-        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px",overflow: this.state.viewfilter ? "" : "hidden"}}>
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
-           {ComponantFilter}
+            {ComponantFilter}
           </div>
         </div>
 
@@ -309,5 +313,17 @@ class NotCodedPaymentDetails extends Component {
     );
   }
 }
+ 
+function mapStateToProps(state, ownProps) {
+  return {
+    showModal: state.communication.showModal
+  };
+}
 
-export default NotCodedPaymentDetails;
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NotCodedPaymentDetails));

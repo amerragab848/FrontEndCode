@@ -455,7 +455,7 @@ let widgets = {
             "key": "0-3-13"
         }
     },
-    "riskStatus":{
+    "riskStatus": {
         "title": "riskStatus",
         "props": {
             "id": "wt-riskStatus01",
@@ -467,35 +467,35 @@ let widgets = {
             "name": "item",
             "y": "total"
         }
-      },
-      "riskPeriority":{
-      "title": "riskPeriority",
+    },
+    "riskPeriority": {
+        "title": "riskPeriority",
         "props": {
-        "id": 'wt-riskPeriority02',
-        "permission": 3500,
-        "type": 'pie',
-        "seriesName": "riskPeriority",
-        "api": 'RiskByPriority',
-        "key": "0-4-2",
-        "name": 'item',
-        "y": 'total'
+            "id": 'wt-riskPeriority02',
+            "permission": 3500,
+            "type": 'pie',
+            "seriesName": "riskPeriority",
+            "api": 'RiskByPriority',
+            "key": "0-4-2",
+            "name": 'item',
+            "y": 'total'
         }
 
-      },
-      "riskType":{
+    },
+    "riskType": {
         "title": "riskType",
         "props": {
-          "id":  "wt-riskType03",
-          "permission": 3507,
-          "type": "pie",
-          "seriesName": "riskType",
-          "api": "RiskByRiskType",
-          "key": "0-4-3",
-          "name": "item",
-          "y": "total"
+            "id": "wt-riskType03",
+            "permission": 3507,
+            "type": "pie",
+            "seriesName": "riskType",
+            "api": "RiskByRiskType",
+            "key": "0-4-3",
+            "name": "item",
+            "y": "total"
         }
 
-      },
+    },
     "monthlyPo": {
         "title": "monthlyPo",
         "props": {
@@ -516,7 +516,7 @@ let widgets = {
             "type": "oneWidget",
             "api": "GetMaterialRequestCounting",
             "apiDetails": "",
-            "route": "",
+            "route": "DashBoardCounterLog",
             "value": "total",
             "listType": "item",
             "action": "action",

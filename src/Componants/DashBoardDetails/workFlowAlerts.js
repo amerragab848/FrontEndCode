@@ -219,13 +219,15 @@ class workFlowAlerts extends Component {
   }
 
   componentDidMount() {
+    
+    this.props.actions.RouteToTemplate();
+    
     Api.get("GetWorkFlowAlertDetails").then(result => {
 
       this.setState({
         rows: result != null ? result : [],
         isLoading: false
-      });
-
+      }); 
     });
   }
 

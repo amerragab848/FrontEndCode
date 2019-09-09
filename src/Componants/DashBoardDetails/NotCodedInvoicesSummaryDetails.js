@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import Api from "../../api";
 import LoadingSection from "../publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
+import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import moment from "moment";
 import GridSetup from "../../Pages/Communication/GridSetup";
-import {   Filters } from "react-data-grid-addons";
+import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as communicationActions from "../../store/actions/communication";
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const {
   NumericFilter,
@@ -22,6 +25,33 @@ const {
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
+
+
+const subjectLink = ({ value, row }) => {
+  let doc_view = "";
+  let subject = "";
+  if (row) {
+
+    let obj = {
+      docId: row.docId,
+      projectId: row.projectId,
+      projectName: row.projectName,
+      arrange: row.arrange,
+      docApprovalId: row.accountDocWorkFlowId,
+      isApproveMode: true,
+      perviousRoute: window.location.pathname + window.location.search
+    };
+
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    doc_view = "/invoicesForPoAddEdit" + "?id=" + encodedPaylod
+    subject = row.subject;
+
+    return <a href={doc_view}> {subject} </a>;
+  }
+  return null;
+};
+
 
 class NotCodedInvoicesSummaryDetails extends Component {
   constructor(props) {
@@ -41,19 +71,20 @@ class NotCodedInvoicesSummaryDetails extends Component {
       },
       {
         key: "subject",
-        name:Resources["subject"][currentLanguage],
+        name: Resources["subject"][currentLanguage],
         width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter: subjectLink
       },
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -93,11 +124,11 @@ class NotCodedInvoicesSummaryDetails extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       },
       {
         key: "docDate",
-        name:Resources["docDate"][currentLanguage],
+        name: Resources["docDate"][currentLanguage],
         width: 150,
         draggable: true,
         sortable: true,
@@ -105,7 +136,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       }
     ];
 
@@ -155,7 +186,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
     ];
 
     this.state = {
-      pageTitle:Resources["notCodedInvoicesSummary"][currentLanguage],
+      pageTitle: Resources["notCodedInvoicesSummary"][currentLanguage],
       viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
@@ -166,6 +197,9 @@ class NotCodedInvoicesSummaryDetails extends Component {
   }
 
   componentDidMount() {
+
+    this.props.actions.RouteToTemplate();
+
     const query = new URLSearchParams(this.props.location.search);
 
     let action = null;
@@ -177,7 +211,7 @@ class NotCodedInvoicesSummaryDetails extends Component {
     if (action) {
       Api.get("GetInvoicesUserByRange?action=" + action).then(
         result => {
-  
+
           this.setState({
             rows: result != null ? result : [],
             isLoading: false
@@ -202,17 +236,17 @@ class NotCodedInvoicesSummaryDetails extends Component {
     });
 
     Api.get("").then(result => {
-        if (result.length > 0) {
-          this.setState({
-            rows: result != null ? result : [],
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
-      })
+      if (result.length > 0) {
+        this.setState({
+          rows: result != null ? result : [],
+          isLoading: false
+        });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
+    })
       .catch(ex => {
         alert(ex);
         this.setState({
@@ -222,8 +256,8 @@ class NotCodedInvoicesSummaryDetails extends Component {
       });
   };
 
-  onRowClick = (obj) => {  
-    if(obj){
+  onRowClick = (obj) => {
+    if (obj) {
       let objRout = {
         docId: obj.boqId,
         projectId: obj.projectId,
@@ -231,33 +265,33 @@ class NotCodedInvoicesSummaryDetails extends Component {
         arrange: 0,
         docApprovalId: 0,
         isApproveMode: false,
-        perviousRoute:window.location.pathname+window.location.search
+        perviousRoute: window.location.pathname + window.location.search
       }
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
       this.props.history.push({
-        pathname: "/invoicesForPoAddEdit"  ,
+        pathname: "/invoicesForPoAddEdit",
         search: "?id=" + encodedPaylod
-      }); 
+      });
     }
-}
+  }
 
   render() {
     const dataGrid =
-    this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows} onRowClick={this.onRowClick} columns={this.state.columns} showCheckbox={false}/>
-    ) : <LoadingSection/>;
+      this.state.isLoading === false ? (
+        <GridSetup rows={this.state.rows} onRowClick={this.onRowClick} columns={this.state.columns} showCheckbox={false} />
+      ) : <LoadingSection />;
 
-    const btnExport = this.state.isLoading === false ? 
-    <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-    : <LoadingSection /> ;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : <LoadingSection />;
 
-    const ComponantFilter= this.state.isLoading === false ?   
-    <Filter
-      filtersColumns={this.state.filtersColumns}
-      apiFilter={this.state.apiFilter}
-      filterMethod={this.filterMethodMain} 
-    /> : <LoadingSection />;
+    const ComponantFilter = this.state.isLoading === false ?
+      <Filter
+        filtersColumns={this.state.filtersColumns}
+        apiFilter={this.state.apiFilter}
+        filterMethod={this.filterMethodMain}
+      /> : <LoadingSection />;
 
     return (
       <div className="mainContainer">
@@ -328,22 +362,22 @@ class NotCodedInvoicesSummaryDetails extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
           <div className="filterBTNS">
-          {btnExport}
-          </div> 
+            {btnExport}
+          </div>
         </div>
-        <div className="filterHidden" style={{maxHeight: this.state.viewfilter ? "" : "0px",overflow: this.state.viewfilter ? "" : "hidden"}}>
+        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
             {ComponantFilter}
           </div>
@@ -355,4 +389,16 @@ class NotCodedInvoicesSummaryDetails extends Component {
   }
 }
 
-export default NotCodedInvoicesSummaryDetails;
+function mapStateToProps(state, ownProps) {
+  return {
+    showModal: state.communication.showModal
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NotCodedInvoicesSummaryDetails));

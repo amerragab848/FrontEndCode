@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom"; 
-import Api from "../../api"; 
- 
+import { withRouter } from "react-router-dom";
+import Api from "../../api";
+
 
 class ApprovedWidget extends Component {
   constructor(props) {
@@ -24,14 +24,18 @@ class ApprovedWidget extends Component {
   }
 
   onOpenModal = (action, value) => {
-    if (value > 0) {
 
-      let splitestring = this.props.props.route.split("?");
+    if (this.props.props.route != "") {
 
-      if (splitestring) {
-        this.props.history.push(this.props.props.route + action);
-      } else {
-        this.props.history.push(this.props.props.route);
+      if (value > 0) {
+
+        let splitestring = this.props.props.route.split("?");
+
+        if (splitestring) {
+          this.props.history.push(this.props.props.route + action);
+        } else {
+          this.props.history.push(this.props.props.route);
+        }
       }
     }
   };
@@ -74,16 +78,14 @@ class ApprovedWidget extends Component {
               <li className="num-3" />
             </ul>
             <div className="summerisList">
-              <div className="first">
-                <span
-                  className="mediumModal"
-                  onClick={() => this.onOpenModal(normal.action, normal[this.props.props.value])} >
+              <div className="first"  onClick={() => this.onOpenModal(normal.action, normal[this.props.props.value])}>
+                <span className="mediumModal">
                   {normal ? normal[this.props.props.value] : 0}
                 </span>
                 {normal ? " " + normal[this.props.props.listType] : ""}
               </div>
-              <div>
-                <span className="mediumModal" onClick={() => this.onOpenModal(low.action, low[this.props.props.value])}>
+              <div onClick={() => this.onOpenModal(low.action, low[this.props.props.value])}>
+                <span className="mediumModal">
                   {low ? low[this.props.props.value] : ""}
                 </span>
                 {low ? " " + low[this.props.props.listType] : ""}
