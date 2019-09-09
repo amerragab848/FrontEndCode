@@ -218,6 +218,7 @@ class siteInstructionsAddEdit extends Component {
             this.setState({ document: siteInstruction });
             this.fillDropDowns(false);
             this.props.actions.documentForAdding()
+            this.GetNExtArrange();
         }
     };
 

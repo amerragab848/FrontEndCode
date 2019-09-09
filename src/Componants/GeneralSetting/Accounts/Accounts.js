@@ -260,39 +260,57 @@ class Accounts extends Component {
 
     ConfirmDeleteAccount = () => {
         let id = '';
-        this.setState({ showDeleteModal: true })
+        this.setState({ showDeleteModal: true, isLoading: true })
         let rowsData = this.state.rows;
         this.state.rowSelectedId.map(i => {
             id = i
         })
         let userName = _.find(rowsData, { 'id': id })
-        console.log(userName.userName)
-        Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName, null, 'DElETE').then(
-            Api.post('accountDeleteById?id=' + id)
-                .then(result => {
-                    let originalRows = this.state.rows;
-                    this.state.rowSelectedId.map(i => {
-                        originalRows = originalRows.filter(r => r.id !== i);
-                    });
+        Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName, null, 'Delete').then(
+            res => {
+                if (res.status === 200) {
+                    Api.post('accountDeleteById?id=' + id)
+                        .then(result => {
+                            let originalRows = this.state.rows;
+                            this.state.rowSelectedId.map(i => {
+                                originalRows = originalRows.filter(r => r.id !== i);
+                            });
+                            this.setState({
+                                rows: originalRows,
+                                totalRows: originalRows.length,
+                                isLoading: false,
+                                showDeleteModal: false,
+                                isLoading: false,
+                                IsActiveShow: false
+                            });
+                            toast.success(Resources["operationSuccess"][currentLanguage]);
+                        }).catch(ex => {
+                            this.setState({
+                                showDeleteModal: false,
+                                IsActiveShow: false,
+                                isLoading: false,
+                            });
+                            toast.error(Resources["operationCanceled"][currentLanguage]);
+                        })
+                }
+                else {
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
                     this.setState({
-                        rows: originalRows,
-                        totalRows: originalRows.length,
-                        isLoading: false,
                         showDeleteModal: false,
+                        IsActiveShow: false,
                         isLoading: false,
-                        IsActiveShow: false
                     });
-                })
-                .catch(ex => {
-                    this.setState({
-                        showDeleteModal: false,
-                        IsActiveShow: false
-                    })
-                })
-        ).catch(ex => { })
-        this.setState({
-            isLoading: true,
-        })
+                }
+
+            }).catch(ex => {
+                this.setState({
+                    showDeleteModal: false,
+                    IsActiveShow: false,
+                    isLoading: false,
+                });
+                toast.error(Resources["operationCanceled"][currentLanguage]);
+            })
+
     }
 
     componentDidMount = () => {

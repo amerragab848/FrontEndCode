@@ -563,7 +563,7 @@ class NCRAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
 
-    
+
     render() {
 
         let AddNewCycle = () => {
@@ -1086,7 +1086,7 @@ class NCRAddEdit extends Component {
                         }
                     </div>
                 </div>
-        
+
                 <div className="skyLight__form">
                     <SkyLightStateless onOverlayClicked={() => this.setState({ showPopUp: false })}
                         title={Resources.addNewCycle[currentLanguage]}

@@ -207,7 +207,7 @@ class AddAccount extends Component {
                     contactId: this.state.ContactId.value, contactSupervisorId: this.state.SupervisorId.value,
                     companySupervisorId: this.state.SupervisorCompanyId.value, defaultHours: this.state.WorkingHours,
                     userRate: this.state.HoursRate, groupId: this.state.GroupNameId.value, empCode: this.state.EmpCode,
-                    designTeam: this.state.DesignTeam,
+                    designTeam: this.state.DesignTeam, deletable: true,
                     isTaskAdmin: this.state.TaskAdmin, active: this.state.Active, passwordEdit: false,
                     isHrManager: false, usePermissionsOnLogs: this.state.UserPermissiononLogsCreatedbyOthers
                 };
