@@ -77,8 +77,8 @@ class EditAccount extends Component {
             let groupName = null;
             let alternativAccountId = null;
 
-            dataservice.GetDataGrid('GetAccountById?id=' + id).then(result => {
-
+            dataservice.GetRowById('GetAccountById?id=' + id).then(result => {
+                console.log(result)
                 let document = {
                     userName: result.userName,
                     oldUserName: result.userName,
@@ -117,15 +117,28 @@ class EditAccount extends Component {
 
                 dataservice.GetDataList('SelectAllAccountsActive?id=' + id, 'userName', 'id').then(result => {
                     if (result) {
-                        const index = result.findIndex(x => x.value === alternativAccountId);
-                        this.setState({ alternativeAccounts: result, selectedAlternative: { label: result[index].label, value: alternativAccountId } });
+                        let alternativAccount = {};
+                        if (alternativAccountId) {
+                            alternativAccount = _.find(result, function (i) { return i.value === alternativAccountId; });
+                            this.setState({
+                                selectedAlternative: alternativAccount
+                            });
+                        }
+                        this.setState({ alternativeAccounts: result });
                     }
                 });
 
                 dataservice.GetDataList('GetGroup?accountOwnerId=' + accountOwnerId, 'groupName', 'id').then(result => {
+
                     if (result) {
-                        const index = result.findIndex(x => x.value === groupId);
-                        this.setState({ groupData: result, selectedGroup: { label: result[index].label, value: groupId } });
+
+                        let group = {};
+                        if (groupId) {
+                            group = _.find(result, function (i) { return i.value === groupId; });
+                            this.setState({ selectedGroup: group });
+                        }
+                        this.setState({ groupData: result });
+
                     }
                 });
 
@@ -145,7 +158,7 @@ class EditAccount extends Component {
 
                 this.setState({
                     accountDocument: document,
-                    alternativeDate: document.alternativeDate
+                    alternativeDate: result.alternativDate !== null ? moment(result.alternativDate).format('YYYY-MM-DD') : moment()
                 });
             });
         }
@@ -177,9 +190,9 @@ class EditAccount extends Component {
         this.setState({
             isLoading: true
         })
-        const alternativeDate = moment(this.state.alternativeDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        let alternativeDate = moment(this.state.alternativeDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
-        const document = {
+        let document = {
             id: this.state.docId,
             userName: value.userName,
             oldUserName: value.userName,
@@ -197,7 +210,7 @@ class EditAccount extends Component {
             passwordEdit: value.passwordEdit,
             isHrManager: value.isHrManager,
             usePermissionsOnLogs: value.usePermissionsOnLogs,
-            alternativAccountId: value.alternativAccountId,
+            alternativAccountId: this.state.selectedAlternative.value,
             alternativDate: alternativeDate,
             isAlternativeWorkFlow: value.isAlternativeWorkFlow,
             groupId: this.state.selectedGroup.value,
@@ -300,7 +313,7 @@ class EditAccount extends Component {
                                             isHrManager: this.state.accountDocument.isHrManager,
                                             usePermissionsOnLogs: this.state.accountDocument.usePermissionsOnLogs,
                                             alternativAccountId: this.state.accountDocument.alternativAccountId,
-                                            alternativDate: this.state.accountDocument.alternativDate,
+                                            alternativDate: this.state.alternativeDate,
                                             isAlternativeWorkFlow: this.state.accountDocument.isAlternativeWorkFlow,
                                             groupId: this.state.accountDocument.groupId
                                         }}
@@ -378,7 +391,6 @@ class EditAccount extends Component {
 
                                                 <div className="linebylineInput valid-input">
                                                     <Dropdown title='alternativeAccount'
-                                                        placeholder={Resources['alternativeAccount'][currentLanguage]}
                                                         data={this.state.alternativeAccounts}
                                                         handleChange={(e) => this.handleDropDown('selectedAlternative', e, false)}
                                                         placeholder='alternativeAccount'
@@ -386,11 +398,10 @@ class EditAccount extends Component {
                                                 </div>
 
                                                 <Fragment>
-                                                    {values.alternativAccountId === null ? null :
+                                                    {this.state.selectedAlternative.value === "0" ? null :
                                                         <div className="linebylineInput valid-input alternativeDate alternativeDate_replacement">
                                                             <DatePicker title='alternativeDate'
                                                                 startDate={this.state.alternativeDate}
-                                                                value={this.state.alternativeDate}
                                                                 handleChange={(e) => this.handleDate(e)} />
                                                             <div className="ui checkbox checkBoxGray300 checked">
                                                                 <input type="checkbox" onChange={(e) => { setFieldValue('isAlternativeWorkFlow', e.target.checked) }}

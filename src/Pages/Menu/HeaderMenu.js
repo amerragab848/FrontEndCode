@@ -309,7 +309,7 @@ class HeaderMenu extends Component {
   }
 
   updateStatus(obj) {
-    dataservice.addObject("UpdateStatusPostit", obj.id).then(result => {
+    dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => {
       if (obj.description) {
         let id = obj.description.split("/")[1];
 
