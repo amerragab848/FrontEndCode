@@ -5,7 +5,7 @@ import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
-
+ 
 export function documentForEdit(urlAction, docTypeId, docName) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
