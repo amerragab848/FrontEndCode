@@ -297,7 +297,7 @@ class HeaderMenu extends Component {
   }
 
   updateStatus(obj) {
-    dataservice.addObject("UpdateStatusPostit", obj.id).then(result => {
+    dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => {
       if (obj.description) {
         let id = obj.description.split("/")[1];
 
@@ -1069,8 +1069,8 @@ class HeaderMenu extends Component {
       viewNotification: false
     });
     this.props.history.push("/myTasks");
-  } 
-  
+  }
+
   searchClick = () => {
     if (this.state.subjectText) {
       let obj = {

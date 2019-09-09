@@ -53,15 +53,18 @@ class TemplatesSettings extends Component {
                             <li className="title">
                                 <h4 className="zero">{Resources['userMenu'][currentLanguage]}</h4>
                             </li>
-                            <Tab>
-                                <span className="subUlTitle">{Resources['titleAccounts'][currentLanguage]}</span>
-                            </Tab>
-                            <Tab>
-                                <span className="subUlTitle">{Resources['groupsPermissions'][currentLanguage]}</span>
-                            </Tab>
-                            <Tab>
-                                <span className="subUlTitle">{Resources['Companies'][currentLanguage]}</span>
-                            </Tab>
+                            {(config.IsAllow(794)) ?
+                                <Tab>
+                                    <span className="subUlTitle">{Resources['titleAccounts'][currentLanguage]}</span>
+                                </Tab> : null}
+                            {(config.IsAllow(802)) ?
+                                <Tab>
+                                    <span className="subUlTitle">{Resources['groupsPermissions'][currentLanguage]}</span>
+                                </Tab> : null}
+                            {(config.IsAllow(1255)) ?
+                                <Tab>
+                                    <span className="subUlTitle">{Resources['Companies'][currentLanguage]}</span>
+                                </Tab> : null}
 
                             {(config.IsAllow(3744)) ?
                                 <Tab>
@@ -108,12 +111,12 @@ class TemplatesSettings extends Component {
                             </TabPanel>
                             : null}
 
-                        {(config.IsAllow(794)) ?
+                        {(config.IsAllow(802)) ?
                             <TabPanel>
                                 <PermissionsGroups />
                             </TabPanel>
                             : null}
-                        {(config.IsAllow(1001105)) ?
+                        {(config.IsAllow(1255)) ?
                             <TabPanel>
                                 <Companies />
                             </TabPanel>
