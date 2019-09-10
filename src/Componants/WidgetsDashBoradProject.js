@@ -6,7 +6,7 @@ var DashBoardWidgets = [
     canView: false,
     checked: false,
     order: 1,
-    widgets: [
+    widgets: [ 
       {
         title: "monthlyPo",
         key: "0-1-1",

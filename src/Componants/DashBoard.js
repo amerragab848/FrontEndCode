@@ -320,9 +320,8 @@ class DashBoard extends Component {
                 if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
                     let checked = this.state.selected[widget.categoryId].indexOf(widget.id) !== -1;
                     return (
-                        <Pane
-                            key={widget.order}
-                            defaultSize={{ width: "50%" }}
+                        <Pane width='100%' height="100%" minHeight='unset'
+                            key={widget.order} 
                             resizable={{ x: false, y: false, xy: false }}>
                             <div className="secondTabs project__select ui-state-default">
                                 <img src={dashBoardLogo} />
@@ -342,9 +341,7 @@ class DashBoard extends Component {
                                 <div className="project__title">
                                     <h3>
                                         {
-                                            Resources[widget.title][
-                                            currentLanguage
-                                            ]
+                                            Resources[widget.title][currentLanguage]
                                         }
                                     </h3>
                                 </div>
@@ -454,10 +451,10 @@ class DashBoard extends Component {
                                                 </SortablePane>
                                             </div>
                                             {this.state.showWidgets ?
-                                                <div className={"project__content" + (this.state.showWidgets ? " widgetsIndex" : " ")}>
+                                                <div className={"project__content" + (this.state.showWidgets ? "  " : " ")}>
                                                     {widgets ? (
                                                         <Fragment>
-                                                            <Pane>
+                                                            <Pane width='100%' height="100%" minHeight='unset'>
                                                                 <div className="secondTabs project__select ui-state-default">
                                                                     <img src={dashBoardLogo} />
                                                                     <div className={"ui checkbox checkBoxGray300 count" + (currentCategoryChecked ? " checked" : "")}

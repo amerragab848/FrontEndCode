@@ -21356,7 +21356,4 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 
 .letterFullWidth.multiDrop .reactSelect >div:first-of-type {
     width: 100% !important;
-}
-.widgetsIndex {
-   display: list-item !important;
-}
+} 

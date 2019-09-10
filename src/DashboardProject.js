@@ -241,27 +241,27 @@ class DashboardProject extends Component {
 
         if (this.state.tabIndex === 0) {
 
-            let widgetss = '';
+            let drawWidget = null;
 
-            widgetss = Details.widgets.find(x => x.title === widget.title);
+            drawWidget = Details.widgets.find(x => x.title === widget.title);
 
-            widgetss.props.api += this.state.projectId;
+            drawWidget.props.api += this.state.projectId;
 
-            if (widgetss.props.type === "twoWidget") {
+            if (drawWidget.props.type === "twoWidget") {
 
                 return (
                     <WidgetsWithText
                         key={index + "DIV"}
                         title={widget.title}
-                        {...widgetss}
+                        {...drawWidget}
                     />
                 );
-            } else if (widgetss.props.type === "oneWidget") {
+            } else if (drawWidget.props.type === "oneWidget") {
                 return (
                     <Widgets
                         key={index + "DIV"}
                         title={widget.title}
-                        {...widgetss}
+                        {...drawWidget}
                     />
                 );
             }

@@ -14,6 +14,7 @@ class Widgets extends Component {
       open: false,
       detailsData: []
     };
+    
   }
 
   componentDidMount() {
@@ -64,5 +65,5 @@ class Widgets extends Component {
     );
   }
 }
-
+ 
 export default withRouter(Widgets);
