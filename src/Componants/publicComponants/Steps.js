@@ -82,13 +82,13 @@ class Steps extends Component {
                     :
                     <Fragment>
                         <div key={"index-" + index} className={'StepNumber ' + (this.state.completedTabs[index] ? " activea" : this.state.stepNo == index ? "current__step active" : "")}>
-                            <div class="StepNum">
-                                <p class="StepN zero" >{index + 1}</p>
-                                <p class="StepTrue zero">✔</p>
+                            <div className="StepNum">
+                                <p className="StepN zero" >{index + 1}</p>
+                                <p className="StepTrue zero">✔</p>
                             </div>
-                            <div class="stepWord">{Resources[step.name][currentLanguage]}</div>
+                            <div className="stepWord">{Resources[step.name][currentLanguage]}</div>
                         </div>
-                        <span class="Step-Line"></span>
+                        <span className="Step-Line"></span>
                     </Fragment>
 
 
@@ -102,12 +102,12 @@ class Steps extends Component {
 
                 {/* Steps Active  */}
                 {this.props.changeStatus == true ?
-                    <div class="editView__tabs">
+                    <div className="editView__tabs">
                         {renderSteps}
                     </div>
                     :
                     <div className="docstepper-levels" style={{ width: '100%', background: '#fff', zIndex: '14' }}>
-                        <div class="StepperNum1 StepperNum" style={{ justifyContent: 'center', marginTop: '40px' }}>
+                        <div className="StepperNum1 StepperNum" style={{ justifyContent: 'center', marginTop: '40px' }}>
                             {renderSteps}
                         </div>
                     </div>

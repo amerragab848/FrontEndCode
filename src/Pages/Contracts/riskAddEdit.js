@@ -10,16 +10,17 @@ import Resources from "../../resources.json";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { withRouter } from "react-router-dom";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor';
+import RiskCause from '../../Componants/OptionsPanels/RiskCause';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
-import * as communicationActions from '../../store/actions/communication'; 
+import moment from "moment";
+import * as communicationActions from '../../store/actions/communication';
 import RiskConesquence from '../../Componants/publicComponants/RiskConesquence';
 import RiskRealisation from '../../Componants/publicComponants/RiskRealisation';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import numeral from 'numeral';
@@ -152,7 +153,6 @@ class riskAddEdit extends Component {
             selectedMitigationTypes: { label: Resources.mitigationType[currentLanguage], value: "0" },
             selectedRiskCause: { label: Resources.riskCause[currentLanguage], value: "0" },
             selectedArea: { label: Resources.area[currentLanguage], value: "0" },
-            selectedPriorityId: { label: Resources.prioritySelect[currentLanguage], value: "0" },
             description: '',
             descriptionMitigation: '',
 
@@ -386,27 +386,6 @@ class riskAddEdit extends Component {
             });
         });
 
-        //priorty
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority", "title", "id").then(result => {
-            if (isEdit) {
-
-                let priorityId = this.props.document.priorityId;
-
-                if (priorityId) {
-
-                    let priorityName = result.find(i => i.value === parseInt(priorityId));
-                    if (priorityName) {
-                        this.setState({
-                            selectedPriorityId: { label: priorityName.label, value: priorityId }
-                        });
-                    }
-                }
-            }
-            this.setState({
-                priority: [...result]
-            });
-        });
-
         //riskType
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=riskTypes", "title", "id").then(result => {
             if (isEdit) {
@@ -619,18 +598,6 @@ class riskAddEdit extends Component {
 
     }
 
-
-
-    showBtnsSaving() {
-        let btn = null;
-        if (this.state.docId === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else if (this.state.docId > 0) {
-            btn = <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' >{Resources.next[currentLanguage]}</button>
-        }
-        return btn;
-    }
-
     viewAttachments() {
         return (
             this.props.document.id > 0 ? (Config.IsAllow(10014) === true ? <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} /> : null) : null
@@ -649,9 +616,6 @@ class riskAddEdit extends Component {
             this.fillConsequence();
         }
     };
-
-
-
 
     handleChangeCycle(e, field) {
 
@@ -1583,10 +1547,8 @@ class riskAddEdit extends Component {
         );
     }
 
-
-
-
     render() {
+
         let numberFormats =
             <div className="proForm datepickerContainer ">
                 <div className="linebylineInput linebylineInput__checkbox ">
@@ -1606,6 +1568,7 @@ class riskAddEdit extends Component {
                         handleChange={event => this.handleChangeDropDown(event, 'currencyId', false, '', '', '', 'selectedCurrency')} />
                 </div>
             </div>
+
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
@@ -1620,15 +1583,17 @@ class riskAddEdit extends Component {
                                                 validationSchema={validationSchema}
                                                 enableReinitialize={this.props.changeStatus}
                                                 onSubmit={(values) => {
-                                                    if (this.props.showModal) { return; }
+                                                    if (values.isFirstButton) {
+                                                        if (this.props.showModal) { return; }
 
-                                                    if (this.props.changeStatus === false && this.state.docId === 0) {
-                                                        this.saveRisk();
-                                                    } else {
-                                                        if (this.props.changeStatus == true)
-                                                            this.editRisk();
-                                                        this.changeCurrentStep(1);
+                                                        if (this.props.changeStatus === false && this.state.docId === 0) {
+                                                            this.saveRisk();
+                                                        } else {
+                                                            if (this.props.changeStatus == true)
+                                                                this.editRisk();
+                                                            this.changeCurrentStep(1);
 
+                                                        }
                                                     }
                                                 }}>
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -1684,6 +1649,38 @@ class riskAddEdit extends Component {
                                                                 null
                                                             }
 
+                                                            <div className="proForm datepickerContainer">
+                                                                <div className="linebylineInput valid-input mix_dropdown">
+                                                                    <label className="control-label">{Resources.ownerRisk[currentLanguage]}</label>
+                                                                    <div className="supervisor__company">
+                                                                        <div className="super_name">
+                                                                            <Dropdown isMulti={false} data={this.state.companies}
+                                                                                selectedValue={this.state.selectedToCompany}
+                                                                                handleChange={event => this.handleChangeDropDown(event, 'ownerCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.ownerCompanyId}
+                                                                                touched={touched.ownerCompanyId}
+                                                                                name="ownerCompanyId"
+                                                                                id="ownerCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
+                                                                        </div>
+                                                                        <div className="super_company">
+                                                                            <Dropdown isMulti={false} data={this.state.ToContacts}
+                                                                                selectedValue={this.state.selectedToContact}
+                                                                                handleChange={event => this.handleChangeDropDown(event, 'ownerContactId', false, '', '', '', 'selectedToContact')}
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.ownerContactId}
+                                                                                touched={touched.ownerContactId}
+                                                                                name="ownerContactId"
+                                                                                id="ownerContactId" classDrop=" contactName1" styles={ContactDropdown} />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker title='docDate'
                                                                     startDate={this.state.document.docDate}
@@ -1719,55 +1716,14 @@ class riskAddEdit extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="proForm first-proform">
-                                                            <div className="linebylineInput valid-input">
-                                                                <label className="control-label">{Resources['riskCause'][currentLanguage]}</label>
-                                                                <div className={"inputDev ui input"} >
-                                                                    <input name='descriptionMitigation' id="descriptionMitigation" className="form-control fsadfsadsa"
-                                                                        placeholder={Resources['riskCause'][currentLanguage]}
-                                                                        autoComplete='off'
-                                                                        value={this.state.document.descriptionMitigation}
-                                                                        onChange={(e) => this.handleChange(e, 'descriptionMitigation')} />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="proForm datepickerContainer">
-                                                            <div className="linebylineInput valid-input">
-                                                                <Dropdown title="priority" data={this.state.priority}
-                                                                    selectedValue={this.state.selectedPriorityId}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'priorityId', false, '', '', '', 'selectedPriorityId')} />
-                                                            </div>
-                                                            <div className="linebylineInput valid-input mix_dropdown">
-                                                                <label className="control-label">{Resources.ownerRisk[currentLanguage]}</label>
-                                                                <div className="supervisor__company">
-                                                                    <div className="super_name">
-                                                                        <Dropdown isMulti={false} data={this.state.companies}
-                                                                            selectedValue={this.state.selectedToCompany}
-                                                                            handleChange={event => this.handleChangeDropDown(event, 'ownerCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
-                                                                            onChange={setFieldValue}
-                                                                            onBlur={setFieldTouched}
-                                                                            error={errors.ownerCompanyId}
-                                                                            touched={touched.ownerCompanyId}
-                                                                            name="ownerCompanyId"
-                                                                            id="ownerCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
-                                                                    </div>
-                                                                    <div className="super_company">
-                                                                        <Dropdown isMulti={false} data={this.state.ToContacts}
-                                                                            selectedValue={this.state.selectedToContact}
-                                                                            handleChange={event => this.handleChangeDropDown(event, 'ownerContactId', false, '', '', '', 'selectedToContact')}
-                                                                            onChange={setFieldValue}
-                                                                            onBlur={setFieldTouched}
-                                                                            error={errors.ownerContactId}
-                                                                            touched={touched.ownerContactId}
-                                                                            name="ownerContactId"
-                                                                            id="ownerContactId" classDrop=" contactName1" styles={ContactDropdown} />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                        {/* <div className="proForm first-proform">
 
-                                                        </div>
+                                                        
+                                                        </div> */}
+
                                                         {this.state.docId > 0 ?
                                                             <Fragment>
+                                                                <RiskCause riskId={this.state.docId} />
                                                                 <RiskConesquence riskId={this.state.docId} />
                                                                 <RiskCategorisation riskId={this.state.docId} />
                                                             </Fragment>
@@ -1782,7 +1738,13 @@ class riskAddEdit extends Component {
                                                                         <div className="bounce3" />
                                                                     </div>
                                                                 </button> :
-                                                                this.showBtnsSaving()}
+
+                                                                this.state.docId === 0 ?
+                                                                    <button onClick={(e) => setFieldValue('isFirstButton', true)}
+                                                                        className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>
+                                                                    : <button onClick={(e) => setFieldValue('isFirstButton', true)} className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' >
+                                                                        {Resources.next[currentLanguage]}</button>
+                                                            }
                                                         </div>
                                                     </Form>
                                                 )}
@@ -1916,7 +1878,7 @@ class riskAddEdit extends Component {
                                                                         <label className="control-label">{'Cost Effectiveness'}</label>
                                                                     </div>
                                                                     <div className="ui left pointing label labelWithArrowBorder basic">
-                                                                        <span>{(this.state.totalProposedMit + this.state.totalPostRiskEmv) > this.state.totalPretRiskEmv ?  'Not Cost Effective': 'Cost Effective' }</span>
+                                                                        <span>{(this.state.totalProposedMit + this.state.totalPostRiskEmv) > this.state.totalPretRiskEmv ? 'Not Cost Effective' : 'Cost Effective'}</span>
                                                                     </div>
 
                                                                     <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
@@ -1985,7 +1947,7 @@ class riskAddEdit extends Component {
                                 : null
                         }
                     </div>
-                </div> 
+                </div>
             </div>
         );
     }

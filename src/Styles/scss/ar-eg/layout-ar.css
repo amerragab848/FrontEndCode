@@ -21357,3 +21357,61 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .letterFullWidth.multiDrop .reactSelect >div:first-of-type {
     width: 100% !important;
 }
+
+.ul__deleteHover {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.ul__deleteHover li {
+    height: 40px;
+    border-bottom: 1px solid #e9ecf0;
+    list-style-type: circle;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    transition: all 0.4s ease;
+    padding: 0 20px;
+}
+
+.ul__deleteHover li::after {
+    content: '';
+    position: absolute;
+    right: -18px;
+    width: 7px;
+    height: 7PX;
+    background: #252833;
+    border-radius: 50%;
+}
+
+.ul__deleteHover li p {
+    font-size: 16px;
+    font-family: 'Muli';
+    font-weight: 600;
+    color: #252833;
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.ul__deleteHover li span {
+    cursor: pointer;
+    opacity: 0;
+    user-select: none;
+    transition: all 0.4s ease-in-out;
+}
+
+.ul__deleteHover li span:hover svg g g  {
+    fill: #969eab;
+    transition: all 0.3s ease-in-out;
+}
+
+.ul__deleteHover li:hover span {
+    opacity: 1;
+    user-select: unset;
+}
+.ul__deleteHover li:hover {
+    background: #edf0f2
+}
