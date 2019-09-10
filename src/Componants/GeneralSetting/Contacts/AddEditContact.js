@@ -122,7 +122,7 @@ class AddNewContact extends Component {
         }
 
     }
-    componentWillMount() {
+    componentDidMount() {
         if (this.props.contactID != undefined) {
             this.setState({ isLoading: true })
             Api.get('GetCompanyContactForEdit?id=' + this.props.contactID).then(res => {

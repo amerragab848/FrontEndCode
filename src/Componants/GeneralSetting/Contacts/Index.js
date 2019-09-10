@@ -23,10 +23,8 @@ const validationSchema = object().shape({
         Resources["fromCompanyRequired"][currentLanguage]
     )
 });
-const _ = require('lodash')
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 class Index extends Component {
     constructor(props) {
@@ -39,7 +37,6 @@ class Index extends Component {
         }
 
         this.columnsGrid = [
-
             {
                 key: 'customBtn1',
                 width: 50
@@ -209,6 +206,11 @@ class Index extends Component {
         };
         return cellActions[column.key];
     }
+
+    componentWillUnmount() {
+        this.props.Adminstration.companyContact = [];
+    }
+
     componentDidMount() {
         let url = 'GetCompanyContacts?companyId=' + this.state.companyID
         this.props.actions.GetCompaniesContact(url);
@@ -216,10 +218,9 @@ class Index extends Component {
             this.setState({ titleData: res })
         })
 
-        this.props.actions.GetCompaniesList('GetProjectCompanies?accountOwnerId=2')
-
-
+        this.props.actions.GetCompaniesList('GetProjectCompanies?accountOwnerId=2');
     }
+
     changeKeyContact = (id) => {
         this.setState({
             selectedContact: id,
@@ -229,11 +230,13 @@ class Index extends Component {
             modelType: 'keyContact'
         });
     }
+
     changeCompany = () => {
         this.setState({ showTransferpopUp: false })
         let url = 'TransferCompanyContact?contactId=' + this.state.selectedContact + '&newCompanyId=' + this.state.transferCompany
         this.props.actions.changeCompany(url, this.state.selectedContact);
     }
+
     addRecord = () => {
         if (Config.IsAllow(10)) {
             this.props.actions.TogglePopUp();
@@ -245,6 +248,7 @@ class Index extends Component {
         else
             toast.warning("you don't have permission");
     }
+
     clickHandlerDeleteRowsMain = selectedRows => {
         this.setState({
             showDeleteModal: true,
@@ -254,12 +258,15 @@ class Index extends Component {
             modelType: 'delete'
         });
     };
+
     onCloseModal() {
         this.setState({ showDeleteModal: false });
     }
+
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     };
+
     Confirm = () => {
         this.setState({ showDeleteModal: true })
         switch (this.state.modelType) {
@@ -282,6 +289,7 @@ class Index extends Component {
                 return null;
         }
     }
+
     onRowClick = (value, index, column) => {
         let id = value['id']
         if (column.key === 'customBtn1') {
@@ -344,8 +352,10 @@ class Index extends Component {
                         </Form>
                     )}
             </Formik>
+
         const dataGrid = this.props.Adminstration.getingData === false ? (
-            <GridSetup rows={this.props.Adminstration.companyContact}
+            <GridSetup
+                rows={this.props.Adminstration.companyContact}
                 columns={this.columnsGrid}
                 showCheckbox={true}
                 clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
@@ -354,9 +364,11 @@ class Index extends Component {
                 getCellActions={this.getCellActions}
             />
         ) : <LoadingSection />;
+
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.rows} columns={this.ExportColumns} fileName={this.state.pageTitle} />
             : null;
+
         return (
 
             <div className="mainContainer">

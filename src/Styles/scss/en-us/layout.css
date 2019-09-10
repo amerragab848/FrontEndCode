@@ -21745,3 +21745,11 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     /* padding-left: 20px !important; */
     font-size: 14px !important;
 }
+  
+  .editView__tabs .editView__tabs--title.active p {
+    color: #4382f9; }
+    .docstepper-levels .StepperNum .StepNumber:last-of-type + .Step-Line {
+        display: none;
+    }
+    
+  
