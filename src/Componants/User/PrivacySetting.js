@@ -1,30 +1,28 @@
-import React, { Component, Fragment } from 'react'
-import Api from '../../api' 
+import React, { Component } from 'react'
+import Api from '../../api'
 import config from "../../Services/Config";
 
 import LoadingSection from "../publicComponants/LoadingSection";
 import Resources from '../../resources.json';
-import { Formik, Form,withFormik } from 'formik';
-import { AlertError } from 'material-ui/svg-icons';
+import { Formik, Form, withFormik } from 'formik';
 import eyepw from '../../Styles/images/eyepw.svg';
-import NotifiMsg from '../publicComponants/NotifiMsg' 
+import NotifiMsg from '../publicComponants/NotifiMsg'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
- 
+
 class PrivacySetting extends Component {
-    constructor(props) { 
-        super(props) 
-        
-        if(Api.IsAuthorized() === false){ 
-           this.props.history.push({
-            pathname: "/"
-          });
-        } 
-        // alert(JSON.stringify(config.getPayload()));
+    constructor(props) {
+        super(props)
+
+        if (Api.IsAuthorized() === false) {
+            this.props.history.push({
+                pathname: "/"
+            });
+        }
         this.state = {
             obj: {
-                    currentPassword: '',
-                    newPassword: '',
-                    ConfimPassword: ''
+                currentPassword: '',
+                newPassword: '',
+                ConfimPassword: ''
             },
             passwordStatus: false,
             userName: '',
@@ -35,7 +33,7 @@ class PrivacySetting extends Component {
             typeCurrentPassword: false,
             typeNewPassword: false,
             isChechingPassword: false,
-            statusClass: "disNone", 
+            statusClass: "disNone",
             confirmPasswordSpan: "",
             confirmPasswordError: "pError disNone",
             boxError: "ui input inputDev",
@@ -49,7 +47,7 @@ class PrivacySetting extends Component {
         const typeCurrentPassword = this.state.typeCurrentPassword
         this.setState({
             typeCurrentPassword: !typeCurrentPassword
-        }) 
+        })
     }
 
     toggleNewPassword = () => {
@@ -64,7 +62,7 @@ class PrivacySetting extends Component {
         const typeConfimPassword = this.state.typeConfimPassword
         this.setState({
             typeConfimPassword: !typeConfimPassword
-        }) 
+        })
     }
 
     confirmPasswordHandleBlur = (e) => {
@@ -95,15 +93,15 @@ class PrivacySetting extends Component {
             newPassword: (e.target.value)
         });
     }
- 
+
     currentPasswordHandleBlur = (e) => {
 
         this.setState({
             isChechingPassword: true
         });
 
-        Api.getPassword('GetPassWordEncrypt', e.target.value).then(result => { 
-           
+        Api.getPassword('GetPassWordEncrypt', e.target.value).then(result => {
+
             if (result === false) {
                 setTimeout(() => {
                     this.setState({
@@ -115,28 +113,28 @@ class PrivacySetting extends Component {
                 }, 1000);
 
                 setTimeout(() => {
-                    this.setState({ 
+                    this.setState({
                         statusClass: "disNone"
                     })
                 }, 5000);
- 
+
             }
-            else if (result === true) { 
-               
+            else if (result === true) {
+
                 this.setState({
                     changePassword: result,
                     isChechingPassword: false,
                     stateMode: null,
                     statusClass: "disNone"
-                }); 
+                });
             }
 
         }).catch(ex => {
             this.setState({
-                isChechingPassword: false, 
+                isChechingPassword: false,
                 stateMode: null
             });
-        }); 
+        });
     }
 
     componentDidMount = () => {
@@ -144,24 +142,23 @@ class PrivacySetting extends Component {
             this.setState({
                 userName: result.userName
             })
-        }) 
+        })
     }
-    
-    onTodoChange(value){
+
+    onTodoChange(value) {
         this.setState({
-             currentPassword: value
+            currentPassword: value
         });
     }
 
-    render() {  
+    render() {
 
-        return ( 
-             
+        return (
             <div className="mainContainer white-bg">
                 {this.state.isNewMode === true ?
                     <Formik
                         enableReinitialize={false}
-                        initialValues={this.state.obj} 
+                        initialValues={this.state.obj}
                         validate={values => {
                             let errors = {};
                             if (values.currentPassword.length == 0) {
@@ -177,27 +174,26 @@ class PrivacySetting extends Component {
                             return errors;
                         }}
 
-                        onSubmit={(values,  actions ) => {
-                            if (this.state.changePassword === true && this.state.isLoading==false) {
-                                
+                        onSubmit={(values, actions) => {
+                            if (this.state.changePassword === true && this.state.isLoading == false) {
+
                                 this.setState({
-                                    isLoading: true 
+                                    isLoading: true
                                 })
-     
-                                    Api.authorizationApi('ProcoorAuthorization?username=' + this.state.userName + '&emailOrPassword=' 
-                                                                                          + this.state.newPassword + '&companyId='+ this.state.companyId 
-                                                                                          +'&changePassword=' + this.state.changePassword ).then(
-                                        Api.getPassword('EditAccountUserPassword', this.state.newPassword).then(result=>{
+
+                                Api.authorizationApi('ProcoorAuthorization?username=' + this.state.userName + '&emailOrPassword=' + this.state.newPassword + '&companyId=' + this.state.companyId + '&changePassword=' + this.state.changePassword).then(res => {
+                                    if (res.status === 200) {
+                                        Api.getPassword('EditAccountUserPassword', this.state.newPassword).then(result => {
                                             actions.setSubmitting(false);
                                             actions.resetForm({});
-                                          withFormik({ 
-                                            enableReinitialize: true,
-                                            initialValues:{
-                                                currentPassword:'', 
-                                                newPassword: '',
-                                                confirmPassword: ''
-                                              }  
-                                            })    
+                                            withFormik({
+                                                enableReinitialize: true,
+                                                initialValues: {
+                                                    currentPassword: '',
+                                                    newPassword: '',
+                                                    confirmPassword: ''
+                                                }
+                                            })
                                             this.setState({
                                                 isLoading: false,
                                                 stateMode: false,
@@ -206,33 +202,35 @@ class PrivacySetting extends Component {
                                             });
 
                                             setTimeout(() => {
-                                                this.setState({ 
+                                                this.setState({
                                                     stateMode: null,
                                                     isNewMode: true,
                                                     statusClass: "disNone"
                                                 })
                                             }, 3000);
-                                        }) 
-                                    ) 
+                                        })
+                                    }
+                                }
+                                )
                             }
                             else
                                 alert("invalid Password")
-                          }
                         }
-                        onReset={(values)=>{ }}
+                        }
+                        onReset={(values) => { }}
                     >
-                        {({ errors, touched, handleBlur, handleChange  , handleReset,handleSubmit , isSubmitting}) => (
+                        {({ errors, touched, handleBlur, handleChange, handleReset, handleSubmit, isSubmitting }) => (
                             <Form id="signupForm1" className="proForm" noValidate="novalidate" onSubmit={handleSubmit}>
 
-                                <div className="resetPassword"> 
-                                    <NotifiMsg statusClass={this.state.statusClass} IsSuccess={ this.state.stateMode ===true ? "false" :(this.state.stateMode == false ? "true": "true")} Msg={this.state.stateMode ===true ? Resources['currentPasswordRequired'][currentLanguage] : Resources['successAlert'][currentLanguage]} />
-                                    
+                                <div className="resetPassword">
+                                    <NotifiMsg statusClass={this.state.statusClass} IsSuccess={this.state.stateMode === true ? "false" : (this.state.stateMode == false ? "true" : "true")} Msg={this.state.stateMode === true ? Resources['currentPasswordRequired'][currentLanguage] : Resources['successAlert'][currentLanguage]} />
+
                                     <div className="approvalTitle">
                                         <h3>{Resources['security'][currentLanguage] + '- ' + Resources['profile'][currentLanguage]}</h3>
                                     </div>
-                                    <div className="loadingWrapper"> 
+                                    <div className="loadingWrapper">
                                         {this.state.isChechingPassword ?
-                                        null
+                                            null
                                             : null
                                         }
 
@@ -258,8 +256,7 @@ class PrivacySetting extends Component {
                                                             <span className="show"> Show</span>
                                                             <span className="hide"> Hide</span>
                                                         </span>
-                                                        <input name="currentPassword" type={this.state.typeCurrentPassword ? 'text' : 'password'} 
-                                                            //value={this.state.currentPassword} 
+                                                        <input name="currentPassword" type={this.state.typeCurrentPassword ? 'text' : 'password'}
                                                             className="form-control" id="currentPassword" placeholder={Resources['currentPassword'][currentLanguage]} autoComplete='off'
                                                             onBlur={(e) => {
                                                                 this.currentPasswordHandleBlur(e)
@@ -277,7 +274,7 @@ class PrivacySetting extends Component {
                                             </div>
 
                                         </div>
-     
+
                                         <div className="inputPassContainer">
                                             <div className="form-group passwordInputs showPasswordArea flexForm">
                                                 <label className="control-label">{Resources['newPassword'][currentLanguage]} </label>
@@ -309,7 +306,7 @@ class PrivacySetting extends Component {
                                             </div>
 
                                         </div>
-     
+
                                         <div className="inputPassContainer">
                                             <div className="form-group passwordInputs showPasswordArea flexForm">
                                                 <label className="control-label">{Resources['confirmPassword'][currentLanguage]} </label>
@@ -337,23 +334,21 @@ class PrivacySetting extends Component {
                                             </div>
 
                                         </div>
-     
+
                                         <div className="fullWidthWrapper">
-                                            {this.state.isLoading === false ? ( 
-                                               <button 
-                                                className="primaryBtn-1 btn largeBtn"
-                                                type="submit"
-                                                 >  {Resources["update"][currentLanguage]}
-                                               </button>  
-                                            ) : 
-                                                (
-                                                <button className="primaryBtn-1 btn largeBtn disabled">
-                                                    <div className="spinner">
-                                                        <div className="bounce1" />
-                                                        <div className="bounce2" />
-                                                        <div className="bounce3" />
-                                                    </div>
+                                            {this.state.isLoading === false ? (
+                                                <button
+                                                    className="primaryBtn-1 btn largeBtn" type="submit">  {Resources["update"][currentLanguage]}
                                                 </button>
+                                            ) :
+                                                (
+                                                    <button className="primaryBtn-1 btn largeBtn disabled">
+                                                        <div className="spinner">
+                                                            <div className="bounce1" />
+                                                            <div className="bounce2" />
+                                                            <div className="bounce3" />
+                                                        </div>
+                                                    </button>
                                                 )}
 
                                         </div>
@@ -362,7 +357,7 @@ class PrivacySetting extends Component {
                             </Form>
                         )}
                     </Formik>
-                    : <LoadingSection /> }
+                    : <LoadingSection />}
             </div>
         )
     }

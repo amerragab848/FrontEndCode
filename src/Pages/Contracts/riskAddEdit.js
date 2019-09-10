@@ -1724,9 +1724,9 @@ class riskAddEdit extends Component {
                                         this.state.CurrentStep == 2 ?
                                             <Fragment>
                                                 <div className="subiTabsContent feilds__top">
-                                                    <div className="document-fields">
+                                                    {/* <div className="document-fields">
                                                         {numberFormats}
-                                                    </div>
+                                                    </div> */}
 
                                                     <div className="doc-pre-cycle">
                                                         <header>
@@ -1758,9 +1758,9 @@ class riskAddEdit extends Component {
                                                 :
                                                 this.state.CurrentStep == 4 ?
                                                     <div className="subiTabsContent feilds__top">
-                                                        <div className="document-fields">
+                                                        {/* <div className="document-fields">
                                                             {numberFormats}
-                                                        </div>
+                                                        </div> */}
                                                         <div className="doc-pre-cycle">
                                                             <header>
                                                                 <h2 className="zero">{Resources['postMedigationRiskQuantitfaction'][currentLanguage]}</h2>
@@ -1887,7 +1887,7 @@ class riskAddEdit extends Component {
                                             projectId={this.state.projectId}
                                             previousRoute={this.state.previousRoute}
                                             docApprovalId={this.state.docApprovalId}
-                                            currentArrange={this.state.currentArrange}
+                                            currentArrange={this.state.arrange}
                                             showModal={this.props.showModal}
                                             showOptionPanel={this.showOptionPanel}
                                             permission={this.state.permission}
