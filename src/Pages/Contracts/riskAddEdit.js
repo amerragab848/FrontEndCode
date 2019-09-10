@@ -871,7 +871,7 @@ class riskAddEdit extends Component {
                                                 startDate={this.state.documentCycle.docDate}
                                                 handleChange={e => this.handleChangeDateCycle(e, 'docDate')} />
                                         </div>
-                                        <div className="letterFullWidth fullInputWidth">
+                                        {/* <div className="letterFullWidth fullInputWidth">
                                             <label className="control-label">{Resources['actionProgress'][currentLanguage]}</label>
                                             <div className={"inputDev ui input" + (errors.actionProgress && touched.actionProgress ? (" has-error") : !errors.actionProgress && touched.actionProgress ? (" has-success") : " ")} >
                                                 <input autoComplete="off" name="actionProgress" id="actionProgress"
@@ -882,7 +882,7 @@ class riskAddEdit extends Component {
                                                     placeholder={Resources['actionProgress'][currentLanguage]} />
                                                 {errors.actionProgress && touched.actionProgress ? (<em className="pError">{errors.actionProgress}</em>) : null}
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['medigationCost'][currentLanguage]}</label>
                                             <div className={'ui input inputDev' + (errors.medigationCost && touched.medigationCost ? (" has-error") : !errors.medigationCost && touched.medigationCost ? (" has-success") : " ")} >
@@ -895,7 +895,7 @@ class riskAddEdit extends Component {
                                                 {errors.medigationCost && touched.medigationCost ? (<em className="pError">{errors.medigationCost}</em>) : null}
                                             </div>
                                         </div>
-                                        <div className="linebylineInput valid-input mix_dropdown">
+                                        {/* <div className="linebylineInput valid-input mix_dropdown">
                                             <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
                                             <div className="supervisor__company">
                                                 <div className="super_name">
@@ -921,7 +921,7 @@ class riskAddEdit extends Component {
                                                         id="actionOwnerContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </Fragment>
                                 {/* } */}
@@ -941,10 +941,6 @@ class riskAddEdit extends Component {
                         )}
                     </Formik>
                     <div className="doc-pre-cycle">
-                        {/* <header>
-                            <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
-                        </header> */}
-
                         <table className="attachmentTable attachmentTable__fixedWidth">
                             <thead>
                                 <tr>
@@ -955,13 +951,7 @@ class riskAddEdit extends Component {
                                         <div className="headCell"> {Resources['type'][currentLanguage]}</div>
                                     </th>
                                     <th>
-                                        <div className="headCell"> {Resources['responsibleCompanyName'][currentLanguage]}</div>
-                                    </th>
-                                    <th>
                                         <div className="headCell"> {Resources['deadLineDate'][currentLanguage]}</div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell"> {Resources['actionProgress'][currentLanguage]}</div>
                                     </th>
                                     <th>
                                         <div className="headCell"> {Resources['medigationCost'][currentLanguage]}</div>
@@ -978,14 +968,8 @@ class riskAddEdit extends Component {
                                         <td>
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.mitigationTypeText}</div>
                                         </td>
-                                        <td style={{ width: 'auto' }}>
-                                            <div className="contentCell tableCell-2" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.actionOwnerContactName}</div>
-                                        </td>
                                         <td>
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.docDate != null ? moment(item.docDate).format('DD/MM/YYYY') : 'No Date'}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell tableCell-2" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.actionProgress}</div>
                                         </td>
                                         <td>
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.mitigationCost}</div>
@@ -1384,68 +1368,51 @@ class riskAddEdit extends Component {
                     <tbody>
                         {this.state.consequenceData.map((original, index) => {
                             let riskEMV = original.riskEMV != null ? numeral((this.state.statusNumbers == false ? original.riskEMV / 1000 : original.riskEMV)).format('0,0') : 0
-                            return (original.isChecked === true ? <tr key={original.id + '-' + index}>
-                                <td className="removeTr">
-                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
-                                </td>
-                                <td>
-                                    <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
-                                        <Dropdown title=""
-                                            data={this.state.consequences}
-                                            handleChange={e => this.actionHandler(original.id, original.conesquenceScore, e, original, true, 1)}
-                                            selectedValue={original.SelectedConsequence}
-                                            index={original.id} />
+                            return (original.isChecked === true ?
+                                 
+                                    <tr key={original.id + '-' + index}>
+                                        <td className="removeTr">
+                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
+                                        </td>
+                                        <td>
+                                            <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
+                                                <Dropdown title=""
+                                                    data={this.state.consequences}
+                                                    handleChange={e => this.actionHandler(original.id, original.conesquenceScore, e, original, true, 1)}
+                                                    selectedValue={original.SelectedConsequence}
+                                                    index={original.id} />
 
-                                    </div>
-                                </td>
-                                <td className="removeTr">
-                                    <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
-                                        <Dropdown title=""
-                                            data={this.state.likelihoods}
-                                            handleChange={e => this.actionHandler(original.id, original.likelihoodScore, e, original, false, 2)}
-                                            selectedValue={original.SelectedLikelihood}
-                                            index={original.id} />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskRanking}</div>
-                                </td>
-                                <td>
-                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {riskEMV} </div>
-                                </td>
-                            </tr>
+                                            </div>
+                                        </td>
+                                        <td className="removeTr">
+                                            <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
+                                                <Dropdown title=""
+                                                    data={this.state.likelihoods}
+                                                    handleChange={e => this.actionHandler(original.id, original.likelihoodScore, e, original, false, 2)}
+                                                    selectedValue={original.SelectedLikelihood}
+                                                    index={original.id} />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskRanking}</div>
+                                        </td>
+                                        <td>
+                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {riskEMV} </div>
+                                        </td>
+                                    </tr>
+ 
                                 : null
                             )
                         })}
                     </tbody>
-                </table>
-                <header>
-                    <h2 className="zero">{Resources['preMedigationRiskQuantification'][currentLanguage]}</h2>
-                </header>
-
-                <div className="Risk__input proForm">
-                    <div className="linebylineInput valid-input">
-                        <label className="control-label">{Resources['totalEMV'][currentLanguage]}</label>
-                        <div className='ui input inputDev '>
-                            <input autoComplete="off" readOnly
-                                value={this.state.totalPretRiskEmv == null ? 0 : numeral(this.state.totalPretRiskEmv).format('0,0')}
-                                type="text"
-                                className="form-control" name="totalRiskRanking"
-                                placeholder={Resources['totalEMV'][currentLanguage]} />
-                        </div>
-                    </div>
-                    <div className="linebylineInput valid-input">
-                        <label className="control-label">{Resources['totalRiskRanking'][currentLanguage]}</label>
-                        <div className='ui input inputDev '>
-                            <input autoComplete="off" readOnly
-                                value={this.state.preMedigationCostEMV == null ? 0 : (this.state.preMedigationCostEMV).toFixed(2)}
-                                type="number"
-                                className="form-control" name="preMedigationCostEMV"
-                                placeholder={Resources['totalRiskRanking'][currentLanguage]} />
-                        </div>
-                    </div>
-
-                </div>
+                    <tfoot>
+                        <tr key={'-total152'}>
+                            <td colSpan='3'></td>
+                            <td>{this.state.preMedigationCostEMV == null ? 0 : (this.state.preMedigationCostEMV).toFixed(2)}</td>
+                            <td>{this.state.totalPretRiskEmv == null ? 0 : numeral(this.state.totalPretRiskEmv).format('0,0')}</td>
+                        </tr> 
+                    </tfoot> 
+                </table> 
             </div>
         );
     }
@@ -1516,33 +1483,16 @@ class riskAddEdit extends Component {
 
                         })}
                     </tbody>
-                </table>
-                <header>
-                    <h2 className="zero">{Resources['postMedigationRiskQuantification'][currentLanguage]}</h2>
-                </header>
+                    
+                    <tfoot>
+                        <tr key={'-total152'}>
+                            <td colSpan='3'></td>
+                            <td>{this.state.postMedigationCostEMV == null ? 0 : (this.state.postMedigationCostEMV).toFixed(2)}</td>
+                            <td>{this.state.totalPostRiskEmv == null ? 0 : numeral(this.state.totalPostRiskEmv).format('0,0')}</td>
+                        </tr>
 
-                <div className="Risk__input proForm">
-                    <div className="linebylineInput valid-input">
-                        <label className="control-label">{Resources['totalEMV'][currentLanguage]}</label>
-                        <div className='ui input inputDev '>
-                            <input autoComplete="off" readOnly
-                                value={this.state.totalPostRiskEmv == null ? 0 : numeral(this.state.totalPostRiskEmv).format('0,0')}
-                                type="text"
-                                className="form-control" name="totalRiskRanking"
-                                placeholder={Resources['totalEMV'][currentLanguage]} />
-                        </div>
-                    </div>
-                    <div className="linebylineInput valid-input">
-                        <label className="control-label">{Resources['totalRiskRanking'][currentLanguage]}</label>
-                        <div className='ui input inputDev '>
-                            <input autoComplete="off" readOnly
-                                value={this.state.postMedigationCostEMV == null ? 0 : (this.state.postMedigationCostEMV).toFixed(2)}
-                                type="number"
-                                className="form-control" name="postMedigationCostEMV"
-                                placeholder={Resources['totalRiskRanking'][currentLanguage]} />
-                        </div>
-                    </div>
-                </div>
+                    </tfoot> 
+                </table> 
             </div>
         );
     }
