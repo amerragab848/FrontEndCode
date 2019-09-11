@@ -15,7 +15,6 @@ import { toast } from "react-toastify";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import Config from "../../Services/Config.js";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -917,25 +916,7 @@ class bogAddEdit extends Component {
             btnText: "save"
         });
     };
-
-    showBtnsSaving() {
-        let btn = null;
-
-        if (this.state.docId === 0) {
-            btn = (
-                <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                    {Resources.save[currentLanguage]}
-                </button>
-            );
-        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = (
-                <button className="primaryBtn-1 btn mediumBtn" type="submit">
-                    {Resources.saveAndExit[currentLanguage]}
-                </button>
-            );
-        }
-        return btn;
-    }
+ 
 
     addContract = values => {
         if (this.props.document.contractId != null || this.state.addedContract)

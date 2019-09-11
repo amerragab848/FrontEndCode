@@ -24,8 +24,7 @@ import Plus from "./Styles/images/epsActions/plus.png";
 import Delete from "./Styles/images/epsActions/delete.png";
 import { toast } from "react-toastify";
 import moment from "moment";
-import Config from "./Services/Config";
-import tab from "material-ui/svg-icons/action/tab";
+import Config from "./Services/Config"; 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
