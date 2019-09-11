@@ -6,7 +6,7 @@ var DashBoardWidgets = [
     canView: false,
     checked: false,
     order: 1,
-    widgets: [
+    widgets: [ 
       {
         title: "monthlyPo",
         key: "0-1-1",
@@ -209,70 +209,70 @@ var DashBoardWidgets = [
       }
     ]
   },
-  {
-    widgetCategory: "inspectionRequest",
-    refrence: 0,
-    key: "0-4",
-    canView: false,
-    checked: false,
-    order: 4,
-    widgets: [
-      {
-        title: "countinspectionPanding",
-        key: "0-4-1",
-        canView: false,
-        checked: false,
-        order: 1,
-        permission: 10058,
-        type: "oneWidget",
-        props: {
-          api: "GetCountInspectionForProject?status=null&projectId=",
-          route: "DashBoardProjectCounterLog",
-          value: "total",
-          listType: "item",
-          action: "action",
-          isModal: false,
-          key: "0-4-1"
-        }
-      },
-      {
-        title: "countinspectionReject",
-        key: "0-4-2",
-        canView: false,
-        checked: false,
-        order: 2,
-        permission: 10059,
-        type: "oneWidget",
-        props: {
-          api: "GetCountInspectionForProject?status=false&projectId=",
-          route: "DashBoardProjectCounterLog",
-          value: "total",
-          listType: "item",
-          action: "action",
-          isModal: false,
-          key: "0-4-2"
-        }
-      },
-      {
-        title: "countinspectionApproved",
-        key: "0-4-3",
-        canView: false,
-        checked: false,
-        order: 3,
-        permission: 10060,
-        type: "oneWidget",
-        props: {
-          api: "GetCountInspectionForProject?status=true&projectId=",
-          route: "DashBoardProjectCounterLog",
-          value: "total",
-          listType: "item",
-          action: "action",
-          isModal: false,
-          key: "0-4-3"
-        }
-      }
-    ]
-  },
+  // {
+  //   widgetCategory: "inspectionRequest",
+  //   refrence: 0,
+  //   key: "0-4",
+  //   canView: false,
+  //   checked: false,
+  //   order: 4,
+  //   widgets: [
+  //     {
+  //       title: "countinspectionPanding",
+  //       key: "0-4-1",
+  //       canView: false,
+  //       checked: false,
+  //       order: 1,
+  //       permission: 10058,
+  //       type: "oneWidget",
+  //       props: {
+  //         api: "GetCountInspectionForProject?status=null&projectId=",
+  //         route: "DashBoardProjectCounterLog",
+  //         value: "total",
+  //         listType: "item",
+  //         action: "action",
+  //         isModal: false,
+  //         key: "0-4-1"
+  //       }
+  //     },
+  //     {
+  //       title: "countinspectionReject",
+  //       key: "0-4-2",
+  //       canView: false,
+  //       checked: false,
+  //       order: 2,
+  //       permission: 10059,
+  //       type: "oneWidget",
+  //       props: {
+  //         api: "GetCountInspectionForProject?status=false&projectId=",
+  //         route: "DashBoardProjectCounterLog",
+  //         value: "total",
+  //         listType: "item",
+  //         action: "action",
+  //         isModal: false,
+  //         key: "0-4-2"
+  //       }
+  //     },
+  //     {
+  //       title: "countinspectionApproved",
+  //       key: "0-4-3",
+  //       canView: false,
+  //       checked: false,
+  //       order: 3,
+  //       permission: 10060,
+  //       type: "oneWidget",
+  //       props: {
+  //         api: "GetCountInspectionForProject?status=true&projectId=",
+  //         route: "DashBoardProjectCounterLog",
+  //         value: "total",
+  //         listType: "item",
+  //         action: "action",
+  //         isModal: false,
+  //         key: "0-4-3"
+  //       }
+  //     }
+  //   ]
+  // },
   {
     widgetCategory: "respondTime",
     refrence: 0,

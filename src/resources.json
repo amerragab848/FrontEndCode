@@ -3063,6 +3063,10 @@
         "en": "Select Company",
         "ar": "برجاء إدخال الشركة "
     },
+    "companyRiskOwnerRequired": {
+        "en": "Select Risk Owner",
+        "ar": "برجاء إدخال الشركة "
+    },
     "actionByContact": {
         "en": "Action By",
         "ar": "الشخص المسئول"
@@ -8142,5 +8146,21 @@
     "assetsTypes": {
         "en": "Assets Types",
         "ar": "Assets Types"
+    },
+    "riskIdentification": {
+        "en": "Risk Identification",
+        "ar": "تعريف المخاطر"
+    },
+    "actionArchive": {
+        "en": "Action Archive ",
+        "ar": "أرشيف العمل"
+    },
+    "actionPlanned": {
+        "en": "Action Planned ",
+        "ar": "العمل المخطط"
+    },
+    "riskMitigationProgress": {
+        "en": "Risk Mitigation Progress ",
+        "ar": "التقدم في تخفيف المخاطر"
     }
 }

@@ -172,204 +172,204 @@ import RiskRealisation from './Componants/publicComponants/RiskRealisation';
 import WeeklyReportsAddEdit from "./Pages/TechnicalOffice/weeklyReportsAddEdit";
 import dailyReportsAddEdit from "./Pages/TechnicalOffice/dailyReportsAddEdit";
 import RiskCause from './Componants/OptionsPanels/RiskCause';
-let setupRoutes = ProjectSetupRoutes.map((item) => {
+let setupRoutes = ProjectSetupRoutes.map((item, index) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
-    return <Route path={path} component={compoenet} />
+    return <Route key={index+181} path={path} component={compoenet} />
 })
 
 
 let originalRoutes = [
-    <Route exact path="/" component={DashBoard} />
-    , <Route path="/LettersAddEdit" component={LettersAddEdit} />
-    , <Route path="/ActionByAlerts" component={ActionByAlerts} />
-    , <Route path="/inspectionRequestAddEdit" component={inspectionRequestAddEdit} />
-    , <Route path="/materialInspectionRequestAddEdit" component={materialInspectionRequestAddEdit} />
-    , <Route path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />
-    , <Route path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails} />
-    , <Route path="/DocNotifyLogDetails" component={DocNotifyLogDetails} />
-    , <Route path="/ClosedSummaryDetails" component={ClosedSummaryDetails} />
-    , <Route path="/DistributionInboxListSummaryDetails" component={DistributionInboxListSummaryDetails} />
-    , <Route path="/NotCodedExpensesSummaryDetails" component={NotCodedExpensesSummaryDetails} />
-    , <Route path="/NotCodedInvoicesSummaryDetails" component={NotCodedInvoicesSummaryDetails} />
-    , <Route path="/NotCodedPaymentDetails" component={NotCodedPaymentDetails} />
-    , <Route path="/OpenedSummaryDetails" component={OpenedSummaryDetails} />
-    , <Route path="/SchedualActionByDetails" component={SchedualActionByDetails} />
-    , <Route path="/ScheduleAlertsSummaryDetails" component={ScheduleAlertsSummaryDetails} />
-    , <Route path="/TimeSheetDetails" component={TimeSheetDetails} />
-    , <Route path="/WorkFlowAlerts" component={WorkFlowAlerts} />
-    , <Route path="/DocApprovalDetails" component={DocApprovalDetails} />
-    , <Route path="/PendingExpensesDetails" component={PendingExpensesDetails} />
-    , <Route path="/PrivacySetting" component={PrivacySetting} />
-    , <Route path="/Companies/" component={Companies} />
-    , <Route path="/Contacts/:companyID" component={Contacts} />
-    , <Route path="/AddEditCompany/:companyID" component={AddEditCompany} />
-    , <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
-    , <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
-    , <Route path="/Contacts/:companyID" component={Contacts} />
-    , <Route path="/AddEditCompany/:companyID" component={AddEditCompany} />
-    , <Route path="/ProfileSetting" component={ProfileSetting} />
-    , <Route path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
-    , <Route path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
-    , <Route path="/MonthlyTasksDetails" component={MonthlyTasksDetails} />
-    , <Route path="/MonitorTasks" component={MonitorTasks} />
-    , <Route path="/AddTimeSheet" component={AddTimeSheet} />
-    , <Route path="/AddOverTime" component={AddOverTime} />
-    , <Route path="/AddLateTimeSheet" component={AddLateTimeSheet} />
-    , <Route path="/OverTime" component={OverTime} />
-    , <Route path="/Accounts" component={Accounts} />
-    , <Route path="/AccountsCompaniesPermissions" component={AccountsCompaniesPermissions} />
-    , <Route path="/AccountsEPSPermissions" component={AccountsEPSPermissions} />
-    , <Route path="/AddAccount" component={AddAccount} />
-    , <Route path="/EditAccount" component={EditAccount} />
-    , <Route path="/UserProjects" component={UserProjects} />
-    , <Route path="/TaskAdmin" component={TaskAdmin} />
-    , <Route path="/FollowUpsSummaryDetails" component={FollowUpsSummaryDetails} />
-    , <Route path="/TemplatesSettings" component={TemplatesSettings} />
-    , <Route path="/GeneralList" component={GeneralList} />
-    , <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} />
-    , <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />
-    , <Route path="/ReportsMenu" component={ReportsMenu} />
-    , <Route path="/GeneralList" component={GeneralList} />
-    , <Route path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} />
-    , <Route path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />
-    , <Route path="/DashBoardCounterLog" component={DashBoardCounterLog} />
-    , <Route path="/RfiAddEdit" component={RfiAddEdit} />
-    , <Route path="/DashBoardProjectCounterLog" component={DashBoardProjectCounterLog} />
-    , <Route path="/phoneAddEdit" component={phoneAddEdit} />
-    , <Route path="/reportsAddEdit" component={reportsAddEdit} />
-    , <Route path="/TransmittalAddEdit" component={TransmittalAddEdit} />
-    , <Route path="/DashboardProject" component={DashboardProject} />
-    , <Route path="/TaskgroupAddEdit" component={TaskGroupsAddEdit} />
-    , <Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
-    , <Route path="/meetingMinutesAddEdit" component={meetingMinutesAddEdit} />
-    , <Route path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
-    , <Route path="/ProjectTasks/:projectId" component={ProjectTasks} />
-    , <Route path="/ProjectTaskAddEdit" component={ProjectTaskAddEdit} />
-    , <Route path="/meetingAgendaAddEdit" component={meetingAgendaAddEdit} />
-    , <Route path="/projectDistributionListAddEdit" component={projectDistributionListAddEdit} />
-    , <Route path="/NCRAddEdit" component={NCRAddEdit} />
-    , <Route path="/clientSelectionAddEdit" component={clientSelectionAddEdit} />
-    , <Route path="/clientModificationAddEdit" component={clientModificationAddEdit} />
-    , <Route path="/SubmittalAddEdit" component={SubmittalAddEdit} />
-    , <Route path="/siteInstructionsAddEdit" component={siteInstructionsAddEdit} />
-    , <Route path="/punchListAddEdit" component={punchListAddEdit} />
-    , <Route path="/boqAddEdit" component={boqAddEdit} />
-    , <Route path="/SubContract" component={SubContract} />
-    , <Route path="/ContractsConditions" component={ContractsConditions} />
-    , <Route path="/changeOrderAddEdit" component={variationOrderAddEdit} />
-    , <Route path="/addEditModificationDrawing" component={addEditModificationDrawing} />
-    , <Route path="/addEditDrawing" component={addEditModificationDrawing} />
-    , <Route path="/AccountsAlerts" component={AccountsAlerts} />
-    , <Route path="/projectPicturesAddEdit" component={projectPicturesAddEdit} />
-    , <Route path="/GeneralConfiguration" component={GeneralConfiguration} />
-    , <Route path="/EpsPermission" component={EpsPermission} />
-    , <Route path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
-    , <Route path="/Projects" component={Projects} />
-    , <Route path="/projectEstimateAddEdit" component={projectEstimateAddEdit} />
-    , <Route path="/EpsPermission" component={EpsPermission} />
-    , <Route path="/pcoAddEdit" component={pcoAddEdit} />
-    , <Route path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />
-    , <Route path="/riskAddEdit" component={riskAddEdit} />
-    , <Route path="/variationRequestAddEdit" component={variationRequestAddEdit} />
-    , <Route path="/projectIssuesAddEdit" component={projectIssuesAddEdit} />
-    , <Route path="/qsAddEdit" component={qsAddEdit} />
-    , <Route path="/requestPaymentsAddEdit" component={RequestPaymentsAddEdit} />
-    , <Route path="/projectsAddEdit" component={projectsAddEdit} />
-    , <Route path="/baseAddEdit" component={baseAddEdit} />
-    , <Route path="/costCodingTreeAddEdit/:projectId" component={costCodingTreeAddEdit} />
-    , <Route path="/Itemize" component={Itemize} />
-    , <Route path="/drawingListAddEdit" component={drawingListAddEdit} />
-    , <Route path="/rptCostCodingTree/:projectId" component={rptCostCodingTree} />
-    , <Route path="/projectScheduleAddEdit" component={projectScheduleAddEdit} />
-    , <Route path="/WFActivityReport" component={WFActivityReport} />
-    , <Route path="/boqStructure" component={boqStructure} />
-    , <Route path="/projectPrimaveraScheduleAddEdit" component={projectPrimaveraScheduleAddEdit} />
-    , <Route path="/ClaimsAddEdit" component={ClaimsAddEdit} />
-    , <Route path="/WFUsageReport" component={WFUsageReport} />
-    , <Route path="/TransmittalReport" component={TransmittalReport} />
-    , <Route path="/FollowUpUsageReport" component={FollowUpUsageReport} />
-    , <Route path="/WFDistributionAccountReport" component={WFDistributionAccountReport} />
-    , <Route path="/PaymentReqStatusReport" component={PaymentReqStatusReport} />
-    , <Route path="/TechnicalOfficeReport" component={TechnicalOfficeReport} />
-    , <Route path="/SubmittalsPerNeighBorhood" component={SubmittalsPerNeighBorhood} />
-    , <Route path="/ProgressDocuments" component={ProgressDocuments} />
-    , <Route path="/ProjectInvoices" component={ProjectInvoices} />
-    , <Route path="/CollectedPaymentRequisition" component={CollectedPaymentRequisition} />
-    , <Route path="/SiteRequestReleasedQnt" component={SiteRequestReleasedQnt} />
-    , <Route path="/InvoicesLogReport" component={InvoicesLogReport} />
-    , <Route path="/ProjectsList" component={ProjectsList} />
-    , <Route path="/CashFlowReport" component={CashFlowReport} />
-    , <Route path="/ProjectBalanceReport" component={ProjectBalanceReport} />
-    , <Route path="/ActiveProjectsReport" component={ActiveProjectsReport} />
-    , <Route path="/NewprojectList" component={NewprojectList} />
-    , <Route path="/MaterialStatusReport" component={MaterialStatusReport} />
-    , <Route path="/BoqTemplateReport" component={BoqTemplateReport} />
-    , <Route path="/BoqStractureCost" component={BoqStractureCost} />
-    , <Route path="/InventoryDetails" component={InventoryDetails} />
-    , <Route path="/allocationOfProjectsOnCompanies" component={allocationOfProjectsOnCompanies} />
-    , <Route path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} />
-    , <Route path="/ProjectCompanies" component={ProjectCompanies} />
-    , <Route path="/permissionsGroups" component={permissionsGroups} />
-    , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} />
-    , <Route path="/PermissionsGroupsPermissions/:groupId" component={PermissionsGroupsPermissions} />
-    , <Route path="/AccountsGroup/:groupId" component={AccountsGroup} />
-    , <Route path="/projectBackLog" component={ProjectBackLog} />
-    , <Route path="/projectsAchievements" component={ProjectsAchievements} />
-    , <Route path="/projectInvoicesCollected" component={projectInvoicesCollected} />
-    , <Route path="/approvalDocument" component={approvalDocument} />
-    , <Route path="/contractorsPerformance" component={contractorsPerformance} />
-    , <Route path="/budgetCashFlow" component={budgetCashFlow} />
-    , <Route path="/paymentRequisition" component={paymentRequisition} />
-    , <Route path="/executiveSummary" component={executiveSummary} />
-    , <Route path="/compareApprovedQuantity" component={compareApprovedQuantity} />
-    , <Route path="/LeftReportMenu" component={LeftReportMenu} />
-    , <Route path="/budgetVarianceReport" component={budgetVarianceReport} />
-    , <Route path="/expensesDetailsOnProjectsReport" component={expensesDetailsOnProjectsReport} />
-    , <Route path="/corrRecievedSent/:projectId" component={corrRecievedSent} />
-    , <Route path="/postitNotificationsDetail" component={PostitNotificationsDetail} />
-    , <Route path="/taskDetails" component={taskDetails} />
-    , <Route path="/myTasks" component={myTasks} />
-    , <Route path="/contractInfoAddEdit" component={contractInfoAddEdit} />
-    , <Route path="/PaymentRequisitionList" component={PaymentRequisitionList} />
-    , <Route path="/SubContractLog" component={SubContractLog} />
-    , <Route path="/RejectedTimesheetsDetails" component={RejectedTimesheetsDetails} />
-    , <Route path="/invoicesForPoAddEdit" component={invoicesForPoAddEdit} />
-    , <Route path="/requestProposalAddEdit" component={requestProposalAddEdit} />
-    , <Route path="/proposalAddEdit" component={proposalAddEdit} />
-    , <Route path="/purchaseOrderAddEdit" component={purchaseOrderAddEdit} />
-    , <Route path="/siteRequestAddEdit" component={siteRequestAddEdit} />
-    , <Route path="/materialDeliveryAddEdit" component={materialDeliveryAddEdit} />
-    , <Route path="/BarChartComp" component={chart} />
-    , <Route path="/equipmentDeliveryAddEdit" component={equipmentDeliveryAddEdit} />
-    , <Route path="/TransferInventory" component={TransferInventory} />
-    , <Route path="/requestsTransferItems" component={requestsTransferItems} />
-    , <Route path="/materialReturnedAddEdit" component={materialReturnedAddEdit} />
-    , <Route path="/materialReleaseAddEdit" component={materialReleaseAddEdit} />
-    , <Route path="/procurementAddEdit" component={procurementAddEdit} />
-    , <Route path="/RiskCause" component={RiskCause} />
-    , <Route path="/materialInventoryAddEdit" component={materialInventoryAddEdit} />
-    , <Route path="/autoDeskViewer" component={autoDeskViewer} />
-    , <Route path="/RiskConesquence" component={RiskConesquence} />
-    , <Route path="/GlobalSearch" component={GlobalSearch} />
-    , <Route path="/currencyExchangeRates" component={currencyExchangeRates} />
-    , <Route path="/specSectionChild" component={specSectionChild} />
-    , <Route path="/RiskRealisation" component={RiskRealisation} />
-    , <Route path="/WeeklyReportsAddEdit" component={WeeklyReportsAddEdit} />
-    , <Route path="/dailyReportsAddEdit" component={dailyReportsAddEdit} />
+    <Route key='r-1' exact path="/" component={DashBoard} />
+    , <Route key='r-2' path="/LettersAddEdit" component={LettersAddEdit} />
+    , <Route key='r-3' path="/ActionByAlerts" component={ActionByAlerts} />
+    , <Route key='r-4' path="/inspectionRequestAddEdit" component={inspectionRequestAddEdit} />
+    , <Route key='r-5' path="/materialInspectionRequestAddEdit" component={materialInspectionRequestAddEdit} />
+    , <Route key='r-6' path="/ActionBySummaryDetails" component={ActionBySummaryDetails} />
+    , <Route key='r-7' path="/AlertingQuantitySummaryDetails" component={AlertingQuantitySummaryDetails} />
+    , <Route key='r-8' path="/DocNotifyLogDetails" component={DocNotifyLogDetails} />
+    , <Route key='r-9' path="/ClosedSummaryDetails" component={ClosedSummaryDetails} />
+    , <Route key='r-10' path="/DistributionInboxListSummaryDetails" component={DistributionInboxListSummaryDetails} />
+    , <Route key='r-11' path="/NotCodedExpensesSummaryDetails" component={NotCodedExpensesSummaryDetails} />
+    , <Route key='r-12' path="/NotCodedInvoicesSummaryDetails" component={NotCodedInvoicesSummaryDetails} />
+    , <Route key='r-13' path="/NotCodedPaymentDetails" component={NotCodedPaymentDetails} />
+    , <Route key='r-14' path="/OpenedSummaryDetails" component={OpenedSummaryDetails} />
+    , <Route key='r-15' path="/SchedualActionByDetails" component={SchedualActionByDetails} />
+    , <Route key='r-16' path="/ScheduleAlertsSummaryDetails" component={ScheduleAlertsSummaryDetails} />
+    , <Route key='r-17' path="/TimeSheetDetails" component={TimeSheetDetails} />
+    , <Route key='r-18' path="/WorkFlowAlerts" component={WorkFlowAlerts} />
+    , <Route key='r-19' path="/DocApprovalDetails" component={DocApprovalDetails} />
+    , <Route key='r-20' path="/PendingExpensesDetails" component={PendingExpensesDetails} />
+    , <Route key='r-21' path="/PrivacySetting" component={PrivacySetting} />
+    , <Route key='r-22' path="/Companies/" component={Companies} />
+    , <Route key='r-23' path="/Contacts/:companyID" component={Contacts} />
+    , <Route key='r-24' path="/AddEditCompany/:companyID" component={AddEditCompany} />
+    , <Route key='r-25' path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
+    , <Route key='r-26' path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
+    , <Route key='r-27' path="/Contacts/:companyID" component={Contacts} />
+    , <Route key='r-28' path="/AddEditCompany/:companyID" component={AddEditCompany} />
+    , <Route key='r-29' path="/ProfileSetting" component={ProfileSetting} />
+    , <Route key='r-30' path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
+    , <Route key='r-31' path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
+    , <Route key='r-32' path="/MonthlyTasksDetails" component={MonthlyTasksDetails} />
+    , <Route key='r-33' path="/MonitorTasks" component={MonitorTasks} />
+    , <Route key='r-34' path="/AddTimeSheet" component={AddTimeSheet} />
+    , <Route key='r-35' path="/AddOverTime" component={AddOverTime} />
+    , <Route key='r-36' path="/AddLateTimeSheet" component={AddLateTimeSheet} />
+    , <Route key='r-37' path="/OverTime" component={OverTime} />
+    , <Route key='r-38' path="/Accounts" component={Accounts} />
+    , <Route key='r-39' path="/AccountsCompaniesPermissions" component={AccountsCompaniesPermissions} />
+    , <Route key='r-40' path="/AccountsEPSPermissions" component={AccountsEPSPermissions} />
+    , <Route key='r-41' path="/AddAccount" component={AddAccount} />
+    , <Route key='r-42' path="/EditAccount" component={EditAccount} />
+    , <Route key='r-43' path="/UserProjects" component={UserProjects} />
+    , <Route key='r-44' path="/TaskAdmin" component={TaskAdmin} />
+    , <Route key='r-45' path="/FollowUpsSummaryDetails" component={FollowUpsSummaryDetails} />
+    , <Route key='r-46' path="/TemplatesSettings" component={TemplatesSettings} />
+    , <Route key='r-47' path="/GeneralList" component={GeneralList} />
+    , <Route key='r-48' path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} />
+    , <Route key='r-49' path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />
+    , <Route key='r-50' path="/ReportsMenu" component={ReportsMenu} />
+    , <Route key='r-51' path="/GeneralList" component={GeneralList} />
+    , <Route key='r-52' path="/ExpensesWorkFlowLog" component={ExpensesWorkFlowLog} />
+    , <Route key='r-53' path="/ExpensesWorkFlowAddEdit" component={ExpensesWorkFlowAddEdit} />
+    , <Route key='r-54' path="/DashBoardCounterLog" component={DashBoardCounterLog} />
+    , <Route key='r-55' path="/RfiAddEdit" component={RfiAddEdit} />
+    , <Route key='r-56' path="/DashBoardProjectCounterLog" component={DashBoardProjectCounterLog} />
+    , <Route key='r-57' path="/phoneAddEdit" component={phoneAddEdit} />
+    , <Route key='r-58' path="/reportsAddEdit" component={reportsAddEdit} />
+    , <Route key='r-59' path="/TransmittalAddEdit" component={TransmittalAddEdit} />
+    , <Route key='r-60' path="/DashboardProject" component={DashboardProject} />
+    , <Route key='r-61' path="/TaskgroupAddEdit" component={TaskGroupsAddEdit} />
+    , <Route key='r-62' path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
+    , <Route key='r-63' path="/meetingMinutesAddEdit" component={meetingMinutesAddEdit} />
+    , <Route key='r-64' path="/InternalMemoAddEdit" component={InternalMemoAddEdit} />
+    , <Route key='r-65' path="/ProjectTasks/:projectId" component={ProjectTasks} />
+    , <Route key='r-66' path="/ProjectTaskAddEdit" component={ProjectTaskAddEdit} />
+    , <Route key='r-67' path="/meetingAgendaAddEdit" component={meetingAgendaAddEdit} />
+    , <Route key='r-68' path="/projectDistributionListAddEdit" component={projectDistributionListAddEdit} />
+    , <Route key='r-69' path="/NCRAddEdit" component={NCRAddEdit} />
+    , <Route key='r-70' path="/clientSelectionAddEdit" component={clientSelectionAddEdit} />
+    , <Route key='r-71' path="/clientModificationAddEdit" component={clientModificationAddEdit} />
+    , <Route key='r-72' path="/SubmittalAddEdit" component={SubmittalAddEdit} />
+    , <Route key='r-73' path="/siteInstructionsAddEdit" component={siteInstructionsAddEdit} />
+    , <Route key='r-74' path="/punchListAddEdit" component={punchListAddEdit} />
+    , <Route key='r-75' path="/boqAddEdit" component={boqAddEdit} />
+    , <Route key='r-76' path="/SubContract" component={SubContract} />
+    , <Route key='r-78' path="/ContractsConditions" component={ContractsConditions} />
+    , <Route key='r-79' path="/changeOrderAddEdit" component={variationOrderAddEdit} />
+    , <Route key='r-80' path="/addEditModificationDrawing" component={addEditModificationDrawing} />
+    , <Route key='r-81' path="/addEditDrawing" component={addEditModificationDrawing} />
+    , <Route key='r-82' path="/AccountsAlerts" component={AccountsAlerts} />
+    , <Route key='r-83' path="/projectPicturesAddEdit" component={projectPicturesAddEdit} />
+    , <Route key='r-84' path="/GeneralConfiguration" component={GeneralConfiguration} />
+    , <Route key='r-85' path="/EpsPermission" component={EpsPermission} />
+    , <Route key='r-86' path="/projectWorkFlowAddEdit" component={projectWorkFlowAddEdit} />
+    , <Route key='r-87' path="/Projects" component={Projects} />
+    , <Route key='r-88' path="/projectEstimateAddEdit" component={projectEstimateAddEdit} />
+    , <Route key='r-89' path="/EpsPermission" component={EpsPermission} />
+    , <Route key='r-90' path="/pcoAddEdit" component={pcoAddEdit} />
+    , <Route key='r-91' path="/drawingSetsAddEdit" component={drawingSetsAddEdit} />
+    , <Route key='r-92' path="/riskAddEdit" component={riskAddEdit} />
+    , <Route key='r-93' path="/variationRequestAddEdit" component={variationRequestAddEdit} />
+    , <Route key='r-94' path="/projectIssuesAddEdit" component={projectIssuesAddEdit} />
+    , <Route key='r-95' path="/qsAddEdit" component={qsAddEdit} />
+    , <Route key='r-96' path="/requestPaymentsAddEdit" component={RequestPaymentsAddEdit} />
+    , <Route key='r-97' path="/projectsAddEdit" component={projectsAddEdit} />
+    , <Route key='r-98' path="/baseAddEdit" component={baseAddEdit} />
+    , <Route key='r-99' path="/costCodingTreeAddEdit/:projectId" component={costCodingTreeAddEdit} />
+    , <Route key='r-100' path="/Itemize" component={Itemize} />
+    , <Route key='r-101' path="/drawingListAddEdit" component={drawingListAddEdit} />
+    , <Route key='r-102' path="/rptCostCodingTree/:projectId" component={rptCostCodingTree} />
+    , <Route key='r-103' path="/projectScheduleAddEdit" component={projectScheduleAddEdit} />
+    , <Route key='r-104' path="/WFActivityReport" component={WFActivityReport} />
+    , <Route key='r-105' path="/boqStructure" component={boqStructure} />
+    , <Route key='r-106' path="/projectPrimaveraScheduleAddEdit" component={projectPrimaveraScheduleAddEdit} />
+    , <Route key='r-107' path="/ClaimsAddEdit" component={ClaimsAddEdit} />
+    , <Route key='r-108' path="/WFUsageReport" component={WFUsageReport} />
+    , <Route key='r-109' path="/TransmittalReport" component={TransmittalReport} />
+    , <Route key='r-110' path="/FollowUpUsageReport" component={FollowUpUsageReport} />
+    , <Route key='r-111' path="/WFDistributionAccountReport" component={WFDistributionAccountReport} />
+    , <Route key='r-112' path="/PaymentReqStatusReport" component={PaymentReqStatusReport} />
+    , <Route key='r-113' path="/TechnicalOfficeReport" component={TechnicalOfficeReport} />
+    , <Route key='r-114' path="/SubmittalsPerNeighBorhood" component={SubmittalsPerNeighBorhood} />
+    , <Route key='r-115' path="/ProgressDocuments" component={ProgressDocuments} />
+    , <Route key='r-116' path="/ProjectInvoices" component={ProjectInvoices} />
+    , <Route key='r-117' path="/CollectedPaymentRequisition" component={CollectedPaymentRequisition} />
+    , <Route key='r-118' path="/SiteRequestReleasedQnt" component={SiteRequestReleasedQnt} />
+    , <Route key='r-119' path="/InvoicesLogReport" component={InvoicesLogReport} />
+    , <Route key='r-120' path="/ProjectsList" component={ProjectsList} />
+    , <Route key='r-121' path="/CashFlowReport" component={CashFlowReport} />
+    , <Route key='r-122' path="/ProjectBalanceReport" component={ProjectBalanceReport} />
+    , <Route key='r-123' path="/ActiveProjectsReport" component={ActiveProjectsReport} />
+    , <Route key='r-124' path="/NewprojectList" component={NewprojectList} />
+    , <Route key='r-125' path="/MaterialStatusReport" component={MaterialStatusReport} />
+    , <Route key='r-126' path="/BoqTemplateReport" component={BoqTemplateReport} />
+    , <Route key='r-127' path="/BoqStractureCost" component={BoqStractureCost} />
+    , <Route key='r-128' path="/InventoryDetails" component={InventoryDetails} />
+    , <Route key='r-129' path="/allocationOfProjectsOnCompanies" component={allocationOfProjectsOnCompanies} />
+    , <Route key='r-130' path="/allocationOfUsersOnProjects" component={allocationOfUsersOnProjects} />
+    , <Route key='r-131' path="/ProjectCompanies" component={ProjectCompanies} />
+    , <Route key='r-132' path="/permissionsGroups" component={permissionsGroups} />
+    , <Route key='r-133' path="/AccountsGroup/:groupId" component={AccountsGroup} />
+    , <Route key='r-134' path="/PermissionsGroupsPermissions/:groupId" component={PermissionsGroupsPermissions} />
+    , <Route key='r-135' path="/AccountsGroup/:groupId" component={AccountsGroup} />
+    , <Route key='r-136' path="/projectBackLog" component={ProjectBackLog} />
+    , <Route key='r-137' path="/projectsAchievements" component={ProjectsAchievements} />
+    , <Route key='r-138' path="/projectInvoicesCollected" component={projectInvoicesCollected} />
+    , <Route key='r-139' path="/approvalDocument" component={approvalDocument} />
+    , <Route key='r-140' path="/contractorsPerformance" component={contractorsPerformance} />
+    , <Route key='r-141' path="/budgetCashFlow" component={budgetCashFlow} />
+    , <Route key='r-142' path="/paymentRequisition" component={paymentRequisition} />
+    , <Route key='r-143' path="/executiveSummary" component={executiveSummary} />
+    , <Route key='r-144' path="/compareApprovedQuantity" component={compareApprovedQuantity} />
+    , <Route key='r-145' path="/LeftReportMenu" component={LeftReportMenu} />
+    , <Route key='r-146' path="/budgetVarianceReport" component={budgetVarianceReport} />
+    , <Route key='r-147' path="/expensesDetailsOnProjectsReport" component={expensesDetailsOnProjectsReport} />
+    , <Route key='r-148' path="/corrRecievedSent/:projectId" component={corrRecievedSent} />
+    , <Route key='r-149' path="/postitNotificationsDetail" component={PostitNotificationsDetail} />
+    , <Route key='r-150' path="/taskDetails" component={taskDetails} />
+    , <Route key='r-151' path="/myTasks" component={myTasks} />
+    , <Route key='r-152' path="/contractInfoAddEdit" component={contractInfoAddEdit} />
+    , <Route key='r-153' path="/PaymentRequisitionList" component={PaymentRequisitionList} />
+    , <Route key='r-154' path="/SubContractLog" component={SubContractLog} />
+    , <Route key='r-155' path="/RejectedTimesheetsDetails" component={RejectedTimesheetsDetails} />
+    , <Route key='r-156' path="/invoicesForPoAddEdit" component={invoicesForPoAddEdit} />
+    , <Route key='r-157' path="/requestProposalAddEdit" component={requestProposalAddEdit} />
+    , <Route key='r-158' path="/proposalAddEdit" component={proposalAddEdit} />
+    , <Route key='r-159' path="/purchaseOrderAddEdit" component={purchaseOrderAddEdit} />
+    , <Route key='r-160' path="/siteRequestAddEdit" component={siteRequestAddEdit} />
+    , <Route key='r-161' path="/materialDeliveryAddEdit" component={materialDeliveryAddEdit} />
+    , <Route key='r-162' path="/BarChartComp" component={chart} />
+    , <Route key='r-163' path="/equipmentDeliveryAddEdit" component={equipmentDeliveryAddEdit} />
+    , <Route key='r-164' path="/TransferInventory" component={TransferInventory} />
+    , <Route key='r-165' path="/requestsTransferItems" component={requestsTransferItems} />
+    , <Route key='r-166' path="/materialReturnedAddEdit" component={materialReturnedAddEdit} />
+    , <Route key='r-167' path="/materialReleaseAddEdit" component={materialReleaseAddEdit} />
+    , <Route key='r-168' path="/procurementAddEdit" component={procurementAddEdit} />
+    , <Route key='r-169' path="/RiskCause" component={RiskCause} />
+    , <Route key='r-171' path="/materialInventoryAddEdit" component={materialInventoryAddEdit} />
+    , <Route key='r-172' path="/autoDeskViewer" component={autoDeskViewer} />
+    , <Route key='r-173' path="/RiskConesquence" component={RiskConesquence} />
+    , <Route key='r-174' path="/GlobalSearch" component={GlobalSearch} />
+    , <Route key='r-175' path="/currencyExchangeRates" component={currencyExchangeRates} />
+    , <Route key='r-176' path="/specSectionChild" component={specSectionChild} />
+    , <Route key='r-177' path="/RiskRealisation" component={RiskRealisation} />
+    , <Route key='r-177' path="/WeeklyReportsAddEdit" component={WeeklyReportsAddEdit} />
+    , <Route key='r-179' path="/dailyReportsAddEdit" component={dailyReportsAddEdit} />
 
-    , <Route path="/emailAddEdit" component={emailAddEdit} />
+    , <Route key='r-180' path="/emailAddEdit" component={emailAddEdit} />
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes]
 
 let routes = (
 
-    <Switch >
-        {originalRoutes.map((item) =>
+    <Switch>
+        {originalRoutes.map((item, index) =>
             item
         )}
-        <Route path="/:document/:projectId" component={CommonLog} />
+        <Route   path="/:document/:projectId" component={CommonLog} />
     </Switch>
 );
 export default routes;

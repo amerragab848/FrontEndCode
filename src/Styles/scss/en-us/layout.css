@@ -4122,7 +4122,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .approveDocument {
-    position: fixed;
+    position: fixed !important;
     bottom: 0;
     right: 40px;
     left: 130px;
@@ -4139,6 +4139,7 @@ h1, h2, h3, h4, h5 {
     -ms-flex-align: center;
     align-items: center;
     z-index: 999;
+    top: unset !important
 }
 
 .approveDocument h2 {
@@ -6833,13 +6834,6 @@ h1, h2, h3, h4, h5 {
     color: #ccc;
 }
 
-.documents-stepper .doc-container .step-content-body h2 {
-    letter-spacing: -0.2px;
-    font-size: 16px;
-    color: #252833;
-    font-family: font-b;
-}
-
 .documents-stepper .doc-container .step-content .step-content-body.out {
     display: none;
 }
@@ -6979,18 +6973,6 @@ h1, h2, h3, h4, h5 {
 
 .noTabs__document .doc-container .step-content .doc-pre-cycle header {
     padding: 40px 0;
-}
-
-.noTabs__document .doc-container .step-content .doc-pre-cycle header h2 {
-    border-bottom: 1px solid #e1e3e8;
-    width: 100%;
-    padding-bottom: 12px;
-    padding-left: 0;
-    font-family: font-r;
-    font-size: 20px;
-    line-height: 1.4;
-    letter-spacing: -0.2px;
-    color: #252833;
 }
 
 .noTabs__document .doc-container .step-content .doc-pre-cycle .slider-Btns {
@@ -14321,7 +14303,7 @@ h1, h2, h3, h4, h5 {
 
 .workFlowStep .StepNumber {
     flex-flow: column;
-    width: 100%;
+    width: 100% !important;
     flex-shrink: 0;
     margin-bottom: 21px;
     position: relative;
@@ -15803,19 +15785,6 @@ em {
     font-weight: bold;
 }
 
-.approvalTitle {
-    height: 80px;
-    border-bottom: 1px solid #DADEE6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.approvalTitle h3 {
-    color: #26344c;
-    font-size: 26px;
-}
-
 .textarea-group textarea {
     overflow: auto;
     width: 100%;
@@ -16949,6 +16918,8 @@ tfoot tr td p {
     display: block;
     margin: 0 auto;
     padding-bottom: 70px;
+    position: unset !important;
+    z-index: unset !important;
 }
 
 .noTabs__document .doc-container .step-content .document-fields {
@@ -16978,18 +16949,6 @@ tfoot tr td p {
 
 .noTabs__document .doc-container .step-content .doc-pre-cycle header {
     padding: 40px 0;
-}
-
-.noTabs__document .doc-container .step-content .doc-pre-cycle header h2 {
-    border-bottom: 1px solid #e1e3e8;
-    width: 100%;
-    padding-bottom: 12px;
-    padding-left: 0;
-    font-family: font-r;
-    font-size: 20px;
-    line-height: 1.4;
-    letter-spacing: -0.2px;
-    color: #252833;
 }
 
 .noTabs__document .doc-container .step-content .slider-Btns,
@@ -17135,18 +17094,6 @@ button.companies_icon {
 
 .one__tab .doc-container .doc-pre-cycle header {
     padding: 40px 0;
-}
-
-.one__tab .doc-container .doc-pre-cycle header h2 {
-    border-bottom: 1px solid #e1e3e8;
-    width: 100%;
-    padding-bottom: 12px;
-    padding-left: 0;
-    font-family: font-r;
-    font-size: 20px;
-    line-height: 1.4;
-    letter-spacing: -0.2px;
-    color: #252833;
 }
 
 .one__tab .doc-container .doc-pre-cycle .slider-Btns {
@@ -21674,18 +21621,23 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     display: flex;
     justify-content: center;
     padding: 0 18px;
-    flex-wrap: wrap; }
+    flex-wrap: wrap; 
+    position: sticky;
+    top: 72px;
+    z-index: 155;
+}
   
-  .editView__tabs .editView__tabs--title {
+.editView__tabs .editView__tabs--title {
     margin: 0 6px;
     display: flex;
     align-items: center;
     height: 72px;
     cursor: pointer;
     position: relative;
-    flex-shrink: 0; }
+    flex-shrink: 0; 
+}
   
-  .editView__tabs .editView__tabs--title::after {
+.editView__tabs .editView__tabs--title::after {
     content: '';
     background: #4382f9;
     position: absolute;
@@ -21694,9 +21646,10 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     bottom: -3px;
     height: 4px;
     width: 0;
-    transition: all 0.4s ease-in-out; }
+    transition: all 0.4s ease-in-out; 
+}
   
-  .editView__tabs .editView__tabs--title p {
+.editView__tabs .editView__tabs--title p {
     font-family: 'Muli', sans-serif;
     font-size: 11px;
     font-weight: 800;
@@ -21705,15 +21658,102 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     line-height: 1.82;
     letter-spacing: normal;
     color: #858d9e;
-    text-transform: uppercase; }
+    text-transform: uppercase; 
+}
   
-  .editView__tabs .editView__tabs--title.active::after {
+.editView__tabs .editView__tabs--title.active::after {
     width: 100%;
     right: 0;
-    left: 0; }
+    left: 0; 
+}
+
+.editView__tabs .editView__tabs--title.active p {
+    color: #4382f9; 
+}
+
+.docstepper-levels .StepperNum .StepNumber:last-of-type + .Step-Line {
+    display: none;
+}
+
+.ul__deleteHover {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.ul__deleteHover li {
+    height: 40px;
+    border-bottom: 1px solid #e9ecf0;
+    list-style-type: circle;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    transition: all 0.4s ease;
+    padding: 0 20px
+}
+
+.ul__deleteHover li::after {
+    content: '';
+    position: absolute;
+    left: -18px;
+    width: 7px;
+    height: 7PX;
+    background: #252833;
+    border-radius: 50%;
+}
+
+.ul__deleteHover li p {
+    font-size: 16px;
+    font-family: 'Muli';
+    font-weight: 600;
+    color: #252833;
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.ul__deleteHover li span {
+    cursor: pointer;
+    opacity: 0;
+    user-select: none;
+    transition: all 0.4s ease-in-out;
+}
+
+.ul__deleteHover li span:hover svg g g  {
+    fill: #969eab;
+    transition: all 0.3s ease-in-out;
+}
+
+.ul__deleteHover li:hover span {
+    opacity: 1;
+    user-select: unset;
+}
+
+.ul__deleteHover li:hover {
+    background: #edf0f2
+}
+
+.subHeader h2 {
+    /* padding-left: 20px !important; */
+    font-size: 14px !important;
+}
   
-  .editView__tabs .editView__tabs--title.active p {
-    color: #4382f9; }
-    .docstepper-levels .StepperNum .StepNumber:last-of-type + .Step-Line {
-        display: none;
+.editView__tabs .editView__tabs--title.active p {
+    color: #4382f9; 
+}
+
+.docstepper-levels .StepperNum .StepNumber:last-of-type + .Step-Line {
+    display: none;
+}
+
+.ck-sticky-panel__content {
+    z-index: 100 !important;
+}
+
+.doc-container >div:nth-child(2){
+    position: sticky;
+    top: 72px;
+    z-index: 155;
+    background: #Fff;
     }

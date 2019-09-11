@@ -1846,9 +1846,9 @@ class requestPaymentsAddEdit extends Component {
             dataservice
                 .GetDataGrid(
                     "AddMissingItems?requestId=" +
-                        this.state.docId +
-                        "&contractId=" +
-                        this.state.document.contractId
+                    this.state.docId +
+                    "&contractId=" +
+                    this.state.document.contractId
                 )
                 .then(result => {
                     toast.success(
@@ -4392,7 +4392,7 @@ class requestPaymentsAddEdit extends Component {
                                         projectId={this.state.projectId}
                                         previousRoute={this.state.previousRoute}
                                         docApprovalId={this.state.docApprovalId}
-                                        currentArrange={this.state.currentArrange}
+                                        currentArrange={this.state.arrange}
                                         showModal={this.props.showModal}
                                         showOptionPanel={this.showOptionPanel}
                                         permission={this.state.permission}

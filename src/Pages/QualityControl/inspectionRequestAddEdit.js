@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -21,7 +20,6 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import SkyLight from 'react-skylight';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
@@ -29,6 +27,7 @@ import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment
 import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -649,7 +648,7 @@ class inspectionRequestAddEdit extends Component {
         let btn = null;
         if (this.state.docId === 0) {
             btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else if (this.state.docId > 0) {
+        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
             btn = <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit'>{Resources.next[currentLanguage]}</button>
         }
         return btn;
@@ -891,8 +890,6 @@ class inspectionRequestAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
-
-
 
     render() {
 
@@ -1242,39 +1239,36 @@ class inspectionRequestAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument">
-                                    <div className="approveDocumentBTNS">
-
-                                        {this.state.isLoading ?
-                                            <button className="primaryBtn-1 btn disabled">
-                                                <div className="spinner">
-                                                    <div className="bounce1" />
-                                                    <div className="bounce2" />
-                                                    <div className="bounce3" />
-                                                </div>
-                                            </button> :
-                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
-                                        }
-                                        <DocumentActions
-                                            isApproveMode={this.state.isApproveMode}
-                                            docTypeId={this.state.docTypeId}
-                                            docId={this.state.docId}
-                                            projectId={this.state.projectId}
-                                            previousRoute={this.state.previousRoute}
-                                            docApprovalId={this.state.docApprovalId}
-                                            currentArrange={this.state.currentArrange}
-                                            showModal={this.props.showModal}
-                                            showOptionPanel={this.showOptionPanel}
-                                            permission={this.state.permission}
-                                        />
-                                    </div>
-                                </div>
-                                : null
-                        }
+                                                            {this.props.changeStatus === true ?
+                                                                <div className="approveDocument">
+                                                                    <div className="approveDocumentBTNS">
+                                                                    
+                                                                        <DocumentActions
+                                                                            isApproveMode={this.state.isApproveMode}
+                                                                            docTypeId={this.state.docTypeId}
+                                                                            docId={this.state.docId}
+                                                                            projectId={this.state.projectId}
+                                                                            previousRoute={this.state.previousRoute}
+                                                                            docApprovalId={this.state.docApprovalId}
+                                                                            currentArrange={this.state.arrange}
+                                                                            showModal={this.props.showModal}
+                                                                            showOptionPanel={this.showOptionPanel}
+                                                                            permission={this.state.permission}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                : null
+                                                            }
                                                             <div className="slider-Btns">
-                                                                {this.showBtnsSaving()}
+                                                                {this.state.isLoading ?
+                                                                    <button className="primaryBtn-1 btn disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button> :
+                                                                    this.showBtnsSaving()}
                                                             </div>
                                                         </Form>
                                                     )}
@@ -1290,6 +1284,15 @@ class inspectionRequestAddEdit extends Component {
                                                     }
                                                 </div>
                                             </div>
+                                            {this.state.isViewMode === false ?
+                                                <div className="doc-pre-cycle">
+                                                    <div className="slider-Btns">
+                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(1)}>{Resources['next'][currentLanguage]}</button>
+                                                    </div>
+
+                                                </div>
+                                                : null
+                                            }
                                         </div>
                                     </div>
                                 </Fragment>

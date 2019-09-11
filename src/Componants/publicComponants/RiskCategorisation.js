@@ -177,7 +177,7 @@ class RiskCategorisation extends Component {
         return (
             <div className="doc-pre-cycle letterFullWidth">
                 <div className="document-fields">
-                    <header style={{ paddingTop: '0' }}>
+                    <header className="subHeader"  style={{ paddingTop: '0' }}>
                         <h2 className="zero">{Resources['categorisation'][currentLanguage]}</h2>
                     </header>
                     {this.state.isLoading == true ? <LoadingSection /> :

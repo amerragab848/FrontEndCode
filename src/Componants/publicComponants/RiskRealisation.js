@@ -18,9 +18,10 @@ class RiskRealisation extends Component {
         super(props)
         this.state = {
             isLoading: false,
-           pageLoading: true,
+            pageLoading: true,
             riskId: props.riskId,
-            riskRealisation: {}
+            riskRealisation: {},
+            showRiskRealisation: true,
         }
     }
 
@@ -61,11 +62,22 @@ class RiskRealisation extends Component {
 
     handleChange(e, field) {
         let original_document = { ...this.state.riskRealisation };
-        let updated_document = {};
-        updated_document[field] = e.target.value;
-        updated_document = Object.assign(original_document, updated_document);
-        this.setState({ riskRealisation: updated_document });
+        original_document[field] = e.target.value;
+        this.setState({ riskRealisation: original_document });
+        if (field === 'riskRealise') {
+            let value = e.target.value
+            if (value === 'true') {
+
+                this.setState({ showRiskRealisation: true });
+            }
+            else {
+                this.setState({ showRiskRealisation: false });
+            }
+
+        }
+
     }
+
     handleChangeDate = (e, field) => {
         let original_document = { ...this.state.riskRealisation };
         let updated_document = {};
@@ -73,6 +85,7 @@ class RiskRealisation extends Component {
         updated_document = Object.assign(original_document, updated_document);
         this.setState({ riskRealisation: updated_document });
     }
+
     saveRisk = () => {
         this.setState({ isLoading: true });
         let riskRealisation = this.state.riskRealisation;
@@ -84,111 +97,117 @@ class RiskRealisation extends Component {
             this.setState({ isLoading: false });
         })
     }
+
     render() {
         return (
             <Fragment>
-                <header className="main__header">
+                {/* <header className="main__header">
                     <div className="main__header--div">
                         <h2 className="zero">{Resources['riskRealisation'][currentLanguage]}</h2>
                     </div>
-                </header>
-                {this.state.pageLoading==true ?<LoadingSection />:
-                <Formik
-                    enableReinitialize={true}
-                    validationSchema={validationSchema}
-                    onSubmit={(values) => {
-                        this.saveRisk()
-                    }}>
-                    {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
-                        <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate" >
-                            <div className="proForm datepickerContainer">
-                                <div className="linebylineInput linebylineInput__checkbox">
+                </header> */}
+                {this.state.pageLoading == true ? <LoadingSection /> :
+                    <Formik
+                        initialValues={{ ...this.state.riskRealisation }}
+                        enableReinitialize={true}
+                        validationSchema={validationSchema}
+                        onSubmit={(values) => {
+                            this.saveRisk()
+                        }}>
+                        {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                            <Form id="signupForm1" className="proForm datepickerContainer letterFullWidth" noValidate="novalidate" >
+                                <div className="letterFullWidth linebylineInput__checkbox">
                                     <label className="control-label">{Resources.riskRealised[currentLanguage]}</label>
                                     <div className="ui checkbox radio radioBoxBlue">
                                         <input type="radio" name="status" defaultChecked={this.state.riskRealisation.riskRealise === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'riskRealise')} />
-                                        <label>{Resources.yes[currentLanguage]}</label>
+                                        <label style={{ paddingLeft: '35px', paddingRight: '15px' }}>{Resources.yes[currentLanguage]}</label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue">
                                         <input type="radio" name="status" defaultChecked={this.state.riskRealisation.riskRealise === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'riskRealise')} />
-                                        <label>{Resources.no[currentLanguage]}</label>
+                                        <label style={{ paddingLeft: '35px', paddingRight: '15px' }}>{Resources.no[currentLanguage]}</label>
                                     </div>
                                 </div>
-                                <div className="linebylineInput ">
-                                    <label className="control-label">{Resources.actualImpact[currentLanguage]}</label>
-                                    <div className={"inputDev ui input"} >
-                                        <input name='actualImpact' className="form-control fsadfsadsa" id="actualImpact"
-                                            placeholder={Resources.actualImpact[currentLanguage]}
-                                            autoComplete='off'
-                                            defaultValue={this.state.riskRealisation.actualImpact}
-                                            onChange={(e) => this.handleChange(e, 'actualImpact')} />
-                                    </div>
-                                </div>
-                                <div className="linebylineInput  alternativeDate">
-                                    <DatePicker title='dateOfRealisation'
-                                        startDate={this.state.riskRealisation.dateRealisation}
-                                        handleChange={e => this.handleChangeDate(e, 'dateRealisation')} />
-                                </div>
-                                <div className="linebylineInput ">
-                                    <label className="control-label">{Resources.postEventMitigation[currentLanguage]}</label>
-                                    <div className="ui input inputDev">
-                                        <input type="text" className="form-control" id="postEventMit"
-                                            defaultValue={this.state.riskRealisation.postEventMit}
-                                            name="postEventMit"
-                                            placeholder={Resources.postEventMitigation[currentLanguage]}
-                                            onChange={(e) => this.handleChange(e, 'postEventMit')} />
-                                    </div>
-                                </div>
-                                <div className="linebylineInput ">
-                                    <label className="control-label">{Resources.costOfMitigation[currentLanguage]}</label>
-                                    <div className={"inputDev ui input" + (errors.costMit && touched.costMit ? (" has-error") : !errors.costMit && touched.costMit ? (" has-success") : " ")} >
-                                        <input type="text" className="form-control" id="costMit"
-                                            defaultValue={this.state.riskRealisation.costMit}
-                                            name="costMit"
-                                            handleBlur={handleBlur}
-                                            placeholder={Resources.costOfMitigation[currentLanguage]}
-                                            onChange={(e) => {
-                                                this.handleChange(e, 'costMit')
-                                                handleChange(e)
-                                            }}
-                                            onBlur={handleBlur} />
-                                        {touched.costMit ? (<em className="pError">{errors.costMit}</em>) : null}
-                                    </div>
-                                </div>
-                                <div className="linebylineInput ">
-                                    <label className="control-label">{Resources.residualRiskTitle[currentLanguage]}</label>
-                                    <div className="ui input inputDev">
-                                        <input type="text" className="form-control" id="residualRiskTitle"
-                                            defaultValue={this.state.riskRealisation.residualRiskTitle}
-                                            name="residualRiskTitle"
-                                            placeholder={Resources.residualRiskTitle[currentLanguage]}
-                                            onChange={(e) => this.handleChange(e, 'residualRiskTitle')} />
-                                    </div>
-                                </div>
-                                <div className="linebylineInput ">
-                                    <label className="control-label">{Resources.newRiskRef[currentLanguage]}</label>
-                                    <div className="ui input inputDev">
-                                        <input type="text" className="form-control" id="riskRef"
-                                            defaultValue={this.state.riskRealisation.riskRef}
-                                            name="riskRef"
-                                            placeholder={Resources.newRiskRef[currentLanguage]}
-                                            onChange={(e) => this.handleChange(e, 'riskRef')} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="slider-Btns">
-                                {this.state.isLoading ?
-                                    <button className="primaryBtn-1 btn disabled">
-                                        <div className="spinner">
-                                            <div className="bounce1" />
-                                            <div className="bounce2" />
-                                            <div className="bounce3" />
+
+                                {this.state.showRiskRealisation === true ?
+                                    <Fragment>
+                                        <div className="linebylineInput ">
+                                            <label className="control-label">{Resources.actualImpact[currentLanguage]}</label>
+                                            <div className={"inputDev ui input"} >
+                                                <input name='actualImpact' className="form-control fsadfsadsa" id="actualImpact"
+                                                    placeholder={Resources.actualImpact[currentLanguage]}
+                                                    autoComplete='off'
+                                                    defaultValue={this.state.riskRealisation.actualImpact}
+                                                    onChange={(e) => this.handleChange(e, 'actualImpact')} />
+                                            </div>
                                         </div>
-                                    </button> :
-                                    <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>}
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
+                                        <div className="linebylineInput  alternativeDate">
+                                            <DatePicker title='dateOfRealisation'
+                                                startDate={this.state.riskRealisation.dateRealisation}
+                                                handleChange={e => this.handleChangeDate(e, 'dateRealisation')} />
+                                        </div>
+                                        <div className="linebylineInput ">
+                                            <label className="control-label">{Resources.postEventMitigation[currentLanguage]}</label>
+                                            <div className="ui input inputDev">
+                                                <input type="text" className="form-control" id="postEventMit"
+                                                    defaultValue={this.state.riskRealisation.postEventMit}
+                                                    name="postEventMit"
+                                                    placeholder={Resources.postEventMitigation[currentLanguage]}
+                                                    onChange={(e) => this.handleChange(e, 'postEventMit')} />
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput ">
+                                            <label className="control-label">{Resources.costOfMitigation[currentLanguage]}</label>
+                                            <div className={"inputDev ui input" + (errors.costMit && touched.costMit ? (" has-error") : !errors.costMit && touched.costMit ? (" has-success") : " ")} >
+                                                <input type="text" className="form-control" id="costMit"
+                                                    defaultValue={this.state.riskRealisation.costMit}
+                                                    name="costMit"
+                                                    handleBlur={handleBlur}
+                                                    placeholder={Resources.costOfMitigation[currentLanguage]}
+                                                    onChange={(e) => {
+                                                        this.handleChange(e, 'costMit')
+                                                        handleChange(e)
+                                                    }}
+                                                    onBlur={handleBlur} />
+                                                {touched.costMit ? (<em className="pError">{errors.costMit}</em>) : null}
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput ">
+                                            <label className="control-label">{Resources.residualRiskTitle[currentLanguage]}</label>
+                                            <div className="ui input inputDev">
+                                                <input type="text" className="form-control" id="residualRiskTitle"
+                                                    defaultValue={this.state.riskRealisation.residualRiskTitle}
+                                                    name="residualRiskTitle"
+                                                    placeholder={Resources.residualRiskTitle[currentLanguage]}
+                                                    onChange={(e) => this.handleChange(e, 'residualRiskTitle')} />
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput ">
+                                            <label className="control-label">{Resources.newRiskRef[currentLanguage]}</label>
+                                            <div className="ui input inputDev">
+                                                <input type="text" className="form-control" id="riskRef"
+                                                    defaultValue={this.state.riskRealisation.riskRef}
+                                                    name="riskRef"
+                                                    placeholder={Resources.newRiskRef[currentLanguage]}
+                                                    onChange={(e) => this.handleChange(e, 'riskRef')} />
+                                            </div>
+                                        </div>
+
+                                        <div className="slider-Btns">
+                                            {this.state.isLoading ?
+                                                <button className="primaryBtn-1 btn disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button> :
+                                                <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>}
+                                        </div>
+                                    </Fragment>
+                                    : null}
+                            </Form>
+                        )}
+                    </Formik>
                 }
             </Fragment>
         );

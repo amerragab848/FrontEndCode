@@ -17,11 +17,11 @@ export default class uploadSignture extends React.Component {
             sign: {},
             signPreview: {},
             signShowRemoveBtn: false, signName: '',
-            signIamge:  signiturePath,
+            signIamge: signiturePath,
             profile: {},
             profilePreview: {},
             profileShowRemoveBtn: false, profileName: '',
-            profileIamge:  profilePath
+            profileIamge: profilePath
         };
     }
     //signture Methods
@@ -48,7 +48,7 @@ export default class uploadSignture extends React.Component {
             let formData = new FormData();
             formData.append("file", this.state.sign)
             api.postFile('UploadSignature', formData).then(res => {
-                this.setState({ signIamge:   signiturePath })
+                this.setState({ signIamge: signiturePath })
                 toast.success(resources["operationSuccess"][currentLanguage]);
             }).catch(ex => {
                 toast.error(resources["operationCanceled"][currentLanguage]);
@@ -76,7 +76,7 @@ export default class uploadSignture extends React.Component {
             let formData = new FormData();
             formData.append("file", this.state.profile)
             api.postFile('UploadPhoto', formData).then(res => {
-                this.setState({ profileIamge:  profilePath })
+                this.setState({ profileIamge: profilePath })
                 toast.success(resources["operationSuccess"][currentLanguage]);
             }).catch(ex => {
                 toast.error(resources["operationCanceled"][currentLanguage]);
@@ -99,7 +99,7 @@ export default class uploadSignture extends React.Component {
                                     {this.state.signName ?
                                         <div className="thumbStyle" key={this.state.signName}>
                                             <div className="thumbInnerStyle">
-                                                <img
+                                                <img alt=''
                                                     src={this.state.signPreview}
                                                     className="imgStyle"
                                                 />
@@ -132,11 +132,11 @@ export default class uploadSignture extends React.Component {
 
                         <div className="a7medImg">
                             {this.state.signIamge ?
-                             <img src={this.state.signIamge} /> : null}
+                                <img alt='' src={this.state.signIamge} /> : null}
                         </div>
                     </div>
                     <div>
-                    <h4>{resources.uploadPhoto[currentLanguage]}</h4>
+                        <h4>{resources.uploadPhoto[currentLanguage]}</h4>
                         <section className="singleUploadForm">
                             {this.state.profileShowRemoveBtn ?
                                 <aside className='thumbsContainer'>
@@ -146,7 +146,7 @@ export default class uploadSignture extends React.Component {
                                     {this.state.profileName ?
                                         <div className="thumbStyle" key={this.state.profileName}>
                                             <div className="thumbInnerStyle">
-                                                <img src={this.state.profilePreview}
+                                                <img alt='' src={this.state.profilePreview}
                                                     className="imgStyle"
                                                 />
                                             </div>
