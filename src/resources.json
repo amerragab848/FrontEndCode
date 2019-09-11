@@ -8138,5 +8138,17 @@
     "riskIdentification": {
         "en": "Risk Identification",
         "ar": "تعريف المخاطر"
+    },
+    "actionArchive": {
+        "en": "Action Archive ",
+        "ar": "أرشيف العمل"
+    },
+    "actionPlanned": {
+        "en": "Action Planned ",
+        "ar": "العمل المخطط"
+    },
+    "riskMitigationProgress": {
+        "en": "Risk Mitigation Progress ",
+        "ar": "التقدم في تخفيف المخاطر"
     }
 }
