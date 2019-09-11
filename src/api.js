@@ -159,7 +159,7 @@ export default class Api {
     }
     static getPassword(route, password) {
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
-
+ 
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password;

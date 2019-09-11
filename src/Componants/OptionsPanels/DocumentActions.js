@@ -103,9 +103,9 @@ class DocumentActions extends Component {
             import(`${item.path}`).then(module => {
                 ///cahnage approvalStatus (true or false ) to set correct parameter for document approvel 
                 if (item.value == 3)
-                    this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: false });
+                    this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: false, currentArrange: this.props.currentArrange });
                 else
-                    this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: true });
+                    this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: true, currentArrange: this.props.currentArrange });
 
                 this.setState({ module: module.default, currentTitle: item.title })
                 this.props.showOptionPanel();

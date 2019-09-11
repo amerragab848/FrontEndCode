@@ -170,6 +170,10 @@ class riskAddEdit extends Component {
                 callBackFn: null
             },
             {
+                name: "information",
+                callBackFn: null
+            },
+            {
                 name: "mitigation",
                 callBackFn: null
             }, {
@@ -876,7 +880,7 @@ class riskAddEdit extends Component {
                                                 startDate={this.state.documentCycle.docDate}
                                                 handleChange={e => this.handleChangeDateCycle(e, 'docDate')} />
                                         </div>
-                                        <div className="letterFullWidth fullInputWidth">
+                                        {/* <div className="letterFullWidth fullInputWidth">
                                             <label className="control-label">{Resources['actionProgress'][currentLanguage]}</label>
                                             <div className={"inputDev ui input" + (errors.actionProgress && touched.actionProgress ? (" has-error") : !errors.actionProgress && touched.actionProgress ? (" has-success") : " ")} >
                                                 <input autoComplete="off" name="actionProgress" id="actionProgress"
@@ -887,7 +891,7 @@ class riskAddEdit extends Component {
                                                     placeholder={Resources['actionProgress'][currentLanguage]} />
                                                 {errors.actionProgress && touched.actionProgress ? (<em className="pError">{errors.actionProgress}</em>) : null}
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['medigationCost'][currentLanguage]}</label>
                                             <div className={'ui input inputDev' + (errors.medigationCost && touched.medigationCost ? (" has-error") : !errors.medigationCost && touched.medigationCost ? (" has-success") : " ")} >
@@ -900,7 +904,7 @@ class riskAddEdit extends Component {
                                                 {errors.medigationCost && touched.medigationCost ? (<em className="pError">{errors.medigationCost}</em>) : null}
                                             </div>
                                         </div>
-                                        <div className="linebylineInput valid-input mix_dropdown">
+                                        {/* <div className="linebylineInput valid-input mix_dropdown">
                                             <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
                                             <div className="supervisor__company">
                                                 <div className="super_name">
@@ -926,7 +930,7 @@ class riskAddEdit extends Component {
                                                         id="actionOwnerContactId" classDrop=" contactName1" styles={ContactDropdown} />
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </Fragment>
                                 {/* } */}
@@ -946,10 +950,6 @@ class riskAddEdit extends Component {
                         )}
                     </Formik>
                     <div className="doc-pre-cycle">
-                        {/* <header>
-                            <h2 className="zero">{Resources['proposeMitigation'][currentLanguage]}</h2>
-                        </header> */}
-
                         <table className="attachmentTable attachmentTable__fixedWidth">
                             <thead>
                                 <tr>
@@ -960,13 +960,7 @@ class riskAddEdit extends Component {
                                         <div className="headCell"> {Resources['type'][currentLanguage]}</div>
                                     </th>
                                     <th>
-                                        <div className="headCell"> {Resources['responsibleCompanyName'][currentLanguage]}</div>
-                                    </th>
-                                    <th>
                                         <div className="headCell"> {Resources['deadLineDate'][currentLanguage]}</div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell"> {Resources['actionProgress'][currentLanguage]}</div>
                                     </th>
                                     <th>
                                         <div className="headCell"> {Resources['medigationCost'][currentLanguage]}</div>
@@ -983,14 +977,8 @@ class riskAddEdit extends Component {
                                         <td>
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.mitigationTypeText}</div>
                                         </td>
-                                        <td style={{ width: 'auto' }}>
-                                            <div className="contentCell tableCell-2" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.actionOwnerContactName}</div>
-                                        </td>
                                         <td>
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.docDate != null ? moment(item.docDate).format('DD/MM/YYYY') : 'No Date'}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell tableCell-2" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.actionProgress}</div>
                                         </td>
                                         <td>
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.mitigationCost}</div>
@@ -1389,68 +1377,51 @@ class riskAddEdit extends Component {
                     <tbody>
                         {this.state.consequenceData.map((original, index) => {
                             let riskEMV = original.riskEMV != null ? numeral((this.state.statusNumbers == false ? original.riskEMV / 1000 : original.riskEMV)).format('0,0') : 0
-                            return (original.isChecked === true ? <tr key={original.id + '-' + index}>
-                                <td className="removeTr">
-                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
-                                </td>
-                                <td>
-                                    <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
-                                        <Dropdown title=""
-                                            data={this.state.consequences}
-                                            handleChange={e => this.actionHandler(original.id, original.conesquenceScore, e, original, true, 1)}
-                                            selectedValue={original.SelectedConsequence}
-                                            index={original.id} />
+                            return (original.isChecked === true ?
 
-                                    </div>
-                                </td>
-                                <td className="removeTr">
-                                    <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
-                                        <Dropdown title=""
-                                            data={this.state.likelihoods}
-                                            handleChange={e => this.actionHandler(original.id, original.likelihoodScore, e, original, false, 2)}
-                                            selectedValue={original.SelectedLikelihood}
-                                            index={original.id} />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskRanking}</div>
-                                </td>
-                                <td>
-                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {riskEMV} </div>
-                                </td>
-                            </tr>
+                                <tr key={original.id + '-' + index}>
+                                    <td className="removeTr">
+                                        <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
+                                    </td>
+                                    <td>
+                                        <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
+                                            <Dropdown title=""
+                                                data={this.state.consequences}
+                                                handleChange={e => this.actionHandler(original.id, original.conesquenceScore, e, original, true, 1)}
+                                                selectedValue={original.SelectedConsequence}
+                                                index={original.id} />
+
+                                        </div>
+                                    </td>
+                                    <td className="removeTr">
+                                        <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
+                                            <Dropdown title=""
+                                                data={this.state.likelihoods}
+                                                handleChange={e => this.actionHandler(original.id, original.likelihoodScore, e, original, false, 2)}
+                                                selectedValue={original.SelectedLikelihood}
+                                                index={original.id} />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskRanking}</div>
+                                    </td>
+                                    <td>
+                                        <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {riskEMV} </div>
+                                    </td>
+                                </tr>
+
                                 : null
                             )
                         })}
                     </tbody>
+                    <tfoot>
+                        <tr key={'-total152'}>
+                            <td colSpan='3'></td>
+                            <td>{this.state.preMedigationCostEMV == null ? 0 : (this.state.preMedigationCostEMV).toFixed(2)}</td>
+                            <td>{this.state.totalPretRiskEmv == null ? 0 : numeral(this.state.totalPretRiskEmv).format('0,0')}</td>
+                        </tr>
+                    </tfoot>
                 </table>
-                <header>
-                    <h2 className="zero">{Resources['preMedigationRiskQuantification'][currentLanguage]}</h2>
-                </header>
-
-                <div className="Risk__input proForm">
-                    <div className="linebylineInput valid-input">
-                        <label className="control-label">{Resources['totalEMV'][currentLanguage]}</label>
-                        <div className='ui input inputDev '>
-                            <input autoComplete="off" readOnly
-                                value={this.state.totalPretRiskEmv == null ? 0 : numeral(this.state.totalPretRiskEmv).format('0,0')}
-                                type="text"
-                                className="form-control" name="totalRiskRanking"
-                                placeholder={Resources['totalEMV'][currentLanguage]} />
-                        </div>
-                    </div>
-                    <div className="linebylineInput valid-input">
-                        <label className="control-label">{Resources['totalRiskRanking'][currentLanguage]}</label>
-                        <div className='ui input inputDev '>
-                            <input autoComplete="off" readOnly
-                                value={this.state.preMedigationCostEMV == null ? 0 : (this.state.preMedigationCostEMV).toFixed(2)}
-                                type="number"
-                                className="form-control" name="preMedigationCostEMV"
-                                placeholder={Resources['totalRiskRanking'][currentLanguage]} />
-                        </div>
-                    </div>
-
-                </div>
             </div>
         );
     }
@@ -1521,33 +1492,16 @@ class riskAddEdit extends Component {
 
                         })}
                     </tbody>
-                </table>
-                <header>
-                    <h2 className="zero">{Resources['postMedigationRiskQuantification'][currentLanguage]}</h2>
-                </header>
 
-                <div className="Risk__input proForm">
-                    <div className="linebylineInput valid-input">
-                        <label className="control-label">{Resources['totalEMV'][currentLanguage]}</label>
-                        <div className='ui input inputDev '>
-                            <input autoComplete="off" readOnly
-                                value={this.state.totalPostRiskEmv == null ? 0 : numeral(this.state.totalPostRiskEmv).format('0,0')}
-                                type="text"
-                                className="form-control" name="totalRiskRanking"
-                                placeholder={Resources['totalEMV'][currentLanguage]} />
-                        </div>
-                    </div>
-                    <div className="linebylineInput valid-input">
-                        <label className="control-label">{Resources['totalRiskRanking'][currentLanguage]}</label>
-                        <div className='ui input inputDev '>
-                            <input autoComplete="off" readOnly
-                                value={this.state.postMedigationCostEMV == null ? 0 : (this.state.postMedigationCostEMV).toFixed(2)}
-                                type="number"
-                                className="form-control" name="postMedigationCostEMV"
-                                placeholder={Resources['totalRiskRanking'][currentLanguage]} />
-                        </div>
-                    </div>
-                </div>
+                    <tfoot>
+                        <tr key={'-total152'}>
+                            <td colSpan='3'></td>
+                            <td>{this.state.postMedigationCostEMV == null ? 0 : (this.state.postMedigationCostEMV).toFixed(2)}</td>
+                            <td>{this.state.totalPostRiskEmv == null ? 0 : numeral(this.state.totalPostRiskEmv).format('0,0')}</td>
+                        </tr>
+
+                    </tfoot>
+                </table>
             </div>
         );
     }
@@ -1573,6 +1527,82 @@ class riskAddEdit extends Component {
                         handleChange={event => this.handleChangeDropDown(event, 'currencyId', false, '', '', '', 'selectedCurrency')} />
                 </div>
             </div>
+
+        let riskIdentification =
+            <div className="document-fields">
+                <Formik initialValues={{ ...this.state.document }}
+                    validationSchema={validationSchema}
+                    enableReinitialize={this.props.changeStatus}
+                    onSubmit={(values) => {
+                        if (values.isFirstButton) {
+                            if (this.props.showModal) { return; }
+
+                            if (this.props.changeStatus === false && this.state.docId === 0) {
+                                this.saveRisk();
+                            } else {
+                                if (this.props.changeStatus == true)
+                                    this.editRisk();
+                                this.changeCurrentStep(1);
+
+                            }
+                        }
+                    }}>
+                    {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                        <Form id="rfiForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+
+                            <div className="proForm datepickerContainer">
+
+                                <div className="proForm first-proform letterFullWidth">
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources.generalListTitle[currentLanguage]}</label>
+                                        <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                            <input name='subject' id="subject" className="form-control fsadfsadsa"
+                                                placeholder={Resources.generalListTitle[currentLanguage]}
+                                                autoComplete='off'
+                                                value={this.state.document.subject}
+                                                onBlur={(e) => { handleBlur(e); handleChange(e) }}
+                                                onChange={(e) => this.handleChange(e, 'subject')} />
+                                            {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="proForm datepickerContainer">
+                                <div className="letterFullWidth">
+                                    <label className="control-label">{Resources.description[currentLanguage]}</label>
+                                    <div className="inputDev ui input">
+                                        <TextEditor value={this.state.description} onChange={event => this.onChangeMessage(event, 'description')} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="slider-Btns">
+                                {this.state.isLoading ?
+                                    <button className="primaryBtn-1 btn disabled">
+                                        <div className="spinner">
+                                            <div className="bounce1" />
+                                            <div className="bounce2" />
+                                            <div className="bounce3" />
+                                        </div>
+                                    </button> :
+
+                                    this.state.docId === 0 ?
+                                        <button onClick={(e) => setFieldValue('isFirstButton', true)}
+                                            className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>
+                                        : <button onClick={(e) => setFieldValue('isFirstButton', true)} className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' >
+                                            {Resources.next[currentLanguage]}</button>
+                                }
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+
+
+
+
+
+
 
         return (
             <div className="mainContainer">
@@ -1721,10 +1751,6 @@ class riskAddEdit extends Component {
                                                             </div>
                                                         </div>
 
-                                                        {/* <div className="proForm first-proform">
-
-                                                        
-                                                        </div> */}
 
                                                         {this.state.docId > 0 ?
                                                             <Fragment>
@@ -1767,169 +1793,172 @@ class riskAddEdit extends Component {
                                 :
                                 <Fragment>
                                     {this.state.CurrentStep == 1 ?
-                                        <div className="subiTabsContent feilds__top">
-                                            {this.CurrentMit()}
-                                            <div className="doc-pre-cycle">
-                                                <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
-                                                </div>
-                                            </div>
-                                        </div>
+
+                                        riskIdentification
                                         :
                                         this.state.CurrentStep == 2 ?
-                                            <Fragment>
-                                                <div className="subiTabsContent feilds__top">
-                                                    <div className="document-fields">
+                                            <div className="subiTabsContent feilds__top">
+                                                {this.CurrentMit()}
+                                                <div className="doc-pre-cycle">
+                                                    <div className="slider-Btns">
+                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            : this.state.CurrentStep == 3 ?
+                                                <Fragment>
+                                                    <div className="subiTabsContent feilds__top">
+                                                        {/* <div className="document-fields">
                                                         {numberFormats}
-                                                    </div>
+                                                    </div> */}
 
-                                                    <div className="doc-pre-cycle">
-                                                        <header>
-                                                            <h2 className="zero">{Resources['preMedigationRiskQuantitfaction'][currentLanguage]}</h2>
-                                                        </header>
-                                                        {!this.state.updateConsequence ?
-                                                            <this.drawConsequence /> : <LoadingSection />
-                                                        }
-                                                    </div>
-
-                                                    <div className="doc-pre-cycle">
-                                                        <div className="slider-Btns">
-                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>{Resources['next'][currentLanguage]}</button>
+                                                        <div className="doc-pre-cycle">
+                                                            <header>
+                                                                <h2 className="zero">{Resources['preMedigationRiskQuantitfaction'][currentLanguage]}</h2>
+                                                            </header>
+                                                            {!this.state.updateConsequence ?
+                                                                <this.drawConsequence /> : <LoadingSection />
+                                                            }
                                                         </div>
 
-                                                    </div>
-                                                </div>
-                                            </Fragment>
-                                            :
-                                            this.state.CurrentStep == 3 ?
-                                                <div className="subiTabsContent feilds__top">
-                                                    {this.ProposedMit(false)}
-                                                    <div className="doc-pre-cycle">
-                                                        <div className="slider-Btns">
-                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(4)}>{Resources['next'][currentLanguage]}</button>
+                                                        <div className="doc-pre-cycle">
+                                                            <div className="slider-Btns">
+                                                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>{Resources['next'][currentLanguage]}</button>
+                                                            </div>
+
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </Fragment>
                                                 :
                                                 this.state.CurrentStep == 4 ?
                                                     <div className="subiTabsContent feilds__top">
-                                                        <div className="document-fields">
-                                                            {numberFormats}
-                                                        </div>
-                                                        <div className="doc-pre-cycle">
-                                                            <header>
-                                                                <h2 className="zero">{Resources['postMedigationRiskQuantitfaction'][currentLanguage]}</h2>
-                                                            </header>
-                                                            {!this.state.updateConsequence ?
-                                                                <this.drawConsequencePost /> : <LoadingSection />
-                                                            }
-                                                        </div>
+                                                        {this.ProposedMit(false)}
                                                         <div className="doc-pre-cycle">
                                                             <div className="slider-Btns">
-                                                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(5)}>{Resources['next'][currentLanguage]}</button>
+                                                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(4)}>{Resources['next'][currentLanguage]}</button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                     :
-                                                    this.state.CurrentStep === 5 ?
-                                                        <div className="document-fields">
-                                                            <div className="datepickerContainer proForm">
+                                                    this.state.CurrentStep == 5 ?
+                                                        <div className="subiTabsContent feilds__top">
+                                                            {/* <div className="document-fields">
+                                                            {numberFormats}
+                                                        </div> */}
+                                                            <div className="doc-pre-cycle">
                                                                 <header>
-                                                                    <h2 className="zero">{Resources['riskAnalysis'][currentLanguage]}</h2>
+                                                                    <h2 className="zero">{Resources['postMedigationRiskQuantitfaction'][currentLanguage]}</h2>
                                                                 </header>
-                                                                <div className="Risk__input">
-                                                                    <div className="letterFullWidth">
-                                                                        <label className="control-label">{'Pre-Mitigation EMV'}</label>
-                                                                        <div className='ui input inputDev '>
-                                                                            <input style={{ minWidth: '360px' }} autoComplete="off" readOnly
-                                                                                value={this.state.totalPretRiskEmv == null ? 0 : numeral(this.state.totalPretRiskEmv).format('0,0')}
-                                                                                type="text"
-                                                                                className="form-control" name="PreMedigation"
-                                                                                placeholder={'Pre-Mitigation EMV'} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
-                                                                        <label className="control-label">{'Post-Mitigation EMV '}</label>
-                                                                        <div className='ui input inputDev '>
-                                                                            <input autoComplete="off" readOnly
-                                                                                value={this.state.totalPostRiskEmv == null ? 0 : numeral(this.state.totalPostRiskEmv).format('0,0')}
-                                                                                type="text"
-                                                                                className="form-control" name="PostMedigationCostEMV"
-                                                                                placeholder={'Post-Mitigation EMV'} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
-                                                                        <label className="control-label">{'Cost Of  Mitigation'}</label>
-                                                                        <div className='ui input inputDev '>
-                                                                            <input autoComplete="off" readOnly
-                                                                                value={this.state.totalProposedMit == null ? 0 : numeral(this.state.totalProposedMit).format('0,0')}
-                                                                                type="text"
-                                                                                className="form-control" name="CostMedigation"
-                                                                                placeholder={'Cost Of  Mitigation'} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
-                                                                        <label className="control-label">{'Post-Mitigation EMV + Cost Of  Mitigation'}</label>
-                                                                        <div className='ui input inputDev '>
-                                                                            <input autoComplete="off" readOnly
-                                                                                value={numeral(this.state.totalProposedMit + this.state.totalPostRiskEmv).format('0,0')}
-                                                                                type="text"
-                                                                                className="form-control" name="Mitigation"
-                                                                                placeholder={'Post-Mitigation EMV + Cost Of  Mitigation'} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
-                                                                        <label className="control-label">{'Cost Effectiveness'}</label>
-                                                                    </div>
-                                                                    <div className="ui left pointing label labelWithArrowBorder basic">
-                                                                        <span>{(this.state.totalProposedMit + this.state.totalPostRiskEmv) > this.state.totalPretRiskEmv ? 'Not Cost Effective' : 'Cost Effective'}</span>
-                                                                    </div>
-
-                                                                    <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
-                                                                        <label className="control-label">{'Cost Benefit'}</label>
-                                                                        <div className='ui input inputDev '>
-                                                                            <input autoComplete="off" readOnly
-                                                                                value={numeral(this.state.totalPretRiskEmv - (this.state.totalProposedMit + this.state.totalPostRiskEmv)).format('0,0')}
-                                                                                type="text"
-                                                                                className="form-control" name="CostBenefit"
-                                                                                placeholder={'Cost Benefit'} />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
+                                                                {!this.state.updateConsequence ?
+                                                                    <this.drawConsequencePost /> : <LoadingSection />
+                                                                }
                                                             </div>
-
                                                             <div className="doc-pre-cycle">
                                                                 <div className="slider-Btns">
-                                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(6)}>{Resources['next'][currentLanguage]}</button>
+                                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(5)}>{Resources['next'][currentLanguage]}</button>
                                                                 </div>
+
                                                             </div>
                                                         </div>
                                                         :
                                                         this.state.CurrentStep === 6 ?
-                                                            <div className="document-fields doc-pre-cycle">
-                                                                <header>
-                                                                    <h2 className="zero">{Resources['riskRealisation'][currentLanguage]}</h2>
-                                                                </header>
-                                                                <RiskRealisation riskId={this.state.docId} />
+                                                            <div className="document-fields">
+                                                                <div className="datepickerContainer proForm">
+                                                                    <header>
+                                                                        <h2 className="zero">{Resources['riskAnalysis'][currentLanguage]}</h2>
+                                                                    </header>
+                                                                    <div className="Risk__input">
+                                                                        <div className="letterFullWidth">
+                                                                            <label className="control-label">{'Pre-Mitigation EMV'}</label>
+                                                                            <div className='ui input inputDev '>
+                                                                                <input style={{ minWidth: '360px' }} autoComplete="off" readOnly
+                                                                                    value={this.state.totalPretRiskEmv == null ? 0 : numeral(this.state.totalPretRiskEmv).format('0,0')}
+                                                                                    type="text"
+                                                                                    className="form-control" name="PreMedigation"
+                                                                                    placeholder={'Pre-Mitigation EMV'} />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
+                                                                            <label className="control-label">{'Post-Mitigation EMV '}</label>
+                                                                            <div className='ui input inputDev '>
+                                                                                <input autoComplete="off" readOnly
+                                                                                    value={this.state.totalPostRiskEmv == null ? 0 : numeral(this.state.totalPostRiskEmv).format('0,0')}
+                                                                                    type="text"
+                                                                                    className="form-control" name="PostMedigationCostEMV"
+                                                                                    placeholder={'Post-Mitigation EMV'} />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
+                                                                            <label className="control-label">{'Cost Of  Mitigation'}</label>
+                                                                            <div className='ui input inputDev '>
+                                                                                <input autoComplete="off" readOnly
+                                                                                    value={this.state.totalProposedMit == null ? 0 : numeral(this.state.totalProposedMit).format('0,0')}
+                                                                                    type="text"
+                                                                                    className="form-control" name="CostMedigation"
+                                                                                    placeholder={'Cost Of  Mitigation'} />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
+                                                                            <label className="control-label">{'Post-Mitigation EMV + Cost Of  Mitigation'}</label>
+                                                                            <div className='ui input inputDev '>
+                                                                                <input autoComplete="off" readOnly
+                                                                                    value={numeral(this.state.totalProposedMit + this.state.totalPostRiskEmv).format('0,0')}
+                                                                                    type="text"
+                                                                                    className="form-control" name="Mitigation"
+                                                                                    placeholder={'Post-Mitigation EMV + Cost Of  Mitigation'} />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
+                                                                            <label className="control-label">{'Cost Effectiveness'}</label>
+                                                                        </div>
+                                                                        <div className="ui left pointing label labelWithArrowBorder basic">
+                                                                            <span>{(this.state.totalProposedMit + this.state.totalPostRiskEmv) > this.state.totalPretRiskEmv ? 'Not Cost Effective' : 'Cost Effective'}</span>
+                                                                        </div>
+
+                                                                        <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
+                                                                            <label className="control-label">{'Cost Benefit'}</label>
+                                                                            <div className='ui input inputDev '>
+                                                                                <input autoComplete="off" readOnly
+                                                                                    value={numeral(this.state.totalPretRiskEmv - (this.state.totalProposedMit + this.state.totalPostRiskEmv)).format('0,0')}
+                                                                                    type="text"
+                                                                                    className="form-control" name="CostBenefit"
+                                                                                    placeholder={'Cost Benefit'} />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
                                                                 <div className="doc-pre-cycle">
                                                                     <div className="slider-Btns">
-                                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(7)}>{Resources['next'][currentLanguage]}</button>
+                                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(6)}>{Resources['next'][currentLanguage]}</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             :
-                                                            <Fragment>
-                                                                <div className="document-fields tableBTnabs">
-                                                                    {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                                                </div>
-                                                                <div className="doc-pre-cycle">
-                                                                    <div className="slider-Btns">
-                                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(8)}>{Resources['next'][currentLanguage]}</button>
+                                                            this.state.CurrentStep === 7 ?
+                                                                <div className="document-fields doc-pre-cycle">
+                                                                    <header>
+                                                                        <h2 className="zero">{Resources['riskRealisation'][currentLanguage]}</h2>
+                                                                    </header>
+                                                                    <RiskRealisation riskId={this.state.docId} />
+                                                                    <div className="doc-pre-cycle">
+                                                                        <div className="slider-Btns">
+                                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(7)}>{Resources['next'][currentLanguage]}</button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </Fragment>
+                                                                :
+                                                                <Fragment>
+                                                                    <div className="document-fields tableBTnabs">
+                                                                        {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                    </div>
+                                                                    <div className="doc-pre-cycle">
+                                                                        <div className="slider-Btns">
+                                                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(8)}>{Resources['next'][currentLanguage]}</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </Fragment>
                                     }
                                 </Fragment>}
                         </div>

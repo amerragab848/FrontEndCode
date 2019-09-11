@@ -97,7 +97,6 @@ class wfApproval extends Component {
       Api.getPassword("GetPassWordEncrypt", values.password).then(result => {
         if (result === true) {
           this.setState({ submitLoading: true });
-          console.log('PROps',this.props)
           Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
             this.setState({ submitLoading: false });
             this.props.actions.showOptionPanel(false);
