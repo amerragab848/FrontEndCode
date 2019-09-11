@@ -3063,6 +3063,10 @@
         "en": "Select Company",
         "ar": "برجاء إدخال الشركة "
     },
+    "companyRiskOwnerRequired": {
+        "en": "Select Risk Owner",
+        "ar": "برجاء إدخال الشركة "
+    },
     "actionByContact": {
         "en": "Action By",
         "ar": "الشخص المسئول"

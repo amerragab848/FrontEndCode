@@ -307,6 +307,7 @@ class riskAddEdit extends Component {
                 id: 0,
                 projectId: projectId,
                 arrange: "1",
+                refDoc: "",
                 fromCompanyId: null,
                 fromContactId: null,
                 ownerCompanyId: null,
@@ -1369,38 +1370,38 @@ class riskAddEdit extends Component {
                         {this.state.consequenceData.map((original, index) => {
                             let riskEMV = original.riskEMV != null ? numeral((this.state.statusNumbers == false ? original.riskEMV / 1000 : original.riskEMV)).format('0,0') : 0
                             return (original.isChecked === true ?
-                                 
-                                    <tr key={original.id + '-' + index}>
-                                        <td className="removeTr">
-                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
-                                        </td>
-                                        <td>
-                                            <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
-                                                <Dropdown title=""
-                                                    data={this.state.consequences}
-                                                    handleChange={e => this.actionHandler(original.id, original.conesquenceScore, e, original, true, 1)}
-                                                    selectedValue={original.SelectedConsequence}
-                                                    index={original.id} />
 
-                                            </div>
-                                        </td>
-                                        <td className="removeTr">
-                                            <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
-                                                <Dropdown title=""
-                                                    data={this.state.likelihoods}
-                                                    handleChange={e => this.actionHandler(original.id, original.likelihoodScore, e, original, false, 2)}
-                                                    selectedValue={original.SelectedLikelihood}
-                                                    index={original.id} />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskRanking}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {riskEMV} </div>
-                                        </td>
-                                    </tr>
- 
+                                <tr key={original.id + '-' + index}>
+                                    <td className="removeTr">
+                                        <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
+                                    </td>
+                                    <td>
+                                        <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
+                                            <Dropdown title=""
+                                                data={this.state.consequences}
+                                                handleChange={e => this.actionHandler(original.id, original.conesquenceScore, e, original, true, 1)}
+                                                selectedValue={original.SelectedConsequence}
+                                                index={original.id} />
+
+                                        </div>
+                                    </td>
+                                    <td className="removeTr">
+                                        <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
+                                            <Dropdown title=""
+                                                data={this.state.likelihoods}
+                                                handleChange={e => this.actionHandler(original.id, original.likelihoodScore, e, original, false, 2)}
+                                                selectedValue={original.SelectedLikelihood}
+                                                index={original.id} />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.riskRanking}</div>
+                                    </td>
+                                    <td>
+                                        <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {riskEMV} </div>
+                                    </td>
+                                </tr>
+
                                 : null
                             )
                         })}
@@ -1410,9 +1411,9 @@ class riskAddEdit extends Component {
                             <td colSpan='3'></td>
                             <td>{this.state.preMedigationCostEMV == null ? 0 : (this.state.preMedigationCostEMV).toFixed(2)}</td>
                             <td>{this.state.totalPretRiskEmv == null ? 0 : numeral(this.state.totalPretRiskEmv).format('0,0')}</td>
-                        </tr> 
-                    </tfoot> 
-                </table> 
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         );
     }
@@ -1483,7 +1484,7 @@ class riskAddEdit extends Component {
 
                         })}
                     </tbody>
-                    
+
                     <tfoot>
                         <tr key={'-total152'}>
                             <td colSpan='3'></td>
@@ -1491,8 +1492,8 @@ class riskAddEdit extends Component {
                             <td>{this.state.totalPostRiskEmv == null ? 0 : numeral(this.state.totalPostRiskEmv).format('0,0')}</td>
                         </tr>
 
-                    </tfoot> 
-                </table> 
+                    </tfoot>
+                </table>
             </div>
         );
     }
@@ -1561,6 +1562,17 @@ class riskAddEdit extends Component {
                                                                         onChange={(e) => this.handleChange(e, 'arrange')} />
                                                                 </div>
                                                             </div>
+                                                            <div className="linebylineInput valid-input">
+                                                                <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
+                                                                <div className={"ui input inputDev " + (errors.refDoc && touched.refDoc ? (" has-error") : " ")}>
+                                                                    <input type="text" className="form-control" id="refDoc" readOnly
+                                                                        value={this.state.document.refDoc}
+                                                                        name="refDoc"
+                                                                        placeholder={Resources.refDoc[currentLanguage]}
+                                                                        onBlur={(e) => { handleChange(e); handleBlur(e) }}
+                                                                        onChange={(e) => this.handleChange(e, 'refDoc')} />
+                                                                </div>
+                                                            </div>
                                                             <div className="linebylineInput linebylineInput__checkbox">
                                                                 <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                                 <div className="ui checkbox radio radioBoxBlue">
@@ -1587,15 +1599,24 @@ class riskAddEdit extends Component {
                                                                     id="riskType" />
                                                             </div>
                                                             {this.state.docId > 0 ?
-                                                                <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">{Resources.raisedBy[currentLanguage]}</label>
-                                                                    <div className="ui input inputDev">
-                                                                        <input type="text" className="form-control" id="createdBy" readOnly
-                                                                            value={this.state.document.createdBy}
-                                                                            name="createdBy"
-                                                                            placeholder={Resources.raisedBy[currentLanguage]} />
+                                                                <Fragment>
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <label className="control-label">{Resources.raisedBy[currentLanguage]}</label>
+                                                                        <div className="ui input inputDev">
+                                                                            <input type="text" className="form-control" id="createdBy" readOnly
+                                                                                value={this.state.document.createdBy}
+                                                                                name="createdBy"
+                                                                                placeholder={Resources.raisedBy[currentLanguage]} />
+                                                                        </div>
                                                                     </div>
-                                                                </div> :
+
+                                                                    <div className="linebylineInput valid-input alternativeDate">
+                                                                        <DatePicker title='lastEditDate'
+                                                                            startDate={this.state.document.lastEditDate} />
+                                                                    </div>
+
+                                                                </Fragment>
+                                                                :
                                                                 null
                                                             }
 
@@ -1616,6 +1637,7 @@ class riskAddEdit extends Component {
                                                                         </div>
                                                                         <div className="super_company">
                                                                             <Dropdown isMulti={false} data={this.state.ToContacts}
+                                                                                title="companyRiskOwnerRequired"
                                                                                 selectedValue={this.state.selectedToContact}
                                                                                 handleChange={event => this.handleChangeDropDown(event, 'ownerContactId', false, '', '', '', 'selectedToContact')}
                                                                                 onChange={setFieldValue}
@@ -1661,15 +1683,13 @@ class riskAddEdit extends Component {
                                                             <div className="letterFullWidth">
                                                                 <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                                 <div className="inputDev ui input">
-                                                                    <TextEditor value={this.state.description} onChange={event => this.onChangeMessage(event, 'description')} />
+                                                                    <TextEditor value={this.state.description}
+                                                                        onChange={event => this.onChangeMessage(event, 'description')} />
+                                                                    {/* <textarea colSpan={3}  value={this.state.description} 
+                                                                    onChange={event => this.onChangeMessage(event, 'description')} ></textarea> */}
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                        {/* <div className="proForm first-proform">
-
-                                                        
-                                                        </div> */}
 
                                                         {this.state.docId > 0 ?
                                                             <Fragment>
@@ -1724,9 +1744,6 @@ class riskAddEdit extends Component {
                                         this.state.CurrentStep == 2 ?
                                             <Fragment>
                                                 <div className="subiTabsContent feilds__top">
-                                                    {/* <div className="document-fields">
-                                                        {numberFormats}
-                                                    </div> */}
 
                                                     <div className="doc-pre-cycle">
                                                         <header>
@@ -1758,9 +1775,7 @@ class riskAddEdit extends Component {
                                                 :
                                                 this.state.CurrentStep == 4 ?
                                                     <div className="subiTabsContent feilds__top">
-                                                        {/* <div className="document-fields">
-                                                            {numberFormats}
-                                                        </div> */}
+
                                                         <div className="doc-pre-cycle">
                                                             <header>
                                                                 <h2 className="zero">{Resources['postMedigationRiskQuantitfaction'][currentLanguage]}</h2>
