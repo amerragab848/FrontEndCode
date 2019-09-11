@@ -8,6 +8,7 @@ import LoadingSection from './LoadingSection'
 import ConfirmationModal from "./ConfirmationModal";
 import { SkyLightStateless } from 'react-skylight';
 const _ = require('lodash');
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class RiskConesquence extends Component {
     constructor(props) {
@@ -203,11 +204,8 @@ class RiskConesquence extends Component {
                                             <div className="headCell tableCell-3"> {Resources.conesquenceName[currentLanguage]}</div>
                                         </th>
                                         <th colSpan="3">
-                                            <div className="headCell tableCell-3"> {Resources.comment[currentLanguage]}</div>
-                                        </th>
-                                        <th>
-                                            <div className="headCell"> {Resources.addedDate[currentLanguage]}</div>
-                                        </th>
+                                            <div className="headCell tableCell-3"> {Resources.description[currentLanguage]}</div>
+                                        </th> 
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -234,10 +232,7 @@ class RiskConesquence extends Component {
                                                             : <div>{item.comment}
                                                             </div>}
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.addedDate != null ? moment(item.addedDate).format('DD/MM/YYYY') : 'No Date'}</div>
-                                                </td>
+                                                </td> 
                                             </tr>
                                         )
                                     })}

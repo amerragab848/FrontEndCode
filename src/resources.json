@@ -3063,6 +3063,10 @@
         "en": "Select Company",
         "ar": "برجاء إدخال الشركة "
     },
+    "companyRiskOwnerRequired": {
+        "en": "Select Risk Owner",
+        "ar": "برجاء إدخال الشركة "
+    },
     "actionByContact": {
         "en": "Action By",
         "ar": "الشخص المسئول"
@@ -8122,7 +8126,7 @@
     "reportsRisk": {
         "en": "Reports Risk",
         "ar": " تقرير الخطورة"
-    } ,
+    },
     "open": {
         "en": "Open",
         "ar": " مفتوح"
@@ -8130,5 +8134,9 @@
     "riskCategory": {
         "en": "Risk Category",
         "ar": " فئات الخطورة"
-    } 
+    },
+    "riskIdentification": {
+        "en": "Risk Identification",
+        "ar": "تعريف المخاطر"
+    }
 }
