@@ -4122,7 +4122,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .approveDocument {
-    position: fixed;
+    position: fixed !important;
     bottom: 0;
     right: 40px;
     left: 130px;
@@ -4139,6 +4139,7 @@ h1, h2, h3, h4, h5 {
     -ms-flex-align: center;
     align-items: center;
     z-index: 999;
+    top: unset !important
 }
 
 .approveDocument h2 {
@@ -14302,7 +14303,7 @@ h1, h2, h3, h4, h5 {
 
 .workFlowStep .StepNumber {
     flex-flow: column;
-    width: 100%;
+    width: 100% !important;
     flex-shrink: 0;
     margin-bottom: 21px;
     position: relative;
@@ -15784,19 +15785,6 @@ em {
     font-weight: bold;
 }
 
-.approvalTitle {
-    height: 80px;
-    border-bottom: 1px solid #DADEE6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.approvalTitle h3 {
-    color: #26344c;
-    font-size: 26px;
-}
-
 .textarea-group textarea {
     overflow: auto;
     width: 100%;
@@ -16930,6 +16918,8 @@ tfoot tr td p {
     display: block;
     margin: 0 auto;
     padding-bottom: 70px;
+    position: unset !important;
+    z-index: unset !important;
 }
 
 .noTabs__document .doc-container .step-content .document-fields {
@@ -21632,6 +21622,9 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     justify-content: center;
     padding: 0 18px;
     flex-wrap: wrap; 
+    position: sticky;
+    top: 72px;
+    z-index: 155;
 }
   
 .editView__tabs .editView__tabs--title {
@@ -21746,10 +21739,21 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     font-size: 14px !important;
 }
   
-  .editView__tabs .editView__tabs--title.active p {
-    color: #4382f9; }
-    .docstepper-levels .StepperNum .StepNumber:last-of-type + .Step-Line {
-        display: none;
+.editView__tabs .editView__tabs--title.active p {
+    color: #4382f9; 
+}
+
+.docstepper-levels .StepperNum .StepNumber:last-of-type + .Step-Line {
+    display: none;
+}
+
+.ck-sticky-panel__content {
+    z-index: 100 !important;
+}
+
+.doc-container >div:nth-child(2){
+    position: sticky;
+    top: 72px;
+    z-index: 155;
+    background: #Fff;
     }
-    
-  

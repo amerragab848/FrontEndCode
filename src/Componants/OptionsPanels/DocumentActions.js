@@ -93,7 +93,7 @@ class DocumentActions extends Component {
             approvalStatus: true,
             projectId: this.props.projectId,
             docApprovalId: this.props.docApprovalId,
-            currentArrange: this.props.arrange,
+            currentArrange: this.props.currentArrange,
         }
     }
     ////handle button clcik for dynamically import panel component and show popUp model with loaded panel

@@ -47,6 +47,7 @@ let subjectLink = ({ value, row }) => {
       perviousRoute: window.location.pathname + window.location.search
     };
 
+
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
     doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod

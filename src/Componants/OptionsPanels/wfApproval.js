@@ -55,8 +55,9 @@ class wfApproval extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, state) {
-    if (nextProps.approvalStatus != state.approvalStatus) {
 
+    if (nextProps.approvalStatus != state.approvalStatus) {
+      console.log('original_updateWorkFlow', nextProps.approvalStatus)
       let original_updateWorkFlow = state.updateWorkFlow;
       let updateWorkFlow_new = {};
       updateWorkFlow_new.approvalStatus = nextProps.approvalStatus;
@@ -96,6 +97,7 @@ class wfApproval extends Component {
       Api.getPassword("GetPassWordEncrypt", values.password).then(result => {
         if (result === true) {
           this.setState({ submitLoading: true });
+          console.log('PROps',this.props)
           Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
             this.setState({ submitLoading: false });
             this.props.actions.showOptionPanel(false);

@@ -372,7 +372,7 @@ class LettersAddEdit extends Component {
         }
     };
 
-    handleChange(e, field) { 
+    handleChange(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -386,7 +386,7 @@ class LettersAddEdit extends Component {
         });
     }
 
-    handleChangeDate(e, field) { 
+    handleChangeDate(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};

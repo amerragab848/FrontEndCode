@@ -186,7 +186,12 @@ class riskAddEdit extends Component {
             {
                 name: "riskAnalysis",
                 callBackFn: null
-            }, {
+            },
+            {
+                name: "riskRealisation",
+                callBackFn: null
+            },
+            {
                 name: "addDocAttachment",
                 callBackFn: null
             }
@@ -1827,7 +1832,7 @@ class riskAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                     :
-                                                    this.state.CurrentStep == 5 ?
+                                                    this.state.CurrentStep === 5 ?
                                                         <div className="document-fields">
                                                             <div className="datepickerContainer proForm">
                                                                 <header>
@@ -1894,7 +1899,7 @@ class riskAddEdit extends Component {
                                                                 </div>
 
                                                             </div>
-                                                            <RiskRealisation riskId={this.state.docId} />
+
                                                             <div className="doc-pre-cycle">
                                                                 <div className="slider-Btns">
                                                                     <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(6)}>{Resources['next'][currentLanguage]}</button>
@@ -1902,30 +1907,41 @@ class riskAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         :
-                                                        <Fragment>
-                                                            <div className="document-fields tableBTnabs">
-                                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                                            </div>
-                                                            <div className="doc-pre-cycle">
-                                                                <div className="slider-Btns">
-                                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(7)}>{Resources['next'][currentLanguage]}</button>
+                                                        this.state.CurrentStep === 6 ?
+                                                            <div className="document-fields doc-pre-cycle">
+                                                                <header>
+                                                                    <h2 className="zero">{Resources['riskRealisation'][currentLanguage]}</h2>
+                                                                </header>
+                                                                <RiskRealisation riskId={this.state.docId} />
+                                                                <div className="doc-pre-cycle">
+                                                                    <div className="slider-Btns">
+                                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(7)}>{Resources['next'][currentLanguage]}</button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </Fragment>
+                                                            :
+                                                            <Fragment>
+                                                                <div className="document-fields tableBTnabs">
+                                                                    {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                </div>
+                                                                <div className="doc-pre-cycle">
+                                                                    <div className="slider-Btns">
+                                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(8)}>{Resources['next'][currentLanguage]}</button>
+                                                                    </div>
+                                                                </div>
+                                                            </Fragment>
                                     }
                                 </Fragment>}
                         </div>
-                        <div  >
-                            <Steps
-                                steps_defination={steps_defination}
-                                exist_link="/Risk/"
-                                docId={this.state.docId}
-                                changeCurrentStep={stepNo =>
-                                    this.changeCurrentStep(stepNo)
-                                }
-                                stepNo={this.state.CurrentStep}
-                            />
-                        </div>
+                        <Steps
+                            steps_defination={steps_defination}
+                            exist_link="/Risk/"
+                            docId={this.state.docId}
+                            changeCurrentStep={stepNo =>
+                                this.changeCurrentStep(stepNo)
+                            }
+                            stepNo={this.state.CurrentStep}
+                        />
                         {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
@@ -1937,7 +1953,7 @@ class riskAddEdit extends Component {
                                             projectId={this.state.projectId}
                                             previousRoute={this.state.previousRoute}
                                             docApprovalId={this.state.docApprovalId}
-                                            currentArrange={this.state.currentArrange}
+                                            currentArrange={this.state.arrange}
                                             showModal={this.props.showModal}
                                             showOptionPanel={this.showOptionPanel}
                                             permission={this.state.permission}
