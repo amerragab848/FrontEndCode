@@ -14,12 +14,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
-import * as communicationActions from '../../store/actions/communication'; 
+import moment from "moment";
+import * as communicationActions from '../../store/actions/communication';
 import RiskConesquence from '../../Componants/publicComponants/RiskConesquence';
 import RiskRealisation from '../../Componants/publicComponants/RiskRealisation';
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import numeral from 'numeral';
@@ -155,7 +155,7 @@ class riskAddEdit extends Component {
             selectedPriorityId: { label: Resources.prioritySelect[currentLanguage], value: "0" },
             description: '',
             descriptionMitigation: '',
-
+            isEdit: false
         }
 
         if (!Config.IsAllow(10000) && !Config.IsAllow(10001) && !Config.IsAllow(10003)) {
@@ -269,6 +269,7 @@ class riskAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
 
+            this.setState({ isEdit: true });
             this.props.actions.documentForEdit("GetCommunicationRiskForEdit?id=" + this.state.docId);
 
             dataservice.GetDataGrid("GetRiskCycles?riskId=" + this.state.docId).then(result => {
@@ -356,7 +357,6 @@ class riskAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -1090,29 +1090,18 @@ class riskAddEdit extends Component {
     buildStructureTableThirdTab(result) {
         let data = [];
         let dataPost = [];
-        let likelihood = {
-            label: 'Please Select',
-            value: 0
-        }
-        let consequ = {
-            label: 'Please Select',
-            value: 0
-        }
-
+        let likelihood = { label: 'Please Select', value: 0 }
+        let consequ = { label: 'Please Select', value: 0 }
         let state = { ...this.state };
         let dslikelihood = this.state.likelihoods;
         let consequences = this.state.consequences;
-
         let totalRankingPost = 0;
         let totalRanking = 0;
         let totalMedigationCost = 0;
         result.map(item => {
-
             let likelihoodScore = item['likelihoodScore'];
             let consequenceScore = item['conesquenceScore'];
-
             let riskEMV = 0;
-
             let statusNumbers = this.state.statusNumbers
             let riskRanking = parseFloat(item['riskRanking']);
             if (statusNumbers) {
@@ -1127,10 +1116,8 @@ class riskAddEdit extends Component {
                 title: item['title'],
                 likelihoodScore: item['likelihoodScore'],
                 conesquenceScore: item['conesquenceScore'],
-
                 consequenceScoreValue: item['consequenceScoreValue'],
                 likelihoodScoreValue: item['likelihoodScoreValue'],
-
                 riskEMV: riskEMV,
                 action: 0,
                 riskRanking: item['riskRanking'],
@@ -1769,7 +1756,7 @@ class riskAddEdit extends Component {
                                                         {this.state.docId > 0 ?
                                                             <Fragment>
                                                                 <RiskConesquence riskId={this.state.docId} />
-                                                                <RiskCategorisation riskId={this.state.docId} />
+                                                                <RiskCategorisation riskId={this.state.docId} isEdit={this.state.isEdit} />
                                                             </Fragment>
                                                             : null
                                                         }
@@ -1916,7 +1903,7 @@ class riskAddEdit extends Component {
                                                                         <label className="control-label">{'Cost Effectiveness'}</label>
                                                                     </div>
                                                                     <div className="ui left pointing label labelWithArrowBorder basic">
-                                                                        <span>{(this.state.totalProposedMit + this.state.totalPostRiskEmv) > this.state.totalPretRiskEmv ?  'Not Cost Effective': 'Cost Effective' }</span>
+                                                                        <span>{(this.state.totalProposedMit + this.state.totalPostRiskEmv) > this.state.totalPretRiskEmv ? 'Not Cost Effective' : 'Cost Effective'}</span>
                                                                     </div>
 
                                                                     <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
@@ -1985,7 +1972,7 @@ class riskAddEdit extends Component {
                                 : null
                         }
                     </div>
-                </div> 
+                </div>
             </div>
         );
     }

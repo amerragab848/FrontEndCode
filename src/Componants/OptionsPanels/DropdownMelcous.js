@@ -30,14 +30,14 @@ const DropdownIndicator = props => {
 };
 
 class DropdownMelcous extends Component {
-    constructor(props) {
-        super(props)
 
+    constructor(props) {
+        super(props);
+
+        this.ischeckbox = this.props.checked === "true" ? { DropdownIndicator, Option, MultiValue } : { DropdownIndicator }
     }
 
-
     handleChange = value => {
-
         if (this.props.onChange != undefined) {
             this.props.onChange(this.props.name, value);
         }
@@ -48,7 +48,6 @@ class DropdownMelcous extends Component {
     handleBlur = () => {
         if (this.props.onBlur != undefined)
             this.props.onBlur(this.props.name, true);
-
     };
 
     render() {
@@ -129,8 +128,7 @@ class DropdownMelcous extends Component {
                 <div className="spanValidation">
                     <label className="control-label">{this.props.title ? Resources[this.props.title][currentLanguage] : ""}</label>
                     {
-                        this.props.message ?
-                            <span>{this.props.message}</span> : ""
+                        this.props.message ? <span>{this.props.message}</span> : ""
                     }
                 </div>
                 <Fragment>
@@ -150,9 +148,12 @@ class DropdownMelcous extends Component {
                                 onChange={this.handleChange}
                                 onBlur={this.handleBlur}
                                 closeMenuOnSelect={this.props.closeMenuOnSelect !== undefined ? this.props.closeMenuOnSelect : true}
-                                components={{ DropdownIndicator }}
+                                components={this.ischeckbox}
+                                hideSelectedOptions={this.props.hideSelectedOptions}
+                                backspaceRemovesValue={this.props.backspaceRemovesValue}
                                 className={(this.props.classDrop ? this.props.classDrop : ' reactSelect') + (this.props.error && this.props.touched ? " drop__hasError" : " ")}
-                                styles={this.props.styles ? this.props.styles : publicStyles} />
+                                styles={this.props.styles ? this.props.styles : publicStyles}
+                            />
                             {this.props.touched && (<em className="dropdown__error">{this.props.error}</em>)}
                         </div>
                     </div>
@@ -161,5 +162,23 @@ class DropdownMelcous extends Component {
         )
     }
 }
+
+const Option = props => (
+    <div>
+        <components.Option {...props}>
+            <div className="ui checked checkbox  checkBoxGray300 " style={{ display: 'inline-block', width: '50%' }}>
+                <input type="checkbox" className="checkbox" checked={props.isSelected} onChange={(e) => null} />
+                {console.log("props.isSelected :", props.isSelected)}
+                <label>{props.data.label}</label>
+            </div>
+        </components.Option>
+    </div>
+);
+
+const MultiValue = props => (
+    <components.MultiValue {...props}>
+        <span>{props.data.label}</span>
+    </components.MultiValue>
+);
 
 export default DropdownMelcous;

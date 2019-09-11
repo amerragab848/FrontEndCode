@@ -8122,7 +8122,7 @@
     "reportsRisk": {
         "en": "Reports Risk",
         "ar": " تقرير الخطورة"
-    } ,
+    },
     "open": {
         "en": "Open",
         "ar": " مفتوح"
@@ -8130,5 +8130,17 @@
     "riskCategory": {
         "en": "Risk Category",
         "ar": " فئات الخطورة"
-    } 
+    },
+    "projectStage": {
+        "en": "Project Stage",
+        "ar": " Project Stage"
+    },
+    "lots": {
+        "en": "Lots",
+        "ar": "Lots"
+    },
+    "assetsTypes": {
+        "en": "Assets Types",
+        "ar": "Assets Types"
+    }
 }

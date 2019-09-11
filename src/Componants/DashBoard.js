@@ -343,11 +343,7 @@ class DashBoard extends Component {
                             </div>
                             <div className="project__title">
                                 <h3>
-                                    {
-                                        Resources[widget.title][
-                                        currentLanguage
-                                        ]
-                                    }
+                                    {Resources[widget.title][currentLanguage]}
                                 </h3>
                             </div>
                         </div>
@@ -452,28 +448,9 @@ class DashBoard extends Component {
                                         <div className="dash__content ui tab active">
                                             <div className="project__content">
                                                 {/* general */}
-                                                <SortablePane
-                                                    direction="vertical"
-                                                    order={
-                                                        this.state
-                                                            .categoryOrder[0]
-                                                    }
-                                                    onDragStop={(
-                                                        e,
-                                                        key,
-                                                        el,
-                                                        order
-                                                    ) =>
-                                                        this.categoryOrderChanged(
-                                                            order
-                                                        )
-                                                    }
-                                                    onOrderChange={order =>
-                                                        this.changeCategoryOrder(
-                                                            order,
-                                                            1
-                                                        )
-                                                    }>
+                                                <SortablePane direction="vertical" order={this.state.categoryOrder[0]}
+                                                    onDragStop={(e, key, el, order) => this.categoryOrderChanged(order)}
+                                                    onOrderChange={order => this.changeCategoryOrder(order, 1)}>
                                                     {categoryPanes[1]}
                                                 </SortablePane>
                                             </div>
