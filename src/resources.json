@@ -8178,5 +8178,9 @@
     "residualRiskRefNo": {
         "en": "Residual risk Referance No",
         "ar": "رقم مرجع المخاطر المتبقيه"
+    },
+    "requestApprovalDrop": {
+        "en": "Request Approval",
+        "ar": " طلب اعتماد"
     }
 }
