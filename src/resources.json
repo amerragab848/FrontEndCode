@@ -8068,7 +8068,7 @@
         "ar": "منظمة"
     },
     "managementlevel": {
-        "en": "Management level",
+        "en": "G contractor",
         "ar": "مستوى الإدارة"
     },
     "categorisation": {
@@ -8140,8 +8140,8 @@
         "ar": " Project Stage"
     },
     "lots": {
-        "en": "Lots",
-        "ar": "Lots"
+        "en": "Lot",
+        "ar": "Lot"
     },
     "assetsTypes": {
         "en": "Assets Types",
@@ -8162,5 +8162,9 @@
     "riskMitigationProgress": {
         "en": "Risk Mitigation Progress ",
         "ar": "التقدم في تخفيف المخاطر"
+    },
+    "rbs": {
+        "en": "RBS ",
+        "ar": "RBS"
     }
 }
