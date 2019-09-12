@@ -21757,3 +21757,15 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     z-index: 155;
     background: #Fff;
     }
+
+
+    .editView__tabs {
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        padding: 0 10px;
+    }
+
+    .editView__tabs::-webkit-scrollbar {
+        height: 5px;
+    }
