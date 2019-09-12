@@ -436,7 +436,9 @@ class riskAddEdit extends Component {
         dataservice.GetDataGrid("GetaccountsDefaultListForList?listType=likelihoods").then(result => {
             let data = [];
             if (result) {
-                result.map(i => {
+                let items = _.orderBy(result, ['action'],['desc']);
+           
+                items.map(i => {
                     data.push({
                         label: i['title'], value: i['id'], action: i['value']
                     })
@@ -450,11 +452,13 @@ class riskAddEdit extends Component {
         //consequencesScores
         dataservice.GetDataGrid("GetaccountsDefaultListForList?listType=consequencesScores").then(result => {
             let data = [];
+             
             result.map(i => {
                 data.push({
                     label: i['title'], value: i['id'], action: i['value']
                 })
             })
+
             this.setState({
                 consequences: [...data]
             });
@@ -1067,8 +1071,7 @@ class riskAddEdit extends Component {
         let dslikelihood = this.state.likelihoods;
         let consequences = this.state.consequences;
         let totalRankingPost = 0;
-        let totalRanking = 0;
-        let totalMedigationCost = 0;
+        let totalRanking = 0; 
         result.map(item => {
             let likelihoodScore = item['likelihoodScore'];
             let consequenceScore = item['conesquenceScore'];
@@ -1384,6 +1387,15 @@ class riskAddEdit extends Component {
                                     <td className="removeTr">
                                         <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {original.title}</div>
                                     </td>
+                                    <td className="removeTr">
+                                        <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
+                                            <Dropdown title=""
+                                                data={this.state.likelihoods}
+                                                handleChange={e => this.actionHandler(original.id, original.likelihoodScore, e, original, false, 2)}
+                                                selectedValue={original.SelectedLikelihood}
+                                                index={original.id} />
+                                        </div>
+                                    </td>
                                     <td>
                                         <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
                                             <Dropdown title=""
@@ -1392,15 +1404,6 @@ class riskAddEdit extends Component {
                                                 selectedValue={original.SelectedConsequence}
                                                 index={original.id} />
 
-                                        </div>
-                                    </td>
-                                    <td className="removeTr">
-                                        <div className="" style={{ maxWidth: 'inherit', paddingLeft: '16px', padding: '10px 0 10px 16px' }}>
-                                            <Dropdown title=""
-                                                data={this.state.likelihoods}
-                                                handleChange={e => this.actionHandler(original.id, original.likelihoodScore, e, original, false, 2)}
-                                                selectedValue={original.SelectedLikelihood}
-                                                index={original.id} />
                                         </div>
                                     </td>
                                     <td>
