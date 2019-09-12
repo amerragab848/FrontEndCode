@@ -53,7 +53,7 @@ const documentProposedValidationSchema = Yup.object().shape({
 
 const riskMitigationProgressValidationSchema = Yup.object().shape({
     proposeMitigation: Yup.string().required(Resources['proposeMitigation'][currentLanguage]).nullable(true),
-    actionArchive: Yup.string().required(Resources['actionArchive'][currentLanguage]),
+    actionAchieve: Yup.string().required(Resources['actionAchieve'][currentLanguage]),
     actionPlanned: Yup.string().required(Resources['actionPlanned'][currentLanguage]),
 })
 
@@ -1644,7 +1644,7 @@ class riskAddEdit extends Component {
                             <Formik initialValues={{
                                 proposeMitigation: "",
                                 date: moment().format('YYYY-MM-DD'),
-                                actionArchive: "",
+                                actionAchieve: "",
                                 actionPlanned: "",
                                 riskId: this.state.docId
                             }}
@@ -1660,7 +1660,7 @@ class riskAddEdit extends Component {
                                     });
                                     toast.success(Resources["operationSuccess"][currentLanguage]);
                                     //    values.date = moment().format('YYYY-MM-DD')
-                                    //    values.actionArchive = ""
+                                    //    values.actionAchieve = ""
                                     //    values.actionPlanned = ""
                                     //    values.proposeMitigation = ""
 
@@ -1690,15 +1690,15 @@ class riskAddEdit extends Component {
                                             </div>
 
                                             <div className="linebylineInput valid-input">
-                                                <label className="control-label">{Resources['actionArchive'][currentLanguage]}</label>
-                                                <div className={'ui input inputDev' + (errors.actionArchive && touched.actionArchive ? (" has-error") : !errors.actionArchive && touched.actionArchive ? (" has-success") : " ")} >
-                                                    <input autoComplete="off" name="actionArchive" id="actionArchive"
-                                                        value={values.actionArchive}
+                                                <label className="control-label">{Resources['actionAchieve'][currentLanguage]}</label>
+                                                <div className={'ui input inputDev' + (errors.actionAchieve && touched.actionAchieve ? (" has-error") : !errors.actionAchieve && touched.actionAchieve ? (" has-success") : " ")} >
+                                                    <input autoComplete="off" name="actionAchieve" id="actionAchieve"
+                                                        value={values.actionAchieve}
                                                         className="form-control"
                                                         onBlur={handleBlur}
                                                         onChange={handleChange}
-                                                        placeholder={Resources['actionArchive'][currentLanguage]} />
-                                                    {errors.actionArchive && touched.actionArchive ? (<em className="pError">{errors.actionArchive}</em>) : null}
+                                                        placeholder={Resources['actionAchieve'][currentLanguage]} />
+                                                    {errors.actionAchieve && touched.actionAchieve ? (<em className="pError">{errors.actionAchieve}</em>) : null}
                                                 </div>
                                             </div>
 
@@ -1741,7 +1741,7 @@ class riskAddEdit extends Component {
                                                 <div className="headCell"> {Resources['date'][currentLanguage]}</div>
                                             </th>
                                             <th>
-                                                <div className="headCell"> {Resources['actionArchive'][currentLanguage]}</div>
+                                                <div className="headCell"> {Resources['actionAchieve'][currentLanguage]}</div>
                                             </th>
                                             <th>
                                                 <div className="headCell"> {Resources['actionPlanned'][currentLanguage]}</div>
@@ -1763,7 +1763,7 @@ class riskAddEdit extends Component {
                                                 </td>
 
                                                 <td>
-                                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.actionArchive}</div>
+                                                    <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.actionAchieve}</div>
                                                 </td>
                                             </tr>
                                         })}
