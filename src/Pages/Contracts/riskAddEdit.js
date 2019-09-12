@@ -229,8 +229,7 @@ class riskAddEdit extends Component {
 
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=currency", 'title', 'id').then(result => {
             this.setState({ currency: result })
-        })
-
+        });
     };
 
     componentWillUnmount() {
@@ -243,6 +242,7 @@ class riskAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id !== this.props.document.id) {
             let sarverObject = nextProps.document;
+
             sarverObject.docDate = sarverObject.docDate !== null ? moment(sarverObject.docDate).format('YYYY-MM-DD') : moment();
             sarverObject.requiredDate = sarverObject.requiredDate !== null ? moment(sarverObject.requiredDate).format('YYYY-MM-DD') : moment();
 
@@ -1815,7 +1815,7 @@ class riskAddEdit extends Component {
                                                                 <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                                 <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? (" has-error") : " ")}>
                                                                     <input type="text" className="form-control" id="arrange" readOnly
-                                                                        value={this.state.document.arrange}
+                                                                        value={this.state.document.arrange || ''}
                                                                         name="arrange"
                                                                         placeholder={Resources.arrange[currentLanguage]}
                                                                         onBlur={(e) => { handleChange(e); handleBlur(e) }}
@@ -1826,7 +1826,7 @@ class riskAddEdit extends Component {
                                                                 <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                                 <div className={"ui input inputDev " + (errors.refDoc && touched.refDoc ? (" has-error") : " ")}>
                                                                     <input type="text" className="form-control" id="refDoc" readOnly
-                                                                        value={this.state.document.refDoc}
+                                                                        value={this.state.document.refDoc || ''}
                                                                         name="refDoc"
                                                                         placeholder={Resources.refDoc[currentLanguage]}
                                                                         onBlur={(e) => { handleChange(e); handleBlur(e) }}
@@ -1864,7 +1864,7 @@ class riskAddEdit extends Component {
                                                                         <label className="control-label">{Resources.raisedBy[currentLanguage]}</label>
                                                                         <div className="ui input inputDev">
                                                                             <input type="text" className="form-control" id="createdBy" readOnly
-                                                                                value={this.state.document.createdBy}
+                                                                                value={this.state.document.createdBy || ''}
                                                                                 name="createdBy"
                                                                                 placeholder={Resources.raisedBy[currentLanguage]} />
                                                                         </div>

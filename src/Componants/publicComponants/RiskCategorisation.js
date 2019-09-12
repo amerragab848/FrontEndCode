@@ -15,7 +15,6 @@ class RiskCategorisation extends Component {
         super(props);
 
         this.state = {
-            isLoading: false,
             projectPhase: [],
             organisation: [],
             managementlevel: [],
@@ -95,8 +94,6 @@ class RiskCategorisation extends Component {
 
     toggleSelected(obj, type, selectedValue) {
 
-        this.setState({ isLoading: true });
-
         const lengthObj = obj.length;
 
         let selectedLengthListTypes = this.state[selectedValue].length;
@@ -142,13 +139,8 @@ class RiskCategorisation extends Component {
                         bulkSelected
                     });
 
-                    this.setState({ isLoading: false });
-
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
-                    this.setState({
-                        isLoading: false
-                    });
                     toast.success(Resources["operationCanceled"][currentLanguage]);
                 });
             }
@@ -169,7 +161,6 @@ class RiskCategorisation extends Component {
                 lastData.splice(indexData, 1);
 
                 this.setState({
-                    isLoading: false,
                     [selectedValue]: obj,
                     bulkSelected,
                     lastData
@@ -187,108 +178,106 @@ class RiskCategorisation extends Component {
                     <header className="subHeader" style={{ paddingTop: '0' }}>
                         <h2 className="zero">{Resources['categorisation'][currentLanguage]}</h2>
                     </header>
-                    {this.state.isLoading == true ? <LoadingSection /> :
-                        <Fragment>
-                            <div id="riskForm" className="proForm datepickerContainer" noValidate="novalidate">
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown
-                                        title="projectPhase"
-                                        data={this.state.projectPhase}
-                                        handleChange={event => this.toggleSelected(event, "projectPhase", "selectedProjectPhase")}
-                                        index="projectPhase"
-                                        name="projectPhase"
-                                        hideSelectedOptions={false}
-                                        backspaceRemovesValue={false}
-                                        checked={true}
-                                        isMulti={true}
-                                        closeMenuOnSelect={false}
-                                        checked="true"
-                                        value={this.state.selectedProjectPhase}
-                                        id="projectPhase" />
-                                </div>
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown
-                                        title="rbs"
-                                        data={this.state.organisation}
-                                        handleChange={event => this.toggleSelected(event, "organisation", "selectedOrganisation")}
-                                        index="organisation"
-                                        name="organisation"
-                                        id="organisation"
-                                        hideSelectedOptions={false}
-                                        backspaceRemovesValue={false}
-                                        checked="true"
-                                        isMulti={true}
-                                        closeMenuOnSelect={false}
-                                        value={this.state.selectedOrganisation}
-                                    />
-                                </div>
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown
-                                        title="managementlevel"
-                                        data={this.state.managementlevel}
-                                        handleChange={event => this.toggleSelected(event, "managementlevel", "selectedManagementlevel")}
-                                        index="managementlevel"
-                                        name="managementlevel"
-                                        id="managementlevel"
-                                        hideSelectedOptions={false}
-                                        backspaceRemovesValue={false}
-                                        checked="true"
-                                        isMulti={true}
-                                        closeMenuOnSelect={false}
-                                        value={this.state.selectedManagementlevel}
-                                    />
-                                </div>
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown
-                                        title="projectStage"
-                                        data={this.state.project_stage}
-                                        handleChange={event => this.toggleSelected(event, "project_stage", "selectedProjectStage")}
-                                        index="projectStage"
-                                        name="projectStage"
-                                        id="projectStage"
-                                        hideSelectedOptions={false}
-                                        backspaceRemovesValue={false}
-                                        checked="true"
-                                        isMulti={true}
-                                        closeMenuOnSelect={false}
-                                        value={this.state.selectedProjectStage}
-                                    />
-                                </div>
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown
-                                        title="lots"
-                                        data={this.state.lots}
-                                        handleChange={event => this.toggleSelected(event, "lots", "selectedLots")}
-                                        index="lots"
-                                        name="lots"
-                                        id="lots"
-                                        hideSelectedOptions={false}
-                                        backspaceRemovesValue={false}
-                                        checked="true"
-                                        isMulti={true}
-                                        closeMenuOnSelect={false}
-                                        value={this.state.selectedLots}
-                                    />
-                                </div>
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown
-                                        title="assetsTypes"
-                                        data={this.state.assets_types}
-                                        handleChange={event => this.toggleSelected(event, "assets_types", "selectedAssetsTypes")}
-                                        index="assetsTypes"
-                                        name="assetsTypes"
-                                        id="assetsTypes"
-                                        hideSelectedOptions={false}
-                                        backspaceRemovesValue={false}
-                                        checked="true"
-                                        isMulti={true}
-                                        closeMenuOnSelect={false}
-                                        value={this.state.selectedAssetsTypes}
-                                    />
-                                </div>
+                    <Fragment>
+                        <div id="riskForm" className="proForm datepickerContainer" noValidate="novalidate">
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="projectPhase"
+                                    data={this.state.projectPhase}
+                                    handleChange={event => this.toggleSelected(event, "projectPhase", "selectedProjectPhase")}
+                                    index="projectPhase"
+                                    name="projectPhase"
+                                    hideSelectedOptions={false}
+                                    backspaceRemovesValue={false}
+                                    checked={true}
+                                    isMulti={true}
+                                    closeMenuOnSelect={false}
+                                    checked="true"
+                                    value={this.state.selectedProjectPhase}
+                                    id="projectPhase" />
                             </div>
-                        </Fragment>
-                    }
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="rbs"
+                                    data={this.state.organisation}
+                                    handleChange={event => this.toggleSelected(event, "organisation", "selectedOrganisation")}
+                                    index="organisation"
+                                    name="organisation"
+                                    id="organisation"
+                                    hideSelectedOptions={false}
+                                    backspaceRemovesValue={false}
+                                    checked="true"
+                                    isMulti={true}
+                                    closeMenuOnSelect={false}
+                                    value={this.state.selectedOrganisation}
+                                />
+                            </div>
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="managementlevel"
+                                    data={this.state.managementlevel}
+                                    handleChange={event => this.toggleSelected(event, "managementlevel", "selectedManagementlevel")}
+                                    index="managementlevel"
+                                    name="managementlevel"
+                                    id="managementlevel"
+                                    hideSelectedOptions={false}
+                                    backspaceRemovesValue={false}
+                                    checked="true"
+                                    isMulti={true}
+                                    closeMenuOnSelect={false}
+                                    value={this.state.selectedManagementlevel}
+                                />
+                            </div>
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="projectStage"
+                                    data={this.state.project_stage}
+                                    handleChange={event => this.toggleSelected(event, "project_stage", "selectedProjectStage")}
+                                    index="projectStage"
+                                    name="projectStage"
+                                    id="projectStage"
+                                    hideSelectedOptions={false}
+                                    backspaceRemovesValue={false}
+                                    checked="true"
+                                    isMulti={true}
+                                    closeMenuOnSelect={false}
+                                    value={this.state.selectedProjectStage}
+                                />
+                            </div>
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="lots"
+                                    data={this.state.lots}
+                                    handleChange={event => this.toggleSelected(event, "lots", "selectedLots")}
+                                    index="lots"
+                                    name="lots"
+                                    id="lots"
+                                    hideSelectedOptions={false}
+                                    backspaceRemovesValue={false}
+                                    checked="true"
+                                    isMulti={true}
+                                    closeMenuOnSelect={false}
+                                    value={this.state.selectedLots}
+                                />
+                            </div>
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title="assetsTypes"
+                                    data={this.state.assets_types}
+                                    handleChange={event => this.toggleSelected(event, "assets_types", "selectedAssetsTypes")}
+                                    index="assetsTypes"
+                                    name="assetsTypes"
+                                    id="assetsTypes"
+                                    hideSelectedOptions={false}
+                                    backspaceRemovesValue={false}
+                                    checked="true"
+                                    isMulti={true}
+                                    closeMenuOnSelect={false}
+                                    value={this.state.selectedAssetsTypes}
+                                />
+                            </div>
+                        </div>
+                    </Fragment>
                 </div>
             </div>
         );
