@@ -184,8 +184,7 @@ class permissionsGroups extends Component {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
                 let rows = []
                 this.state.rows.forEach(element => {
-                    if (element.id == this.state.selectedRow.id) {
-                        console.log(element)
+                    if (element.id == this.state.selectedRow.id) { 
                         element.groupName = value.GroupName
                     }
                     rows.push(element)

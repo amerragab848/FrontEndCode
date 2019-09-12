@@ -225,8 +225,7 @@ class budgetCashFlow extends Component {
         this.state.rowSelectedId.map(i => {
             id = i
         })
-        let userName = _.find(rowsData, { 'id': id })
-        console.log(userName.userName)
+        let userName = _.find(rowsData, { 'id': id }) 
         Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName, null, 'DElETE').then(
             Api.post('accountDeleteById?id=' + id)
                 .then(result => {

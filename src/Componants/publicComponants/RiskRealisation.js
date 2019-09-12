@@ -93,7 +93,7 @@ class RiskRealisation extends Component {
         let riskRealisation = this.state.riskRealisation;
         riskRealisation.riskId = this.state.riskId;
         riskRealisation.dateRealisation = moment(riskRealisation.dateRealisation, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        console.log(riskRealisation);
+         
         Api.post('AddRiskRealisation', riskRealisation).then(() => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
             this.setState({ isLoading: false });
@@ -102,12 +102,7 @@ class RiskRealisation extends Component {
 
     render() {
         return (
-            <Fragment>
-                {/* <header className="main__header">
-                    <div className="main__header--div">
-                        <h2 className="zero">{Resources['riskRealisation'][currentLanguage]}</h2>
-                    </div>
-                </header> */}
+            <Fragment> 
                 {this.state.pageLoading == true ? <LoadingSection /> :
                     <Formik
                         initialValues={{ ...this.state.riskRealisation }}

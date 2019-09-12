@@ -248,12 +248,9 @@ class GeneralConfiguration extends Component {
             })
         }
         else {
-            let updated_document = this.state.DefaultConfigurations
-            console.log(updated_document)
-            let value = updated_document[field] === true ? false : true
-            console.log(value)
-            updated_document[field] = value;
-            console.log(updated_document)
+            let updated_document = this.state.DefaultConfigurations 
+            let value = updated_document[field] === true ? false : true 
+            updated_document[field] = value; 
             this.setState({
                 DefaultConfigurations: updated_document
             })

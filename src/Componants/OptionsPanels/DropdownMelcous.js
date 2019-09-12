@@ -43,8 +43,7 @@ class DropdownMelcous extends Component {
         }
         this.props.handleChange(value, this.props.name);
     };
-
-
+ 
     handleBlur = () => {
         if (this.props.onBlur != undefined)
             this.props.onBlur(this.props.name, true);
@@ -168,7 +167,6 @@ const Option = props => (
         <components.Option {...props}>
             <div className="ui checked checkbox  checkBoxGray300 " style={{ display: 'inline-block', width: '50%' }}>
                 <input type="checkbox" className="checkbox" checked={props.isSelected} onChange={(e) => null} />
-                {console.log("props.isSelected :", props.isSelected)}
                 <label>{props.data.label}</label>
             </div>
         </components.Option>

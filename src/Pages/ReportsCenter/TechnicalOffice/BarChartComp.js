@@ -99,8 +99,7 @@ class BarChartComp extends Component {
           <div className="panel-body">
             <ResponsiveContainer
               render={({ width }) => (
-                <div>
-                  {console.log(this.state.stackedBarData)}
+                <div> 
                   <StackedBar
                     width={width}
                     data={

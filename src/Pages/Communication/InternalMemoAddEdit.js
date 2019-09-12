@@ -208,8 +208,7 @@ class InternalMemoAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; }); 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result

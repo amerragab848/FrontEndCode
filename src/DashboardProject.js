@@ -215,7 +215,7 @@ class DashboardProject extends Component {
 
     renderCategory() { 
         let categoryWidget = this.state.widgets.map((category, index) => {
-            console.log(category, index)
+           
             return (
                 <div className="SummeriesContainer" key={index + "DIV"}>
                     <Fragment key={index}>

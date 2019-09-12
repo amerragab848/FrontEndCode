@@ -147,8 +147,7 @@ class Expenses extends Component {
             showDeleteModal: false,
         };
     }
-    attachments = () => {
-        console.log("attachments")
+    attachments = () => { 
     }
 
     clickHandlerDeleteRowsMain = (selectedRows) => {

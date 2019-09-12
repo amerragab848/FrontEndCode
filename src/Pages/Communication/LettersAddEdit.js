@@ -188,8 +188,7 @@ class LettersAddEdit extends Component {
             //         // und 976 --1
             //         //976 976 fire modal
             //         //976 976 close modal
-            //         //alert('recieve....');
-            //         //console.log(this.props.document.id, nextProps.document.id);
+            //         //alert('recieve....'); 
             //         //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
 
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
@@ -245,8 +244,7 @@ class LettersAddEdit extends Component {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = result.filter(function (i) {
                     return i.value == toSubField;
-                });
-                console.log(targetFieldSelected);
+                }); 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result

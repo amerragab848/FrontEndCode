@@ -319,8 +319,7 @@ class equipmentDeliveryAddEdit extends Component {
 
             this.setState({
                 selectedProject: event
-            })
-            // console.log(this.state.selectedProject)
+            }) 
             // if (event == null) return
             // let original_document = { ...this.state.document }
             // let updated_document = {};
