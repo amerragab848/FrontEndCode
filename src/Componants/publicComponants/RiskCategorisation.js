@@ -95,6 +95,8 @@ class RiskCategorisation extends Component {
 
     toggleSelected(obj, type, selectedValue) {
 
+        this.setState({ isLoading: true });
+
         const lengthObj = obj.length;
 
         let selectedLengthListTypes = this.state[selectedValue].length;
@@ -139,6 +141,8 @@ class RiskCategorisation extends Component {
                         lastData,
                         bulkSelected
                     });
+
+                    this.setState({ isLoading: false });
 
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
@@ -204,7 +208,7 @@ class RiskCategorisation extends Component {
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <Dropdown
-                                        title="organisation"
+                                        title="rbs"
                                         data={this.state.organisation}
                                         handleChange={event => this.toggleSelected(event, "organisation", "selectedOrganisation")}
                                         index="organisation"
