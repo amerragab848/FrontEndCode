@@ -80,7 +80,10 @@ const DropGeneralData =
     { label: Resources["consequencesFactosrs"][currentLanguage], value: "consequencesScores" },
     { label: Resources["projectPhase"][currentLanguage], value: "projectPhase" },
     { label: Resources["organisation"][currentLanguage], value: "organisation" },
-    { label: Resources["managementlevel"][currentLanguage], value: "managementlevel" }
+    { label: Resources["managementlevel"][currentLanguage], value: "managementlevel" },
+    { label: Resources["projectStage"][currentLanguage], value: "project_stage" },
+    { label: Resources["lots"][currentLanguage], value: "lots" },
+    { label: Resources["assetsTypes"][currentLanguage], value: "assets_types" }
     ]
 
 class GeneralList extends Component {
@@ -346,13 +349,9 @@ class GeneralList extends Component {
                     onSubmit={(values, { resetForm }) => {
                         this.save(values, resetForm);
                     }}>
-
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit }) => (
-
                         <Form className="proForm" onSubmit={handleSubmit}>
-
                             <div className="dropWrapper">
-
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['titleEn'][currentLanguage]} </label>
                                     <div className={"inputDev ui input" + (errors.title && touched.title ? (" has-error") : !errors.title && touched.title ? (" has-success") : " ")} >
@@ -361,7 +360,6 @@ class GeneralList extends Component {
                                         {errors.title && touched.title ? (<em className="pError">{errors.title}</em>) : null}
                                     </div>
                                 </div>
-
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['titleAr'][currentLanguage]} </label>
                                     <div className={'ui input inputDev ' + (errors.titleAr && touched.titleAr ? 'has-error' : null) + ' '}>
@@ -371,7 +369,6 @@ class GeneralList extends Component {
                                         {errors.titleAr && touched.titleAr ? <em className="pError">{errors.titleAr}</em> : null}
                                     </div>
                                 </div>
-
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources['abbreviation'][currentLanguage]} </label>
                                     <div className="ui input inputDev" >
@@ -380,7 +377,6 @@ class GeneralList extends Component {
                                             onBlur={handleBlur} onChange={handleChange} />
                                     </div>
                                 </div>
-
                                 {this.state.showValue ?
                                     <div className="fillter-status fillter-item-c fullInputWidth">
                                         <label className="control-label">{Resources['value'][currentLanguage]} </label>
@@ -392,25 +388,19 @@ class GeneralList extends Component {
                                         </div>
                                     </div>
                                     : null}
-
                                 <div className="fullWidthWrapper">
                                     <button className="primaryBtn-1 btn" type='submit'>
                                         {Resources['save'][currentLanguage]}</button>
                                 </div>
-
                             </div>
-
                         </Form>
                     )}
                 </Formik>
-
             )
         }
 
         return (
             <Fragment >
-
-
                 <div className="submittalFilter">
                     <div className="subFilter">
                         <h3 className="zero"> {Resources['AccountsDefaultList'][currentLanguage]}</h3>

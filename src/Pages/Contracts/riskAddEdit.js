@@ -162,8 +162,8 @@ class riskAddEdit extends Component {
             selectedArea: { label: Resources.area[currentLanguage], value: "0" },
             description: '',
             descriptionMitigation: '',
-            riskMitigationProgressData: []
-
+            riskMitigationProgressData: [],
+            isEdit: false
         }
 
         if (!Config.IsAllow(10000) && !Config.IsAllow(10001) && !Config.IsAllow(10003)) {
@@ -290,6 +290,7 @@ class riskAddEdit extends Component {
     componentWillMount() {
         if (this.state.docId > 0) {
 
+            this.setState({ isEdit: true });
             this.props.actions.documentForEdit("GetCommunicationRiskForEdit?id=" + this.state.docId);
 
             dataservice.GetDataGrid("GetRiskCycles?riskId=" + this.state.docId).then(result => {
@@ -378,7 +379,6 @@ class riskAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -1061,29 +1061,18 @@ class riskAddEdit extends Component {
     buildStructureTableThirdTab(result) {
         let data = [];
         let dataPost = [];
-        let likelihood = {
-            label: 'Please Select',
-            value: 0
-        }
-        let consequ = {
-            label: 'Please Select',
-            value: 0
-        }
-
+        let likelihood = { label: 'Please Select', value: 0 }
+        let consequ = { label: 'Please Select', value: 0 }
         let state = { ...this.state };
         let dslikelihood = this.state.likelihoods;
         let consequences = this.state.consequences;
-
         let totalRankingPost = 0;
         let totalRanking = 0;
         let totalMedigationCost = 0;
         result.map(item => {
-
             let likelihoodScore = item['likelihoodScore'];
             let consequenceScore = item['conesquenceScore'];
-
             let riskEMV = 0;
-
             let statusNumbers = this.state.statusNumbers
             let riskRanking = parseFloat(item['riskRanking']);
             if (statusNumbers) {
@@ -1098,10 +1087,8 @@ class riskAddEdit extends Component {
                 title: item['title'],
                 likelihoodScore: item['likelihoodScore'],
                 conesquenceScore: item['conesquenceScore'],
-
                 consequenceScoreValue: item['consequenceScoreValue'],
                 likelihoodScoreValue: item['likelihoodScoreValue'],
-
                 riskEMV: riskEMV,
                 action: 0,
                 riskRanking: item['riskRanking'],
@@ -1942,7 +1929,7 @@ class riskAddEdit extends Component {
                                                             <Fragment>
 
                                                                 <RiskConesquence riskId={this.state.docId} />
-                                                                <RiskCategorisation riskId={this.state.docId} />
+                                                                <RiskCategorisation riskId={this.state.docId} isEdit={this.state.isEdit} />
                                                             </Fragment>
                                                             : null
                                                         }

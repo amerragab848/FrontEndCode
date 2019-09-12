@@ -8135,6 +8135,18 @@
         "en": "Risk Category",
         "ar": " فئات الخطورة"
     },
+    "projectStage": {
+        "en": "Project Stage",
+        "ar": " Project Stage"
+    },
+    "lots": {
+        "en": "Lots",
+        "ar": "Lots"
+    },
+    "assetsTypes": {
+        "en": "Assets Types",
+        "ar": "Assets Types"
+    },
     "riskIdentification": {
         "en": "Risk Identification",
         "ar": "تعريف المخاطر"
