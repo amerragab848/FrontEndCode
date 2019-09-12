@@ -34,7 +34,6 @@ class RiskCategorisation extends Component {
             selectedProjectStage: [],
             selectedLots: [],
             selectedAssetsTypes: [],
-            selectedListTypes: [],
             bulkSelected: [],
             lastData: []
         }
@@ -64,27 +63,32 @@ class RiskCategorisation extends Component {
                     assets_types: assets_types
                 });
 
-                dataservice.GetDataGrid("GetCommunicationRiskCategorisationByRiskId?riskId=" + this.props.riskId).then(result => {
+                if (this.props.isEdit === true) {
 
-                    const selectedProjectPhase = result.filter(x => x.categoryType === "projectPhase").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                    const selectedOrganisation = result.filter(x => x.categoryType === "organisation").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                    const selectedManagementlevel = result.filter(x => x.categoryType === "managementlevel").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                    const selectedProjectStage = result.filter(x => x.categoryType === "project_stage").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                    const selectedLots = result.filter(x => x.categoryType === "lots").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                    const selectedAssetsTypes = result.filter(x => x.categoryType === "assets_types").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                    const bulkSelected = result.map(x => { return { label: x.categoryName, value: x.generalListId } });
+                    dataservice.GetDataGrid("GetCommunicationRiskCategorisationByRiskId?riskId=" + this.props.riskId).then(result => {
 
-                    this.setState({
-                        bulkSelected,
-                        selectedProjectPhase,
-                        selectedOrganisation,
-                        selectedManagementlevel,
-                        selectedProjectStage,
-                        selectedLots,
-                        selectedAssetsTypes,
-                        lastData: result || []
+                        if (result) {
+                            const selectedProjectPhase = result.filter(x => x.categoryType === "projectPhase").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            const selectedOrganisation = result.filter(x => x.categoryType === "organisation").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            const selectedManagementlevel = result.filter(x => x.categoryType === "managementlevel").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            const selectedProjectStage = result.filter(x => x.categoryType === "project_stage").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            const selectedLots = result.filter(x => x.categoryType === "lots").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            const selectedAssetsTypes = result.filter(x => x.categoryType === "assets_types").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            const bulkSelected = result.map(x => { return { label: x.categoryName, value: x.generalListId } });
+
+                            this.setState({
+                                bulkSelected,
+                                selectedProjectPhase,
+                                selectedOrganisation,
+                                selectedManagementlevel,
+                                selectedProjectStage,
+                                selectedLots,
+                                selectedAssetsTypes,
+                                lastData: result || []
+                            });
+                        }
                     });
-                });
+                }
             }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
         }
     }
@@ -132,7 +136,6 @@ class RiskCategorisation extends Component {
 
                     this.setState({
                         [selectedValue]: obj,
-                        selectedListTypes,
                         lastData,
                         bulkSelected
                     });
@@ -177,7 +180,7 @@ class RiskCategorisation extends Component {
         return (
             <div className="doc-pre-cycle letterFullWidth">
                 <div className="document-fields">
-                    <header className="subHeader"  style={{ paddingTop: '0' }}>
+                    <header className="subHeader" style={{ paddingTop: '0' }}>
                         <h2 className="zero">{Resources['categorisation'][currentLanguage]}</h2>
                     </header>
                     {this.state.isLoading == true ? <LoadingSection /> :

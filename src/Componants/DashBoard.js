@@ -442,13 +442,9 @@ class DashBoard extends Component {
                                         <div className="dash__content ui tab active">
                                             <div className="project__content">
                                                 {/* general */}
-<<<<<<< HEAD
-                                            <SortablePane direction="vertical" order={this.state.categoryOrder[0]}
-=======
                                                 <SortablePane
                                                     direction="vertical"
                                                     order={this.state.categoryOrder[0]}
->>>>>>> a188fb98da3c9fea56966799881e404e23eb4fcc
                                                 onDragStop={(e, key, el, order) => this.categoryOrderChanged(order)}
                                                 onOrderChange={order => this.changeCategoryOrder(order, 1)}>
                                                 {categoryPanes[1]}

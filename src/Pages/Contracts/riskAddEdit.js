@@ -162,7 +162,8 @@ class riskAddEdit extends Component {
             selectedArea: { label: Resources.area[currentLanguage], value: "0" },
             description: '',
             descriptionMitigation: '',
-            riskMitigationProgressData: []
+            riskMitigationProgressData: [],
+            isEdit: false
         }
 
         if (!Config.IsAllow(10000) && !Config.IsAllow(10001) && !Config.IsAllow(10003)) {
