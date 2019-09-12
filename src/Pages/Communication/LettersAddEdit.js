@@ -836,7 +836,9 @@ class LettersAddEdit extends Component {
                                                                         {touched.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
                                                                     </div>
 
-                                                                    {this.state.document.sharedSettings === '' || this.state.document.sharedSettings === undefined ?
+                                                                    {this.state.document.sharedSettings === '' ||
+                                                                        this.state.document.sharedSettings === null ||
+                                                                        this.state.document.sharedSettings === undefined ?
                                                                         null
                                                                         : <a
                                                                             target="_blank"

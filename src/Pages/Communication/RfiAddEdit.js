@@ -701,8 +701,13 @@ class RfiAddEdit extends Component {
                                                                         value={this.state.document.sharedSettings} name="sharedSettings"
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
                                                                 </div>
-                                                                <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
-                                                            </div>
+                                                                {this.state.document.sharedSettings === '' ||
+                                                                    this.state.document.sharedSettings === null ||
+                                                                    this.state.document.sharedSettings === undefined ?
+                                                                    null
+                                                                    :
+                                                                    <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
+                                                                }</div>
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>

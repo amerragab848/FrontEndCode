@@ -1065,8 +1065,8 @@ class SubmittalAddEdit extends Component {
       }
     }
   }
-  
-  viewAttachments() { 
+
+  viewAttachments() {
     return this.state.docId > 0 ? (Config.IsAllow(3302) === true ? (<ViewAttachment isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={884} />) : null) : null;
   }
 
@@ -1763,13 +1763,17 @@ class SubmittalAddEdit extends Component {
                                     <input type="text" className="form-control" id="sharedSettings" onChange={e => this.handleChange(e, "sharedSettings")}
                                       value={this.state.document.sharedSettings} name="sharedSettings" placeholder={Resources.sharedSettings[currentLanguage]} />
                                   </div>
-                                  {this.props.changeStatus == true ?
+                                  {this.state.document.sharedSettings === '' ||
+                                    this.state.document.sharedSettings === null ||
+                                    this.state.document.sharedSettings === undefined ?
+                                    null
+                                    :
                                     < a target="_blank" href={this.state.document.sharedSettings}>
                                       <span>
                                         {Resources.openFolder[currentLanguage]}
                                       </span>
                                     </a>
-                                    : null}
+                                  }
                                 </div>
                               </div>
                             </div>
