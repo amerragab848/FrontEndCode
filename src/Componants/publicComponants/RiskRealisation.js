@@ -12,6 +12,8 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 
 const validationSchema = Yup.object().shape({
     // costMit: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
+    actualImpact: Yup.string().required(Resources['realizedImpact'][currentLanguage]),
+
 })
 class RiskRealisation extends Component {
     constructor(props) {
@@ -133,12 +135,17 @@ class RiskRealisation extends Component {
 
                                         <div className="linebylineInput fullInputWidth">
                                             <label className="control-label">{Resources.realizedImpact[currentLanguage]}</label>
-                                            <div className={"inputDev ui input"} >
+                                            <div className={"inputDev ui input" + (errors.actualImpact && touched.actualImpact ? (" has-error") : !errors.actualImpact && touched.actualImpact ? (" has-success") : " ")} >
+                                                {/* <div className={"inputDev ui input"} > */}
                                                 <input name='actualImpact' className="form-control fsadfsadsa" id="actualImpact"
                                                     placeholder={Resources.realizedImpact[currentLanguage]}
                                                     autoComplete='off'
                                                     defaultValue={this.state.riskRealisation.actualImpact}
-                                                    onChange={(e) => this.handleChange(e, 'actualImpact')} />
+                                                    onChange={(e) => {
+                                                        this.handleChange(e, 'actualImpact')
+                                                        handleChange(e)
+                                                    }} onBlur={handleBlur} />
+                                                {touched.actualImpact ? (<em className="pError">{errors.actualImpact}</em>) : null}
                                             </div>
                                         </div>
 

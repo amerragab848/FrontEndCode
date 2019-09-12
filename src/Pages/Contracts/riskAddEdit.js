@@ -797,7 +797,7 @@ class riskAddEdit extends Component {
                                                 <div className="bounce3" />
                                             </div>
                                         </button>
-                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['goAdd'][currentLanguage]}</button>
+                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['save'][currentLanguage]}</button>
                                     }
                                 </div>
                             </Form>
@@ -957,7 +957,7 @@ class riskAddEdit extends Component {
                                                 <div className="bounce3" />
                                             </div>
                                         </button>
-                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['goAdd'][currentLanguage]}</button>
+                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['save'][currentLanguage]}</button>
                                     }
                                 </div>
                             </Form>
@@ -1721,7 +1721,7 @@ class riskAddEdit extends Component {
                                                         <div className="bounce3" />
                                                     </div>
                                                 </button>
-                                                : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['goAdd'][currentLanguage]}</button>
+                                                : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['save'][currentLanguage]}</button>
                                             }
                                         </div>
                                     </Form>
