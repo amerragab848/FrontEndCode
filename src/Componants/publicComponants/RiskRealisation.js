@@ -7,6 +7,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import LoadingSection from './LoadingSection'
 import DatePicker from '../OptionsPanels/DatePicker'
+import Dropdown from '../OptionsPanels/DropdownMelcous'
 const _ = require('lodash');
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -15,6 +16,12 @@ const validationSchema = Yup.object().shape({
     actualImpact: Yup.string().required(Resources['realizedImpact'][currentLanguage]),
 
 })
+let contactApproval = [
+    { label: 'Ahmed Moahmed', value: 1 },
+    { label: 'Shoqui Ahmed', value: 2 },
+    { label: 'Khaled Mahoumed', value: 3 },
+    { label: 'Salah Moahmed', value: 4 },
+]
 class RiskRealisation extends Component {
     constructor(props) {
         super(props)
@@ -24,6 +31,7 @@ class RiskRealisation extends Component {
             riskId: props.riskId,
             riskRealisation: {},
             showRiskRealisation: true,
+            readOnlyInputs: false
         }
     }
 
@@ -116,8 +124,8 @@ class RiskRealisation extends Component {
                         onSubmit={(values) => {
                             this.saveRisk()
                         }}>
-                        {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
-                            <Form id="signupForm1" className="proForm datepickerContainer letterFullWidth" noValidate="novalidate" >
+                        {({ errors, touched, values, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                            <Form id="signupForm1" className={" proForm datepickerContainer letterFullWidth" + (this.state.readOnlyInputs? " readOnly_inputs":"")} noValidate="novalidate" >
                                 <div className="letterFullWidth linebylineInput__checkbox">
                                     <label className="control-label">{Resources.riskRealised[currentLanguage]}</label>
                                     <div className="ui checkbox radio radioBoxBlue">
@@ -199,6 +207,23 @@ class RiskRealisation extends Component {
                                                     placeholder={Resources.residualRiskRefNo[currentLanguage]}
                                                     onChange={(e) => this.handleChange(e, 'riskRef')} />
                                             </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input">
+                                            <Dropdown title="requestApprovalDrop"
+                                                data={contactApproval}
+                                                selectedValue={values.requestApprovalDrop}
+                                                handleChange={(e) => {
+                                                    setFieldValue('requestApprovalDrop', e)
+                                                    this.setState({
+                                                        readOnlyInputs: true
+                                                    })
+                                                }}
+                                                onChange={setFieldValue}
+                                                onBlur={setFieldTouched}
+                                                isClear={false}
+                                                index="requestApprovalDrop"
+                                                name="requestApprovalDrop"
+                                                id="requestApprovalDrop" />
                                         </div>
 
                                         <div className="slider-Btns letterFullWidth">
