@@ -130,8 +130,7 @@ class SiteRequestReleasedQnt extends Component {
     HandleChangeProject = (e) => {
         this.setState({ selectedProject: e })
         Dataservice.GetDataList('GetContractsSiteRequestList?projectId=' + e.value + '&pageNumber=0&pageSize=1000', 'subject', 'id').then(
-            res => {
-                console.log(res.total)
+            res => { 
                 this.setState({
                     MaterialRequest: res
                 })

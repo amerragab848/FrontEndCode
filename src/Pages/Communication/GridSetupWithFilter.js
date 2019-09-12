@@ -257,8 +257,7 @@ class GridSetupWithFilter extends Component {
     });
   }
 
-  getRowsFilter = (rows, filters) => {
-    console.log(rows, filters);
+  getRowsFilter = (rows, filters) => { 
 
     if (this.state.filteredRows.length > 0) {
 

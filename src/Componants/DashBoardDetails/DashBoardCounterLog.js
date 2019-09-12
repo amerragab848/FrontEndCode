@@ -94,8 +94,7 @@ class DashBoardCounterLog extends Component {
 
   componentWillMount = () => {
     this.props.actions.RouteToTemplate();
-    let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
-    console.log(this.props.projectName)
+    let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId; 
     var e = { label: this.props.projectName, value: projectId };
     //this.props.actions.RouteToDashboardProject(e);
   };

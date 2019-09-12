@@ -61,8 +61,7 @@ class AccountsCompaniesPermissions extends Component {
     }
 
 
-    CompanieshandleChange = (e) => {
-        console.log(e)
+    CompanieshandleChange = (e) => { 
         this.setState({ data: e })
     }
 

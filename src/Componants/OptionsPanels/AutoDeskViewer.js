@@ -98,14 +98,13 @@ class AutoDeskViewer extends Component {
     }
 
     handleTokenRequested(onAccessToken) {
-        console.log("Token requested by the viewer.");
         if (onAccessToken) {
             let token = this.getForgeToken();
             if (token) onAccessToken(token.access_token, token.expires_in);
         }
     }
 
-    componentWillMount() {}
+    componentWillMount() { }
 
     componentDidMount() {
         var PercentageID = document.getElementById("precent");
@@ -121,15 +120,13 @@ class AutoDeskViewer extends Component {
             this.showModel(data);
         });
 
-        //this.initializeAutodeskViewer();
-        //this.showModel('dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE5LTA3LTA0LTEyLTE0LTM2LWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL0NoYWlyLmR3Zw');
         Api.get(
             "GetAllMarkUps?docId=" +
-                this.state.docId +
-                "&docType=" +
-                this.state.docType +
-                "&docFileId=" +
-                this.state.docFileId
+            this.state.docId +
+            "&docType=" +
+            this.state.docType +
+            "&docFileId=" +
+            this.state.docFileId
         ).then(markups => {
             this.setState({ markups });
             let markupsList = [];
@@ -145,7 +142,7 @@ class AutoDeskViewer extends Component {
             obj = id,
             duration = this.state.loadingPer === true ? 0 : 1000;
 
-        var timer = setInterval(function() {
+        var timer = setInterval(function () {
             current = current + 1;
             obj.innerHTML = current + "%";
             if (current === end) {
@@ -271,8 +268,7 @@ class AutoDeskViewer extends Component {
                     var svfUrl = doc.getViewablePath(initGeom);
                     var modelOptions = {
                         sharedPropertyDbPath: doc.getPropertyDbPath()
-                    };
-                    console.log(svfUrl, viewer, modelOptions);
+                    }; 
                     viewer.start(
                         svfUrl,
                         modelOptions,
@@ -285,7 +281,7 @@ class AutoDeskViewer extends Component {
                     );
                     this.setState({ viewer, loaded: true });
                 },
-                function(errorCode, errorMessage) {
+                function (errorCode, errorMessage) {
                     console.log(
                         "....Loading fail model autoDesk",
                         errorCode,

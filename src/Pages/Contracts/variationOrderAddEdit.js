@@ -264,8 +264,7 @@ class variationOrderAddEdit extends Component {
       }
     } else {
       this.setState({ isViewMode: false });
-    }
-    console.log("checkDocumentIsView...", this.props, this.state);
+    } 
   }
 
   fillVoItems() {

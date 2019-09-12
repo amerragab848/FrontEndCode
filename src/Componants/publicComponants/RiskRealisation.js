@@ -11,10 +11,8 @@ import Dropdown from '../OptionsPanels/DropdownMelcous'
 const _ = require('lodash');
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const validationSchema = Yup.object().shape({
-    // costMit: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage])
+const validationSchema = Yup.object().shape({ 
     actualImpact: Yup.string().required(Resources['realizedImpact'][currentLanguage]),
-
 })
 let contactApproval = [
     { label: 'Ahmed Moahmed', value: 1 },
@@ -101,7 +99,7 @@ class RiskRealisation extends Component {
         let riskRealisation = this.state.riskRealisation;
         riskRealisation.riskId = this.state.riskId;
         riskRealisation.dateRealisation = moment(riskRealisation.dateRealisation, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-        console.log(riskRealisation);
+         
         Api.post('AddRiskRealisation', riskRealisation).then(() => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
             this.setState({ isLoading: false });
@@ -110,12 +108,7 @@ class RiskRealisation extends Component {
 
     render() {
         return (
-            <Fragment>
-                {/* <header className="main__header">
-                    <div className="main__header--div">
-                        <h2 className="zero">{Resources['riskRealisation'][currentLanguage]}</h2>
-                    </div>
-                </header> */}
+            <Fragment> 
                 {this.state.pageLoading == true ? <LoadingSection /> :
                     <Formik
                         initialValues={{ ...this.state.riskRealisation }}
@@ -144,7 +137,7 @@ class RiskRealisation extends Component {
                                         <div className="linebylineInput fullInputWidth">
                                             <label className="control-label">{Resources.realizedImpact[currentLanguage]}</label>
                                             <div className={"inputDev ui input" + (errors.actualImpact && touched.actualImpact ? (" has-error") : !errors.actualImpact && touched.actualImpact ? (" has-success") : " ")} >
-                                                {/* <div className={"inputDev ui input"} > */}
+                                               
                                                 <input name='actualImpact' className="form-control fsadfsadsa" id="actualImpact"
                                                     placeholder={Resources.realizedImpact[currentLanguage]}
                                                     autoComplete='off'
@@ -172,22 +165,7 @@ class RiskRealisation extends Component {
                                                     onChange={(e) => this.handleChange(e, 'postEventMit')} />
                                             </div>
                                         </div>
-                                        {/* <div className="linebylineInput ">
-                                            <label className="control-label">{Resources.costOfMitigation[currentLanguage]}</label>
-                                            <div className={"inputDev ui input" + (errors.costMit && touched.costMit ? (" has-error") : !errors.costMit && touched.costMit ? (" has-success") : " ")} >
-                                                <input type="text" className="form-control" id="costMit"
-                                                    defaultValue={this.state.riskRealisation.costMit}
-                                                    name="costMit"
-                                                    handleBlur={handleBlur}
-                                                    placeholder={Resources.costOfMitigation[currentLanguage]}
-                                                    onChange={(e) => {
-                                                        this.handleChange(e, 'costMit')
-                                                        handleChange(e)
-                                                    }}
-                                                    onBlur={handleBlur} />
-                                                {touched.costMit ? (<em className="pError">{errors.costMit}</em>) : null}
-                                            </div>
-                                        </div> */}
+                                       
                                         <div className="linebylineInput fullInputWidth">
                                             <label className="control-label">{Resources.residualRiskTitle[currentLanguage]}</label>
                                             <div className="ui input inputDev">

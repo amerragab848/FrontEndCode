@@ -73,8 +73,7 @@ class PrivacySetting extends Component {
         Api.authorizationApi('ProcoorAuthorization?username=' + this.state.userName + '&emailOrPassword='
             + values.confirmPassword + '&companyId=' + this.state.companyId
             + '&changePassword=' + true, null, 'PUT').then(
-                result => {
-                    console.log(result)
+                result => { 
                     if (result.msg === "Successfuly created account.")
                         Api.getPassword('EditAccountUserPassword', values.confirmPassword).then(
                             result => {

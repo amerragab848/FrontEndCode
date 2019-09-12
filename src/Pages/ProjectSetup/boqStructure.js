@@ -131,8 +131,7 @@ class boqStructure extends Component {
             projectId: this.state.projectId, titleEn: '',
             titleAr: '', title: '', costCodingId: undefined,
             trees: '', showPaymentRequsition: false, code: '',
-        }
-        console.log('Add', item)
+        } 
         this.setState({
             parentId: item.id,
             viewPopUp: true,
@@ -142,8 +141,7 @@ class boqStructure extends Component {
         });
     }
 
-    EditNode(item) {
-        console.log('EditDocument', item)
+    EditNode(item) { 
         this.setState({
             parentId: item.id,
             SelectedNode: item,
@@ -259,8 +257,7 @@ class boqStructure extends Component {
         this.setState({
             trees,
             isLoading: false
-        });
-        console.log(item.trees);
+        }); 
     }
 
     closePopUp() {
@@ -352,8 +349,7 @@ class boqStructure extends Component {
     AddEditNode = () => {
 
         this.setState({ isLoading: true })
-
-        //console.log(this.state.SelectedNode)
+ 
         let EditObj = this.state.SelectedNode
         if (this.state.IsEditMode) {
             if (EditObj.perentId !== null) {
@@ -393,8 +389,7 @@ class boqStructure extends Component {
         }
     }
 
-    handleChange(e, field) {
-        //console.log(this.state.SelectedNode);
+    handleChange(e, field) { 
         let updated_document = this.state.SelectedNode;
         updated_document[field] = e.target.value;
         this.setState({
