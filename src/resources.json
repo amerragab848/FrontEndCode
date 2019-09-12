@@ -8151,9 +8151,9 @@
         "en": "Risk Identification",
         "ar": "تعريف المخاطر"
     },
-    "actionArchive": {
-        "en": "Action Archive ",
-        "ar": "أرشيف العمل"
+    "actionAchieve": {
+        "en": "Action Achieve ",
+        "ar": "تحقيق العمل"
     },
     "actionPlanned": {
         "en": "Action Planned ",
@@ -8166,5 +8166,17 @@
     "rbs": {
         "en": "RBS ",
         "ar": "RBS"
+    },
+    "realizedImpact": {
+        "en": "Realized Impact",
+        "ar": "تأثير محقق"
+    },
+    "costOfPostEventMitigation": {
+        "en": "Cost Of Post event mitigation",
+        "ar": "تكلفة ما بعد الحدث التخفيف"
+    },
+    "residualRiskRefNo": {
+        "en": "Residual risk Referance No",
+        "ar": "رقم مرجع المخاطر المتبقيه"
     }
 }
