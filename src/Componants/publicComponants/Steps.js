@@ -101,7 +101,9 @@ class Steps extends Component {
                 {/* Steps Active  */}
                 {this.props.changeStatus == true ?
                     <div className="editView__tabs">
-                        {renderSteps}
+                        <div className="editView__tabs">
+                            {renderSteps}
+                        </div>
                     </div>
                     :
                     <div className="docstepper-levels" style={{ width: '100%', background: '#fff', zIndex: '14' }}>

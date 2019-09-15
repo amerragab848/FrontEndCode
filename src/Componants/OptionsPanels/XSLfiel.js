@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Dropzone from 'react-dropzone';
 import classNames from 'classnames'
 import AttachUpload from '../../Styles/images/attacthUpload.png';
@@ -16,8 +16,7 @@ import * as communicationActions from '../../store/actions/communication';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class XSLfile extends Component {
-    constructor(props) {
-        console.log('props', props)
+    constructor(props) { 
         super(props);
         this.state = {
             docType: this.props.docType,

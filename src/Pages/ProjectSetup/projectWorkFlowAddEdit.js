@@ -274,7 +274,7 @@ class projectWorkFlowAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        console.log(item);
+        
         if (item.value != "0") {
             this.props.actions.showOptionPanel(false);
 
@@ -507,8 +507,7 @@ class projectWorkFlowAddEdit extends Component {
 
     }
 
-    handleChange(e, field) {
-        //console.log(field, e.target.value);
+    handleChange(e, field) { 
         let updated_document = this.state.document
         updated_document[field] = e.target.value;
         this.setState({
@@ -516,8 +515,7 @@ class projectWorkFlowAddEdit extends Component {
         });
     }
 
-    handleChangeDate(e, field) {
-        console.log(field, e);
+    handleChangeDate(e, field) { 
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -751,8 +749,7 @@ class projectWorkFlowAddEdit extends Component {
 
     }
 
-    AddFollowUps = (values) => {
-        console.log(values)
+    AddFollowUps = (values) => { 
         this.setState({ IsLoadingCheckCode: true })
         let FollowUps = {
             workFlowId: this.state.docId, followingUpsContactId: '',

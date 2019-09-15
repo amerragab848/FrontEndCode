@@ -150,8 +150,7 @@ class RiskCause extends Component {
                         }}
                             validationSchema={validationSchema}
                             enableReinitialize={true}
-                            onSubmit={(values) => {
-                                console.log(values)
+                            onSubmit={(values) => { 
                                 if (values.isSecondButton) {
                                     this.AddItem(values)
                                 }

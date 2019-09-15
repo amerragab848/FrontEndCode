@@ -33,8 +33,7 @@ class PieChartComp extends Component {
 
         let dataChart = [];
 
-        this.setState({ isLoading: true });
-        console.log(this.props.api);
+        this.setState({ isLoading: true }); 
         Api.get(this.props.api).then(res => {
             if (res) {
                 let total = 0;

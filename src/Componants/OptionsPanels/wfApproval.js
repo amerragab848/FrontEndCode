@@ -56,8 +56,7 @@ class wfApproval extends Component {
 
   static getDerivedStateFromProps(nextProps, state) {
 
-    if (nextProps.approvalStatus != state.approvalStatus) {
-      console.log('original_updateWorkFlow', nextProps.approvalStatus)
+    if (nextProps.approvalStatus != state.approvalStatus) { 
       let original_updateWorkFlow = state.updateWorkFlow;
       let updateWorkFlow_new = {};
       updateWorkFlow_new.approvalStatus = nextProps.approvalStatus;

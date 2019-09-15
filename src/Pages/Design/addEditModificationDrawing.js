@@ -336,7 +336,7 @@ class addEditModificationDrawing extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+                
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -351,7 +351,7 @@ class addEditModificationDrawing extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.drawingCycle[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+                
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -452,8 +452,7 @@ class addEditModificationDrawing extends Component {
         });
     }
 
-    handleChange(e, field) {
-        console.log(e.target.value, field)
+    handleChange(e, field) { 
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -519,8 +518,7 @@ class addEditModificationDrawing extends Component {
         });
     }
 
-    handleChangeCycle(e, field) {
-        console.log(e.target.value, field)
+    handleChangeCycle(e, field) { 
         let original_document = { ...this.state.drawingCycle };
 
         let updated_document = {};
@@ -534,8 +532,7 @@ class addEditModificationDrawing extends Component {
         });
     }
 
-    handleChangeCycleAdd(e, field) {
-        console.log(e.target.value, field)
+    handleChangeCycleAdd(e, field) { 
         let original_document = { ...this.state.drawingCycleAdd };
 
         let updated_document = {};

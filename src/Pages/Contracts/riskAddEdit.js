@@ -1653,8 +1653,7 @@ class riskAddEdit extends Component {
                                 onSubmit={(values, ) => {
 
                                     let data = this.state.riskMitigationProgressData
-                                    data.push(values)
-                                    console.log(data)
+                                    data.push(values) 
                                     this.setState({
                                         riskMitigationProgressData: data
                                     });

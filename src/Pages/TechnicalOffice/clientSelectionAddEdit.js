@@ -249,7 +249,7 @@ class clientSelectionAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+                
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -411,8 +411,7 @@ class clientSelectionAddEdit extends Component {
         }
     };
 
-    handleChange(e, field) {
-        console.log(e.target.value, field)
+    handleChange(e, field) { 
         let original_document = { ...this.state.document };
 
         let updated_document = {};

@@ -334,8 +334,7 @@ class invoicesForPoAddEdit extends Component {
         dataservice.GetDataList(action, DropLable, DropValue).then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; }); 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -418,8 +417,7 @@ class invoicesForPoAddEdit extends Component {
         this.checkDocumentIsView();
     }
 
-    handleChange(e, field) {
-        console.log(field, e);
+    handleChange(e, field) { 
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -891,8 +889,7 @@ class invoicesForPoAddEdit extends Component {
         })
     }
 
-    EditItem = (obj) => {
-        console.log(obj._original)
+    EditItem = (obj) => { 
         this.setState({
             ObjItem: obj._original,
             showEdititem: true,

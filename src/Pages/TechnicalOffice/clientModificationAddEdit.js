@@ -235,7 +235,7 @@ class clientModificationAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                //   console.log(targetFieldSelected);
+               
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result

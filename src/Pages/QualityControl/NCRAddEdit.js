@@ -380,8 +380,7 @@ class NCRAddEdit extends Component {
         }
     };
 
-    handleChange(e, field) {
-        console.log(field, e);
+    handleChange(e, field) { 
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -447,8 +446,7 @@ class NCRAddEdit extends Component {
         return btn;
     }
 
-    handleChangeDate(e, field) {
-        console.log(field, e);
+    handleChangeDate(e, field) { 
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -581,8 +579,7 @@ class NCRAddEdit extends Component {
 
                     validationSchema={validationSchemaForAddCycle}
 
-                    onSubmit={(values, actions) => {
-                        console.log(values)
+                    onSubmit={(values, actions) => { 
                         this.SaveNewCycle(values, actions)
                     }}>
 

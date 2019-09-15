@@ -337,8 +337,7 @@ class Accounts extends Component {
     }
 
     ConfirmResetPassword = () => {
-        let id = this.state.rowSelectedId;
-        console.log(id)
+        let id = this.state.rowSelectedId; 
         this.setState({ showDeleteModal: true })
         let rowsData = this.state.rows;
         let userName = _.find(rowsData, { 'id': id })

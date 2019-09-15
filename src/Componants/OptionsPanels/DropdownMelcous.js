@@ -43,8 +43,7 @@ class DropdownMelcous extends Component {
         }
         this.props.handleChange(value, this.props.name);
     };
-
-
+ 
     handleBlur = () => {
         if (this.props.onBlur != undefined)
             this.props.onBlur(this.props.name, true);
