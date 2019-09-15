@@ -174,9 +174,11 @@ const Option = props => (
 );
 
 const MultiValue = props => (
-    <components.MultiValue {...props}>
-        <span>{props.data.label}</span>
-    </components.MultiValue>
+    props.data.label === "Select ALL" ? null :
+        <components.MultiValue {...props}>
+            <span>{props.data.label}</span>
+        </components.MultiValue>
+
 );
 
 export default DropdownMelcous;

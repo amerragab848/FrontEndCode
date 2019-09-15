@@ -21778,3 +21778,8 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
         overflow-y: hidden;
         padding: 0 10px;
     } */
+
+    .editView__tabs::-webkit-scrollbar {
+        height: 5px;
+    }
+ 
