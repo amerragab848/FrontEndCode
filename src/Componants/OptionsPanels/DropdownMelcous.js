@@ -168,7 +168,6 @@ const Option = props => (
         <components.Option {...props}>
             <div className="ui checked checkbox  checkBoxGray300 " style={{ display: 'inline-block', width: '50%' }}>
                 <input type="checkbox" className="checkbox" checked={props.isSelected} onChange={(e) => null} />
-                {console.log("props.isSelected :", props.isSelected)}
                 <label>{props.data.label}</label>
             </div>
         </components.Option>
@@ -176,9 +175,11 @@ const Option = props => (
 );
 
 const MultiValue = props => (
-    <components.MultiValue {...props}>
-        <span>{props.data.label}</span>
-    </components.MultiValue>
+    props.data.label === "Select ALL" ? null :
+        <components.MultiValue {...props}>
+            <span>{props.data.label}</span>
+        </components.MultiValue>
+
 );
 
 export default DropdownMelcous;
