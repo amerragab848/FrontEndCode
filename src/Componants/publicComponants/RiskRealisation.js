@@ -11,9 +11,10 @@ import Dropdown from '../OptionsPanels/DropdownMelcous'
 const _ = require('lodash');
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const validationSchema = Yup.object().shape({ 
+const validationSchema = Yup.object().shape({
     actualImpact: Yup.string().required(Resources['realizedImpact'][currentLanguage]),
-})
+});
+
 let contactApproval = [
     { label: 'Ahmed Moahmed', value: 1 },
     { label: 'Shoqui Ahmed', value: 2 },
@@ -21,6 +22,7 @@ let contactApproval = [
     { label: 'Salah Moahmed', value: 4 },
 ]
 class RiskRealisation extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
@@ -29,11 +31,12 @@ class RiskRealisation extends Component {
             riskId: props.riskId,
             riskRealisation: {},
             showRiskRealisation: true,
-            readOnlyInputs: false
+            readOnlyInputs: false,
+            isEdit: false
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Api.get("GetRiskRealisationByRiskId?riskId=" + this.state.riskId).then(result => {
             if (result) {
                 let riskRealisation = {
@@ -47,12 +50,12 @@ class RiskRealisation extends Component {
                     riskRef: result.riskRef,
                     residualRiskTitle: result.residualRiskTitle,
                 }
-                this.setState({ riskRealisation, pageLoading: false });
+                this.setState({ riskRealisation, pageLoading: false, isEdit: true });
             }
             else {
                 let riskRealisation = {
                     id: 0,
-                    riskId: 0,
+                    riskId: this.props.riskId,
                     riskRealise: '',
                     actualImpact: '',
                     dateRealisation: moment(),
@@ -63,9 +66,7 @@ class RiskRealisation extends Component {
                 }
                 this.setState({ riskRealisation, pageLoading: false });
             }
-        }).catch(() => {
-            this.setState({ isLoading: false });
-        });
+        }).catch(() => { this.setState({ isLoading: false }) });
     }
 
     handleChange(e, field) {
@@ -94,31 +95,42 @@ class RiskRealisation extends Component {
         this.setState({ riskRealisation: updated_document });
     }
 
-    saveRisk = () => {
-        this.setState({ isLoading: true });
-        let riskRealisation = this.state.riskRealisation;
-        riskRealisation.riskId = this.state.riskId;
-        riskRealisation.dateRealisation = moment(riskRealisation.dateRealisation, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-         
-        Api.post('AddRiskRealisation', riskRealisation).then(() => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.setState({ isLoading: false });
-        })
+    saveRisk = (values) => {
+
+        if (this.state.isEdit) {
+            //update 
+            //insert in log 
+        }
+        else {
+            this.setState({ isLoading: true });
+            let riskRealisation = this.state.riskRealisation;
+            riskRealisation.riskId = this.state.riskId;
+            riskRealisation.dateRealisation = moment(riskRealisation.dateRealisation, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
+            Api.post('AddRiskRealisation', riskRealisation).then(() => {
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                this.setState({ isLoading: false });
+            });
+        }
+
+
+
     }
 
     render() {
         return (
-            <Fragment> 
+            <Fragment>
                 {this.state.pageLoading == true ? <LoadingSection /> :
                     <Formik
                         initialValues={{ ...this.state.riskRealisation }}
                         enableReinitialize={true}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
-                            this.saveRisk()
+                            this.saveRisk(values);
                         }}>
                         {({ errors, touched, values, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
-                            <Form id="signupForm1" className={" proForm datepickerContainer letterFullWidth" + (this.state.readOnlyInputs? " readOnly_inputs":"")} noValidate="novalidate" >
+                            <Form id="signupForm1" className={" proForm datepickerContainer letterFullWidth" + (this.state.readOnlyInputs ? " readOnly_inputs" : "")} noValidate="novalidate" >
+
                                 <div className="letterFullWidth linebylineInput__checkbox">
                                     <label className="control-label">{Resources.riskRealised[currentLanguage]}</label>
                                     <div className="ui checkbox radio radioBoxBlue">
@@ -133,59 +145,58 @@ class RiskRealisation extends Component {
 
                                 {this.state.showRiskRealisation === true ?
                                     <Fragment>
-
                                         <div className="linebylineInput fullInputWidth">
                                             <label className="control-label">{Resources.realizedImpact[currentLanguage]}</label>
                                             <div className={"inputDev ui input" + (errors.actualImpact && touched.actualImpact ? (" has-error") : !errors.actualImpact && touched.actualImpact ? (" has-success") : " ")} >
-                                               
+
                                                 <input name='actualImpact' className="form-control fsadfsadsa" id="actualImpact"
                                                     placeholder={Resources.realizedImpact[currentLanguage]}
                                                     autoComplete='off'
-                                                    defaultValue={this.state.riskRealisation.actualImpact}
-                                                    onChange={(e) => {
-                                                        this.handleChange(e, 'actualImpact')
-                                                        handleChange(e)
-                                                    }} onBlur={handleBlur} />
+                                                    value={values.actualImpact}
+                                                    onChange={handleChange} onBlur={handleBlur} />
                                                 {touched.actualImpact ? (<em className="pError">{errors.actualImpact}</em>) : null}
                                             </div>
                                         </div>
 
                                         <div className="linebylineInput  alternativeDate">
                                             <DatePicker title='dateOfRealisation'
-                                                startDate={this.state.riskRealisation.dateRealisation}
-                                                handleChange={e => this.handleChangeDate(e, 'dateRealisation')} />
+                                                startDate={values.dateRealisation}
+                                                handleChange={e => setFieldValue('dateRealisation', e)} />
                                         </div>
+
                                         <div className="linebylineInput fullInputWidth">
                                             <label className="control-label">{Resources.costOfPostEventMitigation[currentLanguage]}</label>
                                             <div className="ui input inputDev">
                                                 <input type="text" className="form-control" id="postEventMit"
-                                                    defaultValue={this.state.riskRealisation.postEventMit}
+                                                    value={values.postEventMit}
                                                     name="postEventMit"
                                                     placeholder={Resources.costOfPostEventMitigation[currentLanguage]}
-                                                    onChange={(e) => this.handleChange(e, 'postEventMit')} />
+                                                    onChange={handleChange} onBlur={handleBlur} />
                                             </div>
                                         </div>
-                                       
+
                                         <div className="linebylineInput fullInputWidth">
                                             <label className="control-label">{Resources.residualRiskTitle[currentLanguage]}</label>
                                             <div className="ui input inputDev">
                                                 <input type="text" className="form-control" id="residualRiskTitle"
-                                                    defaultValue={this.state.riskRealisation.residualRiskTitle}
+                                                    value={values.residualRiskTitle}
                                                     name="residualRiskTitle"
                                                     placeholder={Resources.residualRiskTitle[currentLanguage]}
-                                                    onChange={(e) => this.handleChange(e, 'residualRiskTitle')} />
+                                                    onChange={handleChange} onBlur={handleBlur}
+                                                />
                                             </div>
                                         </div>
+
                                         <div className="linebylineInput fullInputWidth">
                                             <label className="control-label">{Resources.residualRiskRefNo[currentLanguage]}</label>
                                             <div className="ui input inputDev">
                                                 <input type="text" className="form-control" id="riskRef"
-                                                    defaultValue={this.state.riskRealisation.riskRef}
-                                                    name="riskRef"
+                                                    value={values.riskRef} name="riskRef"
                                                     placeholder={Resources.residualRiskRefNo[currentLanguage]}
-                                                    onChange={(e) => this.handleChange(e, 'riskRef')} />
+                                                    onChange={handleChange} onBlur={handleBlur} />
                                             </div>
                                         </div>
+
                                         <div className="linebylineInput valid-input">
                                             <Dropdown title="requestApprovalDrop"
                                                 data={contactApproval}
@@ -204,7 +215,7 @@ class RiskRealisation extends Component {
                                                 id="requestApprovalDrop" />
                                         </div>
 
-                                        <div className="slider-Btns letterFullWidth">
+                                        <div className="slider-Btns letterFullWidth" style={{ flexFlow: 'row' }}>
                                             {this.state.isLoading ?
                                                 <button className="primaryBtn-1 btn disabled">
                                                     <div className="spinner">
@@ -214,6 +225,8 @@ class RiskRealisation extends Component {
                                                     </div>
                                                 </button> :
                                                 <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>}
+                                            <button className="defaultBtn btn meduimBtn" type="submit" >Approve</button>
+                                            <button className="primaryBtn-2 btn meduimBtn" type="submit" >Reject</button>
                                         </div>
                                     </Fragment>
                                     : null}

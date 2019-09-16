@@ -9,7 +9,7 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { withRouter } from "react-router-dom";
-import TextEditor from '../../Componants/OptionsPanels/TextEditor';
+import SkyLight from "react-skylight";
 import RiskCause from '../../Componants/OptionsPanels/RiskCause';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -163,7 +163,9 @@ class riskAddEdit extends Component {
             description: '',
             descriptionMitigation: '',
             riskMitigationProgressData: [],
-            isEdit: false
+            isEdit: false,
+            showPopUp: true,
+            currentEditComponent: null
         }
 
         if (!Config.IsAllow(10000) && !Config.IsAllow(10001) && !Config.IsAllow(10003)) {
@@ -436,8 +438,8 @@ class riskAddEdit extends Component {
         dataservice.GetDataGrid("GetaccountsDefaultListForList?listType=likelihoods").then(result => {
             let data = [];
             if (result) {
-                let items = _.orderBy(result, ['action'],['desc']);
-           
+                let items = _.orderBy(result, ['action'], ['desc']);
+
                 items.map(i => {
                     data.push({
                         label: i['title'], value: i['id'], action: i['value']
@@ -452,7 +454,7 @@ class riskAddEdit extends Component {
         //consequencesScores
         dataservice.GetDataGrid("GetaccountsDefaultListForList?listType=consequencesScores").then(result => {
             let data = [];
-             
+
             result.map(i => {
                 data.push({
                     label: i['title'], value: i['id'], action: i['value']
@@ -465,21 +467,6 @@ class riskAddEdit extends Component {
         });
 
     }
-
-    onChangeMessage = (value, field) => {
-        if (value != null) {
-            let original_document = { ...this.state.document };
-
-            let updated_document = {};
-            updated_document[field] = value;
-            updated_document = Object.assign(original_document, updated_document);
-
-            this.setState({
-                document: updated_document,
-                [field]: value
-            });
-        }
-    };
 
     handleChange(e, field) {
 
@@ -745,6 +732,97 @@ class riskAddEdit extends Component {
         });
     }
 
+    editMitigationRequestHandler = (item) => {
+        let currentEditComponent = this.mitigationRequestForm(item);
+        this.setState({ currentEditComponent, showPopUp: true });
+        this.simpleDialog.show();
+    }
+    proposeMitEditHandler = (item) => {
+        let currentEditComponent = this.proposeMitForm(item);
+        this.setState({ currentEditComponent, showPopUp: true, documentCycle: { ...this.state.documentCycle, docDate: item.docDate } });
+        this.simpleDialog.show();
+
+    }
+    /**
+     * to be implemented for editting  
+     */
+    editMitigationRequest() {
+
+    }
+
+    /**
+ * to be implemented for editting  
+ */
+    editproposeMitigation() {
+
+    }
+
+    mitigationRequestForm(values) {
+        let selectedValue = null;
+        if (values) {
+            selectedValue = this.state.mitigationTypes.find(x => x.label === values.mitigationTypeText);
+        }
+        return (
+            <Formik
+                initialValues={{ subject: values ? values.subject : "", mitigationType: selectedValue != null ? selectedValue.label : "", id: values ? values.id : 0 }}
+                validationSchema={documentCycleValidationSchema}
+                enableReinitialize={true}
+                onSubmit={(values) => {
+                    if (values.id)
+                        this.editMitigationRequest();
+                    else
+                        this.saveMitigationRequest(true);
+
+                }}>
+                {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                    <Form id="InspectionRequestCycleForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                        <div className="proForm datepickerContainer">
+                            <div className="fullInputWidth letterFullWidth">
+                                <label className="control-label">{Resources.currentPlannedMitigation[currentLanguage]}</label>
+                                <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                    <input name='subject' id="subject" className="form-control fsadfsadsa"
+                                        placeholder={Resources.currentPlannedMitigation[currentLanguage]}
+                                        autoComplete='off'
+                                        value={values ? values.subject : this.state.documentCycle.subject}
+                                        onBlur={(e) => { handleBlur(e); handleChange(e) }}
+                                        onChange={(e) => this.handleChangeCycle(e, 'subject')} />
+                                    {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="proForm datepickerContainer">
+                            <div className="linebylineInput valid-input">
+                                <Dropdown title="mitigationType"
+                                    data={this.state.mitigationTypes}
+                                    selectedValue={selectedValue != null ? selectedValue : this.state.selectedMitigationTypes}
+                                    handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationTypes')}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.mitigationType}
+                                    touched={touched.mitigationType}
+                                    index="mitigationType"
+                                    name="mitigationType"
+                                    id="mitigationType" />
+                            </div>
+                        </div>
+                        <div className="slider-Btns">
+                            {this.state.CycleEditLoading ?
+                                <button className="primaryBtn-1 btn disabled">
+                                    <div className="spinner">
+                                        <div className="bounce1" />
+                                        <div className="bounce2" />
+                                        <div className="bounce3" />
+                                    </div>
+                                </button>
+                                : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['save'][currentLanguage]}</button>
+                            }
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+        );
+    }
+
     CurrentMit() {
         return (
             <div className="subiTabsContent">
@@ -754,59 +832,9 @@ class riskAddEdit extends Component {
                     </div>
                 </header>
                 <div className='document-fields'>
-                    <Formik
-                        initialValues={{ subject: "", mitigationType: "" }}
-                        validationSchema={documentCycleValidationSchema}
-                        enableReinitialize={true}
-                        onSubmit={(values) => {
-                            this.saveMitigationRequest(true)
-                        }}>
-                        {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                            <Form id="InspectionRequestCycleForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                                <div className="proForm datepickerContainer">
-                                    <div className="fullInputWidth letterFullWidth">
-                                        <label className="control-label">{Resources.currentPlannedMitigation[currentLanguage]}</label>
-                                        <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                            <input name='subject' id="subject" className="form-control fsadfsadsa"
-                                                placeholder={Resources.currentPlannedMitigation[currentLanguage]}
-                                                autoComplete='off'
-                                                value={this.state.documentCycle.subject}
-                                                onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                onChange={(e) => this.handleChangeCycle(e, 'subject')} />
-                                            {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="proForm datepickerContainer">
-                                    <div className="linebylineInput valid-input">
-                                        <Dropdown title="mitigationType"
-                                            data={this.state.mitigationTypes}
-                                            selectedValue={this.state.selectedMitigationTypes}
-                                            handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationTypes')}
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.mitigationType}
-                                            touched={touched.mitigationType}
-                                            index="mitigationType"
-                                            name="mitigationType"
-                                            id="mitigationType" />
-                                    </div>
-                                </div>
-                                <div className="slider-Btns">
-                                    {this.state.CycleEditLoading ?
-                                        <button className="primaryBtn-1 btn disabled">
-                                            <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
-                                            </div>
-                                        </button>
-                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['save'][currentLanguage]}</button>
-                                    }
-                                </div>
-                            </Form>
-                        )}
-                    </Formik>
+                    {this.mitigationRequestForm()}
+
+
                     <div className="doc-pre-cycle">
 
                         <table className="attachmentTable">
@@ -824,7 +852,7 @@ class riskAddEdit extends Component {
 
                             <tbody>
                                 {this.state.IRCyclesPre.map((item, index) => {
-                                    return <tr key={item.id + '-' + index}>
+                                    return <tr key={item.id + '-' + index} onClick={() => this.editMitigationRequestHandler(item)}>
                                         <td className="removeTr">
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.subject}</div>
                                         </td>
@@ -841,6 +869,140 @@ class riskAddEdit extends Component {
         )
     }
 
+    proposeMitForm(item) {
+        let selectedValue = null;
+        if (item) {
+            selectedValue = this.state.mitigationTypes.find(x => x.label === item.mitigationTypeText);
+        }
+        return (
+            <Formik initialValues={{
+                subject: item ? item.subject : "",
+                mitigationType: selectedValue != null ? selectedValue.label : "",
+                actionProgress: item ? item.actionProgress : "",
+                medigationCost: item ? item.mitigationCost : "",
+                actionOwnerContactId: item ? item.actionOwnerContactId : null,
+                docDate: item ? item.docDate : this.state.documentCycle.docDate
+            }}
+                validationSchema={documentProposedValidationSchema}
+                enableReinitialize={true}
+                onSubmit={(values) => {
+                    if (item)
+                        this.editproposeMitigation(values);
+                    else
+                        this.saveMitigationRequest(false);
+                }}>
+                {({ values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                    <Form id="RiskRequestCycleFormPost" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                        <Fragment>
+                            <div className="proForm datepickerContainer">
+                                <div className="fullInputWidth letterFullWidth">
+                                    <label className="control-label">{Resources.proposeMitigation[currentLanguage]}</label>
+                                    <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                        <input name='subject' id="subject" className="form-control fsadfsadsa"
+                                            placeholder={Resources.proposeMitigation[currentLanguage]}
+                                            autoComplete='off'
+                                            defaultValue={item ? item.subject : this.state.documentCycle.subject}
+                                            onBlur={(e) => { handleBlur(e); handleChange(e) }}
+                                            onChange={(e) => this.handleChangeCycle(e, 'subject')} />
+                                        {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="proForm datepickerContainer">
+                                <div className="linebylineInput valid-input">
+                                    <Dropdown title="mitigationType"
+                                        data={this.state.mitigationTypes}
+                                        value={selectedValue !== null ? selectedValue : this.state.selectedMitigationTypes}
+                                        handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationTypes')}
+                                        onChange={setFieldValue}
+                                        onBlur={setFieldTouched}
+                                        error={errors.mitigationType}
+                                        touched={touched.mitigationType}
+                                        index="mitigationType"
+                                        name="mitigationType"
+                                        id="mitigationType" />
+                                </div>
+                                <div className="linebylineInput valid-input alternativeDate">
+                                    <DatePicker title='deadLineDate'
+                                        name="docDate"
+                                        startDate={item ? values.docDate : this.state.documentCycle.docDate}
+                                        handleChange={e => item ? setFieldValue("docDate", e) : this.handleChangeDateCycle(e, 'docDate')} />
+                                </div>
+                                {/* <div className="letterFullWidth fullInputWidth">
+                            <label className="control-label">{Resources['actionProgress'][currentLanguage]}</label>
+                            <div className={"inputDev ui input" + (errors.actionProgress && touched.actionProgress ? (" has-error") : !errors.actionProgress && touched.actionProgress ? (" has-success") : " ")} >
+                                <input autoComplete="off" name="actionProgress" id="actionProgress"
+                                    value={this.state.documentCycle.actionProgress}
+                                    className="form-control" name="actionProgress"
+                                    onBlur={(e) => { handleBlur(e); handleChange(e) }}
+                                    onChange={(e) => { this.handleChangeCycle(e, 'actionProgress') }}
+                                    placeholder={Resources['actionProgress'][currentLanguage]} />
+                                {errors.actionProgress && touched.actionProgress ? (<em className="pError">{errors.actionProgress}</em>) : null}
+                            </div>
+                        </div> */}
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources['medigationCost'][currentLanguage]}</label>
+                                    <div className={'ui input inputDev' + (errors.medigationCost && touched.medigationCost ? (" has-error") : !errors.medigationCost && touched.medigationCost ? (" has-success") : " ")} >
+                                        <input autoComplete="off" name="medigationCost" id="medigationCost"
+                                            defaultValue={item ? item.mitigationCost : this.state.documentCycle.mitigationCost}
+                                            className="form-control"
+                                            onBlur={(e) => { handleBlur(e); handleChange(e) }}
+                                            onChange={(e) => { this.handleChangeCycle(e, 'mitigationCost') }}
+                                            placeholder={Resources['medigationCost'][currentLanguage]} />
+                                        {errors.medigationCost && touched.medigationCost ? (<em className="pError">{errors.medigationCost}</em>) : null}
+                                    </div>
+                                </div>
+                                {/* <div className="linebylineInput valid-input mix_dropdown">
+                            <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
+                            <div className="supervisor__company">
+                                <div className="super_name">
+                                    <Dropdown data={this.state.companies} isMulti={false}
+                                        selectedValue={this.state.selectedFromCompany}
+                                        handleChange={event => { this.handleChangeDropDown(event, 'actionOwnerId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact') }}
+                                        onChange={setFieldValue}
+                                        onBlur={setFieldTouched}
+                                        error={errors.fromCompanyId}
+                                        touched={touched.fromCompanyId}
+                                        name="fromCompanyId"
+                                        id="actionOwnerId" styles={CompanyDropdown} classDrop="companyName1 " />
+                                </div>
+                                <div className="super_company">
+                                    <Dropdown isMulti={false} data={this.state.fromContacts}
+                                        selectedValue={this.state.selectedFromContact}
+                                        handleChange={event => this.handleChangeDropDown(event, 'actionOwnerContactId', false, '', '', '', 'selectedFromContact')}
+                                        onChange={setFieldValue}
+                                        onBlur={setFieldTouched}
+                                        error={errors.actionOwnerContactId}
+                                        touched={touched.actionOwnerContactId}
+                                        name="actionOwnerContactId"
+                                        id="actionOwnerContactId" classDrop=" contactName1" styles={ContactDropdown} />
+                                </div>
+                            </div>
+                        </div> */}
+                            </div>
+                        </Fragment>
+                        {/* } */}
+                        <div className="slider-Btns">
+                            {this.state.CycleEditLoading ?
+                                <button className="primaryBtn-1 btn disabled">
+                                    <div className="spinner">
+                                        <div className="bounce1" />
+                                        <div className="bounce2" />
+                                        <div className="bounce3" />
+                                    </div>
+                                </button>
+                                : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['save'][currentLanguage]}</button>
+                            }
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+        );
+    }
+
+
+
+
     ProposedMit(isCurrent) {
         return (
             <div className="subiTabsContent">
@@ -850,123 +1012,8 @@ class riskAddEdit extends Component {
                     </div>
                 </header>
                 <div className='document-fields'>
-                    <Formik initialValues={{
-                        subject: "",
-                        mitigationType: "",
-                        actionProgress: "",
-                        medigationCost: "",
-                        actionOwnerContactId: null
-                    }}
-                        validationSchema={documentProposedValidationSchema}
-                        enableReinitialize={true}
-                        onSubmit={(values) => {
-                            this.saveMitigationRequest(false)
-                        }}>
-                        {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                            <Form id="RiskRequestCycleFormPost" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                                <Fragment>
-                                    <div className="proForm datepickerContainer">
-                                        <div className="fullInputWidth letterFullWidth">
-                                            <label className="control-label">{Resources.proposeMitigation[currentLanguage]}</label>
-                                            <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                                <input name='subject' id="subject" className="form-control fsadfsadsa"
-                                                    placeholder={Resources.proposeMitigation[currentLanguage]}
-                                                    autoComplete='off'
-                                                    value={this.state.documentCycle.subject}
-                                                    onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                    onChange={(e) => this.handleChangeCycle(e, 'subject')} />
-                                                {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="proForm datepickerContainer">
-                                        <div className="linebylineInput valid-input">
-                                            <Dropdown title="mitigationType"
-                                                data={this.state.mitigationTypes}
-                                                selectedValue={this.state.selectedMitigationTypes}
-                                                handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationTypes')}
-                                                onChange={setFieldValue}
-                                                onBlur={setFieldTouched}
-                                                error={errors.mitigationType}
-                                                touched={touched.mitigationType}
-                                                index="mitigationType"
-                                                name="mitigationType"
-                                                id="mitigationType" />
-                                        </div>
-                                        <div className="linebylineInput valid-input alternativeDate">
-                                            <DatePicker title='deadLineDate'
-                                                startDate={this.state.documentCycle.docDate}
-                                                handleChange={e => this.handleChangeDateCycle(e, 'docDate')} />
-                                        </div>
-                                        {/* <div className="letterFullWidth fullInputWidth">
-                                            <label className="control-label">{Resources['actionProgress'][currentLanguage]}</label>
-                                            <div className={"inputDev ui input" + (errors.actionProgress && touched.actionProgress ? (" has-error") : !errors.actionProgress && touched.actionProgress ? (" has-success") : " ")} >
-                                                <input autoComplete="off" name="actionProgress" id="actionProgress"
-                                                    value={this.state.documentCycle.actionProgress}
-                                                    className="form-control" name="actionProgress"
-                                                    onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                    onChange={(e) => { this.handleChangeCycle(e, 'actionProgress') }}
-                                                    placeholder={Resources['actionProgress'][currentLanguage]} />
-                                                {errors.actionProgress && touched.actionProgress ? (<em className="pError">{errors.actionProgress}</em>) : null}
-                                            </div>
-                                        </div> */}
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">{Resources['medigationCost'][currentLanguage]}</label>
-                                            <div className={'ui input inputDev' + (errors.medigationCost && touched.medigationCost ? (" has-error") : !errors.medigationCost && touched.medigationCost ? (" has-success") : " ")} >
-                                                <input autoComplete="off" name="medigationCost" id="medigationCost"
-                                                    value={this.state.documentCycle.mitigationCost}
-                                                    className="form-control"
-                                                    onBlur={(e) => { handleBlur(e); handleChange(e) }}
-                                                    onChange={(e) => { this.handleChangeCycle(e, 'mitigationCost') }}
-                                                    placeholder={Resources['medigationCost'][currentLanguage]} />
-                                                {errors.medigationCost && touched.medigationCost ? (<em className="pError">{errors.medigationCost}</em>) : null}
-                                            </div>
-                                        </div>
-                                        {/* <div className="linebylineInput valid-input mix_dropdown">
-                                            <label className="control-label">{Resources.responsibleCompanyName[currentLanguage]}</label>
-                                            <div className="supervisor__company">
-                                                <div className="super_name">
-                                                    <Dropdown data={this.state.companies} isMulti={false}
-                                                        selectedValue={this.state.selectedFromCompany}
-                                                        handleChange={event => { this.handleChangeDropDown(event, 'actionOwnerId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact') }}
-                                                        onChange={setFieldValue}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.fromCompanyId}
-                                                        touched={touched.fromCompanyId}
-                                                        name="fromCompanyId"
-                                                        id="actionOwnerId" styles={CompanyDropdown} classDrop="companyName1 " />
-                                                </div>
-                                                <div className="super_company">
-                                                    <Dropdown isMulti={false} data={this.state.fromContacts}
-                                                        selectedValue={this.state.selectedFromContact}
-                                                        handleChange={event => this.handleChangeDropDown(event, 'actionOwnerContactId', false, '', '', '', 'selectedFromContact')}
-                                                        onChange={setFieldValue}
-                                                        onBlur={setFieldTouched}
-                                                        error={errors.actionOwnerContactId}
-                                                        touched={touched.actionOwnerContactId}
-                                                        name="actionOwnerContactId"
-                                                        id="actionOwnerContactId" classDrop=" contactName1" styles={ContactDropdown} />
-                                                </div>
-                                            </div>
-                                        </div> */}
-                                    </div>
-                                </Fragment>
-                                {/* } */}
-                                <div className="slider-Btns">
-                                    {this.state.CycleEditLoading ?
-                                        <button className="primaryBtn-1 btn disabled">
-                                            <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
-                                            </div>
-                                        </button>
-                                        : <button className={"primaryBtn-1 btn meduimBtn" + (this.state.isViewMode === true ? " disNone" : " ")} type='submit' >{Resources['save'][currentLanguage]}</button>
-                                    }
-                                </div>
-                            </Form>
-                        )}
-                    </Formik>
+                    {this.proposeMitForm()}
+
                     <div className="doc-pre-cycle">
                         <table className="attachmentTable attachmentTable__fixedWidth">
                             <thead>
@@ -988,7 +1035,7 @@ class riskAddEdit extends Component {
 
                             <tbody>
                                 {this.state.IRCyclesPost.map((item, index) => {
-                                    return <tr key={item.id + '-' + index}>
+                                    return <tr key={item.id + '-' + index} onClick={() => this.proposeMitEditHandler(item)}>
                                         <td className="removeTr">
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.subject}</div>
                                         </td>
@@ -1071,7 +1118,7 @@ class riskAddEdit extends Component {
         let dslikelihood = this.state.likelihoods;
         let consequences = this.state.consequences;
         let totalRankingPost = 0;
-        let totalRanking = 0; 
+        let totalRanking = 0;
         result.map(item => {
             let likelihoodScore = item['likelihoodScore'];
             let consequenceScore = item['conesquenceScore'];
@@ -1513,7 +1560,7 @@ class riskAddEdit extends Component {
     saveriskIdentification = (values) => {
         let obj = {
             id: this.state.docId,
-            description: this.state.description,
+            description: values.description,
             subject: values.subject,
         }
         this.setState({ btnLoading: true })
@@ -1586,11 +1633,14 @@ class riskAddEdit extends Component {
                             </div>
 
                             <div className="proForm datepickerContainer">
-                                <div className="letterFullWidth">
+                                <div className="letterFullWidth textarea-group">
                                     <label className="control-label">{Resources.description[currentLanguage]}</label>
-                                    <div className="inputDev ui input">
-                                        <TextEditor value={this.state.description} onChange={event => this.onChangeMessage(event, 'description')} />
-                                    </div>
+                                    <textarea className="form-control"
+                                        name='description' id="description"
+                                        placeholder={Resources.description[currentLanguage]}
+                                        value={this.state.description}
+                                        onBlur={handleBlur}
+                                        onChange={handleChange} />
                                 </div>
                             </div>
 
@@ -1610,6 +1660,14 @@ class riskAddEdit extends Component {
                             </div>
                             <RiskCause riskId={this.state.docId} />
 
+                            {this.state.docId > 0 ?
+                                <Fragment>
+
+                                    <RiskConesquence riskId={this.state.docId} />
+                                    <RiskCategorisation riskId={this.state.docId} isEdit={this.state.isEdit} />
+                                </Fragment>
+                                : null
+                            }
                             <div className="doc-pre-cycle">
                                 <div className="slider-Btns">
                                     <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
@@ -1653,7 +1711,7 @@ class riskAddEdit extends Component {
                                 onSubmit={(values, ) => {
 
                                     let data = this.state.riskMitigationProgressData
-                                    data.push(values) 
+                                    data.push(values)
                                     this.setState({
                                         riskMitigationProgressData: data
                                     });
@@ -1872,10 +1930,6 @@ class riskAddEdit extends Component {
                                                                         </div>
                                                                     </div>
 
-                                                                    <div className="linebylineInput valid-input alternativeDate">
-                                                                        <DatePicker title='lastEditDate'
-                                                                            startDate={this.state.document.lastEditDate} />
-                                                                    </div>
 
                                                                 </Fragment>
                                                                 :
@@ -1920,6 +1974,11 @@ class riskAddEdit extends Component {
                                                                     startDate={this.state.document.docDate}
                                                                     handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                             </div>
+                                                            <div className="linebylineInput valid-input alternativeDate">
+                                                                <DatePicker title='lastEditDate'
+                                                                    startDate={this.state.document.lastEditDate} />
+                                                            </div>
+
                                                             {/* <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker title='requiredDate'
                                                                     startDate={this.state.document.requiredDate}
@@ -1927,14 +1986,6 @@ class riskAddEdit extends Component {
                                                             </div> */}
                                                         </div>
 
-                                                        {this.state.docId > 0 ?
-                                                            <Fragment>
-
-                                                                <RiskConesquence riskId={this.state.docId} />
-                                                                <RiskCategorisation riskId={this.state.docId} isEdit={this.state.isEdit} />
-                                                            </Fragment>
-                                                            : null
-                                                        }
                                                         <div className="slider-Btns">
                                                             {this.state.isLoading ?
                                                                 <button className="primaryBtn-1 btn disabled">
@@ -2139,6 +2190,12 @@ class riskAddEdit extends Component {
                                                                     </Fragment>
                                     }
                                 </Fragment>}
+                            {this.state.showPopUp === true ?
+                                <SkyLight ref={ref => (this.simpleDialog = ref)}  >
+                                    <div className='document-fields'>
+                                        {this.state.currentEditComponent}
+                                    </div>
+                                </SkyLight> : null}
                         </div>
                         <Steps
                             steps_defination={steps_defination}
@@ -2169,6 +2226,7 @@ class riskAddEdit extends Component {
                                 </div>
                                 : null
                         }
+
                     </div>
                 </div>
             </div>

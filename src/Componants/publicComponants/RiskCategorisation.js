@@ -3,8 +3,8 @@ import Resources from "../../resources.json";
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import { toast } from "react-toastify";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import _ from 'lodash';
+import orderBy from 'lodash/orderBy';
+import { object } from 'prop-types';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -34,7 +34,9 @@ class RiskCategorisation extends Component {
             selectedLots: [],
             selectedAssetsTypes: [],
             bulkSelected: [],
-            lastData: []
+            lastData: [],
+            lastSelected: null,
+
         }
     }
 
@@ -46,20 +48,27 @@ class RiskCategorisation extends Component {
 
             dataservice.addObject("GetContainsAccountsDefaultList", listType).then(result => {
 
-                const projectPhase = result.filter(x => x.listType === "projectPhase").map(x => { return { label: x.title, value: x.id } });
-                const organisation = result.filter(x => x.listType === "organisation").map(x => { return { label: x.title, value: x.id } });
-                const managementlevel = result.filter(x => x.listType === "managementlevel").map(x => { return { label: x.title, value: x.id } });
-                const project_stage = result.filter(x => x.listType === "project_stage").map(x => { return { label: x.title, value: x.id } });
-                const lots = result.filter(x => x.listType === "lots").map(x => { return { label: x.title, value: x.id } });
-                const assets_types = result.filter(x => x.listType === "assets_types").map(x => { return { label: x.title, value: x.id } });
+                let projectPhase = result.filter(x => x.listType === "projectPhase").map(x => { return { label: x.title, value: x.id } });
+                let organisation = result.filter(x => x.listType === "organisation").map(x => { return { label: x.title, value: x.id } });
+                let managementlevel = result.filter(x => x.listType === "managementlevel").map(x => { return { label: x.title, value: x.id } });
+                let project_stage = result.filter(x => x.listType === "project_stage").map(x => { return { label: x.title, value: x.id } });
+                let lots = result.filter(x => x.listType === "lots").map(x => { return { label: x.title, value: x.id } });
+                let assets_types = result.filter(x => x.listType === "assets_types").map(x => { return { label: x.title, value: x.id } });
+
+                projectPhase.push({ label: "Select ALL", value: 0 });
+                organisation.push({ label: "Select ALL", value: 0 });
+                managementlevel.push({ label: "Select ALL", value: 0 });
+                project_stage.push({ label: "Select ALL", value: 0 });
+                lots.push({ label: "Select ALL", value: 0 });
+                assets_types.push({ label: "Select ALL", value: 0 });
 
                 this.setState({
-                    projectPhase: projectPhase,
-                    organisation: organisation,
-                    managementlevel: managementlevel,
-                    project_stage: project_stage,
-                    lots: lots,
-                    assets_types: assets_types
+                    projectPhase: orderBy(projectPhase, 'value', 'asc'),
+                    organisation: orderBy(organisation, 'value', 'asc'),
+                    managementlevel: orderBy(managementlevel, 'value', 'asc'),
+                    project_stage: orderBy(project_stage, 'value', 'asc'),
+                    lots: orderBy(lots, 'value', 'asc'),
+                    assets_types: orderBy(assets_types, 'value', 'asc')
                 });
 
                 if (this.props.isEdit === true) {
@@ -67,13 +76,32 @@ class RiskCategorisation extends Component {
                     dataservice.GetDataGrid("GetCommunicationRiskCategorisationByRiskId?riskId=" + this.props.riskId).then(result => {
 
                         if (result) {
-                            const selectedProjectPhase = result.filter(x => x.categoryType === "projectPhase").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                            const selectedOrganisation = result.filter(x => x.categoryType === "organisation").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                            const selectedManagementlevel = result.filter(x => x.categoryType === "managementlevel").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                            const selectedProjectStage = result.filter(x => x.categoryType === "project_stage").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                            const selectedLots = result.filter(x => x.categoryType === "lots").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                            const selectedAssetsTypes = result.filter(x => x.categoryType === "assets_types").map(x => { return { label: x.categoryName, value: x.generalListId } });
-                            const bulkSelected = result.map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            let selectedProjectPhase = result.filter(x => x.categoryType === "projectPhase").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            let selectedOrganisation = result.filter(x => x.categoryType === "organisation").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            let selectedManagementlevel = result.filter(x => x.categoryType === "managementlevel").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            let selectedProjectStage = result.filter(x => x.categoryType === "project_stage").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            let selectedLots = result.filter(x => x.categoryType === "lots").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            let selectedAssetsTypes = result.filter(x => x.categoryType === "assets_types").map(x => { return { label: x.categoryName, value: x.generalListId } });
+                            let bulkSelected = result.map(x => { return { label: x.categoryName, value: x.generalListId } });
+
+                            if (projectPhase.filter(x => x.value != 0).length === selectedProjectPhase.length) {
+                                selectedProjectPhase.push({ label: "Select ALL", value: 0 });
+                            }
+                            if (organisation.filter(x => x.value != 0).length === selectedOrganisation.length) {
+                                selectedOrganisation.push({ label: "Select ALL", value: 0 });
+                            }
+                            if (managementlevel.filter(x => x.value != 0).length === selectedManagementlevel.length) {
+                                selectedManagementlevel.push({ label: "Select ALL", value: 0 });
+                            }
+                            if (project_stage.filter(x => x.value != 0).length === selectedProjectStage.length) {
+                                project_stage.push({ label: "Select ALL", value: 0 });
+                            }
+                            if (lots.filter(x => x.value != 0).length === selectedLots.length) {
+                                selectedLots.push({ label: "Select ALL", value: 0 });
+                            }
+                            if (assets_types.filter(x => x.value != 0).length === assets_types.length) {
+                                assets_types.push({ label: "Select ALL", value: 0 });
+                            }
 
                             this.setState({
                                 bulkSelected,
@@ -94,6 +122,8 @@ class RiskCategorisation extends Component {
 
     toggleSelected(obj, type, selectedValue) {
 
+        let selectAll = obj.filter(x => x.value === 0);
+
         const lengthObj = obj.length;
 
         let selectedLengthListTypes = this.state[selectedValue].length;
@@ -106,7 +136,95 @@ class RiskCategorisation extends Component {
 
         let lastData = this.state.lastData;
 
-        if (lengthObj > selectedLengthListTypes) {
+        //this is for obj more than one and check if have select all or not
+
+        if (selectAll.length > 0) {
+
+            const id = selectedListTypes.filter((o) => retriveObj.indexOf(o) === -1);
+
+            if (id.length > 0) {
+
+                let idDoc = lastData.find(x => x.generalListId == id[0]);
+
+                dataservice.GetDataGrid("DeleteRiskCategorisation?id=" + idDoc.id).then(result => {
+
+                    const indexBulk = bulkSelected.findIndex(x => x.value === id[0]);
+
+                    const indexData = lastData.findIndex(x => x.id === idDoc.id);
+
+                    bulkSelected.splice(indexBulk, 1);
+
+                    lastData.splice(indexData, 1);
+
+                    if (id[0] != 0) {
+                        obj = obj.filter(x => x.value != 0);
+
+                        this.setState({
+                            [selectedValue]: obj,
+                            bulkSelected,
+                            lastData
+                        });
+                    }
+                    else {
+                        this.setState({
+                            [selectedValue]: obj,
+                            bulkSelected,
+                            lastData
+                        });
+                    }
+
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                });
+            }
+            else {
+                //check if selectedValue have Selected All
+                const hasSalectAll = selectedListTypes.filter(x => x.value === 0);
+
+                if (hasSalectAll.length === 0) {
+
+                    let data = this.state[type].filter(x => x.value != 0);
+
+                    this.setState({
+                        [selectedValue]: this.state[type]
+                    });
+
+                    data.forEach(item => {
+
+                        let isAdding = lastData.filter(x => x.generalListId === item.value);
+
+                        if (isAdding.length === 0) {
+                            const document = {
+                                riskId: this.props.riskId,
+                                categoryType: type,
+                                generalListId: item.value,
+                                categoryName: item.label
+                            }
+
+                            dataservice.addObject("AddRiskCategorisation", document).then(result => {
+
+                                lastData.push(result);
+
+                                const isAdd = bulkSelected.filter(x => x.value === item.value);
+
+                                if (isAdd.length === 0) {
+                                    bulkSelected.push(item);
+                                }
+
+                                this.setState({
+                                    lastData,
+                                    bulkSelected
+                                });
+                            }).catch(ex => {
+                                toast.success(Resources["operationCanceled"][currentLanguage]);
+                            });
+                        }
+                    });
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }
+            }
+        }
+        //  this is no select all
+        else if (lengthObj > selectedLengthListTypes) {
 
             const listTypeIds = retriveObj.filter((o) => selectedListTypes.indexOf(o) === -1);
 
@@ -133,11 +251,24 @@ class RiskCategorisation extends Component {
                         }
                     });
 
-                    this.setState({
-                        [selectedValue]: obj,
-                        lastData,
-                        bulkSelected
-                    });
+                    let allData = this.state[type].length - 1;
+
+                    if (lengthObj === allData) {
+
+                        obj.push({ label: "Select ALL", value: 0 });
+
+                        this.setState({
+                            [selectedValue]: obj,
+                            lastData,
+                            bulkSelected
+                        });
+                    } else {
+                        this.setState({
+                            [selectedValue]: obj,
+                            lastData,
+                            bulkSelected
+                        });
+                    }
 
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
@@ -146,28 +277,60 @@ class RiskCategorisation extends Component {
             }
         } else {
 
-            const id = selectedListTypes.filter((o) => retriveObj.indexOf(o) === -1);
+            //check if selectedValue have Selected All
+            const isSalectAll = selectedListTypes.indexOf(0);
 
-            let idDoc = lastData.find(x => x.generalListId == id[0])
+            if (isSalectAll != -1) {
 
-            dataservice.GetDataGrid("DeleteRiskCategorisation?id=" + idDoc.id).then(result => {
+                selectedListTypes = selectedListTypes.filter(x => x != 0);
 
-                const indexBulk = bulkSelected.findIndex(x => x.value === id[0]);
+                selectedListTypes.forEach(item => {
 
-                const indexData = lastData.findIndex(x => x.id === idDoc.id);
+                    let data = lastData.filter(x => x.generalListId === item);
 
-                bulkSelected.splice(indexBulk, 1);
+                    const indexBulk = bulkSelected.findIndex(x => x.value === item);
 
-                lastData.splice(indexData, 1);
+                    const indexData = lastData.findIndex(x => x.id === data[0].id);
 
-                this.setState({
-                    [selectedValue]: obj,
-                    bulkSelected,
-                    lastData
+                    bulkSelected.splice(indexBulk, 1);
+
+                    lastData.splice(indexData, 1);
+
+                    this.setState({
+                        [selectedValue]: [],
+                        bulkSelected,
+                        lastData
+                    });
+
+                    dataservice.GetDataGrid("DeleteRiskCategorisation?id=" + data[0].id);
                 });
 
                 toast.success(Resources["operationSuccess"][currentLanguage]);
-            });
+            }
+            else {
+                const id = selectedListTypes.filter((o) => retriveObj.indexOf(o) === -1);
+
+                let idDoc = lastData.find(x => x.generalListId == id[0]);
+
+                dataservice.GetDataGrid("DeleteRiskCategorisation?id=" + idDoc.id).then(result => {
+
+                    const indexBulk = bulkSelected.findIndex(x => x.value === id[0]);
+
+                    const indexData = lastData.findIndex(x => x.id === idDoc.id);
+
+                    bulkSelected.splice(indexBulk, 1);
+
+                    lastData.splice(indexData, 1);
+
+                    this.setState({
+                        [selectedValue]: obj,
+                        bulkSelected,
+                        lastData
+                    });
+
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                });
+            }
         }
     }
 

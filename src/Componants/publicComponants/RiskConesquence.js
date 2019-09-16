@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Resources from "../../resources.json";
 import Api from "../../api";
 import dataservice from "../../Dataservice";
@@ -200,12 +200,12 @@ class RiskConesquence extends Component {
                                         <th>
                                             <div className="headCell tableCell-1">{Resources['checkList'][currentLanguage]}</div>
                                         </th>
-                                        <th colSpan="2">
-                                            <div className="headCell tableCell-3"> {Resources.conesquenceName[currentLanguage]}</div>
+                                        <th colSpan="1">
+                                            <div className="headCell tableCell-2" style={{ maxWidth: '100%' }}> {Resources.conesquenceName[currentLanguage]}</div>
                                         </th>
                                         <th colSpan="3">
-                                            <div className="headCell tableCell-3"> {Resources.description[currentLanguage]}</div>
-                                        </th> 
+                                            <div className="headCell tableCell-2"> {Resources.description[currentLanguage]}</div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -218,7 +218,7 @@ class RiskConesquence extends Component {
                                                         <label />
                                                     </div>
                                                 </td>
-                                                <td colSpan="2" style={{ maxWidth: "150px" }}>
+                                                <td colSpan="1" style={{ maxWidth: "150px" }}>
                                                     <div className="contentCell tableCell-10" style={{ maxWidth: '100%', paddingLeft: '16px' }}> {item.consequenceName}</div>
                                                 </td>
                                                 <td colSpan="3" style={{ maxWidth: '290px' }}>
@@ -232,7 +232,7 @@ class RiskConesquence extends Component {
                                                             : <div>{item.comment}
                                                             </div>}
                                                     </div>
-                                                </td> 
+                                                </td>
                                             </tr>
                                         )
                                     })}
