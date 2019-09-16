@@ -29,12 +29,13 @@ import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
-
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage])
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
+    correlationPercentage: Yup.number(Resources['onlyNumbers'][currentLanguage]).min(0),
 });
 
 const documentCycleValidationSchema = Yup.object().shape({
@@ -144,6 +145,7 @@ class riskAddEdit extends Component {
             IRCyclesPre: [],
             IRCyclesPost: [],
             priority: [],
+            correlationTypes: [],
             permission: [{ name: 'sendByEmail', code: 10006 },
             { name: 'sendByInbox', code: 10005 },
             { name: 'sendTask', code: 0 },
@@ -165,7 +167,9 @@ class riskAddEdit extends Component {
             riskMitigationProgressData: [],
             isEdit: false,
             showPopUp: true,
-            currentEditComponent: null
+            currentEditComponent: null,
+            showDeleteModal: false,
+            deletedMit: null
         }
 
         if (!Config.IsAllow(10000) && !Config.IsAllow(10001) && !Config.IsAllow(10003)) {
@@ -736,6 +740,7 @@ class riskAddEdit extends Component {
         let currentEditComponent = this.mitigationRequestForm(item);
         this.setState({ currentEditComponent, showPopUp: true });
         this.simpleDialog.show();
+
     }
     proposeMitEditHandler = (item) => {
         let currentEditComponent = this.proposeMitForm(item);
@@ -751,10 +756,27 @@ class riskAddEdit extends Component {
     }
 
     /**
- * to be implemented for editting  
- */
+    * to be implemented for editting  
+    */
     editproposeMitigation() {
 
+    }
+    /**
+    * to be implemented for delete  
+    */
+    deleteProposedMit(e, item) {
+        e.stopPropagation();
+        this.setState({ showDeleteModal: true, deletedMit: item });
+    }
+    /**
+    * to be implemented for delete  
+    */
+    deleteCurrentdMit(e, item) {
+        e.stopPropagation();
+        this.setState({ showDeleteModal: true, deletedMit: item });
+    }
+    confirmDelete() {
+        console.log(this.state.deletedMit)
     }
 
     mitigationRequestForm(values) {
@@ -764,7 +786,7 @@ class riskAddEdit extends Component {
         }
         return (
             <Formik
-                initialValues={{ subject: values ? values.subject : "", mitigationType: selectedValue != null ? selectedValue.label : "", id: values ? values.id : 0 }}
+                initialValues={{ subject: values ? values.subject : "", mitigationType: selectedValue != null ? selectedValue : "", id: values ? values.id : 0 }}
                 validationSchema={documentCycleValidationSchema}
                 enableReinitialize={true}
                 onSubmit={(values) => {
@@ -783,7 +805,7 @@ class riskAddEdit extends Component {
                                     <input name='subject' id="subject" className="form-control fsadfsadsa"
                                         placeholder={Resources.currentPlannedMitigation[currentLanguage]}
                                         autoComplete='off'
-                                        value={values ? values.subject : this.state.documentCycle.subject}
+                                        defaultValue={values ? values.subject : this.state.documentCycle.subject}
                                         onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                         onChange={(e) => this.handleChangeCycle(e, 'subject')} />
                                     {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
@@ -794,8 +816,10 @@ class riskAddEdit extends Component {
                             <div className="linebylineInput valid-input">
                                 <Dropdown title="mitigationType"
                                     data={this.state.mitigationTypes}
-                                    selectedValue={selectedValue != null ? selectedValue : this.state.selectedMitigationTypes}
-                                    handleChange={(e) => this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationTypes')}
+                                    selectedValue={values.mitigationType != null ? values.mitigationType : this.state.selectedMitigationTypes}
+                                    handleChange={(e) => {
+                                        values.mitigationType != null ? setFieldValue("mitigationType", e) : this.handleChangeCycleDropDown(e, "mitigationType", 'selectedMitigationTypes')
+                                    }}
                                     onChange={setFieldValue}
                                     onBlur={setFieldTouched}
                                     error={errors.mitigationType}
@@ -840,6 +864,7 @@ class riskAddEdit extends Component {
                         <table className="attachmentTable">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>
                                         <div className="headCell tableCell-1">{Resources['subject'][currentLanguage]}</div>
                                     </th>
@@ -853,6 +878,12 @@ class riskAddEdit extends Component {
                             <tbody>
                                 {this.state.IRCyclesPre.map((item, index) => {
                                     return <tr key={item.id + '-' + index} onClick={() => this.editMitigationRequestHandler(item)}>
+                                        <td onClick={(e) => this.deleteCurrentdMit(e, item)}>
+                                            <i
+                                                style={{ fontSize: "1.6em" }}
+                                                className="fa fa-trash-o"
+                                            />
+                                        </td>
                                         <td className="removeTr">
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.subject}</div>
                                         </td>
@@ -1001,8 +1032,6 @@ class riskAddEdit extends Component {
     }
 
 
-
-
     ProposedMit(isCurrent) {
         return (
             <div className="subiTabsContent">
@@ -1018,6 +1047,9 @@ class riskAddEdit extends Component {
                         <table className="attachmentTable attachmentTable__fixedWidth">
                             <thead>
                                 <tr>
+                                    <th>
+                                        <div className="headCell tableCell-1"> </div>
+                                    </th>
                                     <th>
                                         <div className="headCell tableCell-1">{Resources['subject'][currentLanguage]}</div>
                                     </th>
@@ -1036,6 +1068,12 @@ class riskAddEdit extends Component {
                             <tbody>
                                 {this.state.IRCyclesPost.map((item, index) => {
                                     return <tr key={item.id + '-' + index} onClick={() => this.proposeMitEditHandler(item)}>
+                                        <td >
+                                            <i onClick={(e) => this.deleteProposedMit(e, item)}
+                                                style={{ fontSize: "1.6em" }}
+                                                className="fa fa-trash-o"
+                                            />
+                                        </td>
                                         <td className="removeTr">
                                             <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.subject}</div>
                                         </td>
@@ -1604,6 +1642,7 @@ class riskAddEdit extends Component {
                 <Formik initialValues={{
                     subject: this.state.document.subject,
                     description: this.state.description,
+                    correlationPercentage: 0
 
                 }}
                     validationSchema={validationSchema}
@@ -1641,6 +1680,28 @@ class riskAddEdit extends Component {
                                         value={this.state.description}
                                         onBlur={handleBlur}
                                         onChange={handleChange} />
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <Dropdown title="correlationType"
+                                        isMulti={false}
+                                        data={this.state.correlationTypes}
+                                        selectedValue={this.state.selectedcorrelationType}
+                                        handleChange={(e) => this.handleChangeDropDown(e, "", 'selectedcorrelationType')}
+                                        index="correlationType"
+                                        name="correlationType"
+                                        id="correlationType" />
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <label className="control-label">{Resources.correlationPercentage[currentLanguage]}</label>
+                                    <div className={"inputDev ui input" + (errors.correlationPercentage && touched.correlationPercentage ? (" has-error") : !errors.correlationPercentage && touched.correlationPercentage ? (" has-success") : " ")} >
+                                        <input name='correlationPercentage' id="correlationPercentage" className="form-control fsadfsadsa"
+                                            placeholder={Resources.correlationPercentage[currentLanguage]}
+                                            autoComplete='off'
+                                            value={values.correlationPercentage}
+                                            onBlur={handleBlur}
+                                            onChange={handleChange} />
+                                        {errors.correlationPercentage && touched.correlationPercentage ? (<em className="pError">{errors.correlationPercentage}</em>) : null}
+                                    </div>
                                 </div>
                             </div>
 
@@ -2196,6 +2257,11 @@ class riskAddEdit extends Component {
                                         {this.state.currentEditComponent}
                                     </div>
                                 </SkyLight> : null}
+                            {this.state.showDeleteModal == true ? (
+                                <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} closed={this.onCloseModal}
+                                    showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={() => this.setState({ showDeleteModal: false })}
+                                    buttonName="delete" clickHandlerContinue={this.confirmDelete.bind(this)} />
+                            ) : null}
                         </div>
                         <Steps
                             steps_defination={steps_defination}
