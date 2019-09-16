@@ -83,9 +83,9 @@ class LettersAddEdit extends Component {
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
-            document: this.props.document
-                ? Object.assign({}, this.props.document)
-                : {},
+            document: {
+                id: 0
+            },
             companies: [],
             ToContacts: [],
             fromContacts: [],
@@ -149,7 +149,7 @@ class LettersAddEdit extends Component {
                 toCompanyId: "",
                 toContactId: "",
                 replayId: "",
-                docDate: moment(),
+                docDate: moment().format("YYYY-MM-DD"),
                 status: false,
                 disciplineId: "",
                 refDoc: "",
@@ -157,9 +157,11 @@ class LettersAddEdit extends Component {
                 message: ""
             };
             this.setState({ document: letter });
+            console.log(letter);
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
+
         this.checkDocumentIsView();
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -172,7 +174,8 @@ class LettersAddEdit extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, state) {
-        if (nextProps.document.id != state.document.id) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+            console.log('getDerivedStateFromProps......', nextProps, state);
             return {
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -183,13 +186,14 @@ class LettersAddEdit extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.document.id !== this.props.document.id) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
             //         // und 976 --1
             //         //976 976 fire modal
             //         //976 976 close modal
             //         //alert('recieve....'); 
             //         //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
 
+            console.log('componentDidUpdate......', prevProps);
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
@@ -253,8 +257,7 @@ class LettersAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        dataservice
-            .GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId")
+        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId")
             .then(result => {
                 if (isEdit) {
                     let companyId = this.props.document.fromCompanyId;
@@ -306,8 +309,7 @@ class LettersAddEdit extends Component {
                 });
             });
 
-        dataservice
-            .GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId, "subject", "id")
+        dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId, "subject", "id")
             .then(result => {
                 if (isEdit) {
                     let replyId = this.props.document.replyId;
@@ -680,7 +682,7 @@ class LettersAddEdit extends Component {
                                                                     startDate={this.state.document.docDate}
                                                                     handleChange={e => this.handleChangeDate(e, "docDate")}
                                                                 />
-                                                                
+
                                                             </div>
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">
