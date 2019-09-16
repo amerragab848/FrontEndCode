@@ -3,8 +3,6 @@ import ReactDataGrid from "react-data-grid";
 import { ToolsPanel, Data, Draggable } from "react-data-grid-addons";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Calendar from "react-calendar";
-// import "../../Styles/gridStyle.css";
-// import "../../Styles/scss/en-us/dataGrid.css";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 import moment from "moment";
@@ -14,7 +12,7 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
-const selectors = Data.Selectors;
+//const selectors = Data.Selectors;
 
 let arrColumn = ["arrange", "quantity", "itemCode"];
 
@@ -23,32 +21,33 @@ class GridSetupWithFilter extends Component {
     super(props);
 
     this.state = {
-      columns: [],
+      columns: this.props.columns,
       rows: this.props.rows,
-      filteredRows: this.props.rows,
-      setFilters: {},
-      filters: [],
       groupBy: [],
       selectedIndexes: [],
       selectedRows: [],
       selectedRow: [],
       copmleteRows: [],
       expandedRows: {},
+      columnsModal: false,
+      ColumnsHideShow: [],
+      Loading: false,
+      filteredRows: this.props.rows,
+      setFilters: {},
+      filters: [],
       ShowModelFilter: false,
       ClearFilter: "",
       isView: false,
       currentData: 0,
       date: new Date(),
       setDate: moment(new Date()).format("DD/MM/YYYY"),
-      fieldDate: {},
-      columnsModal: false,
-      ColumnsHideShow: [],
-      Loading: false
+      fieldDate: {}
     };
 
     this.groupColumn = this.groupColumn.bind(this);
     this.onRowsSelected = this.onRowsSelected.bind(this);
     this.saveFilter = this.saveFilter.bind(this);
+    this.onHeaderDrop = this.onHeaderDrop.bind(this);
   }
 
   componentDidMount() {
@@ -78,7 +77,30 @@ class GridSetupWithFilter extends Component {
       this.setState(state);
     }, 500);
   }
+  onHeaderDrop = (source, target) => {
+    const stateCopy = Object.assign({}, this.state);
 
+    const columnSourceIndex = this.state.columns.findIndex(
+      i => i.key === source
+    );
+    const columnTargetIndex = this.state.columns.findIndex(
+      i => i.key === target
+    );
+
+    stateCopy.columns.splice(
+      columnTargetIndex,
+      0,
+      stateCopy.columns.splice(columnSourceIndex, 1)[0]
+    );
+
+    const emptyColumns = Object.assign({}, this.state, { columns: [] });
+    this.setState(emptyColumns);
+
+    const reorderedColumns = Object.assign({}, this.state, {
+      columns: stateCopy.columns
+    });
+    this.setState(reorderedColumns);
+  }; 
   sortRows = (initialRows, sortColumn, sortDirection) => {
     const comparer = (a, b) => {
       if (sortDirection === "ASC") {
@@ -92,8 +114,20 @@ class GridSetupWithFilter extends Component {
   };
 
   getRows = (rows, filters) => {
-    return selectors.getRows({ rows, filters });
+    return  Data.Selectors.getRows(this.state);
   };
+
+  getCount() {
+    return this.getRows().length;
+  }
+
+  getRowAt(index) {
+    if (index < 0 || index > this.getCount()) {
+      return undefined;
+    }
+
+    return this.getRows()[index];
+  }
 
   getRowsGrouping = (rows, groups) => {
     return Data.Selectors.getRows({ rows, groups });
@@ -212,11 +246,40 @@ class GridSetupWithFilter extends Component {
   };
 
   onRowExpandToggle({ columnGroupName, name, shouldExpand }) {
+    this.setState({
+      Loading: true
+    });
+
     let expandedRows = Object.assign({}, this.state.expandedRows);
-    expandedRows[columnGroupName] = Object.assign({}, expandedRows[columnGroupName]);
+    expandedRows[columnGroupName] = Object.assign(
+      {},
+      expandedRows[columnGroupName]
+    );
+    expandedRows[name] = { name: name };
     expandedRows[columnGroupName][name] = { isExpanded: shouldExpand };
-    this.setState({ expandedRows: expandedRows });
+    this.setState({
+      expandedRows: expandedRows,
+      Loading: false
+    });
   }
+
+  onRowExpandClick = ({ columnGroupName, name, shouldExpand }) => {
+    this.setState({
+      Loading: true
+    });
+
+    let expandedRows = Object.assign({}, this.state.expandedRows);
+
+    expandedRows[columnGroupName] = Object.assign(
+      {},
+      expandedRows[columnGroupName]
+    );
+
+    expandedRows[columnGroupName][name] = { isExpanded: shouldExpand };
+
+    this.setState({ expandedRows: expandedRows, Loading: false });
+  };
+
 
   onRowClick = (index, value, column) => {
     if (value) {
@@ -257,7 +320,7 @@ class GridSetupWithFilter extends Component {
     });
   }
 
-  getRowsFilter = (rows, filters) => { 
+  getRowsFilter = (rows, filters) => {
 
     if (this.state.filteredRows.length > 0) {
 
@@ -514,7 +577,8 @@ class GridSetupWithFilter extends Component {
   }
 
   render() {
-    const { groupBy, rows } = this.state;
+    const { rows, groupBy } = this.state;
+
     const groupedRows = Data.Selectors.getRows({ rows, groupBy });
 
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
@@ -720,10 +784,10 @@ class GridSetupWithFilter extends Component {
             </div>
           </div>
         </div>
-        
+
         <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
           <div className="minimizeSpan">
-            <div className="V-tableSize"  data-toggle="tooltip" title="Filter Columns" onClick={this.openModalColumn}>
+            <div className="V-tableSize" data-toggle="tooltip" title="Filter Columns" onClick={this.openModalColumn}>
               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                 <g fill="none" fillRule="evenodd" transform="translate(5 5)">
                   <g fill="#CCD2DB" mask="url(#b)">
@@ -740,17 +804,39 @@ class GridSetupWithFilter extends Component {
             </div>
             <div id="bottom__scroll">
               {this.state.Loading === false ?
-                <DraggableContainer>
-                  <ReactDataGrid rowKey="id" minHeight={groupedRows != undefined ? groupedRows.length < 5 ? 350 : this.props.minHeight !== undefined ? this.props.minHeight : 750 : 1}
-                    height={this.props.minHeight !== undefined ? this.props.minHeight : 750} columns={this.state.columns}
-                    rowGetter={i => (groupedRows[i] != null ? groupedRows[i] : "")} rowsCount={groupedRows != undefined ? groupedRows.length : 1}
+                <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
+                  <ReactDataGrid rowKey="id"
+                    minHeight={this.getRows() != undefined ? this.getCount() < 5 ? 350 : this.props.minHeight !== undefined ? this.props.minHeight : 750 : 1}
+                    height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
+
+                    columns={this.state.columns}
+                    rowGetter={index =>
+                      this.getRowAt(index)
+                    }
+
+                    rowsCount={this.getCount()}
+                    onRowExpandToggle={row =>
+                      this.onRowExpandToggle(row)
+                    }
+                    expandedRows={this.expandedRows}
+                    onRowExpandClick={row =>
+                      this.onRowExpandClick(row)
+                    }
+
                     enableCellSelect={true} onGridRowsUpdated={this.onGridRowsUpdated} onCellSelected={this.onCellSelected}
                     onColumnResize={(idx, width, event) => {
                       this.scrolllll();
                     }}
-                    onGridSort={(sortColumn, sortDirection) =>
+                    onGridSort={(
+                      sortColumn,
+                      sortDirection
+                    ) =>
                       this.setState({
-                        rows: this.sortRows(groupedRows, sortColumn, sortDirection)
+                        rows: this.sortRows(
+                          this.state.rows,
+                          sortColumn,
+                          sortDirection
+                        )
                       })
                     }
                     enableDragAndDrop={true}

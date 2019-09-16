@@ -5,14 +5,19 @@ import keyBy from 'lodash/keyBy';
 
 const schemaBuilder = lf.schema.create('widgets', 1);
 const schemaBuilderDashBoardProjects = lf.schema.create('widgetsDashBoardProjects', 1);
+const cachedData = lf.schema.create('cachedAPI', 1);
 
 let db = null;
 let dbDashBoard = null;
+let api = null;
 
 const tables = {
     'widgetType': null,
     'widgetCategory': null,
-    'widget': null
+    'widget': null,
+    'projects': null,
+    'companies': null,
+    'defaultLists': null
 };
 
 const tableProjects = {
@@ -50,7 +55,33 @@ export default class IndexedDb {
             addColumn('permission', lf.Type.INTEGER).
             addColumn('checked', lf.Type.BOOLEAN).
             addColumn('type', lf.Type.STRING).
-            addPrimaryKey(['id']);
+            addPrimaryKey(['id']); 
+
+    }
+
+    static initializeCachedAPI() { 
+
+        cachedData.createTable('defaultLists').
+            addColumn('value', lf.Type.INTEGER).
+            addColumn('label', lf.Type.STRING).
+            addColumn('listType', lf.Type.STRING).
+            addPrimaryKey(['value']);
+
+        cachedData.createTable('projects').
+            addColumn('value', lf.Type.INTEGER).
+            addColumn('label', lf.Type.STRING).
+            addPrimaryKey(['value']);
+
+        cachedData.createTable('companies').
+            addColumn('value', lf.Type.INTEGER).
+            addColumn('label', lf.Type.STRING).
+            addColumn('projectId', lf.Type.INTEGER).
+            addForeignKey('fk_CompanyId', {
+                local: 'projectId',
+                ref: 'projects.value'
+            }).
+            addPrimaryKey(['value']);
+
     }
 
     static initializeCounterDB() {
@@ -102,7 +133,7 @@ export default class IndexedDb {
                 let category_order = +`${category.refrence + 1}${category.order}`;
 
                 category.widgets.forEach((wid, widIndex) => {
-                 
+
 
                     let widRow = tables.widget.createRow({
                         'id': +`${id}${widIndex + 1}`,
@@ -113,7 +144,7 @@ export default class IndexedDb {
                         'checked': wid.checked,
                         'type': wid.type
                     });
-                      
+
                     widgetRows.push(widRow);
                 });
 
@@ -129,6 +160,42 @@ export default class IndexedDb {
             await db.insertOrReplace().into(tables.widgetCategory).values(widgetCategoryRows).exec();
             await db.insertOrReplace().into(tables.widget).values(widgetRows).exec();
         };
+    }
+ 
+    static async seedProjects(projects) {
+        api = await cachedData.connect();
+
+        tables.projects = api.getSchema().table('projects');  
+
+        let projectsRows = [];
+
+        projects.forEach((project) => {
+            let widRow = tables.projects.createRow({
+                'value': project.id,
+                'label': project.projectName
+            });
+            projectsRows.push(widRow);
+        });
+
+        await api.insertOrReplace().into(tables.projects).values(projectsRows).exec();
+
+    }
+
+    static async seedTypes(data) {
+        api = await cachedData.connect();
+        tables.defaultLists = api.getSchema().table('defaultLists'); 
+        let rows = [];
+        data.forEach((item) => {
+            let widRow = tables.defaultLists.createRow({
+                'value': item.id,
+                'label': item.title,
+                'listType': item.listType
+            });
+            rows.push(widRow);
+        });
+
+        await api.insertOrReplace().into(tables.defaultLists).values(rows).exec();
+
     }
 
     static async seedWidgetCounter() {
@@ -258,7 +325,7 @@ export default class IndexedDb {
         data = data.map(category => ({ id: category.id, order: category.order }));
 
         return keyBy(data, category => category.id);
-    } 
+    }
 
     static async getCategory() {
 
@@ -286,7 +353,7 @@ export default class IndexedDb {
 
         return await query.where(tables[table].id.eq(id)).exec();
     }
-  
+
     static async updateDashBoardProject(table, id, params) {
         let query = dbDashBoard.update(tableProjects[table]);
 

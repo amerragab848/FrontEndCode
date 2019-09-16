@@ -965,7 +965,7 @@ class projectWorkFlowAddEdit extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns} minHeight={350} onRowClick={this.ShowPopUpForEdit}
+                <GridSetup rows={this.state.rows} columns={this.state.columns} minHeight={450} onRowClick={this.ShowPopUpForEdit}
                     showCheckbox={this.state.showCheckbox} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} />
             ) : <LoadingSection />
 
@@ -1291,8 +1291,8 @@ class projectWorkFlowAddEdit extends Component {
                                     </div>
 
                                     <div className="doc-pre-cycle">
-                                        <header>
-                                            <h2 className="zero">{Resources['AddedItems'][currentLanguage]}</h2>
+                                        <header> 
+                                            <h2 className="zero">{Resources['contactList'][currentLanguage]}</h2>
                                         </header>
                                         {dataGrid}
 

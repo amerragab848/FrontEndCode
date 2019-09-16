@@ -74,8 +74,7 @@ export default class Api {
                 // response is not a valid json string
             });
     }
-
-
+ 
     static GetPayload() {
         var payload = [];
 

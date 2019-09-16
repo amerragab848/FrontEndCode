@@ -1,8 +1,12 @@
 import Api from "./api.js";
+import lf from 'lovefield';
+import IndexedDb from "./IndexedDb";
+let db = null;
+const cachedData = lf.schema.create('cachedAPI', 1);
 
 export default class Dataservice {
 
-    static GetDataList = (url, label, value) => {
+    static GetDataList(url, label, value) {
         let Data = []
         return Api.get(url).then(result => {
             (result).forEach(item => {
@@ -14,8 +18,42 @@ export default class Dataservice {
             return Data;
         }).catch(ex => Data);
     };
-    
-    static GetDataListWithNewVersion = (url, label, value) => {
+
+    static async GetDataListCached(url, label, value, tableName, condition) {
+
+        if (tableName) {
+
+            db = await cachedData.connect();
+            db.getSchema().table(tableName);
+
+            let rows = await db.select().from(tableName).exec();
+            if (rows.length === 0) {
+                return this.callAPIGetDataList(url, label, value);
+            } else {
+                return rows;
+            }
+        }
+        else {
+            return this.callAPIGetDataList(url, label, value);
+        }
+    };
+
+    callAPIGetDataList = (url, label, value) => {
+        let Data = []
+        return Api.get(url).then(result => {
+            (result).forEach(item => {
+                var obj = {};
+                obj.label = item[label];
+                obj.value = item[value];
+                Data.push(obj);
+
+                IndexedDb.seedTypes(result);
+            });
+            return Data;
+        }).catch(ex => Data);
+    }
+
+    static GetDataListWithNewVersion = (url, label, value, tableName) => {
         let Data = []
         return Api.get(url).then(result => {
             (result.data).forEach(item => {
@@ -32,7 +70,7 @@ export default class Dataservice {
 
         return Api.post(url, docObj).then(result => {
             return result;
-        }); 
+        });
     };
 
     static GetNextArrangeMainDocument = (url) => {
@@ -64,7 +102,7 @@ export default class Dataservice {
         return Api.get(url).then(result => {
 
             return result;
-        }).catch(ex => {});
+        }).catch(ex => { });
     };
-    
+
 }

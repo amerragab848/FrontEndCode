@@ -234,7 +234,7 @@ class phoneAddEdit extends Component {
                 fromCompanyId: '',
                 fromContactId: '',
                 toCompanyId: '',
-                toContatId: '',
+                toContactId: '',
                 details: '',
                 enteredBy: '',
                 callTime: '',

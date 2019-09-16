@@ -22,8 +22,7 @@ import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(
@@ -244,7 +243,7 @@ class LettersAddEdit extends Component {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = result.filter(function (i) {
                     return i.value == toSubField;
-                }); 
+                });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -255,12 +254,7 @@ class LettersAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         dataservice
-            .GetDataList(
-                "GetProjectProjectsCompaniesForList?projectId=" +
-                this.state.projectId,
-                "companyName",
-                "companyId"
-            )
+            .GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId")
             .then(result => {
                 if (isEdit) {
                     let companyId = this.props.document.fromCompanyId;
@@ -271,14 +265,7 @@ class LettersAddEdit extends Component {
                                 value: companyId
                             }
                         });
-                        this.fillSubDropDownInEdit(
-                            "GetContactsByCompanyId",
-                            "companyId",
-                            companyId,
-                            "fromContactId",
-                            "selectedFromContact",
-                            "fromContacts"
-                        );
+                        this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "fromContactId", "selectedFromContact", "fromContacts");
                     }
 
                     let toCompanyId = this.props.document.toCompanyId;
@@ -290,13 +277,7 @@ class LettersAddEdit extends Component {
                             }
                         });
 
-                        this.fillSubDropDownInEdit(
-                            "GetContactsByCompanyId",
-                            "companyId",
-                            toCompanyId,
-                            "toContactId",
-                            "selectedToContact",
-                            "ToContacts"
+                        this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts"
                         );
                     }
                 }
@@ -305,12 +286,7 @@ class LettersAddEdit extends Component {
                 });
             });
 
-        dataservice
-            .GetDataList(
-                "GetaccountsDefaultListForList?listType=discipline",
-                "title",
-                "id"
-            )
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id")//,'defaultLists', "discipline")
             .then(result => {
                 if (isEdit) {
                     let disciplineId = this.props.document.disciplineId;
