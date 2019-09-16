@@ -35,7 +35,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
-    correlationPercentage: Yup.number(Resources['onlyNumbers'][currentLanguage]).positive(Resources['onlyNumbers'][currentLanguage]),
+    correlationPercentage: Yup.number(Resources['onlyNumbers'][currentLanguage]).min(0),
 });
 
 const documentCycleValidationSchema = Yup.object().shape({
