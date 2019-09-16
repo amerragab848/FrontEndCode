@@ -1,7 +1,7 @@
 {
     "BlobStorageContainerName": "project-files-badya",
     "acApp": "AC",
-    "accountCompanyId": "14",
+    "accountCompanyId": "2",
     "azureStorage": true,
     "canSendAlert": "false",
     "cdn": "https://newgiza.azureedge.net",
