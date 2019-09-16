@@ -6,13 +6,12 @@ import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage =    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
 
-const selectors = Data.Selectors;
+//const selectors = Data.Selectors;
 
 class GridSetup extends Component {
     constructor(props) {
@@ -302,7 +301,7 @@ class GridSetup extends Component {
     scrolllll() {
         document
             .getElementById("top__scroll")
-            .addEventListener("scroll", function() {
+            .addEventListener("scroll", function () {
                 document
                     .getElementById("bottom__scroll")
                     .querySelector(
@@ -316,7 +315,7 @@ class GridSetup extends Component {
         document
             .getElementById("bottom__scroll")
             .querySelector(".react-grid-Canvas")
-            .addEventListener("scroll", function() {
+            .addEventListener("scroll", function () {
                 if (document.getElementById("top__scroll") != null) {
                     document.getElementById(
                         "top__scroll"
@@ -434,7 +433,7 @@ class GridSetup extends Component {
                                                     this.clickHandlerDeleteRows
                                                 }>
                                                 {this.props.NoShowDeletedBar ===
-                                                undefined
+                                                    undefined
                                                     ? "DELETE"
                                                     : "Currency"}
                                             </button>
@@ -471,7 +470,7 @@ class GridSetup extends Component {
                                                     data-toggle="tooltip"
                                                     title={
                                                         Resources[
-                                                            "projectTaskGroups"
+                                                        "projectTaskGroups"
                                                         ][currentLanguage]
                                                     }>
                                                     <i
@@ -491,7 +490,7 @@ class GridSetup extends Component {
                                                     data-toggle="tooltip"
                                                     title={
                                                         Resources[
-                                                            "projectTask"
+                                                        "projectTask"
                                                         ][currentLanguage]
                                                     }>
                                                     <i
@@ -573,24 +572,12 @@ class GridSetup extends Component {
                         </div>
                         <div id="bottom__scroll">
                             {this.state.Loading === false ? (
-                                <DraggableContainer
-                                    onHeaderDrop={this.onHeaderDrop}>
-                                    <ReactDataGrid
-                                        rowKey="id"
+                                <DraggableContainer onHeaderDrop={this.onHeaderDrop}>
+                                    <ReactDataGrid rowKey="id"
                                         minHeight={
-                                            this.getRows() != undefined
-                                                ? this.getCount() < 5
-                                                    ? 350
-                                                    : this.props.minHeight !==
-                                                      undefined
-                                                    ? this.props.minHeight
-                                                    : 750
-                                                : 1
-                                        }
+                                            this.getRows() != undefined ? this.getCount() < 5 ? 350 : this.props.minHeight !== undefined ? this.props.minHeight : 750 : 1}
                                         height={
-                                            this.props.minHeight !== undefined
-                                                ? this.props.minHeight
-                                                : 750
+                                            this.props.minHeight !== undefined ? this.props.minHeight : 750
                                         }
                                         columns={this.state.columns}
                                         rowGetter={index =>
@@ -610,18 +597,14 @@ class GridSetup extends Component {
                                         }
                                         onCellSelected={this.onCellSelected}
                                         onColumnResize={(idx, width, event) => {
-                                            this.scrolllll(); 
+                                            this.scrolllll();
                                         }}
                                         onGridSort={(
                                             sortColumn,
                                             sortDirection
                                         ) =>
                                             this.setState({
-                                                rows: this.sortRows(
-                                                    this.state.rows,
-                                                    sortColumn,
-                                                    sortDirection
-                                                )
+                                                rows: this.sortRows(this.state.rows, sortColumn, sortDirection)
                                             })
                                         }
                                         enableDragAndDrop={true}
@@ -645,30 +628,22 @@ class GridSetup extends Component {
                                             />
                                         }
                                         rowSelection={{
-                                            showCheckbox: this.props
-                                                .showCheckbox,
+                                            showCheckbox: this.props.showCheckbox,
                                             defaultChecked: false,
                                             enableShiftSelect: true,
                                             onRowsSelected: this.onRowsSelected,
-                                            onRowsDeselected: this
-                                                .onRowsDeselected,
+                                            onRowsDeselected: this.onRowsDeselected,
                                             enableRowSelect: "single",
                                             selectBy: {
-                                                indexes: this.state
-                                                    .selectedIndexes,
+                                                indexes: this.state.selectedIndexes,
                                                 keys: {
                                                     rowKey: "id",
-                                                    values: this.state
-                                                        .selectedIndexes
+                                                    values: this.state.selectedIndexes
                                                 }
                                             }
                                         }}
                                         onRowClick={(index, value, column) =>
-                                            this.onRowClick(
-                                                index,
-                                                value,
-                                                column
-                                            )
+                                            this.onRowClick(index, value, column)
                                         }
                                         getCellActions={
                                             this.props.getCellActions
@@ -676,8 +651,8 @@ class GridSetup extends Component {
                                     />
                                 </DraggableContainer>
                             ) : (
-                                <LoadingSection />
-                            )}
+                                    <LoadingSection />
+                                )}
                         </div>
                     </div>
                     <div

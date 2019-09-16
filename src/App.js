@@ -53,6 +53,7 @@ class App extends Component {
 
     IndexedDb.initialize();
     IndexedDb.initializeCounterDB();
+    //IndexedDb.initializeCachedAPI();
   };
 
   state = {
@@ -64,6 +65,7 @@ class App extends Component {
 
     await IndexedDb.seed();
     await IndexedDb.seedWidgetCounter();
+   // await IndexedDb.initializeCachedAPI();
 
     let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -84,6 +86,7 @@ class App extends Component {
           })
         });
       });
+
   }
 
   render() {

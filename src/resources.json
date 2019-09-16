@@ -6816,8 +6816,8 @@
         "ar": "تاكيد كلمة المرور"
     },
     "addFollowUps": {
-        "en": "Add Follow Ups",
-        "ar": "Add Follow Ups"
+        "en": "Follow Up Contacts",
+        "ar": "Add Follow Ups" 
     },
     "followUpsContacts": {
         "en": "Follow Ups Contacts",
@@ -8182,5 +8182,21 @@
     "requestApprovalDrop": {
         "en": "Request Approval",
         "ar": " طلب اعتماد"
+    },
+    "realizationStatus": {
+        "en": "Realization Status",
+        "ar": "Realization Status"
+    },
+    "approveBy": {
+        "en": "Approve By",
+        "ar": "Approve By"
+    },
+    "correlationType": {
+        "en": "Correlation Type",
+        "ar": "Correlation Type"
+    },
+    "correlationPercentage": {
+        "en": "Correlation Percentage",
+        "ar": "Correlation Percentage"
     }
 }

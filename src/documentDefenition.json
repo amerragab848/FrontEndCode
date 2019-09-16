@@ -18673,6 +18673,30 @@
         "cellTemplate": "",
         "isCustom": false,
         "exportDataType": "d"
+      },
+      {
+        "field": "realizationStatus",
+        "friendlyName": "realizationStatus",
+        "minWidth": 100,
+        "width": "8%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
+        "field": "approveBy",
+        "friendlyName": "approveBy",
+        "minWidth": 100,
+        "width": "8%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
       }
     ],
     "filterApi": "TransmittalFilter",
