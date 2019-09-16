@@ -34,7 +34,8 @@ const validationSchema = Yup.object().shape({
         .nullable(true),
     toContactId: Yup.string().required(
         Resources["toContactRequired"][currentLanguage]
-    )
+    ),
+    sharedSettings: Yup.string().url('Please Enter Url.'),
 });
 
 let docId = 0;
@@ -142,7 +143,7 @@ class LettersAddEdit extends Component {
             let letter = {
                 subject: "",
                 id: 0,
-                projectId: this.state.projectId,
+                projectId: this.props.projectId,
                 arrange: "",
                 fromCompanyId: "",
                 fromContactId: "",
@@ -153,7 +154,7 @@ class LettersAddEdit extends Component {
                 status: false,
                 disciplineId: "",
                 refDoc: "",
-                sharedSettings: "",
+                sharedSettings: '',
                 message: ""
             };
             this.setState({ document: letter });
@@ -187,8 +188,7 @@ class LettersAddEdit extends Component {
             //         // und 976 --1
             //         //976 976 fire modal
             //         //976 976 close modal
-            //         //alert('recieve....');
-            //         //console.log(this.props.document.id, nextProps.document.id);
+            //         //alert('recieve....'); 
             //         //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
 
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
@@ -244,8 +244,7 @@ class LettersAddEdit extends Component {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = result.filter(function (i) {
                     return i.value == toSubField;
-                });
-                console.log(targetFieldSelected);
+                }); 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -342,7 +341,7 @@ class LettersAddEdit extends Component {
                             return i.value == replyId;
                         });
                         this.setState({
-                            [replyLetter]: replyLetter
+                            selectedReplyLetter: replyLetter
                         });
                     }
                 }
@@ -372,7 +371,6 @@ class LettersAddEdit extends Component {
     };
 
     handleChange(e, field) {
-        console.log(field, e);
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -387,7 +385,6 @@ class LettersAddEdit extends Component {
     }
 
     handleChangeDate(e, field) {
-        console.log(field, e);
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -461,6 +458,7 @@ class LettersAddEdit extends Component {
             isLoading: true
         });
         let saveDocument = { ...this.state.document };
+        saveDocument.projectId = this.props.projectId
 
         saveDocument.docDate = moment(saveDocument.docDate).format(
             "MM/DD/YYYY"
@@ -479,27 +477,13 @@ class LettersAddEdit extends Component {
         this.props.history.push(this.state.perviousRoute);
     }
 
-    showBtnsSaving(submitForm) {
+    showBtnsSaving() {
         let btn = null;
 
         if (this.state.docId === 0) {
-            btn = (
-                <button
-                    onClick={() => submitForm()}
-                    className="primaryBtn-1 btn meduimBtn"
-                    type="button">
-                    {Resources.save[currentLanguage]}
-                </button>
-            );
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
         } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = (
-                <button
-                    onClick={() => submitForm()}
-                    className="primaryBtn-1 btn mediumBtn"
-                    type="button">
-                    {Resources.saveAndExit[currentLanguage]}
-                </button>
-            );
+            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
         }
         return btn;
     }
@@ -600,7 +584,7 @@ class LettersAddEdit extends Component {
                                                 handleSubmit,
                                                 setFieldValue,
                                                 setFieldTouched,
-                                                submitForm
+
                                             }) => (
                                                     <Form
                                                         id="letterForm"
@@ -839,58 +823,31 @@ class LettersAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput valid-input">
-                                                                <label className="control-label">
-                                                                    {
-                                                                        Resources
-                                                                            .sharedSettings[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
-                                                                </label>
+                                                                <label className="control-label">    {Resources.sharedSettings[currentLanguage]}</label>
                                                                 <div className="shareLinks">
-                                                                    <div className="inputDev ui input">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="sharedSettings"
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "sharedSettings"
-                                                                                )
-                                                                            }
-                                                                            value={
+                                                                    <div className={"inputDev ui input" + (errors.sharedSettings && touched.sharedSettings ? (" has-error") : !errors.sharedSettings && touched.sharedSettings ? (" has-success") : " ")} >
+                                                                        <input type="text" className="form-control" id="sharedSettings"
+                                                                            onChange={e => this.handleChange(e, "sharedSettings")}
+                                                                            value={this.state.document.sharedSettings}
+                                                                            name="sharedSettings" placeholder={Resources.sharedSettings[currentLanguage]}
+                                                                        />
+                                                                        {touched.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
+                                                                    </div>
+
+                                                                    {this.state.document.sharedSettings === '' ||
+                                                                        this.state.document.sharedSettings === null ||
+                                                                        this.state.document.sharedSettings === undefined ?
+                                                                        null
+                                                                        : <a
+                                                                            target="_blank"
+                                                                            href={
                                                                                 this
                                                                                     .state
                                                                                     .document
                                                                                     .sharedSettings
-                                                                            }
-                                                                            name="sharedSettings"
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .sharedSettings[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                        />
-                                                                    </div>
-                                                                    <a
-                                                                        target="_blank"
-                                                                        href={
-                                                                            this
-                                                                                .state
-                                                                                .document
-                                                                                .sharedSettings
-                                                                        }>
-                                                                        <span>
-                                                                            {
-                                                                                Resources
-                                                                                    .openFolder[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                        </span>
-                                                                    </a>
+                                                                            }>
+                                                                            <span> {Resources.openFolder[currentLanguage]}  </span>
+                                                                        </a>}
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput valid-input mix_dropdown">
@@ -1167,22 +1124,18 @@ class LettersAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="slider-Btns">
-                                                            {this.state
-                                                                .isLoading ? (
-                                                                    <button className="primaryBtn-1 btn disabled">
-                                                                        <div className="spinner">
-                                                                            <div className="bounce1" />
-                                                                            <div className="bounce2" />
-                                                                            <div className="bounce3" />
-                                                                        </div>
-                                                                    </button>
-                                                                ) : (
-                                                                    this.showBtnsSaving(
-                                                                        () => {
-                                                                            submitForm();
-                                                                        }
-                                                                    )
-                                                                )}
+                                                            {this.state.isLoading ?
+                                                                <button className="primaryBtn-1 btn disabled">
+                                                                    <div className="spinner">
+                                                                        <div className="bounce1" />
+                                                                        <div className="bounce2" />
+                                                                        <div className="bounce3" />
+                                                                    </div>
+                                                                </button>
+                                                                :
+                                                                <div className="slider-Btns">
+                                                                    {this.showBtnsSaving()}
+                                                                </div>}
                                                         </div>
                                                         {this.props.changeStatus ===
                                                             true ? (
@@ -1222,7 +1175,7 @@ class LettersAddEdit extends Component {
                                                                             projectId={this.state.projectId}
                                                                             previousRoute={this.state.previousRoute}
                                                                             docApprovalId={this.state.docApprovalId}
-                                                                            currentArrange={this.state.currentArrange}
+                                                                            currentArrange={this.state.arrange}
                                                                             showModal={this.props.showModal}
                                                                             showOptionPanel={this.showOptionPanel}
                                                                             permission={this.state.permission}

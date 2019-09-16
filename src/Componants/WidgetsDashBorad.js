@@ -1,16 +1,14 @@
 var widgets = [
   {
     widgetCategory: "mainAlerts",
-    refrence: 0,
-    key: "0-1",
+    refrence: 0, 
     canView: false,
     order: 1,
     checked: false,
     widgets: [
       {
         title: "timesheetLog",
-        permission: 0,
-        key: "0-1-1",
+        permission: 0, 
         canView: false,
         order: 1,
         type: "oneWidget",
@@ -21,15 +19,14 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false,
-          key: "0-1-1",
+          isModal: false 
         },
         checked: false
       },
       {
         title: "docApproval",
         permission: 0,
-        key: "0-1-2",
+        // key: "0-1-2",
         canView: false,
         order: 2,
         type: "oneWidget",
@@ -41,14 +38,14 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "0-1-2"
+          // key: "0-1-2"
         },
         checked: false
       },
       {
         title: "pendingExpenses",
         permission: 0,
-        key: "0-1-3",
+        // key: "0-1-3",
         canView: false,
         checked: false,
         order: 3,
@@ -61,13 +58,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "0-1-3"
+          // key: "0-1-3"
         }
       },
       {
         title: "docRejected",
         permission: 0,
-        key: "0-1-4",
+        // key: "0-1-4",
         canView: false,
         checked: false,
         order: 4,
@@ -80,13 +77,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "0-1-4"
+          // key: "0-1-4"
         }
       },
       {
         title: "docNotify",
         permission: 0,
-        key: "0-1-5",
+        // key: "0-1-5",
         canView: false,
         checked: false,
         order: 5,
@@ -99,13 +96,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "0-1-5"
+          // key: "0-1-5"
         }
       },
       {
         title: "workFlowAlert",
         permission: 0,
-        key: "0-1-6",
+        // key: "0-1-6",
         canView: false,
         checked: false,
         order: 6,
@@ -118,80 +115,21 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "0-1-6"
-        }
-      },
-      {
-        title: "monitorTasks",
-        permission: 0,
-        key: "0-1-7",
-        canView: false,
-        checked: false,
-        order: 7,
-        type: "oneWidget",
-        props: {
-          api: "GetCountMonitorTasks",
-          apiDetails: "",
-          route: "MonitorTasks",
-          value: "total",
-          listType: "item",
-          action: "action",
-          isModal: false,
-          key: "0-1-7"
-        }
-      },
-      {
-        title: "monthlyTasks",
-        permission: 0,
-        key: "0-1-8",
-        canView: false,
-        checked: false,
-        order: 8,
-        type: "oneWidget",
-        props: {
-          api: "GetCounMonthlyTasks",
-          apiDetails: "",
-          route: "MonthlyTasksDetails",
-          value: "total",
-          listType: "item",
-          action: "action",
-          isModal: false,
-          key: "0-1-8"
-        }
-      },
-      {
-        title: "followUpsSummary",
-        permission: 0,
-        key: "0-1-9",
-        canView: false,
-        checked: false,
-        order: 9,
-        type: "oneWidget",
-        props: {
-          api: "SelectByAccountIdCount",
-          apiDetails: "",
-          route: "FollowUpsSummaryDetails",
-          value: "total",
-          listType: "item",
-          action: "action",
-          isModal: false,
-          key: "0-1-9"
+          // key: "0-1-6"
         }
       }
     ]
   },
   {
     widgetCategory: "summaries",
-    refrence: 0,
-    key: "0-2",
+    refrence: 0, 
     canView: false,
     checked: false,
     order: 2,
     widgets: [
       {
         title: "alertingQntySummary",
-        permission: 0,
-        key: "0-2-1",
+        permission: 0, 
         canView: false,
         checked: false,
         order: 1,
@@ -204,13 +142,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: true,
-          key: "0-2-1"
+          // key: "0-2-1"
         },
       },
       {
         title: "closedSummary",
         permission: 0,
-        key: "0-2-2",
+        // key: "0-2-2",
         canView: false,
         checked: false,
         order: 2,
@@ -223,13 +161,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: true,
-          key: "0-2-2"
+          // key: "0-2-2"
         }
       },
       {
         title: "distributionInboxSummary",
         permission: 0,
-        key: "0-2-3",
+        // key: "0-2-3",
         canView: false,
         checked: false,
         order: 3,
@@ -242,13 +180,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "0-2-3"
+          // key: "0-2-3"
         }
       },
       {
         title: "inboxSummary",
         permission: 0,
-        key: "0-2-4",
+        // key: "0-2-4",
         canView: false,
         checked: false,
         order: 4,
@@ -261,13 +199,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "0-2-4"
+          // key: "0-2-4"
         }
       },
       {
         title: "notCodedExpensesSummary",
         permission: 0,
-        key: "0-2-5",
+        // key: "0-2-5",
         canView: false,
         checked: false,
         order: 5,
@@ -280,13 +218,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: true,
-          key: "0-2-5"
+          // key: "0-2-5"
         }
       },
       {
         title: "notCodedInvoicesSummary",
         permission: 0,
-        key: "0-2-6",
+        // key: "0-2-6",
         canView: false,
         checked: false,
         order: 6,
@@ -299,13 +237,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "0-2-6"
+          // key: "0-2-6"
         }
       },
       {
         title: "notCodedPayment",
         permission: 0,
-        key: "0-2-7",
+        // key: "0-2-7",
         canView: false,
         checked: false,
         order: 7,
@@ -318,13 +256,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: true,
-          key: "0-2-7"
+          // key: "0-2-7"
         }
       },
       {
         title: "actionBySummary",
         permission: 0,
-        key: "0-2-8",
+        // key: "0-2-8",
         canView: false,
         checked: false,
         order: 8,
@@ -337,13 +275,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "0-2-8"
+          // key: "0-2-8"
         }
       },
       {
         title: "openedSummary",
         permission: 0,
-        key: "0-2-9",
+        // key: "0-2-9",
         canView: 1372,
         checked: false,
         order: 9,
@@ -356,13 +294,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: true,
-          key: "0-2-9"
+          // key: "0-2-9"
         }
       },
       {
         title: "schedualActionBy",
         permission: 0,
-        key: "0-2-10",
+        // key: "0-2-10",
         canView: false,
         checked: false,
         order: 10,
@@ -375,13 +313,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: true,
-          key: "0-2-10"
+          // key: "0-2-10"
         }
       },
       {
         title: "ScheduleAlertsSummary",
         permission: 0,
-        key: "0-2-11",
+        // key: "0-2-11",
         canView: false,
         checked: false,
         order: 11,
@@ -394,7 +332,7 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: true,
-          key: "0-2-11"
+          // key: "0-2-11"
         }
       }
     ]
@@ -402,7 +340,7 @@ var widgets = [
   {
     widgetCategory: "reportChart",
     refrence: 0,
-    key: "0-3",
+    // key: "0-3",
     canView: false,
     checked: false,
     order: 3,
@@ -411,7 +349,7 @@ var widgets = [
         id: 'wt-Name01',
         checked: false,
         permission: 1377,
-        key: "0-3-1",
+        // key: "0-3-1",
         title: 'projectStatus',
         order: 1,
         props: {
@@ -424,7 +362,7 @@ var widgets = [
       }, {
         id: 'wt-Name02',
         permission: 3500,
-        key: "0-3-2",
+        // key: "0-3-2",
         checked: false,
         title: 'percentageExpensesTypesOfTotal',
         order: 2,
@@ -438,7 +376,7 @@ var widgets = [
 
       }, {
         id: 'wt-Name03',
-        key: "0-3-3",
+        // key: "0-3-3",
         checked: false,
         permission: 3507,
         title: 'expensesAllProject',
@@ -453,7 +391,7 @@ var widgets = [
 
       }, {
         id: 'wt-Name04',
-        key: "0-3-4",
+        // key: "0-3-4",
         checked: false,
         permission: 10041,
         title: 'riskStatusYearly',
@@ -465,7 +403,7 @@ var widgets = [
         type: 'line'
       }, {
         id: 'wt-Name05',
-        key: "0-3-5",
+        // key: "0-3-5",
         checked: false,
         permission: 3498,
         title: 'percentOfApprovedSubmittalPerProject',
@@ -483,7 +421,7 @@ var widgets = [
         barContent: []
       }, {
         id: 'wt-Name6',
-        key: "0-3-6",
+        // key: "0-3-6",
         permission: 10042,
         checked: false,
         title: 'letterStatusYearly',
@@ -495,7 +433,7 @@ var widgets = [
         type: 'line'
       }, {
         id: 'wt-Name7',
-        key: "0-3-7",
+        // key: "0-3-7",
         checked: false,
         permission: 3497,
         order: 7,
@@ -513,7 +451,7 @@ var widgets = [
         barContent: []
       }, {
         id: 'wt-Name8',
-        key: "0-3-8",
+        // key: "0-3-8",
         checked: false,
         permission: 10039,
         order: 8,
@@ -525,7 +463,7 @@ var widgets = [
         type: 'line'
       }, {
         id: 'wt-Name09',
-        key: "0-3-9",
+        // key: "0-3-9",
         checked: false,
         permission: 3499,
         order: 9,
@@ -543,7 +481,7 @@ var widgets = [
         barContent: []
       }, {
         id: 'wt-Name10',
-        key: "0-3-10",
+        // key: "0-3-10",
         checked: false,
         permission: 10043,
         order: 10,
@@ -561,7 +499,7 @@ var widgets = [
         barContent: []
       }, {
         id: 'wt-Name11',
-        key: "0-3-11",
+        // key: "0-3-11",
         checked: false,
         permission: 3505,
         order: 11,
@@ -580,7 +518,7 @@ var widgets = [
 
       }, {
         id: 'wt-Name12',
-        key: "0-3-12",
+        // key: "0-3-12",
         checked: false,
         title: 'budgetVariance',
         permission: 3509,
@@ -598,7 +536,7 @@ var widgets = [
         barContent: [{ name: 'Actual Total', value: 'actual' }, { name: 'Budget Expenses', value: 'budgetedExpenseValue' }]
       }, {
         id: 'wt-Name13',
-        key: "0-3-13",
+        // key: "0-3-13",
         checked: false,
         permission: 10040,
         order: 13,
@@ -611,10 +549,10 @@ var widgets = [
       }
     ]
   },
-  {
+  { 
     widgetCategory: "risk",
     refrence: 0,
-    key: "0-4",
+    // key: "0-4",
     canView: false,
     checked: false,
     order: 4,
@@ -623,7 +561,7 @@ var widgets = [
         id: 'wt-riskStatus01',
         checked: false,
         permission: 1377,
-        key: "0-4-1",
+        // key: "0-4-1",
         title: 'riskStatus',
         order: 1,
         props: {
@@ -636,7 +574,7 @@ var widgets = [
       }, {
         id: 'wt-riskPeriority02',
         permission: 3500,
-        key: "0-4-2",
+        // key: "0-4-2",
         checked: false,
         title: 'riskPeriority',
         order: 2,
@@ -649,7 +587,7 @@ var widgets = [
         seriesName: "riskPeriority"
       }, {
         id: 'wt-riskType03',
-        key: "0-4-3",
+        // key: "0-4-3",
         checked: false,
         permission: 3507,
         title: 'riskType',
@@ -667,8 +605,7 @@ var widgets = [
   },
   {
     widgetCategory: "counters",
-    refrence: 1,
-    key: "1-1",
+    refrence: 1, 
     canView: false,
     checked: false,
     order: 1,
@@ -676,7 +613,7 @@ var widgets = [
       {
         title: "monthlyPo",
         permission: 0,
-        key: "1-1-1",
+        // key: "1-1-1",
         canView: false,
         checked: false,
         order: 1,
@@ -689,13 +626,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-1-1"
+          // key: "1-1-1"
         }
       },
       {
         title: "materialRequestcount",
-        permission: 3343,
-        key: "1-1-2",
+        permission: 3343, 
         canView: false,
         checked: false,
         order: 2,
@@ -708,13 +644,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-1-2"
+          // key: "1-1-2"
         }
       },
       {
         title: "rejectedTimeSheet",
-        permission: 0,
-        key: "1-1-3",
+        permission: 0, 
         canView: false,
         checked: false,
         order: 3,
@@ -727,13 +662,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-1-3"
+          // key: "1-1-3"
         }
       },
       {
         title: "monthlyPaymentRequisitions",
-        permission: 0,
-        key: "1-1-4",
+        permission: 0, 
         canView: false,
         checked: false,
         order: 4,
@@ -745,16 +679,65 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false,
-          key: "1-1-4"
+          isModal: false, 
+        }
+      },
+      {
+        title: "monitorTasks",
+        permission: 0, 
+        canView: false,
+        checked: false,
+        order: 5,
+        type: "oneWidget",
+        props: {
+          api: "GetCountMonitorTasks",
+          apiDetails: "",
+          route: "MonitorTasks",
+          value: "total",
+          listType: "item",
+          action: "action",
+          isModal: false, 
+        }
+      },
+      {
+        title: "monthlyTasks",
+        permission: 0, 
+        canView: false,
+        checked: false,
+        order: 6,
+        type: "oneWidget",
+        props: {
+          api: "GetCounMonthlyTasks",
+          apiDetails: "",
+          route: "MonthlyTasksDetails",
+          value: "total",
+          listType: "item",
+          action: "action",
+          isModal: false 
+        }
+      },
+      {
+        title: "followUpsSummary",
+        permission: 0, 
+        canView: false,
+        checked: false,
+        order: 7,
+        type: "oneWidget",
+        props: {
+          api: "SelectByAccountIdCount",
+          apiDetails: "",
+          route: "FollowUpsSummaryDetails",
+          value: "total",
+          listType: "item",
+          action: "action",
+          isModal: false 
         }
       }
     ]
   },
   {
     widgetCategory: "Submittal",
-    refrence: 1,
-    key: "1-2",
+    refrence: 1, 
     canView: false,
     checked: false,
     order: 2,
@@ -762,7 +745,7 @@ var widgets = [
       {
         title: "approvalSubmittals",
         permission: 3493,
-        key: "1-2-1",
+        // key: "1-2-1",
         canView: false,
         checked: false,
         order: 1,
@@ -775,12 +758,12 @@ var widgets = [
           total: "total-1",
           action: "action",
           isModal: false,
-          key: "1-2-1"
+          // key: "1-2-1"
         }
       }, {
         title: "openedSubmittals",
         permission: 3510,
-        key: "1-2-2",
+        // key: "1-2-2",
         canView: false,
         checked: false,
         order: 2,
@@ -793,13 +776,13 @@ var widgets = [
           total: "total-1",
           action: "action",
           isModal: false,
-          key: "1-2-2"
+          // key: "1-2-2"
         }
       },
       {
         title: "rejectedSubmittals",
         permission: 3494,
-        key: "1-2-3",
+        // key: "1-2-3",
         canView: false,
         checked: false,
         order: 3,
@@ -812,15 +795,14 @@ var widgets = [
           total: "total-1",
           action: "action",
           isModal: false,
-          key: "1-2-3"
+          // key: "1-2-3"
         }
       }
     ]
   },
   {
     widgetCategory: "communication",
-    refrence: 1,
-    key: "1-3",
+    refrence: 1, 
     canView: false,
     checked: false,
     order: 3,
@@ -828,7 +810,7 @@ var widgets = [
       {
         title: "openedLetters",
         permission: 3512,
-        key: "1-3-1",
+        // key: "1-3-1",
         canView: false,
         checked: false,
         order: 1,
@@ -841,12 +823,12 @@ var widgets = [
           total: "total-1",
           action: "action",
           isModal: false,
-          key: "1-3-1"
+          // key: "1-3-1"
         }
       }, {
         title: "openedIR",
         permission: 3513,
-        key: "1-3-2",
+        // key: "1-3-2",
         canView: false,
         checked: false,
         order: 2,
@@ -859,13 +841,13 @@ var widgets = [
           total: "total-1",
           action: "action",
           isModal: false,
-          key: "1-3-2"
+          // key: "1-3-2"
         }
       },
       {
         title: "rfiOpen",
         permission: 3495,
-        key: "1-3-3",
+        // key: "1-3-3",
         canView: false,
         checked: false,
         order: 3,
@@ -878,13 +860,13 @@ var widgets = [
           total: "total-1",
           action: "action",
           isModal: false,
-          key: "1-3-3"
+          // key: "1-3-3"
         }
       },
       {
         title: "openedTransmittals",
         permission: 3511,
-        key: "1-3-4",
+        // key: "1-3-4",
         canView: false,
         checked: false,
         order: 4,
@@ -897,15 +879,14 @@ var widgets = [
           total: "total-1",
           action: "action",
           isModal: false,
-          key: "1-3-4"
+          // key: "1-3-4"
         }
       }
     ]
   },
   {
     widgetCategory: "inspectionRequest",
-    refrence: 1,
-    key: "1-4",
+    refrence: 1, 
     canView: false,
     checked: false,
     order: 4,
@@ -913,7 +894,7 @@ var widgets = [
       {
         title: "countinspectionPanding",
         permission: 3202,
-        key: "1-4-1",
+        // key: "1-4-1",
         canView: false,
         checked: false,
         order: 1,
@@ -926,12 +907,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-4-1"
+          // key: "1-4-1"
         }
       }, {
         title: "countinspectionReject",
         permission: 3201,
-        key: "1-4-2",
+        // key: "1-4-2",
         canView: false,
         checked: false,
         order: 2,
@@ -944,13 +925,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-4-2"
+          // key: "1-4-2"
         }
       },
       {
         title: "countinspectionApproved",
         permission: 3200,
-        key: "1-4-3",
+        // key: "1-4-3",
         canView: false,
         checked: false,
         order: 3,
@@ -963,15 +944,14 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-4-3"
+          // key: "1-4-3"
         }
       }
     ]
   },
   {
     widgetCategory: "respondTime",
-    refrence: 1,
-    key: "1-5",
+    refrence: 1, 
     canView: false,
     checked: false,
     order: 5,
@@ -979,7 +959,7 @@ var widgets = [
       {
         title: "avgRespondTimeLetters",
         permission: 3514,
-        key: "1-5-1",
+        // key: "1-5-1",
         canView: false,
         checked: false,
         order: 1,
@@ -992,12 +972,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-5-1"
+          // key: "1-5-1"
         }
       }, {
         title: "avgRespondTimeTransmittals",
         permission: 3515,
-        key: "1-5-2",
+        // key: "1-5-2",
         canView: false,
         checked: false,
         order: 2,
@@ -1010,13 +990,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-5-2"
+          // key: "1-5-2"
         }
       },
       {
         title: "avgRespondTimeIR",
         permission: 10044,
-        key: "1-5-3",
+        // key: "1-5-3",
         canView: false,
         checked: false,
         order: 3,
@@ -1029,13 +1009,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-5-3"
+          // key: "1-5-3"
         }
       },
       {
         title: "avgRespondTimeMIR",
         permission: 3485,
-        key: "1-5-4",
+        // key: "1-5-4",
         canView: false,
         checked: false,
         order: 4,
@@ -1048,13 +1028,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-5-4"
+          // key: "1-5-4"
         }
       },
       {
         title: "avgRespondTimeRFI",
         permission: 10045,
-        key: "1-5-5",
+        // key: "1-5-5",
         canView: false,
         checked: false,
         order: 5,
@@ -1067,13 +1047,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-5-5"
+          // key: "1-5-5"
         }
       },
       {
         title: "avgRespondTimeSubmittals",
         permission: 10046,
-        key: "1-5-6",
+        // key: "1-5-6",
         canView: false,
         checked: false,
         order: 6,
@@ -1086,13 +1066,13 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-5-6"
+          // key: "1-5-6"
         }
       },
       {
         title: "avgRespondTimePO",
         permission: 10047,
-        key: "1-5-7",
+        // key: "1-5-7",
         canView: false,
         checked: false,
         order: 7,
@@ -1105,15 +1085,14 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-5-7"
+          // key: "1-5-7"
         }
       }
     ]
   },
   {
     widgetCategory: "qualityControl",
-    refrence: 1,
-    key: "1-6",
+    refrence: 1, 
     canView: false,
     checked: false,
     order: 6,
@@ -1121,7 +1100,7 @@ var widgets = [
       {
         title: "materialRequestcount",
         permission: 3343,
-        key: "1-6-1",
+        // key: "1-6-1",
         canView: false,
         checked: false,
         order: 1,
@@ -1134,12 +1113,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-6-1"
+          // key: "1-6-1"
         }
       }, {
         title: "inspectionRequestCount",
         permission: 0,
-        key: "1-6-2",
+        // key: "1-6-2",
         canView: false,
         checked: false,
         order: 2,
@@ -1152,12 +1131,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-6-2"
+          // key: "1-6-2"
         }
       }, {
         title: "NCRCount",
         permission: 0,
-        key: "1-6-3",
+        // key: "1-6-3",
         canView: false,
         checked: false,
         order: 3,
@@ -1170,12 +1149,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-6-3"
+          // key: "1-6-3"
         }
       }, {
         title: "siteInstructionsCount",
         permission: 0,
-        key: "1-6-4",
+        // key: "1-6-4",
         canView: false,
         checked: false,
         order: 4,
@@ -1188,15 +1167,14 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-6-4"
+          // key: "1-6-4"
         }
       }
     ]
   },
   {
     widgetCategory: "po",
-    refrence: 1,
-    key: "1-7",
+    refrence: 1, 
     canView: false,
     checked: false,
     order: 7,
@@ -1204,7 +1182,7 @@ var widgets = [
       {
         title: "InvoicesForPOCount",
         permission: 0,
-        key: "1-7-1",
+        // key: "1-7-1",
         canView: false,
         checked: false,
         order: 1,
@@ -1217,12 +1195,12 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-7-1"
+          // key: "1-7-1"
         }
       }, {
         title: "projectInventory",
         permission: 0,
-        key: "1-7-2",
+        // key: "1-7-2",
         canView: false,
         checked: false,
         order: 2,
@@ -1235,21 +1213,20 @@ var widgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "1-7-2"
+          // key: "1-7-2"
         }
       }
     ]
   },
   {
     widgetCategory: "bar",
-    refrence: 2,
-    key: "2-1",
+    refrence: 2, 
     canView: false,
     checked: false,
     order: 1,
     widgets: [
       {
-        key: "2-1-1",
+        // key: "2-1-1",
         checked: false,
         permission: 0,
         order: 1,
@@ -1267,7 +1244,7 @@ var widgets = [
         barContent: []
       },
       {
-        key: "2-1-2",
+        // key: "2-1-2",
         checked: false,
         permission: 0,
         order: 2,
@@ -1286,7 +1263,7 @@ var widgets = [
       },
       {
         id: 'wt-Name7',
-        key: "2-1-3",
+        // key: "2-1-3",
         checked: false,
         permission: 0,
         order: 3,
@@ -1305,7 +1282,7 @@ var widgets = [
       },
       {
         id: 'wt-Name09',
-        key: "2-1-4",
+        // key: "2-1-4",
         checked: false,
         permission: 0,
         order: 4,
@@ -1323,7 +1300,7 @@ var widgets = [
         barContent: []
       },
       {
-        key: "2-1-5",
+        // key: "2-1-5",
         checked: false,
         permission: 0,
         order: 5,
@@ -1341,7 +1318,7 @@ var widgets = [
         barContent: []
       },
       {
-        key: "2-1-6",
+        // key: "2-1-6",
         checked: false,
         permission: 0,
         order: 6,
@@ -1359,7 +1336,7 @@ var widgets = [
         barContent: []
       },
       {
-        key: "2-1-7",
+        // key: "2-1-7",
         checked: false,
         permission: 0,
         order: 7,
@@ -1380,8 +1357,7 @@ var widgets = [
   },
   {
     widgetCategory: "pie",
-    refrence: 2,
-    key: "2-2",
+    refrence: 2, 
     canView: false,
     checked: false,
     order: 2,
@@ -1389,8 +1365,7 @@ var widgets = [
   },
   {
     widgetCategory: "line",
-    refrence: 2,
-    key: "2-3",
+    refrence: 2, 
     canView: false,
     checked: false,
     order: 3,

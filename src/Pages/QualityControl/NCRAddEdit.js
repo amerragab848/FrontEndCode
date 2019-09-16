@@ -380,8 +380,7 @@ class NCRAddEdit extends Component {
         }
     };
 
-    handleChange(e, field) {
-        console.log(field, e);
+    handleChange(e, field) { 
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -447,8 +446,7 @@ class NCRAddEdit extends Component {
         return btn;
     }
 
-    handleChangeDate(e, field) {
-        console.log(field, e);
+    handleChangeDate(e, field) { 
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -563,7 +561,7 @@ class NCRAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
 
-    
+
     render() {
 
         let AddNewCycle = () => {
@@ -581,8 +579,7 @@ class NCRAddEdit extends Component {
 
                     validationSchema={validationSchemaForAddCycle}
 
-                    onSubmit={(values, actions) => {
-                        console.log(values)
+                    onSubmit={(values, actions) => { 
                         this.SaveNewCycle(values, actions)
                     }}>
 
@@ -1075,7 +1072,7 @@ class NCRAddEdit extends Component {
                                         projectId={this.state.projectId}
                                         previousRoute={this.state.previousRoute}
                                         docApprovalId={this.state.docApprovalId}
-                                        currentArrange={this.state.currentArrange}
+                                        currentArrange={this.state.arrange}
                                         showModal={this.props.showModal}
                                         showOptionPanel={this.showOptionPanel}
                                         permission={this.state.permission}
@@ -1086,7 +1083,7 @@ class NCRAddEdit extends Component {
                         }
                     </div>
                 </div>
-        
+
                 <div className="skyLight__form">
                     <SkyLightStateless onOverlayClicked={() => this.setState({ showPopUp: false })}
                         title={Resources.addNewCycle[currentLanguage]}

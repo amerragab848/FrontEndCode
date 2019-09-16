@@ -47,6 +47,7 @@ let subjectLink = ({ value, row }) => {
       perviousRoute: window.location.pathname + window.location.search
     };
 
+
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
     doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
@@ -182,8 +183,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
+        sortDescendingFirst: true
       },
       {
         key: "dueDate",
@@ -212,7 +212,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        sortDescendingFirst: true 
+        sortDescendingFirst: true
       },
       {
         key: "lastApproveTime",
@@ -221,7 +221,7 @@ class DocApprovalDetails extends Component {
         draggable: true,
         sortable: true,
         resizable: true,
-        sortDescendingFirst: true 
+        sortDescendingFirst: true
       }
     ];
 
@@ -394,6 +394,10 @@ class DocApprovalDetails extends Component {
 
   onRowClick = (obj) => {
     if (obj) {
+
+      if (obj.readStatus != true) {
+        Api.post("UpdateStatusWorkFlow?id=" + obj.id);
+      }
       let objRout = {
         docId: obj.docId,
         projectId: obj.projectId,
@@ -441,8 +445,7 @@ class DocApprovalDetails extends Component {
             <div
               className="ui labeled icon top right pointing dropdown fillter-button"
               tabIndex="0"
-              onClick={() => this.hideFilter(this.state.viewfilter)}
-            >
+              onClick={() => this.hideFilter(this.state.viewfilter)} >
               <span>
                 <svg
                   width="16px"
@@ -493,6 +496,26 @@ class DocApprovalDetails extends Component {
                 <span className="show-fillter">Show Fillter</span>
                 <span className="hide-fillter">Hide Fillter</span>
               </span>
+            </div>
+          </div>
+          <div className="rowsPaginations">
+            <div className="linebylineInput valid-input">
+              <label className="control-label">
+                {Resources.totalDocs[currentLanguage]}
+              </label>
+              <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
+                <input type="text" className="form-control" id="totalDocs" value={this.state.rows.length} readOnly name="totalDocs"
+                  placeholder={Resources.totalDocs[currentLanguage]} />
+              </div>
+            </div>
+            <div className="linebylineInput valid-input">
+              <label className="control-label">
+                {Resources.readedDocs[currentLanguage]}
+              </label>
+              <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
+                <input type="text" className="form-control" id="readedDocs" value={this.state.rows.filter(x => x.readStatus === true).length}
+                  readOnly name="readedDocs" placeholder={Resources.readedDocs[currentLanguage]} />
+              </div>
             </div>
           </div>
           <div className="filterBTNS">

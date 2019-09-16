@@ -20,8 +20,37 @@ const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
+const subjectLink = ({ value, row }) => {
+  let doc_view = "";
+  let subject = "";
+  if (row) {
+
+    let obj = {
+      docId: row.docId,
+      projectId: row.projectId,
+      projectName: row.projectName,
+      arrange: row.arrange,
+      docApprovalId: row.accountDocWorkFlowId,
+      isApproveMode: true,
+      perviousRoute: window.location.pathname + window.location.search
+    };
+
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    doc_view = "/" + route + "?id=" + encodedPaylod
+    subject = row.subject;
+
+    return <a href={doc_view}> {subject} </a>;
+  }
+  return null;
+};
+
+let route = null;
+
 class DashBoardCounterLog extends Component {
+
   constructor(props) {
+
     super(props);
 
     const query = new URLSearchParams(this.props.location.search);
@@ -37,9 +66,15 @@ class DashBoardCounterLog extends Component {
     if (key) {
       getkeyDetails = DashBoardDefenition.find(i => i.key === key);
 
+      route = getkeyDetails.RouteEdit;
+
       getkeyDetails.columns.forEach(item => {
-        if (item.formatter) {
+        if (item.formatter === 'dateFormate') {
           item.formatter = dateFormate;
+        }
+
+        if (item.formatter === 'subjectLink') {
+          item.formatter = subjectLink;
         }
       });
 
@@ -52,16 +87,14 @@ class DashBoardCounterLog extends Component {
         viewfilter: false,
         apiDetails: getkeyDetails.apiDetails,
         pageTitle: getkeyDetails.title,
-        ShowCheckbox:false
+        ShowCheckbox: false
       };
     }
   }
 
-
   componentWillMount = () => {
-
-    let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
-    console.log(this.props.projectName)
+    this.props.actions.RouteToTemplate();
+    let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId; 
     var e = { label: this.props.projectName, value: projectId };
     //this.props.actions.RouteToDashboardProject(e);
   };
@@ -109,7 +142,7 @@ class DashBoardCounterLog extends Component {
         arrange: 0,
         docApprovalId: 0,
         isApproveMode: false,
-        perviousRoute:window.location.pathname+window.location.search
+        perviousRoute: window.location.pathname + window.location.search
       }
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);

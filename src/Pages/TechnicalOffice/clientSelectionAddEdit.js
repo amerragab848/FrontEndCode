@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
+ 
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -17,8 +16,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
-import SkyLight from 'react-skylight';
+import moment from "moment"; 
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
@@ -251,7 +249,7 @@ class clientSelectionAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+                
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -413,8 +411,7 @@ class clientSelectionAddEdit extends Component {
         }
     };
 
-    handleChange(e, field) {
-        console.log(e.target.value, field)
+    handleChange(e, field) { 
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -937,7 +934,7 @@ class clientSelectionAddEdit extends Component {
                                             projectId={this.state.projectId}
                                             previousRoute={this.state.previousRoute}
                                             docApprovalId={this.state.docApprovalId}
-                                            currentArrange={this.state.currentArrange}
+                                            currentArrange={this.state.arrange}
                                             showModal={this.props.showModal}
                                             showOptionPanel={this.showOptionPanel}
                                             permission={this.state.permission}

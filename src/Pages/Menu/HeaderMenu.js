@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as dashboardComponantActions from "../../store/actions/communication";
 import moment from "moment";
+import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const DashboardArrow = () => {
@@ -97,8 +98,8 @@ class HeaderMenu extends Component {
       profilePath: this.props.profilePath ? this.props.profilePath : Img,
       activeClass: false,
       logOut: false,
-      languageSelected: currentLanguage == "en" ? "en" : "ar",
-      classRadio: currentLanguage == "en" ? true : false,
+      languageSelected: currentLanguage === "en" ? "en" : "ar",
+      classRadio: currentLanguage === "en" ? true : false,
       selectedValue: {
         label: Resources.selectProjects[currentLanguage],
         value: "0"
@@ -123,7 +124,7 @@ class HeaderMenu extends Component {
     this.handleOutsideClickProfile = this.handleOutsideClickProfile.bind(this);
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     dataservice.GetDataList("GetAccountsProjectsByIdForList", "projectName", "projectId").then(result => {
       this.setState({
         projects: result
@@ -172,7 +173,7 @@ class HeaderMenu extends Component {
     window.location.reload();
   }
 
-  handleClearCach(event) {
+  handleClearCach() {
 
     var res = [];
 
@@ -184,9 +185,15 @@ class HeaderMenu extends Component {
         localStorage.removeItem(key);
       }
     }
+
+    toast.success(Resources["operationSuccess"][currentLanguage]);
+
+    this.setState({
+      clearCach: false
+    });
   }
 
-  handleClearSettings(event) {
+  handleClearSettings() {
 
     var res = [];
 
@@ -198,6 +205,11 @@ class HeaderMenu extends Component {
       }
     }
 
+    toast.success(Resources["operationSuccess"][currentLanguage]);
+
+    this.setState({
+      clearSettings: false
+    });
   }
 
   logOutHandler() {
@@ -262,7 +274,7 @@ class HeaderMenu extends Component {
   }
 
   navigateLink(link, param) {
-    if (link != "") {
+    if (link !== "") {
       this.props.history.push({ pathname: "/" + link, search: "?id=" + param });
     }
   }
@@ -297,7 +309,7 @@ class HeaderMenu extends Component {
   }
 
   updateStatus(obj) {
-    dataservice.addObject("UpdateStatusPostit", obj.id).then(result => {
+    dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => {
       if (obj.description) {
         let id = obj.description.split("/")[1];
 
@@ -308,19 +320,19 @@ class HeaderMenu extends Component {
 
           case "expensesUserAddEdit":
             dataservice.GetDataGrid("GetExpensesUserForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] !== null ? data["arrange"] : undefined);
             });
             break;
 
           case "transmittalAddEdit":
             dataservice.GetDataGrid("GetCommunicationTransmittalForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] !== null ? data["arrange"] : undefined);
             });
             break;
 
           case "lettersAddEdit":
             dataservice.GetDataGrid("GetLettersById?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] !== null ? data["arrange"] : undefined);
             });
             break;
 
@@ -332,7 +344,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -347,7 +359,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -360,7 +372,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -373,7 +385,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -386,7 +398,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -399,7 +411,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -412,7 +424,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -425,7 +437,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -436,7 +448,7 @@ class HeaderMenu extends Component {
                 obj.description,
                 data["projectId"],
                 data["projectName"],
-                data["arrange"] != null ? data["arrange"] : undefined
+                data["arrange"] !== null ? data["arrange"] : undefined
               );
             });
             break;
@@ -449,7 +461,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -462,7 +474,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -475,7 +487,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -488,7 +500,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -501,7 +513,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -514,7 +526,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -527,7 +539,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -540,7 +552,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -553,7 +565,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -566,7 +578,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -579,7 +591,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -592,7 +604,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -605,7 +617,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -618,7 +630,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -631,7 +643,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -644,7 +656,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -657,7 +669,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -670,7 +682,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -683,7 +695,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -696,7 +708,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -709,7 +721,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -722,7 +734,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -735,7 +747,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -748,7 +760,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -761,7 +773,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -774,7 +786,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -787,7 +799,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -800,7 +812,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -813,7 +825,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -826,7 +838,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -839,7 +851,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -852,7 +864,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -865,7 +877,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -878,7 +890,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -891,7 +903,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -904,7 +916,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -917,7 +929,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -930,7 +942,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -943,7 +955,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -956,7 +968,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -969,7 +981,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -982,7 +994,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -995,7 +1007,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -1008,7 +1020,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -1021,7 +1033,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -1034,7 +1046,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -1047,7 +1059,7 @@ class HeaderMenu extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] !== null ? data["arrange"] : undefined
                 );
               });
             break;
@@ -1070,7 +1082,6 @@ class HeaderMenu extends Component {
     });
     this.props.history.push("/myTasks");
   }
-
 
   searchClick = () => {
     if (this.state.subjectText) {
@@ -1346,21 +1357,19 @@ class HeaderMenu extends Component {
               clickHandlerContinue={() => this.logOutHandler()} title="You Will Be Missed, Are You Sure Want to Leave US?" buttonName='logout' />
           ) : null
         }
-
         {
           this.state.clearCach ? (
             <ConfirmationModal closed={event => this.setState({ clearCach: false })} showDeleteModal={this.state.clearCach} clickHandlerCancel={event => this.setState({ clearCach: false })}
               clickHandlerContinue={() => this.handleClearCach()} title={Resources["clearSetting"][currentLanguage]} buttonName='clearCach' />
           ) : null
         }
-
         {
           this.state.clearSettings ? (
             <ConfirmationModal closed={event => this.setState({ clearSettings: false })} showDeleteModal={this.state.clearSettings} clickHandlerCancel={event => this.setState({ clearSettings: false })}
               clickHandlerContinue={() => this.handleClearSettings()} title={Resources["clearSetting"][currentLanguage]} buttonName='clearSettings' />
           ) : null
         }
-      </div >
+      </div>
     );
   }
 }

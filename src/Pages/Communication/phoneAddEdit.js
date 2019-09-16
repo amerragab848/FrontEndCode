@@ -522,7 +522,7 @@ class phoneAddEdit extends Component {
                                                                     projectId={this.state.projectId}
                                                                     previousRoute={this.state.previousRoute}
                                                                     docApprovalId={this.state.docApprovalId}
-                                                                    currentArrange={this.state.currentArrange}
+                                                                    currentArrange={this.state.arrange}
                                                                     showModal={this.props.showModal}
                                                                     showOptionPanel={this.showOptionPanel}
                                                                     permission={this.state.permission}

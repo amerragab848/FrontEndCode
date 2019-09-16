@@ -21,7 +21,7 @@ import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
-import ContactDropdown from '../../Componants/publicComponants/ContactDropdown' 
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -38,7 +38,7 @@ let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
-let arrange = 0; 
+let arrange = 0;
 
 class TransmittalAddEdit extends Component {
 
@@ -191,10 +191,10 @@ class TransmittalAddEdit extends Component {
 
             serverInspectionRequest.docDate = serverInspectionRequest.docDate != null ? moment(serverInspectionRequest.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
             serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate != null ? moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-            serverInspectionRequest.subject=serverInspectionRequest.subject ? serverInspectionRequest.subject:'';
-            serverInspectionRequest.building=serverInspectionRequest.building ? serverInspectionRequest.building:'';
-            serverInspectionRequest.apartment=serverInspectionRequest.apartment ? serverInspectionRequest.apartment:'';
-            
+            serverInspectionRequest.subject = serverInspectionRequest.subject ? serverInspectionRequest.subject : '';
+            serverInspectionRequest.building = serverInspectionRequest.building ? serverInspectionRequest.building : '';
+            serverInspectionRequest.apartment = serverInspectionRequest.apartment ? serverInspectionRequest.apartment : '';
+
             this.setState({
                 document: serverInspectionRequest,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -233,7 +233,7 @@ class TransmittalAddEdit extends Component {
         else {
             this.setState({ isViewMode: false });
         }
-    } 
+    }
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
@@ -241,7 +241,7 @@ class TransmittalAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = result.filter(function (i) { return i.value == toSubField; });
-                
+
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -534,8 +534,8 @@ class TransmittalAddEdit extends Component {
                                         <Formik initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             enableReinitialize={this.props.changeStatus}
-                                            onSubmit={(values) => { 
-                                                
+                                            onSubmit={(values) => {
+
                                                 if (this.props.showModal) {
                                                     return;
                                                 }
@@ -737,7 +737,12 @@ class TransmittalAddEdit extends Component {
                                                                         value={this.state.document.sharedSettings} name="sharedSettings"
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
                                                                 </div>
-                                                                <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
+                                                                {this.state.document.sharedSettings === '' ||
+                                                                    this.state.document.sharedSettings === null ||
+                                                                    this.state.document.sharedSettings === undefined ?
+                                                                    null
+                                                                    :
+                                                                    <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>}
                                                             </div>
                                                         </div>
                                                         <div className="letterFullWidth">
@@ -763,7 +768,7 @@ class TransmittalAddEdit extends Component {
                                                                         projectId={this.state.projectId}
                                                                         previousRoute={this.state.previousRoute}
                                                                         docApprovalId={this.state.docApprovalId}
-                                                                        currentArrange={this.state.currentArrange}
+                                                                        currentArrange={this.state.arrange}
                                                                         showModal={this.props.showModal}
                                                                         showOptionPanel={this.showOptionPanel}
                                                                         permission={this.state.permission}

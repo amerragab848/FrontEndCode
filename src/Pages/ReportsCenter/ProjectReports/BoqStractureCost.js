@@ -103,8 +103,7 @@ class BoqStractureCost extends Component {
                 this.setState({
                     rows: res.data,
                     isLoading: false
-                })
-                console.log(res)
+                }) 
             }
         ).catch(() => {
             this.setState({ isLoading: false })

@@ -206,8 +206,7 @@ class UploadAttachment extends Component {
                         .addView(docsView)
                         .setOAuthToken(oauthToken)
                         .setDeveloperKey("AIzaSyDS-GpZszvOVwnS_E8I7CVZX7gNaVwvBHg")
-                        .setCallback(() => {
-                            console.log("Custom picker is ready!");
+                        .setCallback(() => { 
                         });
 
                     picker.build().setVisible(true);

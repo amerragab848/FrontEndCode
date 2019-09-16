@@ -2,15 +2,18 @@ import React, { Component } from "react";
 import Api from "../../api";
 import Filter from "../FilterComponent/filterComponent";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
+import Export from "../OptionsPanels/Export";
 import GridSetup from "../../Pages/Communication/GridSetup";
-import { Filters } from "react-data-grid-addons"; 
+import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import moment from "moment";
 import CryptoJS from 'crypto-js';
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as communicationActions from "../../store/actions/communication";
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const {
   NumericFilter,
@@ -21,7 +24,7 @@ const {
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}; 
+};
 
 let subjectLink = ({ value, row }) => {
   let doc_view = "";
@@ -37,7 +40,7 @@ let subjectLink = ({ value, row }) => {
       arrange: row.arrange,
       docApprovalId: 0,
       isApproveMode: false,
-      perviousRoute:window.location.pathname+window.location.search
+      perviousRoute: window.location.pathname + window.location.search
     };
 
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
@@ -52,20 +55,20 @@ let subjectLink = ({ value, row }) => {
 
 const statusButton = ({ value, row }) => {
   let doc_view = "";
-    if(row){
-      if (row.status === true) {
-        doc_view = <div style={{textAlign:'center',margin:'4px auto',padding:'4px 10px',borderRadius:'26px',backgroundColor:'#5FD45F',width:'100%',color:'#fff', fontSize: '12px'}}>{Resources["read"][currentLanguage]}</div>
-      }else{
-        doc_view = <div style={{textAlign:'center',padding:'4px 10px',margin:'4px auto',borderRadius:'26px',backgroundColor:'#E74C3C',width:'100%',color:'#FFF',fontSize: '12px'}}>{Resources["unRead"][currentLanguage]}</div>
-      } 
-        return doc_view; 
+  if (row) {
+    if (row.status === true) {
+      doc_view = <div style={{ textAlign: 'center', margin: '4px auto', padding: '4px 10px', borderRadius: '26px', backgroundColor: '#5FD45F', width: '100%', color: '#fff', fontSize: '12px' }}>{Resources["read"][currentLanguage]}</div>
+    } else {
+      doc_view = <div style={{ textAlign: 'center', padding: '4px 10px', margin: '4px auto', borderRadius: '26px', backgroundColor: '#E74C3C', width: '100%', color: '#FFF', fontSize: '12px' }}>{Resources["unRead"][currentLanguage]}</div>
     }
-    return null;
+    return doc_view;
+  }
+  return null;
 };
 
 class DistributionInboxListSummaryDetails extends Component {
-  constructor(props) { 
-    super(props); 
+  constructor(props) {
+    super(props);
     var columnsGrid = [
       {
         key: "statusText",
@@ -77,7 +80,7 @@ class DistributionInboxListSummaryDetails extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:statusButton
+        formatter: statusButton
       },
       {
         key: "subject",
@@ -89,7 +92,7 @@ class DistributionInboxListSummaryDetails extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:subjectLink
+        formatter: subjectLink
       },
       {
         key: "projectName",
@@ -134,10 +137,10 @@ class DistributionInboxListSummaryDetails extends Component {
         filterable: true,
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter,
-        formatter:dateFormate
+        formatter: dateFormate
       }
     ];
- 
+
     const filtersColumns = [
       {
         field: "statusText",
@@ -187,23 +190,25 @@ class DistributionInboxListSummaryDetails extends Component {
       filtersColumns: filtersColumns,
       isCustom: true,
       pageTitle: "",
-      apiFilter:""
+      apiFilter: ""
     };
   }
- 
+
   componentWillMount() {
     let id = null;
     let action = null;
 
+    this.props.actions.RouteToTemplate();
+
     const query = new URLSearchParams(this.props.location.search);
-      for (let param of query.entries()) {
-        if (param[0] === "id") {
-          id = param[1];
-        }
-        if (param[0] === "action") {
-          action = param[1];
-        }
+    for (let param of query.entries()) {
+      if (param[0] === "id") {
+        id = param[1];
       }
+      if (param[0] === "action") {
+        action = param[1];
+      }
+    }
 
     if (id === "0") {
       this.setState({
@@ -211,7 +216,7 @@ class DistributionInboxListSummaryDetails extends Component {
       });
       if (action) {
         Api.get("GetDocApprovalDetailsInbox?action=" + action).then(result => {
-         
+
           this.setState({
             rows: result,
             isLoading: false
@@ -225,13 +230,13 @@ class DistributionInboxListSummaryDetails extends Component {
       if (action) {
         Api.get(
           "GetDocApprovalDetailsDistributionList?action=" +
-            action +
-            "&pageNumber=" +
-            0 +
-            "&pageSize=" +
-            200
+          action +
+          "&pageNumber=" +
+          0 +
+          "&pageSize=" +
+          200
         ).then(result => {
-        
+
           this.setState({
             rows: result != null ? result : [],
             isLoading: false
@@ -240,7 +245,6 @@ class DistributionInboxListSummaryDetails extends Component {
       }
     }
   }
-
 
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
@@ -257,17 +261,17 @@ class DistributionInboxListSummaryDetails extends Component {
     });
 
     Api.get("").then(result => {
-        if (result.length > 0) {
-          this.setState({
-            rows: result != null ? result : [],
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
-      })
+      if (result.length > 0) {
+        this.setState({
+          rows: result != null ? result : [],
+          isLoading: false
+        });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
+    })
       .catch(ex => {
         alert(ex);
         this.setState({
@@ -277,44 +281,48 @@ class DistributionInboxListSummaryDetails extends Component {
       });
   };
 
-  onRowClick = (obj) => { 
-  if(obj){
-    let spliteLink = obj.docView.split('/');
+  onRowClick = (obj) => {
+    if (obj) {
 
-    let objRout = {
-      docId: spliteLink[1],
-      projectId: obj.projectId,
-      projectName: obj.projectName,
-      arrange: obj.arrange,
-      docApprovalId: 0,
-      isApproveMode: false,
-      perviousRoute:window.location.pathname+window.location.search
+      if (obj.status !== true) {
+        Api.get("UpdateStatusInbox?id=" + obj.id);
+      }
+      let spliteLink = obj.docView.split('/');
+
+      let objRout = {
+        docId: spliteLink[1],
+        projectId: obj.projectId,
+        projectName: obj.projectName,
+        arrange: obj.arrange,
+        docApprovalId: 0,
+        isApproveMode: false,
+        perviousRoute: window.location.pathname + window.location.search
+      }
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+      this.props.history.push({
+        pathname: "/" + spliteLink[0],
+        search: "?id=" + encodedPaylod
+      });
     }
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-    this.props.history.push({
-      pathname: "/" + spliteLink[0],
-      search: "?id=" + encodedPaylod
-    }); 
-   }
   }
 
   render() {
 
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} onRowClick={this.onRowClick} showCheckbox={false}/>
-      ) : <LoadingSection/>;
+        <GridSetup rows={this.state.rows} columns={this.state.columns} onRowClick={this.onRowClick} showCheckbox={false} />
+      ) : <LoadingSection />;
 
-      const btnExport = this.state.isLoading === false ? 
-      <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-      : <LoadingSection /> ;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : <LoadingSection />;
 
-      const ComponantFilter= this.state.isLoading === false ?   
+    const ComponantFilter = this.state.isLoading === false ?
       <Filter
         filtersColumns={this.state.filtersColumns}
         apiFilter={this.state.apiFilter}
-        filterMethod={this.filterMethodMain} 
+        filterMethod={this.filterMethodMain}
       /> : <LoadingSection />;
 
 
@@ -324,7 +332,7 @@ class DistributionInboxListSummaryDetails extends Component {
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
             <span>{this.state.rows.length}</span>
-            <div  className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
+            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"
@@ -381,26 +389,46 @@ class DistributionInboxListSummaryDetails extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
           <div className="filterBTNS">
             {btnExport}
-          </div> 
+          </div>
+          <div className="rowsPaginations">
+            <div className="linebylineInput valid-input">
+              <label className="control-label">
+                {Resources.totalDocs[currentLanguage]}
+              </label>
+              <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
+                <input type="text" className="form-control" id="totalDocs" value={this.state.rows.length} readOnly name="totalDocs"
+                  placeholder={Resources.totalDocs[currentLanguage]} />
+              </div>
+            </div>
+            <div className="linebylineInput valid-input">
+              <label className="control-label">
+                {Resources.readedDocs[currentLanguage]}
+              </label>
+              <div className="ui input inputDev" style={{ width: "100px", margin: " 10px " }}>
+                <input type="text" className="form-control" id="readedDocs" value={this.state.rows.filter(x => x.status === true).length}
+                  readOnly name="readedDocs" placeholder={Resources.readedDocs[currentLanguage]} />
+              </div>
+            </div>
+          </div>
         </div>
         <div
           className="filterHidden"
-          style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}} >
+          style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }} >
           <div className="gridfillter-container">
-          {ComponantFilter}
+            {ComponantFilter}
           </div>
         </div>
 
@@ -410,4 +438,17 @@ class DistributionInboxListSummaryDetails extends Component {
   }
 }
 
-export default DistributionInboxListSummaryDetails;
+
+function mapStateToProps(state, ownProps) {
+  return {
+    showModal: state.communication.showModal
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DistributionInboxListSummaryDetails));

@@ -6,15 +6,13 @@ export default function (state = initialState.app.expensesWorkFlow, action) {
     switch (action.type) {
 
         case types.AddExpensesWorkFlow:
-            state.expensesWorkFlowData = action.data
-            console.log('expensesWorkFlowData')
+            state.expensesWorkFlowData = action.data 
             return {
                 ...state
             };
 
         case types.AddContactExpensesWorkFlow:
-            state.contactData = action.data
-            console.log('AddContactExpensesWorkFlow')
+            state.contactData = action.data 
             return {
                 ...state
             }

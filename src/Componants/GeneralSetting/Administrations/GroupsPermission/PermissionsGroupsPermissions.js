@@ -32,7 +32,7 @@ class PermissionsGroupsPermissions extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({ isLoading: true })
         Api.get('AccountsPermissionsGroupsGetById?id=' + this.state.groupId).then(res => {
             if (!_.isEmpty(res))
@@ -42,11 +42,11 @@ class PermissionsGroupsPermissions extends Component {
         })
 
         let docs = []
-        let module = []
+        //let module = []
         let options = []
         permissions.authorization.forEach(element => {
             docs = []
-            module.push()
+            //module.push()
             element.modules.forEach(item => {
                 docs.push({ label: item.title[currentLanguage], value: item.id })
                 this.setState({ [item.id]: item.permissions })
@@ -56,6 +56,7 @@ class PermissionsGroupsPermissions extends Component {
         this.setState({ options })
 
     }
+
     checkedAll = () => {
 
         this.state[this.state.selectedDocument.value].forEach(item => {
@@ -64,6 +65,7 @@ class PermissionsGroupsPermissions extends Component {
         this.setState({ checkedAll: !this.state.checkedAll })
 
     }
+
     handleCheck = (code) => {
         this.setState({ [code]: !this.state[code] })
     }
@@ -93,6 +95,7 @@ class PermissionsGroupsPermissions extends Component {
             })
         }
     }
+
     changeSelect = (event) => {
         this.setState({ selectedDocument: event })
         let documentPermission = [];
@@ -104,12 +107,14 @@ class PermissionsGroupsPermissions extends Component {
             documentPermissions: documentPermission
         }
         this.setState({ isLoading: true })
+
         Api.post('GetGroupsPermissionsV5', doc).then(res => {
             if (!_.isEmpty(res)) {
                 res.forEach(item => {
                     this.setState({ [item.permissionId]: item.permissionValue })
                 })
                 this.setState({ isLoading: false, disabled: false, status: 1, checkedAll: false })
+
             }
             else {
                 this.setState({ isLoading: false, disabled: false, status: 0, checkedAll: false })
@@ -119,9 +124,11 @@ class PermissionsGroupsPermissions extends Component {
         })
     }
 
-    render() {
-        let checkBoxs = this.state.selectedDocument.value == -1 ? null :
-            this.state[this.state.selectedDocument.value].map(item => {
+    drawItems() {
+
+        let results = this.state[this.state.selectedDocument.value] ? this.state[this.state.selectedDocument.value] : [];
+        if (!_.isEmpty(results)) {
+            return (results.map(item => {
                 return (
                     <div className="project__Permissions--type " key={item.code}>
                         <div id="allSelected" className="ui checkbox checkBoxGray300 checked " >
@@ -131,8 +138,14 @@ class PermissionsGroupsPermissions extends Component {
                         </div>
                     </div>
                 )
-            })
+            }))
+        }
+        else {
+            return null;
+        }
+    }
 
+    render() { 
         return (
             <div className="mainContainer">
                 <div className="documents-stepper noTabs__document">
@@ -174,7 +187,8 @@ class PermissionsGroupsPermissions extends Component {
                                                     <label>Select All</label>
                                                 </div>
                                             </div>}
-                                        {checkBoxs}
+                                        {/* {checkBoxs} */}
+                                        {this.drawItems()}
 
                                     </div>
                                 </div>

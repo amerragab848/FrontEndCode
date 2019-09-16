@@ -303,14 +303,7 @@ class AddLateTimeSheet extends Component {
                                     let currMonth= moment().format("MM");
                                     let DateTimeSheet = moment(this.state.docDate,"DD-MM-YYYY").format("DD");
                                     let MonthTimeSheet=moment(this.state.docDate,"DD-MM-YYYY").format("MM");
-                                    console.log('currDate')
-                                    console.log(currDate)
-                                    console.log('currMonth')
-                                    console.log(currMonth)
-                                    console.log('DateTimeSheet')
-                                    console.log(DateTimeSheet)
-                                    console.log('MonthTimeSheet')
-                                    console.log(currDate)
+                                    
                                    if( parseInt(DateTimeSheet)>=currDate || parseInt(DateTimeSheet) === currDate-1 && (parseInt(MonthTimeSheet)>=currMonth))
                                     {
                                         this.setState({

@@ -1,12 +1,14 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Resources from "../../resources.json";
 import Api from "../../api";
 import dataservice from "../../Dataservice";
 import { toast } from "react-toastify";
 import moment from "moment";
 import LoadingSection from './LoadingSection'
-
+import ConfirmationModal from "./ConfirmationModal";
+import { SkyLightStateless } from 'react-skylight';
 const _ = require('lodash');
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class RiskConesquence extends Component {
     constructor(props) {
@@ -16,7 +18,9 @@ class RiskConesquence extends Component {
             conesquenceItems: [],
             isLoading: true,
             riskId: this.props.riskId,
-            selected: {}
+            selected: {},
+            showDeleteModal: false,
+            ShowPopup: false
         }
     }
 
@@ -26,16 +30,16 @@ class RiskConesquence extends Component {
             dataservice.GetDataGrid("GetAllConesquencesByRiskId?riskId=" + this.state.riskId).then(result => {
 
                 let selected = this.state.selected;
-                result = _.orderBy(result, ['conesquenceId'],['asc']); // Use Lodash to sort array by 'name'
+                result = _.orderBy(result, ['conesquenceId'], ['asc']); // Use Lodash to sort array by 'name'
 
                 result.forEach(item => {
                     selected[item.id] = item.isChecked;
                 });
 
                 this.setState({
-                    conesquenceItems: result, 
+                    conesquenceItems: result,
                     isLoading: false,
-                    selected:selected
+                    selected: selected
                 });
             }).catch(() => {
                 this.setState({
@@ -46,6 +50,7 @@ class RiskConesquence extends Component {
     }
 
     renderEditable = (cellInfo) => {
+
         return (
             <div style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer', width: '100%' }}
                 contentEditable
@@ -104,17 +109,26 @@ class RiskConesquence extends Component {
         })
     }
 
-    updateComment(e, index) {
+    showModal = (e, index) => {
+        this.setState({ showDeleteModal: true, comment: e.target.innerHTML, index: index })
+    }
 
+    showPopup = () => {
+        this.setState({ ShowPopup: true, showDeleteModal: false })
+    }
+
+    saveComment = () => {
+        let comment = this.state.comment
+        let index = this.state.index
         const conesquenceItems = [...this.state.conesquenceItems];
-
-        conesquenceItems[index].comment = e.target.innerHTML;
-
+        conesquenceItems[index].comment = comment;
         this.setState({ isLoading: true })
         Api.post('EditConesquence', conesquenceItems[index]).then(() => {
             this.setState({
                 conesquenceItems,
-                isLoading: false
+                isLoading: false,
+                showDeleteModal: false,
+                ShowPopup: false
             });
         })
     }
@@ -140,71 +154,102 @@ class RiskConesquence extends Component {
     }
 
     render() {
+
+
         return (
             <div className="doc-pre-cycle letterFullWidth">
-                 <header style={{ padding:'0'}} > 
-                        <h2 className="zero">{Resources['riskConesquence'][currentLanguage]}</h2>
-                    </header>
-                    <div className="riskConContainer">
-                        {this.state.isLoading == true ? <LoadingSection /> :
-                           
-                                <div className="doc-pre-cycle letterFullWidth">
-                                    
-                                        <table className="attachmentTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        <div className="headCell tableCell-1">{Resources['checkList'][currentLanguage]}</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell"> {Resources.conesquenceName[currentLanguage]}</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell"> {Resources.comment[currentLanguage]}</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="headCell"> {Resources.addedDate[currentLanguage]}</div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {this.state.conesquenceItems.map((item, index) => {
-                                                    return (
-                                                        <tr key={item.id + '-' + index}>
-                                                            <td className="removeTr">
-                                                                <div className="ui checked checkbox  checkBoxGray300 ">
-                                                                    <input type="checkbox" className="checkbox" checked={this.state.selected[item.id] === true} onChange={() => this.toggleRow(item, index)} />
-                                                                    <label />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.consequenceName}</div>
-                                                            </td>
-                                                            <td>
-                                                                <div className="contentCell tableCell-3" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}>
-                                                                    {
-                                                                        this.state.selected[item.id] === true ?
-                                                                            <div style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer', width: '100%' }}
-                                                                                contentEditable
-                                                                                suppressContentEditableWarning
-                                                                                onBlur={e => this.updateComment(e, index)}
-                                                                                dangerouslySetInnerHTML={{
-                                                                                    __html: item.comment
-                                                                                }} /> : <div>{item.comment}</div>}
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div className="contentCell tableCell-1" style={{ maxWidth: 'inherit', paddingLeft: '16px' }}> {item.addedDate != null ? moment(item.addedDate).format('DD/MM/YYYY') : 'No Date'}</div>
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })}
-                                            </tbody>
-                                        </table>
+
+                <div className="skyLight__form">
+                    <SkyLightStateless onOverlayClicked={e => this.setState({ ShowPopup: false })}
+                        title='Edit Comment'
+                        onCloseClicked={e => this.setState({ ShowPopup: false })} isVisible={this.state.ShowPopup}>
+                        <div className="doc-pre-cycle">
+                            <div className="subiTabsContent feilds__top">
+                                <div className='document-fields'>
+                                    <div className="letterFullWidth proForm  first-proform ">
+                                        <div className="linebylineInput valid-input">
+                                            <label className="control-label">{Resources['comment'][currentLanguage]} </label>
+                                            <div className='inputDev ui input'>
+                                                <input name='comment' className="form-control" autoComplete='off'
+                                                    placeholder={Resources['comment'][currentLanguage]}
+                                                    value={this.state.comment}
+                                                    onChange={e => this.setState({ comment: e.target.value })} />
+                                            </div>
+                                        </div>
                                     </div>
-                            
-                        }
-                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="fullWidthWrapper">
+                            <button type='button' className="primaryBtn-1 btn meduimBtn" onClick={this.saveComment}  >{Resources.save[currentLanguage]}</button>
+                        </div>
+                    </SkyLightStateless>
+                </div>
+
+                <header className="subHeader" style={{ padding: '0' }} >
+                    <h2 className="zero">{Resources['riskConesquence'][currentLanguage]}</h2>
+                </header>
+                <div className="riskConContainer">
+                    {this.state.isLoading == true ? <LoadingSection /> :
+
+                        <div className="doc-pre-cycle letterFullWidth">
+
+                            <table className="attachmentTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div className="headCell tableCell-1">{Resources['checkList'][currentLanguage]}</div>
+                                        </th>
+                                        <th colSpan="1">
+                                            <div className="headCell tableCell-2" style={{ maxWidth: '100%' }}> {Resources.conesquenceName[currentLanguage]}</div>
+                                        </th>
+                                        <th colSpan="3">
+                                            <div className="headCell tableCell-2"> {Resources.description[currentLanguage]}</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.conesquenceItems.map((item, index) => {
+                                        return (
+                                            <tr key={item.id + '-' + index}>
+                                                <td className="removeTr">
+                                                    <div className="ui checked checkbox  checkBoxGray300 ">
+                                                        <input type="checkbox" className="checkbox" checked={this.state.selected[item.id] === true} onChange={() => this.toggleRow(item, index)} />
+                                                        <label />
+                                                    </div>
+                                                </td>
+                                                <td colSpan="1" style={{ maxWidth: "150px" }}>
+                                                    <div className="contentCell tableCell-10" style={{ maxWidth: '100%', paddingLeft: '16px' }}> {item.consequenceName}</div>
+                                                </td>
+                                                <td colSpan="3" style={{ maxWidth: '290px' }}>
+                                                    <div className="contentCell tableCell-10" style={{ maxWidth: '100%', paddingLeft: '16px' }}>
+                                                        {this.state.selected[item.id] === true ?
+                                                            <div style={{ color: "#4382f9 ", padding: '0px 6px', margin: '5px 0px', border: '1px dashed', cursor: 'pointer', width: '100%' }}
+                                                                contentEditable
+                                                                suppressContentEditableWarning
+                                                                onClick={e => this.showModal(e, index)}
+                                                                dangerouslySetInnerHTML={{ __html: item.comment }} />
+                                                            : <div>{item.comment}
+                                                            </div>}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    }
+                </div>
+                {this.state.showDeleteModal == true ? (
+                    <ConfirmationModal
+                        title='Do You Want to Edit Comment ?'
+                        closed={e => this.setState({ showDeleteModal: false })}
+                        showDeleteModal={this.state.showDeleteModal}
+                        clickHandlerCancel={e => this.setState({ showDeleteModal: false })}
+                        buttonName='yes' clickHandlerContinue={this.showPopup} />
+                ) : null}
             </div>
         );
     }

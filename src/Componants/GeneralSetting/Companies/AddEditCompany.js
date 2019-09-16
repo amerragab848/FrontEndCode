@@ -511,8 +511,7 @@ class AddEditCompany extends Component {
     }
 
     GetData = (url, label, value, currState) => {
-        Dataservice.GetDataList(url, label, value).then(res => {
-            console.log('res', res)
+        Dataservice.GetDataList(url, label, value).then(res => { 
             this.setState({
                 [currState]: [...res],
                 sectionLoading: false

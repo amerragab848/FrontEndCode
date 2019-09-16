@@ -139,9 +139,7 @@ class addItemDescription extends Component {
             .addObject(this.props.addItemApi, saveDocument)
             .then(result => {
                 if (result) {
-                    let arr = [];
-
-                    console.log("addObject...", result);
+                    let arr = []; 
 
                     arr.push(result);
                     this.props.actions.addItemDescription(arr);

@@ -8,8 +8,12 @@ import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import CryptoJS from "crypto-js";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as communicationActions from "../../store/actions/communication";
+
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const {
   NumericFilter,
@@ -22,10 +26,37 @@ const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
+const subjectLink = ({ value, row }) => {
+  let doc_view = "";
+  let subject = "";
+  if (row) {
+
+    let obj = {
+      docId: row.docId,
+      projectId: row.projectId,
+      projectName: row.projectName,
+      arrange: row.arrange,
+      docApprovalId: row.accountDocWorkFlowId,
+      isApproveMode: true,
+      perviousRoute: window.location.pathname + window.location.search
+    };
+
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
+    subject = row.subject;
+
+    return <a href={doc_view}> {subject} </a>;
+  }
+  return null;
+};
+
+
 class OpenedSummaryDetails extends Component {
   constructor(props) {
+
     super(props);
-    console.log('OpenedSummaryDetails')
+
     var columnsGrid = [
       {
         key: "docNo",
@@ -58,7 +89,8 @@ class OpenedSummaryDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
+        filterRenderer: SingleSelectFilter,
+        formatter: subjectLink
       },
       {
         key: "openedBy",
@@ -147,8 +179,10 @@ class OpenedSummaryDetails extends Component {
   }
 
   componentDidMount() {
+
+    this.props.actions.RouteToTemplate();
+
     const query = new URLSearchParams(this.props.location.search);
-    const queryes = this.props.location.search;
 
     let action = null;
 
@@ -204,7 +238,7 @@ class OpenedSummaryDetails extends Component {
 
 
   rowClick = (rowId, colID) => {
-    console.log(rowId)
+
     if (colID !== 0 && colID !== 2) {
       let rowData = this.state.rows[rowId];
 
@@ -218,9 +252,6 @@ class OpenedSummaryDetails extends Component {
           isApproveMode: false,
           perviousRoute: window.location.pathname + window.location.search
         };
-        // if (rowData.docType === 37 || rowData.docType === 114) {
-        //   obj.isModification = rowData.docTyp === 114 ? true : false;
-        // }
         let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
         let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
         this.props.history.push({ pathname: "/" + rowData.docLink, search: "?id=" + encodedPaylod });
@@ -349,4 +380,19 @@ class OpenedSummaryDetails extends Component {
   }
 }
 
-export default OpenedSummaryDetails;
+function mapStateToProps(state, ownProps) {
+  return {
+    showModal: state.communication.showModal
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(OpenedSummaryDetails));

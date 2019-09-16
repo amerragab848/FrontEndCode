@@ -43,8 +43,7 @@ class SendTask extends Component {
     }
 
     clickHandler = (e) => {
-        let inboxDto = { ...this.state.sendingData };
-        console.log(inboxDto);
+        let inboxDto = { ...this.state.sendingData }; 
         Api.post("SendTask", inboxDto)
     }
 

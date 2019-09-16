@@ -20,8 +20,7 @@ export default class TextEditor extends React.Component {
                     editor={ClassicEditor}
                     data={this.props.value !=undefined?this.props.value:''}
                     onInit={(event, editor) => {
-                        // You can store the "editor" and use when it is needed.
-                   //     console.log('Editor is ready to use!', editor);
+                        // You can store the "editor" and use when it is needed. 
                     }}
                     onChange={(event,editor) => {
                         // const data = editor.getData();
@@ -32,8 +31,7 @@ export default class TextEditor extends React.Component {
                     const data = editor.getData();
                     this.handleChange(data)
                 } }
-                // onFocus={ editor => {
-                //     console.log( 'Focus.', editor );
+                // onFocus={ editor => { 
                 // } }
                 />
             </div>

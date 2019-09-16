@@ -205,6 +205,9 @@ class DocNotifyLogDetails extends Component {
   }
 
   componentDidMount() {
+    
+    this.props.actions.RouteToTemplate();
+
     Api.get("GetNotifyRequestsDocApprove").then(result => {
   
       this.setState({

@@ -136,8 +136,7 @@ class projectPicturesAddEdit extends Component {
         }
     }
 
-    handleChange(e, field) {
-        console.log(field, e);
+    handleChange(e, field) { 
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -481,7 +480,7 @@ class projectPicturesAddEdit extends Component {
                                                                 projectId={this.state.projectId}
                                                                 previousRoute={this.state.previousRoute}
                                                                 docApprovalId={this.state.docApprovalId}
-                                                                currentArrange={this.state.currentArrange}
+                                                                currentArrange={this.state.arrange}
                                                                 showModal={this.props.showModal}
                                                                 showOptionPanel={this.showOptionPanel}
                                                                 permission={this.state.permission}

@@ -15,8 +15,8 @@ class postitNotificationsDetail extends Component {
     super(props);
     this.state = {
       postitData: [],
-      selected:{},
-      showDeleteModal:false
+      selected: {},
+      showDeleteModal: false
     };
   }
 
@@ -28,60 +28,60 @@ class postitNotificationsDetail extends Component {
     });
   };
 
-  toggleRow(obj) { 
+  toggleRow(obj) {
 
-      const newSelected = Object.assign({}, this.state.selected);
+    const newSelected = Object.assign({}, this.state.selected);
 
-      newSelected[obj.id] = !this.state.selected[obj.id];
+    newSelected[obj.id] = !this.state.selected[obj.id];
 
-      let setIndex = selectedRows.findIndex(x => x.id === obj.id);
+    let setIndex = selectedRows.findIndex(x => x.id === obj.id);
 
-      if (setIndex > -1) {
-        selectedRows.splice(setIndex, 1);
-      } else {
-        selectedRows.push(obj);
-      }
+    if (setIndex > -1) {
+      selectedRows.splice(setIndex, 1);
+    } else {
+      selectedRows.push(obj);
+    }
 
-      this.setState({
-        selected: newSelected
-      }); 
+    this.setState({
+      selected: newSelected
+    });
   }
 
   DeletePostit() {
     this.setState({
-      showDeleteModal: true 
+      showDeleteModal: true
     });
   }
 
   clickHandlerContinueMain = () => {
-  
-      if (selectedRows.length > 0) {
 
-        let listIds = selectedRows.map(rows => rows.id);
+    if (selectedRows.length > 0) {
 
-        dataservice.addObject("DeleteNotificationPostitMultiple", listIds).then(result => {
+      let listIds = selectedRows.map(rows => rows.id);
 
-          let originalData = this.state.postitData;
+      dataservice.addObject("DeleteNotificationPostitMultiple", listIds).then(result => {
 
-          selectedRows.forEach(item => {
-            let getIndex = originalData.findIndex(x => x.id === item.id);
+        let originalData = this.state.postitData;
 
-            originalData.splice(getIndex, 1);
-          });
+        selectedRows.forEach(item => {
+          let getIndex = originalData.findIndex(x => x.id === item.id);
 
-          selectedRows = [];
-
-          this.setState({
-            postitData: originalData,
-            showDeleteModal: false
-          });
-
-          toast.success(Resources["operationSuccess"][currentLanguage]);
-
-        }).catch(ex => {
-          toast.error(Resources["operationSuccess"][currentLanguage]);
+          originalData.splice(getIndex, 1);
         });
-      } 
+
+        selectedRows = [];
+
+        this.setState({
+          postitData: originalData,
+          showDeleteModal: false
+        });
+
+        toast.success(Resources["operationSuccess"][currentLanguage]);
+
+      }).catch(ex => {
+        toast.error(Resources["operationSuccess"][currentLanguage]);
+      });
+    }
   };
 
   routeToView(docView, projectId, projectName, arrange) {
@@ -114,7 +114,7 @@ class postitNotificationsDetail extends Component {
   }
 
   updateStatus(obj) {
-    dataservice.addObject("UpdateStatusPostit", obj.id).then(result => {
+    dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => {
       if (obj.description) {
         let id = obj.description.split("/")[1];
 
@@ -125,19 +125,19 @@ class postitNotificationsDetail extends Component {
 
           case "expensesUserAddEdit":
             dataservice.GetDataGrid("GetExpensesUserForEdit?id=" + id).then(data => {
-                this.routeToView(obj.description,data["projectId"],data["projectName"],data["arrange"] != null ? data["arrange"] : undefined);
-              });
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+            });
             break;
 
           case "transmittalAddEdit":
             dataservice.GetDataGrid("GetCommunicationTransmittalForEdit?id=" + id).then(data => {
-                this.routeToView(obj.description,data["projectId"],data["projectName"],data["arrange"] != null ? data["arrange"] : undefined);
-              });
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+            });
             break;
 
           case "lettersAddEdit":
             dataservice.GetDataGrid("GetLettersById?id=" + id).then(data => {
-              this.routeToView(obj.description,data["projectId"],data["projectName"],data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
             });
             break;
 
@@ -806,32 +806,32 @@ class postitNotificationsDetail extends Component {
 
           case "projectTaskGroupAddEdit":
             dataservice.GetDataGrid("GetProjectTaskGroupForEdit?id=" + id).then(data => {
-                this.routeToView(obj.description,data["projectId"],data["projectName"],data["arrange"] != null ? data["arrange"] : undefined);
-              });
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+            });
             break;
 
           case "projectScheduleAddEdit":
             dataservice.GetDataGrid("GetProjectScheduleForEdit?id=" + id).then(data => {
-                this.routeToView(obj.description,data["projectId"],data["projectName"],data["arrange"] != null ? data["arrange"] : undefined);
-              });
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+            });
             break;
 
           case "projectDistributionListAddEdit":
             dataservice.GetDataGrid("GetProjectDistributionListForEdit?id=" + id).then(data => {
-                this.routeToView(obj.description,data["projectId"],data["projectName"],data["arrange"] != null ? data["arrange"] : undefined);
-              });
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+            });
             break;
 
           case "projectPrimaveraScheduleAddEdit":
             dataservice.GetDataGrid("GetPrimaveraScheduleForEdit?id=" + id).then(data => {
-                this.routeToView(obj.description,data["projectId"],data["projectName"],data["arrange"] != null ? data["arrange"] : undefined);
-              });
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+            });
             break;
 
           case "projectCheckListAddEdit":
             dataservice.GetDataGrid("GetProjectCheckListForEdit?id=" + id).then(data => {
-                this.routeToView(obj.description,data["projectId"],data["projectName"],data["arrange"] != null ? data["arrange"] : undefined);
-              });
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+            });
             break;
         }
       }
@@ -862,13 +862,13 @@ class postitNotificationsDetail extends Component {
         Cell: ({ row }) => {
           if (row._original.readUnread === "Un-Read") {
             return (
-              <div onClick={() => this.updateStatus(row._original)} style={{ cursor: "pointer", padding: "4px 8px", margin: "4px auto", borderRadius: "100px", backgroundColor: "#E74C3C", width: "auto", color: "#FFF", minWidth: ' 61px',height: '24px', fontFamily: 'Muli', fontSize: '11px',fontWeight: 'bold', fontStyle: 'normal',fontStretch: 'normal',lineHeight: '1.45',letterSpacing: '-0.2px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <div onClick={() => this.updateStatus(row._original)} style={{ cursor: "pointer", padding: "4px 8px", margin: "4px auto", borderRadius: "100px", backgroundColor: "#E74C3C", width: "auto", color: "#FFF", minWidth: ' 61px', height: '24px', fontFamily: 'Muli', fontSize: '11px', fontWeight: 'bold', fontStyle: 'normal', fontStretch: 'normal', lineHeight: '1.45', letterSpacing: '-0.2px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {Resources["unRead"][currentLanguage]}
               </div>
             );
           } else {
             return (
-              <div style={{margin: "4px auto", padding: "4px 8px", borderRadius: '100px', backgroundColor: "#e9ecf0", width: "auto",minWidth: ' 43px',height: '24px' ,fontFamily: 'Muli', fontSize: '11px',fontWeight: 'bold', fontStyle: 'normal',fontStretch: 'normal',lineHeight: '1.45',letterSpacing: '-0.2px', color: '#858d9e', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <div style={{ margin: "4px auto", padding: "4px 8px", borderRadius: '100px', backgroundColor: "#e9ecf0", width: "auto", minWidth: ' 43px', height: '24px', fontFamily: 'Muli', fontSize: '11px', fontWeight: 'bold', fontStyle: 'normal', fontStretch: 'normal', lineHeight: '1.45', letterSpacing: '-0.2px', color: '#858d9e', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {Resources["read"][currentLanguage]}
               </div>
             );
@@ -908,40 +908,40 @@ class postitNotificationsDetail extends Component {
     ];
 
     return (
-      <div> 
+      <div>
         <div className="mainContainer main__withouttabs">
           <div class="submittalFilter">
             <div class="subFilter">
               <h3 class="zero">{Resources["Postit"][currentLanguage]}</h3>
             </div>
           </div>
-          <div style={{position:"relative"}}>
-          {selectedRows.length > 0 ? (
-          <div className={ "gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} style={{top:'0px'}}>
-            <div className="tableselcted-items">
-              <span id="count-checked-checkboxes">{selectedRows.length}</span>
-              <span>Selected</span>
-            </div>
-            <div className="tableSelctedBTNs">
-              <button className="defaultBtn btn smallBtn" onClick={this.DeletePostit.bind(this)}>
-                {Resources["delete"][currentLanguage]}
-              </button>
-            </div>
-          </div>
-        ) : null}
-          <ReactTable
-            data={this.state.postitData}
-            columns={columns}
-            defaultPageSize={10}
-            noDataText={Resources["noData"][currentLanguage]}
-            className="-striped -highlight"
-          />
+          <div style={{ position: "relative" }}>
+            {selectedRows.length > 0 ? (
+              <div className={"gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} style={{ top: '0px' }}>
+                <div className="tableselcted-items">
+                  <span id="count-checked-checkboxes">{selectedRows.length}</span>
+                  <span>Selected</span>
+                </div>
+                <div className="tableSelctedBTNs">
+                  <button className="defaultBtn btn smallBtn" onClick={this.DeletePostit.bind(this)}>
+                    {Resources["delete"][currentLanguage]}
+                  </button>
+                </div>
+              </div>
+            ) : null}
+            <ReactTable
+              data={this.state.postitData}
+              columns={columns}
+              defaultPageSize={10}
+              noDataText={Resources["noData"][currentLanguage]}
+              className="-striped -highlight"
+            />
           </div>
         </div>
         {this.state.showDeleteModal == true ? (
-            <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
-              showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
-              clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />) : null}
+          <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
+            showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
+            clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />) : null}
       </div>
     );
   }

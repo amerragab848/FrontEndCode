@@ -3,13 +3,12 @@ import Api from "../../api";
 import { withRouter } from "react-router-dom";
 import Filter from "../FilterComponent/filterComponent";
 import LoadingSection from "../publicComponants/LoadingSection";
-import Export from "../OptionsPanels/Export"; 
+import Export from "../OptionsPanels/Export";
 
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const {
   NumericFilter,
@@ -20,7 +19,9 @@ const {
 
 class TimeSheetDetails extends Component {
   constructor(props) {
+
     super(props);
+
     const columnsGrid = [
       {
         key: "requestCount",
@@ -36,7 +37,7 @@ class TimeSheetDetails extends Component {
       {
         key: "requestFromUserName",
         name: Resources["fromContact"][currentLanguage],
-        width:150,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -75,19 +76,19 @@ class TimeSheetDetails extends Component {
         name: "fromCompany",
         type: "string",
         isCustom: true
-      } 
+      }
     ];
 
     this.state = {
-      pageTitle:Resources["timeSheet"][currentLanguage],
+      pageTitle: Resources["timeSheet"][currentLanguage],
       viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
       isCustom: true,
-      apiFilter:"",
-      viewModal:false 
+      apiFilter: "",
+      viewModal: false
     };
   }
 
@@ -101,7 +102,11 @@ class TimeSheetDetails extends Component {
       }
     );
   }
-  
+
+  componentDidMount() {
+    this.props.actions.RouteToTemplate();
+  }
+
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
 
@@ -121,17 +126,17 @@ class TimeSheetDetails extends Component {
     });
 
     Api.get("").then(result => {
-        if (result.length > 0) {
-          this.setState({
-            rows: result != null ? result : [],
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
-      })
+      if (result.length > 0) {
+        this.setState({
+          rows: result != null ? result : [],
+          isLoading: false
+        });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
+    })
       .catch(ex => {
         alert(ex);
         this.setState({
@@ -140,12 +145,12 @@ class TimeSheetDetails extends Component {
         });
       });
   };
-  
-  RouteHandler(obj){
-    if(obj){
-    this.props.history.push({
+
+  RouteHandler(obj) {
+    if (obj) {
+      this.props.history.push({
         pathname: "/TimeSheetWorkFlow",
-        search: "?id="+ obj.requestFromUserId
+        search: "?id=" + obj.requestFromUserId
       });
     }
   }
@@ -153,20 +158,20 @@ class TimeSheetDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false}  onRowClick={this.RouteHandler.bind(this)}/>
-      ) : <LoadingSection/>;
+        <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} onRowClick={this.RouteHandler.bind(this)} />
+      ) : <LoadingSection />;
 
-      const btnExport = this.state.isLoading === false ? 
-      <Export rows={ this.state.isLoading === false ?  this.state.rows : [] }  columns={this.state.columns} fileName={this.state.pageTitle} /> 
-      : <LoadingSection /> ;
+    const btnExport = this.state.isLoading === false ?
+      <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
+      : <LoadingSection />;
 
-      const ComponantFilter= this.state.isLoading === false ?   
+    const ComponantFilter = this.state.isLoading === false ?
       <Filter
         filtersColumns={this.state.filtersColumns}
         apiFilter={this.state.apiFilter}
-        filterMethod={this.filterMethodMain} 
+        filterMethod={this.filterMethodMain}
       /> : <LoadingSection />;
-  
+
     return (
       <div className="mainContainer">
         <div className="submittalFilter">
@@ -230,28 +235,28 @@ class TimeSheetDetails extends Component {
                   </span>
                 </span>
               ) : (
-                <span className="text">
-                  <span className="show-fillter">
-                    {Resources["showFillter"][currentLanguage]}
+                  <span className="text">
+                    <span className="show-fillter">
+                      {Resources["showFillter"][currentLanguage]}
+                    </span>
+                    <span className="hide-fillter">
+                      {Resources["hideFillter"][currentLanguage]}
+                    </span>
                   </span>
-                  <span className="hide-fillter">
-                    {Resources["hideFillter"][currentLanguage]}
-                  </span>
-                </span>
-              )}
+                )}
             </div>
           </div>
           <div className="filterBTNS">
-           {btnExport}
-          </div> 
+            {btnExport}
+          </div>
         </div>
         <div
           className="filterHidden"
-          style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden"}}>
+          style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
-            {ComponantFilter} 
+            {ComponantFilter}
           </div>
-        </div> 
+        </div>
         <div>{dataGrid}</div>
       </div>
     );

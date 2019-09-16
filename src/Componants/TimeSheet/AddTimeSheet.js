@@ -138,9 +138,7 @@ class AddTimeSheet extends Component {
         })
     }
 
-    date_handleChange = (e) => {
-        console.log(day)
-        console.log(vacationDay)
+    date_handleChange = (e) => { 
         if (e.value == 'NoDate') {
             this.setState({
                 date: '',
@@ -217,8 +215,7 @@ class AddTimeSheet extends Component {
     }
 
     render() {
-        const items = this.state.TimeSheetData;
-        console.log(items)
+        const items = this.state.TimeSheetData; 
         let count = [];
         const allItems = this.state.tableView === true ? items !== null ? (items.map(item => {
             count.push(item.workHours);

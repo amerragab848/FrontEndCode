@@ -258,8 +258,7 @@ export default class IndexedDb {
         data = data.map(category => ({ id: category.id, order: category.order }));
 
         return keyBy(data, category => category.id);
-    }
- 
+    } 
 
     static async getCategory() {
 
@@ -287,8 +286,7 @@ export default class IndexedDb {
 
         return await query.where(tables[table].id.eq(id)).exec();
     }
- 
-
+  
     static async updateDashBoardProject(table, id, params) {
         let query = dbDashBoard.update(tableProjects[table]);
 
@@ -298,4 +296,4 @@ export default class IndexedDb {
 
         return await query.where(tableProjects[table].id.eq(id)).exec();
     }
-}
+} 

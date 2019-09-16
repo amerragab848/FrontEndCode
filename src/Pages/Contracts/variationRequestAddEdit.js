@@ -211,7 +211,7 @@ class VariationRequestAdd extends Component {
 
     GetNextArrange() {
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
-        // this.props.actions.GetNextArrange(url);
+         
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             let original_document = { ...this.state.document };
             let updated_document = {};
@@ -230,7 +230,7 @@ class VariationRequestAdd extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+                
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -685,7 +685,7 @@ class VariationRequestAdd extends Component {
                                                                         projectId={this.state.projectId}
                                                                         previousRoute={this.state.previousRoute}
                                                                         docApprovalId={this.state.docApprovalId}
-                                                                        currentArrange={this.state.currentArrange}
+                                                                        currentArrange={this.state.arrange}
                                                                         showModal={this.props.showModal}
                                                                         showOptionPanel={this.showOptionPanel}
                                                                         permission={this.state.permission}

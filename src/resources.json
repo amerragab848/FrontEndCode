@@ -3063,6 +3063,10 @@
         "en": "Select Company",
         "ar": "برجاء إدخال الشركة "
     },
+    "companyRiskOwnerRequired": {
+        "en": "Select Risk Owner",
+        "ar": "برجاء إدخال الشركة "
+    },
     "actionByContact": {
         "en": "Action By",
         "ar": "الشخص المسئول"
@@ -8064,7 +8068,7 @@
         "ar": "منظمة"
     },
     "managementlevel": {
-        "en": "Management level",
+        "en": "G contractor",
         "ar": "مستوى الإدارة"
     },
     "categorisation": {
@@ -8122,7 +8126,7 @@
     "reportsRisk": {
         "en": "Reports Risk",
         "ar": " تقرير الخطورة"
-    } ,
+    },
     "open": {
         "en": "Open",
         "ar": " مفتوح"
@@ -8130,5 +8134,53 @@
     "riskCategory": {
         "en": "Risk Category",
         "ar": " فئات الخطورة"
-    } 
+    },
+    "projectStage": {
+        "en": "Project Stage",
+        "ar": " Project Stage"
+    },
+    "lots": {
+        "en": "Lot",
+        "ar": "Lot"
+    },
+    "assetsTypes": {
+        "en": "Assets Types",
+        "ar": "Assets Types"
+    },
+    "riskIdentification": {
+        "en": "Risk Identification",
+        "ar": "تعريف المخاطر"
+    },
+    "actionAchieve": {
+        "en": "Action Achieve ",
+        "ar": "تحقيق العمل"
+    },
+    "actionPlanned": {
+        "en": "Action Planned ",
+        "ar": "العمل المخطط"
+    },
+    "riskMitigationProgress": {
+        "en": "Risk Mitigation Progress ",
+        "ar": "التقدم في تخفيف المخاطر"
+    },
+    "rbs": {
+        "en": "RBS ",
+        "ar": "RBS"
+    },
+    "realizedImpact": {
+        "en": "Realized Impact",
+        "ar": "تأثير محقق"
+    },
+    "costOfPostEventMitigation": {
+        "en": "Cost Of Post event mitigation",
+        "ar": "تكلفة ما بعد الحدث التخفيف"
+    },
+    "residualRiskRefNo": {
+        "en": "Residual risk Referance No",
+        "ar": "رقم مرجع المخاطر المتبقيه"
+    },
+    "requestApprovalDrop": {
+        "en": "Request Approval",
+        "ar": " طلب اعتماد"
+    }
 }

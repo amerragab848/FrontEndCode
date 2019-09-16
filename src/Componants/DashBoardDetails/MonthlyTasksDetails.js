@@ -1,14 +1,13 @@
 import React, { Component, Fragment } from "react";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Api from "../../api";
-import { Formik, Form } from "formik";
+import Api from "../../api"; 
 import Resources from "../../resources.json";
 import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import moment from "moment";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
-
+import dataservice from "../../Dataservice";
 
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -19,6 +18,7 @@ const dateFormate = ({ value }) => {
 
 export default class MonthlyTasksDetails extends Component {
   constructor(props) {
+    
     super(props);
 
     const columnsGrid = [
@@ -157,21 +157,25 @@ export default class MonthlyTasksDetails extends Component {
   };
 
   componentDidMount = () => {
+
+    this.props.actions.RouteToTemplate();
+
     Api.get("GetMonthlyTaskDetails").then(result => {
       this.setState({
         rows: result != null ? result : [], isLoading: false
       });
     });
-    this.GetData("GetAllContactsWithUser", "contactName", "id", "Contacts");
+
+    dataservice.GetDataList("GetAllContactsWithUser", "contactName", "id").then(result => {
+      this.setState({
+        Contacts: result || []
+      })
+    })
   };
 
   render() {
     const btnExport = (
-      <Export
-        rows={this.state.rows}
-        columns={this.state.columns}
-        fileName={Resources["monthlyTasks"][currentLanguage]}
-      />
+      <Export rows={this.state.rows} columns={this.state.columns} fileName={Resources["monthlyTasks"][currentLanguage]} />
     );
     const gridSetup = this.state.isLoading ?
       <LoadingSection />
@@ -209,7 +213,6 @@ export default class MonthlyTasksDetails extends Component {
                 </svg>
               </span>
             </div>
-
             <div className="filterBTNS">{btnExport}</div>
             <div className="rowsPaginations">
               <div className="rowsPagiRange">
@@ -267,7 +270,6 @@ export default class MonthlyTasksDetails extends Component {
               </div>
             </div>
           </div>
-
           <div>
             {gridSetup}
           </div>
@@ -275,21 +277,4 @@ export default class MonthlyTasksDetails extends Component {
       </div>
     );
   }
-
-  GetData = (url, label, value, currState) => {
-    let Data = [];
-    Api.get(url)
-      .then(result => {
-        result.forEach(item => {
-          var obj = {};
-          obj.label = item[label];
-          obj.value = item[value];
-          Data.push(obj);
-        });
-        this.setState({
-          [currState]: [...Data]
-        });
-      })
-      .catch(ex => { });
-  };
 }

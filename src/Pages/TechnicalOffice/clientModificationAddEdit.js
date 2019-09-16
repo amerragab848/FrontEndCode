@@ -17,8 +17,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
-import SkyLight from 'react-skylight';
+import moment from "moment"; 
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
@@ -236,7 +235,7 @@ class clientModificationAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                //   console.log(targetFieldSelected);
+               
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -855,7 +854,7 @@ class clientModificationAddEdit extends Component {
                                             projectId={this.state.projectId}
                                             previousRoute={this.state.previousRoute}
                                             docApprovalId={this.state.docApprovalId}
-                                            currentArrange={this.state.currentArrange}
+                                            currentArrange={this.state.arrange}
                                             showModal={this.props.showModal}
                                             showOptionPanel={this.showOptionPanel}
                                             permission={this.state.permission}

@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from "formik";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
@@ -22,9 +21,7 @@ import * as communicationActions from "../../store/actions/communication";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import Rodal from "../../Styles/js/rodal";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import { MapsTransferWithinAStation } from "material-ui/svg-icons";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
@@ -1069,29 +1066,7 @@ class SubmittalAddEdit extends Component {
     }
   }
 
-  showBtnsSaving() {
-
-    let btn = null;
-
-    if (this.state.docId === 0) {
-      btn = (
-        <button className="primaryBtn-1 btn meduimBtn" type="submit">
-          {Resources.save[currentLanguage]}
-        </button>
-      );
-    } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-      btn = (
-        <button className="primaryBtn-1 btn mediumBtn" type="submit">
-          {Resources.saveAndExit[currentLanguage]}
-        </button>
-      );
-    }
-
-    return btn;
-  }
-
   viewAttachments() {
-
     return this.state.docId > 0 ? (Config.IsAllow(3302) === true ? (<ViewAttachment isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={884} />) : null) : null;
   }
 
@@ -1788,13 +1763,17 @@ class SubmittalAddEdit extends Component {
                                     <input type="text" className="form-control" id="sharedSettings" onChange={e => this.handleChange(e, "sharedSettings")}
                                       value={this.state.document.sharedSettings} name="sharedSettings" placeholder={Resources.sharedSettings[currentLanguage]} />
                                   </div>
-                                  {this.props.changeStatus == true ?
+                                  {this.state.document.sharedSettings === '' ||
+                                    this.state.document.sharedSettings === null ||
+                                    this.state.document.sharedSettings === undefined ?
+                                    null
+                                    :
                                     < a target="_blank" href={this.state.document.sharedSettings}>
                                       <span>
                                         {Resources.openFolder[currentLanguage]}
                                       </span>
                                     </a>
-                                    : null}
+                                  }
                                 </div>
                               </div>
                             </div>
@@ -2178,7 +2157,7 @@ class SubmittalAddEdit extends Component {
                     projectId={this.state.projectId}
                     previousRoute={this.state.previousRoute}
                     docApprovalId={this.state.docApprovalId}
-                    currentArrange={this.state.currentArrange}
+                    currentArrange={this.state.arrange}
                     showModal={this.props.showModal}
                     showOptionPanel={this.showOptionPanel}
                     permission={this.state.permission}

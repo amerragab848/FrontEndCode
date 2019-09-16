@@ -24,7 +24,7 @@ import Plus from "./Styles/images/epsActions/plus.png";
 import Delete from "./Styles/images/epsActions/delete.png";
 import { toast } from "react-toastify";
 import moment from "moment";
-import Config from "./Services/Config";
+import Config from "./Services/Config"; 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -121,7 +121,7 @@ class DashboardProject extends Component {
 
         var e = { label: this.props.projectName, value: projectId };
         this.props.actions.RouteToDashboardProject(e);
-        this.getWidgets();
+         this.getWidgets();
 
         dataService.GetDataGrid("GetProjectOrganizationChart?projectId=" + this.state.projectId).then(result => {
             let state = this.state;
@@ -213,9 +213,9 @@ class DashboardProject extends Component {
         );
     }
 
-    renderCategory() {
-
+    renderCategory() { 
         let categoryWidget = this.state.widgets.map((category, index) => {
+           
             return (
                 <div className="SummeriesContainer" key={index + "DIV"}>
                     <Fragment key={index}>
@@ -241,33 +241,33 @@ class DashboardProject extends Component {
 
         if (this.state.tabIndex === 0) {
 
-            let widgetss = '';
+            let drawWidget = null;
 
-            widgetss = Details.widgets.find(x => x.title === widget.title);
+            drawWidget = Details.widgets.find(x => x.title === widget.title);
+            let projectId = this.props.projectId == 0 ? localStorage.getItem("lastSelectedProject") : this.props.projectId;
 
-            widgetss.props.api += this.state.projectId;
+            drawWidget.props.api = drawWidget.props.api + projectId;
 
-            if (widgetss.props.type === "twoWidget") {
-
+            if (drawWidget.props.type === "twoWidget") {
                 return (
                     <WidgetsWithText
                         key={index + "DIV"}
                         title={widget.title}
-                        {...widgetss}
+                        {...drawWidget}
                     />
                 );
-            } else if (widgetss.props.type === "oneWidget") {
+            } else if (drawWidget.props.type === "oneWidget") {
                 return (
                     <Widgets
-                        key={index + "DIV"}
+                        key={(index + '_' + drawWidget.props.key) + "DIV"}
                         title={widget.title}
-                        {...widgetss}
+                        {...drawWidget}
                     />
                 );
             }
         }
-    } 
-    
+    }
+
     viewDashBoardHandler() {
         this.setState({
             viewDashBoard: true
@@ -283,7 +283,8 @@ class DashboardProject extends Component {
 
     onClickTabItem(tabIndex) {
         this.setState({
-            tabIndex: tabIndex
+            tabIndex: tabIndex,
+            viewWidget: tabIndex === 1 ? true : false
         });
     }
 

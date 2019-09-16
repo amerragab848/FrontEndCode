@@ -46,10 +46,13 @@ export function editContact(url, newContact) {
 }
 export function GetCompaniesContact(url) {
     return (dispatch, getState) => {
+        
         dispatch({
             type: types.toggleLoading
         });
+
         return Api.get(url).then(resp => {
+
             dispatch({
                 type: types.Get_Contacts,
                 data: resp
@@ -61,7 +64,6 @@ export function GetCompaniesContact(url) {
                 data: []
             });
             toast.error("operation error");
-
         });
     }
 }
