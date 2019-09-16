@@ -3,8 +3,7 @@ import React, { Component } from "react";
 import dataservice from "../../Dataservice";
 import LoadingSection from "../publicComponants/LoadingSection";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
-import Resources from "../../resources.json";
-import Recycle from '../../Styles/images/attacheRecycle.png'
+import Resources from "../../resources.json"; 
 import { toast } from "react-toastify";
 import moment from 'moment';
 import { Formik, Form, Field } from 'formik';
