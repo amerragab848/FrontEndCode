@@ -436,9 +436,7 @@ class LettersAddEdit extends Component {
         let saveDocument = { ...this.state.document };
         saveDocument.projectId = this.props.projectId
 
-        saveDocument.docDate = moment(saveDocument.docDate).format(
-            "MM/DD/YYYY"
-        );
+        saveDocument.docDate = moment(saveDocument.docDate).format("MM/DD/YYYY");
 
         dataservice.addObject("AddLetters", saveDocument).then(result => {
             this.setState({
@@ -501,32 +499,7 @@ class LettersAddEdit extends Component {
                         }
                     />
                     <div className="doc-container">
-                        {this.props.changeStatus == true ? (
-                            <header className="main__header">
-                                <div className="main__header--div">
-                                    <h2 className="zero">
-                                        {Resources.goEdit[currentLanguage]}
-                                    </h2>
-                                    <p className="doc-infohead">
-                                        <span>
-                                            {" "}
-                                            {this.state.document.refDoc}
-                                        </span>{" "}
-                                        -{" "}
-                                        <span>
-                                            {" "}
-                                            {this.state.document.arrange}
-                                        </span>{" "}
-                                        -{" "}
-                                        <span>
-                                            {moment(
-                                                this.state.document.docDate
-                                            ).format("DD/MM/YYYY")}
-                                        </span>
-                                    </p>
-                                </div>
-                            </header>
-                        ) : null}
+
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
@@ -704,18 +677,10 @@ class LettersAddEdit extends Component {
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker
                                                                     title="docDate"
-                                                                    startDate={
-                                                                        this.state
-                                                                            .document
-                                                                            .docDate
-                                                                    }
-                                                                    handleChange={e =>
-                                                                        this.handleChangeDate(
-                                                                            e,
-                                                                            "docDate"
-                                                                        )
-                                                                    }
+                                                                    startDate={this.state.document.docDate}
+                                                                    handleChange={e => this.handleChangeDate(e, "docDate")}
                                                                 />
+                                                                
                                                             </div>
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">
