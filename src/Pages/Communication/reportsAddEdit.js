@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
+import React, { Component } from "react"; 
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -14,8 +13,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
-import SkyLight from 'react-skylight';
+import moment from "moment"; 
 import * as communicationActions from '../../store/actions/communication';
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import { toast } from "react-toastify";
@@ -31,7 +29,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
+    // refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
     fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
     toContact: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
     reportType: Yup.string().required(Resources['reportTypeRequired'][currentLanguage])
@@ -499,7 +497,7 @@ class reportsAddEdit extends Component {
 
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
-                                                            <div className={"inputDev ui input " + (errors.refDoc && touched.refDoc ? 'has-error' : !errors.refDoc && touched.refDoc ? (" has-success") : " ")} >
+                                                            <div className="inputDev ui input " >
                                                                 <input type="text" className="form-control" id="refDoc"
                                                                     defaultValue={this.state.document.refDoc}
                                                                     name="refDoc"
@@ -508,8 +506,7 @@ class reportsAddEdit extends Component {
                                                                         handleChange(e)
                                                                         handleBlur(e)
                                                                     }}
-                                                                    onChange={(e) => this.handleChange('refDoc', e.target.value)} />
-                                                                {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
+                                                                    onChange={(e) => this.handleChange('refDoc', e.target.value)} /> 
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input mix_dropdown">

@@ -1725,9 +1725,7 @@ class SubmittalAddEdit extends Component {
                                   handleChange={event => this.handleChangeDropDown(event, "location", false, "", "", "", "selectedLocation")} />
                               </div>
                               <div className="linebylineInput valid-input">
-                                <label className="control-label">
-                                  {Resources.Building[currentLanguage]}
-                                </label>
+                                <label className="control-label">                                  {Resources.Building[currentLanguage]}                                </label>
                                 <div className={"inputDev ui input" + (errors.Building && touched.Building ? " has-error" : !errors.Building && touched.Building ? " has-success" : " ")}>
                                   <input name="Building" className="form-control fsadfsadsa" id="Building"
                                     placeholder={Resources.Building[currentLanguage]}
@@ -1783,9 +1781,7 @@ class SubmittalAddEdit extends Component {
                                 this.state.isViewMode === false ?
                                   (this.state.isLoading === false ?
                                     (<button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">
-                                      {this.state.docId > 0
-                                        ? Resources["next"][currentLanguage]
-                                        : Resources["save"][currentLanguage]}
+                                      {this.state.docId > 0 ? Resources["next"][currentLanguage] : Resources["save"][currentLanguage]}
                                     </button>
                                     ) : (
                                       <button className="primaryBtn-1 btn disabled">
@@ -2140,16 +2136,7 @@ class SubmittalAddEdit extends Component {
             {this.props.changeStatus === true && this.state.currentStep === 0 ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
-                  {this.state.isLoading ?
-                    <button className="primaryBtn-1 btn disabled">
-                      <div className="spinner">
-                        <div className="bounce1" />
-                        <div className="bounce2" />
-                        <div className="bounce3" />
-                      </div>
-                    </button> :
-                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
-                  }
+                  
                   <DocumentActions
                     isApproveMode={this.state.isApproveMode}
                     docTypeId={this.state.docTypeId}

@@ -34,7 +34,7 @@ export default class Config {
             return true;
         }
     }
-
+ 
     static getPayload() {
         var payload = window.localStorage.getItem("claims")
             ? CryptoJS.enc.Base64.parse(
