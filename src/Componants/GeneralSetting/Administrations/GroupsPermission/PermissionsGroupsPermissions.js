@@ -109,7 +109,9 @@ class PermissionsGroupsPermissions extends Component {
         this.setState({ isLoading: true })
 
         Api.post('GetGroupsPermissionsV5', doc).then(res => {
+
             if (!_.isEmpty(res)) {
+                console.log(res)
                 res.forEach(item => {
                     this.setState({ [item.permissionId]: item.permissionValue })
                 })
@@ -145,7 +147,7 @@ class PermissionsGroupsPermissions extends Component {
         }
     }
 
-    render() { 
+    render() {
         return (
             <div className="mainContainer">
                 <div className="documents-stepper noTabs__document">
