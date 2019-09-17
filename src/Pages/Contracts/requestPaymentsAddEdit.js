@@ -295,12 +295,12 @@ class requestPaymentsAddEdit extends Component {
                 callBackFn: () => this.FillGridItems()
             },
             {
-                name: "summaries",
-                callBackFn: () => this.FillSummariesTab()
-            },
-            {
                 name: "deductions",
                 callBackFn: this.fillDeductions()
+            },
+            {
+                name: "summaries",
+                callBackFn: () => this.FillSummariesTab()
             }
         ];
     }
@@ -2740,7 +2740,7 @@ class requestPaymentsAddEdit extends Component {
                     <header>
                         <h2 className="zero">
                             {
-                                Resources["interimPaymentCertificate"][
+                                Resources["summaryOfApprovedInvoices"][
                                 currentLanguage
                                 ]
                             }
@@ -2748,7 +2748,7 @@ class requestPaymentsAddEdit extends Component {
                     </header>
                     <table
                         className="attachmentTable "
-                        key="interimPaymentCertificate">
+                        key="summaryOfApprovedInvoices">
                         <thead>
                             <tr>
                                 <td width="15%">
@@ -4072,7 +4072,7 @@ class requestPaymentsAddEdit extends Component {
                                 </Fragment>
                             ) : null}
 
-                            {this.state.currentStep == 2 ? (
+                            {this.state.currentStep == 3 ? (
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
                                         <div className="doc-pre-cycle">
@@ -4154,7 +4154,7 @@ class requestPaymentsAddEdit extends Component {
                                     </div>
                                 </Fragment>
                             ) : null}
-                            {this.state.currentStep == 3 ? (
+                            {this.state.currentStep == 2 ? (
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
                                         <header>

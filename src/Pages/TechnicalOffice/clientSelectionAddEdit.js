@@ -1,5 +1,5 @@
 import React, { Component } from "react";
- 
+
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -16,7 +16,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
+import moment from "moment";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
@@ -249,7 +249,7 @@ class clientSelectionAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                
+
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -259,6 +259,7 @@ class clientSelectionAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
+
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
 
             if (isEdit) {
@@ -361,6 +362,7 @@ class clientSelectionAddEdit extends Component {
             });
 
         });
+
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=clinetselectionstype", 'title', 'id').then(result => {
 
             this.setState({
@@ -379,12 +381,12 @@ class clientSelectionAddEdit extends Component {
             }
         });
 
-        dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-            if (isEdit === false) {
+        dataservice.GetDataList("GetContractsForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+            if (isEdit) {
                 let contractId = this.props.document.contractId;
                 let selectedContract = {};
                 if (contractId) {
-                    selectedContract = _.find(result, function (i) { return i.value == contractId; });
+                    selectedContract = result.find(i => i.value == contractId);
                     this.setState({
                         selectedContract: selectedContract
                     });
@@ -411,7 +413,7 @@ class clientSelectionAddEdit extends Component {
         }
     };
 
-    handleChange(e, field) { 
+    handleChange(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -734,13 +736,23 @@ class clientSelectionAddEdit extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown
+
+                                                        <div className="linebylineInput valid-input fullInputWidth">
+                                                            <React.Fragment>
+                                                                <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
+                                                                <div className="ui input inputDev "  >
+                                                                    <input type="text" className="form-control" id="contractPo" readOnly
+                                                                        value={this.state.document.contractName}
+                                                                        name="contractPo"
+                                                                        placeholder={Resources.contractPo[currentLanguage]} />
+                                                                </div>
+                                                            </React.Fragment> :
+                                                                <Dropdown
                                                                 title="contractPo"
                                                                 data={this.state.contractsPos}
                                                                 selectedValue={this.state.selectedContract}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
-                                                                index="contractId" />
+                                                                index="contractId" />}
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">

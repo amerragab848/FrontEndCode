@@ -15,12 +15,7 @@ import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const {
-  NumericFilter,
-  AutoCompleteFilter,
-  MultiSelectFilter,
-  SingleSelectFilter
-} = Filters;
+const { SingleSelectFilter } = Filters;
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -281,29 +276,62 @@ class DistributionInboxListSummaryDetails extends Component {
       });
   };
 
-  onRowClick = (obj) => {
-    if (obj) {
+  // onRowClick = (obj) => {
+  //   if (obj) {
 
-      if (obj.status !== true) {
-        Api.get("UpdateStatusInbox?id=" + obj.id);
-      }
-      let spliteLink = obj.docView.split('/');
+  //     if (obj.status !== true) {
+  //       Api.get("UpdateStatusInbox?id=" + obj.id);
+  //     }
+  //     let spliteLink = obj.docView.split('/');
 
-      let objRout = {
-        docId: spliteLink[1],
-        projectId: obj.projectId,
-        projectName: obj.projectName,
-        arrange: obj.arrange,
-        docApprovalId: 0,
-        isApproveMode: false,
-        perviousRoute: window.location.pathname + window.location.search
+  //     let objRout = {
+  //       docId: spliteLink[1],
+  //       projectId: obj.projectId,
+  //       projectName: obj.projectName,
+  //       arrange: obj.arrange,
+  //       docApprovalId: 0,
+  //       isApproveMode: false,
+  //       perviousRoute: window.location.pathname + window.location.search
+  //     }
+  //     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+  //     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+  //     this.props.history.push({
+  //       pathname: "/" + spliteLink[0],
+  //       search: "?id=" + encodedPaylod
+  //     });
+  //   }
+  // }
+  cellClick = (rowId, colID) => {
+
+    let selectedRow = this.state.rows[rowId];
+    if (selectedRow) {
+      if (selectedRow.status !== true) {
+        Api.get("UpdateStatusInbox?id=" + selectedRow.id);
       }
-      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
-      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-      this.props.history.push({
-        pathname: "/" + spliteLink[0],
-        search: "?id=" + encodedPaylod
-      });
+    }
+    let spliteLink = selectedRow.docView.split('/');
+    if (colID != 0 && colID != 1) {
+      if (this.state.columns[colID].key !== "subject") {
+        let obj = {
+          docId: spliteLink[1],
+          projectId: selectedRow.projectId,
+          projectName: selectedRow.projectName,
+          arrange: selectedRow.arrange,
+          docApprovalId: 0,
+          isApproveMode: false,
+          perviousRoute: window.location.pathname + window.location.search
+        };
+
+        if (selectedRow.docType === 37 || selectedRow.docType === 114) {
+          obj.isModification = selectedRow.docTyp === 114 ? true : false;
+        }
+
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+        this.props.history.push({ pathname: "/" + spliteLink[0], search: "?id=" + encodedPaylod });
+      }
     }
   }
 
@@ -311,7 +339,12 @@ class DistributionInboxListSummaryDetails extends Component {
 
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} onRowClick={this.onRowClick} showCheckbox={false} />
+        <GridSetup
+          rows={this.state.rows}
+          columns={this.state.columns}
+          //onRowClick={this.onRowClick}
+          cellClick={this.cellClick}
+          showCheckbox={false} />
       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?

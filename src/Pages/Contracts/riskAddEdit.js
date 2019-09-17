@@ -35,6 +35,8 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
+    riskType: Yup.string().required(Resources['riskType'][currentLanguage]).nullable(true),  
+    ownerCompanyId: Yup.string().required(Resources['companyRiskOwnerRequired'][currentLanguage]).nullable(true),  
     correlationPercentage: Yup.number(Resources['onlyNumbers'][currentLanguage]).min(0),
 });
 
@@ -46,10 +48,8 @@ const documentCycleValidationSchema = Yup.object().shape({
 
 const documentProposedValidationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    mitigationType: Yup.string().required(Resources['mitigationType'][currentLanguage]).nullable(true),
-    //actionProgress: Yup.string().required(Resources['actionProgress'][currentLanguage]).nullable(true),
-    medigationCost: Yup.number().required(Resources['medigationCost'][currentLanguage]),
-    //actionOwnerContactId: Yup.string().required(Resources['ownerRisk'][currentLanguage]).nullable(true)
+    mitigationType: Yup.string().required(Resources['mitigationType'][currentLanguage]).nullable(true),  
+    medigationCost: Yup.number().required(Resources['medigationCost'][currentLanguage])
 });
 
 const riskMitigationProgressValidationSchema = Yup.object().shape({
@@ -350,7 +350,7 @@ class riskAddEdit extends Component {
                 priorityId: "",
                 description: "",
                 descriptionMitigation: "",
-                sharedSettings: "",
+                sharedSettings: ""
             };
 
             this.setState({
@@ -368,11 +368,9 @@ class riskAddEdit extends Component {
     GetNextArrange() {
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
         let original_document = { ...this.state.document };
-        //let updated_document = {};
-
+         
         dataservice.GetNextArrangeMainDocument(url).then(res => {
-            original_document.arrange = res;
-            // updated_document = Object.assign(original_document, updated_document);
+            original_document.arrange = res; 
             this.setState({
                 document: original_document
             });
@@ -1615,28 +1613,7 @@ class riskAddEdit extends Component {
             });
     }
 
-    render() {
-
-        let numberFormats =
-            <div className="proForm datepickerContainer ">
-                <div className="linebylineInput linebylineInput__checkbox ">
-                    <label className="control-label">Number Format</label>
-                    <div className="ui checkbox radio radioBoxBlue">
-                        <input type="radio" name="risk-statusNumbers" defaultChecked={this.state.statusNumbers === false ? null : 'checked'} value="true" onChange={e => { this.handleChangeStatusNumbers(true); this.handleChange(e, 'statusNumbers') }} />
-                        <label>{Resources.normal[currentLanguage]}</label>
-                    </div>
-                    <div className="ui checkbox radio radioBoxBlue">
-                        <input type="radio" name="risk-statusNumbers" defaultChecked={this.state.statusNumbers === false ? 'checked' : null} value="false" onChange={e => { this.handleChangeStatusNumbers(false); this.handleChange(e, 'statusNumbers') }} />
-                        <label>{Resources.thousand[currentLanguage]}</label>
-                    </div>
-                </div>
-                <div className="linebylineInput valid-input">
-                    <Dropdown title="currencyRates" data={this.state.currency}
-                        selectedValue={this.state.selectedCurrency}
-                        handleChange={event => this.handleChangeDropDown(event, 'currencyId', false, '', '', '', 'selectedCurrency')} />
-                </div>
-            </div>
-
+    render() { 
         let riskIdentification =
             < div className="document-fields" >
                 <Formik initialValues={{
@@ -1912,7 +1889,7 @@ class riskAddEdit extends Component {
                                     <div className="subiTabsContent">
                                         <div className="document-fields">
                                             <Formik initialValues={{ ...this.state.document }}
-                                                //   validationSchema={validationSchema}
+                                                validationSchema={validationSchema}
                                                 enableReinitialize={this.props.changeStatus}
                                                 onSubmit={(values) => {
                                                     if (values.isFirstButton) {
@@ -1946,7 +1923,7 @@ class riskAddEdit extends Component {
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                                 <div className={"ui input inputDev " + (errors.refDoc && touched.refDoc ? (" has-error") : " ")}>
-                                                                    <input type="text" className="form-control" id="refDoc" readOnly
+                                                                    <input type="text" className="form-control" id="refDoc"  
                                                                         value={this.state.document.refDoc || ''}
                                                                         name="refDoc"
                                                                         placeholder={Resources.refDoc[currentLanguage]}
@@ -2035,16 +2012,15 @@ class riskAddEdit extends Component {
                                                                     startDate={this.state.document.docDate}
                                                                     handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                             </div>
+                                                            {this.state.docId > 0 ?
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker title='lastEditDate'
                                                                     startDate={this.state.document.lastEditDate} />
                                                             </div>
-
-                                                            {/* <div className="linebylineInput valid-input alternativeDate">
-                                                                <DatePicker title='requiredDate'
-                                                                    startDate={this.state.document.requiredDate}
-                                                                    handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
-                                                            </div> */}
+                                                               :
+                                                               null
+                                                           }
+ 
                                                         </div>
 
                                                         <div className="slider-Btns">
