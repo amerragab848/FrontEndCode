@@ -98,7 +98,7 @@ class bogAddEdit extends Component {
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
-            if (index == 0) {
+            if (index === 0) {
                 try {
                     let obj = JSON.parse(
                         CryptoJS.enc.Base64.parse(param[1]).toString(
@@ -282,7 +282,7 @@ class bogAddEdit extends Component {
         ];
 
         this.state = {
-            isCompany: Config.getPayload().uty == "company" ? true : false,
+            isCompany: Config.getPayload().uty === "company" ? true : false,
             showForm: false,
             loadingContractPurchase: false,
             AddedPurchase: false,
@@ -441,12 +441,9 @@ class bogAddEdit extends Component {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(617) || this.props.document.contractId !== null) {
                 this.setState({ isViewMode: true });
-            } else if (this.state.isApproveMode != true && Config.IsAllow(617)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(617)) {
-                    if (
-                        this.props.document.status != false &&
-                        Config.IsAllow(617)
-                    ) {
+            } else if (this.state.isApproveMode !== true && Config.IsAllow(617)) {
+                if (this.props.hasWorkflow === false && Config.IsAllow(617)) {
+                    if (this.props.document.status !== false && Config.IsAllow(617)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -916,7 +913,7 @@ class bogAddEdit extends Component {
             btnText: "save"
         });
     };
- 
+
 
     addContract = values => {
         if (this.props.document.contractId != null || this.state.addedContract)
