@@ -222,15 +222,15 @@ class workFlowAlerts extends Component {
   }
 
   componentDidMount() {
-    
+
     this.props.actions.RouteToTemplate();
-    
+
     Api.get("GetWorkFlowAlertDetails").then(result => {
 
       this.setState({
         rows: result != null ? result : [],
         isLoading: false
-      }); 
+      });
     });
   }
 
@@ -271,7 +271,7 @@ class workFlowAlerts extends Component {
 
   cellClick = (rowId, colID) => {
 
-    if (colID != 0 && colID != 1) { 
+    if (colID != 0 && colID != 1) {
       let rowData = this.state.rows[rowId];
       if (this.state.columns[colID].key !== "subject") {
         let obj = {

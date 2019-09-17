@@ -36,6 +36,14 @@ class ApprovedWidget extends Component {
         } else {
           this.props.history.push(this.props.props.route);
         }
+      } else if (this.props.title === "Distribution Inbox " || this.props.title === "Inbox ") {
+        let splitestring = this.props.props.route.split("?");
+
+        if (splitestring) {
+          this.props.history.push(this.props.props.route + action);
+        } else {
+          this.props.history.push(this.props.props.route);
+        }
       }
     }
   };
@@ -78,7 +86,7 @@ class ApprovedWidget extends Component {
               <li className="num-3" />
             </ul>
             <div className="summerisList">
-              <div className="first"  onClick={() => this.onOpenModal(normal.action, normal[this.props.props.value])}>
+              <div className="first" onClick={() => this.onOpenModal(normal.action, normal[this.props.props.value])}>
                 <span className="mediumModal">
                   {normal ? normal[this.props.props.value] : 0}
                 </span>

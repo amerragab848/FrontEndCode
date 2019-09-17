@@ -2160,7 +2160,7 @@ var routes = [
         }
     },
     {
-        route: "budgetCashFlowReport",
+        route: "budgetCashFlowReports",
         moduleId: "reports/budgetCashFlowReport",
         title: "budgetCashFlowReport",
         nav: true,
@@ -2342,7 +2342,7 @@ var routes = [
         settings: { OtherReports: true, permission: 3721, order: 3 }
     },
     {
-        route: "UsersAccountsReport",
+        route: "budgetCashFlowReport",
         moduleId: "OtherReports/UsersAccountsReport",
         title: "usersAccountsReport",
         nav: true,

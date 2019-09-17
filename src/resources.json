@@ -8206,5 +8206,25 @@
     "correlationPercentage": {
         "en": "Correlation Percentage",
         "ar": "Correlation Percentage"
-    }
+    },
+    "revisedQuantity": {
+        "en": "Revised Quantity",
+        "ar": "الكمية  المستقبلة "
+    },
+    "filtersApplied": {
+        "en": "Filters Applied",
+        "ar": "عناصر للبحث "
+    } ,
+    "resetAll": {
+        "en": "Reset All",
+        "ar": "الوضع الأفتراضى "
+    }  ,
+    "filterResults": {
+        "en": "Filter results",
+        "ar": "نتائج البحث "
+    }  ,
+    "gridColumns": {
+        "en": "Grid Columns",
+        "ar": "أعمدة الجدول "
+    } 
 }

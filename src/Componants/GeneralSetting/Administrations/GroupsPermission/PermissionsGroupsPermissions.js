@@ -110,7 +110,9 @@ class PermissionsGroupsPermissions extends Component {
         this.setState({ isLoading: true })
 
         Api.post('GetGroupsPermissionsV5', doc).then(res => {
+
             if (!_.isEmpty(res)) {
+                console.log(res)
                 res.forEach(item => {
                     this.setState({ [item.permissionId]: item.permissionValue })
                 })

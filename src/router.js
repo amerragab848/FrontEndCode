@@ -172,10 +172,12 @@ import RiskRealisation from './Componants/publicComponants/RiskRealisation';
 import WeeklyReportsAddEdit from "./Pages/TechnicalOffice/weeklyReportsAddEdit";
 import dailyReportsAddEdit from "./Pages/TechnicalOffice/dailyReportsAddEdit";
 import RiskCause from './Componants/OptionsPanels/RiskCause';
+import budgetCashFlowReports from './Pages/CostControl/budgetCashFlowReport';
+
 let setupRoutes = ProjectSetupRoutes.map((item, index) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
-    return <Route key={index+181} path={path} component={compoenet} />
+    return <Route key={index + 181} path={path} component={compoenet} />
 })
 
 
@@ -357,8 +359,8 @@ let originalRoutes = [
     , <Route key='r-177' path="/RiskRealisation" component={RiskRealisation} />
     , <Route key='r-177' path="/WeeklyReportsAddEdit" component={WeeklyReportsAddEdit} />
     , <Route key='r-179' path="/dailyReportsAddEdit" component={dailyReportsAddEdit} />
-
-    , <Route key='r-180' path="/emailAddEdit" component={emailAddEdit} />
+    , <Route key='r-180' path="/budgetCashFlowReports" component={budgetCashFlowReports} />
+    , <Route key='r-181' path="/emailAddEdit" component={emailAddEdit} />
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes]
@@ -369,7 +371,7 @@ let routes = (
         {originalRoutes.map((item, index) =>
             item
         )}
-        <Route   path="/:document/:projectId" component={CommonLog} />
+        <Route path="/:document/:projectId" component={CommonLog} />
     </Switch>
 );
 export default routes;

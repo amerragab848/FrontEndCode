@@ -5,11 +5,11 @@ import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Calendar from "react-calendar";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
-import moment from "moment"; 
+import moment from "moment";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
-const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel; 
+const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
 
 let arrColumn = ["arrange", "quantity", "itemCode"];
 
@@ -97,7 +97,7 @@ class GridSetupWithFilter extends Component {
       columns: stateCopy.columns
     });
     this.setState(reorderedColumns);
-  }; 
+  };
   sortRows = (initialRows, sortColumn, sortDirection) => {
     const comparer = (a, b) => {
       if (sortDirection === "ASC") {
@@ -111,7 +111,7 @@ class GridSetupWithFilter extends Component {
   };
 
   getRows = (rows, filters) => {
-    return  Data.Selectors.getRows(this.state);
+    return Data.Selectors.getRows(this.state);
   };
 
   getCount() {
@@ -645,10 +645,10 @@ class GridSetupWithFilter extends Component {
       <Fragment>
         <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
           <div className="filter__more" style={{ padding: 0 }}>
-            <span>5 filters applied</span>
+            <span>5 {Resources.filtersApplied[currentLanguage]}</span>
             {this.props.columns.length > 5 ? (
               <button className="filter__more--btn" onClick={this.showFilterMore}>
-                See all
+                {Resources.seeAll[currentLanguage]}
               </button>
             ) : null}
           </div>
@@ -701,7 +701,7 @@ class GridSetupWithFilter extends Component {
                 }
               })}
               <button style={{ marginBottom: '0' }} className="defaultBtn btn" onClick={this.resetModeFilter} type="button">
-                Reset all
+                {Resources.resetAll[currentLanguage]}
               </button>
             </form>
           </div>
@@ -709,7 +709,7 @@ class GridSetupWithFilter extends Component {
 
 
         <div className={this.state.ShowModelFilter ? "filterModal__container active" : "filterModal__container"}>
-          <h2 className="zero">Filter results</h2>
+          <h2 className="zero">{Resources.filterResults[currentLanguage]}</h2>
           <button className="filter__close" onClick={this.CloseModeFilter}>
             x
           </button>
@@ -868,14 +868,14 @@ class GridSetupWithFilter extends Component {
           <div className="grid__column--container">
             <button className="closeColumn" onClick={this.closeModalColumn}>X</button>
             <div className="grid__column--title">
-              <h2>Grid Columns</h2>
+              <h2>{Resources.gridColumns[currentLanguage]}</h2>
             </div>
             <div className="grid__column--content">
               {RenderPopupShowColumns}
             </div>
             <div className="grid__column--footer">
-              <button className="btn primaryBtn-1" onClick={this.closeModalColumn}>Close</button>
-              <button className="btn primaryBtn-2" onClick={this.ResetShowHide}>Reset</button>
+              <button className="btn primaryBtn-1" onClick={this.closeModalColumn}>{Resources.close[currentLanguage]}</button>
+              <button className="btn primaryBtn-2" onClick={this.ResetShowHide}>{Resources.reset[currentLanguage]} </button>
             </div>
           </div>
         </div>

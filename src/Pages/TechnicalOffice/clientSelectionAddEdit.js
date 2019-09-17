@@ -259,6 +259,7 @@ class clientSelectionAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
+
         dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
 
             if (isEdit) {
@@ -361,6 +362,7 @@ class clientSelectionAddEdit extends Component {
             });
 
         });
+
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=clinetselectionstype", 'title', 'id').then(result => {
 
             this.setState({
@@ -380,7 +382,7 @@ class clientSelectionAddEdit extends Component {
         });
 
         dataservice.GetDataList("GetContractsForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-            if (isEdit === true) {
+            if (isEdit) {
                 let contractId = this.props.document.contractId;
                 let selectedContract = {};
                 if (contractId) {
@@ -734,13 +736,23 @@ class clientSelectionAddEdit extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="linebylineInput valid-input">
-                                                            <Dropdown
+
+                                                        <div className="linebylineInput valid-input fullInputWidth">
+                                                            <React.Fragment>
+                                                                <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
+                                                                <div className="ui input inputDev "  >
+                                                                    <input type="text" className="form-control" id="contractPo" readOnly
+                                                                        value={this.state.document.contractName}
+                                                                        name="contractPo"
+                                                                        placeholder={Resources.contractPo[currentLanguage]} />
+                                                                </div>
+                                                            </React.Fragment> :
+                                                                <Dropdown
                                                                 title="contractPo"
                                                                 data={this.state.contractsPos}
                                                                 selectedValue={this.state.selectedContract}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
-                                                                index="contractId" />
+                                                                index="contractId" />}
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">

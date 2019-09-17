@@ -617,7 +617,7 @@ class materialInspectionRequestAddEdit extends Component {
     saveInspectionRequest(event) {
         let saveDocument = { ...this.state.document };
         this.setState({
-            DocLoading: true
+            DocLoading: true, isLoading: true,
         });
 
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
@@ -646,7 +646,8 @@ class materialInspectionRequestAddEdit extends Component {
                 this.setState({
                     docId: result.id,
                     documentCycle: cycle,
-                    DocLoading: false
+                    DocLoading: false,
+                    isLoading: false,
                 });
 
                 toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -1299,7 +1300,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                 : null
                                                             }
                                                             <div className="slider-Btns">
-                                                                {this.state.CycleEditLoading ?
+                                                                {this.state.isLoading ?
                                                                     <button className="primaryBtn-1 btn disabled">
                                                                         <div className="spinner">
                                                                             <div className="bounce1" />
