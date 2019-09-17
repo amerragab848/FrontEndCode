@@ -5,14 +5,11 @@ import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Calendar from "react-calendar";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
-import moment from "moment";
-const _ = require("lodash");
-
+import moment from "moment"; 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
-const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
-//const selectors = Data.Selectors;
+const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel; 
 
 let arrColumn = ["arrange", "quantity", "itemCode"];
 

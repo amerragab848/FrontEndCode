@@ -100,7 +100,7 @@ class meetingAgendaAddEdit extends Component {
         let index = 0;
 
         for (let param of query.entries()) {
-            if (index == 0) {
+            if (index === 0) {
                 try {
                     let obj = JSON.parse(
                         CryptoJS.enc.Base64.parse(param[1]).toString(
@@ -304,8 +304,8 @@ class meetingAgendaAddEdit extends Component {
             if (!Config.IsAllow(453)) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(453)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(453)) {
+            if (this.state.isApproveMode !== true && Config.IsAllow(453)) {
+                if (this.props.hasWorkflow === false && Config.IsAllow(453)) {
                     if (
                         this.props.document.status !== false &&
                         Config.IsAllow(453)
@@ -542,7 +542,7 @@ class meetingAgendaAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
         }
-        if (prevProps.showModal != this.props.showModal) {
+        if (prevProps.showModal !== this.props.showModal) {
             this.setState({ showModal: this.props.showModal });
         }
     }
@@ -668,7 +668,7 @@ class meetingAgendaAddEdit extends Component {
                 let id = this.state.topic.id;
 
                 let topics = _.filter(this.state.topics, function (x) {
-                    return x.id != id;
+                    return x.id !== id;
                 });
 
                 topics.push({

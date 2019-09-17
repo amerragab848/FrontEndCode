@@ -21783,6 +21783,9 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
         height: 5px;
     }
  
+    .notifiError.approved {
+        background-color: #39BD3D !important;
+    }
 .skylight-wrapper  .slider-Btns {
     text-align: center
 }
