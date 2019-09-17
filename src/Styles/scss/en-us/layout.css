@@ -4126,7 +4126,7 @@ h1, h2, h3, h4, h5 {
     bottom: 0;
     right: 40px;
     left: 130px;
-    z-index: 1000;
+    z-index: 1000 !important;
     height: 64px;
     border-radius: 3px;
     box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.1);

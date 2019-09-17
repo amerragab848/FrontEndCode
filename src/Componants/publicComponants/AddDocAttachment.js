@@ -194,8 +194,6 @@ class AddDocAttachment extends Component {
     return <a href={doc_view}>{row.subject}</a>;
   }
 
-
-
   closeModal() {
     this.setState({
       viewModel: false
