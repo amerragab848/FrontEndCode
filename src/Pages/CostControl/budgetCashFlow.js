@@ -7,8 +7,6 @@ import Filter from '../../Componants/FilterComponent/filterComponent'
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetup from "../Communication/GridSetup"
 import { SkyLightStateless } from 'react-skylight';
-// import config from "../../Services/Config";
-// import CryptoJS from 'crypto-js';
 import { withRouter } from "react-router-dom";
 import Export from '../../Componants/OptionsPanels/Export';
 import dataservice from "../../Dataservice";
@@ -132,8 +130,8 @@ class budgetCashFlow extends Component {
         }
     }
 
-    componentWillMount() { 
-        this.props.actions.FillGridLeftMenu(); 
+    componentWillMount() {
+        this.props.actions.FillGridLeftMenu();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -225,7 +223,7 @@ class budgetCashFlow extends Component {
         this.state.rowSelectedId.map(i => {
             id = i
         })
-        let userName = _.find(rowsData, { 'id': id }) 
+        let userName = _.find(rowsData, { 'id': id })
         Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName, null, 'DElETE').then(
             Api.post('accountDeleteById?id=' + id)
                 .then(result => {

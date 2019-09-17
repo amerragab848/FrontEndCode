@@ -4,7 +4,7 @@ import xlsx from "../../Styles/images/attatcheXLS.png";
 import doc from "../../Styles/images/attatcheDOC.png";
 import png from "../../Styles/images/ex.png";
 import jpeg from "../../Styles/images/ex.png";
-import jpg from "../../Styles/images/ex.png"; 
+import jpg from "../../Styles/images/ex.png";
 import pdfPrint from "../../Styles/images/pdfPrint.png";
 import pdfDelete from "../../Styles/images/pdfMDelete.png";
 import pdfMenuAction from "../../Styles/images/pdfMenuAction.png";
@@ -19,7 +19,6 @@ import SkyLight from "react-skylight";
 import axios from "axios";
 import { bindActionCreators } from "redux";
 import moment from "moment";
-
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config";
 import _ from "lodash";
@@ -29,6 +28,7 @@ let activeURL = "";
 
 class ViewAttachmments extends Component {
     constructor(props) {
+
         super(props);
 
         this.state = {
@@ -297,45 +297,28 @@ class ViewAttachmments extends Component {
                                 <th>
                                     <div className="headCell tableCell-1">
                                         <span>
-                                            {" "}
-                                            {
-                                                Resources["actions"][
-                                                currentLanguage
-                                                ]
-                                            }{" "}
+                                            {Resources["actions"][currentLanguage]}
                                         </span>
                                     </div>
                                 </th>
                                 <th>
                                     <div className="headCell tableCell-2">
                                         <span>
-                                            {
-                                                Resources["fileName"][
-                                                currentLanguage
-                                                ]
-                                            }{" "}
+                                            {Resources["fileName"][currentLanguage]}
                                         </span>
                                     </div>
                                 </th>
                                 <th>
                                     <div className="headCell tableCell-3">
                                         <span>
-                                            {
-                                                Resources["docDate"][
-                                                currentLanguage
-                                                ]
-                                            }
+                                            {Resources["docDate"][currentLanguage]}
                                         </span>
                                     </div>
                                 </th>
                                 <th>
                                     <div className="headCell tableCell-4">
                                         <span>
-                                            {
-                                                Resources["uploadedBy"][
-                                                currentLanguage
-                                                ]
-                                            }{" "}
+                                            {Resources["uploadedBy"][currentLanguage]}
                                         </span>
                                     </div>
                                 </th>
@@ -351,13 +334,9 @@ class ViewAttachmments extends Component {
         let tabel =
             this.props.isLoadingFiles == true
                 ? this.props.files.map((item, Index) => {
-                    let ext = item["fileName"].split(".")[1]
-                        ? item["fileName"].split(".")[1].toLowerCase() : "png";
-                    let extension = ext == "xlsx" ? xlsx : ext == "pdf" ? pdf
-                        : ext == "jpeg" ? jpeg : ext == "png" ? png : ext == "jpg" ? jpg : doc;
-                    let createdDate = moment(item["createdDate"]).format(
-                        "DD/MM/YYYY"
-                    );
+                    let ext = item["fileName"].split(".")[1] ? item["fileName"].split(".")[1].toLowerCase() : "png";
+                    let extension = ext == "xlsx" ? xlsx : ext == "pdf" ? pdf : ext == "jpeg" ? jpeg : ext == "png" ? png : ext == "jpg" ? jpg : doc;
+                    let createdDate = moment(item["createdDate"]).format("DD/MM/YYYY");
                     if (item.isCloud !== true) {
                         var containerIndex = item.attachFile ? item.attachFile.indexOf("/" + Config.getPublicConfiguartion().BlobStorageContainerName) : -1;
                         var filePath = item.attachFile ? item.attachFile.substr(containerIndex) : item.attachFile;
@@ -425,15 +404,15 @@ class ViewAttachmments extends Component {
                             <td>
                                 <div className="contentCell tableCell-4">
                                     <p className="zero">
-                                        {item["uploadedBy"]}{" "}
+                                        {item["uploadedBy"]}
                                     </p>
                                 </div>
                             </td>
                             <td className="tdHover">
                                 <div className="attachmentAction">
-                                    {Config.IsAllow(this.props.deleteAttachments) && (this.props.isApproveMode === false)? (
+                                    {Config.IsAllow(this.props.deleteAttachments) && (this.props.isApproveMode === false) ? (
                                         <a className="attachRecycle" onClick={() => this.deletehandler(item)} data-toggle="tooltip" title={Resources["delete"][currentLanguage]}>
-                                             
+
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                                 <g fill="none" fillRule="evenodd" transform="translate(1)">
                                                     <g fill="#A8B0BF" mask="url(#b)">
@@ -445,7 +424,7 @@ class ViewAttachmments extends Component {
                                     ) : null}
 
                                     <a href={item["attachFile"]} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
-                                       
+
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                             <g fill="none" fillRule="evenodd" transform="translate(1)">
                                                 <g fill="#A8B0BF" mask="url(#b)">
@@ -456,7 +435,7 @@ class ViewAttachmments extends Component {
                                     </a>
                                     {Config.IsAllow(4501) ? (
                                         <a className="attachPend" onClick={() => this.versionHandler(item["parentId"], ext)} data-toggle="tooltip" title={Resources["versions"][currentLanguage]}>
-                                        
+
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                                 <g fill="none" fillRule="evenodd" transform="translate(1 1)">
                                                     <g fill="#A8B0BF" mask="url(#b)">
@@ -493,19 +472,14 @@ class ViewAttachmments extends Component {
                             <th>
                                 <div className="headCell tableCell-1">
                                     <span>
-                                        {" "}
-                                        {
-                                            Resources["actions"][
-                                            currentLanguage
-                                            ]
-                                        }{" "}
+                                        {Resources["actions"][currentLanguage]}
                                     </span>
                                 </div>
                             </th>
                             <th>
                                 <div className="headCell tableCell-2">
                                     <span>
-                                        {Resources["fileName"][currentLanguage]}{" "}
+                                        {Resources["fileName"][currentLanguage]}
                                     </span>
                                 </div>
                             </th>
@@ -519,11 +493,7 @@ class ViewAttachmments extends Component {
                             <th>
                                 <div className="headCell tableCell-4">
                                     <span>
-                                        {
-                                            Resources["uploadedBy"][
-                                            currentLanguage
-                                            ]
-                                        }{" "}
+                                        {Resources["uploadedBy"][currentLanguage]}
                                     </span>
                                 </div>
                             </th>
@@ -548,60 +518,31 @@ class ViewAttachmments extends Component {
                                             <div className="pdf__maxi">
                                                 <p className="zero">-</p>
                                                 <span>
-                                                    {" "}
-                                                    <img
-                                                        src={pdfMaxi}
-                                                        alt="Print"
-                                                    />
+                                                    <img src={pdfMaxi} alt="Print" />
                                                 </span>
                                                 <p className="zero">+</p>
                                             </div>
                                             <div className="pdf__print">
                                                 <span>
-                                                    {" "}
-                                                    <img
-                                                        src={pdfPrint}
-                                                        alt="Print"
-                                                    />
+                                                    <img src={pdfPrint} alt="Print" />
                                                 </span>
                                                 <span>
-                                                    {" "}
-                                                    <img
-                                                        src={pdfDelete}
-                                                        alt="Print"
-                                                    />
+                                                    <img src={pdfDelete} alt="Print" />
                                                 </span>
                                                 <span>
-                                                    {" "}
-                                                    <img
-                                                        src={pdfMenuAction}
-                                                        alt="Print"
-                                                    />
+                                                    <img src={pdfMenuAction} alt="Print" />
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                {activeURL === "" ? null : (
-                                    <PDFViewer
-                                        document={{
-                                            url: activeURL
-                                        }}
-                                    />
-                                )}
+                                {activeURL === "" ? null : (<PDFViewer document={{ url: activeURL }} />)}
                             </div>
                         </SkyLight>
                     </div>
                 ) : null}
-
-                <div
-                    className="largePopup largeModal "
-                    style={{
-                        display: this.state.viewVersion ? "block" : "none"
-                    }}>
-                    <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.simpleDialogVersion = ref)}>
+                <div className="largePopup largeModal " style={{ display: this.state.viewVersion ? "block" : "none" }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialogVersion = ref)}>
                         <div className="dropWrapper">
                             {ViewVersionDetails()}
                         </div>
@@ -626,7 +567,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ViewAttachmments);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewAttachmments);

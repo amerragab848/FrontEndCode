@@ -16752,6 +16752,9 @@ tfoot tr td p {
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div span {
     font-size: 12px;
     margin-right: 3px;
+}
+
+.SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div {
     cursor: pointer;
 }
 
@@ -18799,7 +18802,7 @@ button.companies_icon {
     margin-bottom: 16px;
 }
 
-.settings-container .setting-tabs-contant .reports__proForm .linebylineInput {
+.reports__proForm .linebylineInput {
     margin-right: 16px;
     width: 192px;
     margin-bottom: 16px;

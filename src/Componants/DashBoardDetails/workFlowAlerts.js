@@ -8,6 +8,9 @@ import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -219,15 +222,15 @@ class workFlowAlerts extends Component {
   }
 
   componentDidMount() {
-    
+
     this.props.actions.RouteToTemplate();
-    
+
     Api.get("GetWorkFlowAlertDetails").then(result => {
 
       this.setState({
         rows: result != null ? result : [],
         isLoading: false
-      }); 
+      });
     });
   }
 
@@ -268,7 +271,7 @@ class workFlowAlerts extends Component {
 
   cellClick = (rowId, colID) => {
 
-    if (colID != 0 && colID != 1) { 
+    if (colID != 0 && colID != 1) {
       let rowData = this.state.rows[rowId];
       if (this.state.columns[colID].key !== "subject") {
         let obj = {
@@ -410,4 +413,20 @@ class workFlowAlerts extends Component {
   }
 }
 
-export default workFlowAlerts;
+function mapStateToProps(state, ownProps) {
+  return {
+    projectId: state.communication.projectId,
+    showLeftMenu: state.communication.showLeftMenu,
+    showSelectProject: state.communication.showSelectProject,
+    projectName: state.communication.projectName,
+    moduleName: state.communication.moduleName
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(workFlowAlerts);

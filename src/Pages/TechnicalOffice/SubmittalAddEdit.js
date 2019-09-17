@@ -1570,10 +1570,6 @@ class SubmittalAddEdit extends Component {
                                     value={this.state.document.subject}
                                     onBlur={e => { handleBlur(e); handleChange(e); }}
                                     onChange={e => this.handleChange(e, "subject")} />
-                                  {errors.subject && touched.subject ? (
-                                    <span className="glyphicon glyphicon-remove form-control-feedback spanError" />)
-                                    : !errors.subject && touched.subject ?
-                                      (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
                                   {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                 </div>
                               </div>
@@ -1619,8 +1615,6 @@ class SubmittalAddEdit extends Component {
                                   <input type="text" className="form-control" readOnly value={this.state.document.arrange} name="arrange" placeholder={Resources.arrange[currentLanguage]}
                                     onBlur={e => { handleChange(e); handleBlur(e); }}
                                     onChange={e => this.handleChange(e, "arrange")} />
-                                  {errors.arrange && touched.arrange ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                                    !errors.arrange && touched.arrange ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
                                   {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
                                 </div>
                               </div>
@@ -1832,8 +1826,6 @@ class SubmittalAddEdit extends Component {
                                           value={this.state.documentCycle.subject}
                                           onBlur={e => { handleBlur(e); handleChange(e); }}
                                           onChange={e => this.handleChangeCycles(e, "subject")} />
-                                        {errors.subject && touched.subject ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                                          !errors.subject && touched.subject ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
                                         {errors.subject && touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
                                       </div>
                                     </div>
@@ -1873,8 +1865,7 @@ class SubmittalAddEdit extends Component {
                                           placeholder={Resources.arrange[currentLanguage]}
                                           onBlur={e => { handleChange(e); handleBlur(e); }}
                                           onChange={e => this.handleChangeCycles(e, "arrange")} />
-                                        {errors.arrangeCycle && touched.arrangeCycle ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                                          !errors.arrangeCycle && touched.arrangeCycle ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+
                                         {errors.arrangeCycle && touched.arrangeCycle ? (<em className="pError"> {errors.arrangeCycle} </em>) : null}
                                       </div>
                                     </div>
@@ -1985,10 +1976,7 @@ class SubmittalAddEdit extends Component {
                                               value={this.state.itemsDocumentSubmital.description}
                                               onBlur={e => { handleBlur(e); handleChange(e); }}
                                               onChange={e => this.handleChangeItems(e, "description")} />
-                                            {errors.description && touched.description ?
-                                              (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                                              !errors.description && touched.description ?
-                                                (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+
                                             {errors.description && touched.description ? (<em className="pError"> {errors.description} </em>) : null}
                                           </div>
                                         </div>
@@ -2016,8 +2004,7 @@ class SubmittalAddEdit extends Component {
                                               name="arrange" placeholder={Resources.arrange[currentLanguage]}
                                               onBlur={e => { handleChange(e); handleBlur(e); }}
                                               onChange={e => this.handleChangeDateItems(e, "arrange")} />
-                                            {errors.arrange && touched.arrange ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                                              !errors.arrange && touched.arrange ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+
                                             {errors.arrange && touched.arrange ? (<em className="pError"> {errors.arrange} </em>) : null}
                                           </div>
                                         </div>
@@ -2030,9 +2017,7 @@ class SubmittalAddEdit extends Component {
                                               name="refDoc" placeholder={Resources.refDoc[currentLanguage]}
                                               onBlur={e => { handleChange(e); handleBlur(e); }}
                                               onChange={e => this.handleChangeItems(e, "refDoc")} />
-                                            {errors.refDoc && touched.refDoc ?
-                                              (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                                              !errors.refDoc && touched.refDoc ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
+
                                             {errors.refDoc && touched.refDoc ? (<em className="pError"> {errors.refDoc} </em>) : null}
                                           </div>
                                         </div>
@@ -2136,7 +2121,7 @@ class SubmittalAddEdit extends Component {
             {this.props.changeStatus === true && this.state.currentStep === 0 ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
-                  
+
                   <DocumentActions
                     isApproveMode={this.state.isApproveMode}
                     docTypeId={this.state.docTypeId}
@@ -2282,7 +2267,6 @@ class SubmittalAddEdit extends Component {
                           placeholder={Resources.description[currentLanguage]} autoComplete="off"
                           value={this.state.addCycleSubmital.description} onBlur={e => { handleBlur(e); handleChange(e); }}
                           onChange={e => this.handleChangeCyclesPopUp(e, "description")} />
-                        {errors.description && touched.description ? (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) : !errors.description && touched.description ? (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
                         {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
                       </div>
                     </div>
@@ -2322,10 +2306,6 @@ class SubmittalAddEdit extends Component {
                         <input type="text" className="form-control" readOnly value={this.state.addCycleSubmital.arrange}
                           name="arrange" placeholder={Resources.arrange[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
                           onChange={e => this.handleChangeCyclesPopUp(e, "arrange")} />
-                        {errors.arrange && touched.arrange ?
-                          (<span className="glyphicon glyphicon-remove form-control-feedback spanError" />) :
-                          !errors.arrange && touched.arrange ?
-                            (<span className="glyphicon form-control-feedback glyphicon-ok" />) : null}
                         {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
                       </div>
                     </div>

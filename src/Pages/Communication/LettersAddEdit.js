@@ -133,6 +133,7 @@ class LettersAddEdit extends Component {
             this.props.history.push(this.state.perviousRoute);
         }
     }
+    
     componentDidMount() {
 
         if (this.state.docId > 0) {

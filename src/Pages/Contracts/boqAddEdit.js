@@ -30,8 +30,7 @@ import dataservice from "../../Dataservice";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const poqSchema = Yup.object().shape({
     subject: Yup.string().required(
@@ -224,7 +223,7 @@ class bogAddEdit extends Component {
             },
             {
                 key: "revisedQuantity",
-                name: Resources["receivedQuantity"][currentLanguage],
+                name: Resources["revisedQuantity"][currentLanguage],
                 width: 100,
                 draggable: true,
                 sortable: true,
@@ -3003,7 +3002,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(bogAddEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(bogAddEdit));
