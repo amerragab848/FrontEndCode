@@ -6817,7 +6817,7 @@
     },
     "addFollowUps": {
         "en": "Follow Up Contacts",
-        "ar": "Add Follow Ups" 
+        "ar": "Add Follow Ups"
     },
     "followUpsContacts": {
         "en": "Follow Ups Contacts",
@@ -8068,7 +8068,7 @@
         "ar": "منظمة"
     },
     "managementlevel": {
-        "en": "G contractor",
+        "en": "G Contractor",
         "ar": "مستوى الإدارة"
     },
     "categorisation": {
@@ -8182,6 +8182,14 @@
     "requestApprovalDrop": {
         "en": "Request Approval",
         "ar": " طلب اعتماد"
+    },
+    "riskReports": {
+        "en": "Risk Reports",
+        "ar": "تقرير المخاطر"
+    },
+    "selectedType": {
+        "en": "Selected Type",
+        "ar": "اختر نوع التقرير"
     },
     "realizationStatus": {
         "en": "Realization Status",

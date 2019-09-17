@@ -14861,6 +14861,14 @@
                 "ar": "أقسام الخطورة"
               },
               "value": false
+            },
+            {
+              "code": 4026,
+              "title": {
+                "en": "Risk Reports",
+                "ar": "تقارير الخطورة"
+              },
+              "value": false
             }
           ]
         },

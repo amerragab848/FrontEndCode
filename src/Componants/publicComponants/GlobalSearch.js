@@ -104,7 +104,7 @@ class GlobalSearch extends Component {
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
         for (let param of query.entries()) {
-            if (index == 0) {
+            if (index === 0) {
                 try {
                     let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
                     subject = obj.subject;
@@ -263,13 +263,13 @@ class GlobalSearch extends Component {
         let toDate = '';
         let pageNumber = this.state.pageNumber
 
-        if (flag != 0)
+        if (flag !== 0)
             pageNumber = this.state.pageNumber + flag
         else
             pageNumber = 0
         this.setState({ pageNumber })
 
-        if (this.state.filterDate.split("-")[0] == this.state.filterDate) {
+        if (this.state.filterDate.split("-")[0] === this.state.filterDate) {
             fromDate = moment().add(-1, 'Y').format('YYYY/MM/DD')
             toDate = moment().format('YYYY/MM/DD')
         }
@@ -305,7 +305,7 @@ class GlobalSearch extends Component {
 
     }
     cellClick = (rowId, colID) => {
-        if (colID != 0) {
+        if (colID !== 0) {
             let rowData = this.state.searchResult[rowId];
             let obj = {
                 docId: rowData.docId,
@@ -357,7 +357,7 @@ class GlobalSearch extends Component {
                             <span> {this.state.totalRows}</span>
                         </div>
                         <button
-                            className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.state.pageNumber != 0 ? this.search(-1) : null} >
+                            className={this.state.pageNumber === 0 ? "rowunActive" : ""} onClick={() => this.state.pageNumber != 0 ? this.search(-1) : null} >
                             <i className="angle left icon" />
                         </button>
                         <button className={this.state.totalRows > this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "" : "rowunActive"}
@@ -380,7 +380,7 @@ class GlobalSearch extends Component {
                                         closeMenuOnSelect={false}
                                         selectedValue={this.state.selectedDocs}
                                         handleChange={event => this.setState({ selectedDocs: event })}
-                                        name="docType" styles={filterStyle}/>
+                                        name="docType" styles={filterStyle} />
                                 </div>
                             </div>
                             <div className="form-group linebylineInput medium__input--width">
