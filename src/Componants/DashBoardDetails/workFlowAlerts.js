@@ -8,6 +8,9 @@ import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as communicationActions from '../../store/actions/communication'; 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -72,7 +75,7 @@ class workFlowAlerts extends Component {
       }, {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: 100,
+        width: 150,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -295,10 +298,7 @@ class workFlowAlerts extends Component {
   };
 
   render() {
-    const dataGrid =
-      this.state.isLoading === false ? (
-
-        <GridSetup
+    const dataGrid =      this.state.isLoading === false ? (        <GridSetup
           rows={this.state.rows}
           showCheckbox={false}
           columns={this.state.columns}
@@ -410,4 +410,16 @@ class workFlowAlerts extends Component {
   }
 }
 
-export default workFlowAlerts;
+function mapStateToProps(state, ownProps) {
+  return {
+    showLeftMenu: state.communication.showLeftMenu
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)( workFlowAlerts);
