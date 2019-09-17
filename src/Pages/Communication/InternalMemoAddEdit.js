@@ -208,7 +208,7 @@ class InternalMemoAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; }); 
+                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -566,13 +566,13 @@ class InternalMemoAddEdit extends Component {
                                                             <label className="control-label">{Resources.answer[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
-                                                                    value={this.state.message}
+                                                                    value={this.state.answer}
                                                                     onChange={event => this.onChangeMessage(event, "answer")} />
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="slider-Btns">
-                                                        {this.state.isLoading ?
+                                                        {this.state.isLoading && this.props.changeStatus === false ?
                                                             <button className="primaryBtn-1 btn disabled">
                                                                 <div className="spinner">
                                                                     <div className="bounce1" />
@@ -582,24 +582,45 @@ class InternalMemoAddEdit extends Component {
                                                             </button> :
                                                             this.showBtnsSaving()}
                                                     </div>
-                                                    {
-                                                        this.props.changeStatus === true ?
-                                                            <div className="approveDocument">
-                                                                <div className="approveDocumentBTNS">
-                                                                    <DocumentActions
-                                                                        isApproveMode={this.state.isApproveMode}
-                                                                        docTypeId={this.state.docTypeId}
-                                                                        docId={this.state.docId}
-                                                                        projectId={this.state.projectId}
-                                                                        previousRoute={this.state.previousRoute}
-                                                                        docApprovalId={this.state.docApprovalId}
-                                                                        currentArrange={this.state.arrange}
-                                                                        showModal={this.props.showModal}
-                                                                        showOptionPanel={this.showOptionPanel}
-                                                                        permission={this.state.permission}
-                                                                    />
-                                                                </div>
-                                                            </div> : null
+
+
+                                                    {this.props.changeStatus === true ?
+                                                        <div className="approveDocument">
+                                                            <div className="approveDocumentBTNS">
+                                                                {this.state.isLoading ? (
+                                                                    <button className="primaryBtn-1 btn disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button>
+                                                                ) : (
+                                                                        <button
+                                                                            className={
+                                                                                this.state.isViewMode === true
+                                                                                    ? "primaryBtn-1 btn middle__btn disNone"
+                                                                                    : "primaryBtn-1 btn middle__btn"
+                                                                            }>
+                                                                            {
+                                                                                Resources.save[currentLanguage]
+                                                                            }
+                                                                        </button>
+                                                                    )}
+                                                                <DocumentActions
+                                                                    isApproveMode={this.state.isApproveMode}
+                                                                    docTypeId={this.state.docTypeId}
+                                                                    docId={this.state.docId}
+                                                                    projectId={this.state.projectId}
+                                                                    previousRoute={this.state.previousRoute}
+                                                                    docApprovalId={this.state.docApprovalId}
+                                                                    currentArrange={this.state.arrange}
+                                                                    showModal={this.props.showModal}
+                                                                    showOptionPanel={this.showOptionPanel}
+                                                                    permission={this.state.permission}
+                                                                />
+                                                            </div>
+                                                        </div> : null
                                                     }
                                                 </Form>
                                             )}

@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from "react";
 import classNames from "classnames";
 import AttachUpload from "../../Styles/images/attacthUpload.png";
-import AttachDrag from "../../Styles/images/attachDraggable.png"; 
+import AttachDrag from "../../Styles/images/attachDraggable.png";
 import DropboxChooser from "react-dropbox-chooser";
-import GooglePicker from "react-google-picker"; 
+import GooglePicker from "react-google-picker";
 import Dropzone from "react-dropzone";
 import Drive from '../../Styles/images/gdrive.png';
-import dropbox from '../../Styles/images/dropbox.png'; 
+import dropbox from '../../Styles/images/dropbox.png';
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux"; 
+import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config";
 import Resources from "../../resources.json";
@@ -81,7 +81,7 @@ class UploadAttachment extends Component {
                 onDragOver={e => this.setState({ _className: "dragHover" })}
                 onDropAccepted={e => this.onDropAcceptedHandler(e)}
                 onDropRejected={this.onDropRejected}
-                onClick={evt => evt.preventDefault()} >
+            >
                 {({ getRootProps, getInputProps, isDragActive }) => {
                     return (
                         <Fragment>
@@ -92,14 +92,14 @@ class UploadAttachment extends Component {
                                         <div className="uploadFormDiv">
                                             <img src={AttachUpload} />
                                             <div className="dragUpload">
-                                            <p>{Resources.dropOrClick[currentLanguage]}</p>  
+                                                <p>{Resources.dropOrClick[currentLanguage]}</p>
                                             </div>
                                         </div>
                                         <div className="dragHoverDiv">
                                             <div id="myBar" />
                                             <img src={AttachDrag} />
                                             <div className="dragUpload">
-                                            <p>{Resources.dropFiles[currentLanguage]}</p>
+                                                <p>{Resources.dropFiles[currentLanguage]}</p>
                                             </div>
                                         </div>
                                         <div className="progressBar">
@@ -168,7 +168,7 @@ class UploadAttachment extends Component {
                     cancel={() => this.onCancel()}
                     multiselect={true}
                     accessToken={"l7phamm2skocwwy"}
-                    extensions={[".pdf", ".doc", ".docx", ".png",".dwg",".rvt"]}>
+                    extensions={[".pdf", ".doc", ".docx", ".png", ".dwg", ".rvt"]}>
                     <div className="drive__button--tooltip">
                         <div className="drive__button Dbox">
                             <img src={dropbox} alt="drobBox" />
@@ -192,7 +192,7 @@ class UploadAttachment extends Component {
                 multiselect={true}
                 navHidden={true}
                 authImmediate={false}
-                mimeTypes={["image/png", "image/jpeg", "image/jpg","application/autocad_dwg","application/dwg","application/octet-stream"]}
+                mimeTypes={["image/png", "image/jpeg", "image/jpg", "application/autocad_dwg", "application/dwg", "application/octet-stream"]}
                 query={"a query string like .txt or fileName"}
                 viewId={"DOCS"}
                 createPicker={(google, oauthToken) => {
@@ -206,7 +206,7 @@ class UploadAttachment extends Component {
                         .addView(docsView)
                         .setOAuthToken(oauthToken)
                         .setDeveloperKey("AIzaSyDS-GpZszvOVwnS_E8I7CVZX7gNaVwvBHg")
-                        .setCallback(() => { 
+                        .setCallback(() => {
                         });
 
                     picker.build().setVisible(true);

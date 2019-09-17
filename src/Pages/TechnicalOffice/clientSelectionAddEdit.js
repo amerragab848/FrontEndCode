@@ -1,5 +1,5 @@
 import React, { Component } from "react";
- 
+
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -16,7 +16,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
+import moment from "moment";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
@@ -249,7 +249,7 @@ class clientSelectionAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                
+
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -379,12 +379,12 @@ class clientSelectionAddEdit extends Component {
             }
         });
 
-        dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-            if (isEdit === false) {
+        dataservice.GetDataList("GetContractsForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+            if (isEdit === true) {
                 let contractId = this.props.document.contractId;
                 let selectedContract = {};
                 if (contractId) {
-                    selectedContract = _.find(result, function (i) { return i.value == contractId; });
+                    selectedContract = result.find(i => i.value == contractId);
                     this.setState({
                         selectedContract: selectedContract
                     });
@@ -411,7 +411,7 @@ class clientSelectionAddEdit extends Component {
         }
     };
 
-    handleChange(e, field) { 
+    handleChange(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
