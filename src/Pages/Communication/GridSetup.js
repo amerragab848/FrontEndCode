@@ -6,7 +6,7 @@ import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 
-let currentLanguage =    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
@@ -284,7 +284,9 @@ class GridSetup extends Component {
     };
 
     onCellSelected = ({ rowIdx, idx }) => {
-        if (this.props.cellClick) this.props.cellClick(rowIdx, idx);
+        if (idx > 0) {
+            if (this.props.cellClick) this.props.cellClick(rowIdx, idx);
+        }
     };
 
     onselectRowEven = ({ selectedRows }) => {
@@ -595,7 +597,7 @@ class GridSetup extends Component {
                                         onGridRowsUpdated={
                                             this.onGridRowsUpdated
                                         }
-                                        onCellSelected={this.onCellSelected}
+                                        onCellSelected={ this.onCellSelected}
                                         onColumnResize={(idx, width, event) => {
                                             this.scrolllll();
                                         }}

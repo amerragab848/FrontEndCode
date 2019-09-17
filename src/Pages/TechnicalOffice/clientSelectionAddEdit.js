@@ -386,7 +386,7 @@ class clientSelectionAddEdit extends Component {
                 let contractId = this.props.document.contractId;
                 let selectedContract = {};
                 if (contractId) {
-                    selectedContract = _.find(result, function (i) { return i.value == contractId; });
+                    selectedContract = result.find(i => i.value == contractId);
                     this.setState({
                         selectedContract: selectedContract
                     });
