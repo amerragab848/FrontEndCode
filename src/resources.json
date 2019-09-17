@@ -8068,7 +8068,7 @@
         "ar": "منظمة"
     },
     "managementlevel": {
-        "en": "G contractor",
+        "en": "G Contractor",
         "ar": "مستوى الإدارة"
     },
     "categorisation": {
@@ -8182,5 +8182,13 @@
     "requestApprovalDrop": {
         "en": "Request Approval",
         "ar": " طلب اعتماد"
+    },
+    "riskReports":{
+        "en" : "Risk Reports",
+        "ar" : "تقرير المخاطر"
+    },
+    "selectedType":{
+        "en" : "Selected Type",
+        "ar" : "اختر نوع التقرير"
     }
 }

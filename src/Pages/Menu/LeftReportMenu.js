@@ -145,110 +145,45 @@ class LeftReportMenu extends Component {
                                 {Resources.Reports[currentLanguage]}
                             </h3>
                             <ul className="zero">
-                                <li
-                                    data-tab="subiTab-1"
-                                    className={
-                                        this.state[1] === true ? "active" : " "
-                                    }
+                                <li data-tab="subiTab-1" className={this.state[1] === true ? "active" : " "}
                                     onClick={() => this.activeLi(1)}>
                                     <span className="subUlTitle">
-                                        {
-                                            Resources.projectReports[
-                                                currentLanguage
-                                            ]
-                                        }
+                                        {Resources.projectReports[currentLanguage]}
                                     </span>
                                 </li>
-                                <li
-                                    data-tab="subiTab-2"
-                                    className={
-                                        this.state[2] === true ? "active" : " "
-                                    }
-                                    onClick={() => this.activeLi(2)}>
+                                <li data-tab="subiTab-2" className={this.state[2] === true ? "active" : " "} onClick={() => this.activeLi(2)}>
                                     <span className="subUlTitle">
-                                        {
-                                            Resources.contractsPurchaseOrders[
-                                                currentLanguage
-                                            ]
-                                        }
+                                        {Resources.contractsPurchaseOrders[currentLanguage]}
                                     </span>
                                 </li>
-                                <li
-                                    data-tab="subiTab-3"
-                                    className={
-                                        this.state[3] === true ? "active" : " "
-                                    }
+                                <li data-tab="subiTab-3" className={this.state[3] === true ? "active" : " "}
                                     onClick={() => this.activeLi(3)}>
                                     <span className="subUlTitle">
-                                        {
-                                            Resources.tasksReports[
-                                                currentLanguage
-                                            ]
-                                        }
+                                        {Resources.tasksReports[currentLanguage]}
                                     </span>
                                 </li>
-                                <li
-                                    data-tab="subiTab-4"
-                                    className={
-                                        this.state[4] === true ? "active" : " "
-                                    }
+                                <li data-tab="subiTab-4" className={this.state[4] === true ? "active" : " "}
                                     onClick={() => this.activeLi(4)}>
                                     <span className="subUlTitle">
-                                        {
-                                            Resources.timeSheetReport[
-                                                currentLanguage
-                                            ]
-                                        }
+                                        {Resources.timeSheetReport[currentLanguage]}
                                     </span>
                                 </li>
-                                <li
-                                    data-tab="subiTab-5"
-                                    className={
-                                        this.state[5] === true ? "active" : " "
-                                    }
-                                    onClick={() => this.activeLi(5)}>
+                                <li data-tab="subiTab-5" className={this.state[5] === true ? "active" : " "} onClick={() => this.activeLi(5)}>
                                     <span className="subUlTitle">
-                                        {
-                                            Resources.otherReports[
-                                                currentLanguage
-                                            ]
-                                        }
+                                        {Resources.otherReports[currentLanguage]}
                                     </span>
                                 </li>
-                                <li
-                                    data-tab="subiTab-6"
-                                    className={
-                                        this.state[6] === true ? "active" : " "
-                                    }
-                                    onClick={() => this.activeLi(6)}>
+                                <li data-tab="subiTab-6" className={this.state[6] === true ? "active" : " "} onClick={() => this.activeLi(6)}>
                                     <span className="subUlTitle">
-                                        {
-                                            Resources.inventoryRpt[
-                                                currentLanguage
-                                            ]
-                                        }
+                                        {Resources.inventoryRpt[currentLanguage]}
                                     </span>
                                 </li>
-                                <li
-                                    data-tab="subiTab-7"
-                                    className={
-                                        this.state[7] === true ? "active" : " "
-                                    }
-                                    onClick={() => this.activeLi(7)}>
+                                <li data-tab="subiTab-7" className={this.state[7] === true ? "active" : " "} onClick={() => this.activeLi(7)}>
                                     <span className="subUlTitle">
-                                        {
-                                            Resources.technicalOffice[
-                                                currentLanguage
-                                            ]
-                                        }
+                                        {Resources.technicalOffice[currentLanguage]}
                                     </span>
                                 </li>
-                                <li
-                                    data-tab="subiTab-7"
-                                    className={
-                                        this.state[8] === true ? "active" : " "
-                                    }
-                                    onClick={() => this.activeLi(8)}>
+                                <li data-tab="subiTab-7" className={this.state[8] === true ? "active" : " "} onClick={() => this.activeLi(8)}>
                                     <span className="subUlTitle">
                                         {Resources.reportsRisk[currentLanguage]}
                                     </span>
@@ -261,28 +196,18 @@ class LeftReportMenu extends Component {
                                     {this.state.moduleName}
                                 </label>
                                 <div className="reposrts__menu--dropdown">
-                                    <Dropdown
-                                        data={this.state.subReports}
-                                        selectedValue={
-                                            this.state.selectedReport
-                                        }
-                                        handleChange={event =>
-                                            this.getReport(event)
-                                        }
-                                        name="drop"
-                                        id="drop"
-                                    />
+                                    <Dropdown data={this.state.subReports} selectedValue={this.state.selectedReport}
+                                        handleChange={event => this.getReport(event)} name="drop" id="drop" />
                                 </div>
                             </div>
                             <ErrorHandler>
-                                {this.state.selectedReport.value ==
-                                "0" ? null : (
-                                    <div className="reports__content" id="ren">
+                                {this.state.selectedReport.value == "0" ? null :
+                                    (<div className="reports__content" id="ren">
                                         {Component != null ? (
                                             <Component />
                                         ) : null}
                                     </div>
-                                )}
+                                    )}
                             </ErrorHandler>
                         </div>
                     </React.Fragment>
@@ -346,7 +271,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LeftReportMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(LeftReportMenu);

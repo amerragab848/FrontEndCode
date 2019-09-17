@@ -3049,6 +3049,18 @@ var routes = [
             caption: "procoor-icon-BIC",
             order: 11
         }
+    },
+    {
+        route: "Risk",
+        moduleId: "RiskReports/RiskReports",
+        title: "riskReports",
+        nav: true,
+        settings: {
+            RiskReport: true,
+            permission: 4026,
+            caption: "procoor-icon-BIC",
+            order: 11
+        }
     }
 ];
 
