@@ -37,12 +37,13 @@ class ViewAttachmments extends Component {
             docId: this.props.docId,
             activeURL: "",
             viewVersion: false,
-            Versionfiles: []
+            Versionfiles: [],
+            viewImage: false,
+            imagePath: ""
         };
     }
 
     deletehandler = file => {
-
         let urlDelete = "DeleteAttachFileById?id=" + file.id;
         this.props.actions.deleteFile(urlDelete, file);
     };
@@ -72,6 +73,14 @@ class ViewAttachmments extends Component {
             });
             activeURL = item.attachFile;
             this.getPDFblob(item.attachFile);
+        } else {
+
+            this.setState({
+                viewImage: true,
+                imagePath: item.attachFile
+            });
+
+            this.simpleDialogImage.show();
         }
     };
 
@@ -81,10 +90,7 @@ class ViewAttachmments extends Component {
             refer: window.location.href.replace("#", "-hashfill-"),
             docTypeId: this.props.docTypeId,
             docId: this.props.docId,
-            name:
-                localStorage.getItem("contactName") !== null
-                    ? localStorage.getItem("contactName")
-                    : "Procoor User",
+            name: localStorage.getItem("contactName") !== null ? localStorage.getItem("contactName") : "Procoor User",
             photo: Config.getPublicConfiguartion().static + "/public/img/signature.png",
             file: item.parentAttachFile,
             fileName: item.parentAttachFile.split("/")[4],
@@ -545,6 +551,16 @@ class ViewAttachmments extends Component {
                     <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialogVersion = ref)}>
                         <div className="dropWrapper">
                             {ViewVersionDetails()}
+                        </div>
+                    </SkyLight>
+                </div>
+
+                <div className="largePopup largeModal " style={{ display: this.state.viewImage ? "block" : "none" }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialogImage = ref)}>
+                        <div className="dropWrapper">
+                            <div className="fullWidthWrapper">
+                                <img src={this.state.imagePath} alt="doc img" style={{ maxWidth: '100 %'}} />
+                            </div>
                         </div>
                     </SkyLight>
                 </div>

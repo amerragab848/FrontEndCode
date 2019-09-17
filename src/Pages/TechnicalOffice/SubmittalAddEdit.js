@@ -60,7 +60,7 @@ const validationSchemaForCyclePopUp = Yup.object().shape({
   description: Yup.string().required(Resources["description"][currentLanguage]),
   arrange: Yup.number().required(Resources["onlyNumbers"][currentLanguage]),
   refDoc: Yup.string().max(450, Resources["selectRefNo"][currentLanguage]),
-  approvalStatusId: Yup.string().required(Resources["selectResult"][currentLanguage]).nullable(true)
+  reviewResult: Yup.string().required(Resources["selectResult"][currentLanguage]).nullable(true)
 });
 
 let docId = 0;
@@ -200,13 +200,8 @@ class SubmittalAddEdit extends Component {
       {
         name: "items",
         callBackFn: () => this.getLogsSubmittalItems()
-      },
-      {
-        name: "addDocAttachment",
-        callBackFn: null
       }
     ];
-
   }
 
   componentDidMount() {
@@ -1152,11 +1147,6 @@ class SubmittalAddEdit extends Component {
     }
   }
 
-
-  ExistDocument() {
-    this.props.history.push("/submittal/" + this.state.projectId);
-  }
-
   onCloseModal = () => {
     this.setState({ showDeleteModal: false });
   };
@@ -1314,8 +1304,6 @@ class SubmittalAddEdit extends Component {
         isLoading: false,
         selectedReviewResult: { label: Resources.selectResult[currentLanguage], value: "0" }
       });
-
-
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(ex => {
       toast.error(Resources["failError"][currentLanguage]);
@@ -1399,6 +1387,10 @@ class SubmittalAddEdit extends Component {
   }
 
   changeCurrentStep = stepNo => {
+    if (stepNo === 3) {
+
+      this.props.history.push("/submittal/" + this.state.projectId);
+    }
     this.setState({ currentStep: stepNo });
   };
 
@@ -1412,7 +1404,7 @@ class SubmittalAddEdit extends Component {
       submittalItem.submitalDate = moment();
       submittalItem.refDoc = "";
       submittalItem.arrange = maxArrange != undefined ? (maxArrange.arrange != null ? maxArrange.arrange + 1 : 1) : 1;
-      this.changeCurrentStep(3);
+      //this.changeCurrentStep(3);
       this.setState({
         itemsDocumentSubmital: submittalItem
 
@@ -1769,7 +1761,6 @@ class SubmittalAddEdit extends Component {
                                 </div>
                               </div>
                             </div>
-
                             <div className="slider-Btns">
                               {
                                 this.state.isViewMode === false ?
@@ -1950,152 +1941,140 @@ class SubmittalAddEdit extends Component {
                         </Fragment> :
                         <Fragment>
                           {
-                            this.state.currentStep === 2 ? <Fragment>
-                              <header className="main__header">
-                                <div className="main__header--div">
-                                  <h2 className="zero">
-                                    {Resources["items"][currentLanguage]}
-                                  </h2>
-                                </div>
-                              </header>
-                              <div className="document-fields">
-                                <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
-                                  validationSchema={validationSchemaForItem}
-                                  enableReinitialize={true}
-                                  onSubmit={values => { this.addSubmittalItems(); }}>
-                                  {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                                    <Form onSubmit={handleSubmit}>
-                                      <div className="proForm datepickerContainer">
-                                        <div className="letterFullWidth fullInputWidth">
-                                          <label className="control-label">
-                                            {Resources["description"][currentLanguage]}
-                                          </label>
-                                          <div className={"ui input inputDev fillter-item-c " + (errors.description && touched.description ? "has-error" : !errors.description && touched.description ? "has-success" : "")}>
-                                            <input name="description" className="form-control fsadfsadsa" id="description"
-                                              placeholder={Resources.description[currentLanguage]} autoComplete="off"
-                                              value={this.state.itemsDocumentSubmital.description}
-                                              onBlur={e => { handleBlur(e); handleChange(e); }}
-                                              onChange={e => this.handleChangeItems(e, "description")} />
-
-                                            {errors.description && touched.description ? (<em className="pError"> {errors.description} </em>) : null}
-                                          </div>
-                                        </div>
-                                        <div className="linebylineInput valid-input">
-                                          <Dropdown isMulti={false} title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
-                                            onChange={setFieldValue} onBlur={setFieldTouched}
-                                            error={errors.reviewResult}
-                                            touched={touched.reviewResult}
-                                            name="reviewResult" id="reviewResult"
-                                            handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")} />
-                                        </div>
-                                        <div className="linebylineInput">
-                                          <div className="inputDev ui input input-group date NormalInputDate">
-                                            <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
-                                              handleChange={e => this.handleChangeDateItems(e, "submitalDate")}
-                                            />
-                                          </div>
-                                        </div>
-                                        <div className="linebylineInput valid-input">
-                                          <label className="control-label">
-                                            {Resources.arrange[currentLanguage]}
-                                          </label>
-                                          <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? " has-error" : " ")}>
-                                            <input type="text" className="form-control" id="arrange" readOnly value={this.state.itemsDocumentSubmital.arrange}
-                                              name="arrange" placeholder={Resources.arrange[currentLanguage]}
-                                              onBlur={e => { handleChange(e); handleBlur(e); }}
-                                              onChange={e => this.handleChangeDateItems(e, "arrange")} />
-
-                                            {errors.arrange && touched.arrange ? (<em className="pError"> {errors.arrange} </em>) : null}
-                                          </div>
-                                        </div>
-                                        <div className="linebylineInput valid-input">
-                                          <label className="control-label">
-                                            {Resources.refDoc[currentLanguage]}
-                                          </label>
-                                          <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? " has-error" : "ui input inputDev")}>
-                                            <input type="text" className="form-control" id="refNo" value={this.state.itemsDocumentSubmital.refDoc}
-                                              name="refDoc" placeholder={Resources.refDoc[currentLanguage]}
-                                              onBlur={e => { handleChange(e); handleBlur(e); }}
-                                              onChange={e => this.handleChangeItems(e, "refDoc")} />
-
-                                            {errors.refDoc && touched.refDoc ? (<em className="pError"> {errors.refDoc} </em>) : null}
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="slider-Btns">
-                                        {
-                                          this.state.isViewMode === false ?
-                                            (this.state.isLoading === false ?
-                                              (<button className="primaryBtn-1 btn meduimBtn" type="submit" >
-                                                {Resources["addTitle"][currentLanguage]}
-                                              </button>
-                                              ) : (
-                                                <button className="primaryBtn-1 btn disabled">
-                                                  <div className="spinner">
-                                                    <div className="bounce1" />
-                                                    <div className="bounce2" />
-                                                    <div className="bounce3" />
-                                                  </div>
-                                                </button>
-                                              )) : null}
-                                      </div>
-                                    </Form>
-                                  )}
-                                </Formik>
-                              </div>
-                              <div className="precycle-grid">
+                            this.state.currentStep === 2 ?
+                              <Fragment>
                                 <header className="main__header">
                                   <div className="main__header--div">
                                     <h2 className="zero">
-                                      {Resources["listDetails"][currentLanguage]}
+                                      {Resources["items"][currentLanguage]}
                                     </h2>
                                   </div>
                                 </header>
-                                <div className="reactTableActions">
-                                  {selectedRows.length > 0 ? (
-                                    <div className={"gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} >
-                                      <div className="tableselcted-items">
-                                        <span id="count-checked-checkboxes">
-                                          {selectedRows.length}
-                                        </span>
-                                        <span>Selected</span>
-                                      </div>
-                                      <div className="tableSelctedBTNs">
-                                        <button className="defaultBtn btn smallBtn" onClick={this.DeleteDocumentAttachment.bind(this)}>
-                                          {Resources["delete"][currentLanguage]}
-                                        </button>
-                                      </div>
+                                <div className="document-fields">
+                                  <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
+                                    validationSchema={validationSchemaForItem}
+                                    enableReinitialize={true}
+                                    onSubmit={values => { this.addSubmittalItems(); }}>
+                                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                                      <Form onSubmit={handleSubmit}>
+                                        <div className="proForm datepickerContainer">
+                                          <div className="letterFullWidth fullInputWidth">
+                                            <label className="control-label">
+                                              {Resources["description"][currentLanguage]}
+                                            </label>
+                                            <div className={"ui input inputDev fillter-item-c " + (errors.description && touched.description ? "has-error" : !errors.description && touched.description ? "has-success" : "")}>
+                                              <input name="description" className="form-control fsadfsadsa" id="description"
+                                                placeholder={Resources.description[currentLanguage]} autoComplete="off"
+                                                value={this.state.itemsDocumentSubmital.description}
+                                                onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                onChange={e => this.handleChangeItems(e, "description")} />
+
+                                              {errors.description && touched.description ? (<em className="pError"> {errors.description} </em>) : null}
+                                            </div>
+                                          </div>
+                                          <div className="linebylineInput valid-input">
+                                            <Dropdown isMulti={false} title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
+                                              onChange={setFieldValue} onBlur={setFieldTouched}
+                                              error={errors.reviewResult}
+                                              touched={touched.reviewResult}
+                                              name="reviewResult" id="reviewResult"
+                                              handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")} />
+                                          </div>
+                                          <div className="linebylineInput">
+                                            <div className="inputDev ui input input-group date NormalInputDate">
+                                              <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
+                                                handleChange={e => this.handleChangeDateItems(e, "submitalDate")}
+                                              />
+                                            </div>
+                                          </div>
+                                          <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                              {Resources.arrange[currentLanguage]}
+                                            </label>
+                                            <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? " has-error" : " ")}>
+                                              <input type="text" className="form-control" id="arrange" readOnly value={this.state.itemsDocumentSubmital.arrange}
+                                                name="arrange" placeholder={Resources.arrange[currentLanguage]}
+                                                onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                onChange={e => this.handleChangeDateItems(e, "arrange")} />
+
+                                              {errors.arrange && touched.arrange ? (<em className="pError"> {errors.arrange} </em>) : null}
+                                            </div>
+                                          </div>
+                                          <div className="linebylineInput valid-input">
+                                            <label className="control-label">
+                                              {Resources.refDoc[currentLanguage]}
+                                            </label>
+                                            <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? " has-error" : "ui input inputDev")}>
+                                              <input type="text" className="form-control" id="refNo" value={this.state.itemsDocumentSubmital.refDoc}
+                                                name="refDoc" placeholder={Resources.refDoc[currentLanguage]}
+                                                onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                onChange={e => this.handleChangeItems(e, "refDoc")} />
+
+                                              {errors.refDoc && touched.refDoc ? (<em className="pError"> {errors.refDoc} </em>) : null}
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div className="slider-Btns">
+                                          {
+                                            this.state.isViewMode === false ?
+                                              (this.state.isLoading === false ?
+                                                (<button className="primaryBtn-1 btn meduimBtn" type="submit" >
+                                                  {Resources["addTitle"][currentLanguage]}
+                                                </button>
+                                                ) : (
+                                                  <button className="primaryBtn-1 btn disabled">
+                                                    <div className="spinner">
+                                                      <div className="bounce1" />
+                                                      <div className="bounce2" />
+                                                      <div className="bounce3" />
+                                                    </div>
+                                                  </button>
+                                                )) : null}
+                                        </div>
+                                      </Form>
+                                    )}
+                                  </Formik>
+                                </div>
+                                <div className="precycle-grid">
+                                  <header className="main__header">
+                                    <div className="main__header--div">
+                                      <h2 className="zero">
+                                        {Resources["listDetails"][currentLanguage]}
+                                      </h2>
                                     </div>
-                                  ) : null}
-                                  <ReactTable data={this.state.itemData} columns={columns} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]}
-                                    className="-striped -highlight"
-                                    getTrProps={(state, rowInfo, column, instance) => {
-                                      return { onClick: e => { this.viewModelToEdit(rowInfo.original.id, e.target.type); } };
-                                    }} />
-                                </div>
-                              </div>
-
-                              <div className="slider-Btns">
-                                {this.state.currentStep === 2 ? (
-                                  <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>
-                                    {Resources["next"][currentLanguage]}
-                                  </button>
-                                ) : null}
-                              </div>
-                            </Fragment> :
-
-                              <Fragment>
-
-                                <div className="document-fields tableBTnabs">
-                                  {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                </div>
-
-                                <div className="doc-pre-cycle">
-                                  <div className="slider-Btns">
-                                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.ExistDocument.bind(this)}>{Resources['next'][currentLanguage]}</button>
+                                  </header>
+                                  <div className="reactTableActions">
+                                    {selectedRows.length > 0 ? (
+                                      <div className={"gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} >
+                                        <div className="tableselcted-items">
+                                          <span id="count-checked-checkboxes">
+                                            {selectedRows.length}
+                                          </span>
+                                          <span>Selected</span>
+                                        </div>
+                                        <div className="tableSelctedBTNs">
+                                          <button className="defaultBtn btn smallBtn" onClick={this.DeleteDocumentAttachment.bind(this)}>
+                                            {Resources["delete"][currentLanguage]}
+                                          </button>
+                                        </div>
+                                      </div>
+                                    ) : null}
+                                    <ReactTable data={this.state.itemData} columns={columns} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]}
+                                      className="-striped -highlight"
+                                      getTrProps={(state, rowInfo, column, instance) => {
+                                        return { onClick: e => { this.viewModelToEdit(rowInfo.original.id, e.target.type); } };
+                                      }} />
                                   </div>
                                 </div>
-                              </Fragment>
+                                <div className="slider-Btns">
+                                  {this.state.currentStep === 2 ? (
+                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>
+                                      {Resources["next"][currentLanguage]}
+                                    </button>
+                                  ) : null}
+                                </div>
+                              </Fragment> :
+                              null
                           }
                         </Fragment>
                       }
@@ -2111,6 +2090,13 @@ class SubmittalAddEdit extends Component {
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
                       {this.state.docId > 0 && this.state.isViewMode === false && this.state.currentStep === 0 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={883} EditAttachments={3261} ShowDropBox={3581} ShowGoogleDrive={3582} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                      {this.state.docId > 0 && this.state.currentStep === 0 ? (
+                        <Fragment>
+                          <div className="document-fields tableBTnabs">
+                            <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                          </div>
+                        </Fragment>
+                      ) : null}
                       {this.state.currentStep === 0 ? this.viewAttachments() : null}
                       {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                     </div>
@@ -2121,7 +2107,6 @@ class SubmittalAddEdit extends Component {
             {this.props.changeStatus === true && this.state.currentStep === 0 ? (
               <div className="approveDocument">
                 <div className="approveDocumentBTNS">
-
                   <DocumentActions
                     isApproveMode={this.state.isApproveMode}
                     docTypeId={this.state.docTypeId}
@@ -2137,15 +2122,8 @@ class SubmittalAddEdit extends Component {
                 </div>
               </div>
             ) : null}
-            <Steps
-              steps_defination={steps_defination}
-              exist_link="/submittal/"
-              docId={this.state.docId}
-              changeCurrentStep={stepNo =>
-                this.changeCurrentStep(stepNo)
-              }
-              stepNo={this.state.currentStep}
-            />
+            <Steps steps_defination={steps_defination} exist_link="/submittal/" docId={this.state.docId}
+              changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)} stepNo={this.state.currentStep} />
           </div>
         </div>
         <div>
@@ -2155,7 +2133,7 @@ class SubmittalAddEdit extends Component {
               showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
               clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />) : null}
 
-          <SkyLight ref={ref => (this.simpleDialog1 = ref)} beforeClose={this._executeBeforeModalClose}>
+          {this.state.viewForEdit === true ? <SkyLight ref={ref => (this.simpleDialog1 = ref)} beforeClose={this._executeBeforeModalClose}>
             <div className="ui modal largeModal">
               <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
                 validationSchema={validationSchemaForCyclePopUp}
@@ -2164,6 +2142,7 @@ class SubmittalAddEdit extends Component {
                 {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                   <Form className="dropWrapper" onSubmit={handleSubmit}>
                     <div className=" proForm customProform">
+
                       <div className="fillter-status fillter-item-c">
                         <label className="control-label">
                           {Resources["description"][currentLanguage]}
@@ -2176,24 +2155,15 @@ class SubmittalAddEdit extends Component {
                           {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
                         </div>
                       </div>
+
                       <Dropdown title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
                         handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")}
                         onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reviewResult}
                         touched={touched.reviewResult} name="reviewResult" id="reviewResult" />
-                      <div className="fillter-status fillter-item-c">
-                        <div className="inputDev ui input input-group date NormalInputDate">
-                          <div className="customDatepicker fillter-status fillter-item-c ">
-                            <div className="proForm datepickerContainer">
-                              <div className="linebylineInput">
-                                <div className="inputDev ui input input-group date NormalInputDate">
-                                  <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
-                                    handleChange={e => this.handleChangeDateItems(e, "submitalDate")} />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+
+                      <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
+                        handleChange={e => this.handleChangeDateItems(e, "submitalDate")} />
+
                       <div className="fillter-status fillter-item-c">
                         <label className="control-label">
                           {Resources.arrange[currentLanguage]}
@@ -2241,7 +2211,7 @@ class SubmittalAddEdit extends Component {
                 )}
               </Formik>
             </div>
-          </SkyLight>
+          </SkyLight> : null}
 
           <SkyLight ref={ref => (this.simpleDialog2 = ref)}>
             <div className="ui modal largeModal proForm ">

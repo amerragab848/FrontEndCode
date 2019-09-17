@@ -54,12 +54,14 @@ class ViewWorkFlow extends Component {
             this.renderCycles(this.props.workFlowCycles);
         }
     }
- 
+
     showPopup(e) {
-        this.setState({
-            showPopup: true,
-            comment: e
-        });
+        if (e != "") {
+            this.setState({
+                showPopup: true,
+                comment: e
+            });
+        }
     }
 
     closePopup(e) {
@@ -104,7 +106,7 @@ class ViewWorkFlow extends Component {
                                         <div className="Status__comment">
                                             {level.statusVal != null ?
                                                 <span>
-                                                    {level.comment === null ? null :
+                                                    {level.comment === null  || level.comment !== ""? null :
                                                         <img src={CommentImg} alt="Cooment" onClick={e => this.showPopup(level.comment)} />
                                                     }
                                                 </span> : null}
@@ -176,8 +178,5 @@ function mapDispatchToProps(dispatch) {
         actions: bindActionCreators(communicationActions, dispatch)
     };
 }
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ViewWorkFlow);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewWorkFlow);
 
