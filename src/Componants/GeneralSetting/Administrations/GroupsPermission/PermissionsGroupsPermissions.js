@@ -41,19 +41,20 @@ class PermissionsGroupsPermissions extends Component {
             this.setstate({ isLoading: false })
         })
 
-        let docs = []
-        //let module = []
-        let options = []
+        let docs = [];
+        let options = [];
         permissions.authorization.forEach(element => {
-            docs = []
-            //module.push()
+            docs = [];
             element.modules.forEach(item => {
-                docs.push({ label: item.title[currentLanguage], value: item.id })
-                this.setState({ [item.id]: item.permissions })
+                docs.push({ label: item.title[currentLanguage], value: item.id });
+                this.setState({ [item.id]: item.permissions });
+
             })
-            options.push({ label: element.title[currentLanguage], options: docs })
+            options.push({ label: element.title[currentLanguage], options: docs });
+
         })
-        this.setState({ options })
+        this.setState({ options });
+
 
     }
 
@@ -97,6 +98,8 @@ class PermissionsGroupsPermissions extends Component {
     }
 
     changeSelect = (event) => {
+        console.log(this.state[event.value])
+        console.log(event)
         this.setState({ selectedDocument: event })
         let documentPermission = [];
         this.state[event.value].forEach(item => {
