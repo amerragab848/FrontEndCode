@@ -98,7 +98,7 @@ class RiskRealisation extends Component {
         let obj = values
         let approveBy = this.state.selectApproveBy === null ? undefined : this.state.selectApproveBy.value
         obj.approveBy = approveBy
-        obj.dateRealisation = moment(obj.dateRealisation, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        //  obj.dateRealisation = moment(obj.dateRealisation, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         if (this.state.isEdit) {
             dataservice.addObject('SaveRiskRealisation', obj).then(
                 result => {

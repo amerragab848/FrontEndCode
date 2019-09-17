@@ -274,7 +274,7 @@ class projectWorkFlowAddEdit extends Component {
 
     handleShowAction = (item) => {
         if (item.title == "sendToWorkFlow") { this.props.actions.SendingWorkFlow(true); }
-        
+
         if (item.value != "0") {
             this.props.actions.showOptionPanel(false);
 
@@ -507,7 +507,7 @@ class projectWorkFlowAddEdit extends Component {
 
     }
 
-    handleChange(e, field) { 
+    handleChange(e, field) {
         let updated_document = this.state.document
         updated_document[field] = e.target.value;
         this.setState({
@@ -515,7 +515,7 @@ class projectWorkFlowAddEdit extends Component {
         });
     }
 
-    handleChangeDate(e, field) { 
+    handleChangeDate(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -749,7 +749,7 @@ class projectWorkFlowAddEdit extends Component {
 
     }
 
-    AddFollowUps = (values) => { 
+    AddFollowUps = (values) => {
         this.setState({ IsLoadingCheckCode: true })
         let FollowUps = {
             workFlowId: this.state.docId, followingUpsContactId: '',
@@ -965,7 +965,7 @@ class projectWorkFlowAddEdit extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns} minHeight={450} onRowClick={this.ShowPopUpForEdit}
+                <GridSetup rows={this.state.rows} columns={this.state.columns} minHeight={700} onRowClick={this.ShowPopUpForEdit}
                     showCheckbox={this.state.showCheckbox} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} />
             ) : <LoadingSection />
 
@@ -1291,7 +1291,7 @@ class projectWorkFlowAddEdit extends Component {
                                     </div>
 
                                     <div className="doc-pre-cycle">
-                                        <header> 
+                                        <header>
                                             <h2 className="zero">{Resources['contactList'][currentLanguage]}</h2>
                                         </header>
                                         {dataGrid}
