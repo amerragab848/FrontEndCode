@@ -2,7 +2,7 @@ import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-let widgets = [ 
+let widgets = [
   {
     title: "monthlyPo",
     key: "0-1-1",
@@ -86,7 +86,7 @@ let widgets = [
   },
   {
     title: "materialRequestcount",
-    key: "0-1-2",
+    key:  "0-1-2",
     apiDetails: "GetTotalMaterialRequestCountingForProject?projectId=",
     columns: [
       {
@@ -196,10 +196,10 @@ let widgets = [
         isCustom: true
       }
     ]
-  }, 
+  },
   {
     title: "monthlyPaymentRequisitions",
-    key: "0-1-4",
+    key:  "0-1-3",
     apiDetails: "GetTotalPaymentDetailsForProject?projectId=",
     columns: [
       {

@@ -37,7 +37,7 @@ class DashBoardProjectCounterLog extends Component {
     for (let param of query.entries()) {
       key = param[1];
     }
-alert(key);
+
     if (key) {
       documentInfo = DashBoardDefenition.find(i => i.key === key);
       if (documentInfo) {
@@ -46,8 +46,8 @@ alert(key);
             item.formatter = dateFormate;
           }
         });
-
       }
+
       let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
 
       this.state = {

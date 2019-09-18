@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -141,8 +142,9 @@ class siteInstructionsAddEdit extends Component {
             this.setState({
                 document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
-                message: nextProps.document.message
-            })
+                message: nextProps.document.message,
+                loadingPage: false
+            });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
@@ -181,19 +183,14 @@ class siteInstructionsAddEdit extends Component {
 
     componentWillMount() {
         if (this.state.docId > 0) {
-            this.setState({ loadingPage: true })
+            //this.setState({ loadingPage: true })
             let url = "GetLogsSiteInstructionsForEdit?id=" + this.state.docId
-            this.setState({ loadingPage: true })
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'siteInstructions').then(() => {
-                this.checkDocumentIsView()
-                setTimeout(() => {
-                    this.setState({ loadingPage: false })
-                }, 500)
-            });
+            // this.setState({ loadingPage: true })
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'siteInstructions');
 
         } else {
 
-            let siteInstruction = {
+            let document = {
                 arrange: arrange,
                 projectId: projectId,
                 fromCompanyId: '',
@@ -202,11 +199,11 @@ class siteInstructionsAddEdit extends Component {
                 toContactId: '',
                 subject: '',
                 refDoc: '',
-                docDate: moment(),
+                docDate: moment().format('YYYY-MM-DD'),
                 status: true,
                 docType: this.state.docTypeId,
-                requiredDate: moment(),
-                replayDate: moment(),
+                requiredDate: moment().format('YYYY-MM-DD'),
+                //replayDate: moment().format('YYYY-MM-DD'),
                 contractId: '',
                 receivedFor: '',
                 replayMsg: '',
@@ -215,7 +212,7 @@ class siteInstructionsAddEdit extends Component {
                 orderId: 0,
                 orderType: ''
             };
-            this.setState({ document: siteInstruction });
+            this.setState({ document });
             this.fillDropDowns(false);
             this.props.actions.documentForAdding()
             this.GetNExtArrange();
@@ -223,17 +220,12 @@ class siteInstructionsAddEdit extends Component {
     };
 
     GetNExtArrange() {
-        let original_document = this.state.document;
-        let updated_document = {};
         this.setState({ loadingPage: true })
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + this.state.document.fromContactId;
-        // this.props.actions.GetNextArrange(url);
         dataservice.GetNextArrangeMainDocument(url).then(res => {
-            updated_document.arrange = res;
-            updated_document = Object.assign(original_document, updated_document);
-            this.setState({
-                document: updated_document, loadingPage: false
-            });
+            let document = this.state.document
+            document.arrange = res;
+            this.setState({ document, loadingPage: false });
         })
     }
 
@@ -277,17 +269,17 @@ class siteInstructionsAddEdit extends Component {
         });
 
         dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-            if (isEdit) {
-                let contractId = this.state.document.contractId;
-                let contract = {};
-                if (contractId) {
-                    contract = _.find(result, function (i) { return i.value == contractId; });
+            // if (isEdit) {
+            //     let contractId = this.state.document.contractId;
+            //     let contract = {};
+            //     if (contractId) {
+            //         contract = _.find(result, function (i) { return i.value == contractId; });
 
-                    this.setState({
-                        selectedContract: contract
-                    });
-                }
-            }
+            //         this.setState({
+            //             selectedContract: contract
+            //         });
+            //     }
+            // }
             this.setState({
                 contracts: [...result]
             });
@@ -464,18 +456,6 @@ class siteInstructionsAddEdit extends Component {
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
                     {this.state.loadingPage ? <LoadingSection /> :
                         <div className="doc-container">
-                            {
-                                this.props.changeStatus == true ?
-                                    <header className="main__header">
-                                        <div className="main__header--div">
-                                            <h2 className="zero">
-                                                {Resources.goEdit[currentLanguage]}
-                                            </h2>
-                                            <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                        </div>
-                                    </header>
-                                    : null
-                            }
                             <div className="step-content">
                                 <div id="step1" className="step-content-body">
                                     <div className="subiTabsContent">
@@ -483,7 +463,7 @@ class siteInstructionsAddEdit extends Component {
                                             <Formik
                                                 initialValues={{ ...this.state.document }}
                                                 validationSchema={validationSchema}
-                                                enableReinitialize={this.props.changeStatus}
+                                                enableReinitialize={true}
                                                 onSubmit={(values) => {
 
                                                     if (this.props.showModal) { return; }
@@ -528,8 +508,11 @@ class siteInstructionsAddEdit extends Component {
                                                                     <label>{Resources.closed[currentLanguage]}</label>
                                                                 </div>
                                                             </div>
+
                                                         </div>
+
                                                         <div className="proForm datepickerContainer">
+
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                                 <div className="ui input inputDev"  >
@@ -544,22 +527,21 @@ class siteInstructionsAddEdit extends Component {
                                                                         onChange={(e) => this.handleChange(e, 'arrange')} />
                                                                 </div>
                                                             </div>
+
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker title='docDate'
-                                                                    onChange={e => setFieldValue('docDate', e)}
-                                                                    format={'DD/MM/YYYY'}
                                                                     name="docDate"
                                                                     startDate={this.state.document.docDate}
                                                                     handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                             </div>
+
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker title='requiredDate'
-                                                                    format={'DD/MM/YYYY'}
-                                                                    onChange={e => setFieldValue('requiredDate', e)}
                                                                     name="requiredDate"
                                                                     startDate={this.state.document.requiredDate}
                                                                     handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
                                                             </div>
+
                                                             <div className="linebylineInput valid-input mix_dropdown">
                                                                 <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
@@ -596,6 +578,7 @@ class siteInstructionsAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
+
                                                             <div className="linebylineInput valid-input mix_dropdown">
 
                                                                 <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
@@ -611,6 +594,7 @@ class siteInstructionsAddEdit extends Component {
                                                                             styles={CompanyDropdown}
                                                                             classDrop="companyName1" />
                                                                     </div>
+
                                                                     <div className="super_company">
                                                                         <Dropdown
                                                                             isMulti={false}
@@ -629,18 +613,32 @@ class siteInstructionsAddEdit extends Component {
                                                                             styles={ContactDropdown}
                                                                         />
                                                                     </div>
+
                                                                 </div>
                                                             </div>
-                                                            <div className="linebylineInput valid-input">
-                                                                <Dropdown
-                                                                    title="contractPo"
-                                                                    data={this.state.contracts}
-                                                                    selectedValue={this.state.selectedContract}
-                                                                    handleChange={event => {
-                                                                        this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract');
-                                                                    }}
-                                                                    index="contractId" />
+
+                                                            <div className="linebylineInput valid-input fullInputWidth">
+                                                                {this.props.changeStatus ?
+                                                                    <React.Fragment>
+                                                                        <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
+                                                                        <div className="ui input inputDev "  >
+                                                                            <input type="text" className="form-control" id="contractPo" readOnly
+                                                                                value={this.state.document.contractName}
+                                                                                name="contractPo"
+                                                                                placeholder={Resources.contractPo[currentLanguage]} />
+                                                                        </div>
+                                                                    </React.Fragment> :
+                                                                    <Dropdown
+                                                                        title="contractPo"
+                                                                        data={this.state.contracts}
+                                                                        selectedValue={this.state.selectedContract}
+                                                                        handleChange={event => {
+                                                                            this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract');
+                                                                        }}
+                                                                        index="contractId" />
+                                                                }
                                                             </div>
+
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.receivedFor[currentLanguage]}</label>
                                                                 <div className="ui input inputDev"  >
@@ -651,6 +649,7 @@ class siteInstructionsAddEdit extends Component {
                                                                         onChange={(e) => this.handleChange(e, 'receivedFor')} />
                                                                 </div>
                                                             </div>
+
                                                             <div className="linebylineInput valid-input">
                                                                 <Dropdown
                                                                     title="inspectionRequest"
@@ -660,6 +659,7 @@ class siteInstructionsAddEdit extends Component {
                                                                     handleChange={event => this.handleChangeDropDown(event, 'inspectionRequestId', false, '', '', '', 'selecetedinspectionRequest')}
                                                                     index="areaId" />
                                                             </div>
+
                                                             <div className="letterFullWidth">
                                                                 <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                                 <div className="inputDev ui input">
@@ -668,7 +668,9 @@ class siteInstructionsAddEdit extends Component {
                                                                         onChange={this.onChangeMessage.bind(this)} />
                                                                 </div>
                                                             </div>
+
                                                         </div>
+
                                                         <div className="slider-Btns">
                                                             {this.props.changeStatus === false ?
                                                                 <React.Fragment>
@@ -728,6 +730,11 @@ class siteInstructionsAddEdit extends Component {
                                             <div>
                                                 {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={863} EditAttachments={3269} ShowDropBox={3601} ShowGoogleDrive={3602} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                 {this.viewAttachments()}
+                                                <Fragment>
+                                                    <div className="document-fields tableBTnabs">
+                                                        {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                    </div>
+                                                </Fragment>
                                                 {this.props.changeStatus === true ?
                                                     <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                     : null}
