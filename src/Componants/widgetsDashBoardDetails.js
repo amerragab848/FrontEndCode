@@ -48,7 +48,7 @@ let widgets = [
             "value": "total-0",
             "total": "total-1",
             "action": "action",
-            "key": "0-1-4"
+            "key": "0-2-1"
         }
     },
     {
@@ -61,7 +61,7 @@ let widgets = [
             "value": "count-0",
             "total": "total-1",
             "action": "action",
-            "key": "0-1-5"
+            "key": "0-2-2",
         }
     },
     {
@@ -74,7 +74,7 @@ let widgets = [
             "value": "total-0",
             "total": "total-1",
             "action": "action",
-            "key": "0-1-6"
+            "key": "0-2-3"
         }
     },
     {
@@ -87,7 +87,7 @@ let widgets = [
             "value": "count-0",
             "total": "total-1",
             "action": "action",
-            "key": "0-1-7"
+            "key": "0-3-1"
         }
     },
     {
@@ -100,7 +100,7 @@ let widgets = [
             "value": "count-0",
             "total": "total-1",
             "action": "action",
-            "key": "0-1-8"
+            "key": "0-3-2"
         }
     },
     {
@@ -113,7 +113,7 @@ let widgets = [
             "value": "total-0",
             "total": "total-1",
             "action": "action",
-            "key": "0-1-9"
+            "key": "0-3-3"
         }
     },
     {
@@ -126,7 +126,7 @@ let widgets = [
             "value": "count-0",
             "total": "total-1",
             "action": "action",
-            "key": "0-2-1"
+            "key": "0-3-4"
         }
     },
     {
@@ -139,7 +139,7 @@ let widgets = [
             "value": "total",
             "listType": "item",
             "action": "action",
-            "key": "0-2-2"
+            "key": "0-4-1"
         }
     },
     {
@@ -152,7 +152,7 @@ let widgets = [
             "value": "total",
             "listType": "item",
             "action": "action",
-            "key": "0-2-3"
+            "key": "0-4-2"
         }
     },
     {
@@ -165,7 +165,7 @@ let widgets = [
             "value": "total",
             "listType": "item",
             "action": "action",
-            "key": "0-2-4"
+            "key": "0-4-3"
         }
     },
     {
@@ -178,7 +178,7 @@ let widgets = [
             "value": "total",
             "listType": "item",
             "action": "action",
-            "key": "0-2-5"
+            "key": "0-5-1"
         }
     },
     {
@@ -191,7 +191,7 @@ let widgets = [
             "value": "total",
             "listType": "item",
             "action": "action",
-            "key": "0-2-6"
+            "key": "0-5-2"
         }
     },
     {
@@ -204,7 +204,7 @@ let widgets = [
             "value": "total",
             "listType": "item",
             "action": "action",
-            "key": "0-2-7"
+            "key": "0-5-3"
         }
     },
     {
@@ -217,7 +217,7 @@ let widgets = [
             "value": "total",
             "listType": "item",
             "action": "action",
-            "key": "0-2-8"
+            "key": "0-5-4"
         }
     },
     {
@@ -230,7 +230,7 @@ let widgets = [
             "value": "total",
             "listType": "item",
             "action": "action",
-            "key": "0-2-9"
+            "key": "0-5-5"
         }
     },
     {
@@ -243,7 +243,7 @@ let widgets = [
             "value": "total",
             "listType": "item",
             "action": "action",
-            "key": "0-2-10"
+            "key": "0-5-6"
         }
     },
     {
@@ -256,7 +256,7 @@ let widgets = [
             "value": "total",
             "listType": "item",
             "action": "action",
-            "key": "0-2-11"
+            "key": "0-5-7"
         }
     }
 ]

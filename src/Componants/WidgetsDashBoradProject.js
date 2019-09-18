@@ -6,7 +6,7 @@ var DashBoardWidgets = [
     canView: false,
     checked: false,
     order: 1,
-    widgets: [ 
+    widgets: [
       {
         title: "monthlyPo",
         key: "0-1-1",
@@ -45,11 +45,11 @@ var DashBoardWidgets = [
       },
       {
         title: "monthlyPaymentRequisitions",
-        key: "0-1-4",
+        key: "0-1-3",
         canView: false,
         checked: false,
         permission: 10050,
-        order: 4,
+        order: 3,
         type: "oneWidget",
         props: {
           api: "GetTotalPaymentForProject?projectId=",
@@ -58,7 +58,7 @@ var DashBoardWidgets = [
           listType: "item",
           action: "action",
           isModal: false,
-          key: "0-1-4"
+          key: "0-1-3"
         }
       }
     ]
