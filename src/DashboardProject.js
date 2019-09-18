@@ -24,7 +24,7 @@ import Plus from "./Styles/images/epsActions/plus.png";
 import Delete from "./Styles/images/epsActions/delete.png";
 import { toast } from "react-toastify";
 import moment from "moment";
-import Config from "./Services/Config"; 
+import Config from "./Services/Config";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -121,7 +121,7 @@ class DashboardProject extends Component {
 
         var e = { label: this.props.projectName, value: projectId };
         this.props.actions.RouteToDashboardProject(e);
-         this.getWidgets();
+        this.getWidgets();
 
         dataService.GetDataGrid("GetProjectOrganizationChart?projectId=" + this.state.projectId).then(result => {
             let state = this.state;
@@ -213,9 +213,9 @@ class DashboardProject extends Component {
         );
     }
 
-    renderCategory() { 
+    renderCategory() {
         let categoryWidget = this.state.widgets.map((category, index) => {
-           
+
             return (
                 <div className="SummeriesContainer" key={index + "DIV"}>
                     <Fragment key={index}>
@@ -240,29 +240,20 @@ class DashboardProject extends Component {
     renderWidget(widget, index) {
 
         if (this.state.tabIndex === 0) {
+ 
+            let drawWidget = Details.widgets.find(x => x.title === widget.title);
 
-            let drawWidget = null;
-
-            drawWidget = Details.widgets.find(x => x.title === widget.title);
             let projectId = this.props.projectId == 0 ? localStorage.getItem("lastSelectedProject") : this.props.projectId;
 
             drawWidget.props.api = drawWidget.props.api + projectId;
 
             if (drawWidget.props.type === "twoWidget") {
                 return (
-                    <WidgetsWithText
-                        key={index + "DIV"}
-                        title={widget.title}
-                        {...drawWidget}
-                    />
+                    <WidgetsWithText key={index + "DIV"} title={widget.title} {...drawWidget} />
                 );
             } else if (drawWidget.props.type === "oneWidget") {
                 return (
-                    <Widgets
-                        key={(index + '_' + drawWidget.props.key) + "DIV"}
-                        title={widget.title}
-                        {...drawWidget}
-                    />
+                    <Widgets key={(index + '_' + drawWidget.props.key) + "DIV"} title={widget.title} {...drawWidget} />
                 );
             }
         }
@@ -1316,6 +1307,7 @@ class DashboardProject extends Component {
                             </span>
                         </Tab>
                     </TabList>
+                    {/* View renderCategoryWidget */}
                     <TabPanel>
                         <div className="mainContainer">
                             {this.state.viewWidget
@@ -1323,11 +1315,13 @@ class DashboardProject extends Component {
                                 : null}
                         </div>
                     </TabPanel>
+                    {/* view renderDiscussions */}
                     <TabPanel>
                         <div className="mainContainer">
                             {this.renderDiscussions()}
                         </div>
                     </TabPanel>
+                    {/* view renderOrganizationChart */}
                     <TabPanel>
                         <div className="mainContainer">
                             {this.renderOrganizationChart()}
@@ -1335,6 +1329,7 @@ class DashboardProject extends Component {
                     </TabPanel>
                 </Tabs>
 
+                {/* Custom DashBoard */}
                 {this.state.viewDashBoard ? (
                     <DashBoard
                         opened={this.state.viewDashBoard}
@@ -1342,6 +1337,7 @@ class DashboardProject extends Component {
                     />
                 ) : null}
 
+                {/* this for Add organizationChart */}
                 <SkyLight ref={ref => (this.simpleDialog = ref)}>
                     <div>
                         <header className="costHeader">

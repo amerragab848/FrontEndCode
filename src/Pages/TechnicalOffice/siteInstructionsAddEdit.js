@@ -507,7 +507,9 @@ class siteInstructionsAddEdit extends Component {
                                                                     <label>{Resources.closed[currentLanguage]}</label>
                                                                 </div>
                                                             </div>
+
                                                         </div>
+
                                                         <div className="proForm datepickerContainer">
 
                                                             <div className="linebylineInput valid-input">

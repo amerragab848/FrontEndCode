@@ -167,6 +167,7 @@ class inspectionRequestAddEdit extends Component {
             reasonForIssues: [],
             areas: [],
             buildings: [],
+            IRCycles: [],
             answer: '',
             rfi: '',
             CurrentStep: 0,
@@ -666,12 +667,12 @@ class inspectionRequestAddEdit extends Component {
 
     saveInspectionRequestCycle(event) {
         let saveDocument = { ...this.state.documentCycle };
-
         saveDocument.projectId = this.state.projectId;
         saveDocument.requestForInspectionId = this.state.docId;
         saveDocument.disciplineId = this.state.document.disciplineId;
         saveDocument.flowCompanyId = this.state.document.bicCompanyId;
         saveDocument.flowContactId = this.state.document.bicContactId;
+        saveDocument.status = saveDocument.status == null ? true : false;
 
         let api = saveDocument.typeAddOrEdit === "editLastCycle" ? 'EditInspectionRequestCycle' : 'AddInspectionRequestCycleOnly';
         if (saveDocument.typeAddOrEdit === "editLastCycle") {
@@ -692,8 +693,21 @@ class inspectionRequestAddEdit extends Component {
                     arrange: 0,
                     id: result.id
                 };
-
+                let newCycle = {
+                    subject: result.subject,
+                    docDate: result.docDate,
+                    arrange: result.arrange,
+                    flowCompanyName: this.state.selectedActionByCompanyId.label,
+                    flowContactName: this.state.selectedActionByContactId.label,
+                    progressPercent: result.progressPercent,
+                    statusName: result.status ? "Opened" : "Closed",
+                    approvalStatusName: this.state.selectedApprovalStatusId.label,
+                    cycleComment: result.cycleComment,
+                }
+                let IRCycles = this.state.IRCycles;
+                IRCycles.push(newCycle);
                 this.setState({
+                    IRCycles,
                     documentCycle: cycle,
                     CycleEditLoading: false,
                     CycleAddLoading: false,
@@ -960,7 +974,6 @@ class inspectionRequestAddEdit extends Component {
                                                                 </div>
 
                                                             </div>
-
                                                             <div className="proForm datepickerContainer">
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
@@ -1239,7 +1252,9 @@ class inspectionRequestAddEdit extends Component {
                                                                 <div>
                                                                     {this.state.docId > 0 && this.state.isViewMode === false ?
                                                                         <Fragment>
-                                                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={849} EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={849}
+                                                                                EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594}
+                                                                                docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                                             {this.viewAttachments()}
                                                                             <div className="document-fields tableBTnabs">
                                                                                 {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
@@ -1271,7 +1286,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                 </div>
 
                                                                             </div> : null}
-
                                                                     </div>
                                                                     <div className="approveDocument">
                                                                         <div className="approveDocumentBTNS">
@@ -1324,16 +1338,17 @@ class inspectionRequestAddEdit extends Component {
                                         <header>
                                             <h2 className="zero">{Resources['cyclesCount'][currentLanguage]}</h2>
                                         </header>
-                                        <ReactTable
-                                            ref={(r) => {
-                                                this.selectTable = r;
-                                            }}
-                                            data={this.state.IRCycles}
-                                            columns={columns}
-                                            defaultPageSize={10}
-                                            minRows={2}
-                                            noDataText={Resources['noData'][currentLanguage]}
-                                        />
+                                        {this.state.CycleEditLoading === false && this.state.CycleAddLoading === false ?
+                                            <ReactTable
+                                                ref={(r) => {
+                                                    this.selectTable = r;
+                                                }}
+                                                data={this.state.IRCycles}
+                                                columns={columns}
+                                                defaultPageSize={10}
+                                                minRows={2}
+                                                noDataText={Resources['noData'][currentLanguage]}
+                                            /> : null}
                                     </div>
                                     {this.props.changeStatus == true ?
                                         <div className="doc-pre-cycle">
