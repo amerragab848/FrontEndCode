@@ -98,8 +98,6 @@ class PermissionsGroupsPermissions extends Component {
     }
 
     changeSelect = (event) => {
-        console.log(this.state[event.value])
-        console.log(event)
         this.setState({ selectedDocument: event })
         let documentPermission = [];
         this.state[event.value].forEach(item => {

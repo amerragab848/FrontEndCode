@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -26,7 +25,6 @@ import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
 
-import SkyLight from 'react-skylight';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
@@ -180,7 +178,8 @@ class materialInspectionRequestAddEdit extends Component {
             CurrentStep: 0,
             CycleEditLoading: false,
             CycleAddLoading: false,
-            DocLoading: false
+            DocLoading: false,
+            contractText: ""
         }
 
         if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
@@ -199,10 +198,6 @@ class materialInspectionRequestAddEdit extends Component {
             },
             {
                 name: "newCycle",
-                callBackFn: null
-            },
-            {
-                name: "addDocAttachment",
                 callBackFn: null
             }
         ];
@@ -505,13 +500,17 @@ class materialInspectionRequestAddEdit extends Component {
             });
         });
 
-        if (isEdit === false) {
-            dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-                this.setState({
-                    contractsPos: [...result]
-                });
-            });
-        }
+
+        dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+            if (isEdit == false)
+                this.setState({ contractsPos: [...result] });
+            else {
+                let contract = result.find(item => item.value == this.props.document.contractId);
+                if (contract)
+                    this.setState({ contractText: contract.label });
+            }
+        });
+
 
     }
 
@@ -624,8 +623,13 @@ class materialInspectionRequestAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-
+        if (this.state.selectedContract.value !== "0") {
+            let contract = this.state.selectedContract.value.split('-');
+            saveDocument.orderId = contract[0];
+            saveDocument.orderType = contract[1] == "1" ? 'Contract' : 'purchaseOrder';
+        }
         saveDocument.projectId = this.state.projectId;
+
 
         dataservice.addObject('AddMaterialRequestOnly', saveDocument).then(result => {
             if (result.id) {
@@ -1151,16 +1155,25 @@ class materialInspectionRequestAddEdit extends Component {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-                                                                <div className="linebylineInput valid-input">
-                                                                    <Dropdown
-                                                                        title="contractPo"
-                                                                        data={this.state.contractsPos}
-                                                                        selectedValue={this.state.selectedContract}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
-                                                                        index="contractId" />
-                                                                </div>
-
+                                                                {this.props.changeStatus == false ?
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <Dropdown
+                                                                            title="contractPo"
+                                                                            data={this.state.contractsPos}
+                                                                            selectedValue={this.state.selectedContract}
+                                                                            handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
+                                                                            index="contractId" />
+                                                                    </div>
+                                                                    :
+                                                                    <div className="linebylineInput fullInputWidth">
+                                                                        <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
+                                                                        <div className="ui input inputDev"  >
+                                                                            <input type="text" className="form-control" readOnly
+                                                                                value={this.state.contractText}
+                                                                                name="contractPoText"
+                                                                                placeholder={Resources.contractPo[currentLanguage]} />
+                                                                        </div>
+                                                                    </div>}
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
                                                                         title="discipline"
@@ -1238,7 +1251,54 @@ class materialInspectionRequestAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <div className="doc-pre-cycle letterFullWidth">
+                                                                <div>
+                                                                    {this.state.docId > 0 ? this.props.changeStatus === false ?
+                                                                        (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
+                                                                        (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
+                                                                    }
+                                                                    {this.viewAttachments()}
+                                                                    <Fragment>
+                                                                        <div className="document-fields tableBTnabs">
+                                                                            {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                        </div>
+                                                                    </Fragment>
+                                                                    {this.props.changeStatus === true ?
+                                                                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                                        : null
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            {this.props.changeStatus === true ?
+                                                                <div className="approveDocument">
+                                                                    <div className="approveDocumentBTNS">
 
+                                                                        {this.state.isLoading ?
+                                                                            <button className="primaryBtn-1 btn disabled">
+                                                                                <div className="spinner">
+                                                                                    <div className="bounce1" />
+                                                                                    <div className="bounce2" />
+                                                                                    <div className="bounce3" />
+                                                                                </div>
+                                                                            </button> :
+                                                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
+                                                                        }
+                                                                        <DocumentActions
+                                                                            isApproveMode={this.state.isApproveMode}
+                                                                            docTypeId={this.state.docTypeId}
+                                                                            docId={this.state.docId}
+                                                                            projectId={this.state.projectId}
+                                                                            previousRoute={this.state.previousRoute}
+                                                                            docApprovalId={this.state.docApprovalId}
+                                                                            currentArrange={this.state.arrange}
+                                                                            showModal={this.props.showModal}
+                                                                            showOptionPanel={this.showOptionPanel}
+                                                                            permission={this.state.permission}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                : null
+                                                            }
                                                             <div className="slider-Btns">
                                                                 {this.state.isLoading ?
                                                                     <button className="primaryBtn-1 btn disabled">
@@ -1254,74 +1314,40 @@ class materialInspectionRequestAddEdit extends Component {
                                                     )}
                                                 </Formik>
                                             </div>
-                                            <div className="doc-pre-cycle letterFullWidth">
-                                                <div>
-
-                                                    {this.state.docId > 0 ? this.props.changeStatus === false ?
-                                                        (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
-                                                        (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
-                                                    }
-                                                    {this.viewAttachments()}
-
-                                                    {this.props.changeStatus === true ?
-                                                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                        : null
-                                                    }
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </Fragment>
                                 :
-                                <Fragment>
-                                    {this.state.CurrentStep == 1 ?
-                                        <div className="subiTabsContent feilds__top">
+                                <div className="subiTabsContent feilds__top">
 
-                                            {this.AddNewCycle()}
+                                    {this.AddNewCycle()}
 
-                                            <div className="doc-pre-cycle">
-                                                <header>
-                                                    <h2 className="zero">{Resources['cyclesCount'][currentLanguage]}</h2>
-                                                </header>
-                                                <ReactTable
-                                                    ref={(r) => {
-                                                        this.selectTable = r;
-                                                    }}
-                                                    data={this.state.IRCycles}
-                                                    columns={columns}
-                                                    pivotBy={['statusName']}
+                                    <div className="doc-pre-cycle">
+                                        <header>
+                                            <h2 className="zero">{Resources['cyclesCount'][currentLanguage]}</h2>
+                                        </header>
+                                        <ReactTable
+                                            ref={(r) => {
+                                                this.selectTable = r;
+                                            }}
+                                            data={this.state.IRCycles}
+                                            columns={columns}
+                                            pivotBy={['statusName']}
 
-                                                    defaultPageSize={10}
-                                                    minRows={2}
-                                                    noDataText={Resources['noData'][currentLanguage]}
-                                                />
-                                            </div>
+                                            defaultPageSize={10}
+                                            minRows={2}
+                                            noDataText={Resources['noData'][currentLanguage]}
+                                        />
+                                    </div>
 
-                                            <div className="doc-pre-cycle">
-                                                <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
-                                                </div>
-
-                                            </div>
+                                    <div className="doc-pre-cycle">
+                                        <div className="slider-Btns">
+                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
                                         </div>
-                                        :
-                                        <Fragment>
 
-
-                                            <div className="document-fields tableBTnabs">
-
-                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                            </div>
-
-                                            <div className="doc-pre-cycle">
-                                                <div className="slider-Btns">
-                                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>{Resources['next'][currentLanguage]}</button>
-                                                </div>
-
-                                            </div>
-                                        </Fragment>
-                                    }
-                                </Fragment>}
+                                    </div>
+                                </div>
+                            }
 
                         </div>
                         <Steps
@@ -1333,37 +1359,6 @@ class materialInspectionRequestAddEdit extends Component {
                             }
                             stepNo={this.state.CurrentStep}
                         />
-                        {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument">
-                                    <div className="approveDocumentBTNS">
-
-                                        {this.state.isLoading ?
-                                            <button className="primaryBtn-1 btn disabled">
-                                                <div className="spinner">
-                                                    <div className="bounce1" />
-                                                    <div className="bounce2" />
-                                                    <div className="bounce3" />
-                                                </div>
-                                            </button> :
-                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
-                                        }
-                                        <DocumentActions
-                                            isApproveMode={this.state.isApproveMode}
-                                            docTypeId={this.state.docTypeId}
-                                            docId={this.state.docId}
-                                            projectId={this.state.projectId}
-                                            previousRoute={this.state.previousRoute}
-                                            docApprovalId={this.state.docApprovalId}
-                                            currentArrange={this.state.arrange}
-                                            showModal={this.props.showModal}
-                                            showOptionPanel={this.showOptionPanel}
-                                            permission={this.state.permission}
-                                        />
-                                    </div>
-                                </div>
-                                : null
-                        }
                     </div>
                 </div>
             </div>

@@ -18,9 +18,9 @@ const dateFormate = ({ value }) => {
 };
 
 class DashBoardProjectCounterLog extends Component {
-  
+
   constructor(props) {
-  
+
     super(props);
 
     const query = new URLSearchParams(this.props.location.search);
@@ -37,19 +37,21 @@ class DashBoardProjectCounterLog extends Component {
     for (let param of query.entries()) {
       key = param[1];
     }
-
+alert(key);
     if (key) {
       documentInfo = DashBoardDefenition.find(i => i.key === key);
-      documentInfo.columns.map(item => {
-        if (item.formatter) {
-          item.formatter = dateFormate;
-        }
-      });
+      if (documentInfo) {
+        documentInfo.columns.map(item => {
+          if (item.formatter) {
+            item.formatter = dateFormate;
+          }
+        });
 
+      }
       let projectId = this.props.projectId == 0 ? localStorage.getItem('lastSelectedProject') : this.props.projectId;
 
       this.state = {
-        columns: documentInfo.columns,
+        columns: documentInfo.columns ? documentInfo.columns : [],
         rows: [],
         isLoading: true,
         filtersColumns: documentInfo.filters,
@@ -57,7 +59,6 @@ class DashBoardProjectCounterLog extends Component {
         apiDetails: documentInfo.apiDetails + projectId,
         pageTitle: documentInfo.title
       };
-
     }
   }
 
@@ -108,7 +109,8 @@ class DashBoardProjectCounterLog extends Component {
       this.state.isLoading === false ? (
         <GridSetup rows={this.state.rows}
           columns={this.state.columns}
-          showCheckbox={false} />)
+          showCheckbox={false} />
+      )
         : (<LoadingSection />);
 
     const btnExport = this.state.isLoading === false ? (<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={Resources[this.state.pageTitle][currentLanguage]} />
