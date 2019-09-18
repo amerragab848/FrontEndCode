@@ -7,6 +7,9 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import CryptoJS from "crypto-js";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as communicationActions from '../../store/actions/communication';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let selectedRows = [];
 
@@ -27,6 +30,9 @@ class postitNotificationsDetail extends Component {
       });
     });
   };
+  componentDidMount() {
+    this.props.actions.RouteToTemplate();
+  }
 
   toggleRow(obj) {
 
@@ -84,7 +90,7 @@ class postitNotificationsDetail extends Component {
     }
   };
 
-  routeToView(docView, projectId, projectName, arrange) {
+  routeToView(docView, projectId, projectName, arrange, docId) {
     dataservice.GetDataGrid("GetAccountsProjectsByIdForList").then(result => {
       result.forEach(item => {
         if (item.projectId === projectId) {
@@ -92,7 +98,7 @@ class postitNotificationsDetail extends Component {
             this.props.history.push(docView);
           } else {
             let obj = {
-              docId: item.docId,
+              docId,
               projectId: projectId,
               projectName: projectName,
               arrange: arrange,
@@ -117,7 +123,7 @@ class postitNotificationsDetail extends Component {
     dataservice.addObject(`UpdateStatusPostit?id=${obj.id}`, null).then(result => {
       if (obj.description) {
         let id = obj.description.split("/")[1];
-
+        console.log(obj.description)
         switch (obj.description.split("/")[0]) {
           case "workspace":
             this.props.history.push(obj.description);
@@ -125,19 +131,19 @@ class postitNotificationsDetail extends Component {
 
           case "expensesUserAddEdit":
             dataservice.GetDataGrid("GetExpensesUserForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
             });
             break;
 
           case "transmittalAddEdit":
             dataservice.GetDataGrid("GetCommunicationTransmittalForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
             });
             break;
 
           case "lettersAddEdit":
             dataservice.GetDataGrid("GetLettersById?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
             });
             break;
 
@@ -149,7 +155,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -164,7 +170,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -177,7 +183,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -190,7 +196,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -203,7 +209,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -216,7 +222,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -229,7 +235,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -242,7 +248,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -253,7 +259,7 @@ class postitNotificationsDetail extends Component {
                 obj.description,
                 data["projectId"],
                 data["projectName"],
-                data["arrange"] != null ? data["arrange"] : undefined
+                data["arrange"] != null ? data["arrange"] : undefined, id
               );
             });
             break;
@@ -266,7 +272,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -279,7 +285,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -292,7 +298,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -305,7 +311,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -318,7 +324,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -331,7 +337,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -344,7 +350,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -357,7 +363,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -370,7 +376,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -383,7 +389,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -396,7 +402,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -409,7 +415,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -422,7 +428,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -435,7 +441,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -448,7 +454,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -461,7 +467,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -474,7 +480,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -487,7 +493,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -500,7 +506,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -513,7 +519,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -526,7 +532,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -539,7 +545,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -552,7 +558,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -565,7 +571,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -578,7 +584,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -591,7 +597,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -604,7 +610,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -617,7 +623,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -630,7 +636,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -643,7 +649,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -656,7 +662,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -669,7 +675,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -682,7 +688,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -695,7 +701,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -708,7 +714,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -721,7 +727,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -734,7 +740,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -747,7 +753,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -760,7 +766,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -773,7 +779,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -786,7 +792,7 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
@@ -799,38 +805,38 @@ class postitNotificationsDetail extends Component {
                   obj.description,
                   data["projectId"],
                   data["projectName"],
-                  data["arrange"] != null ? data["arrange"] : undefined
+                  data["arrange"] != null ? data["arrange"] : undefined, id
                 );
               });
             break;
 
           case "projectTaskGroupAddEdit":
             dataservice.GetDataGrid("GetProjectTaskGroupForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
             });
             break;
 
           case "projectScheduleAddEdit":
             dataservice.GetDataGrid("GetProjectScheduleForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
             });
             break;
 
           case "projectDistributionListAddEdit":
             dataservice.GetDataGrid("GetProjectDistributionListForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
             });
             break;
 
           case "projectPrimaveraScheduleAddEdit":
             dataservice.GetDataGrid("GetPrimaveraScheduleForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
             });
             break;
 
           case "projectCheckListAddEdit":
             dataservice.GetDataGrid("GetProjectCheckListForEdit?id=" + id).then(data => {
-              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined);
+              this.routeToView(obj.description, data["projectId"], data["projectName"], data["arrange"] != null ? data["arrange"] : undefined, id);
             });
             break;
         }
@@ -860,7 +866,7 @@ class postitNotificationsDetail extends Component {
         id: "readUnread",
         accessor: "readUnread",
         Cell: ({ row }) => {
-          if (row._original.readUnread === "Un-Read") {
+          if (row._original.viewStatus === false) {
             return (
               <div onClick={() => this.updateStatus(row._original)} style={{ cursor: "pointer", padding: "4px 8px", margin: "4px auto", borderRadius: "100px", backgroundColor: "#E74C3C", width: "auto", color: "#FFF", minWidth: ' 61px', height: '24px', fontFamily: 'Muli', fontSize: '11px', fontWeight: 'bold', fontStyle: 'normal', fontStretch: 'normal', lineHeight: '1.45', letterSpacing: '-0.2px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {Resources["unRead"][currentLanguage]}
@@ -946,5 +952,16 @@ class postitNotificationsDetail extends Component {
     );
   }
 }
+function mapStateToProps(state, ownProps) {
+  return {
+    showLeftMenu: state.communication.showLeftMenu
+  }
+}
 
-export default postitNotificationsDetail;
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(postitNotificationsDetail);
