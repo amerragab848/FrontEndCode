@@ -8214,17 +8214,21 @@
     "filtersApplied": {
         "en": "Filters Applied",
         "ar": "عناصر للبحث "
-    } ,
+    },
     "resetAll": {
         "en": "Reset All",
         "ar": "الوضع الأفتراضى "
-    }  ,
+    },
     "filterResults": {
         "en": "Filter results",
         "ar": "نتائج البحث "
-    }  ,
+    },
     "gridColumns": {
         "en": "Grid Columns",
         "ar": "أعمدة الجدول "
-    } 
+    },
+    "noDate": {
+        "en": "No Date",
+        "ar": "لايوجد تاريخ "
+    }
 }

@@ -19,7 +19,7 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 let documentObj = {};
 
 const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
+  return value ? moment(value).format("DD/MM/YYYY") : Resources.noDate[currentLanguage];
 };
 
 class CommonLog extends Component {
@@ -110,11 +110,11 @@ class CommonLog extends Component {
       }
     }
   }
- 
+
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = this.state.isCustom !== nextProps.isCustom;
     return shouldUpdate;
-  } 
+  }
 
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
@@ -621,7 +621,7 @@ class CommonLog extends Component {
       </Fragment>
     );
   }
-  
+
 }
 
 function mapStateToProps(state, ownProps) {
