@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { withRouter } from "react-router-dom";
-import LoadingSection from "../../publicComponants/LoadingSection";
-import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../Pages/Communication/GridSetup";
+import { withRouter } from "react-router-dom"; 
+import ConfirmationModal from "../../publicComponants/ConfirmationModal"; 
 import Export from "../../OptionsPanels/Export";
 import { SkyLightStateless } from 'react-skylight';
 import Select from '../../OptionsPanels/DropdownMelcous';

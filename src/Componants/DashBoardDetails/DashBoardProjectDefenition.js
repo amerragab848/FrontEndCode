@@ -2,7 +2,7 @@ import Resources from "../../resources.json";
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-let widgets = [
+let widgets = [ 
   {
     title: "monthlyPo",
     key: "0-1-1",

@@ -9,7 +9,7 @@ import Moment from 'moment';
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/avatar/xavatarBig.svg"
 import CommentImg from "../../Styles/images/flowComment.png"
-
+import DistributionList from "../OptionsPanels/viewDistributionList";
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -106,7 +106,7 @@ class ViewWorkFlow extends Component {
                                         <div className="Status__comment">
                                             {level.statusVal != null ?
                                                 <span>
-                                                    {level.comment === null  || level.comment !== ""? null :
+                                                    {level.comment === null || level.comment !== "" ? null :
                                                         <img src={CommentImg} alt="Cooment" onClick={e => this.showPopup(level.comment)} />
                                                     }
                                                 </span> : null}
@@ -149,7 +149,7 @@ class ViewWorkFlow extends Component {
 
     render() {
         return (
-            <Fragment >
+            <Fragment>
                 <div className={this.state.showPopup === true ? "popupMedium active" : "popupMedium"}>
                     <button onClick={(e) => this.closePopup()} className="workflowComment__closeBtn">x</button>
                     <div className={this.state.showPopup === true ? "ui modal smallModal active workflowComment" : "ui modal smallModal workflowComment"} id="smallModal2">
@@ -160,6 +160,9 @@ class ViewWorkFlow extends Component {
                 </div>
 
                 {this.state.visualCycle}
+                <Fragment>
+                    <DistributionList id={this.props.docId} docType={this.props.docType} />
+                </Fragment>
             </Fragment>
         )
     }
