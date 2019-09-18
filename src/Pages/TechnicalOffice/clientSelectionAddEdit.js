@@ -738,21 +738,22 @@ class clientSelectionAddEdit extends Component {
 
 
                                                         <div className="linebylineInput valid-input fullInputWidth">
-                                                            <React.Fragment>
-                                                                <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
-                                                                <div className="ui input inputDev "  >
-                                                                    <input type="text" className="form-control" id="contractPo" readOnly
-                                                                        value={this.state.document.contractName}
-                                                                        name="contractPo"
-                                                                        placeholder={Resources.contractPo[currentLanguage]} />
-                                                                </div>
-                                                            </React.Fragment> :
+                                                            {this.props.changeStatus ?
+                                                                < React.Fragment >
+                                                                    <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
+                                                                    <div className="ui input inputDev "  >
+                                                                        <input type="text" className="form-control" id="contractPo" readOnly
+                                                                            value={this.state.document.contractName}
+                                                                            name="contractPo"
+                                                                            placeholder={Resources.contractPo[currentLanguage]} />
+                                                                    </div>
+                                                                </React.Fragment> :
                                                                 <Dropdown
-                                                                title="contractPo"
-                                                                data={this.state.contractsPos}
-                                                                selectedValue={this.state.selectedContract}
-                                                                handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
-                                                                index="contractId" />}
+                                                                    title="contractPo"
+                                                                    data={this.state.contractsPos}
+                                                                    selectedValue={this.state.selectedContract}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
+                                                                    index="contractId" />}
                                                         </div>
 
                                                         <div className="linebylineInput valid-input">
