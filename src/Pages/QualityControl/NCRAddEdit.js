@@ -11,7 +11,7 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import Api from '../../api';
 import { withRouter } from "react-router-dom";
-
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 
 import { connect } from 'react-redux';
@@ -380,7 +380,7 @@ class NCRAddEdit extends Component {
         }
     };
 
-    handleChange(e, field) { 
+    handleChange(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -446,7 +446,7 @@ class NCRAddEdit extends Component {
         return btn;
     }
 
-    handleChangeDate(e, field) { 
+    handleChangeDate(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -579,7 +579,7 @@ class NCRAddEdit extends Component {
 
                     validationSchema={validationSchemaForAddCycle}
 
-                    onSubmit={(values, actions) => { 
+                    onSubmit={(values, actions) => {
                         this.SaveNewCycle(values, actions)
                     }}>
 
@@ -995,6 +995,11 @@ class NCRAddEdit extends Component {
                                                     <div>
                                                         {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={927} EditAttachments={3263} ShowDropBox={3585} ShowGoogleDrive={3586} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                         {this.viewAttachments()}
+                                                        <Fragment>
+                                                            <div className="document-fields tableBTnabs">
+                                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                            </div>
+                                                        </Fragment>
                                                         {this.props.changeStatus === true ?
                                                             <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                             : null}

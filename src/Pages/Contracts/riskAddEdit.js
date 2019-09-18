@@ -35,8 +35,8 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
-    riskType: Yup.string().required(Resources['riskType'][currentLanguage]).nullable(true),  
-    ownerCompanyId: Yup.string().required(Resources['companyRiskOwnerRequired'][currentLanguage]).nullable(true),  
+    riskType: Yup.string().required(Resources['riskType'][currentLanguage]).nullable(true),
+    ownerCompanyId: Yup.string().required(Resources['companyRiskOwnerRequired'][currentLanguage]).nullable(true),
     correlationPercentage: Yup.number(Resources['onlyNumbers'][currentLanguage]).min(0),
 });
 
@@ -48,7 +48,7 @@ const documentCycleValidationSchema = Yup.object().shape({
 
 const documentProposedValidationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    mitigationType: Yup.string().required(Resources['mitigationType'][currentLanguage]).nullable(true),  
+    mitigationType: Yup.string().required(Resources['mitigationType'][currentLanguage]).nullable(true),
     medigationCost: Yup.number().required(Resources['medigationCost'][currentLanguage])
 });
 
@@ -212,10 +212,6 @@ class riskAddEdit extends Component {
             {
                 name: "riskMitigationProgress",
                 callBackFn: null
-            },
-            {
-                name: "addDocAttachment",
-                callBackFn: null
             }
         ];
     }
@@ -368,9 +364,9 @@ class riskAddEdit extends Component {
     GetNextArrange() {
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
         let original_document = { ...this.state.document };
-         
+
         dataservice.GetNextArrangeMainDocument(url).then(res => {
-            original_document.arrange = res; 
+            original_document.arrange = res;
             this.setState({
                 document: original_document
             });
@@ -1613,7 +1609,7 @@ class riskAddEdit extends Component {
             });
     }
 
-    render() { 
+    render() {
         let riskIdentification =
             < div className="document-fields" >
                 <Formik initialValues={{
@@ -1923,7 +1919,7 @@ class riskAddEdit extends Component {
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                                 <div className={"ui input inputDev " + (errors.refDoc && touched.refDoc ? (" has-error") : " ")}>
-                                                                    <input type="text" className="form-control" id="refDoc"  
+                                                                    <input type="text" className="form-control" id="refDoc"
                                                                         value={this.state.document.refDoc || ''}
                                                                         name="refDoc"
                                                                         placeholder={Resources.refDoc[currentLanguage]}
@@ -2013,14 +2009,14 @@ class riskAddEdit extends Component {
                                                                     handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                             </div>
                                                             {this.state.docId > 0 ?
-                                                            <div className="linebylineInput valid-input alternativeDate">
-                                                                <DatePicker title='lastEditDate'
-                                                                    startDate={this.state.document.lastEditDate} />
-                                                            </div>
-                                                               :
-                                                               null
-                                                           }
- 
+                                                                <div className="linebylineInput valid-input alternativeDate">
+                                                                    <DatePicker title='lastEditDate'
+                                                                        startDate={this.state.document.lastEditDate} />
+                                                                </div>
+                                                                :
+                                                                null
+                                                            }
+
                                                         </div>
 
                                                         <div className="slider-Btns">
@@ -2048,6 +2044,9 @@ class riskAddEdit extends Component {
                                             <div>
                                                 {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={10012} EditAttachments={10013} ShowDropBox={10016} ShowGoogleDrive={10017} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                 {this.viewAttachments()}
+                                                <div className="document-fields tableBTnabs">
+                                                    {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                </div>
                                                 {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                             </div>
                                         </div>
@@ -2057,12 +2056,10 @@ class riskAddEdit extends Component {
                                 <Fragment>
                                     {this.state.CurrentStep == 1 ?
                                         riskIdentification
-
                                         :
                                         this.state.CurrentStep == 2 ?
                                             <div className="subiTabsContent feilds__top">
                                                 {this.CurrentMit()}
-
                                                 <div className="doc-pre-cycle">
                                                     <div className="slider-Btns">
                                                         <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>{Resources['next'][currentLanguage]}</button>
@@ -2212,20 +2209,7 @@ class riskAddEdit extends Component {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                :
-                                                                this.state.CurrentStep === 8 ?
-                                                                    riskMitigationProgress() :
-                                                                    <Fragment>
-                                                                        <div className="document-fields tableBTnabs">
-                                                                            {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                                                        </div>
-                                                                        <div className="doc-pre-cycle">
-                                                                            <div className="slider-Btns">
-                                                                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(10)}>{Resources['next'][currentLanguage]}</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </Fragment>
-                                    }
+                                                                : riskMitigationProgress()}
                                 </Fragment>}
                             {this.state.showPopUp === true ?
                                 <SkyLight ref={ref => (this.simpleDialog = ref)}  >
