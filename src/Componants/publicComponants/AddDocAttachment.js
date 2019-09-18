@@ -319,7 +319,7 @@ class AddDocAttachment extends Component {
               <Fragment>
                 {selectedRows.length > 0 ?
                   <div className="fullWidthWrapper">
-                    <button className="primaryBtn-1 btn meduimBtn" onClick={this.saveDocument.bind(this)}>
+                    <button className="primaryBtn-1 btn meduimBtn" type="button" onClick={this.saveDocument.bind(this)}>
                       {Resources["save"][currentLanguage]}
                     </button>
                   </div>

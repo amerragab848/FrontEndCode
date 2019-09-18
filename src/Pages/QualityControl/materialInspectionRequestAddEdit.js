@@ -39,8 +39,6 @@ const validationSchema = Yup.object().shape({
 
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
 
-    refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
-
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
         .nullable(true),
 
@@ -155,6 +153,7 @@ class materialInspectionRequestAddEdit extends Component {
             approvalstatusList: [],
             discplines: [],
             letters: [],
+            IRCycles: [],
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
             { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
@@ -610,7 +609,7 @@ class materialInspectionRequestAddEdit extends Component {
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            //this.NextStep();
+            this.changeCurrentStep(1);
         });
     }
 
@@ -634,7 +633,7 @@ class materialInspectionRequestAddEdit extends Component {
         dataservice.addObject('AddMaterialRequestOnly', saveDocument).then(result => {
             if (result.id) {
                 let cycle = {
-                    requestForInspectionId: result.id,
+                    materialRequestForInspectionId: result.id,
                     subject: this.state.document.subject,
                     docDate: this.state.document.docDate,
                     progressPercent: 0,
@@ -688,13 +687,12 @@ class materialInspectionRequestAddEdit extends Component {
 
 
         let saveDocument = { ...this.state.documentCycle };
-
         saveDocument.projectId = this.state.projectId;
-        saveDocument.requestForInspectionId = this.state.docId;
+        saveDocument.materialRequestForInspectionId = this.state.docId;
         saveDocument.disciplineId = this.state.document.disciplineId;
         saveDocument.flowCompanyId = this.state.document.bicCompanyId;
         saveDocument.flowContactId = this.state.document.bicContactId;
-
+        saveDocument.status = saveDocument.status == null ? true : false;
         let api = saveDocument.typeAddOrEdit === "editLastCycle" ? 'EditMaterialRequestCycle' : 'AddMaterialRequestCycleOnly';
         if (saveDocument.typeAddOrEdit === "editLastCycle") {
             this.setState({ CycleEditLoading: true })
@@ -704,24 +702,40 @@ class materialInspectionRequestAddEdit extends Component {
 
         dataservice.addObject(api, saveDocument).then(result => {
             if (result) {
+
                 let cycle = {
                     subject: result.subject,
                     docDate: result.docDate,
                     progressPercent: result.progressPercent,
                     status: result.cycleStatus,
-                    requestForInspectionId: this.state.docId,
+                    materialRequestForInspectionId: this.state.docId,
                     approvalStatusId: result.approvalStatusId,
                     cycleComment: result.cycleComment,
                     arrange: 0,
                     id: result.id
                 };
-
+                let newCycle = {
+                    subject: result.subject,
+                    docDate: result.docDate,
+                    arrange: result.arrange,
+                    flowCompanyName: this.state.selectedActionByCompanyId.label,
+                    flowContactName: this.state.selectedActionByContactId.label,
+                    progressPercent: result.progressPercent,
+                    statusName: result.status ? "Opened" : "Closed",
+                    approvalStatusName: this.state.selectedApprovalStatusId.label,
+                    cycleComment: result.cycleComment,
+                }
+                let IRCycles = this.state.IRCycles;
+                IRCycles.push(newCycle);
                 this.setState({
+                    IRCycles,
                     documentCycle: cycle,
                     CycleEditLoading: false,
                     CycleAddLoading: false,
                 });
                 toast.success(Resources["operationSuccess"][currentLanguage]);
+                if (this.props.changeStatus == false)
+                    this.props.history.push(this.state.perviousRoute);
             }
         }).catch(res => {
             this.setState({
@@ -800,9 +814,7 @@ class materialInspectionRequestAddEdit extends Component {
                             </header>
 
                             <div className='document-fields'>
-
                                 <div className="proForm first-proform">
-
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -876,26 +888,30 @@ class materialInspectionRequestAddEdit extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="slider-Btns">
-                                    {this.state.CycleEditLoading ?
-                                        <button className="primaryBtn-1 btn disabled">
-                                            <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
-                                            </div>
-                                        </button>
-                                        : <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' onClick={this.editCycle}>{Resources['editCycle'][currentLanguage]}</button>}
-                                    {this.state.CycleAddLoading ?
-                                        <button className="primaryBtn-1 btn disabled">
-                                            <div className="spinner">
-                                                <div className="bounce1" />
-                                                <div className="bounce2" />
-                                                <div className="bounce3" />
-                                            </div>
-                                        </button>
-                                        : <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' onClick={this.newCycle}>{Resources['newCycle'][currentLanguage]}</button>}
-                                </div>
+                                {this.props.changeStatus == false ?
+                                    <button className="primaryBtn-1 btn meduimBtn" type='submit' onClick={this.newCycle}>{Resources['saveAndExit'][currentLanguage]}</button>
+                                    :
+                                    <div className="slider-Btns">
+                                        {this.state.CycleEditLoading ?
+                                            <button className="primaryBtn-1 btn disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                            : <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' onClick={this.editCycle}>{Resources['editCycle'][currentLanguage]}</button>}
+                                        {this.state.CycleAddLoading ?
+                                            <button className="primaryBtn-1 btn disabled">
+                                                <div className="spinner">
+                                                    <div className="bounce1" />
+                                                    <div className="bounce2" />
+                                                    <div className="bounce3" />
+                                                </div>
+                                            </button>
+                                            : <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type='submit' onClick={this.newCycle}>{Resources['newCycle'][currentLanguage]}</button>}
+                                    </div>
+                                }
                             </div>
                         </Form>
                     )}
@@ -931,17 +947,16 @@ class materialInspectionRequestAddEdit extends Component {
                                                     validationSchema={validationSchema}
                                                     enableReinitialize={this.props.changeStatus}
                                                     onSubmit={(values) => {
+
                                                         if (this.props.showModal) { return; }
 
-                                                        if (this.props.changeStatus === false && this.state.docId === 0) {
+                                                        else if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveInspectionRequest();
-                                                        } else {
-                                                            if (this.props.changeStatus == true) {
-                                                                this.editInspectionRequest();
-                                                            }
+                                                        } else if (this.props.changeStatus == true) {
+                                                            this.editInspectionRequest();
+                                                        } else if (this.props.changeStatus === false && this.state.docId > 0)
                                                             this.changeCurrentStep(1);
 
-                                                        }
                                                     }}  >
 
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -979,7 +994,6 @@ class materialInspectionRequestAddEdit extends Component {
                                                                 </div>
 
                                                             </div>
-
                                                             <div className="proForm datepickerContainer">
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
@@ -1011,17 +1025,12 @@ class materialInspectionRequestAddEdit extends Component {
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
-                                                                    <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
+                                                                    <div className="ui input inputDev"  >
                                                                         <input type="text" className="form-control" id="refDoc"
                                                                             value={this.state.document.refDoc}
                                                                             name="refDoc"
                                                                             placeholder={Resources.refDoc[currentLanguage]}
-                                                                            onBlur={(e) => {
-                                                                                handleChange(e)
-                                                                                handleBlur(e)
-                                                                            }}
                                                                             onChange={(e) => this.handleChange(e, 'refDoc')} />
-                                                                        {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
 
                                                                     </div>
                                                                 </div>
@@ -1270,46 +1279,56 @@ class materialInspectionRequestAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                             {this.props.changeStatus === true ?
-                                                                <div className="approveDocument">
-                                                                    <div className="approveDocumentBTNS">
-
-                                                                        {this.state.isLoading ?
-                                                                            <button className="primaryBtn-1 btn disabled">
-                                                                                <div className="spinner">
-                                                                                    <div className="bounce1" />
-                                                                                    <div className="bounce2" />
-                                                                                    <div className="bounce3" />
+                                                                <Fragment>
+                                                                    <div className="slider-Btns">
+                                                                        {this.state.isViewMode === false ?
+                                                                            <div className="doc-pre-cycle">
+                                                                                <div className="slider-Btns">
+                                                                                    {this.state.DocLoading ?
+                                                                                        <button className="primaryBtn-1 btn disabled">
+                                                                                            <div className="spinner">
+                                                                                                <div className="bounce1" />
+                                                                                                <div className="bounce2" />
+                                                                                                <div className="bounce3" />
+                                                                                            </div>
+                                                                                        </button> :
+                                                                                        <button className="primaryBtn-1 btn meduimBtn" >{Resources['next'][currentLanguage]}</button>
+                                                                                    }
                                                                                 </div>
-                                                                            </button> :
-                                                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
-                                                                        }
-                                                                        <DocumentActions
-                                                                            isApproveMode={this.state.isApproveMode}
-                                                                            docTypeId={this.state.docTypeId}
-                                                                            docId={this.state.docId}
-                                                                            projectId={this.state.projectId}
-                                                                            previousRoute={this.state.previousRoute}
-                                                                            docApprovalId={this.state.docApprovalId}
-                                                                            currentArrange={this.state.arrange}
-                                                                            showModal={this.props.showModal}
-                                                                            showOptionPanel={this.showOptionPanel}
-                                                                            permission={this.state.permission}
-                                                                        />
+
+                                                                            </div> : null}
                                                                     </div>
-                                                                </div>
-                                                                : null
-                                                            }
-                                                            <div className="slider-Btns">
-                                                                {this.state.isLoading ?
-                                                                    <button className="primaryBtn-1 btn disabled">
-                                                                        <div className="spinner">
-                                                                            <div className="bounce1" />
-                                                                            <div className="bounce2" />
-                                                                            <div className="bounce3" />
+                                                                    <div className="approveDocument">
+                                                                        <div className="approveDocumentBTNS">
+                                                                            <DocumentActions
+                                                                                isApproveMode={this.state.isApproveMode}
+                                                                                docTypeId={this.state.docTypeId}
+                                                                                docId={this.state.docId}
+                                                                                projectId={this.state.projectId}
+                                                                                previousRoute={this.state.previousRoute}
+                                                                                docApprovalId={this.state.docApprovalId}
+                                                                                currentArrange={this.state.arrange}
+                                                                                showModal={this.props.showModal}
+                                                                                showOptionPanel={this.showOptionPanel}
+                                                                                permission={this.state.permission}
+                                                                            />
                                                                         </div>
-                                                                    </button>
-                                                                    : this.showBtnsSaving()}
-                                                            </div>
+                                                                    </div>
+                                                                </Fragment>
+                                                                :
+                                                                <div className="slider-Btns">
+                                                                    {this.state.DocLoading ?
+                                                                        <button className="primaryBtn-1 btn disabled">
+                                                                            <div className="spinner">
+                                                                                <div className="bounce1" />
+                                                                                <div className="bounce2" />
+                                                                                <div className="bounce3" />
+                                                                            </div>
+                                                                        </button> :
+                                                                        this.showBtnsSaving()}
+                                                                </div>
+                                                            }
+
                                                         </Form>
                                                     )}
                                                 </Formik>
@@ -1326,26 +1345,25 @@ class materialInspectionRequestAddEdit extends Component {
                                         <header>
                                             <h2 className="zero">{Resources['cyclesCount'][currentLanguage]}</h2>
                                         </header>
-                                        <ReactTable
-                                            ref={(r) => {
-                                                this.selectTable = r;
-                                            }}
-                                            data={this.state.IRCycles}
-                                            columns={columns}
-                                            pivotBy={['statusName']}
-
-                                            defaultPageSize={10}
-                                            minRows={2}
-                                            noDataText={Resources['noData'][currentLanguage]}
-                                        />
+                                        {this.state.CycleEditLoading === false && this.state.CycleAddLoading === false ?
+                                            <ReactTable
+                                                ref={(r) => {
+                                                    this.selectTable = r;
+                                                }}
+                                                data={this.state.IRCycles}
+                                                columns={columns}
+                                                defaultPageSize={10}
+                                                minRows={2}
+                                                noDataText={Resources['noData'][currentLanguage]}
+                                            /> : null}
                                     </div>
-
-                                    <div className="doc-pre-cycle">
-                                        <div className="slider-Btns">
-                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
+                                    {this.props.changeStatus == true ?
+                                        <div className="doc-pre-cycle">
+                                            <div className="slider-Btns">
+                                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
+                                            </div>
                                         </div>
-
-                                    </div>
+                                        : null}
                                 </div>
                             }
 
