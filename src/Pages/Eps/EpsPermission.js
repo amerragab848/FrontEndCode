@@ -369,7 +369,7 @@ class EpsPermission extends Component {
         </Fragment>
 
         return (
-            <div className="mainContainer">
+            <div className="mainContainer main__fulldash white-bg" style={{padding: '40px'}}>
                 <Dropdown title="chooseProject" handleChange={event => this.routeProjects(event)}
                     data={this.state.projects} selectedValue={this.state.selectedProject} />
 

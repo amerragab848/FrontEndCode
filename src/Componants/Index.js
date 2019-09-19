@@ -128,10 +128,10 @@ class Index extends Component {
     return (
       <div className="SummeriesContainer" key={index}>
         <Fragment>
-          <h2 className="SummeriesTitle">
+          <h2 className={"SummeriesTitle " + (category.title == "mainAlerts" ? 'disNone' : '')}>
             {language[category.title][currentLanguage]}
           </h2>
-          <div className={"SummeriesContainerContent " + (category.title == "mainAlerts" ? " numbersContainerContent" : " ")}>
+          <div className={"SummeriesContainerContent " + (category.title == "summaries" || category.title == "Submittal" || category.title == "communication" ? " numbersContainerContent" : " ")}>
             {category.widgets.map((widget, widgetIndex) => {
               if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
                 return this.renderWidget(widget, widgetIndex);
@@ -139,7 +139,7 @@ class Index extends Component {
             })}
           </div>
         </Fragment>
-      </div>
+      </div >
     );
   }
 
