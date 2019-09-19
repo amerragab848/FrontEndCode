@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import Api from "../../api"; 
+import Api from "../../api";
 import Resources from "../../resources.json";
 import DatePicker from "../OptionsPanels/DatePicker";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
@@ -8,17 +8,20 @@ import moment from "moment";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
 import dataservice from "../../Dataservice";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as communicationActions from "../../store/actions/communication";
+import { withRouter } from "react-router-dom";
 
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 
-export default class MonthlyTasksDetails extends Component {
+class MonthlyTasksDetails extends Component {
   constructor(props) {
-    
+
     super(props);
 
     const columnsGrid = [
@@ -133,8 +136,8 @@ export default class MonthlyTasksDetails extends Component {
     this.setState({ finishDate: date });
   };
 
-  ViewReport = () => {
-    if (this.state.ContactIsEmpty === false) {
+  ViewReport = () => { 
+
       this.setState({
         btnisLoading: true,
         isLoading: true
@@ -149,11 +152,7 @@ export default class MonthlyTasksDetails extends Component {
           totalRows: result.length
         });
       });
-    } else {
-      this.setState({
-        valid: true
-      });
-    }
+   
   };
 
   componentDidMount = () => {
@@ -174,12 +173,9 @@ export default class MonthlyTasksDetails extends Component {
   };
 
   render() {
-    const btnExport = (
-      <Export rows={this.state.rows} columns={this.state.columns} fileName={Resources["monthlyTasks"][currentLanguage]} />
-    );
-    const gridSetup = this.state.isLoading ?
-      <LoadingSection />
-      : (<GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />)
+    const btnExport = (<Export rows={this.state.rows} columns={this.state.columns} fileName={Resources["monthlyTasks"][currentLanguage]} />);
+
+    const gridSetup = this.state.isLoading ? <LoadingSection /> : (<GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} />)
     return (
       <div className="mainContainer">
         <div className="resetPassword">
@@ -224,7 +220,7 @@ export default class MonthlyTasksDetails extends Component {
           <div className="gridfillter-container">
             <div className="fillter-status-container">
               <div className="form-group fillterinput fillter-item-c">
-                <div className={this.state.valid ? "has-error" : ""}>
+                <div>
                   <Dropdown
                     title="ContactName"
                     data={this.state.Contacts}
@@ -252,10 +248,7 @@ export default class MonthlyTasksDetails extends Component {
 
               <div className="dropBtn">
                 {this.state.btnisLoading === false ? (
-                  <button
-                    className="primaryBtn-1 btn smallBtn"
-                    onClick={this.ViewReport}
-                  >
+                  <button className="primaryBtn-1 btn smallBtn" onClick={this.ViewReport} >
                     {Resources["View"][currentLanguage]}
                   </button>
                 ) : (
@@ -278,3 +271,20 @@ export default class MonthlyTasksDetails extends Component {
     );
   }
 }
+
+
+//export default MonthlyTasksDetails;
+
+function mapStateToProps(state, ownProps) {
+  return {
+    isLoading: state.communication.isLoading
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MonthlyTasksDetails));
