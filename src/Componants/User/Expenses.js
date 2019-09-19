@@ -23,6 +23,7 @@ const Actions = ({ value }) => {
 };
 
 class Expenses extends Component {
+
     constructor(props) {
         super(props)
 
@@ -147,7 +148,8 @@ class Expenses extends Component {
             showDeleteModal: false,
         };
     }
-    attachments = () => { 
+
+    attachments = () => {
     }
 
     clickHandlerDeleteRowsMain = (selectedRows) => {
@@ -186,7 +188,7 @@ class Expenses extends Component {
     RouteHandler(obj) {
         if (obj) {
             this.props.history.push({
-                pathname: "/GetExpensesUserForEdit",
+                pathname: "/expensesUserAddEdit",
                 search: "?id=" + obj.id
             });
         }
@@ -294,11 +296,11 @@ class Expenses extends Component {
     render() {
         const btnExport =
             <Export rows={this.state.isLoading === false ? this.state.rows : []}
-            columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
+                columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
 
         return (
             <div className="main__fulldash--container">
-                
+
                 <div className="resetPassword">
 
                     <div className="submittalFilter">
@@ -377,12 +379,12 @@ class Expenses extends Component {
                         </div>
                     </div>
 
-                  
-                        {this.state.Loading ? <LoadingSection /> : null}
-                        {this.state.isLoading == false
-                            ? <GridSetup columns={this.state.columns} rows={this.state.rows} pageSize={this.state.pageSize}
-                                showCheckbox={true} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} onRowClick={this.RouteHandler.bind(this)} />
-                            : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
+
+                    {this.state.Loading ? <LoadingSection /> : null}
+                    {this.state.isLoading == false
+                        ? <GridSetup columns={this.state.columns} rows={this.state.rows} pageSize={this.state.pageSize}
+                            showCheckbox={true} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} onRowClick={this.RouteHandler.bind(this)} />
+                        : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
 
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal

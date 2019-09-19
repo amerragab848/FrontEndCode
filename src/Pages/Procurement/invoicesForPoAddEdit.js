@@ -32,7 +32,7 @@ steps_defination = [
     { name: "invoicesForPO", callBackFn: null },
     { name: "items", callBackFn: null },
     { name: "deductions", callBackFn: null }
-];
+]; 
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
@@ -1938,7 +1938,9 @@ class invoicesForPoAddEdit extends Component {
                     <SkyLightStateless onOverlayClicked={e => this.setState({ ShowTree: false })}
                         title={Resources['add'][currentLanguage]}
                         onCloseClicked={e => this.setState({ ShowTree: false })} isVisible={this.state.ShowTree}>
+                        {this.state.ShowTree? 
                         <Tree projectId={this.state.projectId} GetNodeData={this.GetNodeData} />
+                        :null}
                         <div className="fullWidthWrapper">
                             <button className="primaryBtn-1 btn meduimBtn" onClick={e => this.setState({ ShowTree: false })}  >{Resources.add[currentLanguage]}</button>
                         </div>

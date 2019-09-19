@@ -269,17 +269,17 @@ class siteInstructionsAddEdit extends Component {
         });
 
         dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-            // if (isEdit) {
-            //     let contractId = this.state.document.contractId;
-            //     let contract = {};
-            //     if (contractId) {
-            //         contract = _.find(result, function (i) { return i.value == contractId; });
+            if (isEdit) {
+                let contractId = this.state.document.contractId;
+                let contract = {};
+                if (contractId) {
+                    contract = _.find(result, function (i) { return i.value == contractId; });
 
-            //         this.setState({
-            //             selectedContract: contract
-            //         });
-            //     }
-            // }
+                    this.setState({
+                        selectedContract: contract
+                    });
+                }
+            }
             this.setState({
                 contracts: [...result]
             });
@@ -623,7 +623,7 @@ class siteInstructionsAddEdit extends Component {
                                                                         <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
                                                                         <div className="ui input inputDev "  >
                                                                             <input type="text" className="form-control" id="contractPo" readOnly
-                                                                                value={this.state.document.contractName}
+                                                                                value={this.state.selectedContract.label}
                                                                                 name="contractPo"
                                                                                 placeholder={Resources.contractPo[currentLanguage]} />
                                                                         </div>
