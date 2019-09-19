@@ -1065,7 +1065,6 @@ class SubmittalAddEdit extends Component {
     return this.state.docId > 0 ? (Config.IsAllow(3302) === true ? (<ViewAttachment isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={884} />) : null) : null;
   }
 
-
   getLogsSubmittalItems = () => {
     dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
       let maxArrange = _.maxBy(data, "arrange");
@@ -2090,7 +2089,7 @@ class SubmittalAddEdit extends Component {
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
                       {this.state.docId > 0 && this.state.isViewMode === false && this.state.currentStep === 0 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={883} EditAttachments={3261} ShowDropBox={3581} ShowGoogleDrive={3582} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-                      {this.state.docId > 0 && this.state.currentStep === 0 ? (
+                      {this.state.docId > 0 && this.state.currentStep === 0 && this.state.isViewMode === false ? (
                         <Fragment>
                           <div className="document-fields tableBTnabs">
                             <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} />

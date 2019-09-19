@@ -3,12 +3,9 @@ import Api from "../../../../api";
 import SkyLight from 'react-skylight';
 import LoadingSection from "../../../../Componants/publicComponants/LoadingSection";
 import Export from "../../../OptionsPanels/Export";
-// import "../../../../Styles/css/semantic.min.css";
-// import "../../../../Styles/scss/en-us/layout.css";
 import { Formik, Form } from 'formik';
 import ConfirmationModal from "../../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../../Pages/Communication/GridSetup";
-import CryptoJS from 'crypto-js';
+import GridSetup from "../../../../Pages/Communication/GridSetupWithFilter";
 import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
 import { withRouter } from "react-router-dom";
@@ -35,6 +32,7 @@ class permissionsGroups extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
+                filterable: true,
                 sortDescendingFirst: true
             },
         ];
@@ -71,17 +69,17 @@ class permissionsGroups extends Component {
                     {
                         text: Resources['groupsPermissions'][currentLanguage],
                         callback: () => {
-                                this.props.history.push({
-                                    pathname: '/PermissionsGroupsPermissions/'+row.id,
-                                })
-                            
+                            this.props.history.push({
+                                pathname: '/PermissionsGroupsPermissions/' + row.id,
+                            })
+
                         }
                     },
                     {
                         text: Resources['contacts'][currentLanguage],
                         callback: () => {
                             this.props.history.push({
-                                pathname: '/AccountsGroup/'+row.id,
+                                pathname: '/AccountsGroup/' + row.id,
                             })
                         }
                     }
@@ -184,7 +182,7 @@ class permissionsGroups extends Component {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
                 let rows = []
                 this.state.rows.forEach(element => {
-                    if (element.id == this.state.selectedRow.id) { 
+                    if (element.id == this.state.selectedRow.id) {
                         element.groupName = value.GroupName
                     }
                     rows.push(element)
@@ -214,6 +212,7 @@ class permissionsGroups extends Component {
     }
 
     render() {
+
         const dataGrid =
             this.state.isLoading === false ? (
                 <GridSetup rows={this.state.rows}
@@ -222,6 +221,7 @@ class permissionsGroups extends Component {
                     clickHandlerDeleteRows={this.deleteGroupName}
                     getCellActions={this.GetCellActions}
                     single={true}
+                    filterColumnsLength={1}
                     onRowClick={(value, index, column) => this.onRowClick(value, index, column)}
                 />
             ) : <LoadingSection />
