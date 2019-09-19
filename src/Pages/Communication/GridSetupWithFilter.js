@@ -645,7 +645,7 @@ class GridSetupWithFilter extends Component {
       <Fragment>
         <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
           <div className="filter__more" style={{ padding: 0 }}>
-            <span>5 {Resources.filtersApplied[currentLanguage]}</span>
+            <span>{this.props.filterColumnsLength != undefined ? this.props.filterColumnsLength : 5}{Resources.filtersApplied[currentLanguage]}</span>
             {this.props.columns.length > 5 ? (
               <button className="filter__more--btn" onClick={this.showFilterMore}>
                 {Resources.seeAll[currentLanguage]}
