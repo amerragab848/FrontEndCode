@@ -951,7 +951,7 @@ class dailyReportsAddEdit extends Component {
                         {this.state.activeTab == "weather" ? (<Fragment>{weatherTab()}</Fragment>) : null}
 
                     </Fragment>
-                    <div className="doc-pre-cycle letterFullWidth">
+                    {/* <div className="doc-pre-cycle letterFullWidth">
                         <div className="precycle-grid">
                             <div className="slider-Btns">
                                 <button className="primaryBtn-1 btn meduimBtn " type="button" onClick={() => this.changeCurrentStep(2)}>
@@ -959,7 +959,7 @@ class dailyReportsAddEdit extends Component {
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </Fragment>
             )
         }
