@@ -11,7 +11,6 @@ import Export from "../OptionsPanels/Export";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
@@ -191,6 +190,11 @@ class Expenses extends Component {
                 pathname: "/expensesUserAddEdit",
                 search: "?id=" + obj.id
             });
+        } else {
+            this.props.history.push({
+                pathname: "/expensesUserAddEdit",
+                search: "?id=" + 0
+            });
         }
     }
 
@@ -330,7 +334,7 @@ class Expenses extends Component {
 
                         <div className="filterBTNS">
                             {btnExport}
-                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>New</button>
+                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.RouteHandler()}>New</button>
                         </div>
 
                         <div className="rowsPaginations">
