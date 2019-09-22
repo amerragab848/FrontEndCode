@@ -2065,13 +2065,13 @@ class SubmittalAddEdit extends Component {
                                       }} />
                                   </div>
                                 </div>
-                                <div className="slider-Btns">
+                                {/* <div className="slider-Btns">
                                   {this.state.currentStep === 2 ? (
                                     <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>
                                       {Resources["next"][currentLanguage]}
                                     </button>
                                   ) : null}
-                                </div>
+                                </div> */}
                               </Fragment> :
                               null
                           }
@@ -2079,13 +2079,13 @@ class SubmittalAddEdit extends Component {
                       }
                     </Fragment>
                     )}
-                  <div className="slider-Btns">
+                  {/* <div className="slider-Btns">
                     {this.state.currentStep === 1 && this.props.changeStatus === true ? (
                       <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>
                         {Resources["next"][currentLanguage]}
                       </button>
                     ) : null}
-                  </div>
+                  </div> */}
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
                       {this.state.docId > 0 && this.state.isViewMode === false && this.state.currentStep === 0 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={883} EditAttachments={3261} ShowDropBox={3581} ShowGoogleDrive={3582} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}

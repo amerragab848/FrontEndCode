@@ -8532,7 +8532,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .attachmentTable tbody tr .contentCell.tableCell-2 {
-    max-width: 200px;
+    max-width: 300px;
 }
 
 .attachmentTable tbody tr .contentCell.tableCell-1 span {
@@ -17192,10 +17192,6 @@ button.companies_icon {
     .noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
         max-width: 100%;
         min-width: 192px;
-    }
-
-    .noTabs__document.one__tab.one_step .attachmentTable tbody tr .contentCell.tableCell-2 {
-        max-width: 130px;
     }
 
     .noTabs__document.one__tab.one_step .attachmentTable tbody tr .contentCell.tableCell-3 {
