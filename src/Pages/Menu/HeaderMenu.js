@@ -1193,8 +1193,16 @@ class HeaderMenu extends Component {
                             <TabList className="zero">
                               <Tab className={this.state.tabNotifi ? "active" : ""}>
                                 <span className="imgWrapper not__icon">
-                                  <img className="activeImg" src={iconActive} />
-                                  <img className="normalImg" src={notifIcon} />
+                                  <span className="activeImg" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24" style={{ transform: 'rotate(0deg)', marginTop: '5px' }}>
+                                      <g fill="none" fill-rule="evenodd" transform="translate(4 2)">
+                                        <g fill="#A8B0BF" mask="url(#b)">
+                                          <path id="a" d="M13.714 9V7c0-2.414-1.968-4.435-4.572-4.898V0H6.858v2.102C4.252 2.565 2.285 4.586 2.285 7v2c0 5.133-.57 6-2.285 6v2h16v-2c-1.714 0-2.286-.866-2.286-6zm-9.979 6c.836-1.581.836-3.872.836-6V7c0-1.653 1.538-3 3.428-3s3.43 1.347 3.43 3v2c0 2.128 0 4.419.835 6H3.735zm1.98 3h4.571v2H5.714v-2z" />
+                                        </g>
+                                      </g>
+                                    </svg>
+                                  </span>
+                                  {/* <img className="normalImg" src={notifIcon} /> */}
                                 </span>
                                 <span className="tabNAme">
                                   {Resources["general"][currentLanguage]}
@@ -1202,8 +1210,15 @@ class HeaderMenu extends Component {
                               </Tab>
                               <Tab className={this.state.tabTask ? "active" : ""}>
                                 <span className="imgWrapper base__icon">
-                                  <img className="activeImg" src={baseActive} />
-                                  <img className="normalImg" src={greyBase} />
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24" style={{ transform: 'rotate(0deg)'}}>
+                                    <g fill="none" fill-rule="evenodd" transform="translate(4 4)">
+                                      <g fill="#A8B0BF" mask="url(#b)">
+                                        <path id="a" d="M13.76 1.133h.935c.611 0 1.198.253 1.63.704.432.45.675 1.063.675 1.7v11.059C17 15.923 15.968 17 14.695 17H2.305C1.032 17 0 15.923 0 14.596V3.537C0 2.21 1.032 1.133 2.305 1.133h.882v1.834c-.865.052-1.227.408-1.227 1.391v9.45c0 1.022.493 1.362 1.472 1.362h10.194c.979 0 1.404-.34 1.404-1.362v-9.45c0-.986-.338-1.364-1.27-1.396V1.133zm-4.197 0V2.96H7.383V1.133h2.178zm2.426 4.46l1.362 1.452-5.32 5.676-3.32-3.54L6.073 7.73 8.03 9.813l3.96-4.22zM4.25.852C4.244.455 4.567 0 5.287 0s1.035.458 1.035.852v2.945c0 .48-.463.736-1.048.736s-1.03-.335-1.024-.736c.02-1.311.02-1.683 0-2.945zm6.375 0C10.62.455 10.942 0 11.662 0s1.035.458 1.035.852v2.945c0 .48-.463.736-1.048.736s-1.03-.335-1.024-.736c.02-1.311.02-1.683 0-2.945z" />
+                                      </g>
+                                    </g>
+                                  </svg>
+                                  {/* <img className="activeImg" src={baseActive} />
+                                  <img className="normalImg" src={greyBase} /> */}
                                 </span>
                                 <span className="tabNAme">
                                   {Resources["myTasks"][currentLanguage]}

@@ -51,7 +51,7 @@ class WidgetsWithText extends Component {
             </h4>
             <p className="number" onClick={this.onOpenModal.bind(this)}>
               {this.state.count}
-              <sub>Out Of {this.state.total}</sub>
+              <sub>/ {this.state.total}</sub>
             </p>
           </div>
         </div>

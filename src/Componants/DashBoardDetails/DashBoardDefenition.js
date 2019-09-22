@@ -719,7 +719,7 @@ let widgets = [
       }
     ]
   },
-  {
+  { 
     title: "openedSubmittals",
     key: "1-2-2",
     RouteEdit:'submittalAddEdit',
