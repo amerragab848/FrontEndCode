@@ -18,6 +18,7 @@ import { bindActionCreators } from "redux";
 import * as dashboardComponantActions from "../../store/actions/communication";
 import moment from "moment";
 import { toast } from "react-toastify";
+// import { settings } from "cluster";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const DashboardArrow = () => {
@@ -111,6 +112,8 @@ class HeaderMenu extends Component {
       tabNotifi: true,
       tabTask: false,
       searchClass: false,
+
+      activeTabs: 0
     };
     config.contactName = this.props.contactName;
     this.handleChange = this.handleChange.bind(this);
@@ -142,6 +145,29 @@ class HeaderMenu extends Component {
         taskes: result
       });
     });
+
+
+
+    if (this.props.location.pathname === "/LeftReportMenu") {
+      setTimeout(() => {
+        this.setState({
+          activeTabs: 2
+        })
+      }, 500);
+    } else if (this.props.location.pathname === "/TemplatesSettings") {
+      setTimeout(() => {
+        this.setState({
+          activeTabs: 1
+        })
+      }, 500);
+    } else {
+      setTimeout(() => {
+        this.setState({
+          activeTabs: 0
+        })
+      }, 500);
+    }
+
   };
 
   openProfile = () => {
@@ -227,6 +253,9 @@ class HeaderMenu extends Component {
     localStorage.setItem("lastSelectedprojectName", e.label);
     this.props.actions.RouteToDashboardProject(e);
     this.props.history.push({ pathname: "/DashboardProject" });
+    this.setState({
+      activeTabs: 0
+    })
   }
 
   handleChangeTemplate(e) {
@@ -1098,6 +1127,25 @@ class HeaderMenu extends Component {
     }
   }
 
+  notfiClick = (e, field) => {
+    console.log(`Field =>  ${field}`)
+    console.log(`e =>  ${e}`)
+
+    if (field === 'settings') {
+      this.setState({
+        activeTabs: 1
+      })
+    } else if (field === 'report') {
+      this.setState({
+        activeTabs: 2
+      })
+    } else {
+      this.setState({
+        activeTabs: 0
+      })
+    }
+  }
+
   render() {
     let totalNotification = this.state.notifications.length + this.state.taskes.length;
 
@@ -1109,7 +1157,7 @@ class HeaderMenu extends Component {
               <ul className="nav-left">
                 {this.props.showSelectProject === true ? (
                   <Fragment>
-                    <li className="procoor__logo">
+                    <li className="procoor__logo" onClick={(e, field) => this.notfiClick(e, 'logo')}>
                       <NavLink to="/">
                         <img src={Logo} alt="logo" />
                       </NavLink>
@@ -1129,11 +1177,11 @@ class HeaderMenu extends Component {
                   </Fragment>
                 ) : null}
               </ul>
-              <ul className="nav-right">
-                <li ref={search => { this.search = search }}>
-                  <a>
+              <ul id="nav-clickable" className="nav-right">
+                <li style={{ borderBottom: 0 }} ref={search => { this.search = search }}>
+                  <a className="header__search--container">
                     <div className="header__search ">
-                      <span onClick={this.searchClick}>
+                      <span onClick={(e, field) => { this.notfiClick(e, 'search'); this.searchClick(e); }}>
                         <svg width="24" height="24" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                           <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                             <g id="Icons/Search/16px/Light-grey" fill="#A8B0BF" stroke="#A8B0BF">
@@ -1152,26 +1200,48 @@ class HeaderMenu extends Component {
                     </div>
                   </a>
                 </li>
-                <li>
+                <li className={this.state.activeTabs === 2 ? ' active' : ''} onClick={(e, field) => this.notfiClick(e, 'report')}>
                   <a data-modal="modal1" className="notfiUI" onClick={this.ReportCenterMenu}>
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-                      <g fill="none" fillRule="evenodd" transform="translate(3 3)">
-                        <g fill="#A8B0BF">
-                          <path id="a" d="M16.511 11.777c.55.232.715.9.5 1.321A8.999 8.999 0 1 1 4.523 1.189c.424-.243 1.108-.132 1.46.475.35.607-.128 1.248-.506 1.475a6.836 6.836 0 1 0 9.528 9.124c.372-.685.956-.72 1.506-.486zM18 9c0 .598-.484 1.082-1.082 1.082H9A1.082 1.082 0 0 1 7.918 9V1.082C7.918.484 8.402 0 9 0a8.997 8.997 0 0 1 9 9zm-4.1-4.89A7.304 7.304 0 0 0 9.89 2.06V8.12h6.058A7.305 7.305 0 0 0 13.9 4.11z" />
+
+                    {this.state.activeTabs === 2 ?
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                        <g fill="none" fill-rule="evenodd" transform="translate(3 3)">
+                          <g fill="#5E6475" mask="url(#b)">
+                            <path id="a" d="M16.511 11.777c.55.232.715.9.5 1.321A8.999 8.999 0 1 1 4.523 1.189c.424-.243 1.108-.132 1.46.475.35.607-.128 1.248-.506 1.475a6.836 6.836 0 1 0 9.528 9.124c.372-.685.956-.72 1.506-.486zM18 9c0 .598-.484 1.082-1.082 1.082H9A1.082 1.082 0 0 1 7.918 9V1.082C7.918.484 8.402 0 9 0a8.997 8.997 0 0 1 9 9z" />
+                          </g>
                         </g>
-                      </g>
-                    </svg>
+                      </svg>
+                      :
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                        <g fill="none" fillRule="evenodd" transform="translate(3 3)">
+                          <g fill="#A8B0BF">
+                            <path id="a" d="M16.511 11.777c.55.232.715.9.5 1.321A8.999 8.999 0 1 1 4.523 1.189c.424-.243 1.108-.132 1.46.475.35.607-.128 1.248-.506 1.475a6.836 6.836 0 1 0 9.528 9.124c.372-.685.956-.72 1.506-.486zM18 9c0 .598-.484 1.082-1.082 1.082H9A1.082 1.082 0 0 1 7.918 9V1.082C7.918.484 8.402 0 9 0a8.997 8.997 0 0 1 9 9zm-4.1-4.89A7.304 7.304 0 0 0 9.89 2.06V8.12h6.058A7.305 7.305 0 0 0 13.9 4.11z" />
+                          </g>
+                        </g>
+                      </svg>
+                    }
+
                   </a>
                 </li>
-                <li>
+                <li className={this.state.activeTabs === 1 ? 'active' : ''} onClick={(e, field) => this.notfiClick(e, 'settings')}>
                   <NavLink to="/TemplatesSettings" onClick={this.handleChangeTemplate}>
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-                      <g fill="none" fillRule="evenodd" transform="translate(3 3)">
-                        <g fill="#A8B0BF">
-                          <path id="a" d="M3.602 13.71c.604-.333 1.455-.323 2.05.024l1.386.808c.595.346 1.03 1.084 1.048 1.776l.017.663 1.794-.002.017-.66c.017-.693.452-1.43 1.048-1.778l1.386-.807c.595-.346 1.447-.357 2.047-.026l.578.317.897-1.568-.56-.346c-.586-.362-1.001-1.11-1.001-1.802l-.002-1.616c0-.691.416-1.441 1.002-1.803l.56-.346-.896-1.568-.575.315c-.604.332-1.455.322-2.05-.025l-1.386-.808c-.595-.346-1.03-1.084-1.048-1.776l-.017-.663-1.794.002-.017.66c-.017.693-.452 1.43-1.048 1.778l-1.386.807c-.595.346-1.447.357-2.047.026l-.578-.317-.897 1.568.56.346c.586.362 1.001 1.11 1.001 1.802l.002 1.616c0 .691-.416 1.441-1.002 1.803l-.56.346.896 1.568.575-.315zm-2.13 1.634L.22 13.154a1.66 1.66 0 0 1 .558-2.23l.868-.535a.27.27 0 0 1 .045-.082L1.69 8.692a.313.313 0 0 1-.045-.082l-.869-.536a1.658 1.658 0 0 1-.558-2.23l1.253-2.189a1.63 1.63 0 0 1 2.193-.627l.897.491c-.01-.006.1-.007.09-.002l1.386-.806a.317.317 0 0 1 .048-.08l.026-1.03C6.137.713 6.863.003 7.746.003L10.253 0c.881 0 1.61.71 1.635 1.602l.026 1.028c0-.01.056.084.048.08l1.386.808a.327.327 0 0 1 .093 0l.896-.49a1.628 1.628 0 0 1 2.191.628l1.251 2.19a1.66 1.66 0 0 1-.558 2.23l-.868.535a.27.27 0 0 1-.045.082l.001 1.615c0-.01.054.087.045.082l.869.536c.753.465 1 1.458.558 2.23l-1.253 2.189a1.63 1.63 0 0 1-2.193.627l-.897-.491c.01.006-.1.007-.09.002l-1.386.806a.317.317 0 0 1-.048.08l-.026 1.03c-.025.889-.751 1.599-1.634 1.599L7.747 19c-.881 0-1.61-.71-1.635-1.602l-.026-1.028a.287.287 0 0 1-.048-.08l-1.386-.808a.327.327 0 0 1-.093 0l-.896.49a1.628 1.628 0 0 1-2.191-.628zm4.334-7.72a3.676 3.676 0 0 1 5.046-1.364c1.767 1.03 2.373 3.31 1.352 5.092a3.676 3.676 0 0 1-5.046 1.363c-1.767-1.029-2.373-3.309-1.352-5.09zm2.352 3.354c.81.474 1.847.193 2.315-.627.468-.82.19-1.868-.62-2.341a1.684 1.684 0 0 0-2.315.627c-.469.82-.19 1.868.62 2.341z" />
+                    {this.state.activeTabs === 1 ?
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                        <g fill="none" fill-rule="evenodd" transform="translate(3 3)">
+                          <g fill="#5E6475" mask="url(#b)">
+                            <path id="a" d="M3.602 13.71c.604-.333 1.455-.323 2.05.024l1.386.808c.595.346 1.03 1.084 1.048 1.776l.017.663 1.794-.002.017-.66c.017-.693.452-1.43 1.048-1.778l1.386-.807c.595-.346 1.447-.357 2.047-.026l.578.317.897-1.568-.56-.346c-.586-.362-1.001-1.11-1.001-1.802l-.002-1.616c0-.691.416-1.441 1.002-1.803l.56-.346-.896-1.568-.575.315c-.604.332-1.455.322-2.05-.025l-1.386-.808c-.595-.346-1.03-1.084-1.048-1.776l-.017-.663-1.794.002-.017.66c-.017.693-.452 1.43-1.048 1.778l-1.386.807c-.595.346-1.447.357-2.047.026l-.578-.317-.897 1.568.56.346c.586.362 1.001 1.11 1.001 1.802l.002 1.616c0 .691-.416 1.441-1.002 1.803l-.56.346.896 1.568.575-.315zm-2.13 1.634L.22 13.154a1.66 1.66 0 0 1 .558-2.23l.868-.535a.27.27 0 0 1 .045-.082L1.69 8.692a.313.313 0 0 1-.045-.082l-.869-.536a1.658 1.658 0 0 1-.558-2.23l1.253-2.189a1.63 1.63 0 0 1 2.193-.627l.897.491c-.01-.006.1-.007.09-.002l1.386-.806a.317.317 0 0 1 .048-.08l.026-1.03C6.137.713 6.863.003 7.746.003L10.253 0c.881 0 1.61.71 1.635 1.602l.026 1.028c0-.01.056.084.048.08l1.386.808a.327.327 0 0 1 .093 0l.896-.49a1.628 1.628 0 0 1 2.191.628l1.251 2.19a1.66 1.66 0 0 1-.558 2.23l-.868.535a.27.27 0 0 1-.045.082l.001 1.615c0-.01.054.087.045.082l.869.536c.753.465 1 1.458.558 2.23l-1.253 2.189a1.63 1.63 0 0 1-2.193.627l-.897-.491c.01.006-.1.007-.09.002l-1.386.806a.317.317 0 0 1-.048.08l-.026 1.03c-.025.889-.751 1.599-1.634 1.599L7.747 19c-.881 0-1.61-.71-1.635-1.602l-.026-1.028a.287.287 0 0 1-.048-.08l-1.386-.808a.327.327 0 0 1-.093 0l-.896.49a1.628 1.628 0 0 1-2.191-.628zm4.767-7.472a3.178 3.178 0 0 1 4.363-1.18 3.238 3.238 0 0 1 1.17 4.403 3.178 3.178 0 0 1-4.364 1.18 3.238 3.238 0 0 1-1.17-4.403z" />
+                          </g>
                         </g>
-                      </g>
-                    </svg>
+                      </svg>
+                      : <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                        <g fill="none" fillRule="evenodd" transform="translate(3 3)">
+                          <g fill="#A8B0BF">
+                            <path id="a" d="M3.602 13.71c.604-.333 1.455-.323 2.05.024l1.386.808c.595.346 1.03 1.084 1.048 1.776l.017.663 1.794-.002.017-.66c.017-.693.452-1.43 1.048-1.778l1.386-.807c.595-.346 1.447-.357 2.047-.026l.578.317.897-1.568-.56-.346c-.586-.362-1.001-1.11-1.001-1.802l-.002-1.616c0-.691.416-1.441 1.002-1.803l.56-.346-.896-1.568-.575.315c-.604.332-1.455.322-2.05-.025l-1.386-.808c-.595-.346-1.03-1.084-1.048-1.776l-.017-.663-1.794.002-.017.66c-.017.693-.452 1.43-1.048 1.778l-1.386.807c-.595.346-1.447.357-2.047.026l-.578-.317-.897 1.568.56.346c.586.362 1.001 1.11 1.001 1.802l.002 1.616c0 .691-.416 1.441-1.002 1.803l-.56.346.896 1.568.575-.315zm-2.13 1.634L.22 13.154a1.66 1.66 0 0 1 .558-2.23l.868-.535a.27.27 0 0 1 .045-.082L1.69 8.692a.313.313 0 0 1-.045-.082l-.869-.536a1.658 1.658 0 0 1-.558-2.23l1.253-2.189a1.63 1.63 0 0 1 2.193-.627l.897.491c-.01-.006.1-.007.09-.002l1.386-.806a.317.317 0 0 1 .048-.08l.026-1.03C6.137.713 6.863.003 7.746.003L10.253 0c.881 0 1.61.71 1.635 1.602l.026 1.028c0-.01.056.084.048.08l1.386.808a.327.327 0 0 1 .093 0l.896-.49a1.628 1.628 0 0 1 2.191.628l1.251 2.19a1.66 1.66 0 0 1-.558 2.23l-.868.535a.27.27 0 0 1-.045.082l.001 1.615c0-.01.054.087.045.082l.869.536c.753.465 1 1.458.558 2.23l-1.253 2.189a1.63 1.63 0 0 1-2.193.627l-.897-.491c.01.006-.1.007-.09.002l-1.386.806a.317.317 0 0 1-.048.08l-.026 1.03c-.025.889-.751 1.599-1.634 1.599L7.747 19c-.881 0-1.61-.71-1.635-1.602l-.026-1.028a.287.287 0 0 1-.048-.08l-1.386-.808a.327.327 0 0 1-.093 0l-.896.49a1.628 1.628 0 0 1-2.191-.628zm4.334-7.72a3.676 3.676 0 0 1 5.046-1.364c1.767 1.03 2.373 3.31 1.352 5.092a3.676 3.676 0 0 1-5.046 1.363c-1.767-1.029-2.373-3.309-1.352-5.09zm2.352 3.354c.81.474 1.847.193 2.315-.627.468-.82.19-1.868-.62-2.341a1.684 1.684 0 0 0-2.315.627c-.469.82-.19 1.868.62 2.341z" />
+                          </g>
+                        </g>
+                      </svg>
+
+                    }
                   </NavLink>
                 </li>
                 <li ref={node => { this.node = node }} className="notifi-icon">
@@ -1186,7 +1256,7 @@ class HeaderMenu extends Component {
                     <div className="inboxNotif smallSquare">{totalNotification}</div>
                   </a>
                   {this.state.viewNotification ? (
-                    <div id="notiClosed" className="notifiBar">
+                    <div onClick={(e, field) => this.notfiClick(e, 'notifiBar')} id="notiClosed" className="notifiBar">
                       <div className="smallNotifiBar">
                         <div className="notifi__tabs">
                           <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.onClickTabItem(tabIndex)}>
@@ -1210,7 +1280,7 @@ class HeaderMenu extends Component {
                               </Tab>
                               <Tab className={this.state.tabTask ? "active" : ""}>
                                 <span className="imgWrapper base__icon">
-                                  <svg xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24" style={{ transform: 'rotate(0deg)'}}>
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24" style={{ transform: 'rotate(0deg)' }}>
                                     <g fill="none" fill-rule="evenodd" transform="translate(4 4)">
                                       <g fill="#A8B0BF" mask="url(#b)">
                                         <path id="a" d="M13.76 1.133h.935c.611 0 1.198.253 1.63.704.432.45.675 1.063.675 1.7v11.059C17 15.923 15.968 17 14.695 17H2.305C1.032 17 0 15.923 0 14.596V3.537C0 2.21 1.032 1.133 2.305 1.133h.882v1.834c-.865.052-1.227.408-1.227 1.391v9.45c0 1.022.493 1.362 1.472 1.362h10.194c.979 0 1.404-.34 1.404-1.362v-9.45c0-.986-.338-1.364-1.27-1.396V1.133zm-4.197 0V2.96H7.383V1.133h2.178zm2.426 4.46l1.362 1.452-5.32 5.676-3.32-3.54L6.073 7.73 8.03 9.813l3.96-4.22zM4.25.852C4.244.455 4.567 0 5.287 0s1.035.458 1.035.852v2.945c0 .48-.463.736-1.048.736s-1.03-.335-1.024-.736c.02-1.311.02-1.683 0-2.945zm6.375 0C10.62.455 10.942 0 11.662 0s1.035.458 1.035.852v2.945c0 .48-.463.736-1.048.736s-1.03-.335-1.024-.736c.02-1.311.02-1.683 0-2.945z" />
@@ -1316,7 +1386,7 @@ class HeaderMenu extends Component {
                     <span className="profileName">
                       {this.state.contactName}
                     </span>
-                    <div className="ui dropdown classico basic">
+                    <div onClick={(e, field) => this.notfiClick(e, 'userimg')} className="ui dropdown classico basic">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                         <path fill="#5E6475" fillRule="evenodd" d="M11.319 6c.886 0 .8.687.346 1.235-.587.705-2.28 2.757-2.728 3.224-.69.721-1.004.722-1.696 0L4.303 7.235C3.866 6.719 3.848 6 4.606 6h6.713z"
                         />
@@ -1384,7 +1454,7 @@ class HeaderMenu extends Component {
               clickHandlerContinue={() => this.handleClearSettings()} title={Resources["clearSetting"][currentLanguage]} buttonName='clearSettings' />
           ) : null
         }
-      </div>
+      </div >
     );
   }
 }

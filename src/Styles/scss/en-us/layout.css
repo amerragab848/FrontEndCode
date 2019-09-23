@@ -3298,6 +3298,7 @@ h1, h2, h3, h4, h5 {
     justify-content: center;
     text-align: center;
     position: relative;
+    z-index: 2;
 }
 
 .submittalHead h2 {
@@ -5695,11 +5696,21 @@ h1, h2, h3, h4, h5 {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+    margin: 0;
+    height: 100%;
 }
 
 .main-header .header-content .nav-right li {
     margin-left: 24px;
     cursor: pointer;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid transparent;
+}
+
+.main-header .header-content .nav-right li.active {
+    border-bottom: 2px solid #858d9e;
 }
 
 .main-header .header-content .nav-right li:first-child {
@@ -5714,7 +5725,7 @@ h1, h2, h3, h4, h5 {
     margin-left: 48px;
 }
 
-.main-header .header-content .nav-right li.notifi-icon {
+.main-header .header-content .nav-right li.notifi-icon a, .main-header .header-content .nav-right li.notifi-icon {
     position: relative;
 }
 
@@ -6932,12 +6943,6 @@ h1, h2, h3, h4, h5 {
     transition: 0s;
 }
 
-.noTabs__document .submittalHead {
-    justify-content: center;
-    padding-left: 0;
-    z-index: 2;
-}
-
 .noTabs__document .doc-container {
     background: #fff;
     flex-flow: column;
@@ -6976,6 +6981,8 @@ h1, h2, h3, h4, h5 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    max-width: 786px;
+    margin-top: 0
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:last-of-type {
@@ -8629,7 +8636,7 @@ h1, h2, h3, h4, h5 {
     justify-content: center;
     position: relative;
     position: absolute;
-    top: 150%;
+    top: 100%;
     z-index: 999;
     width: 345px;
     right: -162px;
@@ -8785,6 +8792,8 @@ h1, h2, h3, h4, h5 {
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    margin-left: 0 !important;
+    border-bottom: none;
 }
 
 .notifiBar .smallNotifiBar .notifi__tabs ul li .imgWrapper {
@@ -16918,25 +16927,19 @@ tfoot tr td p {
 }
 
 .noTabs__document .doc-container .step-content {
-    width: 835px;
+    /* width: 835px; */
     border-right: 0;
     background-color: #ffffff;
-    margin: auto;
+    /* margin: auto; */
     display: block;
-    margin: 0 auto;
-    padding-bottom: 70px;
+    /* margin: 0 auto; */
     position: unset !important;
     z-index: unset !important;
-
     width: 100%;
     padding: 0;
+    padding-bottom: 70px;
     padding-left: 56px;
     padding-right: 40px;
-}
-
-.noTabs__document .doc-container .step-content .document-fields .proForm.first-proform, 
-.noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer {
-    max-width: 786px;
 }
 
 .noTabs__document .doc-container .step-content .document-fields {
@@ -16947,16 +16950,14 @@ tfoot tr td p {
     border: 0;
 }
 
-.noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer {
-    margin-top: 0;
-}
-
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform {
     display: flex;
     justify-content: space-between;
     padding-right: 0;
-    flex-wrap: wrap;
     align-items: center;
+    flex-wrap: wrap !important;
+    max-width: 786px;
+    margin-bottom: 16px !important;
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput {
@@ -17466,6 +17467,11 @@ button.companies_icon {
     width: 1px;
     background-color: #E9ECF0;
     z-index: 2;
+}
+
+.SummeriesContainer .SummeriesContainerContent .summerisItem.withOutOf::after {
+    top: 61px;
+    bottom: 40px;
 }
 
 .SummeriesContainer .SummeriesContainerContent.numbersContainerContent {
@@ -19101,11 +19107,6 @@ button.companies_icon {
     cursor: pointer;
 }
 
-.proForm.first-proform {
-    flex-wrap: wrap !important;
-    margin-bottom: 16px !important;
-}
-
 .proForm.first-proform .linebylineInput:first-child {
     width: 100% !important;
     flex-shrink: 0 !important;
@@ -19145,10 +19146,6 @@ button.companies_icon {
 .notifiBar .smallNotifiBar .notifi__tabs ul li .imgWrapper img,
 .notifiBar .smallNotifiBar .notifiContent .smallAvatarSize img {
     transform: none !important;
-}
-
-.notifiBar .smallNotifiBar .notifi__tabs ul li {
-    margin-left: 0 !important;
 }
 
 .tableReports.attachmentTable tbody tr .contentCell {
@@ -20747,21 +20744,33 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     margin-left: 24px;
 }
 
+.main-header .header-content .nav-right li a.header__search--container {
+    height: 100%
+}
+
+.header__search span  {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
 .header__search {
     display: flex;
     align-items: flex-end;
     padding: 0 5px;
     border-bottom: 2px solid transparent;
     transition: all 0.4s ease-in-out;
+    height: 100%
 }
 
 .header__search:hover, .header__search.active {
-    border-bottom: 2px solid #E9ECF0;
+    border-bottom: 2px solid #858d9e;
 }
 
 .header__search .ui.input {
     width: 0;
     transition: all 0.4s ease-in-out;
+    height: 100%
 }
 
 .header__search:hover .ui.input,
@@ -20777,7 +20786,8 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     background-color: #ffffff;
     font-size: 14px;
     font-family: 'Muli';
-    font-weight: 600
+    font-weight: 600;
+    padding-bottom: 0;
 }
 
 .one__tab.one_step .doc-container .step-content .main__header {
@@ -21812,4 +21822,9 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .mainContainer:not(.main__fulldash) .noTabs__document {
     margin-left: -40px;
     margin-right: -40px;
+}
+
+.projectDashboard {
+    padding-left: 88px;
+    padding-right: 0
 }
