@@ -24,21 +24,21 @@ class viewDistributionList extends Component {
         let ReactTBLColumns = this.state.rows.map((item, index) => {
             return (
                 <tr key={index}>
-                    <td>
+                    <td style={{width: 'auto'}}>
                         <div className="contentCell tableCell-3">
                             <p className="zero status">
                                 {item.contact}
                             </p>
                         </div>
                     </td>
-                    <td>
+                    <td style={{width: 'auto'}}>
                         <div className="contentCell tableCell-4">
                             <p className="zero">
                                 {item.action}
                             </p>
                         </div>
                     </td>
-                    <td>
+                    <td style={{width: 'auto'}}>
                         <div className="contentCell tableCell-4">
                             <p className="zero">
                                 {item.comment}
@@ -78,7 +78,6 @@ class viewDistributionList extends Component {
                                             </span>
                                         </div>
                                     </th>
-                                    <th />
                                 </tr>
                             </thead>
                             <tbody>{ReactTBLColumns}</tbody>

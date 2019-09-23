@@ -3888,11 +3888,6 @@ h1, h2, h3, h4, h5 {
     background-color: #E9ECF0;
 }
 
-.subiTabsContent {
-    width: 100%;
-    padding-bottom: 40px;
-}
-
 .subiTabsContent .subiConHead {
     height: 72px;
     border-bottom: 1px solid #E9ECF0;
@@ -5749,8 +5744,8 @@ h1, h2, h3, h4, h5 {
     transition: all 0.2s ease;
 }
 
-.header__search:hover svg g g {
-    stroke: #5e6475
+.header__search.active {
+    fill: #5e6475
 }
 
 .main-header .header-content .UserImg .dropdownContent {
@@ -7783,7 +7778,7 @@ h1, h2, h3, h4, h5 {
     flex-flow: column;
     align-items: center;
     width: 257px;
-    padding: 0 20px;
+    padding: 0;
     position: relative;
     z-index: 9;
 }
@@ -7814,12 +7809,12 @@ h1, h2, h3, h4, h5 {
     transition: all 0.3s ease-in-out;
     text-align: center;
     position: relative;
-    padding: 0 5px 12px 0;
+    padding: 0 0 12px 0;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
     position: absolute;
-    right: 12px;
+    left: calc(100% - 50px);
     position: absolute;
     height: 50%;
     top: 16px;
@@ -8539,7 +8534,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .attachmentTable tbody tr .contentCell.tableCell-2 {
-    max-width: 200px;
+    max-width: 300px;
 }
 
 .attachmentTable tbody tr .contentCell.tableCell-1 span {
@@ -16937,9 +16932,9 @@ tfoot tr td p {
     z-index: unset !important;
     width: 100%;
     padding: 0;
-    padding-bottom: 70px;
-    padding-left: 56px;
-    padding-right: 40px;
+    padding-bottom: 80px;
+    padding-right: 56px;
+    padding-left: 40px;
 }
 
 .noTabs__document .doc-container .step-content .document-fields {
@@ -17193,10 +17188,6 @@ button.companies_icon {
     .noTabs__document .doc-container .step-content .linebylineInput .fillter-status.fillter-item-c .customD_Menu {
         max-width: 100%;
         min-width: 192px;
-    }
-
-    .noTabs__document.one__tab.one_step .attachmentTable tbody tr .contentCell.tableCell-2 {
-        max-width: 130px;
     }
 
     .noTabs__document.one__tab.one_step .attachmentTable tbody tr .contentCell.tableCell-3 {
@@ -17462,8 +17453,8 @@ button.companies_icon {
     position: absolute;
     content: "";
     right: 0;
-    top: 103px;
-    bottom: 103px;
+    top: 33%;
+    bottom: 33%;
     width: 1px;
     background-color: #E9ECF0;
     z-index: 2;

@@ -9,10 +9,6 @@ import Select, { components } from "react-select";
 import Resources from "../../resources.json";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import Logo from "../../Styles/images/logo.svg";
-import iconActive from "../../Styles/images/notif-iconActive.png";
-import notifIcon from "../../Styles/images/notif-icon.png";
-import baseActive from "../../Styles/images/grey-baseActive.png";
-import greyBase from "../../Styles/images/grey-base.png";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as dashboardComponantActions from "../../store/actions/communication";
@@ -1128,8 +1124,6 @@ class HeaderMenu extends Component {
   }
 
   notfiClick = (e, field) => {
-    console.log(`Field =>  ${field}`)
-    console.log(`e =>  ${e}`)
 
     if (field === 'settings') {
       this.setState({
@@ -1182,13 +1176,10 @@ class HeaderMenu extends Component {
                   <a className="header__search--container">
                     <div className="header__search ">
                       <span onClick={(e, field) => { this.notfiClick(e, 'search'); this.searchClick(e); }}>
-                        <svg width="24" height="24" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                          <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                            <g id="Icons/Search/16px/Light-grey" fill="#A8B0BF" stroke="#A8B0BF">
-                              <g id="search">
-                                <path d="M7.26998519,1.00030679 C5.21410776,0.99945959 3.28858201,2.00665384 2.11723694,3.6959605 C0.945891873,5.38526717 0.677539882,7.54107511 1.39781093,9.46666586 C2.11892701,11.3913466 3.73811764,12.8411624 5.73044429,13.3455818 C7.72368098,13.8491778 9.83708563,13.3447346 11.3867453,11.9938981 L14.2594224,14.8715588 C14.4286998,15.0408362 14.7037795,15.0408362 14.8730461,14.8715588 C15.0423126,14.7022815 15.0423234,14.4272017 14.8730461,14.2579352 L11.9953853,11.3826579 C13.0559011,10.1672412 13.6069057,8.58950045 13.5341245,6.97895515 C13.4604897,5.36743481 12.7681351,3.84648463 11.6009718,2.73255844 C10.4346536,1.61871892 8.88321726,0.998313379 7.27007186,1.00000344 L7.26998519,1.00030679 Z M1.86827736,7.26871463 C1.86658513,5.46760367 2.76375182,3.78414723 4.25928602,2.78029194 C5.7548419,1.77647999 7.65241657,1.58350923 9.3190807,2.26737887 C10.9864599,2.95124852 12.2028083,4.42058672 12.5624888,6.18529628 C12.9230577,7.95000584 12.3796693,9.77820118 11.1134747,11.0604839 L11.0855432,11.0841838 L11.0618433,11.1121153 C10.0453341,12.1159273 8.67256799,12.6762489 7.24467972,12.6694669 C5.81596808,12.663543 4.44827213,12.092223 3.44095004,11.0791157 C2.43291292,10.0668318 1.86752117,8.6965574 1.8683662,7.26866913 L1.86827736,7.26871463 Z"
-                                  id="Page-1"></path>
-                              </g>
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                          <g fill="none" fill-rule="evenodd" transform="translate(3 3)">
+                            <g fill="#A8B0BF" mask="url(#b)">
+                              <path id="a" d="M2.346 8.026a5.683 5.683 0 0 0 5.817 5.672c3.04-.066 5.613-2.588 5.539-5.815-.07-3.057-2.584-5.53-5.674-5.534C4.9 2.345 2.343 4.9 2.346 8.026m12.11 4.806c.054.04.108.071.15.114.99.986 1.978 1.973 2.967 2.96.219.218.39.46.421.78.05.52-.215.985-.688 1.206-.456.214-.959.107-1.37-.302-.997-.994-1.992-1.99-2.985-2.988-.046-.046-.072-.112-.103-.16a8.05 8.05 0 0 1-11.081-1.393c-2.584-3.228-2.29-7.841.59-10.7a8.012 8.012 0 0 1 10.719-.557 8.025 8.025 0 0 1 1.38 11.04" />
                             </g>
                           </g>
                         </svg>
