@@ -10,6 +10,7 @@ import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/avatar/xavatarBig.svg"
 import CommentImg from "../../Styles/images/flowComment.png"
 import DistributionList from "../OptionsPanels/viewDistributionList";
+import Config from "../../Services/Config";
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -87,6 +88,7 @@ class ViewWorkFlow extends Component {
                         </div>
                         <div className="MultiPeinding">
                             {i.map((level, idx) => {
+                                let levelSignature = Config.getPublicConfiguartion().downloads +'/'+ level.signature
                                 return (
                                     <div key={idx} className={level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
                                         <div className={level.statusVal == null ? "signature-h signaturePendingd" : "signature-h"}>
@@ -100,7 +102,7 @@ class ViewWorkFlow extends Component {
                                         </div>
                                         {level.statusVal != null ?
                                             <div className="card-signature">
-                                                <img src={level.signature != null ? level.signature : Signature} alt="..." />
+                                                <img src={level.signature != null ? levelSignature : Signature} alt="..." />
                                             </div>
                                             : null}
 
