@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom";
-import Rodal from "../../Styles/js/rodal";
+import { withRouter } from "react-router-dom"; 
 import "../../Styles/css/rodal.css";
 import CryptoJS from 'crypto-js';
 import Resources from "../../resources.json";
@@ -17,8 +16,7 @@ import SkyLight from "react-skylight";
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-let selectedRows = [];
-let listDocs = [];
+let selectedRows = []; 
 
 class AddDocAttachment extends Component {
   constructor(props) {
@@ -353,7 +351,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(AddDocAttachment));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AddDocAttachment));

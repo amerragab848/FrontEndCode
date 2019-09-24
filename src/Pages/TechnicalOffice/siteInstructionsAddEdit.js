@@ -465,7 +465,6 @@ class siteInstructionsAddEdit extends Component {
                                                 validationSchema={validationSchema}
                                                 enableReinitialize={true}
                                                 onSubmit={(values) => {
-
                                                     if (this.props.showModal) { return; }
 
                                                     if (this.props.changeStatus === true && this.state.docId > 0) {
@@ -475,8 +474,7 @@ class siteInstructionsAddEdit extends Component {
                                                     } else {
                                                         this.saveAndExit();
                                                     }
-                                                }}  >
-
+                                                }}>
                                                 {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                     <Form id="ClientSelectionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                         <div className="proForm first-proform">
@@ -494,7 +492,6 @@ class siteInstructionsAddEdit extends Component {
                                                                         }}
                                                                         onChange={(e) => this.handleChange(e, 'subject')} />
                                                                     {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput valid-input">
@@ -508,11 +505,8 @@ class siteInstructionsAddEdit extends Component {
                                                                     <label>{Resources.closed[currentLanguage]}</label>
                                                                 </div>
                                                             </div>
-
                                                         </div>
-
                                                         <div className="proForm datepickerContainer">
-
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                                 <div className="ui input inputDev"  >
@@ -527,21 +521,18 @@ class siteInstructionsAddEdit extends Component {
                                                                         onChange={(e) => this.handleChange(e, 'arrange')} />
                                                                 </div>
                                                             </div>
-
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker title='docDate'
                                                                     name="docDate"
                                                                     startDate={this.state.document.docDate}
                                                                     handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                             </div>
-
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker title='requiredDate'
                                                                     name="requiredDate"
                                                                     startDate={this.state.document.requiredDate}
                                                                     handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
                                                             </div>
-
                                                             <div className="linebylineInput valid-input mix_dropdown">
                                                                 <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
@@ -578,9 +569,7 @@ class siteInstructionsAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                             <div className="linebylineInput valid-input mix_dropdown">
-
                                                                 <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
@@ -594,7 +583,6 @@ class siteInstructionsAddEdit extends Component {
                                                                             styles={CompanyDropdown}
                                                                             classDrop="companyName1" />
                                                                     </div>
-
                                                                     <div className="super_company">
                                                                         <Dropdown
                                                                             isMulti={false}
@@ -613,10 +601,8 @@ class siteInstructionsAddEdit extends Component {
                                                                             styles={ContactDropdown}
                                                                         />
                                                                     </div>
-
                                                                 </div>
                                                             </div>
-
                                                             <div className="linebylineInput valid-input fullInputWidth">
                                                                 {this.props.changeStatus ?
                                                                     <React.Fragment>
@@ -638,7 +624,6 @@ class siteInstructionsAddEdit extends Component {
                                                                         index="contractId" />
                                                                 }
                                                             </div>
-
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.receivedFor[currentLanguage]}</label>
                                                                 <div className="ui input inputDev"  >
@@ -649,7 +634,6 @@ class siteInstructionsAddEdit extends Component {
                                                                         onChange={(e) => this.handleChange(e, 'receivedFor')} />
                                                                 </div>
                                                             </div>
-
                                                             <div className="linebylineInput valid-input">
                                                                 <Dropdown
                                                                     title="inspectionRequest"
@@ -659,7 +643,6 @@ class siteInstructionsAddEdit extends Component {
                                                                     handleChange={event => this.handleChangeDropDown(event, 'inspectionRequestId', false, '', '', '', 'selecetedinspectionRequest')}
                                                                     index="areaId" />
                                                             </div>
-
                                                             <div className="letterFullWidth">
                                                                 <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                                 <div className="inputDev ui input">
@@ -668,20 +651,15 @@ class siteInstructionsAddEdit extends Component {
                                                                         onChange={this.onChangeMessage.bind(this)} />
                                                                 </div>
                                                             </div>
-
                                                         </div>
-
                                                         <div className="slider-Btns">
                                                             {this.props.changeStatus === false ?
                                                                 <React.Fragment>
                                                                     {this.state.isLoading === false ? (
-                                                                        <button
-                                                                            className={this.props.changeStatus == false ? 'primaryBtn-1 btn meduimBtn ' : ' primaryBtn-1 btn meduimBtn  disNone'}
-                                                                            type="submit"
-                                                                        >  {this.state.docId > 0 && this.props.changeStatus === false ? Resources.saveAndExit[currentLanguage] : Resources.save[currentLanguage]}
+                                                                        <button className={this.props.changeStatus == false ? 'primaryBtn-1 btn meduimBtn ' : ' primaryBtn-1 btn meduimBtn  disNone'} type="submit">
+                                                                            {this.state.docId > 0 && this.props.changeStatus === false ? Resources.saveAndExit[currentLanguage] : Resources.save[currentLanguage]}
                                                                         </button>
-                                                                    ) :
-                                                                        (
+                                                                    ) : (
                                                                             <button className="primaryBtn-1 btn meduimBtn disabled" disabled="disabled">
                                                                                 <div className="spinner">
                                                                                     <div className="bounce1" />
@@ -732,23 +710,19 @@ class siteInstructionsAddEdit extends Component {
                                                 {this.viewAttachments()}
                                                 <Fragment>
                                                     <div className="document-fields tableBTnabs">
-                                                        {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                        {this.state.docId > 0 && this.state.isViewMode === false ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                     </div>
                                                 </Fragment>
-                                                {this.props.changeStatus === true ?
-                                                    <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                    : null}
+                                                {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     }
                 </div>
             </div>
-
         );
     }
 }
@@ -772,7 +746,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(siteInstructionsAddEdit))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(siteInstructionsAddEdit))
