@@ -219,10 +219,10 @@ class DashboardProject extends Component {
             return (
                 <div className="SummeriesContainer" key={index + "DIV"}>
                     <Fragment key={index}>
-                        <h2 className="SummeriesTitle">
-                            {language[category.title][currentLanguage]}
+                        <h2 className={"SummeriesTitle " + (category.title == "counters" ? 'disNone' : '')}>
+                            {language[category.title][currentLanguage] + ' ' + category.title}
                         </h2>
-                        <div className="SummeriesContainerContent">
+                        <div className={"SummeriesContainerContent " + (category.title == "Submittal" || category.title == "communication" ? " numbersContainerContent" : " ")}>
                             {category.widgets.map((widget, widgetIndex) => {
                                 if (widget.permission === 0 || Config.IsAllow(widget.permission)) {
                                     return this.renderWidget(widget, widgetIndex);
@@ -1309,7 +1309,7 @@ class DashboardProject extends Component {
                     </TabList>
                     {/* View renderCategoryWidget */}
                     <TabPanel>
-                        <div className="mainContainer">
+                        <div className="mainContainer projectDashboard">
                             {this.state.viewWidget
                                 ? this.renderCategoryWidget()
                                 : null}
@@ -1323,7 +1323,7 @@ class DashboardProject extends Component {
                     </TabPanel>
                     {/* view renderOrganizationChart */}
                     <TabPanel>
-                        <div className="mainContainer">
+                        <div className="mainContainer projectDashboard">
                             {this.renderOrganizationChart()}
                         </div>
                     </TabPanel>

@@ -111,7 +111,7 @@ class MyTasks extends Component {
               <div id="step1" className="step-content-body">
                 <div className="subiTabsContent">
                   <div className="document-fields">
-                    <form className="proForm datepickerContainer">
+                    <form className="proForm">
                       {this.state.taskData.map(item => {
                         return (
                           <div
@@ -151,7 +151,7 @@ class MyTasks extends Component {
                                       <span>
                                         {
                                           Resources["suspeneded"][
-                                            currentLanguage
+                                          currentLanguage
                                           ]
                                         }
                                       </span>
@@ -169,7 +169,7 @@ class MyTasks extends Component {
                                       <span>
                                         {
                                           Resources["actionByContact"][
-                                            currentLanguage
+                                          currentLanguage
                                           ]
                                         }
                                       </span>
@@ -180,7 +180,7 @@ class MyTasks extends Component {
                                       <span>
                                         {
                                           Resources["estimateTime"][
-                                            currentLanguage
+                                          currentLanguage
                                           ]
                                         }
                                       </span>
@@ -198,7 +198,7 @@ class MyTasks extends Component {
                                       <span>
                                         {
                                           Resources["startDate"][
-                                            currentLanguage
+                                          currentLanguage
                                           ]
                                         }
                                       </span>
@@ -209,7 +209,7 @@ class MyTasks extends Component {
                                       <span>
                                         {
                                           Resources["finishDate"][
-                                            currentLanguage
+                                          currentLanguage
                                           ]
                                         }
                                       </span>
@@ -230,7 +230,7 @@ class MyTasks extends Component {
                                         <td>
                                           <div className="contentCell tableCell-1">
                                             <button
-                                              className={!data.status ?"primaryBtn-2 btn smallBtn gridBtn disabled" :"primaryBtn-2 btn smallBtn gridBtn"}
+                                              className={!data.status ? "primaryBtn-2 btn smallBtn gridBtn disabled" : "primaryBtn-2 btn smallBtn gridBtn"}
                                               onClick={e =>
                                                 this.editStatus(e, data.id)
                                               }
@@ -317,7 +317,8 @@ class MyTasks extends Component {
               ref={ref => (this.simpleDialog = ref)}
               title={Resources["goEdit"][currentLanguage]}
             >
-              <div className="dropWrapper">
+              <div className="proForm">
+                <div className="dropWrapper">
                   <div className="fillter-status fillter-item-c fullInputWidth">
                     <label className="control-label">
                       {Resources.status[currentLanguage]}
@@ -506,6 +507,7 @@ class MyTasks extends Component {
                     </button>
                   </div>
                 </div>
+              </div>
             </SkyLight>
           </div>
         </div>
