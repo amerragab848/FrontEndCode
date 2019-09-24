@@ -69,6 +69,7 @@ class ViewWorkFlow extends Component {
             showPopup: false
         });
     }
+
     renderLevels(items) {
 
         let grouped = _.groupBy(items, 'arrange');
@@ -118,6 +119,7 @@ class ViewWorkFlow extends Component {
                                     </div>
                                 );
                             })}
+
                         </div>
                     </div>
                 </div>

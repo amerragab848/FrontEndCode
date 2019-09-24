@@ -43,7 +43,7 @@ class DropdownMelcous extends Component {
         }
         this.props.handleChange(value, this.props.name);
     };
- 
+
     handleBlur = () => {
         if (this.props.onBlur != undefined)
             this.props.onBlur(this.props.name, true);
@@ -56,7 +56,7 @@ class DropdownMelcous extends Component {
                 ({
                     ...styles,
                     backgroundColor: '#fff',
-                    width: '360px',
+                    width: this.props.isMulti ? '100%' : '360px',
                     maxWidth: '100%',
                     minHeight: '48px',
                     maxHeight: this.props.isMulti ? 'unset' : '48px',

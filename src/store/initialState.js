@@ -43,7 +43,8 @@ export default {
 			companyContact: [],
 			getingData: false,
 			companyList: [],
-			tabIndex: 0
+			tabIndex: 0,
+			userTabIndex: 0
 		},
 		Steps: {
 			currentStep: 0
