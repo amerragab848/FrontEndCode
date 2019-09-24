@@ -10,7 +10,7 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
-
+const _ = require('lodash');
 let arrColumn = ["arrange", "quantity", "itemCode"];
 
 class GridSetupWithFilter extends Component {
@@ -74,6 +74,7 @@ class GridSetupWithFilter extends Component {
       this.setState(state);
     }, 500);
   }
+
   onHeaderDrop = (source, target) => {
     const stateCopy = Object.assign({}, this.state);
 
@@ -98,6 +99,7 @@ class GridSetupWithFilter extends Component {
     });
     this.setState(reorderedColumns);
   };
+
   sortRows = (initialRows, sortColumn, sortDirection) => {
     const comparer = (a, b) => {
       if (sortDirection === "ASC") {
@@ -317,7 +319,7 @@ class GridSetupWithFilter extends Component {
     });
   }
 
-  getRowsFilter = (rows, filters) => {
+  getRowsFilter = (rows, _filters) => {
 
     if (this.state.filteredRows.length > 0) {
 
@@ -325,6 +327,7 @@ class GridSetupWithFilter extends Component {
 
       let matched = 0;
 
+      let filters = Object.keys(_filters).reduce((n, k) => (n[k] = _filters[k].toLowerCase(), n), {});
       if (Object.keys(filters).length > 1) {
 
         let Data = this.state.rows;

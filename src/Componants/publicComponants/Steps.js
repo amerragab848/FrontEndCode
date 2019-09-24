@@ -22,7 +22,7 @@ class Steps extends Component {
     /// click over steps in edit mode
     /// params: stepNo to specify the desired step
     setCurrentStep = stepNo => {
-        if (this.props.changeStatus == true || this.props.docId > 0) {
+        if (this.props.changeStatus == true || this.props.docId > 0 || this.props.isEdit == true) {
             let length = this.props.steps_defination.length;
             if (stepNo == length)
                 this.props.history.push({
@@ -73,7 +73,7 @@ class Steps extends Component {
     render() {
         let renderSteps = this.props.steps_defination.map((step, index) => {
             return (
-                this.props.changeStatus == true ?
+                this.props.changeStatus == true || this.props.isEdit == true ?
                     <Fragment key={"index-" + index}>
                         <div onClick={e => { this.toggleNextStep(e, step, index); }} className={'editView__tabs--title ' + (this.state.completedTabs[index] ? " " : this.state.stepNo == index ? " active" : "")}>
                             <p>{Resources[step.name][currentLanguage]}</p>
@@ -99,7 +99,7 @@ class Steps extends Component {
                 {/* Next & Previous */}
 
                 {/* Steps Active  */}
-                {this.props.changeStatus == true ?
+                {this.props.changeStatus == true || this.props.isEdit == true ?
                     <div className="editView__tabs">
                         <div className="editView__tabs">
                             {renderSteps}

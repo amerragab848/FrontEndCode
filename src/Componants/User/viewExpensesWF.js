@@ -1,119 +1,105 @@
-//sayd doing 
-//draw html and create levels and subjects titles
-
-// missing and not complated
-//create step Number on top of work flow  "when work flow is in multi level" 
 
 import React, { Component, Fragment } from 'react'
 import Moment from 'moment';
+import dataService from "../../Dataservice";
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/avatar/xavatarBig.svg"
 import CommentImg from "../../Styles/images/flowComment.png"
-import DistributionList from "../OptionsPanels/viewDistributionList";
+import LoadingSection from "../publicComponants/LoadingSection";
+import Resources from "../../resources.json";
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
-
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
-const _ = require('lodash')
-
-class ViewWorkFlow extends Component {
-
+const _ = require('lodash');
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+class viewExpensesWF extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
+            isloading: true,
             workFlowCycles: [],
             visualCycle: [],
-            projectId: this.props.projectId != null ? this.props.projectId : 0,
-            docId: this.props.docId != null ? this.props.docId : 0,
-            docType: this.props.docType != null ? this.props.docType : 0,
             showPopup: false,
-            comment: ''
-        }
+            comment: '',
+            currentLevel: {}
+
+        };
     }
 
     componentDidMount() {
-        let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.state.docId + '&docType=' + this.state.docType + '&projectId=' + this.state.projectId;
-
-        if (this.props.workFlowCycles.length === 0 && this.props.changeStatus === true) { //
-            this.props.actions.GetWorkFlowCycles(url);
-        }
+        dataService.GetDataGrid('GetExpensesWorkFlowSigntureByExpensesId?expensesId=' + this.props.expensesId).then(
+            result => {
+                let grouped = result.sort((a, b) => (a.arrangeLevel > b.arrangeLevel) ? 1 : ((b.arrangeLevel > a.arrangeLevel) ? -1 : 0));
+                let index = grouped.length - 1
+                console.log(grouped)
+                console.log(grouped[index])
+                this.setState({
+                    isloading: false,
+                    workFlowCycles: result,
+                    currentLevel: grouped[index]
+                });
+                // this.renderCycles(result);
+            }
+        )
     }
 
-    static getDerivedStateFromProps(nextProps, state) {
-        if (nextProps.workFlowCycles != state.workFlowCycles) {
-            return { workFlowCycles: nextProps.workFlowCycles };
-        }
-        return null
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.workFlowCycles !== this.props.workFlowCycles) {
-            this.renderCycles(this.props.workFlowCycles);
-        }
-    }
 
     showPopup(e) {
         if (e != "") {
-            this.setState({
-                showPopup: true,
-                comment: e
-            });
+            this.setState({ showPopup: true, comment: e });
         }
     }
 
     closePopup(e) {
-        this.setState({
-            showPopup: false
-        });
+        this.setState({ showPopup: false });
     }
 
     renderLevels(items) {
 
-        let grouped = _.groupBy(items, 'arrange');
+        let grouped = _.groupBy(items, 'arrangeLevel');
 
         let mapLevels = _.map(grouped, (i, index) => {
             return (
                 <div className="StepperNum1 StepperNum workFlowStep" key={index}>
                     <div>
-                        <div className={i[0].statusVal == null ? 'StepNumber pendingStep' : (i[0].statusVal === true ? "StepNumber approvalstep" : "StepNumber declineStep")}>
+                        <div className={i[0].status == null ? 'StepNumber pendingStep' : (i[0].status === true ? "StepNumber approvalstep" : "StepNumber declineStep")}>
                             <span className="Step-Line afterLine"></span>
                             <div className="StepNum">
-                                <p className="StepN zero">{i[0].arrange}</p>
+                                <p className="StepN zero">{i[0].arrangeLevel}</p>
                             </div>
                             <span className="Step-Line"></span>
                         </div>
                         <div className="MultiPeinding">
                             {i.map((level, idx) => {
                                 return (
-                                    <div key={idx} className={level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
-                                        <div className={level.statusVal == null ? "signature-h signaturePendingd" : "signature-h"}>
+                                    <div key={idx} className={level.status == null ? "card-box cardPending" : level.status === true ? "card-box cardApproval" : "card-box cardDeclined"}>
+
+                                        <div className={level.status == null ? "signature-h signaturePendingd" : "signature-h"}>
                                             <figure className="avatarProfile smallAvatarSize">
                                                 <img alt="" title="" src={Avatar} />
                                             </figure>
-                                            <div className="avatarName">
-                                                <h6>{level.contactName}</h6>
-                                                <p>{level.companyName}</p>
-                                            </div>
+                                            <div className="avatarName"> 
+                                             <h6>{level.contactName}</h6> 
+                                             <p>{level.companyName}</p>
+                                             </div>
                                         </div>
-                                        {level.statusVal != null ?
+
+                                        {level.status != null ?
                                             <div className="card-signature">
                                                 <img src={level.signature != null ? level.signature : Signature} alt="..." />
                                             </div>
                                             : null}
 
                                         <div className="Status__comment">
-                                            {level.statusVal != null ?
+                                            {level.status != null ?
                                                 <span>
                                                     {level.comment === null || level.comment !== "" ? null :
                                                         <img src={CommentImg} alt="Cooment" onClick={e => this.showPopup(level.comment)} />
                                                     }
                                                 </span> : null}
                                             <div className="box-statue">
-                                                <h5>{level.status}</h5>
-                                                <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>
+                                                <h5>{level.statusName}</h5>
+                                                <p>{Moment(level.requestDate).format('DD-MM-YYYY')}</p>
                                             </div>
                                         </div>
 
@@ -125,24 +111,25 @@ class ViewWorkFlow extends Component {
                     </div>
                 </div>
             )
-        })
+        });
 
         return mapLevels;
     }
 
     renderCycles(workFlowCycles) {
-        let cycles = workFlowCycles.map(cycle => {
+        let cycles = () => {
             return (
                 <div className="workflowWrapper" key={Math.random()} id='wfCycles'>
                     <div className="workflow-header">
-                        <h4><p className="zero"><span>{cycle.subject}</span><span>{"Currently at Level:" + cycle.currentLevel}</span></p><span> {"Sent in:" + Moment(cycle.creationDate).format('DD-MM-YYYY')}</span></h4>
+                        <h4><p className="zero"><span>{workFlowCycles[0].subject}</span><span>{"Currently at Level:" + workFlowCycles[0].arrangeLevel}</span></p>
+                            <span> {"Sent in:" + Moment(workFlowCycles[0].requestDate).format('DD-MM-YYYY')}</span></h4>
                     </div>
                     <div className="card-status">
-                        {this.renderLevels(cycle.levels)}
+                        {this.renderLevels(workFlowCycles[0].levels)}
                     </div>
                 </div>
             )
-        })
+        }
         this.setState({
             visualCycle: cycles
         });
@@ -152,6 +139,8 @@ class ViewWorkFlow extends Component {
     render() {
         return (
             <Fragment>
+                {this.state.isloading ? <LoadingSection /> : null}
+
                 <div className={this.state.showPopup === true ? "popupMedium active" : "popupMedium"}>
                     <button onClick={(e) => this.closePopup()} className="workflowComment__closeBtn">x</button>
                     <div className={this.state.showPopup === true ? "ui modal smallModal active workflowComment" : "ui modal smallModal workflowComment"} id="smallModal2">
@@ -160,28 +149,21 @@ class ViewWorkFlow extends Component {
                         <button onClick={(e) => this.closePopup()} className="smallBtn primaryBtn-1 btn approve">Close</button>
                     </div>
                 </div>
+                {this.state.workFlowCycles.length ?
 
-                {this.state.visualCycle}
-                <Fragment>
-                    <DistributionList id={this.props.docId} docType={this.props.docType} />
-                </Fragment>
+                    <div className="workflowWrapper" id='wfCycles'>
+                        <div className="workflow-header">
+                            <h4><p className="zero"><span>{this.state.currentLevel.subject}</span><span>{"Currently at Level:" + this.state.currentLevel.arrangeLevel}</span></p>
+                                <span> {"Sent in:" + Moment(this.state.currentLevel.requestDate).format('DD-MM-YYYY')}</span></h4>
+                        </div>
+                        <div className="card-status">
+                            {this.renderLevels(this.state.workFlowCycles)}
+                        </div>
+                    </div> : null}
+                {/* {this.state.visualCycle} */}
             </Fragment>
         )
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        workFlowCycles: state.communication.workFlowCycles,
-        hasWorkflow: state.communication.hasWorkflow,
-        changeStatus: state.communication.changeStatus
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(communicationActions, dispatch)
-    };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(ViewWorkFlow);
-
+export default viewExpensesWF;

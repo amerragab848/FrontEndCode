@@ -7,7 +7,10 @@ import Timesheet from './Timesheet';
 import Expenses from './Expenses';
 import DocumentEmailNotification from './DocumentEmailNotification';
 import Resources from "../../resources.json";
-
+import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
+import * as actions from '../../store/actions/Adminstration';
+import { bindActionCreators } from 'redux';
 let currentLanguage =
   localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class Index extends Component {
@@ -24,7 +27,7 @@ class Index extends Component {
     return (
       <div className="mainContainer main__fulldash">
         <div className="customeTabs">
-          <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
+          <Tabs selectedIndex={this.props.Adminstration.userTabIndex} onSelect={tabIndex => this.props.actions.userSettingsTabIndex(tabIndex)}>
             <TabList>
               <Tab> {Resources["profile"][currentLanguage]}</Tab>
               <Tab> {Resources["expenses"][currentLanguage]}</Tab>
@@ -54,4 +57,16 @@ class Index extends Component {
   }
 }
 
-export default Index;
+//export default ;
+const mapStateToProps = (state) => {
+
+  let sState = state;
+  return sState;
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+}
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Index));
