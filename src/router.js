@@ -20,7 +20,7 @@ import CommonLog from "./Pages/Communication/CommonLog";
 import PrivacySetting from '../src/Componants/User/PrivacySetting';
 import ProfileSetting from "../src/Componants/User/index";
 import TimeSheetWorkFlow from "../src/Componants/DashBoardDetails/TimeSheetWorkFlow";
-import GetExpensesUserForEdit from "../src/Componants/User/GetExpensesUserForEdit";
+import expensesUserAddEdit from "../src/Componants/User/expensesUserAddEdit";
 import Companies from './Componants/GeneralSetting/Companies/Index';
 import AddEditCompany from './Componants/GeneralSetting/Companies/AddEditCompany';
 import Contacts from './Componants/GeneralSetting/Contacts/Index';
@@ -207,12 +207,11 @@ let originalRoutes = [
     , <Route key='r-23' path="/Contacts/:companyID" component={Contacts} />
     , <Route key='r-24' path="/AddEditCompany/:companyID" component={AddEditCompany} />
     , <Route key='r-25' path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
-    , <Route key='r-26' path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
+    , <Route key='r-26' path="/expensesUserAddEdit" component={expensesUserAddEdit} />
     , <Route key='r-27' path="/Contacts/:companyID" component={Contacts} />
     , <Route key='r-28' path="/AddEditCompany/:companyID" component={AddEditCompany} />
     , <Route key='r-29' path="/ProfileSetting" component={ProfileSetting} />
     , <Route key='r-30' path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
-    , <Route key='r-31' path="/GetExpensesUserForEdit" component={GetExpensesUserForEdit} />
     , <Route key='r-32' path="/MonthlyTasksDetails" component={MonthlyTasksDetails} />
     , <Route key='r-33' path="/MonitorTasks" component={MonitorTasks} />
     , <Route key='r-34' path="/AddTimeSheet" component={AddTimeSheet} />

@@ -1311,7 +1311,8 @@ body {
     padding-left: 130px;
     padding-right: 40px;
     padding-top: 72px;
-    background-image: linear-gradient(to bottom, #f5f5f6 0%, #f5f5f6 26%, #fafbfc 0%, #fafbfc 100%);
+    /* background-image: linear-gradient(to bottom, #f5f5f6 0%, #f5f5f6 26%, #fafbfc 0%, #fafbfc 100%); */
+    background: #fafbfc;
 }
 
 #ascrail2003,
@@ -2414,14 +2415,14 @@ h1, h2, h3, h4, h5 {
     padding-right: 5px;
 }
 
-.mainSide .header-logo-menu .content-collapse .procoorLogo a {
+.mainSide .header-logo-menu .content-collapse .procoorLogo a, .main-header .header-content .nav-left li.procoor__logo a {
     display: inline-block;
     width: 48px;
     height: 48px;
     padding: 6px
 }
 
-.mainSide .header-logo-menu .content-collapse .procoorLogo a img {
+.mainSide .header-logo-menu .content-collapse .procoorLogo a img, .main-header .header-content .nav-left li.procoor__logo a img {
     width: 100%;
     height: 100%;
 }
@@ -3882,11 +3883,6 @@ h1, h2, h3, h4, h5 {
     -webkit-transition: 0.3s;
     transition: 0.3s;
     background-color: #E9ECF0;
-}
-
-.subiTabsContent {
-    width: 100%;
-    padding-bottom: 40px;
 }
 
 .subiTabsContent .subiConHead {
@@ -5692,11 +5688,21 @@ h1, h2, h3, h4, h5 {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+    margin: 0;
+    height: 100%;
 }
 
 .main-header .header-content .nav-right li {
     margin-right: 24px;
     cursor: pointer;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid transparent;
+}
+
+.main-header .header-content .nav-right li.active {
+    border-bottom: 2px solid #858d9e;
 }
 
 .main-header .header-content .nav-right li:first-child {
@@ -5711,7 +5717,7 @@ h1, h2, h3, h4, h5 {
     margin-right: 48px;
 }
 
-.main-header .header-content .nav-right li.notifi-icon {
+.main-header .header-content .nav-right li.notifi-icon a, .main-header .header-content .nav-right li.notifi-icon {
     position: relative;
 }
 
@@ -6381,6 +6387,7 @@ h1, h2, h3, h4, h5 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-top: 0;
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:last-of-type {
@@ -7191,7 +7198,7 @@ h1, h2, h3, h4, h5 {
     flex-flow: column;
     align-items: center;
     width: 257px;
-    padding: 0 20px;
+    padding: 0;
     position: relative;
     z-index: 9;
 }
@@ -7222,14 +7229,30 @@ h1, h2, h3, h4, h5 {
     transition: all 0.3s ease-in-out;
     text-align: center;
     position: relative;
-    padding: 0 5px 12px 0;
+    padding: 0 0 12px 0;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
-    position: absolute;
+    /* position: absolute;
     bottom: 15px;
     left: 12px;
-    font-size: 12px;
+    font-size: 12px; */
+
+    position: absolute;
+    right: calc(100% - 50px);
+    position: absolute;
+    height: 50%;
+    top: 16px;
+    font-family: 'Muli';
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.45;
+    letter-spacing: -0.18px;
+    color: #252833;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .status {
@@ -8027,7 +8050,7 @@ h1, h2, h3, h4, h5 {
     justify-content: center;
     position: relative;
     position: absolute;
-    top: 150%;
+    top: 100%;
     z-index: 999;
     width: 345px;
     right: -162px;
@@ -8183,6 +8206,7 @@ h1, h2, h3, h4, h5 {
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    border-bottom: none
 }
 
 .notifiBar .smallNotifiBar .notifi__tabs ul li .imgWrapper {
@@ -15457,10 +15481,6 @@ body {
     right: 10px !important;
 }
 
-.header__search .ui.input > input {
-    text-align: right;
-}
-
 /* layout -ar css */
 /* templates approval ar */
 .rowsPaginations button i {
@@ -15670,9 +15690,6 @@ table edition
 }
 
 /* sla7 22/1/2019*/
-.mainContainer {
-    background-image: linear-gradient(to bottom, #f5f5f6 100%, #f5f5f6 26%, #fafbfc 0%, #fafbfc 0%);
-}
 
 .mainContainer .ui.fluid.selection.dropdown.singleDropDown {
     padding: 0;
@@ -17192,20 +17209,18 @@ tfoot tr td p {
 }
 
 .noTabs__document .doc-container .step-content {
-    width: 835px;
+    /* width: 835px; */
     border-left: 0;
     background-color: #ffffff;
-    margin: auto;
     display: block;
-    margin: 0 auto;
-    padding-bottom: 70px;
+    /* margin: 0 auto; */
     position: unset !important;
     z-index: unset !important;
-
     width: 100%;
     padding: 0;
     padding-left: 56px;
     padding-right: 40px;
+    padding-bottom: 80px;
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform,
@@ -17219,10 +17234,6 @@ tfoot tr td p {
 
 .noTabs__document .doc-container .step-content .documents-stepper.noTabs__document .doc-container {
     border: 0;
-}
-
-.noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer {
-    margin-top: 0;
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform {
@@ -17760,8 +17771,8 @@ button.companies_icon {
     position: absolute;
     content: "";
     left: 0;
-    top: 103px;
-    bottom: 103px;
+    top: 33%;
+    bottom: 33%;
     width: 1px;
     background-color: #E9ECF0;
     z-index: 2;
@@ -21050,21 +21061,34 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     margin-right: 24px;
 }
 
+.main-header .header-content .nav-right li a.header__search--container {
+    height: 100%
+}
+
+.header__search span  {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
 .header__search {
+
     display: flex;
     align-items: flex-end;
     padding: 0 5px;
     border-bottom: 2px solid transparent;
     transition: all 0.4s ease-in-out;
+    height: 100%
 }
 
 .header__search:hover, .header__search.active {
-    border-bottom: 2px solid #E9ECF0;
+    border-bottom: 2px solid #858d9e;
 }
 
 .header__search .ui.input {
     width: 0;
     transition: all 0.4s ease-in-out;
+    height: 100%
 }
 
 .header__search:hover .ui.input,
@@ -21080,6 +21104,8 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     background-color: #ffffff;
     font-size: 14px;
     font-family: cairo-b; 
+    text-align: right;
+    padding-bottom: 0;
 }
 
 .one__tab.one_step .doc-container .step-content .main__header {
@@ -22087,4 +22113,9 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 
     .customD_Menu  {
         text-align: right;
+    }
+
+    .projectDashboard {
+        padding-left: 0;
+        padding-right: 88px
     }

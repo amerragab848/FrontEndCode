@@ -235,10 +235,7 @@ class siteInstructionsAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                this.setState({
-                    [subSelectedValue]: targetFieldSelected,
-                    [subDatasource]: result
-                });
+                this.setState({ [subSelectedValue]: targetFieldSelected, [subDatasource]: result });
             }
         });
     }
@@ -248,59 +245,35 @@ class siteInstructionsAddEdit extends Component {
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
-                    this.setState({
-                        selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
-                    });
+                    this.setState({ selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId } });
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
                 }
-
                 let toCompanyId = this.props.document.toCompanyId;
                 if (toCompanyId) {
-                    this.setState({
-                        selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
-                    });
-
+                    this.setState({ selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId } });
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
                 }
             }
-            this.setState({
-                companies: [...result]
-            });
+            this.setState({ companies: [...result] });
         });
 
-        dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-            // if (isEdit) {
-            //     let contractId = this.state.document.contractId;
-            //     let contract = {};
-            //     if (contractId) {
-            //         contract = _.find(result, function (i) { return i.value == contractId; });
-
-            //         this.setState({
-            //             selectedContract: contract
-            //         });
-            //     }
-            // }
-            this.setState({
-                contracts: [...result]
+        if (!isEdit) {
+            dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+                this.setState({ contracts: [...result] });
             });
-        });
+        }
 
         dataservice.GetDataList("GetInspectionRequest?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-
-            this.setState({
-                inspectionRequests: [...result]
-            });
 
             if (isEdit) {
                 let inspectionRequestId = this.props.document.inspectionRequestId;
                 let inspectionRequest = {};
                 if (inspectionRequestId) {
                     inspectionRequest = _.find(result, function (i) { return i.value == inspectionRequestId; });
-                    this.setState({
-                        selecetedinspectionRequest: inspectionRequest
-                    });
+                    this.setState({ selecetedinspectionRequest: inspectionRequest });
                 }
             }
+            this.setState({ inspectionRequests: [...result] });
         });
 
 
@@ -317,7 +290,6 @@ class siteInstructionsAddEdit extends Component {
                 document: updated_document
             });
         }
-
     };
 
     handleChange(e, field) {

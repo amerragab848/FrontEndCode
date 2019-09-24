@@ -87,6 +87,11 @@ export default function (state = initialState.app.adminstration, action) {
             return {
                 ...state
             };
+        case types.userSettingsTabIndex:
+            state.userTabIndex = action.data
+            return {
+                ...state
+            };
         default:
             return {
                 ...state
