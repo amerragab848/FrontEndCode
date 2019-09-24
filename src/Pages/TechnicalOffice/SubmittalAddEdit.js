@@ -2089,10 +2089,10 @@ class SubmittalAddEdit extends Component {
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
                       {this.state.docId > 0 && this.state.isViewMode === false && this.state.currentStep === 0 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={883} EditAttachments={3261} ShowDropBox={3581} ShowGoogleDrive={3582} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-                      {this.state.docId > 0 && this.state.currentStep === 0 && this.state.isViewMode === false ? (
+                      {this.state.docId > 0 && this.state.currentStep === 0 ? (
                         <Fragment>
                           <div className="document-fields tableBTnabs">
-                            <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                            <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
                           </div>
                         </Fragment>
                       ) : null}

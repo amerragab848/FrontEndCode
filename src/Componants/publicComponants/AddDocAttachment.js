@@ -34,7 +34,8 @@ class AddDocAttachment extends Component {
       selected: {},
       showDeleteModal: false,
       currentId: null,
-      storedDocuments: []
+      storedDocuments: [],
+      isViewMode: this.props.isViewMode
     };
   }
 
@@ -57,6 +58,10 @@ class AddDocAttachment extends Component {
       }
     }
   };
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ isViewMode: nextProps.isViewMode });
+  }
 
   componentWillUnmount() {
     this.props.actions.ViewDocsAttachment([]);
@@ -204,8 +209,10 @@ class AddDocAttachment extends Component {
 
   render() {
 
-    const columnsDocument = [
-      {
+    let columnsDocument = [];
+
+    if (this.state.isViewMode === false) {
+      columnsDocument.push({
         Header: Resources["delete"][currentLanguage],
         accessor: "id",
         Cell: ({ row }) => {
@@ -216,7 +223,10 @@ class AddDocAttachment extends Component {
           );
         },
         width: 70
-      },
+      })
+    }
+
+    columnsDocument.push(
       {
         Header: Resources["subject"][currentLanguage],
         accessor: "subject",
@@ -243,7 +253,7 @@ class AddDocAttachment extends Component {
           </span>
         )
       }
-    ];
+    );
 
     const columns = [
       {
@@ -286,9 +296,10 @@ class AddDocAttachment extends Component {
 
     return (
       <Fragment>
-        <button className="primaryBtn-2 btn meduimBtn" type="button" onClick={() => this.simpleDialog.show()}>
-          {Resources["addDocAttachment"][currentLanguage]}
-        </button>
+        {this.state.isViewMode === false ?
+          <button className="primaryBtn-2 btn meduimBtn" type="button" onClick={() => this.simpleDialog.show()}>
+            {Resources["addDocAttachment"][currentLanguage]}
+          </button> : null}
         <br />
         <br />
         <div className="precycle-grid modalTable">
