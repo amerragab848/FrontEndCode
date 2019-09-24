@@ -46,7 +46,7 @@ export default class uploadSignture extends React.Component {
     uploadSign = () => {
         if (this.state.sign) {
             let formData = new FormData();
-            formData.append("file", this.state.sign)
+            formData.append("file", this.state.sign[0])
             api.postFile('UploadSignature', formData).then(res => {
                 this.setState({ signIamge: signiturePath })
                 toast.success(resources["operationSuccess"][currentLanguage]);
@@ -74,7 +74,7 @@ export default class uploadSignture extends React.Component {
     uploadPP = () => {
         if (this.state.profile) {
             let formData = new FormData();
-            formData.append("file", this.state.profile)
+            formData.append("file", this.state.profile[0])
             api.postFile('UploadPhoto', formData).then(res => {
                 this.setState({ profileIamge: profilePath })
                 toast.success(resources["operationSuccess"][currentLanguage]);
@@ -131,8 +131,7 @@ export default class uploadSignture extends React.Component {
                         </div>
 
                         <div className="a7medImg">
-                            {this.state.signIamge ?
-                                <img alt='' src={this.state.signIamge} /> : null}
+                            {this.state.signIamge ? <img alt='' src={this.state.signIamge} /> : null}
                         </div>
                     </div>
                     <div>
@@ -176,9 +175,7 @@ export default class uploadSignture extends React.Component {
                             <button className="primaryBtn-1 btn smallBtn" onClick={this.uploadPP}>{resources['uploadPhoto'][currentLanguage]}</button>
                         </div>
                         <div className="a7medImg">
-                            {this.state.profileIamge ? <img
-                                src={this.state.profileIamge}
-                            /> : null}
+                            {this.state.profileIamge ? <img src={this.state.profileIamge} /> : null}
                         </div>
                     </div>
                 </div>

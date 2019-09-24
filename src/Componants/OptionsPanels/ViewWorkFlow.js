@@ -107,8 +107,7 @@ class ViewWorkFlow extends Component {
                                         <div className="Status__comment">
                                             {level.statusVal != null ?
                                                 <span>
-                                                    {level.comment === null || level.comment !== "" ? null :
-                                                        <img src={CommentImg} alt="Cooment" onClick={e => this.showPopup(level.comment)} />
+                                                    {level.comment ? <img src={CommentImg} alt="Cooment" onClick={e => this.showPopup(level.comment)} /> : null
                                                     }
                                                 </span> : null}
                                             <div className="box-statue">

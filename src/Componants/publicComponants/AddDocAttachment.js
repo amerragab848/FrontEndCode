@@ -47,6 +47,7 @@ class AddDocAttachment extends Component {
       });
 
       let currentData = this.props.attachDocuments;
+
       if (currentData.length === 0) {
         dataservice.GetDataGrid("GetCommunicationDocsAttachDoc?projectId=" + this.state.projectId + "&docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
           this.setState({
@@ -289,8 +290,8 @@ class AddDocAttachment extends Component {
         <br />
         <div className="precycle-grid modalTable">
           {
-            this.props.attachDocuments.length > 0 ?
-              <ReactTable data={this.props.attachDocuments} id="attachDocuments"
+            this.state.storedDocuments.length > 0 ?
+              <ReactTable data={this.state.storedDocuments} id="attachDocuments"
                 columns={columnsDocument} defaultPageSize={5}
                 noDataText={Resources["noData"][currentLanguage]}
                 className="-striped -highlight" /> : null
