@@ -12,9 +12,7 @@ import ReactTable from "react-table";
 import { withRouter } from "react-router-dom";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Config from "../../Services/Config.js";
@@ -1257,7 +1255,7 @@ class inspectionRequestAddEdit extends Component {
                                                                                 docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                                             {this.viewAttachments()}
                                                                             <div className="document-fields tableBTnabs">
-                                                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                                {this.state.docId > 0  && this.state.isViewMode === false? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                                             </div>
                                                                         </Fragment>
                                                                         : null}

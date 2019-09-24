@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom"; 
+import { withRouter } from "react-router-dom";
 import "../../Styles/css/rodal.css";
 import CryptoJS from 'crypto-js';
 import Resources from "../../resources.json";
@@ -16,7 +16,7 @@ import SkyLight from "react-skylight";
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-let selectedRows = []; 
+let selectedRows = [];
 
 class AddDocAttachment extends Component {
   constructor(props) {
@@ -47,7 +47,6 @@ class AddDocAttachment extends Component {
       });
 
       let currentData = this.props.attachDocuments;
-
       if (currentData.length === 0) {
         dataservice.GetDataGrid("GetCommunicationDocsAttachDoc?projectId=" + this.state.projectId + "&docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
           this.setState({
@@ -58,6 +57,10 @@ class AddDocAttachment extends Component {
       }
     }
   };
+
+  componentWillUnmount() {
+    this.props.actions.ViewDocsAttachment([]);
+  }
 
   fillDropDowns(event, url, label, id) {
     dataservice.GetDataList(url + event.value, label, id).then(result => {
@@ -290,8 +293,8 @@ class AddDocAttachment extends Component {
         <br />
         <div className="precycle-grid modalTable">
           {
-            this.state.storedDocuments.length > 0 ?
-              <ReactTable data={this.state.storedDocuments} id="attachDocuments"
+            this.props.attachDocuments.length > 0 ?
+              <ReactTable data={this.props.attachDocuments} id="attachDocuments"
                 columns={columnsDocument} defaultPageSize={5}
                 noDataText={Resources["noData"][currentLanguage]}
                 className="-striped -highlight" /> : null
