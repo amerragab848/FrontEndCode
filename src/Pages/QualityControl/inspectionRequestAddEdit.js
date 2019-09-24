@@ -1255,7 +1255,7 @@ class inspectionRequestAddEdit extends Component {
                                                                                 docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                                             {this.viewAttachments()}
                                                                             <div className="document-fields tableBTnabs">
-                                                                                {this.state.docId > 0  && this.state.isViewMode === false? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                                             </div>
                                                                         </Fragment>
                                                                         : null}

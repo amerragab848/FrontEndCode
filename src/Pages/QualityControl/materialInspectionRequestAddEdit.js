@@ -1263,7 +1263,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                     {this.viewAttachments()}
                                                                     <Fragment>
                                                                         <div className="document-fields tableBTnabs">
-                                                                            {this.state.docId > 0 && this.state.isViewMode === false ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                            {this.state.docId > 0  ? <AddDocAttachment projectId={projectId} isViewMode={ this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                                         </div>
                                                                     </Fragment>
                                                                     {this.props.changeStatus === true ?
@@ -1320,8 +1320,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                         </button> :
                                                                         this.showBtnsSaving()}
                                                                 </div>
-                                                            }
-
+                                                            } 
                                                         </Form>
                                                     )}
                                                 </Formik>
