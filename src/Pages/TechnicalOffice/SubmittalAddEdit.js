@@ -56,11 +56,17 @@ const validationSchemaForItem = Yup.object().shape({
   reviewResult: Yup.string().required(Resources["selectResult"][currentLanguage]).nullable(true)
 });
 
-const validationSchemaForCyclePopUp = Yup.object().shape({
+const validationSchemaForItemPopUp = Yup.object().shape({
   description: Yup.string().required(Resources["description"][currentLanguage]),
   arrange: Yup.number().required(Resources["onlyNumbers"][currentLanguage]),
-  refDoc: Yup.string().max(450, Resources["selectRefNo"][currentLanguage]),
+  refDoc: Yup.string().max(100, (Resources["maxLength"][currentLanguage] + " 100")),
   reviewResult: Yup.string().required(Resources["selectResult"][currentLanguage]).nullable(true)
+});
+
+const validationSchemaForCyclePopUp = Yup.object().shape({
+  subject: Yup.string().required(Resources["description"][currentLanguage]),
+  arrange: Yup.number().required(Resources["onlyNumbers"][currentLanguage]),
+  approvalStatusId: Yup.string().required(Resources["selectResult"][currentLanguage]).nullable(true)
 });
 
 let docId = 0;
@@ -181,7 +187,8 @@ class SubmittalAddEdit extends Component {
       selectedCycleAprrovalStatus: { label: Resources.selectResult[currentLanguage], value: "0" },
       selectedNewFromContactCycles: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
       selectedNewFromCompanyCycles: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
-      type: ""
+      type: "",
+      viewCycle: false
     };
 
     if ((!Config.IsAllow(220)) && (!Config.IsAllow(221)) && !Config.IsAllow(223)) {
@@ -311,6 +318,7 @@ class SubmittalAddEdit extends Component {
       approvalStatusId: "",
       arrange: "1",
       flowCompanyId: "",
+      flowContactId: "",
       fromContactId: "",
       approvalAction: "1"
     };
@@ -1346,7 +1354,8 @@ class SubmittalAddEdit extends Component {
       selectedNewFromContactCycles: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
       selectedNewFromCompanyCycles: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       addCycleSubmital: submittalCycle,
-      addNewCycle: true
+      addNewCycle: true,
+      viewCycle: true
     });
     this.simpleDialog2.show();
   }
@@ -1357,7 +1366,12 @@ class SubmittalAddEdit extends Component {
 
     let saveCycle = this.state.addCycleSubmital;
 
+    let arrangeCycle = this.state.documentCycle.arrange;
+
+    saveCycle.arrange = arrangeCycle ? arrangeCycle + 1 : saveCycle + 1
+
     saveCycle.docDate = moment(saveCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+
     dataservice.addObject("AddLogSubmittalCycles", saveCycle).then(result => {
 
       let originalData = this.state.submittalItemData;
@@ -1367,7 +1381,8 @@ class SubmittalAddEdit extends Component {
       this.setState({
         submittalItemData: originalData,
         addNewCycle: false,
-        isLoading: false
+        isLoading: false,
+        viewCycle: false
       });
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(ex => {
@@ -1403,7 +1418,6 @@ class SubmittalAddEdit extends Component {
       submittalItem.submitalDate = moment();
       submittalItem.refDoc = "";
       submittalItem.arrange = maxArrange != undefined ? (maxArrange.arrange != null ? maxArrange.arrange + 1 : 1) : 1;
-      //this.changeCurrentStep(3);
       this.setState({
         itemsDocumentSubmital: submittalItem
 
@@ -1897,7 +1911,6 @@ class SubmittalAddEdit extends Component {
                                         </div>
                                       </div>
                                     </div>
-
                                     <div className="linebylineInput">
                                       <div className="inputDev ui input input-group date NormalInputDate">
                                         <ModernDatepicker startDate={this.state.documentCycle.approvedDate} title="dateApproved"
@@ -2065,27 +2078,12 @@ class SubmittalAddEdit extends Component {
                                       }} />
                                   </div>
                                 </div>
-                                {/* <div className="slider-Btns">
-                                  {this.state.currentStep === 2 ? (
-                                    <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(3)}>
-                                      {Resources["next"][currentLanguage]}
-                                    </button>
-                                  ) : null}
-                                </div> */}
-                              </Fragment> :
-                              null
+                              </Fragment> : null
                           }
                         </Fragment>
                       }
                     </Fragment>
                     )}
-                  {/* <div className="slider-Btns">
-                    {this.state.currentStep === 1 && this.props.changeStatus === true ? (
-                      <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>
-                        {Resources["next"][currentLanguage]}
-                      </button>
-                    ) : null}
-                  </div> */}
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
                       {this.state.docId > 0 && this.state.isViewMode === false && this.state.currentStep === 0 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={883} EditAttachments={3261} ShowDropBox={3581} ShowGoogleDrive={3582} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
@@ -2135,13 +2133,12 @@ class SubmittalAddEdit extends Component {
           {this.state.viewForEdit === true ? <SkyLight ref={ref => (this.simpleDialog1 = ref)} beforeClose={this._executeBeforeModalClose}>
             <div className="ui modal largeModal">
               <Formik initialValues={{ ...this.state.itemsDocumentSubmital }}
-                validationSchema={validationSchemaForCyclePopUp}
+                validationSchema={validationSchemaForItemPopUp}
                 enableReinitialize={true}
                 onSubmit={values => { this.editItems(); }}>
                 {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                   <Form className="dropWrapper" onSubmit={handleSubmit}>
                     <div className=" proForm customProform">
-
                       <div className="fillter-status fillter-item-c">
                         <label className="control-label">
                           {Resources["description"][currentLanguage]}
@@ -2229,14 +2226,14 @@ class SubmittalAddEdit extends Component {
                     </div>
                     <div className="fillter-status fillter-item-c">
                       <label className="control-label">
-                        {Resources.description[currentLanguage]}
+                        {Resources.subject[currentLanguage]}
                       </label>
-                      <div className={"ui input inputDev " + (errors.description && touched.description ? "has-error" : !errors.description && touched.description ? "has-success" : "")}>
-                        <input name="description" className="form-control fsadfsadsa"
-                          placeholder={Resources.description[currentLanguage]} autoComplete="off"
-                          value={this.state.addCycleSubmital.description} onBlur={e => { handleBlur(e); handleChange(e); }}
-                          onChange={e => this.handleChangeCyclesPopUp(e, "description")} />
-                        {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
+                      <div className={"ui input inputDev " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")}>
+                        <input name="subject" className="form-control fsadfsadsa"
+                          placeholder={Resources.subject[currentLanguage]} autoComplete="off"
+                          value={this.state.addCycleSubmital.subject} onBlur={e => { handleBlur(e); handleChange(e); }}
+                          onChange={e => this.handleChangeCyclesPopUp(e, "subject")} />
+                        {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                       </div>
                     </div>
                     <div className="fillter-status fillter-item-c radioBtnDrop">
@@ -2254,19 +2251,8 @@ class SubmittalAddEdit extends Component {
                         <label>{Resources.closed[currentLanguage]}</label>
                       </div>
                     </div>
-                    <div className="customDatepicker fillter-status fillter-item-c " style={{ marginBottom: '0' }}>
-                      <div className="proForm datepickerContainer fillter-status fillter-item-c ">
-                        <label className="control-label">
-                          {Resources.cycleDate[currentLanguage]}
-                        </label>
-                        <div className="linebylineInput">
-                          <div className="inputDev ui input input-group date NormalInputDate">
-                            <ModernDatepicker startDate={this.state.addCycleSubmital.docDate}
-                              handleChange={e => this.handleChangeDateCyclesPopUp(e, "docDate")} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <ModernDatepicker title="cycleDate" startDate={this.state.addCycleSubmital.docDate}
+                      handleChange={e => this.handleChangeDateCyclesPopUp(e, "docDate")} />
                     <div className="fillter-status fillter-item-c">
                       <label className="control-label">
                         {Resources.arrange[currentLanguage]}
@@ -2278,12 +2264,15 @@ class SubmittalAddEdit extends Component {
                         {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
                       </div>
                     </div>
-                    <Dropdown title="approvalStatus" data={this.state.approvales}
+                    <Dropdown title="approvalStatus"
+                      data={this.state.approvales}
                       selectedValue={this.state.selectedCycleAprrovalStatus}
                       handleChange={event => this.handleChangeDropDownCyclesPopUp(event, "approvalStatusId", false, "", "", "", "selectedCycleAprrovalStatus")}
-                      onChange={setFieldValue} onBlur={setFieldTouched}
+                      onChange={setFieldValue}
+                      onBlur={setFieldTouched}
                       error={errors.approvalStatusId} touched={touched.approvalStatusId}
                       name="approvalStatusId" id="approvalStatusId" />
+
                     <div className="linebylineInput valid-input mix_dropdown">
                       <label className="control-label">
                         {Resources.fromCompany[currentLanguage]}
