@@ -2208,7 +2208,7 @@ class SubmittalAddEdit extends Component {
             </div>
           </SkyLight> : null}
 
-           <SkyLight ref={ref => (this.simpleDialog2 = ref)}>
+          <SkyLight ref={ref => (this.simpleDialog2 = ref)}>
             <div className="ui modal largeModal proForm ">
               <Formik initialValues={{ ...this.state.addCycleSubmital }}
                 validationSchema={validationSchemaForCyclePopUp}
@@ -2320,7 +2320,7 @@ class SubmittalAddEdit extends Component {
                 )}
               </Formik>
             </div>
-          </SkyLight> 
+          </SkyLight>
         </div>
       </div>
     );
