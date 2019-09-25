@@ -78,7 +78,6 @@ class EditAccount extends Component {
             let alternativAccountId = null;
 
             dataservice.GetRowById('GetAccountById?id=' + id).then(result => {
-                console.log(result)
                 let document = {
                     userName: result.userName,
                     oldUserName: result.userName,
@@ -107,10 +106,10 @@ class EditAccount extends Component {
                 }
 
                 accountOwnerId = result.accountOwnerId;
-                companyName = result.companyName;
-                contactName = result.contactName;
-                companyId = result.companyId;
-                contactId = result.contactId;
+                companyName = result.supervisorCompanyName;
+                contactName = result.supervisorName;
+                companyId = result.contactSupervisorId;
+                contactId = result.supervisorAccountId;
                 groupId = result.groupId;
                 groupName = result.groupName;
                 alternativAccountId = result.alternativAccountId;
