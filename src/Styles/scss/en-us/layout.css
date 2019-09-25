@@ -21798,17 +21798,17 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
         padding: 0 10px;
     } */
 
-    .editView__tabs::-webkit-scrollbar {
-        height: 5px;
-    }
- 
-    .notifiError.approved {
-        background-color: #39BD3D !important;
-    }
+.editView__tabs::-webkit-scrollbar {
+    height: 5px;
+}
+
+.notifiError.approved {
+    background-color: #39BD3D !important;
+}
+
 .skylight-wrapper  .slider-Btns {
     text-align: center
 }
-
 
 .mainContainer:not(.main__fulldash) .noTabs__document {
     margin-left: -40px;
