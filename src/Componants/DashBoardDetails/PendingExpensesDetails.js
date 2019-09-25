@@ -236,7 +236,6 @@ class PendingExpensesDetails extends Component {
   componentDidMount() {
 
     //    this.props.actions.RouteToTemplate();
-
     Api.get("GetExpensesWorkFlowTransactionByContactId").then(result => {
 
       this.setState({
@@ -282,12 +281,15 @@ class PendingExpensesDetails extends Component {
 
   onRowClick = (obj) => {
     if (this.state.RouteEdit !== '') {
+      console.log(obj)
       let objRout = {
-        expenseId: obj.expenseId,
+        id: obj.expenseId,
         workFlowId: obj.workFlowId,
         workFlowItemId: obj.workFlowItemId,
         arrangeLevel: obj.arrangeLevel,
-        cycleId: obj.cycleId
+        cycleId: obj.cycleId,
+        currentArrange: obj.currentArrange,
+        transactionId: obj.transactionId,
       }
       let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
       let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);

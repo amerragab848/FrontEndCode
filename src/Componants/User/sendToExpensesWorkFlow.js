@@ -7,8 +7,13 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import LoadingSection from "../publicComponants/LoadingSection";
+import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
+import * as AdminstrationActions from '../../store/actions/Adminstration';
+import { bindActionCreators } from 'redux';
 import { SkyLightStateless } from "react-skylight";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 //const _ = require('lodash')
 
 const validationSchema = Yup.object().shape({
@@ -47,15 +52,16 @@ class sendToExpensesWorkFlow extends Component {
 
     save(values, resetForm) {
         this.setState({ Loading: true });
-        let obj = values
+        let obj = values;
+
         values.accountId = this.state.selectedApprovedTo.value;
         values.workFlowId = this.state.selectedWF.value;
         dataService.addObject('sendToExpensesWorkFlow', obj).then(
             result => {
                 this.setState({ Loading: false });
-                this.props.viewWorkFlow();
                 this.props.closeModal();
-
+                this.props.viewWorkFlow();
+                this.props.actions.expenseWorkFlow();
                 resetForm();
                 //return ViewWork
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
@@ -122,5 +128,10 @@ class sendToExpensesWorkFlow extends Component {
         );
     }
 }
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(AdminstrationActions, dispatch)
+    };
+}
+export default withRouter(connect(null, mapDispatchToProps)(sendToExpensesWorkFlow));
 
-export default sendToExpensesWorkFlow;
