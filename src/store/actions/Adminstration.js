@@ -185,3 +185,14 @@ export function userSettingsTabIndex(userTabIndex) {
 
     }
 }
+
+export function expenseWorkFlow() {
+
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.EXPENSEWORKFLOW,
+            data: true
+        });
+
+    }
+}

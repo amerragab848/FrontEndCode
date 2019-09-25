@@ -49,7 +49,6 @@ class Tree extends Component {
     }
 
     componentDidMount() {
-        this.props.actions.documentForAdding();
         if (this.props.isExpenses) {
             dataservice.GetDataGrid(this.state.ApiDrawTree + this.props.projectid).then(result => {
                 this.setState({
@@ -152,8 +151,8 @@ class Tree extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        document: state.communication.document,
-        isLoading: state.communication.isLoading,
+        // document: state.communication.document,
+        //isLoading: state.communication.isLoading,
         projectId: state.communication.projectId
     };
 }

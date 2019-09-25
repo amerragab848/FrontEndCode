@@ -21815,6 +21815,16 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     margin-right: -40px;
 }
 
+.mainContainer:not(.main__fulldash) .approveDocument {
+    left: 88px;
+    right: 0px;
+}
+
+.mainContainer.main__fulldash .approveDocument {
+    left: 0;
+    right: 0px;
+}
+
 .projectDashboard {
     padding-left: 88px;
     padding-right: 0

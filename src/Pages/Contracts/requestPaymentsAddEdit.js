@@ -988,17 +988,8 @@ class requestPaymentsAddEdit extends Component {
 
             this.buildColumns(this.props.changeStatus);
 
-            dataservice
-                .GetDataGrid(
-                    "GetRequestItemsOrderByContractId?contractId=" +
-                    event.value +
-                    "&isAdd=true&requestId=" +
-                    this.state.docId +
-                    "&pageNumber=" +
-                    this.state.pageNumber +
-                    "&pageSize=" +
-                    this.state.pageSize
-                )
+            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" +
+                this.state.pageNumber + "&pageSize=" + this.state.pageSize)
                 .then(result => {
                     this.setState({
                         paymentsItems: result,
@@ -1015,14 +1006,7 @@ class requestPaymentsAddEdit extends Component {
                     month = objDate.toLocaleString("en", { month: "long" });
                 var year = objDate.getFullYear();
 
-                updated_document.subject =
-                    "Payment Requisition " +
-                    contract.subject +
-                    " (" +
-                    year +
-                    "/" +
-                    month +
-                    ") " +
+                updated_document.subject = "Payment Requisition " + contract.subject + " (" + year + "/" + month + ") " +
                     original_document.arrange;
                 updated_document.vat = parseFloat(contract.vat);
                 updated_document.tax = parseFloat(contract.tax);
@@ -1156,17 +1140,7 @@ class requestPaymentsAddEdit extends Component {
             if (paymentsItems.length == 0) {
                 this.buildColumns(this.props.changeStatus);
                 this.setState({ isLoading: true });
-                dataservice
-                    .GetDataGrid(
-                        "/GetRequestItemsOrderByContractId?contractId=" +
-                        contractId +
-                        "&isAdd=false&requestId=" +
-                        this.state.docId +
-                        "&pageNumber=" +
-                        this.state.pageNumber +
-                        "&pageSize=" +
-                        this.state.pageSize
-                    )
+                dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize)
                     .then(result => {
                         this.setState({
                             paymentsItems: result != null ? result : [],
@@ -1230,11 +1204,9 @@ class requestPaymentsAddEdit extends Component {
 
                             result.map(parent => {
                                 let sumRowTotal = 0;
-                                let sumtotal = 0;
-                                //config.itemsColumnDefenition2.friendlyNames.push(parent.details);
+                                let sumtotal = 0; 
 
-                                res.map(child => {
-                                    //config.itemsColumnDefenition2.fields.push(child.building);
+                                res.map(child => { 
 
                                     var total = child[parent.details];
                                     sumRowTotal += parseFloat(child.rowTotal);
@@ -2178,17 +2150,15 @@ class requestPaymentsAddEdit extends Component {
                 x => (x.value = parseFloat(x.value))
             );
 
-            dataservice
-                .addObject("AddDistributionQuantity", originalData)
-                .then(result => {
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
-                    this.setState({
-                        showCostCodingTree: false,
-                        isLoading: false
-                    });
+            dataservice.addObject("AddDistributionQuantity", originalData).then(result => {
+                toast.success(
+                    Resources["operationSuccess"][currentLanguage]
+                );
+                this.setState({
+                    showCostCodingTree: false,
+                    isLoading: false
                 });
+            });
         } else {
             toast.success("Please Add CostCodingTree");
         }
@@ -2205,17 +2175,7 @@ class requestPaymentsAddEdit extends Component {
 
             let oldRows = [...this.state.paymentsItems];
 
-            dataservice
-                .GetDataGrid(
-                    "GetRequestItemsOrderByContractId?contractId=" +
-                    this.state.document.contractId +
-                    "&isAdd=true&requestId=" +
-                    this.state.docId +
-                    "&pageNumber=" +
-                    pageNumber +
-                    "&pageSize=" +
-                    this.state.pageSize
-                )
+            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize)
                 .then(result => {
                     const newRows = [...this.state.paymentsItems, ...result];
 
@@ -2243,17 +2203,7 @@ class requestPaymentsAddEdit extends Component {
 
         let oldRows = [...this.state.paymentsItems];
 
-        dataservice
-            .GetDataGrid(
-                "GetRequestItemsOrderByContractId?contractId=" +
-                this.state.document.contractId +
-                "&isAdd=true&requestId=" +
-                this.state.docId +
-                "&pageNumber=" +
-                pageNumber +
-                "&pageSize=" +
-                this.state.pageSize
-            )
+        dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize)
             .then(result => {
                 const newRows = [...this.state.paymentsItems, ...result];
 
