@@ -318,6 +318,7 @@ class SubmittalAddEdit extends Component {
       approvalStatusId: "",
       arrange: "1",
       flowCompanyId: "",
+      flowContactId: "",
       fromContactId: "",
       approvalAction: "1"
     };
