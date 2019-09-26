@@ -16,7 +16,7 @@ import moment from "moment";
 import { toast } from "react-toastify";
 // import { settings } from "cluster";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
+ 
 const DashboardArrow = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -1177,7 +1177,7 @@ class HeaderMenu extends Component {
                     <div className="header__search ">
                       <span onClick={(e, field) => { this.notfiClick(e, 'search'); this.searchClick(e); }}>
                         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-                          <g fill="none" fill-rule="evenodd" transform="translate(3 3)">
+                          <g fill="none" fillRule="evenodd" transform="translate(3 3)">
                             <g fill="#A8B0BF" mask="url(#b)">
                               <path id="a" d="M2.346 8.026a5.683 5.683 0 0 0 5.817 5.672c3.04-.066 5.613-2.588 5.539-5.815-.07-3.057-2.584-5.53-5.674-5.534C4.9 2.345 2.343 4.9 2.346 8.026m12.11 4.806c.054.04.108.071.15.114.99.986 1.978 1.973 2.967 2.96.219.218.39.46.421.78.05.52-.215.985-.688 1.206-.456.214-.959.107-1.37-.302-.997-.994-1.992-1.99-2.985-2.988-.046-.046-.072-.112-.103-.16a8.05 8.05 0 0 1-11.081-1.393c-2.584-3.228-2.29-7.841.59-10.7a8.012 8.012 0 0 1 10.719-.557 8.025 8.025 0 0 1 1.38 11.04" />
                             </g>
@@ -1196,7 +1196,7 @@ class HeaderMenu extends Component {
 
                     {this.state.activeTabs === 2 ?
                       <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-                        <g fill="none" fill-rule="evenodd" transform="translate(3 3)">
+                        <g fill="none" fillRule="evenodd" transform="translate(3 3)">
                           <g fill="#5E6475" mask="url(#b)">
                             <path id="a" d="M16.511 11.777c.55.232.715.9.5 1.321A8.999 8.999 0 1 1 4.523 1.189c.424-.243 1.108-.132 1.46.475.35.607-.128 1.248-.506 1.475a6.836 6.836 0 1 0 9.528 9.124c.372-.685.956-.72 1.506-.486zM18 9c0 .598-.484 1.082-1.082 1.082H9A1.082 1.082 0 0 1 7.918 9V1.082C7.918.484 8.402 0 9 0a8.997 8.997 0 0 1 9 9z" />
                           </g>
@@ -1218,7 +1218,7 @@ class HeaderMenu extends Component {
                   <NavLink to="/TemplatesSettings" onClick={this.handleChangeTemplate}>
                     {this.state.activeTabs === 1 ?
                       <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-                        <g fill="none" fill-rule="evenodd" transform="translate(3 3)">
+                        <g fill="none" fillRule="evenodd" transform="translate(3 3)">
                           <g fill="#5E6475" mask="url(#b)">
                             <path id="a" d="M3.602 13.71c.604-.333 1.455-.323 2.05.024l1.386.808c.595.346 1.03 1.084 1.048 1.776l.017.663 1.794-.002.017-.66c.017-.693.452-1.43 1.048-1.778l1.386-.807c.595-.346 1.447-.357 2.047-.026l.578.317.897-1.568-.56-.346c-.586-.362-1.001-1.11-1.001-1.802l-.002-1.616c0-.691.416-1.441 1.002-1.803l.56-.346-.896-1.568-.575.315c-.604.332-1.455.322-2.05-.025l-1.386-.808c-.595-.346-1.03-1.084-1.048-1.776l-.017-.663-1.794.002-.017.66c-.017.693-.452 1.43-1.048 1.778l-1.386.807c-.595.346-1.447.357-2.047.026l-.578-.317-.897 1.568.56.346c.586.362 1.001 1.11 1.001 1.802l.002 1.616c0 .691-.416 1.441-1.002 1.803l-.56.346.896 1.568.575-.315zm-2.13 1.634L.22 13.154a1.66 1.66 0 0 1 .558-2.23l.868-.535a.27.27 0 0 1 .045-.082L1.69 8.692a.313.313 0 0 1-.045-.082l-.869-.536a1.658 1.658 0 0 1-.558-2.23l1.253-2.189a1.63 1.63 0 0 1 2.193-.627l.897.491c-.01-.006.1-.007.09-.002l1.386-.806a.317.317 0 0 1 .048-.08l.026-1.03C6.137.713 6.863.003 7.746.003L10.253 0c.881 0 1.61.71 1.635 1.602l.026 1.028c0-.01.056.084.048.08l1.386.808a.327.327 0 0 1 .093 0l.896-.49a1.628 1.628 0 0 1 2.191.628l1.251 2.19a1.66 1.66 0 0 1-.558 2.23l-.868.535a.27.27 0 0 1-.045.082l.001 1.615c0-.01.054.087.045.082l.869.536c.753.465 1 1.458.558 2.23l-1.253 2.189a1.63 1.63 0 0 1-2.193.627l-.897-.491c.01.006-.1.007-.09.002l-1.386.806a.317.317 0 0 1-.048.08l-.026 1.03c-.025.889-.751 1.599-1.634 1.599L7.747 19c-.881 0-1.61-.71-1.635-1.602l-.026-1.028a.287.287 0 0 1-.048-.08l-1.386-.808a.327.327 0 0 1-.093 0l-.896.49a1.628 1.628 0 0 1-2.191-.628zm4.767-7.472a3.178 3.178 0 0 1 4.363-1.18 3.238 3.238 0 0 1 1.17 4.403 3.178 3.178 0 0 1-4.364 1.18 3.238 3.238 0 0 1-1.17-4.403z" />
                           </g>
@@ -1256,7 +1256,7 @@ class HeaderMenu extends Component {
                                 <span className="imgWrapper not__icon">
                                   <span className="activeImg" >
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24" style={{ transform: 'rotate(0deg)', marginTop: '5px' }}>
-                                      <g fill="none" fill-rule="evenodd" transform="translate(4 2)">
+                                      <g fill="none" fillRule="evenodd" transform="translate(4 2)">
                                         <g fill="#A8B0BF" mask="url(#b)">
                                           <path id="a" d="M13.714 9V7c0-2.414-1.968-4.435-4.572-4.898V0H6.858v2.102C4.252 2.565 2.285 4.586 2.285 7v2c0 5.133-.57 6-2.285 6v2h16v-2c-1.714 0-2.286-.866-2.286-6zm-9.979 6c.836-1.581.836-3.872.836-6V7c0-1.653 1.538-3 3.428-3s3.43 1.347 3.43 3v2c0 2.128 0 4.419.835 6H3.735zm1.98 3h4.571v2H5.714v-2z" />
                                         </g>
@@ -1272,7 +1272,7 @@ class HeaderMenu extends Component {
                               <Tab className={this.state.tabTask ? "active" : ""}>
                                 <span className="imgWrapper base__icon">
                                   <svg xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24" style={{ transform: 'rotate(0deg)' }}>
-                                    <g fill="none" fill-rule="evenodd" transform="translate(4 4)">
+                                    <g fill="none" fillRule="evenodd" transform="translate(4 4)">
                                       <g fill="#A8B0BF" mask="url(#b)">
                                         <path id="a" d="M13.76 1.133h.935c.611 0 1.198.253 1.63.704.432.45.675 1.063.675 1.7v11.059C17 15.923 15.968 17 14.695 17H2.305C1.032 17 0 15.923 0 14.596V3.537C0 2.21 1.032 1.133 2.305 1.133h.882v1.834c-.865.052-1.227.408-1.227 1.391v9.45c0 1.022.493 1.362 1.472 1.362h10.194c.979 0 1.404-.34 1.404-1.362v-9.45c0-.986-.338-1.364-1.27-1.396V1.133zm-4.197 0V2.96H7.383V1.133h2.178zm2.426 4.46l1.362 1.452-5.32 5.676-3.32-3.54L6.073 7.73 8.03 9.813l3.96-4.22zM4.25.852C4.244.455 4.567 0 5.287 0s1.035.458 1.035.852v2.945c0 .48-.463.736-1.048.736s-1.03-.335-1.024-.736c.02-1.311.02-1.683 0-2.945zm6.375 0C10.62.455 10.942 0 11.662 0s1.035.458 1.035.852v2.945c0 .48-.463.736-1.048.736s-1.03-.335-1.024-.736c.02-1.311.02-1.683 0-2.945z" />
                                       </g>

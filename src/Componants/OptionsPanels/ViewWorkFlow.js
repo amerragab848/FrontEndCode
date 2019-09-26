@@ -154,11 +154,11 @@ class ViewWorkFlow extends Component {
         return (
             <Fragment>
                 <div className={this.state.showPopup === true ? "popupMedium active" : "popupMedium"}>
-                    <button onClick={(e) => this.closePopup()} className="workflowComment__closeBtn">x</button>
+                    <button onClick={(e) => this.closePopup()} className="workflowComment__closeBtn"  type="button" >x</button>
                     <div className={this.state.showPopup === true ? "ui modal smallModal active workflowComment" : "ui modal smallModal workflowComment"} id="smallModal2">
                         <h2 className="header zero">Comment</h2>
                         <p className="zero">{this.state.comment}</p>
-                        <button onClick={(e) => this.closePopup()} className="smallBtn primaryBtn-1 btn approve">Close</button>
+                        <button onClick={(e) => this.closePopup()} type="button" className="smallBtn primaryBtn-1 btn approve">Close</button>
                     </div>
                 </div>
 
