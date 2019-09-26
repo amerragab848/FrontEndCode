@@ -53,17 +53,23 @@ class AddDocAttachment extends Component {
 
       if (currentData.length === 0) {
         dataservice.GetDataGrid("GetCommunicationDocsAttachDoc?projectId=" + this.state.projectId + "&docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
+        
+          let document = result || [];
+        
           this.setState({
-            storedDocuments: [...result] || []
+            storedDocuments: document
           });
-          this.props.actions.ViewDocsAttachment(result);
+          this.props.actions.ViewDocsAttachment(document);
         });
       }
 
       if (this.state.relatedLink) {
         dataservice.GetDataGrid("GetCommunicationDocsAttachDocByDocIdandDocType?docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
+          
+          let document = result || [];
+
           this.setState({
-            relatedLinkData: result || []
+            relatedLinkData:  document
           });
         });
       }
