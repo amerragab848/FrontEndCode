@@ -21829,3 +21829,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     padding-left: 88px;
     padding-right: 0
 }
+
+.fixed__loading .dashboardLoading {
+    position: fixed !important
+}

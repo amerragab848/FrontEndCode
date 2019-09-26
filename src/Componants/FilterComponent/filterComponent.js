@@ -62,13 +62,7 @@ class FilterComponent extends Component {
     };
   }
 
-  componentDidMount() {
-    // if (this.props.filtersColumns.length > 6) {
-    //   document.getElementById('showMore_input').addEventListener("click", function () {
-    //     document.querySelector('.moreOn').classList.toggle('lessOn');
-    //     document.querySelector('.fillter-status-container').classList.toggle('onelineFilter');
-    //   });
-    // }
+  componentDidMount() { 
   }
 
   componentWillMount() {

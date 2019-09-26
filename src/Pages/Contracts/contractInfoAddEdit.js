@@ -934,21 +934,25 @@ class ContractInfoAddEdit extends Component {
 
   editItems = () => {
 
-    this.setState({ viewItemPopUp: false });
+    this.setState({ isLoading: true });
+
     let objItems = this.state.objItems;
+
     objItems.docId = this.state.docId;
+
     DataService.addObject("EditContracOrdertById", objItems).then(result => {
 
       let originalData = this.state.rows;
 
-      let findIndex = originalData.findIndex(x => x.id === this.state.currentId);
+      let findIndex = originalData.findIndex(x => x.id === objItems.id);
 
       originalData.splice(findIndex, 1);
 
-      originalData.push(this.state.objItems);
+      originalData.push(objItems);
 
       this.setState({
-        rows: originalData
+        rows: originalData,
+        isLoading: false
       });
       this.props.actions.resetItems(originalData)
       toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -1755,9 +1759,7 @@ class ContractInfoAddEdit extends Component {
                   steps_defination={steps_defination}
                   exist_link="/contractInfo/"
                   docId={this.state.docId}
-                  changeCurrentStep={stepNo =>
-                    this.changeCurrentStep(stepNo)
-                  }
+                  changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
                   stepNo={this.state.CurrStep}
                 />
               </div>
@@ -1855,6 +1857,18 @@ class ContractInfoAddEdit extends Component {
                           name="unitPrice" placeholder={Resources.refDoc[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
                           onChange={e => this.handleChangeItems(e, "unitPrice")} />
                         {errors.unitPrice && touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                      </div>
+                    </div>
+                    <div className="fillter-status fillter-item-c">
+                      <label className="control-label">
+                        {Resources.itemCode[currentLanguage]}
+                      </label>
+                      <div className={"ui input inputDev" + (errors.itemCode && touched.itemCode ? " has-error" : "ui input inputDev")}>
+                        <input type="text" className="form-control" id="itemCode"
+                          value={this.state.objItems.itemCode}
+                          name="itemCode" placeholder={Resources.itemCode[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
+                          onChange={e => this.handleChangeItems(e, "itemCode")} />
+                        {errors.itemCode && touched.itemCode ? (<em className="pError">{errors.itemCode}</em>) : null}
                       </div>
                     </div>
                     <div className="slider-Btns fullWidthWrapper">

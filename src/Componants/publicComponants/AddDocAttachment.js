@@ -35,7 +35,9 @@ class AddDocAttachment extends Component {
       showDeleteModal: false,
       currentId: null,
       storedDocuments: [],
-      isViewMode: this.props.isViewMode
+      isViewMode: this.props.isViewMode,
+      relatedLink: this.props.title === "SiteInstruction" || "VariationOrder" ? true : false,
+      relatedLinkData: []
     };
   }
 
@@ -48,12 +50,21 @@ class AddDocAttachment extends Component {
       });
 
       let currentData = this.props.attachDocuments;
+
       if (currentData.length === 0) {
         dataservice.GetDataGrid("GetCommunicationDocsAttachDoc?projectId=" + this.state.projectId + "&docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
           this.setState({
-            storedDocuments: [...result]
+            storedDocuments: [...result] || []
           });
           this.props.actions.ViewDocsAttachment(result);
+        });
+      }
+
+      if (this.state.relatedLink) {
+        dataservice.GetDataGrid("GetCommunicationDocsAttachDocByDocIdandDocType?docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
+          this.setState({
+            relatedLinkData: result || []
+          });
         });
       }
     }
@@ -294,6 +305,37 @@ class AddDocAttachment extends Component {
       }
     ];
 
+    const relatedColumns = [
+      {
+        Header: Resources["subject"][currentLanguage],
+        accessor: "subject",
+        Cell: ({ row }) => {
+          return (
+            <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }}>
+              {this.renderLink(row._original)}
+            </div>
+          );
+        },
+        width: 200
+      },
+      {
+        Header: Resources["docStatus"][currentLanguage],
+        accessor: "statusText",
+        width: 200,
+        sortabel: true
+      },
+      {
+        Header: Resources["docDate"][currentLanguage],
+        accessor: "docDate",
+        Cell: row => (
+          <span>
+            <span>{moment(row.value).format("DD/MM/YYYY")}</span>
+          </span>
+        )
+      }
+    ];
+
+
     return (
       <Fragment>
         {this.state.isViewMode === false ?
@@ -309,6 +351,24 @@ class AddDocAttachment extends Component {
                 columns={columnsDocument} defaultPageSize={5}
                 noDataText={Resources["noData"][currentLanguage]}
                 className="-striped -highlight" /> : null
+          }
+        </div>
+        <div className="precycle-grid modalTable">
+          {
+            this.state.relatedLink ?
+              (this.state.relatedLinkData.length > 0 ?
+                <Fragment>
+                  <div class="workflow-header">
+                    <h4>
+                      <p class="zero">
+                        <span>RelatedLink</span>
+                      </p>
+                    </h4>
+                  </div>
+                  <ReactTable id="relatedLink" data={this.state.relatedLinkData}
+                    columns={relatedColumns} defaultPageSize={5}
+                    noDataText={Resources["noData"][currentLanguage]}
+                    className="-striped -highlight" /> </Fragment> : null) : null
           }
         </div>
         <div>

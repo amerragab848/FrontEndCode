@@ -174,16 +174,18 @@ class requestPaymentsAddEdit extends Component {
         let userType = Config.getPayload();
 
         this.state = {
+            advancedPayment: null,
             currentStep: 0,
             trees: [],
             showCostCodingTree: false,
             showDeleteModal: false,
             userType: userType.uty,
             fillDropDown: [
-                { label: "AddMissingAmendments", value: "1" },
-                { label: "ReCalculatorPayment", value: "2" },
-                { label: "UpdateItemsFromVO", value: "3" },
-                { label: "AddMissingItems", value: "4" }
+                { label: "Add Missing Amendments", value: "1" },
+                { label: "ReCalculator Payment", value: "2" },
+                { label: "Update Items From VO", value: "3" },
+                { label: "Add Missing Items", value: "4" },
+                { label: "Edit Advanced Payment Amount", value: "5" }
             ],
             selectedDropDownTrees: {
                 label: Resources.codingTree[currentLanguage],
@@ -275,11 +277,7 @@ class requestPaymentsAddEdit extends Component {
             currentDocument: ""
         };
 
-        if (
-            !Config.IsAllow(184) &&
-            !Config.IsAllow(187) &&
-            !Config.IsAllow(185)
-        ) {
+        if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(this.state.perviousRoute);
         }
@@ -408,10 +406,8 @@ class requestPaymentsAddEdit extends Component {
         let addCostCodingTree = ({ value, row }) => {
             if (row) {
                 return (
-                    <button
-                        className="primaryBtn-1 btn meduimBtn"
-                        type="submit">
-                        Add Cost Coding Tree{" "}
+                    <button className="primaryBtn-1 btn meduimBtn" type="submit">
+                        Add Cost Coding Tree
                     </button>
                 );
             }
@@ -770,7 +766,6 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: false
             });
         }
-
     }
 
     componentDidUpdate(prevProps) {
@@ -895,24 +890,19 @@ class requestPaymentsAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         if (isEdit === false) {
-            dataservice
-                .GetDataGrid(
-                    "GetContractsListForPaymentRequistion?projectId=" +
-                    this.state.projectId
-                )
-                .then(result => {
-                    let Data = [];
-                    result.forEach(item => {
-                        var obj = {};
-                        obj.label = item["subject"];
-                        obj.value = item["id"];
-                        Data.push(obj);
-                    });
-                    this.setState({
-                        contractsPos: [...Data],
-                        contractsPool: result
-                    });
+            dataservice.GetDataGrid("GetContractsListForPaymentRequistion?projectId=" + this.state.projectId).then(result => {
+                let Data = [];
+                result.forEach(item => {
+                    var obj = {};
+                    obj.label = item["subject"];
+                    obj.value = item["id"];
+                    Data.push(obj);
                 });
+                this.setState({
+                    contractsPos: [...Data],
+                    contractsPool: result
+                });
+            });
         }
     }
 
@@ -1204,9 +1194,9 @@ class requestPaymentsAddEdit extends Component {
 
                             result.map(parent => {
                                 let sumRowTotal = 0;
-                                let sumtotal = 0; 
+                                let sumtotal = 0;
 
-                                res.map(child => { 
+                                res.map(child => {
 
                                     var total = child[parent.details];
                                     sumRowTotal += parseFloat(child.rowTotal);
@@ -1765,73 +1755,62 @@ class requestPaymentsAddEdit extends Component {
     };
 
     handleDropAction(event) {
-        if (event.label === "AddMissingAmendments") {
-            dataservice
-                .GetDataGrid(
-                    "AddMissingAmendments?requestId=" +
-                    this.state.docId +
-                    "&contractId=" +
-                    this.state.document.contractId
-                )
-                .then(result => {
+
+        switch (event.value) {
+            case "1":
+                dataservice.GetDataGrid("AddMissingAmendments?requestId=" + this.state.docId + "&contractId=" + this.state.document.contractId).then(result => {
                     toast.success(
                         Resources["operationSuccess"][currentLanguage]
                     );
                 })
-                .catch(res => {
-                    toast.error(
-                        Resources["operationCanceled"][currentLanguage]
-                    );
-                });
-        } else if (event.label === "ReCalculatorPayment") {
-            dataservice
-                .GetDataGrid(
-                    "UpdatePayemtRequistionTotals?id=" + this.state.docId
-                )
-                .then(result => {
+                    .catch(res => {
+                        toast.error(
+                            Resources["operationCanceled"][currentLanguage]
+                        );
+                    });
+                break;
+            case "2":
+                dataservice.GetDataGrid("UpdatePayemtRequistionTotals?id=" + this.state.docId).then(result => {
                     toast.success(
                         Resources["operationSuccess"][currentLanguage]
                     );
                 })
-                .catch(res => {
-                    toast.error(
-                        Resources["operationCanceled"][currentLanguage]
-                    );
-                });
-        } else if (event.label === "UpdateItemsFromVO") {
-            dataservice
-                .GetDataGrid(
+                    .catch(res => {
+                        toast.error(
+                            Resources["operationCanceled"][currentLanguage]
+                        );
+                    });
+                break;
+            case "3":
+                dataservice.GetDataGrid(
                     "UpdatePRItemsByVariationOrders?requestId=" +
                     this.state.docId
                 )
-                .then(result => {
+                    .then(result => {
+                        toast.success(
+                            Resources["operationSuccess"][currentLanguage]
+                        );
+                    })
+                    .catch(res => {
+                        toast.error(
+                            Resources["operationCanceled"][currentLanguage]
+                        );
+                    });
+                break;
+            case "4":
+                dataservice.GetDataGrid("AddMissingItems?requestId=" + this.state.docId + "&contractId=" + this.state.document.contractId).then(result => {
                     toast.success(
                         Resources["operationSuccess"][currentLanguage]
                     );
-                })
-                .catch(res => {
+                }).catch(res => {
                     toast.error(
                         Resources["operationCanceled"][currentLanguage]
                     );
                 });
-        } else if (event.label === "AddMissingItems") {
-            dataservice
-                .GetDataGrid(
-                    "AddMissingItems?requestId=" +
-                    this.state.docId +
-                    "&contractId=" +
-                    this.state.document.contractId
-                )
-                .then(result => {
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
-                })
-                .catch(res => {
-                    toast.error(
-                        Resources["operationCanceled"][currentLanguage]
-                    );
-                });
+                break;
+            case "5":
+                this.editPayment.show();
+                break;
         }
 
         this.setState({
@@ -2224,6 +2203,24 @@ class requestPaymentsAddEdit extends Component {
         this.viewConfirmDelete(rows, "requestItems");
     };
 
+    editAdvancedPayment() {
+        if (this.state.advancedPayment != 0) {
+
+            this.setState({
+                isLoading: true
+            });
+
+            dataservice.addObject(`EditPaymentAmount?requestId=${this.state.docId}&value=${this.state.advancedPayment}`).then(result => {
+                this.setState({
+                    isLoading: false
+                });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            });
+        } else {
+            toast.warn("Please Write Value MoreZane Zero");
+        }
+    }
+
     render() {
         let columns = [];
 
@@ -2591,9 +2588,7 @@ class requestPaymentsAddEdit extends Component {
                             )}
                     </tr>
                 ))
-            ) : (
-                    <LoadingSection />
-                );
+            ) : (<LoadingSection />);
 
         let viewHistory = (
             <div className="doc-pre-cycle">
@@ -2774,9 +2769,7 @@ class requestPaymentsAddEdit extends Component {
                         </tfoot>
                     </table>
                 </Fragment>
-            ) : (
-                    <LoadingSection />
-                );
+            ) : (<LoadingSection />);
 
         let ExportColumns = itemsColumns.filter(i => i.key !== "BtnActions");
 
@@ -4365,11 +4358,7 @@ class requestPaymentsAddEdit extends Component {
                         {BoqTypeContent}
                     </SkyLight>
                 </div>
-                <div
-                    className="largePopup largeModal "
-                    style={{
-                        display: this.state.showCommentModal ? "block" : "none"
-                    }}>
+                <div className="largePopup largeModal " style={{ display: this.state.showCommentModal ? "block" : "none" }}>
                     <SkyLight
                         hideOnOverlayClicked
                         ref={ref => (this.addCommentModal = ref)}
@@ -4748,18 +4737,45 @@ class requestPaymentsAddEdit extends Component {
                 ) : null}
                 <div
                     className="largePopup largeModal "
-                    style={{
-                        display: this.state.showViewHistoryModal
-                            ? "block"
-                            : "none"
-                    }}>
-                    <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.ViewHistoryModal = ref)}
-                        title={Resources.viewHistory[currentLanguage]}>
+                    style={{ display: this.state.showViewHistoryModal ? "block" : "none" }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.ViewHistoryModal = ref)} title={Resources.viewHistory[currentLanguage]}>
                         {viewHistory}
                     </SkyLight>
                 </div>
+
+                <SkyLight hideOnOverlayClicked ref={ref => (this.editPayment = ref)} title={Resources.editPayment[currentLanguage]}>
+                    <div className="doc-pre-cycle">
+                        <div className="inpuBtn proForm">
+                            <div className="linebylineInput valid-input ">
+                                <label className="control-label">
+                                    {Resources.advancedPayment[currentLanguage]}
+                                </label>
+                                <div className="ui input inputDev">
+                                    <input type="text" className="form-control" name="advancedPayment"
+                                        value={this.state.advancedPayment}
+                                        placeholder={Resources.advancedPayment[currentLanguage]}
+                                        onChange={event => this.setState({ advancedPayment: event.target.value })}
+                                    />
+                                </div>
+                            </div>
+                            {this.state.isLoading === false ? (
+                                <button className="primaryBtn-1 btn meduimBtn" onClick={this.editAdvancedPayment.bind(this)}>
+                                    {Resources["save"][currentLanguage]}
+                                </button>
+                            ) : (
+                                    <button
+                                        className="primaryBtn-1 btn  disabled"
+                                        disabled="disabled">
+                                        <div className="spinner">
+                                            <div className="bounce1" />
+                                            <div className="bounce2" />
+                                            <div className="bounce3" />
+                                        </div>
+                                    </button>
+                                )}
+                        </div>
+                    </div>
+                </SkyLight>
             </div>
         );
     }
@@ -4785,7 +4801,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(requestPaymentsAddEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(requestPaymentsAddEdit));
