@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from "react";
-
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -23,7 +21,7 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import SkyLight, { SkyLightStateless } from 'react-skylight';
+import  { SkyLightStateless } from 'react-skylight';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
@@ -428,10 +426,15 @@ class NCRAddEdit extends Component {
         }
     }
 
-    saveAndExit = () => {
-        this.props.history.push({
-            pathname: '/Ncr/' + projectId + '',
-        })
+    saveAndExit = () => { 
+
+        if (this.state.isApproveMode === false) {
+            this.props.history.push(this.state.perviousRoute);
+        }
+
+        // this.props.history.push({
+        //     pathname: '/Ncr/' + projectId + '',
+        // })
     }
 
     showBtnsSaving() {
