@@ -433,7 +433,7 @@ export const ViewDocsAttachment = (docs) => {
         return (
             dispatch({
                 type: types.ViewDocsAttachment,
-                attachDocuments: docs
+                attachDocuments: docs || []
             })
         )
     }

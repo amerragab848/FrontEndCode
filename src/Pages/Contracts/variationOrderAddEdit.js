@@ -1058,7 +1058,7 @@ class variationOrderAddEdit extends Component {
                           {this.state.docId > 0 && this.state.CurrentStep === 0 ? (
                             <Fragment>
                               <div className="document-fields tableBTnabs">
-                                <AddDocAttachment title="VariationOrder" projectId={this.state.projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                                <AddDocAttachment title="VariationOrder"  projectId={this.state.projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
                               </div>
                             </Fragment>
                           ) : null}

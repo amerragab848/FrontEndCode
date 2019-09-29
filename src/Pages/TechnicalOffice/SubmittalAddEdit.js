@@ -2090,7 +2090,7 @@ class SubmittalAddEdit extends Component {
                       {this.state.docId > 0 && this.state.currentStep === 0 ? (
                         <Fragment>
                           <div className="document-fields tableBTnabs">
-                            <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                            <AddDocAttachment projectId={projectId}  isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
                           </div>
                         </Fragment>
                       ) : null}
