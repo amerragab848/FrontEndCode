@@ -5,7 +5,7 @@ import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
- 
+
 export function documentForEdit(urlAction, docTypeId, docName) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
@@ -232,7 +232,7 @@ export function SendByEmail_Inbox(url, formData) {
 export function copyTo(url, formData) {
     return (dispatch, getState) => {
         return Api.post(url, formData).then(resp => {
-           toast.success(Resources["operationSuccess"][currentLanguage]);
+            toast.success(Resources["operationSuccess"][currentLanguage]);
             dispatch({
                 type: types.CopyTo,
                 showModal: false
@@ -300,7 +300,7 @@ export function GetWorkFlowCycles(urlAction) {
                 type: types.Cycles_WorkFlow,
                 workFlowCycles: result.cycles,
                 hasWorkflow: result.hasWorkFlow,
-                showModal: false
+                // showModal: false
             });
 
         }).catch((ex) => {

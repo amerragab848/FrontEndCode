@@ -51,7 +51,7 @@ class ViewWorkFlow extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.workFlowCycles !== this.props.workFlowCycles) {
+        if (prevProps.workFlowCycles !== prevState.workFlowCycles) {
             this.renderCycles(this.props.workFlowCycles);
         }
     }
@@ -88,7 +88,7 @@ class ViewWorkFlow extends Component {
                         </div>
                         <div className="MultiPeinding">
                             {i.map((level, idx) => {
-                                let levelSignature = Config.getPublicConfiguartion().downloads +'/'+ level.signature
+                                let levelSignature = Config.getPublicConfiguartion().downloads + '/' + level.signature
                                 return (
                                     <div key={idx} className={level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
                                         <div className={level.statusVal == null ? "signature-h signaturePendingd" : "signature-h"}>
@@ -154,7 +154,7 @@ class ViewWorkFlow extends Component {
         return (
             <Fragment>
                 <div className={this.state.showPopup === true ? "popupMedium active" : "popupMedium"}>
-                    <button onClick={(e) => this.closePopup()} className="workflowComment__closeBtn"  type="button" >x</button>
+                    <button onClick={(e) => this.closePopup()} className="workflowComment__closeBtn" type="button" >x</button>
                     <div className={this.state.showPopup === true ? "ui modal smallModal active workflowComment" : "ui modal smallModal workflowComment"} id="smallModal2">
                         <h2 className="header zero">Comment</h2>
                         <p className="zero">{this.state.comment}</p>

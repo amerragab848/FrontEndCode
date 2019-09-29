@@ -903,7 +903,7 @@ class inspectionRequestAddEdit extends Component {
     }
 
     render() {
-
+        console.log('this.props.changestatus', this.props.changeStatus);
         return (
             <div className="mainContainer">
 
@@ -1261,7 +1261,10 @@ class inspectionRequestAddEdit extends Component {
                                                                         {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                                     </div>
                                                                     {this.props.changeStatus === true ?
-                                                                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                                        <Fragment>
+                                                                            <span>show Work flow</span>
+                                                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                                                        </Fragment>
                                                                         : null
                                                                     }
                                                                 </div>
