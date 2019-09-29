@@ -1000,7 +1000,7 @@ class NCRAddEdit extends Component {
                                                         {this.viewAttachments()}
                                                         <Fragment>
                                                             <div className="document-fields tableBTnabs">
-                                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                {this.state.docId > 0 ? <AddDocAttachment   isViewMode={ this.state.isViewMode}  projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                             </div>
                                                         </Fragment>
                                                         {this.props.changeStatus === true ?

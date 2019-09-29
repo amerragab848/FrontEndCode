@@ -16,9 +16,10 @@ import SkyLight from "react-skylight";
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-let selectedRows = [];
+
 
 class AddDocAttachment extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +38,8 @@ class AddDocAttachment extends Component {
       storedDocuments: [],
       isViewMode: this.props.isViewMode,
       relatedLink: this.props.title === "SiteInstruction" || "VariationOrder" ? true : false,
-      relatedLinkData: []
+      relatedLinkData: [],
+      selectedRows: []
     };
   }
 
@@ -49,30 +51,33 @@ class AddDocAttachment extends Component {
         });
       });
 
+      this.props.actions.ViewDocsAttachment([]);
+
       let currentData = this.props.attachDocuments;
+ 
+        if (currentData.length === 0) {
 
-      if (currentData.length === 0) {
-        dataservice.GetDataGrid("GetCommunicationDocsAttachDoc?projectId=" + this.state.projectId + "&docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
-        
-          let document = result || [];
-        
-          this.setState({
-            storedDocuments: document
+          dataservice.GetDataGrid("GetCommunicationDocsAttachDoc?projectId=" + this.state.projectId + "&docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
+
+            let document = result || [];
+
+            this.setState({
+              storedDocuments: document
+            });
+            this.props.actions.ViewDocsAttachment(document);
           });
-          this.props.actions.ViewDocsAttachment(document);
-        });
-      }
+        }
 
-      if (this.state.relatedLink) {
-        dataservice.GetDataGrid("GetCommunicationDocsAttachDocByDocIdandDocType?docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
-          
-          let document = result || [];
+        if (this.state.relatedLink) {
+          dataservice.GetDataGrid("GetCommunicationDocsAttachDocByDocIdandDocType?docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
 
-          this.setState({
-            relatedLinkData:  document
+            let document = result || [];
+
+            this.setState({
+              relatedLinkData: document
+            });
           });
-        });
-      }
+        } 
     }
   };
 
@@ -107,25 +112,31 @@ class AddDocAttachment extends Component {
 
     const newSelected = Object.assign({}, this.state.selected);
 
+    let originalData = this.state.selectedRows;
+
     newSelected[obj.id] = !this.state.selected[obj.id];
 
-    let setIndex = selectedRows.findIndex(x => x.id === obj.id);
+    let setIndex = originalData.findIndex(x => x.id === obj.id);
 
     if (setIndex > -1) {
-      selectedRows.splice(setIndex, 1);
+      originalData.splice(setIndex, 1);
     } else {
-      selectedRows.push(obj);
+      originalData.push(obj);
     }
 
     this.setState({
-      selected: newSelected
+      selected: newSelected,
+      selectedRows: originalData
     });
   }
 
   saveDocument() {
-    if (selectedRows.length > 0) {
+    if (this.state.selectedRows.length > 0) {
+
       let count = 0;
-      selectedRows.forEach(item => {
+
+      this.state.selectedRows.forEach(item => {
+
         let listDocs = this.state.storedDocuments;
 
         let isExist = listDocs.findIndex(x => x.docId === item.docId);
@@ -150,7 +161,7 @@ class AddDocAttachment extends Component {
 
         }
         count++;
-        if (count === selectedRows.length) {
+        if (count === this.state.selectedRows.length) {
 
           toast.success(Resources["operationSuccess"][currentLanguage]);
 
@@ -341,7 +352,6 @@ class AddDocAttachment extends Component {
       }
     ];
 
-
     return (
       <Fragment>
         {this.state.isViewMode === false ?
@@ -367,7 +377,7 @@ class AddDocAttachment extends Component {
                   <div class="workflow-header">
                     <h4>
                       <p class="zero">
-                        <span>RelatedLink</span>
+                        <span>{Resources.relatedLink[currentLanguage]}</span>
                       </p>
                     </h4>
                   </div>
@@ -396,7 +406,7 @@ class AddDocAttachment extends Component {
             <Dropdown title="docType" data={this.state.documents} selectedValue={this.state.selectDocument} handleChange={event => this.getDocuments(event)} />
             {this.state.documentData.length > 0 ? (
               <Fragment>
-                {selectedRows.length > 0 ?
+                {this.state.selectedRows.length > 0 ?
                   <div className="fullWidthWrapper">
                     <button className="primaryBtn-1 btn meduimBtn" type="button" onClick={this.saveDocument.bind(this)}>
                       {Resources["save"][currentLanguage]}

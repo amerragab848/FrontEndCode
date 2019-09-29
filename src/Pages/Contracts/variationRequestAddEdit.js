@@ -211,7 +211,7 @@ class VariationRequestAdd extends Component {
 
     GetNextArrange() {
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
-         
+
         dataservice.GetNextArrangeMainDocument(url).then(res => {
             let original_document = { ...this.state.document };
             let updated_document = {};
@@ -230,7 +230,7 @@ class VariationRequestAdd extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                
+
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -663,17 +663,13 @@ class VariationRequestAdd extends Component {
                                                                         handleBlur(e)
                                                                     }}
                                                                     onChange={(e) => this.handleChange(e, 'description')} />
-
                                                                 {touched.description ? (<em className="pError">{errors.description}</em>) : null}
-
                                                             </div>
-                                                        </div>
-
+                                                        </div> 
                                                     </div>
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
-                                                    </div>
-
+                                                    </div> 
                                                     {
                                                         this.props.changeStatus === true ?
                                                             <div className="approveDocument">
@@ -691,11 +687,8 @@ class VariationRequestAdd extends Component {
                                                                         permission={this.state.permission}
                                                                     />
                                                                 </div>
-                                                            </div>
-                                                            : null
+                                                            </div> : null
                                                     }
-
-
                                                 </Form>
                                             )}
                                         </Formik>
@@ -711,10 +704,8 @@ class VariationRequestAdd extends Component {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         );
     }
 }
@@ -729,7 +720,6 @@ function mapStateToProps(state, ownProps) {
         hasWorkflow: state.communication.hasWorkflow,
         projectId: state.communication.projectId,
         showModal: state.communication.showModal
-
     }
 }
 
@@ -739,7 +729,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(VariationRequestAdd))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(VariationRequestAdd))
