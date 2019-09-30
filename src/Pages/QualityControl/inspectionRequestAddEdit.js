@@ -658,6 +658,14 @@ class inspectionRequestAddEdit extends Component {
         )
     }
 
+    viewWorkFlowCycles() {
+        return (
+            this.props.changeStatus ?
+                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                : null
+        )
+    }
+
     changeCurrentStep = stepNo => {
         this.setState({ CurrentStep: stepNo });
     };
@@ -903,7 +911,7 @@ class inspectionRequestAddEdit extends Component {
     }
 
     render() {
-        console.log('this.props.changestatus', this.props.changeStatus);
+
         return (
             <div className="mainContainer">
 
@@ -1260,13 +1268,7 @@ class inspectionRequestAddEdit extends Component {
                                                                     <div className="document-fields tableBTnabs">
                                                                         {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                                     </div>
-                                                                    {this.props.changeStatus === true ?
-                                                                        <Fragment>
-                                                                            <span>show Work flow</span>
-                                                                            <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                        </Fragment>
-                                                                        : null
-                                                                    }
+                                                                    {this.viewWorkFlowCycles()}
                                                                 </div>
                                                             </div>
                                                             {this.props.changeStatus === true ?
@@ -1371,6 +1373,7 @@ class inspectionRequestAddEdit extends Component {
                             changeCurrentStep={stepNo =>
                                 this.changeCurrentStep(stepNo)
                             }
+                            changeStatus={this.props.changeStatus}
                             stepNo={this.state.CurrentStep}
                         />
 

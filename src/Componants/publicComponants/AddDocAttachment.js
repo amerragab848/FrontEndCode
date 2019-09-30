@@ -54,30 +54,30 @@ class AddDocAttachment extends Component {
       this.props.actions.ViewDocsAttachment([]);
 
       let currentData = this.props.attachDocuments;
- 
-        if (currentData.length === 0) {
 
-          dataservice.GetDataGrid("GetCommunicationDocsAttachDoc?projectId=" + this.state.projectId + "&docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
+      if (currentData.length === 0) {
 
-            let document = result || [];
+        dataservice.GetDataGrid("GetCommunicationDocsAttachDoc?projectId=" + this.state.projectId + "&docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
 
-            this.setState({
-              storedDocuments: document
-            });
-            this.props.actions.ViewDocsAttachment(document);
+          let document = result || [];
+
+          this.setState({
+            storedDocuments: document
           });
-        }
+          this.props.actions.ViewDocsAttachment(document);
+        });
+      }
 
-        if (this.state.relatedLink) {
-          dataservice.GetDataGrid("GetCommunicationDocsAttachDocByDocIdandDocType?docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
+      if (this.state.relatedLink) {
+        dataservice.GetDataGrid("GetCommunicationDocsAttachDocByDocIdandDocType?docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
 
-            let document = result || [];
+          let document = result || [];
 
-            this.setState({
-              relatedLinkData: document
-            });
+          this.setState({
+            relatedLinkData: document
           });
-        } 
+        });
+      }
     }
   };
 
