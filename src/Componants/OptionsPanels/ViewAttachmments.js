@@ -171,8 +171,7 @@ class ViewAttachmments extends Component {
                 this.setState({
                     activeURL: fileURL,
                     view: true
-                });
-                activeURL = fileURL;
+                }); 
                 this.simpleDialog.show();
             }
         }).catch(error => {
@@ -190,11 +189,7 @@ class ViewAttachmments extends Component {
     }
 
     getData() {
-        let url =
-            "GetAzureFiles?docTypeId=" +
-            this.props.docTypeId +
-            "&docId=" +
-            this.props.docId;
+        let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId;
         if (this.props.files.length === 0) {
             this.props.actions.GetUploadedFiles(url);
         }

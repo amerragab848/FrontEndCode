@@ -910,7 +910,7 @@ class ExpensesUserAddEdit extends Component {
                             <Steps steps_defination={steps_defination}
                                 exist_link="/ProfileSetting/" docId={this.state.id}
                                 changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
-                                stepNo={this.state.CurrentStep} isEdit={this.state.isEdit} />
+                                stepNo={this.state.CurrentStep} changeStatus={this.state.id === 0 ? false : true} isEdit={this.state.isEdit} />
                         </Fragment>
 
                     </div>

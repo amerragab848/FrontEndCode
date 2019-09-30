@@ -304,6 +304,11 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state
             };
+        case types.GET_DOCS_ATTACH:
+            return {
+                ...state,
+                docsAttachData: action.data,
+            }
 
         default:
             return {

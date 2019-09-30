@@ -1014,7 +1014,7 @@ class drawingListAddEdit extends Component {
                             changeCurrentStep={stepNo =>
                                 this.changeCurrentStep(stepNo)
                             }
-                            stepNo={this.state.CurrentStep}
+                            stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true}
                         />
                     </div>
 

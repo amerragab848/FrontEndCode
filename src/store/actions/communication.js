@@ -28,6 +28,7 @@ export function documentForEdit(urlAction, docTypeId, docName) {
         });
     }
 }
+
 export function clearCashDocument() {
     return (dispatch, getState) => {
         dispatch({
@@ -412,6 +413,7 @@ export function GetAttendeesTable(urlAction) {
         });
     }
 }
+
 export function GetTopicsTable(urlAction) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
@@ -482,6 +484,23 @@ export function setDocId(docId) {
         dispatch({
             type: types.Set_DocId,
             docId: docId
+        });
+    }
+}
+export function getCommunicationDocsAttach(projectId, docType, docId) {
+    return (dispatch, getState) => {
+        return Api.get("GetCommunicationDocsAttachDoc?projectId=" + projectId + "&docTypeId=" + docType + "&docId=" + docId).then(resp => {
+
+            dispatch({
+                type: types.GET_DOCS_ATTACH,
+                data: resp
+            });
+
+        }).catch((ex) => {
+            dispatch({
+                type: types.GET_DOCS_ATTACH,
+                data: []
+            });
         });
     }
 }

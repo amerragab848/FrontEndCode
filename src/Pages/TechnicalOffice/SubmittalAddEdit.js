@@ -2120,7 +2120,7 @@ class SubmittalAddEdit extends Component {
               </div>
             ) : null}
             <Steps steps_defination={steps_defination} exist_link="/submittal/" docId={this.state.docId}
-              changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)} stepNo={this.state.currentStep} />
+              changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)} stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true} />
           </div>
         </div>
         <div>
