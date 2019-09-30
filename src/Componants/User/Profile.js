@@ -45,6 +45,7 @@ export default class uploadSignture extends React.Component {
 
     uploadSign = () => {
         if (this.state.sign) {
+            console.log(this.state.sign)
             let formData = new FormData();
             formData.append("file", this.state.sign[0])
             api.postFile('UploadSignature', formData).then(res => {
