@@ -1250,23 +1250,14 @@ class inspectionRequestAddEdit extends Component {
                                                             </div>
                                                             <div className="doc-pre-cycle letterFullWidth">
                                                                 <div>
-                                                                    {this.state.docId > 0 && this.state.isViewMode === false ?
-                                                                        <Fragment>
-                                                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={849}
-                                                                                EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594}
-                                                                                docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                            {this.viewAttachments()}
-                                                                            <div className="document-fields tableBTnabs">
-                                                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                                                            </div>
-                                                                        </Fragment>
-                                                                        : null}
-                                                                    {this.props.changeStatus === true ?
-                                                                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                        : null
-                                                                    }
+                                                                    {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={849}
+                                                                        EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594}
+                                                                        docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                                                    {this.viewAttachments()}
+                                                                    {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                                 </div>
                                                             </div>
+
                                                             {this.props.changeStatus === true ?
                                                                 <Fragment>
                                                                     <div className="slider-Btns">

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Export from "../../OptionsPanels/Export";
-import GridSetup from "../../../Pages/Communication/GridSetup";
+import GridSetupWithFilter from "../../../Pages/Communication/GridSetupWithFilter";
 import Resources from "../../../resources.json";
 import Config from '../../../Services/Config'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
@@ -50,7 +50,8 @@ class Index extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "string"
             },
             {
                 key: "contactName",
@@ -60,7 +61,8 @@ class Index extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "string"
             },
             {
                 key: "position",
@@ -70,7 +72,8 @@ class Index extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "string"
             },
             {
                 key: "mobile",
@@ -79,8 +82,9 @@ class Index extends Component {
                 draggable: true,
                 sortable: true,
                 resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                filterable: false,
+                sortDescendingFirst: true,
+                type: "string"
             },
             {
                 key: "email",
@@ -90,7 +94,8 @@ class Index extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "string"
             },
             {
                 key: "enteredBy",
@@ -100,7 +105,8 @@ class Index extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "string"
             },
             {
                 key: "lastModified",
@@ -110,7 +116,8 @@ class Index extends Component {
                 sortable: true,
                 resizable: true,
                 filterable: true,
-                sortDescendingFirst: true
+                sortDescendingFirst: true,
+                type: "string"
             }
         ];
         this.Actions = [
@@ -308,6 +315,7 @@ class Index extends Component {
         }
     }
 
+
     render() {
         const companiesList =
             <Formik
@@ -354,7 +362,7 @@ class Index extends Component {
             </Formik>
 
         const dataGrid = this.props.Adminstration.getingData === false ? (
-            <GridSetup
+            <GridSetupWithFilter
                 rows={this.props.Adminstration.companyContact}
                 columns={this.columnsGrid}
                 showCheckbox={true}
@@ -362,12 +370,21 @@ class Index extends Component {
                 onRowClick={this.onRowClick}
                 single={true}
                 getCellActions={this.getCellActions}
-            />
-        ) : <LoadingSection />;
+                key="items"
+            />) : <LoadingSection />;
+
+        //      <GridSetup
+        //         rows={}
+        //         columns={}
+        //         onRowClick={this.onRowClick}
+        //     />
+        // ) : <LoadingSection />;
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.rows} columns={this.ExportColumns} fileName={this.state.pageTitle} />
             : null;
+
+
 
         return (
 
@@ -383,6 +400,7 @@ class Index extends Component {
                         <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord}>{Resources['add'][currentLanguage]}</button>
                     </div>
                 </div>
+
                 <div>
                     <div className="grid-container">
                         {this.props.Adminstration.getingData === false ? dataGrid : <LoadingSection />}

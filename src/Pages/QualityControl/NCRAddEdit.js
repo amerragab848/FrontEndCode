@@ -848,27 +848,6 @@ class NCRAddEdit extends Component {
                                                         <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
                                                             <div className="super_name">
-                                                                <Dropdown data={this.state.companies} name="bicCompanyId"
-                                                                    selectedValue={this.state.selectedActionByCompanyId}
-                                                                    handleChange={event =>
-                                                                        this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
-                                                                    styles={CompanyDropdown} classDrop="companyName1 " />
-                                                            </div>
-                                                            <div className="super_company">
-                                                                <Dropdown data={this.state.bicContacts} onChange={setFieldValue} name="bicContactId"
-                                                                    onBlur={setFieldTouched} error={errors.bicContactId} id="bicContactId"
-                                                                    touched={touched.bicContactId} index="IR-bicContactId"
-                                                                    selectedValue={this.state.selectedActionByContactId}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedActionByContactId')}
-                                                                    classDrop=" contactName1" styles={ContactDropdown} />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="linebylineInput valid-input mix_dropdown">
-                                                        <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
-                                                        <div className="supervisor__company">
-                                                            <div className="super_name">
                                                                 <Dropdown data={this.state.companies} selectedValue={this.state.selectedToCompany}
                                                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.toCompanyId}
                                                                     touched={touched.toCompanyId} name="toCompanyId"
@@ -886,6 +865,29 @@ class NCRAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    
+                                                    <div className="linebylineInput valid-input mix_dropdown">
+                                                        <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
+                                                        <div className="supervisor__company">
+                                                            <div className="super_name">
+                                                                <Dropdown data={this.state.companies} name="bicCompanyId"
+                                                                    selectedValue={this.state.selectedActionByCompanyId}
+                                                                    handleChange={event =>
+                                                                        this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
+                                                                    styles={CompanyDropdown} classDrop="companyName1 " />
+                                                            </div>
+                                                            <div className="super_company">
+                                                                <Dropdown data={this.state.bicContacts} onChange={setFieldValue} name="bicContactId"
+                                                                    onBlur={setFieldTouched} error={errors.bicContactId} id="bicContactId"
+                                                                    touched={touched.bicContactId} index="IR-bicContactId"
+                                                                    selectedValue={this.state.selectedActionByContactId}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedActionByContactId')}
+                                                                    classDrop=" contactName1" styles={ContactDropdown} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                             
 
                                                     <div className="linebylineInput valid-input">
                                                         <Dropdown data={this.state.contractsPos} selectedValue={this.state.selectedContract}
