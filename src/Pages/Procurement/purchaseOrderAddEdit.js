@@ -4281,7 +4281,7 @@ class PurchaseOrderAddEdit extends Component {
                             changeCurrentStep={stepNo =>
                                 this.changeCurrentStep(stepNo)
                             }
-                            stepNo={this.state.currentStep}
+                            stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true}
                         />
                     </div>
 

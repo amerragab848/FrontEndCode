@@ -1760,7 +1760,7 @@ class ContractInfoAddEdit extends Component {
                   exist_link="/contractInfo/"
                   docId={this.state.docId}
                   changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
-                  stepNo={this.state.CurrStep}
+                  stepNo={this.state.CurrStep} changeStatus={docId === 0 ? false : true}
                 />
               </div>
             </div>

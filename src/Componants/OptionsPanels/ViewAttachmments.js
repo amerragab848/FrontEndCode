@@ -190,11 +190,7 @@ class ViewAttachmments extends Component {
     }
 
     getData() {
-        let url =
-            "GetAzureFiles?docTypeId=" +
-            this.props.docTypeId +
-            "&docId=" +
-            this.props.docId;
+        let url = "GetAzureFiles?docTypeId=" + this.props.docTypeId + "&docId=" + this.props.docId;
         if (this.props.files.length === 0) {
             this.props.actions.GetUploadedFiles(url);
         }
@@ -559,7 +555,7 @@ class ViewAttachmments extends Component {
                     <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialogImage = ref)}>
                         <div className="dropWrapper">
                             <div className="fullWidthWrapper">
-                                <img src={this.state.imagePath} alt="doc img" style={{ maxWidth: '100 %'}} />
+                                <img src={this.state.imagePath} alt="doc img" style={{ maxWidth: '100 %' }} />
                             </div>
                         </div>
                     </SkyLight>

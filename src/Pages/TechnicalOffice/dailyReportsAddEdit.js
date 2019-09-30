@@ -1878,7 +1878,7 @@ class dailyReportsAddEdit extends Component {
                             <Steps steps_defination={steps_defination}
                                 exist_link="/dailyReports/" docId={this.state.docId}
                                 changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
-                                stepNo={this.state.CurrentStep} />
+                                stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true} />
                         </Fragment>
 
                     </div>

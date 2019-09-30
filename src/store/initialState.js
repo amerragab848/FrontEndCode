@@ -28,7 +28,8 @@ export default {
 			projectName: "",
 			moduleName: "",
 			showSelectProject: true,
-			showLeftReportMenu: false
+			showLeftReportMenu: false,
+			docsAttachData: []
 		},
 		expensesWorkFlow: {
 			expensesWorkFlowData: {},

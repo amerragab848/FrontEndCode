@@ -25,6 +25,7 @@ import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment
 import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import { tr } from "date-fns/esm/locale";
 
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -171,7 +172,8 @@ class inspectionRequestAddEdit extends Component {
             CurrentStep: 0,
             CycleEditLoading: false,
             CycleAddLoading: false,
-            DocLoading: false
+            DocLoading: false,
+            isEdit: docId === 0 ? false : true
         }
 
         if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
@@ -1366,6 +1368,7 @@ class inspectionRequestAddEdit extends Component {
 
 
                         </div>
+
                         <Steps
                             steps_defination={steps_defination}
                             exist_link="/inspectionRequest/"
@@ -1373,9 +1376,8 @@ class inspectionRequestAddEdit extends Component {
                             changeCurrentStep={stepNo =>
                                 this.changeCurrentStep(stepNo)
                             }
-                            changeStatus={this.props.changeStatus}
                             stepNo={this.state.CurrentStep}
-                        />
+                            changeStatus={docId === 0 ? false : true} />
 
                     </div>
                 </div>
