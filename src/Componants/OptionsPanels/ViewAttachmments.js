@@ -69,10 +69,9 @@ class ViewAttachmments extends Component {
     previewPDF = (item, extension) => {
         if (extension == "pdf") {
             this.setState({
-                activeURL: item.attachFile
+                activeURL: item.parentAttachFile
             });
-            activeURL = item.attachFile;
-            this.getPDFblob(item.attachFile);
+            this.getPDFblob(item.parentAttachFile);
         } else {
 
             this.setState({
@@ -170,7 +169,8 @@ class ViewAttachmments extends Component {
                 //Build a URL from the file
                 const fileURL = URL.createObjectURL(blob);
                 this.setState({
-                    activeURL: fileURL
+                    activeURL: fileURL,
+                    view: true
                 });
                 activeURL = fileURL;
                 this.simpleDialog.show();
@@ -542,7 +542,7 @@ class ViewAttachmments extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                {activeURL === "" ? null : (<PDFViewer document={{ url: activeURL }} />)}
+                                {activeURL === "" ? null : (<PDFViewer document={{ url: this.state.activeURL }} />)}
                             </div>
                         </SkyLight>
                     </div>
@@ -559,7 +559,7 @@ class ViewAttachmments extends Component {
                     <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialogImage = ref)}>
                         <div className="dropWrapper">
                             <div className="fullWidthWrapper">
-                                <img src={this.state.imagePath} alt="doc img" style={{ maxWidth: '100 %'}} />
+                                <img src={this.state.imagePath} alt="doc img" style={{ maxWidth: '100 %' }} />
                             </div>
                         </div>
                     </SkyLight>
