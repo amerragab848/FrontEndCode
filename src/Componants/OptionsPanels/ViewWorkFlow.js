@@ -38,7 +38,7 @@ class ViewWorkFlow extends Component {
     componentDidMount() {
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.state.docId + '&docType=' + this.state.docType + '&projectId=' + this.state.projectId;
 
-        if (this.props.workFlowCycles.length === 0 && this.props.changeStatus === true) { //
+        if (this.props.changeStatus === true) {
             this.props.actions.GetWorkFlowCycles(url);
         }
     }
@@ -51,7 +51,7 @@ class ViewWorkFlow extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.workFlowCycles !== prevState.workFlowCycles) {
+        if (prevProps.workFlowCycles !== this.props.workFlowCycles) {
             this.renderCycles(this.props.workFlowCycles);
         }
     }
