@@ -1311,7 +1311,8 @@ body {
     padding-left: 130px;
     padding-right: 40px;
     padding-top: 72px;
-    background-image: linear-gradient(to bottom, #f5f5f6 0%, #f5f5f6 26%, #fafbfc 0%, #fafbfc 100%);
+    /* background-image: linear-gradient(to bottom, #f5f5f6 0%, #f5f5f6 26%, #fafbfc 0%, #fafbfc 100%); */
+    background: #fafbfc;
 }
 
 #ascrail2003,
@@ -2412,6 +2413,18 @@ h1, h2, h3, h4, h5 {
     -ms-user-select: none;
     user-select: none;
     padding-right: 5px;
+}
+
+.mainSide .header-logo-menu .content-collapse .procoorLogo a, .main-header .header-content .nav-left li.procoor__logo a {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    padding: 6px
+}
+
+.mainSide .header-logo-menu .content-collapse .procoorLogo a img, .main-header .header-content .nav-left li.procoor__logo a img {
+    width: 100%;
+    height: 100%;
 }
 
 .mainSide .header-logo-menu .content-collapse .mainProjectsList {
@@ -3870,11 +3883,6 @@ h1, h2, h3, h4, h5 {
     -webkit-transition: 0.3s;
     transition: 0.3s;
     background-color: #E9ECF0;
-}
-
-.subiTabsContent {
-    width: 100%;
-    padding-bottom: 40px;
 }
 
 .subiTabsContent .subiConHead {
@@ -5680,11 +5688,21 @@ h1, h2, h3, h4, h5 {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+    margin: 0;
+    height: 100%;
 }
 
 .main-header .header-content .nav-right li {
     margin-right: 24px;
     cursor: pointer;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid transparent;
+}
+
+.main-header .header-content .nav-right li.active {
+    border-bottom: 2px solid #858d9e;
 }
 
 .main-header .header-content .nav-right li:first-child {
@@ -5699,7 +5717,7 @@ h1, h2, h3, h4, h5 {
     margin-right: 48px;
 }
 
-.main-header .header-content .nav-right li.notifi-icon {
+.main-header .header-content .nav-right li.notifi-icon a, .main-header .header-content .nav-right li.notifi-icon {
     position: relative;
 }
 
@@ -5719,8 +5737,12 @@ h1, h2, h3, h4, h5 {
 }
 
 .main-header .header-content .nav-right li:hover svg g g {
-    fill: #969eab;
+    fill: #5e6475;
     transition: all 0.2s ease;
+}
+
+.header__search:hover svg g g {
+    stroke: #5e6475
 }
 
 .main-header .header-content .UserImg .dropdownContent {
@@ -6365,6 +6387,7 @@ h1, h2, h3, h4, h5 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-top: 0;
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform .linebylineInput:last-of-type {
@@ -7158,17 +7181,8 @@ h1, h2, h3, h4, h5 {
     position: relative;
 }
 
-.SummeriesContainer .SummeriesTitle {
-    font-size: 28px;
-    font-family: cairo-b;
-    padding-right: 90px;
-    margin: 0;
-}
-
 .SummeriesContainer .SummeriesContainerContent {
-    border-bottom: 1px solid #E9ECF0;
-    border-top: 1px solid #E9ECF0;
-    background-color: #fff;
+    background-color: transparent;
     display: flex;
     padding: 0;
     justify-content: center;
@@ -7184,7 +7198,7 @@ h1, h2, h3, h4, h5 {
     flex-flow: column;
     align-items: center;
     width: 257px;
-    padding: 0 20px;
+    padding: 0;
     position: relative;
     z-index: 9;
 }
@@ -7215,14 +7229,30 @@ h1, h2, h3, h4, h5 {
     transition: all 0.3s ease-in-out;
     text-align: center;
     position: relative;
-    padding: 0 5px 12px 0;
+    padding: 0 0 12px 0;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .number sub {
-    position: absolute;
+    /* position: absolute;
     bottom: 15px;
     left: 12px;
-    font-size: 12px;
+    font-size: 12px; */
+
+    position: absolute;
+    right: calc(100% - 50px);
+    position: absolute;
+    height: 50%;
+    top: 16px;
+    font-family: 'Muli';
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.45;
+    letter-spacing: -0.18px;
+    color: #252833;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .status {
@@ -7275,11 +7305,11 @@ h1, h2, h3, h4, h5 {
     font-family: cairo-b;
     font-size: 12px;
     letter-spacing: -0.2px;
-    color: #ccd2db;
+    color: #a8b0bf;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList > div span {
-    color: #858d9e;
+    color: #252833;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem:before {
@@ -7309,8 +7339,10 @@ h1, h2, h3, h4, h5 {
 .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .title > div span,
 .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .number > div span,
 .SummeriesContainer .SummeriesContainerContent .summerisItem:hover .status > div span,
-.SummeriesContainer .SummeriesContainerContent .summerisItem:hover .summerisList > div span {
+.SummeriesContainer .SummeriesContainerContent .summerisItem:hover .summerisList > div span,
+.SummeriesContainer .SummeriesContainerContent .summerisItem:hover .summerisList > div {
     color: #fff;
+    transition: all 0.5s ease-in-out
 }
 
 .SummeriesContainer.numbersOnly .SummeriesContainerContent {
@@ -8018,7 +8050,7 @@ h1, h2, h3, h4, h5 {
     justify-content: center;
     position: relative;
     position: absolute;
-    top: 150%;
+    top: 100%;
     z-index: 999;
     width: 345px;
     right: -162px;
@@ -8155,6 +8187,7 @@ h1, h2, h3, h4, h5 {
     top: 0;
     background: #fff;
     z-index: 999;
+    width: 100%
 }
 
 .notifiBar .smallNotifiBar .notifi__tabs ul {
@@ -8173,6 +8206,7 @@ h1, h2, h3, h4, h5 {
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    border-bottom: none
 }
 
 .notifiBar .smallNotifiBar .notifi__tabs ul li .imgWrapper {
@@ -8182,33 +8216,6 @@ h1, h2, h3, h4, h5 {
     align-items: center;
     position: relative;
     overflow: hidden;
-}
-
-.notifiBar .smallNotifiBar .notifi__tabs ul li .imgWrapper img {
-    margin: auto;
-    opacity: 1;
-    transition: all 0.3s ease;
-    width: 24px;
-    height: 24px;
-}
-
-.notifiBar .smallNotifiBar .notifi__tabs ul li .imgWrapper img.activeImg {
-    display: none;
-    width: 16px;
-    height: 16px;
-}
-
-.notifiBar .smallNotifiBar .notifi__tabs ul li .imgWrapper::after {
-    content: '';
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    opacity: 0;
-    top: 0;
-    left: 0;
-    transition: all 0.3s ease;
-    background-repeat: no-repeat;
-    background-position: center;
 }
 
 .notifiBar .smallNotifiBar .notifi__tabs ul li::after {
@@ -8244,16 +8251,6 @@ h1, h2, h3, h4, h5 {
     opacity: 0;
 }
 
-.notifiBar .smallNotifiBar .notifi__tabs ul li:hover .imgWrapper.not__icon::after {
-    opacity: 1;
-    background-image: url(../../images//notif-iconHover.png);
-}
-
-.notifiBar .smallNotifiBar .notifi__tabs ul li:hover .imgWrapper.base__icon::after {
-    opacity: 1;
-    background-image: url(../../images//grey-baseHover.png);
-}
-
 .notifiBar .smallNotifiBar .notifi__tabs ul li.active::after {
     background-color: #4382f9;
 }
@@ -8263,21 +8260,17 @@ h1, h2, h3, h4, h5 {
     opacity: 1;
 }
 
-.notifiBar .smallNotifiBar .notifi__tabs ul li.active img.activeImg {
-    display: block;
-}
-
-.notifiBar .smallNotifiBar .notifi__tabs ul li.active img.normalImg {
-    display: none;
-}
-
-.notifiBar .smallNotifiBar .notifi__tabs ul li.active:hover .imgWrapper img {
+.notifiBar .smallNotifiBar .notifi__tabs ul li.active span svg g g  {
+    fill: #4382f9 !important;
     opacity: 1;
 }
 
-.notifiBar .smallNotifiBar .notifi__tabs ul li.active:hover .imgWrapper::after {
-    opacity: 0;
-    background-image: none;
+.notifiBar .smallNotifiBar .notifi__tabs ul li.active span.activeImg {
+    display: block;
+}
+
+.notifiBar .smallNotifiBar .notifi__tabs ul li.active:hover .imgWrapper span {
+    opacity: 1;
 }
 
 .printWrapper {
@@ -9041,9 +9034,10 @@ h1, h2, h3, h4, h5 {
     margin-top: 41px;
 }
 
-.login__page .login__page--form .proForm .form-group {
-    display: block;
+.login__page .login__page--form .proForm .form-group { 
     padding: 0;
+    display: flex;
+    margin-bottom: 20px
 }
 
 .login__page .login__page--form .proForm .ui.input.inputDev {
@@ -13126,8 +13120,19 @@ h1, h2, h3, h4, h5 {
     color: #a8b0bf;
     font-family: cairo-r;
     font-size: 12px;
-    background: #fff;
+    z-index: 9;
     padding: 0 5px;
+}
+
+.proForm .ui.input.inputDev .inputsideNote::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background: #fff;
+    z-index: -1;
 }
 
 .proForm .ui.input.inputDev input {
@@ -15251,10 +15256,6 @@ div[draggable=true]:last-of-type .react-grid-HeaderCell--frozen, .rdg-last--froz
     border-left: none;
 }
 
-.panel {
-    direction: ltr;
-}
-
 /* layout -ar css */
 .zero {
     margin: 0;
@@ -15480,10 +15481,6 @@ body {
     right: 10px !important;
 }
 
-.header__search .ui.input > input {
-    text-align: right;
-}
-
 /* layout -ar css */
 /* templates approval ar */
 .rowsPaginations button i {
@@ -15693,9 +15690,6 @@ table edition
 }
 
 /* sla7 22/1/2019*/
-.mainContainer {
-    background-image: linear-gradient(to bottom, #f5f5f6 100%, #f5f5f6 26%, #fafbfc 0%, #fafbfc 0%);
-}
 
 .mainContainer .ui.fluid.selection.dropdown.singleDropDown {
     padding: 0;
@@ -16580,11 +16574,9 @@ table edition
 }
 
 .panel {
-    margin-bottom: 25px;
     height: 100%;
-
-    /*  display: flex;
-     align-items: center; */
+    direction: ltr;
+    margin-bottom: 100px
 }
 
 .donut-container {
@@ -16593,12 +16585,14 @@ table edition
 }
 
 .panel h2 {
-    text-align: center;
-    font-family: cairo-r;
+    padding-left: 20px;
+    font-family: cairo-b;
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.2px;
     color: #252833;
+    text-align: right;
+    padding-right: 30px
 }
 
 .legend-container {
@@ -17014,7 +17008,7 @@ tfoot tr td p {
 
 .dashboard__name {
     padding-top: 67px;
-    padding-bottom: 61px;
+    padding-bottom: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17039,6 +17033,10 @@ tfoot tr td p {
     padding-bottom: 59px;
     line-height: 1.14;
     letter-spacing: -0.5px;
+    font-size: 20px;
+    font-family: cairo-b;
+    padding-right: 90px;
+    margin: 0;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .summerisList .first {
@@ -17211,15 +17209,23 @@ tfoot tr td p {
 }
 
 .noTabs__document .doc-container .step-content {
-    width: 835px;
+    /* width: 835px; */
     border-left: 0;
     background-color: #ffffff;
-    margin: auto;
     display: block;
-    margin: 0 auto;
-    padding-bottom: 70px;
+    /* margin: 0 auto; */
     position: unset !important;
     z-index: unset !important;
+    width: 100%;
+    padding: 0;
+    padding-left: 56px;
+    padding-right: 40px;
+    padding-bottom: 80px;
+}
+
+.noTabs__document .doc-container .step-content .document-fields .proForm.first-proform,
+.noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer {
+    max-width: 786px;
 }
 
 .noTabs__document .doc-container .step-content .document-fields {
@@ -17228,10 +17234,6 @@ tfoot tr td p {
 
 .noTabs__document .doc-container .step-content .documents-stepper.noTabs__document .doc-container {
     border: 0;
-}
-
-.noTabs__document .doc-container .step-content .document-fields .proForm.datepickerContainer {
-    margin-top: 0;
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm.first-proform {
@@ -17243,7 +17245,7 @@ tfoot tr td p {
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm .linebylineInput {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     width: 48%;
 }
 
@@ -17769,17 +17771,18 @@ button.companies_icon {
     position: absolute;
     content: "";
     left: 0;
-    top: 103px;
-    bottom: 103px;
+    top: 33%;
+    bottom: 33%;
     width: 1px;
     background-color: #E9ECF0;
     z-index: 2;
 }
 
 .SummeriesContainer .SummeriesContainerContent.numbersContainerContent {
-    background-color: transparent;
-    border: 0;
+    background-color: #fff; 
     justify-content: center;
+    border-bottom: 1px solid #E9ECF0;
+    border-top: 1px solid #E9ECF0;
 }
 
 .noTabs__document .doc-container .step-content .document-fields .proForm .account__checkbox {
@@ -19672,6 +19675,8 @@ line.horizontal-grid-line {
 .donut__legend {
     display: flex;
     align-items: center;
+    direction: rtl;
+    margin-top: 56px;
 }
 
 .donut-text {
@@ -19680,6 +19685,7 @@ line.horizontal-grid-line {
 
 #legenbd__teext {
     overflow: hidden;
+    padding-right: 25px;
 }
 
 #legenbd__teext .chartName {
@@ -20399,6 +20405,10 @@ button.ck.ck-button.ck-off.ck-button_with-text.ck-dropdown__button {
     background-position: center;
 }
 
+.linebylineInput .ck.ck-toolbar {
+    padding: 0 !important
+}
+
 .ck.ck-toolbar {
     height: 50px !important;
     border-top-left-radius: 4px !important;
@@ -20887,10 +20897,6 @@ div#markup-panel {
     margin-bottom: 8px;
 }
 
-.login__page .login__page--form .proForm .form-group {
-    display: flex;
-}
-
 .attachmentTableAuto.attachmentTable thead tr th:nth-child(2),
 .attachmentTableAuto.attachmentTable tbody tr td:nth-child(2) {
     width: auto;
@@ -21055,21 +21061,34 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     margin-right: 24px;
 }
 
+.main-header .header-content .nav-right li a.header__search--container {
+    height: 100%
+}
+
+.header__search span  {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
 .header__search {
+
     display: flex;
     align-items: flex-end;
     padding: 0 5px;
     border-bottom: 2px solid transparent;
     transition: all 0.4s ease-in-out;
+    height: 100%
 }
 
 .header__search:hover, .header__search.active {
-    border-bottom: 2px solid #E9ECF0;
+    border-bottom: 2px solid #858d9e;
 }
 
 .header__search .ui.input {
     width: 0;
     transition: all 0.4s ease-in-out;
+    height: 100%
 }
 
 .header__search:hover .ui.input,
@@ -21084,6 +21103,9 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     color: #858d9e;
     background-color: #ffffff;
     font-size: 14px;
+    font-family: cairo-b; 
+    text-align: right;
+    padding-bottom: 0;
 }
 
 .one__tab.one_step .doc-container .step-content .main__header {
@@ -22091,4 +22113,9 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 
     .customD_Menu  {
         text-align: right;
+    }
+
+    .projectDashboard {
+        padding-left: 0;
+        padding-right: 88px
     }

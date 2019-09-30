@@ -43,7 +43,9 @@ export default {
 			companyContact: [],
 			getingData: false,
 			companyList: [],
-			tabIndex: 0
+			tabIndex: 0,
+			userTabIndex: 0,
+			showExpensesWF: false
 		},
 		Steps: {
 			currentStep: 0

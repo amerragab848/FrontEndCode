@@ -144,36 +144,40 @@ class LeftMenu extends Component {
       hover: false
     });
 
-    if (this.state.ActivePanal != 0) {
+    viewEps = false;
+    viewModules = true;
+    viewProjects = false;
 
-      if (this.state.ActivePanal === 1) {
-        this.setState(state => {
-          return {
-            viewEps: true,
-            viewModules: false,
-            viewProjects: false
-          };
-        });
+    // if (this.state.ActivePanal != 0) {
 
-        viewEps = true;
-        viewModules = false;
-        viewProjects = false;
+    //   if (this.state.ActivePanal === 1) {
+    //     this.setState(state => {
+    //       return {
+    //         viewEps: true,
+    //         viewModules: false,
+    //         viewProjects: false
+    //       };
+    //     });
 
-      } else {
-        this.setState(state => {
-          return {
-            viewEps: false,
-            viewModules: true,
-            viewProjects: false
-          };
-        });
+    //     viewEps = true;
+    //     viewModules = false;
+    //     viewProjects = false;
 
-        viewEps = false;
-        viewModules = true;
-        viewProjects = false;
-      }
+    //   } else {
+    //     this.setState(state => {
+    //       return {
+    //         viewEps: false,
+    //         viewModules: true,
+    //         viewProjects: false
+    //       };
+    //     });
 
-    }
+    //     viewEps = false;
+    //     viewModules = true;
+    //     viewProjects = false;
+    //   }
+
+    // }
   };
 
   ProjectHandler = () => {

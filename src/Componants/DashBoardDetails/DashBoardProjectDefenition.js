@@ -11,7 +11,7 @@ let widgets = [
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
-        width: 150,
+        width: 250,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -33,7 +33,7 @@ let widgets = [
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: 150,
+        width: 200,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -103,7 +103,7 @@ let widgets = [
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: 150,
+        width: 200,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -114,7 +114,7 @@ let widgets = [
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
-        width: 150,
+        width: 250,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -205,7 +205,7 @@ let widgets = [
       {
         key: "subject",
         name: Resources["subject"][currentLanguage],
-        width: 150,
+        width: 250,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -227,7 +227,7 @@ let widgets = [
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: 150,
+        width: 200,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -1033,7 +1033,7 @@ let widgets = [
       {
         key: "projectName",
         name: Resources["projectName"][currentLanguage],
-        width: 300,
+        width: 200,
         draggable: true,
         sortable: true,
         resizable: true,

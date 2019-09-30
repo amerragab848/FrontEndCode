@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import Api from "../../../api";
-import SkyLight from 'react-skylight';
 import TaskAdmin from './TaskAdmin'
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Export from "../../OptionsPanels/Export";
 import Filter from "../../FilterComponent/filterComponent";
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
 import GridSetup from "../../../Pages/Communication/GridSetup";
-import NotifiMsg from '../../publicComponants/NotifiMsg'
 import moment from "moment";
 import CryptoJS from 'crypto-js';
 import config from "../../../Services/Config";
@@ -21,8 +19,6 @@ const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
 const publicConfiguarion = config.getPayload();
-
-let rwIdse = '';
 
 class Accounts extends Component {
 
@@ -215,7 +211,7 @@ class Accounts extends Component {
         let Id = rowId[0]
         let IsCanDeleted = rows.filter(s => s.id === Id)
         if (IsCanDeleted[0].deletable === 1) {
-            rwIdse = rowId;
+
             this.setState({
                 showDeleteModal: true,
                 rowSelectedId: rowId,
@@ -245,17 +241,14 @@ class Accounts extends Component {
     };
 
     addRecord = () => {
-        Api.get('CheckLimitAccount').then(
-            result => {
-                if (result === 'Done') {
-                    this.props.history.push({ pathname: "AddAccount" });
-                }
-                else {
-                    toast.error('You have exceeded accounts users number please contact the administartor !!!')
-                }
+        Api.get('CheckLimitAccount').then(result => {
+            if (result === 'Done') {
+                this.props.history.push({ pathname: "AddAccount" });
             }
-        )
-
+            else {
+                toast.error('You have exceeded accounts users number please contact the administartor !!!')
+            }
+        })
     }
 
     ConfirmDeleteAccount = () => {
@@ -327,7 +320,7 @@ class Accounts extends Component {
             });
         }
         else {
-            alert('You Don`t Have Permissions')
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.goBack()
         }
         if (config.IsAllow(798))
@@ -337,7 +330,7 @@ class Accounts extends Component {
     }
 
     ConfirmResetPassword = () => {
-        let id = this.state.rowSelectedId; 
+        let id = this.state.rowSelectedId;
         this.setState({ showDeleteModal: true })
         let rowsData = this.state.rows;
         let userName = _.find(rowsData, { 'id': id })
@@ -427,10 +420,10 @@ class Accounts extends Component {
             let url = 'GetAccountsFilter?' + this.state.pageNumber + "&pageSize=" + this.state.pageSize + '&query=' + _query[0] + '}'
             Api.get(url).then(result => {
                 this.setState({
-                    rows: result,
+                    rows: result || [],
                     isLoading: false,
                     pageNumber: 1,
-                    totalRows: result.length
+                    totalRows: result.length || 0
                 });
             })
         }
@@ -439,15 +432,14 @@ class Accounts extends Component {
             let pageNumber = this.state.pageNumber + 1
             Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                 this.setState({
-                    rows: result,
+                    rows: result || [],
                     isLoading: false,
                     pageNumber: pageNumber,
-                    totalRows: result.length,
+                    totalRows: result.length || 0,
                     search: false
                 });
             });
         }
-
     };
 
     AccountsEdit(obj) {
@@ -496,6 +488,7 @@ class Accounts extends Component {
                     .catch(ex => { })
             ).catch(ex => { })
         }, 500);
+
         this.setState({
             isLoading: true,
             IsActiveShow: false,
@@ -599,28 +592,17 @@ class Accounts extends Component {
 
         let Exportcolumns = this.state.columns.filter(s => s.key !== 'BtnActions')
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={Exportcolumns} fileName={this.state.pageTitle} />
-            : null;
+        const btnExport = this.state.isLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={Exportcolumns} fileName={this.state.pageTitle} /> : null;
 
-        const ComponantFilter = this.state.isLoading === false ?
-            <Filter
-                filtersColumns={this.state.filtersColumns}
-                filterMethod={this.filterMethodMain}
-            /> : null;
+        const ComponantFilter = <Filter filtersColumns={this.state.filtersColumns} filterMethod={this.filterMethodMain} />;
 
         return (
-            <div >
+            <div>
                 <div className="submittalFilter">
-
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>
                         <span>{this.state.totalRows}</span>
-                        <div
-                            className="ui labeled icon top right pointing dropdown fillter-button"
-                            tabIndex="0"
-                            onClick={() => this.hideFilter(this.state.viewfilter)}
-                        >
+                        <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
                             <span>
                                 <svg
                                     width="16px"
@@ -666,54 +648,38 @@ class Accounts extends Component {
                                     </g>
                                 </svg>
                             </span>
-
                             <span className={this.state.viewfilter === false ? "text active " : " text"}>
                                 <span className="show-fillter">{Resources['hideFillter'][currentLanguage]}</span>
                                 <span className="hide-fillter">{Resources['showFillter'][currentLanguage]}</span>
                             </span>
                         </div>
                     </div>
-
                     <div className="filterBTNS">
-                        {this.state.IsActiveShow ?
-                            <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null}
+                        {this.state.IsActiveShow ? <button className="primaryBtn-1 btn mediumBtn activeBtnCheck" onClick={this.IsActiveFun}><i className="fa fa-user"></i></button> : null}
                         {btnExport}
-                        {config.IsAllow(801) ?
-                            <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button>
-                            : null}
+                        {config.IsAllow(801) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button> : null}
                     </div>
-
                     <div className="rowsPaginations">
                         <div className="rowsPagiRange">
                             <span>0</span> - <span>{this.state.pageSize}</span> of
                            <span> {this.state.totalRows}</span>
                         </div>
-
                         <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                             <i className="angle left icon" />
                         </button>
                         <button onClick={() => this.GetNextData()}>
                             <i className="angle right icon" />
                         </button>
-
                     </div>
-
                 </div>
-
-                <div className="filterHidden"
-                    style={{
-                        maxHeight: this.state.viewfilter ? "" : "0px",
-                        overflow: this.state.viewfilter ? "" : "hidden"
-                    }}>
+                <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
                     <div className="gridfillter-container">
                         {ComponantFilter}
                     </div>
                 </div>
-
-                <div className="grid-container">
+                <div className="grid-container fixed__loading">
                     {dataGrid}
                 </div>
-
                 {this.state.showPopupTaskAdmin ? <TaskAdmin /> : null}
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal

@@ -9,29 +9,23 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import ReactTable from "react-table";
-
 import { withRouter } from "react-router-dom";
-
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
-
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import Steps from "../../Componants/publicComponants/Steps";
-import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
-import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -1269,7 +1263,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                     {this.viewAttachments()}
                                                                     <Fragment>
                                                                         <div className="document-fields tableBTnabs">
-                                                                            {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                            {this.state.docId > 0  ? <AddDocAttachment   projectId={projectId} isViewMode={ this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                                         </div>
                                                                     </Fragment>
                                                                     {this.props.changeStatus === true ?
@@ -1295,7 +1289,6 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                         <button className="primaryBtn-1 btn meduimBtn" >{Resources['next'][currentLanguage]}</button>
                                                                                     }
                                                                                 </div>
-
                                                                             </div> : null}
                                                                     </div>
                                                                     <div className="approveDocument">
@@ -1327,8 +1320,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                         </button> :
                                                                         this.showBtnsSaving()}
                                                                 </div>
-                                                            }
-
+                                                            } 
                                                         </Form>
                                                     )}
                                                 </Formik>

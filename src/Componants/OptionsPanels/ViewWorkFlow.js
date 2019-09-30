@@ -10,6 +10,7 @@ import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/avatar/xavatarBig.svg"
 import CommentImg from "../../Styles/images/flowComment.png"
 import DistributionList from "../OptionsPanels/viewDistributionList";
+import Config from "../../Services/Config";
 import { connect } from 'react-redux';
 import {
     bindActionCreators
@@ -37,7 +38,7 @@ class ViewWorkFlow extends Component {
     componentDidMount() {
         let url = 'GetCycleWorkflowByDocIdDocType?docId=' + this.state.docId + '&docType=' + this.state.docType + '&projectId=' + this.state.projectId;
 
-        if (this.props.workFlowCycles.length === 0 && this.props.changeStatus === true) { //
+        if (this.props.changeStatus === true) {
             this.props.actions.GetWorkFlowCycles(url);
         }
     }
@@ -69,6 +70,7 @@ class ViewWorkFlow extends Component {
             showPopup: false
         });
     }
+
     renderLevels(items) {
 
         let grouped = _.groupBy(items, 'arrange');
@@ -86,6 +88,7 @@ class ViewWorkFlow extends Component {
                         </div>
                         <div className="MultiPeinding">
                             {i.map((level, idx) => {
+                                let levelSignature = Config.getPublicConfiguartion().downloads + '/' + level.signature
                                 return (
                                     <div key={idx} className={level.statusVal == null ? "card-box cardPending" : level.statusVal === true ? "card-box cardApproval" : "card-box cardDeclined"}>
                                         <div className={level.statusVal == null ? "signature-h signaturePendingd" : "signature-h"}>
@@ -99,15 +102,14 @@ class ViewWorkFlow extends Component {
                                         </div>
                                         {level.statusVal != null ?
                                             <div className="card-signature">
-                                                <img src={level.signature != null ? level.signature : Signature} alt="..." />
+                                                <img src={level.signature != null ? levelSignature : Signature} alt="..." />
                                             </div>
                                             : null}
 
                                         <div className="Status__comment">
                                             {level.statusVal != null ?
                                                 <span>
-                                                    {level.comment === null || level.comment !== "" ? null :
-                                                        <img src={CommentImg} alt="Cooment" onClick={e => this.showPopup(level.comment)} />
+                                                    {level.comment ? <img src={CommentImg} alt="Cooment" onClick={e => this.showPopup(level.comment)} /> : null
                                                     }
                                                 </span> : null}
                                             <div className="box-statue">
@@ -119,6 +121,7 @@ class ViewWorkFlow extends Component {
                                     </div>
                                 );
                             })}
+
                         </div>
                     </div>
                 </div>
@@ -151,11 +154,11 @@ class ViewWorkFlow extends Component {
         return (
             <Fragment>
                 <div className={this.state.showPopup === true ? "popupMedium active" : "popupMedium"}>
-                    <button onClick={(e) => this.closePopup()} className="workflowComment__closeBtn">x</button>
+                    <button onClick={(e) => this.closePopup()} className="workflowComment__closeBtn" type="button" >x</button>
                     <div className={this.state.showPopup === true ? "ui modal smallModal active workflowComment" : "ui modal smallModal workflowComment"} id="smallModal2">
                         <h2 className="header zero">Comment</h2>
                         <p className="zero">{this.state.comment}</p>
-                        <button onClick={(e) => this.closePopup()} className="smallBtn primaryBtn-1 btn approve">Close</button>
+                        <button onClick={(e) => this.closePopup()} type="button" className="smallBtn primaryBtn-1 btn approve">Close</button>
                     </div>
                 </div>
 

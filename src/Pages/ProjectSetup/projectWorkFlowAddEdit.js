@@ -40,6 +40,7 @@ let arrange = 0;
 const _ = require('lodash')
 
 var steps_defination = [];
+
 steps_defination = [
     { name: "workFlow", callBackFn: null },
     { name: "contacts", callBackFn: null },
@@ -954,13 +955,8 @@ class projectWorkFlowAddEdit extends Component {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }
         ]
 
         const dataGrid =
@@ -1062,16 +1058,11 @@ class projectWorkFlowAddEdit extends Component {
                     validationSchema={validationSchemaForAddEditWorkFlow}
                     onSubmit={(values, actions) => {
                         this.AddEditWorkFlow(values, actions)
-                    }}
-                >
-
+                    }}>
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldValue, setFieldTouched }) => (
-                        <Form onSubmit={handleSubmit}>
-
-                            <div className="document-fields">
-
-                                <div className="proForm first-proform">
-
+                        <Form onSubmit={handleSubmit}> 
+                            <div className="document-fields"> 
+                                <div className="proForm first-proform"> 
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -1101,17 +1092,13 @@ class projectWorkFlowAddEdit extends Component {
                                                 onBlur={e => this.handleChange(e, 'status')} value="false" onChange={e => this.handleChange(e, 'status')} />
                                             <label>{Resources.closed[currentLanguage]}</label>
                                         </div>
-                                    </div>
-
-                                </div>
-
-                                <div className="proForm datepickerContainer">
-
+                                    </div> 
+                                </div> 
+                                <div className="proForm datepickerContainer"> 
                                     <div className="linebylineInput valid-input alternativeDate">
                                         <DatePicker title='docDate' startDate={this.state.document.docDate}
                                             handleChange={e => this.handleChangeDate(e, 'docDate')} />
-                                    </div>
-
+                                    </div> 
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                         <div className="ui input inputDev"  >
@@ -1122,8 +1109,7 @@ class projectWorkFlowAddEdit extends Component {
                                                     handleBlur(e)
                                                 }} name="arrange" />
                                         </div>
-                                    </div>
-
+                                    </div> 
                                     <div className="linebylineInput valid-input">
                                         <Dropdown data={this.state.RejectionOptionData} selectedValue={this.state.selectedRejectionOptions}
                                             handleChange={event => this.handleChangeDropDown(event, 'rejectionOptions', false, '', '', '', 'selectedRejectionOptions')}
@@ -1216,7 +1202,6 @@ class projectWorkFlowAddEdit extends Component {
                         </Form>
                     )}
                 </Formik>
-
             )
         }
 

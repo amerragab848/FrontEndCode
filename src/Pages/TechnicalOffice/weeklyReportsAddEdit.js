@@ -1187,9 +1187,9 @@ class weeklyReportsAddEdit extends Component {
                                     <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} onClick={() => this.saveTechnicalOffice()} disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
                                 </div>
                             </div>
-                            <div className="slider-Btns letterFullWidth">
+                            {/* <div className="slider-Btns letterFullWidth">
                                 <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(2)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -1310,9 +1310,9 @@ class weeklyReportsAddEdit extends Component {
                                 </Form>
                             )}
                         </Formik>
-                        <div className="slider-Btns letterFullWidth">
+                        {/* <div className="slider-Btns letterFullWidth">
                             <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(3)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             )
@@ -1492,9 +1492,9 @@ class weeklyReportsAddEdit extends Component {
                                 </Form>
                             )}
                         </Formik>
-                        <div className="slider-Btns letterFullWidth">
+                        {/* <div className="slider-Btns letterFullWidth">
                             <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(4)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             )
@@ -1643,9 +1643,9 @@ class weeklyReportsAddEdit extends Component {
                                 </Form>
                             )}
                         </Formik>
-                        <div className="slider-Btns letterFullWidth">
+                        {/* <div className="slider-Btns letterFullWidth">
                             <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(5)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             )
@@ -1886,9 +1886,9 @@ class weeklyReportsAddEdit extends Component {
                                 </Form>
                             )}
                         </Formik>
-                        <div className="slider-Btns letterFullWidth">
+                        {/* <div className="slider-Btns letterFullWidth">
                             <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(6)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             )
@@ -2113,9 +2113,9 @@ class weeklyReportsAddEdit extends Component {
                                 </Form>
                             )}
                         </Formik>
-                        <div className="slider-Btns letterFullWidth">
+                        {/* <div className="slider-Btns letterFullWidth">
                             <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(7)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             )
@@ -2211,9 +2211,9 @@ class weeklyReportsAddEdit extends Component {
                             <div className="slider-Btns letterFullWidth" style={{ flexFlow: 'row' }}>
                                 <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? ' disNone' : '')} onClick={() => this.saveCoordination()} disabled={this.props.isViewMode} >{Resources["save"][currentLanguage]}</button>
                             </div>
-                            <div className="slider-Btns fullWidthWrapper textLeft ">
+                            {/* <div className="slider-Btns fullWidthWrapper textLeft ">
                                 <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(8)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -2360,9 +2360,9 @@ class weeklyReportsAddEdit extends Component {
                                 </Form>
                             )}
                         </Formik>
-                        <div className="slider-Btns letterFullWidth">
+                        {/* <div className="slider-Btns letterFullWidth">
                             <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(9)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             )
@@ -2522,9 +2522,9 @@ class weeklyReportsAddEdit extends Component {
                                 </Form>
                             )}
                         </Formik>
-                        <div className="slider-Btns letterFullWidth">
+                        {/* <div className="slider-Btns letterFullWidth">
                             <button type="button" className="primaryBtn-1 btn " onClick={() => this.changeCurrentStep(10)} disabled={this.props.isViewMode} >{Resources["next"][currentLanguage]}</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             )
@@ -2576,8 +2576,7 @@ class weeklyReportsAddEdit extends Component {
 
                     </div>
                 </div>
-
-
+ 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources["smartDeleteMessage"][currentLanguage].content}

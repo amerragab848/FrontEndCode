@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
+import { el } from "date-fns/locale";
 
 class Tree extends Component {
 
@@ -22,30 +23,47 @@ class Tree extends Component {
             parentId: "",
             isLoading: false,
             ApiDrawTree: 'GetCostTreeByProjectId?projectId=',
+            isExpenses: this.props.isExpenses ? this.props.isExpenses : false
         };
         this.printChild = this.printChild.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.projectId !== this.props.projectId) {
-            dataservice.GetDataGrid(this.state.ApiDrawTree + nextProps.projectId).then(result => {
-                this.setState({
-                    trees: result,
-                    projectId: nextProps.projectId
-                })
-            })
-        }
+        // if (nextProps.projectId !== "0") {
+        //     dataservice.GetDataGrid(this.state.ApiDrawTree + nextProps.projectId).then(result => {
+        //         this.setState({
+        //             trees: result,
+        //             projectId: nextProps.projectId
+        //         })
+        //     })
+        // }
+        // else if (nextProps.projectid) {
+        //     dataservice.GetDataGrid(this.state.ApiDrawTree + nextProps.projectid).then(result => {
+        //         this.setState({
+        //             trees: result,
+        //             projectId: nextProps.projectid
+        //         })
+        //     })
+        // }
     }
 
-    componentWillMount() {
-        this.props.actions.documentForAdding();
-
-        dataservice.GetDataGrid(this.state.ApiDrawTree + this.state.projectId).then(result => {
-            this.setState({
-                trees: result
+    componentDidMount() {
+        if (this.props.isExpenses) {
+            dataservice.GetDataGrid(this.state.ApiDrawTree + this.props.projectid).then(result => {
+                this.setState({
+                    trees: result
+                });
             });
-        });
+        }
+        else {
+            dataservice.GetDataGrid(this.state.ApiDrawTree + this.props.projectId).then(result => {
+                this.setState({
+                    trees: result
+                });
+            });
+        }
+
     }
 
 
@@ -71,21 +89,21 @@ class Tree extends Component {
             children.map((item, i) => {
                 return (
 
-                     <Fragment>
-                         <div className={"epsTitle" + (item.collapse === false ? ' ' : ' ')} key={item.id}>
-                             <div className="listTitle">
+                    <Fragment>
+                        <div className={"epsTitle" + (item.collapse === false ? ' ' : ' ')} key={item.id}>
+                            <div className="listTitle">
 
-                                 <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }} onClick={() => this.viewChild(item)}>
-                                     <i className="dropdown icon" />
-                                 </span>
+                                <span className="dropArrow" style={{ visibility: (item.trees.length > 0 ? '' : 'hidden') }} onClick={() => this.viewChild(item)}>
+                                    <i className="dropdown icon" />
+                                </span>
 
-                                 <span className="accordionTitle"   onClick={() => this.props.GetNodeData(item)}>{item.codeTreeTitle}</span>
-                             </div>
-                         </div>
-                         <div className="epsContent">
-                             {item.trees.length > 0 ? this.printChild(item.trees) : null}
-                         </div>
-                     </Fragment>
+                                <span className="accordionTitle" onClick={() => this.props.GetNodeData(item)}>{item.codeTreeTitle}</span>
+                            </div>
+                        </div>
+                        <div className="epsContent">
+                            {item.trees.length > 0 ? this.printChild(item.trees) : null}
+                        </div>
+                    </Fragment>
                 )
             })
         )
@@ -115,7 +133,7 @@ class Tree extends Component {
                                                 <i className="dropdown icon" />
                                             </span>
                                             <span className="accordionTitle" onClick={() => this.props.GetNodeData(item)}>{item.codeTreeTitle}</span>
-                                        </div> 
+                                        </div>
                                     </div>
                                     <div className="epsContent">
                                         {item.trees.length > 0 ? this.printChild(item.trees) : null}
@@ -133,8 +151,8 @@ class Tree extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        document: state.communication.document,
-        isLoading: state.communication.isLoading,
+        // document: state.communication.document,
+        //isLoading: state.communication.isLoading,
         projectId: state.communication.projectId
     };
 }

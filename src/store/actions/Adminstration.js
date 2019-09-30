@@ -46,7 +46,7 @@ export function editContact(url, newContact) {
 }
 export function GetCompaniesContact(url) {
     return (dispatch, getState) => {
-        
+
         dispatch({
             type: types.toggleLoading
         });
@@ -69,7 +69,7 @@ export function GetCompaniesContact(url) {
 }
 export function GetCompaniesList(url) {
     return (dispatch, getState) => {
-      
+
         return Api.get(url).then(resp => {
             let _data = []
             resp.forEach(element => {
@@ -169,7 +169,29 @@ export function routeToTabIndex(tabIndex) {
     return (dispatch, getState) => {
         dispatch({
             type: types.routeToTabIndex,
-            data:tabIndex
+            data: tabIndex
+        });
+
+    }
+}
+
+export function userSettingsTabIndex(userTabIndex) {
+
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.userSettingsTabIndex,
+            data: userTabIndex
+        });
+
+    }
+}
+
+export function expenseWorkFlow() {
+
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.EXPENSEWORKFLOW,
+            data: true
         });
 
     }

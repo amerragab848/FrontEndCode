@@ -2045,7 +2045,7 @@ class riskAddEdit extends Component {
                                                 {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={10012} EditAttachments={10013} ShowDropBox={10016} ShowGoogleDrive={10017} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                 {this.viewAttachments()}
                                                 <div className="document-fields tableBTnabs">
-                                                    {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                    {this.state.docId > 0 ? <AddDocAttachment  projectId={projectId} isViewMode={ this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                 </div>
                                                 {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                             </div>

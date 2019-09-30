@@ -16,13 +16,12 @@ import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
 import moment from "moment";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-import SkyLight from "react-skylight";
 import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
-import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
-
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -264,7 +263,7 @@ class variationOrderAddEdit extends Component {
       }
     } else {
       this.setState({ isViewMode: false });
-    } 
+    }
   }
 
   fillVoItems() {
@@ -1056,6 +1055,13 @@ class variationOrderAddEdit extends Component {
                                 projectId={this.state.projectId}
                               />
                             ) : null}
+                          {this.state.docId > 0 && this.state.CurrentStep === 0 ? (
+                            <Fragment>
+                              <div className="document-fields tableBTnabs">
+                                <AddDocAttachment title="VariationOrder"  projectId={this.state.projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                              </div>
+                            </Fragment>
+                          ) : null}
                           {this.viewAttachments()}
                           {this.props.changeStatus === true ? (
                             <ViewWorkFlow

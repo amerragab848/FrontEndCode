@@ -41,7 +41,6 @@ class Index extends Component {
                 key: 'customBtn1',
                 width: 50
             },
-
             {
                 key: "address",
                 name: Resources["title"][currentLanguage],
@@ -120,6 +119,7 @@ class Index extends Component {
                 type: "string"
             }
         ];
+
         this.Actions = [
             {
                 icon: "fa fa-pencil",
@@ -141,45 +141,39 @@ class Index extends Component {
                     }
                 ]
             }
-
         ];
+    
         this.ExportColumns = [
             {
                 key: "address",
-                name: Resources["title"][currentLanguage],
-
+                name: Resources["title"][currentLanguage] 
             },
             {
                 key: "contactName",
-                name: Resources["ContactName"][currentLanguage],
-
+                name: Resources["ContactName"][currentLanguage] 
             },
             {
                 key: "position",
-                name: Resources["position"][currentLanguage],
-
+                name: Resources["position"][currentLanguage] 
             },
             {
                 key: "mobile",
-                name: Resources["Mobile"][currentLanguage],
-
+                name: Resources["Mobile"][currentLanguage] 
             },
             {
                 key: "email",
-                name: Resources["email"][currentLanguage],
-
+                name: Resources["email"][currentLanguage] 
             },
             {
                 key: "enteredBy",
-                name: Resources["enteredBy"][currentLanguage],
-
+                name: Resources["enteredBy"][currentLanguage] 
             },
             {
                 key: "lastModified",
-                name: Resources["lastModified"][currentLanguage],
-
+                name: Resources["lastModified"][currentLanguage] 
             }
         ];
+        
         this.state = {
             Isallow: Config.IsAllow(14),
             isLoading: true,

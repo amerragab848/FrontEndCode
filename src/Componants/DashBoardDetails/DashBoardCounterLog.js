@@ -26,7 +26,7 @@ const subjectLink = ({ value, row }) => {
   if (row) {
 
     let obj = {
-      docId: row.docId,
+      docId: row.id,
       projectId: row.projectId,
       projectName: row.projectName,
       arrange: row.arrange,

@@ -9,8 +9,8 @@ import moment from 'moment';
 import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
+import CryptoJS from "crypto-js";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-
 
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -23,6 +23,7 @@ const Actions = ({ value }) => {
 };
 
 class Expenses extends Component {
+
     constructor(props) {
         super(props)
 
@@ -147,7 +148,8 @@ class Expenses extends Component {
             showDeleteModal: false,
         };
     }
-    attachments = () => { 
+
+    attachments = () => {
     }
 
     clickHandlerDeleteRowsMain = (selectedRows) => {
@@ -185,9 +187,24 @@ class Expenses extends Component {
 
     RouteHandler(obj) {
         if (obj) {
+            let objRout = {
+                id: obj.id,
+            }
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
             this.props.history.push({
-                pathname: "/GetExpensesUserForEdit",
-                search: "?id=" + obj.id
+                pathname: "/expensesUserAddEdit",
+                search: "?id=" + encodedPaylod
+            });
+        } else {
+            let objRout = {
+                id: "0"
+            }
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+            this.props.history.push({
+                pathname: "/expensesUserAddEdit",
+                search: "?id=" + encodedPaylod
             });
         }
     }
@@ -294,11 +311,11 @@ class Expenses extends Component {
     render() {
         const btnExport =
             <Export rows={this.state.isLoading === false ? this.state.rows : []}
-            columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
+                columns={this.state.columns} fileName={Resources['timeSheet'][currentLanguage]} />
 
         return (
             <div className="main__fulldash--container">
-                
+
                 <div className="resetPassword">
 
                     <div className="submittalFilter">
@@ -328,7 +345,7 @@ class Expenses extends Component {
 
                         <div className="filterBTNS">
                             {btnExport}
-                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>New</button>
+                            <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.RouteHandler()}>New</button>
                         </div>
 
                         <div className="rowsPaginations">
@@ -377,12 +394,12 @@ class Expenses extends Component {
                         </div>
                     </div>
 
-                  
-                        {this.state.Loading ? <LoadingSection /> : null}
-                        {this.state.isLoading == false
-                            ? <GridSetup columns={this.state.columns} rows={this.state.rows} pageSize={this.state.pageSize}
-                                showCheckbox={true} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} onRowClick={this.RouteHandler.bind(this)} />
-                            : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
+
+                    {this.state.Loading ? <LoadingSection /> : null}
+                    {this.state.isLoading == false
+                        ? <GridSetup columns={this.state.columns} rows={this.state.rows} pageSize={this.state.pageSize}
+                            showCheckbox={true} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} onRowClick={this.RouteHandler.bind(this)} />
+                        : <div className={this.state.isLoading == false ? "disNone" : ""}> <GridSetup columns={this.state.columns} showCheckbox={false} /></div>}
 
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal

@@ -20,28 +20,31 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
 const validationSchema = Yup.object().shape({
-    email: Yup.string()
-        .email(Resources['emailFormat'][currentLanguage])
-        .required(Resources['emailRequired'][currentLanguage]),
-    titleEnCompany: Yup.string().test('titleEnCompany', 'Name cannot be arabic', value => {
+    email: Yup.string().max(50, Resources['maxLength'][currentLanguage]).email(Resources['emailFormat'][currentLanguage]).required(Resources['emailRequired'][currentLanguage]),
+    titleEnCompany: Yup.string().max(50, Resources['maxLength'][currentLanguage]).test('titleEnCompany', 'Name cannot be arabic', value => {
         return !en.test(value);
     }).required(Resources['ComapnyNameRequired'][currentLanguage]),
-    titleArCompany: Yup.string().test('contactNameAr', 'Name cannot be english', value => {
+    titleArCompany: Yup.string().max(50, Resources['maxLength'][currentLanguage]).test('contactNameAr', 'Name cannot be english', value => {
         return ar.test(value)
     }).required(Resources['ComapnyNameRequired'][currentLanguage]),
-    ContactNameEn: Yup.string().required(Resources['contactNameRequired'][currentLanguage]),
-    ContactNameAr: Yup.string().required(Resources['contactNameRequired'][currentLanguage]),
-    Mobile: Yup.number().required(Resources['mobileRequired'][currentLanguage]),
-    Telephone: Yup.number(),
+    ContactNameEn: Yup.string().max(450, Resources['maxLength'][currentLanguage]).required(Resources['contactNameRequired'][currentLanguage]),
+    ContactNameAr: Yup.string().max(450, Resources['maxLength'][currentLanguage]).required(Resources['contactNameRequired'][currentLanguage]),
+    Mobile: Yup.number().max(50, Resources['maxLength'][currentLanguage]).required(Resources['mobileRequired'][currentLanguage]),
+    positionEn: Yup.string().max(50, Resources['maxLength'][currentLanguage]),
+    positionAr: Yup.string().max(50, Resources['maxLength'][currentLanguage]),
+    addressAr: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
+    addressEn: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
+    Telephone: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
     discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
     title: Yup.string().required(Resources['empTitleRequired'][currentLanguage]),
     companyRole: Yup.string().required(Resources['companyRoleRequired'][currentLanguage])
-})
+});
+
 const validationSchemaForEdit = Yup.object().shape({
-    titleEnCompany: Yup.string().test('titleEnCompany', 'Name cannot be arabic', value => {
+    titleEnCompany: Yup.string().max(50, Resources['maxLength'][currentLanguage]).test('titleEnCompany', 'Name cannot be arabic', value => {
         return !en.test(value);
     }).required(Resources['ComapnyNameRequired'][currentLanguage]),
-    titleArCompany: Yup.string().test('contactNameAr', 'Name cannot be english', value => {
+    titleArCompany: Yup.string().max(50, Resources['maxLength'][currentLanguage]).test('contactNameAr', 'Name cannot be english', value => {
         return ar.test(value)
     }).required(Resources['ComapnyNameRequired'][currentLanguage]),
     discipline: Yup.string().required(Resources['disciplineRequired'][currentLanguage]),
@@ -72,6 +75,7 @@ class AddEditCompany extends Component {
 
         }
     }
+
     onDropImage(file) {
         let _formData = new FormData();
         _formData.append("file", file)
@@ -81,15 +85,13 @@ class AddEditCompany extends Component {
             imageName: file[0].name,
             imageIamge: _formData
         });
-
-
     }
+
     removeImage = () => {
 
         this.setState({
             image: {}, imageName: '', imagePreview: {}
         })
-
     }
 
     handleChange = (item, name) => {
@@ -138,7 +140,9 @@ class AddEditCompany extends Component {
         }
 
     };
+
     Save = (values) => {
+
         let SendingObject = {
             id: this.state.companyID,
             companyNameEn: values.titleEnCompany,
@@ -161,6 +165,7 @@ class AddEditCompany extends Component {
             logoFileData: this.state.imageIamge
 
         }
+
         if (this.state.companyID == 0) {
             Api.post('AddCompanyContact', SendingObject).then(() => {
                 this.setState({ isLoading: false })
@@ -197,9 +202,7 @@ class AddEditCompany extends Component {
                             <div className="subiTabsContent">
                                 <div className="document-fields">
                                     {this.state.sectionLoading ? <LoadingSection /> :
-
                                         <Formik
-
                                             initialValues={{
                                                 titleEnCompany: this.state.titleEnCompany,
                                                 titleArCompany: this.state.titleArCompany,
@@ -221,43 +224,21 @@ class AddEditCompany extends Component {
                                             onSubmit={(values) => {
                                                 this.setState({ isLoading: true })
                                                 this.Save(values)
-                                            }}
-                                        >
+                                            }}>
                                             {({ touched, errors, handleBlur, handleChange, values, setFieldValue, setFieldTouched }) => (
                                                 <Form id="signupForm1" className="proForm datepickerContainer" noValidate="novalidate" >
                                                     <div className="linebylineInput valid-input passWrapperInput">
                                                         <label className="control-label"> {Resources['titleEnCompany'][currentLanguage]} </label>
-                                                        <div className={"ui input inputDev fillter-item-c " + (errors.titleEnCompany && touched.titleEnCompany ? (
-                                                            "has-error") : !errors.titleEnCompany && touched.titleEnCompany ? ("has-success") : "")}
-                                                        >
-                                                            <input autoComplete="off" type='text' className="form-control" name="titleEnCompany" value={values.titleEnCompany}
-                                                                onBlur={handleBlur} onChange={handleChange} placeholder={Resources['titleEnCompany'][currentLanguage]} />
-                                                            {errors.titleEnCompany && touched.titleEnCompany ? (
-                                                                <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                                            ) : !errors.titleEnCompany && touched.titleEnCompany ? (
-                                                                <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                                            ) : null}
-                                                            {errors.titleEnCompany && touched.titleEnCompany ? (
-                                                                <em className="pError">{errors.titleEnCompany}</em>
-                                                            ) : null}
+                                                        <div className={"ui input inputDev fillter-item-c " + (errors.titleEnCompany && touched.titleEnCompany ? ("has-error") : !errors.titleEnCompany && touched.titleEnCompany ? ("has-success") : "")}>
+                                                            <input autoComplete="off" type='text' className="form-control" name="titleEnCompany" value={values.titleEnCompany} onBlur={handleBlur} onChange={handleChange} placeholder={Resources['titleEnCompany'][currentLanguage]} />
+                                                            {errors.titleEnCompany && touched.titleEnCompany ? (<em className="pError">{errors.titleEnCompany}</em>) : null}
                                                         </div>
                                                     </div>
                                                     <div className="linebylineInput valid-input passWrapperInput">
                                                         <label className="control-label"> {Resources['titleArCompany'][currentLanguage]} </label>
-
-                                                        <div className={"ui input inputDev fillter-item-c " + (errors.titleArCompany && touched.titleArCompany ? (
-                                                            "has-error") : !errors.titleArCompany && touched.titleArCompany ? ("has-success") : "")}
-                                                        >
-                                                            <input autoComplete="off" type='text' className="form-control" name="titleArCompany" value={values.titleArCompany}
-                                                                onBlur={handleBlur} onChange={handleChange} placeholder={Resources['titleArCompany'][currentLanguage]} />
-                                                            {errors.titleArCompany && touched.titleArCompany ? (
-                                                                <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                                            ) : !errors.titleArCompany && touched.titleArCompany ? (
-                                                                <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                                            ) : null}
-                                                            {errors.titleArCompany && touched.titleArCompany ? (
-                                                                <em className="pError">{errors.titleArCompany}</em>
-                                                            ) : null}
+                                                        <div className={"ui input inputDev fillter-item-c " + (errors.titleArCompany && touched.titleArCompany ? ("has-error") : !errors.titleArCompany && touched.titleArCompany ? ("has-success") : "")}>
+                                                            <input autoComplete="off" type='text' className="form-control" name="titleArCompany" value={values.titleArCompany} onBlur={handleBlur} onChange={handleChange} placeholder={Resources['titleArCompany'][currentLanguage]} />
+                                                            {errors.titleArCompany && touched.titleArCompany ? (<em className="pError">{errors.titleArCompany}</em>) : null}
                                                         </div>
                                                     </div>
                                                     <div className="linebylineInput valid-input passWrapperInput">
@@ -301,14 +282,10 @@ class AddEditCompany extends Component {
                                                                         : null}
 
                                                                 </aside> : null}
-                                                            <Dropzone
-                                                                accept="image/*"
-                                                                onDrop={this.onDropImage.bind(this)}
-                                                            >
+                                                            <Dropzone accept="image/*" onDrop={this.onDropImage.bind(this)}>
                                                                 {({ getRootProps, getInputProps }) => (
                                                                     <div className="singleDragText" {...getRootProps()}>
                                                                         <input {...getInputProps()} />
-
                                                                         {this.state.imageName.length > 0 ?
                                                                             null : <p>{Resources['dragFileHere'][currentLanguage]}</p>}
                                                                         <button type='button' className="primaryBtn-1 btn smallBtn">{Resources['chooseFile'][currentLanguage]}</button>
@@ -322,7 +299,6 @@ class AddEditCompany extends Component {
                                                                 </div> : null}
                                                         </section>
                                                     </div>
-
                                                     {this.state.companyID == 0 ?
                                                         <div className="workingHours__cycle">
                                                             <header>
@@ -342,134 +318,67 @@ class AddEditCompany extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input passWrapperInput">
                                                                     <label className="control-label"> {Resources['email'][currentLanguage]} </label>
-
-                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.email && touched.email ? (
-                                                                        "has-error") : !errors.email && touched.email ? ("has-success") : "")}
-                                                                    >
-                                                                        <input autoComplete="off" type='text' className="form-control" name="email"
-                                                                            onBlur={handleBlur} onChange={handleChange} placeholder={Resources['email'][currentLanguage]} />
-                                                                        {errors.email && touched.email ? (
-                                                                            <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                                                        ) : !errors.email && touched.email ? (
-                                                                            <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                                                        ) : null}
-                                                                        {errors.email && touched.email ? (
-                                                                            <em className="pError">{errors.email}</em>
-                                                                        ) : null}
+                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.email && touched.email ? ("has-error") : !errors.email && touched.email ? ("has-success") : "")}>
+                                                                        <input autoComplete="off" type='text' className="form-control" name="email" onBlur={handleBlur} onChange={handleChange} placeholder={Resources['email'][currentLanguage]} />
+                                                                        {errors.email && touched.email ? (<em className="pError">{errors.email}</em>) : null}
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input passWrapperInput">
                                                                     <label className="control-label"> {Resources['ContactNameEn'][currentLanguage]} </label>
-
-                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.ContactNameEn && touched.ContactNameEn ? (
-                                                                        "has-error") : !errors.ContactNameEn && touched.ContactNameEn ? ("has-success") : "")}
-                                                                    >
-                                                                        <input autoComplete="off" type='text' className="form-control" name="ContactNameEn"
-                                                                            onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ContactNameEn'][currentLanguage]} />
-                                                                        {errors.ContactNameEn && touched.ContactNameEn ? (
-                                                                            <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                                                        ) : !errors.ContactNameEn && touched.ContactNameEn ? (
-                                                                            <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                                                        ) : null}
-                                                                        {errors.ContactNameEn && touched.ContactNameEn ? (
-                                                                            <em className="pError">{errors.ContactNameEn}</em>
-                                                                        ) : null}
+                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.ContactNameEn && touched.ContactNameEn ? ("has-error") : !errors.ContactNameEn && touched.ContactNameEn ? ("has-success") : "")}>
+                                                                        <input autoComplete="off" type='text' className="form-control" name="ContactNameEn" onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ContactNameEn'][currentLanguage]} />
+                                                                        {errors.ContactNameEn && touched.ContactNameEn ? (<em className="pError">{errors.ContactNameEn}</em>) : null}
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input passWrapperInput">
                                                                     <label className="control-label"> {Resources['ContactNameAr'][currentLanguage]} </label>
-
-                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.ContactNameAr && touched.ContactNameAr ? (
-                                                                        "has-error") : !errors.ContactNameAr && touched.ContactNameAr ? ("has-success") : "")}
-                                                                    >
-                                                                        <input autoComplete="off" type='text' className="form-control" name="ContactNameAr"
-                                                                            onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ContactNameAr'][currentLanguage]} />
-                                                                        {errors.ContactNameAr && touched.ContactNameAr ? (
-                                                                            <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                                                        ) : !errors.ContactNameAr && touched.ContactNameAr ? (
-                                                                            <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                                                        ) : null}
-                                                                        {errors.ContactNameAr && touched.ContactNameAr ? (
-                                                                            <em className="pError">{errors.ContactNameAr}</em>
-                                                                        ) : null}
+                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.ContactNameAr && touched.ContactNameAr ? ("has-error") : !errors.ContactNameAr && touched.ContactNameAr ? ("has-success") : "")}>
+                                                                        <input autoComplete="off" type='text' className="form-control" name="ContactNameAr" onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ContactNameAr'][currentLanguage]} />
+                                                                        {errors.ContactNameAr && touched.ContactNameAr ? (<em className="pError">{errors.ContactNameAr}</em>) : null}
                                                                     </div>
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input passWrapperInput">
                                                                     <label className="control-label"> {Resources['EnglishPosition'][currentLanguage]} </label>
-
-                                                                    <div className='ui input inputDev fillter-item-c'>
-                                                                        <input autoComplete="off" type='text' className="form-control" name="positionEn"
-                                                                            onBlur={handleBlur} onChange={handleChange} placeholder={Resources['EnglishPosition'][currentLanguage]} />
-
+                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.positionEn && touched.positionEn ? ("has-error") : !errors.positionEn && touched.positionEn ? ("has-success") : "")}>
+                                                                        <input autoComplete="off" type='text' className="form-control" name="positionEn" onBlur={handleBlur} onChange={handleChange} placeholder={Resources['EnglishPosition'][currentLanguage]} />
+                                                                        {errors.positionEn && touched.positionEn ? (<em className="pError">{errors.positionEn}</em>) : null}
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input passWrapperInput">
                                                                     <label className="control-label"> {Resources['ArabicPosition'][currentLanguage]} </label>
-
-                                                                    <div className='ui input inputDev fillter-item-c'>
-                                                                        <input autoComplete="off" type='text' className="form-control" name="positionAr"
-                                                                            onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ArabicPosition'][currentLanguage]} />
-
+                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.positionAr && touched.positionAr ? ("has-error") : !errors.positionAr && touched.positionAr ? ("has-success") : "")}>
+                                                                        <input autoComplete="off" type='text' className="form-control" name="positionAr" onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ArabicPosition'][currentLanguage]} />
+                                                                        {errors.positionAr && touched.positionAr ? (<em className="pError">{errors.positionAr}</em>) : null}
                                                                     </div>
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input passWrapperInput">
                                                                     <label className="control-label"> {Resources['EnglishAddress'][currentLanguage]} </label>
-
-                                                                    <div className="ui input inputDev fillter-item-c">
+                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.addressEn && touched.addressEn ? ("has-error") : !errors.addressEn && touched.addressEn ? ("has-success") : "")}>
                                                                         <input autoComplete="off" type='text' className="form-control" name="addressEn"
                                                                             onBlur={handleBlur} onChange={handleChange} placeholder={Resources['EnglishAddress'][currentLanguage]} />
-
+                                                                        {errors.addressEn && touched.addressEn ? (<em className="pError">{errors.addressEn}</em>) : null}
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input passWrapperInput">
                                                                     <label className="control-label"> {Resources['ArabicAddress'][currentLanguage]} </label>
-
-                                                                    <div className="ui input inputDev fillter-item-c" >
-                                                                        <input autoComplete="off" type='text' className="form-control" name="addressAr"
-                                                                            onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ArabicAddress'][currentLanguage]} />
-
+                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.addressAr && touched.addressAr ? ("has-error") : !errors.addressAr && touched.addressAr ? ("has-success") : "")}>                                                                        <input autoComplete="off" type='text' className="form-control" name="addressAr"
+                                                                        onBlur={handleBlur} onChange={handleChange} placeholder={Resources['ArabicAddress'][currentLanguage]} />
+                                                                        {errors.addressAr && touched.addressAr ? (<em className="pError">{errors.addressAr}</em>) : null}
                                                                     </div>
                                                                 </div>
-
-
                                                                 <div className="linebylineInput valid-input passWrapperInput">
                                                                     <label className="control-label"> {Resources['Telephone'][currentLanguage]} </label>
-
-                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.Telephone && touched.Telephone ? (
-                                                                        "has-error") : !errors.Telephone && touched.Telephone ? ("has-success") : "")}
-                                                                    >
-                                                                        <input autoComplete="off" type='text' className="form-control" name="Telephone"
-                                                                            onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Telephone'][currentLanguage]} />
-                                                                        {errors.Telephone && touched.Telephone ? (
-                                                                            <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                                                        ) : !errors.Telephone && touched.Telephone ? (
-                                                                            <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                                                        ) : null}
-                                                                        {errors.Telephone && touched.Telephone ? (
-                                                                            <em className="pError">{errors.Telephone}</em>
-                                                                        ) : null}
+                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.Telephone && touched.Telephone ? ("has-error") : !errors.Telephone && touched.Telephone ? ("has-success") : "")}>
+                                                                        <input autoComplete="off" type='text' className="form-control" name="Telephone" onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Telephone'][currentLanguage]} />
+                                                                        {errors.Telephone && touched.Telephone ? (<em className="pError">{errors.Telephone}</em>) : null}
                                                                     </div>
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input passWrapperInput">
                                                                     <label className="control-label"> {Resources['Mobile'][currentLanguage]} </label>
-
-                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.Mobile && touched.Mobile ? (
-                                                                        "has-error") : !errors.Mobile && touched.Mobile ? ("has-success") : "")}
-                                                                    >
-                                                                        <input autoComplete="off" type='text' className="form-control" name="Mobile"
-                                                                            onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Mobile'][currentLanguage]} />
-                                                                        {errors.Mobile && touched.Mobile ? (
-                                                                            <span className="glyphicon glyphicon-remove form-control-feedback spanError"></span>
-                                                                        ) : !errors.Mobile && touched.Mobile ? (
-                                                                            <span className="glyphicon form-control-feedback glyphicon-ok"></span>
-                                                                        ) : null}
-                                                                        {errors.Mobile && touched.Mobile ? (
-                                                                            <em className="pError">{errors.Mobile}</em>
-                                                                        ) : null}
+                                                                    <div className={"ui input inputDev fillter-item-c " + (errors.Mobile && touched.Mobile ? ("has-error") : !errors.Mobile && touched.Mobile ? ("has-success") : "")}>
+                                                                        <input autoComplete="off" type='text' className="form-control" name="Mobile" onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Mobile'][currentLanguage]} />
+                                                                        {errors.Mobile && touched.Mobile ? (<em className="pError">{errors.Mobile}</em>) : null}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -511,7 +420,7 @@ class AddEditCompany extends Component {
     }
 
     GetData = (url, label, value, currState) => {
-        Dataservice.GetDataList(url, label, value).then(res => { 
+        Dataservice.GetDataList(url, label, value).then(res => {
             this.setState({
                 [currState]: [...res],
                 sectionLoading: false

@@ -56,15 +56,14 @@ class wfApproval extends Component {
 
   static getDerivedStateFromProps(nextProps, state) {
 
-    if (nextProps.approvalStatus != state.approvalStatus) { 
+    if (nextProps.approvalStatus != state.approvalStatus) {
       let original_updateWorkFlow = state.updateWorkFlow;
       let updateWorkFlow_new = {};
       updateWorkFlow_new.approvalStatus = nextProps.approvalStatus;
       updateWorkFlow_new = Object.assign(original_updateWorkFlow, updateWorkFlow_new);
       return {
         updateWorkFlow: updateWorkFlow_new
-      };
-
+      }; 
     }
     return null
   }
@@ -147,7 +146,7 @@ class wfApproval extends Component {
                   </div>
                 </div>
               </div>
-              <Dropdown title="approveTo" data={this.state.approveData} handleChange={this.selectHandleChange} index="approve" isMulti="true" />
+              <Dropdown title={this.props.approvalStatus === true ? "approveTo" : "rejectedTo"} data={this.state.approveData} handleChange={this.selectHandleChange} index="approve" isMulti="true" />
               <div className="textarea-group fullWidthWrapper textLeft">
                 <label>Comment</label>
                 <textarea className="form-control" onBlur={e => this.commentOnBlurHandler(e)} />

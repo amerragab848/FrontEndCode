@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import Api from "../../api";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
-import moment from "moment"; 
+import moment from "moment";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Resources from "../../resources.json";
@@ -13,7 +13,7 @@ import { withRouter } from "react-router-dom";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import DataService from "../../Dataservice";
 import CryptoJS from "crypto-js";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import AmendmentList from "./AmendmentList";
 import PaymentRequisitionList from "./PaymentRequisitionList";
 import ContractsDeductions from "./ContractsDeductions";
@@ -21,10 +21,10 @@ import ContractsConditions from "./ContractsConditions";
 import ContractInsurance from "./ContractInsurance";
 import Schedule from "./Schedule";
 import SubContract from "./SubContractLog";
-import SubPurchaseOrderLog from "./subPurchaseOrderLog"; 
+import SubPurchaseOrderLog from "./subPurchaseOrderLog";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
-import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow"; 
+import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Config from "../../Services/Config.js";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -37,6 +37,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 
 var steps_defination = [];
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const voItemSchema = Yup.object().shape({
@@ -175,11 +176,6 @@ class ContractInfoAddEdit extends Component {
         { name: "deleteAttachments", code: 860 }
       ],
       document: {},
-      originalContractSum: 0,
-      revisedContractSum: 0,
-      contractExecutedToDate: 0,
-      balanceToFinish: 0,
-      changeOrderSum: 0,
       viewItemPopUp: false,
       objItems: {},
       showSubPurchaseOrders: false
@@ -488,8 +484,11 @@ class ContractInfoAddEdit extends Component {
   }
 
   componentWillMount() {
+
     if (this.state.docId > 0) {
+
       this.setState({ isLoading: true, LoadingPage: true });
+
       this.props.actions.documentForEdit("GetContractsForEdit?id=" + this.state.docId, this.state.docTypeId, "boq").then(() => {
         this.setState({
           isLoading: false,
@@ -510,20 +509,9 @@ class ContractInfoAddEdit extends Component {
 
         let maxArrange = Math.max(...result.map(s => s.arrange));
 
-
         this.setState({
           arrange: result.length > 0 ? (maxArrange + 1) : 1,
           variationOrdersData: result != null ? result : []
-        });
-      });
-
-      DataService.GetDataGrid("GetContractsForEdit?id=" + this.state.docId).then(result => {
-        this.setState({
-          originalContractSum: result.originalContractSum,
-          revisedContractSum: result.revisedContractSum,
-          contractExecutedToDate: result.contractExecutedToDate,
-          balanceToFinish: result.balanceToFinish,
-          changeOrderSum: result.changeOrderSum
         });
       });
     } else {
@@ -714,7 +702,6 @@ class ContractInfoAddEdit extends Component {
     else
       this.setState({ CurrStep: stepNo });
   };
-
 
   showOptionPanel = () => {
     this.props.actions.showOptionPanel(true);
@@ -947,21 +934,25 @@ class ContractInfoAddEdit extends Component {
 
   editItems = () => {
 
-    this.setState({ viewItemPopUp: false });
+    this.setState({ isLoading: true });
+
     let objItems = this.state.objItems;
+
     objItems.docId = this.state.docId;
+
     DataService.addObject("EditContracOrdertById", objItems).then(result => {
 
       let originalData = this.state.rows;
 
-      let findIndex = originalData.findIndex(x => x.id === this.state.currentId);
+      let findIndex = originalData.findIndex(x => x.id === objItems.id);
 
       originalData.splice(findIndex, 1);
 
-      originalData.push(this.state.objItems);
+      originalData.push(objItems);
 
       this.setState({
-        rows: originalData
+        rows: originalData,
+        isLoading: false
       });
       this.props.actions.resetItems(originalData)
       toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -1253,9 +1244,7 @@ class ContractInfoAddEdit extends Component {
             pageSize={this.state.pageSize} onRowClick={this.onRowClick.bind(this)} columns={columnsGrid}
             onGridRowsUpdated={this._onGridRowsUpdated} key='rows' />
         </Fragment>
-      ) : (
-          <LoadingSection />
-        );
+      ) : (<LoadingSection />);
     const voItemsGrid =
       this.state.isLoading === false ? (
         <Fragment>
@@ -1268,9 +1257,7 @@ class ContractInfoAddEdit extends Component {
             noDataText={Resources["noData"][currentLanguage]}
             className="-striped -highlight" />
         </Fragment>
-      ) : (
-          <LoadingSection />
-        );
+      ) : (<LoadingSection />);
 
     const pricedItemContent = (
       <Fragment>
@@ -1383,7 +1370,6 @@ class ContractInfoAddEdit extends Component {
         </div>
       </Fragment>
     );
- 
 
     let Step_1 = (
       <Fragment>
@@ -1444,13 +1430,13 @@ class ContractInfoAddEdit extends Component {
                         </div>
                       </div>
                     </div>
-                    <div className="letterFullWidth">
-                      <div className="linebylineInput valid-input">
-                        <DatePicker title="docDate" name="docDate"
-                          startDate={values.docDate} handleChange={e => { handleChange(e); setFieldValue("docDate", e); }} />
-                      </div>
-                    </div>
                     <div className="proForm datepickerContainer">
+                      <div className="letterFullWidth">
+                        <div className="linebylineInput valid-input">
+                          <DatePicker title="docDate" name="docDate"
+                            startDate={values.docDate} handleChange={e => { handleChange(e); setFieldValue("docDate", e); }} />
+                        </div>
+                      </div>
                       <div className="linebylineInput valid-input">
                         <label className="control-label">
                           {Resources.arrange[currentLanguage]}
@@ -1496,7 +1482,6 @@ class ContractInfoAddEdit extends Component {
                           handleChange={event => this.handleChangeDropDown(event, "contractTo", true, "contacts", "GetContactsByCompanyId?companyId=", "", "selectedContract")}
                           touched={touched.contractTo} name="contractTo" index="contractTo" />
                       </div>
-
                       <div className="linebylineInput valid-input">
                         <Dropdown title="contractWithContact" data={this.state.contacts}
                           selectedValue={this.state.selectedContractWithContact}
@@ -1506,7 +1491,6 @@ class ContractInfoAddEdit extends Component {
                           onChange={setFieldValue} onBlur={setFieldTouched} error={errors.contact}
                           touched={touched.contact} name="contact" index="contact" />
                       </div>
-
                       <div className="linebylineInput valid-input">
                         <label className="control-label">
                           {Resources["tax"][currentLanguage]}
@@ -1517,7 +1501,6 @@ class ContractInfoAddEdit extends Component {
                           {errors.tax ? (<em className="pError">{errors.tax}</em>) : null}
                         </div>
                       </div>
-
                       <div className="linebylineInput valid-input">
                         <label className="control-label">
                           {Resources["vat"][currentLanguage]}
@@ -1587,7 +1570,7 @@ class ContractInfoAddEdit extends Component {
                             <div className="ui input inputDev">
                               <input type="text" className="form-control" id="originalContractSum" readOnly
                                 onChange={handleChange} onBlur={handleBlur}
-                                defaultValue={this.state.originalContractSum}
+                                defaultValue={this.props.document.originalContactSum || 0}
                                 name="originalContractSum" placeholder={Resources.originalContractSum[currentLanguage]} />
                             </div>
                           </div>
@@ -1598,7 +1581,7 @@ class ContractInfoAddEdit extends Component {
                             <div className="ui input inputDev">
                               <input type="text" className="form-control" id="revisedContractSumToDate" readOnly
                                 onChange={handleChange} onBlur={handleBlur}
-                                defaultValue={this.state.revisedContractSum}
+                                defaultValue={this.props.document.revisedContractSum || 0}
                                 name="revisedContractSumToDate" placeholder={Resources.revisedContractSumToDate[currentLanguage]} />
                             </div>
                           </div>
@@ -1609,7 +1592,7 @@ class ContractInfoAddEdit extends Component {
                             <div className="ui input inputDev">
                               <input type="text" className="form-control" id="contractExecutedToDate" readOnly
                                 onChange={handleChange} onBlur={handleBlur}
-                                defaultValue={this.state.contractExecutedToDate}
+                                defaultValue={this.props.document.actualExceuted || 0}
                                 name="contractExecutedToDate" placeholder={Resources.contractExecutedToDate[currentLanguage]} />
                             </div>
                           </div>
@@ -1620,7 +1603,7 @@ class ContractInfoAddEdit extends Component {
                             <div className="ui input inputDev">
                               <input type="text" className="form-control" id="balance" readOnly
                                 onChange={handleChange} onBlur={handleBlur}
-                                defaultValue={this.state.balanceToFinish}
+                                defaultValue={this.props.document.balanceToFinish || 0}
                                 name="balance" placeholder={Resources.balance[currentLanguage]} />
                             </div>
                           </div>
@@ -1631,7 +1614,7 @@ class ContractInfoAddEdit extends Component {
                             <div className="ui input inputDev">
                               <input type="text" className="form-control" id="changeOrderSum" readOnly
                                 onChange={handleChange} onBlur={handleBlur}
-                                defaultValue={this.state.changeOrderSum}
+                                defaultValue={this.props.document.approvedChangeOrder || 0}
                                 name="changeOrderSum" placeholder={Resources.changeOrderSum[currentLanguage]} />
                             </div>
                           </div>
@@ -1776,9 +1759,7 @@ class ContractInfoAddEdit extends Component {
                   steps_defination={steps_defination}
                   exist_link="/contractInfo/"
                   docId={this.state.docId}
-                  changeCurrentStep={stepNo =>
-                    this.changeCurrentStep(stepNo)
-                  }
+                  changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
                   stepNo={this.state.CurrStep}
                 />
               </div>
@@ -1793,7 +1774,7 @@ class ContractInfoAddEdit extends Component {
                 noDataText={Resources["noData"][currentLanguage]}
                 className="-striped -highlight" />
             </Fragment>
-          </SkyLight> 
+          </SkyLight>
 
           <div className="largePopup largeModal " style={{ display: this.state.showItemEdit ? 'block' : 'none' }}>
             <SkyLight hideOnOverlayClicked ref={ref => this.itemDialog = ref} title={Resources.goEdit[currentLanguage]}>
@@ -1806,7 +1787,6 @@ class ContractInfoAddEdit extends Component {
               buttonName="delete" clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />
           ) : null}
         </div>
-
 
         <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogForEdit = ref} beforeClose={this.onCloseModal.bind(this)}>
           <div className="ui modal largeModal ">
@@ -1877,6 +1857,18 @@ class ContractInfoAddEdit extends Component {
                           name="unitPrice" placeholder={Resources.refDoc[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
                           onChange={e => this.handleChangeItems(e, "unitPrice")} />
                         {errors.unitPrice && touched.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                      </div>
+                    </div>
+                    <div className="fillter-status fillter-item-c">
+                      <label className="control-label">
+                        {Resources.itemCode[currentLanguage]}
+                      </label>
+                      <div className={"ui input inputDev" + (errors.itemCode && touched.itemCode ? " has-error" : "ui input inputDev")}>
+                        <input type="text" className="form-control" id="itemCode"
+                          value={this.state.objItems.itemCode}
+                          name="itemCode" placeholder={Resources.itemCode[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
+                          onChange={e => this.handleChangeItems(e, "itemCode")} />
+                        {errors.itemCode && touched.itemCode ? (<em className="pError">{errors.itemCode}</em>) : null}
                       </div>
                     </div>
                     <div className="slider-Btns fullWidthWrapper">

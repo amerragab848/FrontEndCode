@@ -133,7 +133,7 @@ class LettersAddEdit extends Component {
             this.props.history.push(this.state.perviousRoute);
         }
     }
-    
+
     componentDidMount() {
 
         if (this.state.docId > 0) {
@@ -151,7 +151,7 @@ class LettersAddEdit extends Component {
                 toContactId: "",
                 replayId: "",
                 docDate: moment().format("YYYY-MM-DD"),
-                status: false,
+                status: true,
                 disciplineId: "",
                 refDoc: "",
                 sharedSettings: '',
