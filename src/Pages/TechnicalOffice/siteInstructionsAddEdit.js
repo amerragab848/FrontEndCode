@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
+import React, { Component, Fragment } from "react"; 
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -16,8 +15,7 @@ import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
-import SkyLight from 'react-skylight';
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'; 
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";

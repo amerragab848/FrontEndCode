@@ -1267,8 +1267,9 @@ class inspectionRequestAddEdit extends Component {
 
                                                                     <div className="document-fields tableBTnabs">
                                                                         {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                                                    </div>
-                                                                    {this.viewWorkFlowCycles()}
+                                                                    </div> 
+                                                                    {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+
                                                                 </div>
                                                             </div>
 
