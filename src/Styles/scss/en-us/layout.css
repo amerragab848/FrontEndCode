@@ -2370,8 +2370,8 @@ h1, h2, h3, h4, h5 {
 }
 
 .mainSide .header-logo-menu .header-logocontent {
-    -webkit-box-shadow: 0px 0 12px #888888;
-    box-shadow: 0px 0 12px #888888;
+    /* -webkit-box-shadow: 0px 0 12px #888888;
+    box-shadow: 0px 0 12px #888888; */
     width: 88px;
     overflow: hidden;
     -webkit-transition: 0.3s ease;
@@ -12539,6 +12539,22 @@ h1, h2, h3, h4, h5 {
     margin-top: 10px;
 }
 
+@media screen and (max-width: 1366px) {
+    .StepperNum.StepperNum1 .stepWord {
+        font-size: 12px
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .StepperNum.StepperNum1 .stepWord {
+        font-size: 10px
+    }
+
+    .docstepper-levels .StepperNum .StepNumber {
+        min-width: 135px;
+    }
+}
+
 .StepperNum.StepperNum3 .Stepimg {
     width: 36px;
     height: 36px;
@@ -21675,7 +21691,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     position: absolute;
     right: 50%;
     left: 50%;
-    bottom: -3px;
+    bottom: 0;
     height: 4px;
     width: 0;
     transition: all 0.4s ease-in-out; 
@@ -21818,4 +21834,8 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .projectDashboard {
     padding-left: 88px;
     padding-right: 0
+}
+
+.fixedLoading .dashboardLoading {
+    position: fixed !important;
 }

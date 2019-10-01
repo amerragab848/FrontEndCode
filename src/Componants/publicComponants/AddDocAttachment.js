@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
-import Rodal from "../../Styles/js/rodal";
 import "../../Styles/css/rodal.css";
 import CryptoJS from 'crypto-js';
 import Resources from "../../resources.json";
@@ -18,7 +17,6 @@ import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let selectedRows = [];
-let listDocs = [];
 
 class AddDocAttachment extends Component {
   constructor(props) {
@@ -36,7 +34,8 @@ class AddDocAttachment extends Component {
       selected: {},
       showDeleteModal: false,
       currentId: null,
-      storedDocuments: []
+      storedDocuments: [],
+      isViewMode: this.props.isViewMode
     };
   }
 
@@ -59,6 +58,14 @@ class AddDocAttachment extends Component {
       }
     }
   };
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ isViewMode: nextProps.isViewMode });
+  }
+
+  componentWillUnmount() {
+    this.props.actions.ViewDocsAttachment([]);
+  }
 
   fillDropDowns(event, url, label, id) {
     dataservice.GetDataList(url + event.value, label, id).then(result => {
@@ -202,8 +209,10 @@ class AddDocAttachment extends Component {
 
   render() {
 
-    const columnsDocument = [
-      {
+    let columnsDocument = [];
+
+    if (this.state.isViewMode === false) {
+      columnsDocument.push({
         Header: Resources["delete"][currentLanguage],
         accessor: "id",
         Cell: ({ row }) => {
@@ -214,7 +223,10 @@ class AddDocAttachment extends Component {
           );
         },
         width: 70
-      },
+      })
+    }
+
+    columnsDocument.push(
       {
         Header: Resources["subject"][currentLanguage],
         accessor: "subject",
@@ -241,7 +253,7 @@ class AddDocAttachment extends Component {
           </span>
         )
       }
-    ];
+    );
 
     const columns = [
       {
@@ -284,9 +296,10 @@ class AddDocAttachment extends Component {
 
     return (
       <Fragment>
-        <button className="primaryBtn-2 btn meduimBtn" type="button" onClick={() => this.simpleDialog.show()}>
-          {Resources["addDocAttachment"][currentLanguage]}
-        </button>
+        {this.state.isViewMode === false ?
+          <button className="primaryBtn-2 btn meduimBtn" type="button" onClick={() => this.simpleDialog.show()}>
+            {Resources["addDocAttachment"][currentLanguage]}
+          </button> : null}
         <br />
         <br />
         <div className="precycle-grid modalTable">
@@ -353,7 +366,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(AddDocAttachment));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AddDocAttachment));

@@ -12,9 +12,7 @@ import ReactTable from "react-table";
 import { withRouter } from "react-router-dom";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Config from "../../Services/Config.js";
@@ -1256,11 +1254,12 @@ class inspectionRequestAddEdit extends Component {
                                                                                 EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594}
                                                                                 docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                                             {this.viewAttachments()}
-                                                                            <div className="document-fields tableBTnabs">
-                                                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                                                            </div>
+
                                                                         </Fragment>
                                                                         : null}
+                                                                    <div className="document-fields tableBTnabs">
+                                                                        {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                    </div>
                                                                     {this.props.changeStatus === true ?
                                                                         <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                                                         : null
