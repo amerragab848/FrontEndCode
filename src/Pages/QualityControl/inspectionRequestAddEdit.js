@@ -25,7 +25,7 @@ import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment
 import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
-import { tr } from "date-fns/esm/locale";
+ 
 
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -659,15 +659,7 @@ class inspectionRequestAddEdit extends Component {
                 : null
         )
     }
-
-    viewWorkFlowCycles() {
-        return (
-            this.props.changeStatus ?
-                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                : null
-        )
-    }
-
+ 
     changeCurrentStep = stepNo => {
         this.setState({ CurrentStep: stepNo });
     };
@@ -1262,9 +1254,7 @@ class inspectionRequestAddEdit extends Component {
                                                                         EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594}
                                                                         docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                                     {this.viewAttachments()}
-
-                                                                    {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-
+ 
                                                                     <div className="document-fields tableBTnabs">
                                                                         {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                                     </div> 
