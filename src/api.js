@@ -1,7 +1,5 @@
-
 import CryptoJS from "crypto-js";
-import { toast } from "react-toastify";
-
+import { toast } from "react-toastify"; 
 import Config from "./Services/Config";
 
 let Authorization = localStorage.getItem("userToken");
@@ -15,7 +13,7 @@ export default class Api {
             dataType: "json",
             isNewVersion: "true",
             Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
-            Authorization: localStorage.getItem("userToken")
+            Authorization: Authorization
         };
     }
 
@@ -50,15 +48,15 @@ export default class Api {
                     json = resp.json();
                     if (json === undefined) return null;
                     return json;
-                } else if (resp.status === 500) {
-                    json = null;
-                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
-
-                    return json;
                 } else if (resp.status === 401) {
                     localStorage.removeItem("userToken");
                     json = "";
                     window.location.reload();
+                    return json;
+                } else if (resp.status === 500) {
+                    json = null;
+                    toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+
                     return json;
                 } else if (resp.status === 409) {
                     return resp;
@@ -71,10 +69,9 @@ export default class Api {
             .then(json => (json.result ? json.result : json))
             .catch(reason => {
                 return null;
-                // response is not a valid json string
             });
     }
- 
+
     static GetPayload() {
         var payload = [];
 
@@ -85,11 +82,7 @@ export default class Api {
         let userPermissions = [];
         let isCompany = true;
         if (localStorage.getItem("permissions")) {
-            let perms = JSON.parse(
-                CryptoJS.enc.Base64.parse(
-                    localStorage.getItem("permissions")
-                ).toString(CryptoJS.enc.Utf8)
-            );
+            let perms = JSON.parse(CryptoJS.enc.Base64.parse(localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8));
             userPermissions = perms;
         }
 
@@ -110,7 +103,7 @@ export default class Api {
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
         const url = `${host}${route}`;
         let headers = {};
-        headers.Authorization = localStorage.getItem("userToken");
+        headers.Authorization = Authorization;
         if (header) {
             headers.docid = header.docId;
             headers.doctypeid = header.docTypeId;
@@ -158,7 +151,7 @@ export default class Api {
     }
     static getPassword(route, password) {
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
- 
+
         const url = `${host}${route}`;
         let headers = Api.headers();
         headers.password = password;
