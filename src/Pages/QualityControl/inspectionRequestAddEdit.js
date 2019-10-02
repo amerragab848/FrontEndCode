@@ -659,14 +659,6 @@ class inspectionRequestAddEdit extends Component {
         )
     }
 
-    viewWorkFlowCycles() {
-        return (
-            this.props.changeStatus ?
-                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                : null
-        )
-    }
-
     changeCurrentStep = stepNo => {
         this.setState({ CurrentStep: stepNo });
     };
@@ -1261,105 +1253,110 @@ class inspectionRequestAddEdit extends Component {
                                                                         EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594}
                                                                         docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                                     {this.viewAttachments()}
+<<<<<<< HEAD
 
-                                                                    <div className="document-fields tableBTnabs">
-                                                                        {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                                                    </div>
-                                                                    {this.viewWorkFlowCycles()}
+=======
+
+>>>>>>> e88b12f6d7c7ea40fe8f3e0fae208a4107a0867c
+                                                                <div className="document-fields tableBTnabs">
+                                                                    {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                                 </div>
+                                                                {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+
+                                                            </div>
                                                             </div>
 
                                                             {this.props.changeStatus === true ?
                                                                 <Fragment>
+                                                        <div className="slider-Btns">
+                                                            {this.state.isViewMode === false ?
+                                                                <div className="doc-pre-cycle">
                                                                     <div className="slider-Btns">
-                                                                        {this.state.isViewMode === false ?
-                                                                            <div className="doc-pre-cycle">
-                                                                                <div className="slider-Btns">
-                                                                                    {this.state.DocLoading ?
-                                                                                        <button className="primaryBtn-1 btn disabled">
-                                                                                            <div className="spinner">
-                                                                                                <div className="bounce1" />
-                                                                                                <div className="bounce2" />
-                                                                                                <div className="bounce3" />
-                                                                                            </div>
-                                                                                        </button> :
-                                                                                        <button className="primaryBtn-1 btn meduimBtn" >{Resources['next'][currentLanguage]}</button>
-                                                                                    }
+                                                                        {this.state.DocLoading ?
+                                                                            <button className="primaryBtn-1 btn disabled">
+                                                                                <div className="spinner">
+                                                                                    <div className="bounce1" />
+                                                                                    <div className="bounce2" />
+                                                                                    <div className="bounce3" />
                                                                                 </div>
+                                                                            </button> :
+                                                                            <button className="primaryBtn-1 btn meduimBtn" >{Resources['next'][currentLanguage]}</button>
+                                                                        }
+                                                                    </div>
 
-                                                                            </div> : null}
-                                                                    </div>
-                                                                    <div className="approveDocument">
-                                                                        <div className="approveDocumentBTNS">
-                                                                            <DocumentActions
-                                                                                isApproveMode={this.state.isApproveMode}
-                                                                                docTypeId={this.state.docTypeId}
-                                                                                docId={this.state.docId}
-                                                                                projectId={this.state.projectId}
-                                                                                previousRoute={this.state.previousRoute}
-                                                                                docApprovalId={this.state.docApprovalId}
-                                                                                currentArrange={this.state.arrange}
-                                                                                showModal={this.props.showModal}
-                                                                                showOptionPanel={this.showOptionPanel}
-                                                                                permission={this.state.permission}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                </Fragment>
-                                                                :
+                                                                </div> : null}
+                                                        </div>
+                                                        <div className="approveDocument">
+                                                            <div className="approveDocumentBTNS">
+                                                                <DocumentActions
+                                                                    isApproveMode={this.state.isApproveMode}
+                                                                    docTypeId={this.state.docTypeId}
+                                                                    docId={this.state.docId}
+                                                                    projectId={this.state.projectId}
+                                                                    previousRoute={this.state.previousRoute}
+                                                                    docApprovalId={this.state.docApprovalId}
+                                                                    currentArrange={this.state.arrange}
+                                                                    showModal={this.props.showModal}
+                                                                    showOptionPanel={this.showOptionPanel}
+                                                                    permission={this.state.permission}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </Fragment>
+                                                    :
                                                                 <div className="slider-Btns">
-                                                                    {this.state.DocLoading ?
-                                                                        <button className="primaryBtn-1 btn disabled">
-                                                                            <div className="spinner">
-                                                                                <div className="bounce1" />
-                                                                                <div className="bounce2" />
-                                                                                <div className="bounce3" />
-                                                                            </div>
-                                                                        </button> :
-                                                                        this.showBtnsSaving()}
+                                                        {this.state.DocLoading ?
+                                                            <button className="primaryBtn-1 btn disabled">
+                                                                <div className="spinner">
+                                                                    <div className="bounce1" />
+                                                                    <div className="bounce2" />
+                                                                    <div className="bounce3" />
                                                                 </div>
-                                                            }
+                                                            </button> :
+                                                            this.showBtnsSaving()}
+                                                    </div>
+                                                    }
 
                                                         </Form>
-                                                    )}
+                                                )}
                                                 </Formik>
-                                            </div>
+                                        </div>
 
-                                            {/* 
+                                        {/* 
                                                 : null
                                             } */}
-                                        </div>
+                                    </div>
                                     </div>
                                 </Fragment>
-                                :
+                            :
                                 <div className="subiTabsContent feilds__top">
 
-                                    {this.AddNewCycle()}
+                                {this.AddNewCycle()}
 
-                                    <div className="doc-pre-cycle">
-                                        <header>
-                                            <h2 className="zero">{Resources['cyclesCount'][currentLanguage]}</h2>
-                                        </header>
-                                        {this.state.CycleEditLoading === false && this.state.CycleAddLoading === false ?
-                                            <ReactTable
-                                                ref={(r) => {
-                                                    this.selectTable = r;
-                                                }}
-                                                data={this.state.IRCycles}
-                                                columns={columns}
-                                                defaultPageSize={10}
-                                                minRows={2}
-                                                noDataText={Resources['noData'][currentLanguage]}
-                                            /> : null}
-                                    </div>
-                                    {this.props.changeStatus == true ?
-                                        <div className="doc-pre-cycle">
-                                            <div className="slider-Btns">
-                                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
-                                            </div>
-                                        </div>
-                                        : null}
+                                <div className="doc-pre-cycle">
+                                    <header>
+                                        <h2 className="zero">{Resources['cyclesCount'][currentLanguage]}</h2>
+                                    </header>
+                                    {this.state.CycleEditLoading === false && this.state.CycleAddLoading === false ?
+                                        <ReactTable
+                                            ref={(r) => {
+                                                this.selectTable = r;
+                                            }}
+                                            data={this.state.IRCycles}
+                                            columns={columns}
+                                            defaultPageSize={10}
+                                            minRows={2}
+                                            noDataText={Resources['noData'][currentLanguage]}
+                                        /> : null}
                                 </div>
+                                {this.props.changeStatus == true ?
+                                    <div className="doc-pre-cycle">
+                                        <div className="slider-Btns">
+                                            <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
+                                        </div>
+                                    </div>
+                                    : null}
+                            </div>
                             }
 
 

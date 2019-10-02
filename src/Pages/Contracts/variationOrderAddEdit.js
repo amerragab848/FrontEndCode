@@ -21,7 +21,6 @@ import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
-import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -1054,14 +1053,7 @@ class variationOrderAddEdit extends Component {
                                 docId={this.state.docId}
                                 projectId={this.state.projectId}
                               />
-                            ) : null}
-                          {this.state.docId > 0 && this.state.CurrentStep === 0 ? (
-                            <Fragment>
-                              <div className="document-fields tableBTnabs">
-                                <AddDocAttachment title="VariationOrder"  projectId={this.state.projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
-                              </div>
-                            </Fragment>
-                          ) : null}
+                            ) : null} 
                           {this.viewAttachments()}
                           {this.props.changeStatus === true ? (
                             <ViewWorkFlow

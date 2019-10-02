@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
@@ -12,44 +12,25 @@ import { withRouter } from "react-router-dom";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
-
-//import RichTextEditor from 'react-rte';
-
+import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
-
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-
-import SkyLight from 'react-skylight';
-
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const validationSchema = Yup.object().shape({
-
+const validationSchema = Yup.object().shape({ 
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-
     refDoc: Yup.string().required(Resources['selectRefNo'][currentLanguage]),
-
     description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
-
-    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
-        .nullable(true),
-
-    contractId: Yup.string().required(Resources['contractRequired'][currentLanguage])
-        .nullable(true),
-
-    toContactId: Yup.string()
-        .required(Resources['toContactRequired'][currentLanguage])
-
+    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
+    contractId: Yup.string().required(Resources['contractRequired'][currentLanguage]).nullable(true),
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage])
 })
 
 let docId = 0;
@@ -665,11 +646,11 @@ class VariationRequestAdd extends Component {
                                                                     onChange={(e) => this.handleChange(e, 'description')} />
                                                                 {touched.description ? (<em className="pError">{errors.description}</em>) : null}
                                                             </div>
-                                                        </div> 
+                                                        </div>
                                                     </div>
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
-                                                    </div> 
+                                                    </div>
                                                     {
                                                         this.props.changeStatus === true ?
                                                             <div className="approveDocument">
@@ -696,6 +677,13 @@ class VariationRequestAdd extends Component {
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={3172} EditAttachments={3253} ShowDropBox={3563} ShowGoogleDrive={3564} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                            {this.state.docId > 0 ? (
+                                                <React.Fragment>
+                                                    <div className="document-fields tableBTnabs">
+                                                        <AddDocAttachment projectId={this.state.projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                                                    </div>
+                                                </React.Fragment>
+                                            ) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>

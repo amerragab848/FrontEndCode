@@ -13,8 +13,7 @@ import Logo from "../../Styles/images/logo.svg";
 import Config from "../../Services/Config";
 import Resources from "../../resources.json";
 const _ = require("lodash");
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage =    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const validationSchema = Yup.object().shape({
     userName: Yup.string().required(
         Resources["userNameRequired"][currentLanguage]
@@ -38,13 +37,7 @@ class Login extends Component {
         let companyId = Config.getPublicConfiguartion().accountCompanyId; // config["accountCompanyId"]
         let loginServer = Config.getPublicConfiguartion().loginServer; // config["loginServer"]
         let url = "/token";
-        let param =
-            "grant_type=password&username=" +
-            input.userName +
-            "&password=" +
-            input.password +
-            "&companyId=" +
-            companyId;
+        let param = "grant_type=password&username=" + input.userName + "&password=" + input.password + "&companyId=" + companyId;
         Api.Login(loginServer, url, param).then(Response => {
             if (Response.status === 400) {
                 toast.error("invalid username or password");
@@ -53,123 +46,119 @@ class Login extends Component {
                 let token = Response.access_token;
                 tokenStore.setItem("userToken", "Bearer " + token);
                 let payLoad = {};
-                Api.get("LoginSuccess")
-                    .then(result => {
-                        if (result) {
-                            payLoad.acn = result.acn;
-                            payLoad.aoi = result.aoi;
-                            payLoad.cmi = result.cmi;
-                            payLoad.cni = result.cni;
-                            payLoad.emp = result.emp;
-                            payLoad.gri = result.gri;
-                            payLoad.ihr = result.ihr;
-                            payLoad.iss = result.iss;
-                            payLoad.spi = result.spi;
-                            payLoad.sub = result.sub;
-                            payLoad.ulp = result.ulp;
-                            payLoad.uty = result.uty;
-                            payLoad.aci = result.aci;
+                Api.get("LoginSuccess").then(result => {
+                    if (result) {
+                        payLoad.acn = result.acn;
+                        payLoad.aoi = result.aoi;
+                        payLoad.cmi = result.cmi;
+                        payLoad.cni = result.cni;
+                        payLoad.emp = result.emp;
+                        payLoad.gri = result.gri;
+                        payLoad.ihr = result.ihr;
+                        payLoad.iss = result.iss;
+                        payLoad.spi = result.spi;
+                        payLoad.sub = result.sub;
+                        payLoad.ulp = result.ulp;
+                        payLoad.uty = result.uty;
+                        payLoad.aci = result.aci;
+                    }
+                    let _payLoad = CryptoJS.enc.Utf8.parse(
+                        JSON.stringify(payLoad)
+                    );
+                    let encodedPaylod = CryptoJS.enc.Base64.stringify(
+                        _payLoad
+                    );
+                    tokenStore.setItem("claims", encodedPaylod);
+                    let browserObj = this.createBrowserObject();
+                    let cookie = this.getCookie();
+                    if (Config.getPublicConfiguartion().canSendAlert) {
+                        browserObj.token = cookie;
+                        if (browserObj.publicIP === undefined) {
+                            Api.getPublicIP("https://ipapi.co/json").then(
+                                res => {
+                                    browserObj.publicIP = res.ip;
+                                    browserObj.macAddress =
+                                        res.latitude + "," + res.longitude;
+                                    Api.post(
+                                        "checkAccountLogin",
+                                        browserObj
+                                    ).then(resp => {
+                                        if (resp !== "Done")
+                                            this.setCookie(resp);
+                                    });
+                                }
+                            );
                         }
-                        let _payLoad = CryptoJS.enc.Utf8.parse(
-                            JSON.stringify(payLoad)
-                        );
-                        let encodedPaylod = CryptoJS.enc.Base64.stringify(
-                            _payLoad
-                        );
-                        tokenStore.setItem("claims", encodedPaylod);
-                        let browserObj = this.createBrowserObject();
-                        let cookie = this.getCookie();
-                        if (Config.getPublicConfiguartion().canSendAlert) {
-                            browserObj.token = cookie;
-                            if (browserObj.publicIP === undefined) {
-                                Api.getPublicIP("https://ipapi.co/json").then(
-                                    res => {
-                                        browserObj.publicIP = res.ip;
-                                        browserObj.macAddress =
-                                            res.latitude + "," + res.longitude;
-                                        Api.post(
-                                            "checkAccountLogin",
-                                            browserObj
-                                        ).then(resp => {
-                                            if (resp !== "Done")
-                                                this.setCookie(resp);
-                                        });
-                                    }
-                                );
+                    } else {
+                        Api.post("checkAccountLogin", browserObj).then(
+                            resp => {
+                                if (resp !== "Done") this.setCookie(resp);
                             }
-                        } else {
-                            Api.post("checkAccountLogin", browserObj).then(
-                                resp => {
-                                    if (resp !== "Done") this.setCookie(resp);
-                                }
+                        );
+                    }
+                    if (tokenStore.getItem("requestPermission")) {
+                        let deviceToken = tokenStore.getItem(
+                            "requestPermission"
+                        );
+                        Api.post(
+                            "UpdateAccountWebDeviceToken?webDeviceToken=" +
+                            deviceToken,
+                            null
+                        );
+                    }
+                    Api.get("GetPrimeData?token=undefined").then(primeData => {
+                        if (
+                            primeData.permissions &&
+                            primeData.permissions.length > 0
+                        ) {
+                            let permission = CryptoJS.enc.Utf8.parse(
+                                JSON.stringify(primeData.permissions)
+                            );
+                            let encodedPermission = CryptoJS.enc.Base64.stringify(
+                                permission
+                            );
+                            tokenStore.setItem(
+                                "permissions",
+                                encodedPermission
                             );
                         }
-                        if (tokenStore.getItem("requestPermission")) {
-                            let deviceToken = tokenStore.getItem(
-                                "requestPermission"
-                            );
-                            Api.post(
-                                "UpdateAccountWebDeviceToken?webDeviceToken=" +
-                                deviceToken,
-                                null
+                        if (primeData.timeSheetSettings) {
+                            tokenStore.setItem(
+                                "timeSheetSettings",
+                                JSON.stringify(
+                                    primeData.timeSheetSettings
+                                )
                             );
                         }
-                        Api.get("GetPrimeData?token=undefined")
-                            .then(primeData => {
-                                if (
-                                    primeData.permissions &&
-                                    primeData.permissions.length > 0
-                                ) {
-                                    let permission = CryptoJS.enc.Utf8.parse(
-                                        JSON.stringify(primeData.permissions)
-                                    );
-                                    let encodedPermission = CryptoJS.enc.Base64.stringify(
-                                        permission
-                                    );
-                                    tokenStore.setItem(
-                                        "permissions",
-                                        encodedPermission
-                                    );
-                                }
-                                if (primeData.timeSheetSettings) {
-                                    tokenStore.setItem(
-                                        "timeSheetSettings",
-                                        JSON.stringify(
-                                            primeData.timeSheetSettings
-                                        )
-                                    );
-                                }
-                                if (primeData.wfSettings) {
-                                    tokenStore.setItem(
-                                        "wfSettings",
-                                        JSON.stringify(primeData.wfSettings)
-                                    );
-                                }
-                                if (primeData.appComponants) {
-                                    tokenStore.setItem(
-                                        "appComponants",
-                                        JSON.stringify(primeData.appComponants)
-                                    );
-                                }
-                                if (primeData.contactName) {
-                                    tokenStore.setItem(
-                                        "contactName",
-                                        primeData.contactName
-                                    );
-                                }
-                                window.location.reload();
-                            })
-                            .catch(() => {
-                                this.setState({ isLoading: false });
-                                toast.error(
-                                    Resources["failError"][currentLanguage]
-                                );
-                            });
-                    })
-                    .catch(() => {
+                        if (primeData.wfSettings) {
+                            tokenStore.setItem(
+                                "wfSettings",
+                                JSON.stringify(primeData.wfSettings)
+                            );
+                        }
+                        if (primeData.appComponants) {
+                            tokenStore.setItem(
+                                "appComponants",
+                                JSON.stringify(primeData.appComponants)
+                            );
+                        }
+                        if (primeData.contactName) {
+                            tokenStore.setItem(
+                                "contactName",
+                                primeData.contactName
+                            );
+                        }
+                        window.location.reload();
+                    }).catch(() => {
                         this.setState({ isLoading: false });
-                        toast.error(Resources["failError"][currentLanguage]);
+                        toast.error(
+                            Resources["failError"][currentLanguage]
+                        );
                     });
+                }).catch(() => {
+                    this.setState({ isLoading: false });
+                    toast.error(Resources["failError"][currentLanguage]);
+                });
             }
         });
     };
