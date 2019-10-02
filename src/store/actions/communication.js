@@ -543,6 +543,16 @@ export function getCommunicationDocument(projectId, docType) {
     }
 }
 
+export function checkLog(value) {
+
+    return (dispatch) => {
+        dispatch({
+            type: types.SET_ISREJECT,
+            data: value
+        });
+    }
+}
+
 export function addCommunicationDocsAttach(data, projectId, docType, docId) {
     return (dispatch) => {
         let document = []

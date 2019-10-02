@@ -32,6 +32,7 @@ export default {
 			docsAttachData: [],
 			relatedLinkData: [],
 			documentData: [],
+			isReject : null
 		},
 		expensesWorkFlow: {
 			expensesWorkFlowData: {},

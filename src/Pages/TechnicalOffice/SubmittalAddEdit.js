@@ -914,15 +914,18 @@ class SubmittalAddEdit extends Component {
   editSubmittal(event) {
 
     this.setState({
-      isLoading: true
+      isLoading: true,
+      CurrentStep: 1
     });
 
     let saveDocument = this.state.document;
     saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocument.forwardToDate = moment(saveDocument.forwardToDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    saveDocument.area = this.state.selectedArea.label;
-    saveDocument.location = this.state.selectedLocation.label;
+    saveDocument.area = this.state.selectedArea.value === "0" ? "" : this.state.selectedArea.label;
+    saveDocument.location = this.state.selectedLocation.value === "0" ? "" : this.state.selectedLocation.label;
+
     this.changeCurrentStep(1);
+
     dataservice.addObject("EditLogSubmittal", saveDocument).then(result => {
 
       this.setState({
@@ -952,6 +955,7 @@ class SubmittalAddEdit extends Component {
         this.setState({
           isLoading: false,
           itemData: data,
+          CurrentStep: 2,
           itemsDocumentSubmital: submittalItem,
         });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
@@ -963,7 +967,8 @@ class SubmittalAddEdit extends Component {
   addSubmittalCycle() {
 
     this.setState({
-      isLoading: true
+      isLoading: true,
+      CurrentStep: 2
     });
 
     let saveDocumentCycle = this.state.documentCycle;
@@ -1003,12 +1008,13 @@ class SubmittalAddEdit extends Component {
     if (this.props.changeStatus === false) {
 
       this.setState({
-        isLoading: true
+        isLoading: true,
+        CurrentStep: 1
       });
 
       let saveDocument = { ...this.state.document };
-      saveDocument.area = this.state.selectedArea.label;
-      saveDocument.location = this.state.selectedLocation.label;
+      saveDocument.area = this.state.selectedArea.value === "0" ? "" : this.state.selectedArea.label;
+      saveDocument.location = this.state.selectedLocation.value === "0" ? "" : this.state.selectedLocation.label;
       saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
       saveDocument.forwardToDate = moment(saveDocument.forwardToDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
@@ -1401,10 +1407,7 @@ class SubmittalAddEdit extends Component {
   }
 
   changeCurrentStep = stepNo => {
-    if (stepNo === 3) {
 
-      this.props.history.push("/submittal/" + this.state.projectId);
-    }
     this.setState({ currentStep: stepNo });
   };
 
@@ -2090,7 +2093,7 @@ class SubmittalAddEdit extends Component {
                       {this.state.docId > 0 && this.state.currentStep === 0 ? (
                         <Fragment>
                           <div className="document-fields tableBTnabs">
-                            <AddDocAttachment projectId={projectId}  isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                            <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
                           </div>
                         </Fragment>
                       ) : null}
@@ -2151,15 +2154,12 @@ class SubmittalAddEdit extends Component {
                           {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
                         </div>
                       </div>
-
                       <Dropdown title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
                         handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")}
                         onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reviewResult}
                         touched={touched.reviewResult} name="reviewResult" id="reviewResult" />
-
                       <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
                         handleChange={e => this.handleChangeDateItems(e, "submitalDate")} />
-
                       <div className="fillter-status fillter-item-c">
                         <label className="control-label">
                           {Resources.arrange[currentLanguage]}

@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 
-let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -45,7 +45,6 @@ let subjectLink = ({ value, row }) => {
       isApproveMode: true,
       perviousRoute: window.location.pathname + window.location.search
     };
-
 
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
@@ -166,7 +165,7 @@ class DocApprovalDetails extends Component {
         sortDescendingFirst: true
       },
       {
-        key: "lastApproveDate",
+        key: "lastApprovalDate",
         name: Resources["lastApproveDate"][currentLanguage],
         width: 150,
         draggable: true,
@@ -337,6 +336,8 @@ class DocApprovalDetails extends Component {
         pageTitle: Resources["docRejected"][currentLanguage]
       });
 
+      this.props.actions.checkLog(false);
+
       Api.get("GetRejectedRequestsDocApprove").then(result => {
         this.setState({
           rows: result != null ? result : [],
@@ -347,6 +348,9 @@ class DocApprovalDetails extends Component {
       this.setState({
         pageTitle: Resources["docApproval"][currentLanguage]
       });
+
+      this.props.actions.checkLog(true);
+
       Api.get("GetApprovalRequestsDocApprove").then(result => {
         this.setState({
           rows: result != null ? result : [],
@@ -534,7 +538,8 @@ class DocApprovalDetails extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    showLeftMenu: state.communication.showLeftMenu
+    showLeftMenu: state.communication.showLeftMenu,
+    isReject: state.communication.isReject
   }
 }
 

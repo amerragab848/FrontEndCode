@@ -13,7 +13,7 @@ export default class Api {
             dataType: "json",
             isNewVersion: "true",
             Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
-            Authorization: Authorization
+            Authorization: Authorization ==null ? localStorage.getItem("userToken"): Authorization
         };
     }
 
