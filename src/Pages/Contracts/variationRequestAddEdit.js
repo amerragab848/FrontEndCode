@@ -24,7 +24,7 @@ import { toast } from "react-toastify";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const validationSchema = Yup.object().shape({ 
+const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     refDoc: Yup.string().required(Resources['selectRefNo'][currentLanguage]),
     description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
@@ -178,7 +178,7 @@ class VariationRequestAdd extends Component {
                 toCompanyId: '',
                 toContactId: '',
                 docDate: moment(),
-                status: 'false',
+                status: 'true',
                 description: '',
                 refDoc: '',
                 contractId: ''
@@ -372,11 +372,10 @@ class VariationRequestAdd extends Component {
     }
 
     saveAndExit(event) {
-        // let letter = { ...this.state.document };
 
-        this.props.history.push({
-            pathname: "/variationRequest/" + this.state.projectId
-        });
+        if (this.state.isApproveMode === false) {
+            this.props.history.push(this.state.perviousRoute);
+        }
     }
 
     showBtnsSaving() {

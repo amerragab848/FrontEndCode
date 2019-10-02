@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import Config from "./Services/Config";
 
 let Authorization = localStorage.getItem("userToken");
@@ -13,7 +13,7 @@ export default class Api {
             dataType: "json",
             isNewVersion: "true",
             Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
-            Authorization: Authorization
+            Authorization: Authorization === null ? localStorage.getItem("userToken") : Authorization
         };
     }
 
