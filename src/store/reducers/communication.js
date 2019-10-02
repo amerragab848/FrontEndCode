@@ -304,11 +304,30 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state
             };
+
         case types.GET_DOCS_ATTACH:
-            return {
-                ...state,
-                docsAttachData: action.data,
-            }
+            return { ...state, docsAttachData: action.data }
+
+        case types.GET_RELATED_LINK:
+            return { ...state, relatedLinkData: action.data || [] }
+
+        case types.DELETE_DOCS_ATTACH:
+            let newData = state.docsAttachData.filter(s => s.id !== action.id)
+            return { ...state, docsAttachData: newData }
+
+        case types.GET_DOCUMNET_DATA:
+            let updateData = []
+            action.data.filter(function (item) {
+                let filterData = state.docsAttachData.filter(s => s.docId === item.docId && s.docType === item.docType)
+                if (!filterData.length) {
+                    updateData.push(item)
+                }
+                return filterData
+            });
+            return { ...state, documentData: updateData }
+
+        case types.ADD_DOCS_ATTACH:
+            return { ...state, docsAttachData: action.resp || [], documentData: [] }
 
         default:
             return {
