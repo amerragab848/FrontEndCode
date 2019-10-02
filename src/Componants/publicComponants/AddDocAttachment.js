@@ -43,9 +43,11 @@ class AddDocAttachment extends Component {
     // Get Drop Down Models Data When Open Modal To Add Attachment
     dataservice.GetDataList("GetModuleList", "modulType", "id").then(result => { this.setState({ moduls: result }) });
     //Get Data For Doc Attachment Table By DocId & ProjectId & DocType
-    this.props.actions.getCommunicationDocsAttach(this.props.projectId, this.props.docTypeId, this.props.docId);
+    if (!this.props.docsAttachData.length) {
+      this.props.actions.getCommunicationDocsAttach(this.props.projectId, this.props.docTypeId, this.props.docId);
+    }
     //In This Case In Two Documnets Only[ SiteInstruction & VariationRequest] You Must Show Related Links Section 
-    if (this.state.relatedLink) {
+    if (this.state.relatedLink && !this.props.docsAttachData.length) {
       this.props.actions.getCommunicationRelatedLinks(this.props.docTypeId, this.props.docId);
     }
   }
