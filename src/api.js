@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import Config from "./Services/Config";
 
 let Authorization = localStorage.getItem("userToken");
@@ -13,7 +13,7 @@ export default class Api {
             dataType: "json",
             isNewVersion: "true",
             Lang: localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang"),
-            Authorization: Authorization ==null ? localStorage.getItem("userToken"): Authorization
+            Authorization: Authorization === null ? localStorage.getItem("userToken") : Authorization
         };
     }
 
@@ -225,7 +225,7 @@ export default class Api {
             .then(json => (json.result ? json.result : json));
     }
 
-    static authorizationApi(route, params, method) {
+    static authorizationApi(route, params, method, isCheck) {
         const host = Config.getPublicConfiguartion().loginServer + "/api/";
         const url = `${host}${route}`;
         let json = null;
@@ -246,7 +246,13 @@ export default class Api {
         return fetch(url, options).then(reponse => {
             if (reponse.status === 200) {
                 returnObject.status = 200;
-                returnObject.msg = "Successfuly created account.";
+                if (isCheck) {
+
+                    returnObject.msg = "Email already exists.";
+                } else {
+
+                    returnObject.msg = "Successfuly created account.";
+                }
                 json = returnObject;
                 return json;
             } else if (reponse.status === 500) {
@@ -258,7 +264,14 @@ export default class Api {
                 json = returnObject;
                 return json;
             }
-        }).then(json => (json.result ? json.result : json));
+        }).then(json => {
+            if (json.result) {
+                return json.result
+            } else {
+                return json
+            }
+        }
+        );
     }
 
     static IsAuthorized() {

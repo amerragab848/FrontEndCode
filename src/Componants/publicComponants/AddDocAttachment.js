@@ -43,9 +43,11 @@ class AddDocAttachment extends Component {
     // Get Drop Down Models Data When Open Modal To Add Attachment
     dataservice.GetDataList("GetModuleList", "modulType", "id").then(result => { this.setState({ moduls: result }) });
     //Get Data For Doc Attachment Table By DocId & ProjectId & DocType
-    this.props.actions.getCommunicationDocsAttach(this.props.projectId, this.props.docTypeId, this.props.docId);
+    if (!this.props.docsAttachData.length) {
+      this.props.actions.getCommunicationDocsAttach(this.props.projectId, this.props.docTypeId, this.props.docId);
+    }
     //In This Case In Two Documnets Only[ SiteInstruction & VariationRequest] You Must Show Related Links Section 
-    if (this.state.relatedLink) {
+    if (this.state.relatedLink && !this.props.docsAttachData.length) {
       this.props.actions.getCommunicationRelatedLinks(this.props.docTypeId, this.props.docId);
     }
   }
@@ -271,7 +273,7 @@ class AddDocAttachment extends Component {
       ];
 
       return (
-        this.props.relatedLinkData ?
+        this.props.relatedLinkData.length ?
 
           <div className="precycle-grid modalTable doc-pre-cycle">
             <header>
@@ -295,19 +297,19 @@ class AddDocAttachment extends Component {
             onClick={() => this.setState({ modalAdd: true })}>
             {Resources["addDocAttachment"][currentLanguage]} </button> : null}
 
+        {this.props.docsAttachData.length ?
 
-        <div className="precycle-grid modalTable doc-pre-cycle">
-          <header>
-            <h2 className="zero">{Resources.docAttachment[currentLanguage]}</h2>
-          </header>
+          <div className="precycle-grid modalTable doc-pre-cycle">
+            <header>
+              <h2 className="zero">{Resources.docAttachment[currentLanguage]}</h2>
+            </header>
 
-          {this.props.docsAttachData.length ?
             <ReactTable data={this.props.docsAttachData} id="attachDocuments"
               columns={columnsDocument} defaultPageSize={5}
               noDataText={Resources["noData"][currentLanguage]}
-              className="-striped -highlight" /> : null}
-        </div>
-
+              className="-striped -highlight" />
+          </div>
+          : null}
         {this.state.relatedLink ? relatedLink() : null}
 
 
