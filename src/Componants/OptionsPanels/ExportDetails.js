@@ -81,7 +81,13 @@ class ExportDetails extends Component {
             // })
 
             Dataservice.GetDataGrid(`ExportDocumentServerSide?documentName${this.props.documentTitle}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`).then(result => {
-                window.open(Config.getPublicConfiguartion().static + result);
+
+                var a = document.createElement('A');
+                a.href = result;
+                a.download = result.substr(result.lastIndexOf('/') + 1);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
             });
         }
         else {
