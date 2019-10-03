@@ -21833,3 +21833,22 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .fixed__loading .dashboardLoading {
     position: fixed !important
 }
+
+.subEps__list {
+    position: relative;
+    padding-left: 15px;
+}
+
+.subEps__list >a{
+    color: #A9B0BF !important
+}
+
+.subEps__list::after {
+    content: "\F0D8";
+    position: absolute;
+    font-family: FontAwesome;
+    color: #000;
+    right: 15px;
+    font-size: 16px;
+    top: 12px;
+}

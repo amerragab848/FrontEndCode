@@ -8,16 +8,20 @@ import { connect } from 'react-redux';
 import Profile from '../../Styles/images/icons/person.svg'
 import LoadingSection from '../publicComponants/LoadingSection'
 import Signature from '../../Styles/images/mySignature.png';
-
-import {
-    bindActionCreators
-} from 'redux';
-
+import Config from "../../Services/Config";
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
+import Dataservice from '../../Dataservice.js';
 const _ = require('lodash')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const filedsIgnor = ['status', 'docDate'];
+
+
+// (function linkExport(params) {
+//     window.location.href = "https://www.w3schools.com";
+// })()
+
 class ExportDetails extends Component {
 
     constructor(props) {
@@ -35,47 +39,50 @@ class ExportDetails extends Component {
     ExportDocument(Fields, items, name) {
         if (this.state.isExcel == "false") {
 
-            this.setState({
-                isLoading: true
+            // this.setState({
+            //     isLoading: true
+            // });
+            // const input = document.getElementById('printPdf');
+            // input.style.height = 'auto'
+            // input.style.visibility = 'visible'
+
+            // html2canvas(input).then((canvas) => {
+            //     var imgData = canvas.toDataURL('image/png');
+            //     var imgWidth = 210;
+            //     var pageHeight = 295;
+            //     var imgHeight = canvas.height * imgWidth / canvas.width;
+            //     var heightLeft = imgHeight;
+            //     var doc = new jsPDF('landscape', 'mm', 'letter');
+            //     var position = 0;
+
+            //     doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            //     heightLeft -= pageHeight;
+
+            //     while (heightLeft >= 0) {
+            //         position = heightLeft - imgHeight;
+            //         doc.addPage();
+            //         doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            //         heightLeft -= pageHeight;
+            //     }
+            //     doc.setProperties({
+            //         // title: 'Title',
+            //         // subject: 'This is the subject',
+            //         author: 'Procoor',
+            //         keywords: 'Procoor V5',
+            //         creator: 'Procoor Team Development'
+            //     });
+
+            //     doc.save(Resources[this.props.documentTitle][currentLanguage] + '.pdf');
+            //     input.style.visibility = 'hidden';
+            //     input.style.height = '0';
+            //     this.setState({
+            //         isLoading: false
+            //     }); 
+            // })
+
+            Dataservice.GetDataGrid(`ExportDocumentServerSide?documentName${this.props.documentTitle}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`).then(result => {
+                window.open(Config.getPublicConfiguartion().static + result);
             });
-            const input = document.getElementById('printPdf');
-            input.style.height = 'auto'
-            input.style.visibility = 'visible'
-
-            html2canvas(input).then((canvas) => {
-                var imgData = canvas.toDataURL('image/png');
-                var imgWidth = 210;
-                var pageHeight = 295;
-                var imgHeight = canvas.height * imgWidth / canvas.width;
-                var heightLeft = imgHeight;
-                var doc = new jsPDF('landscape', 'mm', 'letter');
-                var position = 0;
-
-                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    doc.addPage();
-                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                doc.setProperties({
-                    // title: 'Title',
-                    // subject: 'This is the subject',
-                    author: 'Procoor',
-                    keywords: 'Procoor V5',
-                    creator: 'Procoor Team Development'
-                   });
-
-                doc.save(Resources[this.props.documentTitle][currentLanguage] + '.pdf');
-                input.style.visibility = 'hidden';
-                input.style.height = '0';
-                this.setState({
-                    isLoading: false
-                });
-
-            })
         }
         else {
             var uri = 'data:application/vnd.ms-excel;base64,'
@@ -166,7 +173,6 @@ class ExportDetails extends Component {
                         </Fragment>
                         : null
                     }
-
                 </tr>
                 )
             }
@@ -243,8 +249,8 @@ class ExportDetails extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.props.files.map(file => {
-                        return (<tr>
+                    {this.props.files.map((file, index) => {
+                        return (<tr key={index}>
                             <td>
                                 <div className="contentCell tableCell-2">
                                     <a className="pdfPopup various zero">{file.fileName}</a>
@@ -265,7 +271,6 @@ class ExportDetails extends Component {
                     })}
                 </tbody>
             </table>
-
         )
     }
 
@@ -331,18 +336,18 @@ class ExportDetails extends Component {
                     <tr key={index}>
                         <td>
                             <div className="table__wrapper">
-                            <h4 className="ui image header ">
-                                <img src={Profile} alt="Doc." />
-                                <div className="content">
-                                    {Resources[field.name][currentLanguage]}
-                                </div>
-                            </h4>
+                                <h4 className="ui image header ">
+                                    <img src={Profile} alt="Doc." />
+                                    <div className="content">
+                                        {Resources[field.name][currentLanguage]}
+                                    </div>
+                                </h4>
                             </div>
                         </td>
                         <td className="white mt5 tc f3" >
-                        <div className="table__wrapper">
+                            <div className="table__wrapper">
 
-                            {formatData}
+                                {formatData}
                             </div>
                         </td>
                     </tr>
@@ -358,6 +363,7 @@ class ExportDetails extends Component {
             </table>
         )
     }
+
     drawItems_pdf() {
         let fieldsItems = DED[this.props.docTypeId].columnsItems
         let rows = this.props.items.length > 0 ?
@@ -428,10 +434,10 @@ class ExportDetails extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.files.map(file => {
+                            {this.props.files.map((file, index) => {
                                 let formatData = moment(file.createdDate).format('DD/MM/YYYY')
                                 return (
-                                    <tr>
+                                    <tr key={index}>
                                         <td>
                                             <div className="contentCell tableCell-2">
                                                 <a className="pdfPopup various zero">{file.fileNameDisplay}</a>
@@ -525,7 +531,6 @@ class ExportDetails extends Component {
                                 </td>
                             </tr>
                             <tr className="workflowPrint">
-
                                 {levels.map((cycle, index) => {
                                     return (
                                         <td key={'cyc-' + index} className="flowNumber">
@@ -539,9 +544,7 @@ class ExportDetails extends Component {
                                             </div>
                                         </td>
                                     )
-
                                 })}
-
                             </tr>
                         </Fragment>
                         : null
@@ -625,9 +628,7 @@ class ExportDetails extends Component {
                             )
                         })}
                     </div>
-
                     {this.drawattachDocuments_pdf()}
-
                 </div>
             </div>
         return (
@@ -660,6 +661,7 @@ class ExportDetails extends Component {
                     <div className="fullWidthWrapper">
                         <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
                     </div>
+                    <div id="exportLink"></div>
                 </div>
 
                 {this.state.isLoading === true ?
@@ -674,7 +676,6 @@ class ExportDetails extends Component {
                 </div>
                 {exportPdf}
             </div>
-
         )
     }
 }
@@ -690,7 +691,8 @@ function mapStateToProps(state, ownProps) {
         fieldsItems: state.communication.fieldsItems,
         attachDocuments: state.communication.attachDocuments,
         docTypeId: state.communication.docTypeId,
-        documentTitle: state.communication.documentTitle
+        documentTitle: state.communication.documentTitle,
+        projectId: state.communication.projectId
     }
 }
 
@@ -700,8 +702,5 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ExportDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(ExportDetails);
 
