@@ -1086,6 +1086,8 @@ class NCRAddEdit extends Component {
                                         showModal={this.props.showModal}
                                         showOptionPanel={this.showOptionPanel}
                                         permission={this.state.permission}
+                                        
+                                        documentName='ncr'
                                     />
                                 </div>
                             </div>

@@ -12,15 +12,12 @@ import Config from "../../Services/Config";
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Dataservice from '../../Dataservice.js';
+import api from '../../api.js';
+
 const _ = require('lodash')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const filedsIgnor = ['status', 'docDate'];
-
-
-// (function linkExport(params) {
-//     window.location.href = "https://www.w3schools.com";
-// })()
 
 class ExportDetails extends Component {
 
@@ -39,9 +36,9 @@ class ExportDetails extends Component {
     ExportDocument(Fields, items, name) {
         if (this.state.isExcel == "false") {
 
-            // this.setState({
-            //     isLoading: true
-            // });
+            this.setState({
+                isLoading: true
+            });
             // const input = document.getElementById('printPdf');
             // input.style.height = 'auto'
             // input.style.visibility = 'visible'
@@ -80,15 +77,25 @@ class ExportDetails extends Component {
             //     }); 
             // })
 
-            Dataservice.GetDataGrid(`ExportDocumentServerSide?documentName${this.props.documentTitle}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`).then(result => {
-
-                var a = document.createElement('A');
-                a.href = result;
-                a.download = result.substr(result.lastIndexOf('/') + 1);
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            });
+            var route = 'ExportDocumentServerSide';
+            // alert(this.props.projectId);
+            Dataservice.GetNextArrangeMainDocument(route + `?documentName=${this.props.documentName}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`)
+                .then(result => {
+                    alert(result);
+                    if (result != null) {
+                        result = Config.getPublicConfiguartion().downloads + result;
+                        alert(result);
+                        var a = document.createElement('A');
+                        a.href = result;
+                        a.download = result.substr(result.lastIndexOf('/') + 1);
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        this.setState({
+                            isLoading: false
+                        });
+                    }
+                });
         }
         else {
             var uri = 'data:application/vnd.ms-excel;base64,'
@@ -698,7 +705,7 @@ function mapStateToProps(state, ownProps) {
         attachDocuments: state.communication.attachDocuments,
         docTypeId: state.communication.docTypeId,
         documentTitle: state.communication.documentTitle,
-        projectId: state.communication.projectId
+        // projectId: state.communication.projectId
     }
 }
 

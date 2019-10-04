@@ -496,17 +496,7 @@ class RfiAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.communicationRFI[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
-                        {
-                            this.props.changeStatus == true ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {Resources.goEdit[currentLanguage]}
-                                        </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header> : null
-                        }
+
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
@@ -763,6 +753,7 @@ class RfiAddEdit extends Component {
                                                                         showModal={this.props.showModal}
                                                                         showOptionPanel={this.showOptionPanel}
                                                                         permission={this.state.permission}
+                                                                        documentName='rfi'
                                                                     />
                                                                 </div>
                                                             </div> : null
@@ -773,7 +764,10 @@ class RfiAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={827} EditAttachments={3224} ShowDropBox={3609} ShowGoogleDrive={3610} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus}
+                                                AddAttachments={827} EditAttachments={3224} ShowDropBox={3609} ShowGoogleDrive={3610}
+                                                docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />)
+                                                : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>

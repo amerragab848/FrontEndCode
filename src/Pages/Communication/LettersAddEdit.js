@@ -1123,6 +1123,8 @@ class LettersAddEdit extends Component {
                                                                             showModal={this.props.showModal}
                                                                             showOptionPanel={this.showOptionPanel}
                                                                             permission={this.state.permission}
+
+                                                                            documentName='letters'
                                                                         />
                                                                     </div>
                                                                 </div>

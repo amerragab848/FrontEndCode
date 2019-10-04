@@ -772,6 +772,8 @@ class TransmittalAddEdit extends Component {
                                                                         showModal={this.props.showModal}
                                                                         showOptionPanel={this.showOptionPanel}
                                                                         permission={this.state.permission}
+                                                                        
+                                                                        documentName='transmittal'
                                                                     />
                                                                 </div>
                                                             </div> : null

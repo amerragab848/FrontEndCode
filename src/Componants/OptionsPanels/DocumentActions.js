@@ -94,6 +94,7 @@ class DocumentActions extends Component {
             projectId: this.props.projectId,
             docApprovalId: this.props.docApprovalId,
             currentArrange: this.props.currentArrange,
+            documentName: this.props.documentName,
         }
     }
     ////handle button clcik for dynamically import panel component and show popUp model with loaded panel
@@ -154,7 +155,7 @@ class DocumentActions extends Component {
                             <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(importedPaths[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
                             <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(importedPaths[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                         </div> : null
-                } 
+                }
                 <Fragment>
                     {this.IsAllow(importedPaths[1]['title']) ?
                         <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(importedPaths[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>
@@ -172,7 +173,8 @@ class DocumentActions extends Component {
                     <Fragment>
                         {this.IsAllow(importedPaths[6]['title']) || this.IsAllow(importedPaths[7]['title'])
                             || this.IsAllow(importedPaths[9]['title']) || this.IsAllow(importedPaths[8]['title']) ?
-                            <DropDown data={this.state.selectedPanels} name="ddlActions" handleChange={item => this.handleShowAction(importedPaths[item.value])} index='ddlActions' selectedValue={this.state.defualtValue} styles={actionPanel} />
+                            <DropDown data={this.state.selectedPanels} name="ddlActions" handleChange={item => this.handleShowAction(importedPaths[item.value])}
+                                index='ddlActions' selectedValue={this.state.defualtValue} styles={actionPanel} />
                             : null}
                     </Fragment>
                 </div>

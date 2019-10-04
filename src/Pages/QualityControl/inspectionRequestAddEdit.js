@@ -191,7 +191,7 @@ class inspectionRequestAddEdit extends Component {
 
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-       
+
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
                 links[i].classList.add('even');
@@ -199,7 +199,7 @@ class inspectionRequestAddEdit extends Component {
             else {
                 links[i].classList.add('odd');
             }
-        } 
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -299,7 +299,7 @@ class inspectionRequestAddEdit extends Component {
                 contractId: '',
                 requiredDate: moment(),
                 resultDate: moment(),
-                reasonForIssueId: '' 
+                reasonForIssueId: ''
             };
 
             this.setState({ document: inspectionRequest }, function () {
@@ -1241,6 +1241,8 @@ class inspectionRequestAddEdit extends Component {
                                                                                 showModal={this.props.showModal}
                                                                                 showOptionPanel={this.showOptionPanel}
                                                                                 permission={this.state.permission}
+
+                                                                                documentName='materialRequest'
                                                                             />
                                                                         </div>
                                                                     </div>
@@ -1275,7 +1277,7 @@ class inspectionRequestAddEdit extends Component {
                                         {this.state.CycleEditLoading === false && this.state.CycleAddLoading === false ?
                                             <ReactTable ref={(r) => { this.selectTable = r; }} data={this.state.IRCycles}
                                                 columns={columns} defaultPageSize={5} noDataText={Resources['noData'][currentLanguage]} /> : null}
-                                    </div> 
+                                    </div>
                                 </div>
                             }
                         </div>
