@@ -81,7 +81,7 @@ class ExportDetails extends Component {
             // alert(this.props.projectId);
             Dataservice.GetNextArrangeMainDocument(route + `?documentName=${this.props.documentName}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`)
                 .then(result => {
-                    alert(result);
+                   // alert(result);
                     if (result != null) {
                         result = Config.getPublicConfiguartion().downloads + result;
                         alert(result);
