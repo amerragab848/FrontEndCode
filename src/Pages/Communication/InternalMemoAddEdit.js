@@ -14,7 +14,6 @@ import { bindActionCreators } from 'redux';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import SkyLight from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import { toast } from "react-toastify";
@@ -618,6 +617,7 @@ class InternalMemoAddEdit extends Component {
                                                                     showModal={this.props.showModal}
                                                                     showOptionPanel={this.showOptionPanel}
                                                                     permission={this.state.permission}
+                                                                    documentName={Resources.communicationInternalMemo[currentLanguage]}
                                                                 />
                                                             </div>
                                                         </div> : null

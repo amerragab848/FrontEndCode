@@ -753,7 +753,7 @@ class RfiAddEdit extends Component {
                                                                         showModal={this.props.showModal}
                                                                         showOptionPanel={this.showOptionPanel}
                                                                         permission={this.state.permission}
-                                                                        documentName='rfi'
+                                                                        documentName={Resources.communicationRFI[currentLanguage]}
                                                                     />
                                                                 </div>
                                                             </div> : null

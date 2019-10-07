@@ -158,7 +158,7 @@ class LettersAddEdit extends Component {
                 message: ""
             };
             this.setState({ document: letter });
-         
+
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -176,7 +176,7 @@ class LettersAddEdit extends Component {
 
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
-           
+
             return {
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -1123,8 +1123,7 @@ class LettersAddEdit extends Component {
                                                                             showModal={this.props.showModal}
                                                                             showOptionPanel={this.showOptionPanel}
                                                                             permission={this.state.permission}
-
-                                                                            documentName='letters'
+                                                                            documentName={Resources.lettertitle[currentLanguage]}
                                                                         />
                                                                     </div>
                                                                 </div>

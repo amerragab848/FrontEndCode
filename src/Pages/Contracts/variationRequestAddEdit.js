@@ -193,7 +193,8 @@ class VariationRequestAdd extends Component {
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedContractSubject: { label: Resources.contractSubject[currentLanguage], value: "0" },
-            CurrentStep: 0
+            CurrentStep: 0,
+            totalCost: 0
         }
 
         if (!Config.IsAllow(3162) && !Config.IsAllow(3163) && !Config.IsAllow(3165)) {
@@ -703,6 +704,14 @@ class VariationRequestAdd extends Component {
                                                                         {touched.description ? (<em className="pError">{errors.description}</em>) : null}
                                                                     </div>
                                                                 </div>
+                                                                {this.props.changeStatus ? <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">{Resources.totalCost[currentLanguage]}</label>
+                                                                    <div className="ui input inputDev">
+                                                                        <input type="text" className="form-control" id="totalCost"
+                                                                            value={this.state.totalCost} name="totalCost"
+                                                                            placeholder={Resources.totalCost[currentLanguage]} />
+                                                                    </div>
+                                                                </div> : null}
                                                             </div>
                                                             <div className="slider-Btns">
                                                                 {this.showBtnsSaving()}
