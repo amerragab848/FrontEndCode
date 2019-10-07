@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import moment from "moment";
 import Resources from '../../resources.json';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
+// import jsPDF from 'jspdf';
 import DED from './DocumentExportDefination.json'
 import { connect } from 'react-redux';
 import Profile from '../../Styles/images/icons/person.svg'
@@ -11,9 +11,7 @@ import Signature from '../../Styles/images/mySignature.png';
 import Config from "../../Services/Config";
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import Dataservice from '../../Dataservice.js';
-import api from '../../api.js';
-
+import Dataservice from '../../Dataservice.js'; 
 const _ = require('lodash')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -38,53 +36,13 @@ class ExportDetails extends Component {
 
             this.setState({
                 isLoading: true
-            });
-            // const input = document.getElementById('printPdf');
-            // input.style.height = 'auto'
-            // input.style.visibility = 'visible'
-
-            // html2canvas(input).then((canvas) => {
-            //     var imgData = canvas.toDataURL('image/png');
-            //     var imgWidth = 210;
-            //     var pageHeight = 295;
-            //     var imgHeight = canvas.height * imgWidth / canvas.width;
-            //     var heightLeft = imgHeight;
-            //     var doc = new jsPDF('landscape', 'mm', 'letter');
-            //     var position = 0;
-
-            //     doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            //     heightLeft -= pageHeight;
-
-            //     while (heightLeft >= 0) {
-            //         position = heightLeft - imgHeight;
-            //         doc.addPage();
-            //         doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            //         heightLeft -= pageHeight;
-            //     }
-            //     doc.setProperties({
-            //         // title: 'Title',
-            //         // subject: 'This is the subject',
-            //         author: 'Procoor',
-            //         keywords: 'Procoor V5',
-            //         creator: 'Procoor Team Development'
-            //     });
-
-            //     doc.save(Resources[this.props.documentTitle][currentLanguage] + '.pdf');
-            //     input.style.visibility = 'hidden';
-            //     input.style.height = '0';
-            //     this.setState({
-            //         isLoading: false
-            //     }); 
-            // })
-
-            var route = 'ExportDocumentServerSide';
-            // alert(this.props.projectId);
+            }); 
+            var route = 'ExportDocumentServerSide'; 
             Dataservice.GetNextArrangeMainDocument(route + `?documentName=${this.props.documentName}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`)
-                .then(result => {
-                   // alert(result);
+                .then(result => { 
                     if (result != null) {
                         result = Config.getPublicConfiguartion().downloads + result;
-                        alert(result);
+                        
                         var a = document.createElement('A');
                         a.href = result;
                         a.download = result.substr(result.lastIndexOf('/') + 1);
