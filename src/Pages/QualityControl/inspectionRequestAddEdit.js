@@ -895,7 +895,8 @@ class inspectionRequestAddEdit extends Component {
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.inspectionRequest[currentLanguage]} moduleTitle={Resources['qualityControl'][currentLanguage]} />
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
+                        docTitle={Resources.inspectionRequest[currentLanguage]} moduleTitle={Resources['qualityControl'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
                             {this.state.CurrentStep == 0 ?
@@ -1241,8 +1242,7 @@ class inspectionRequestAddEdit extends Component {
                                                                                 showModal={this.props.showModal}
                                                                                 showOptionPanel={this.showOptionPanel}
                                                                                 permission={this.state.permission}
-
-                                                                                documentName='materialRequest'
+                                                                                documentName={Resources.inspectionRequest[currentLanguage]}
                                                                             />
                                                                         </div>
                                                                     </div>

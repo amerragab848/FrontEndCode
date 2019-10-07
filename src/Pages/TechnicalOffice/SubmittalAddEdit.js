@@ -2118,6 +2118,7 @@ class SubmittalAddEdit extends Component {
                     showModal={this.props.showModal}
                     showOptionPanel={this.showOptionPanel}
                     permission={this.state.permission}
+                    documentName={Resources.Submittal[currentLanguage]}
                   />
                 </div>
               </div>

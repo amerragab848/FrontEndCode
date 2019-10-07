@@ -925,7 +925,8 @@ class materialInspectionRequestAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.materialInspectionRequest[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
+                        docTitle={Resources.materialInspectionRequest[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
 
                     <div className="doc-container">
@@ -941,17 +942,14 @@ class materialInspectionRequestAddEdit extends Component {
                                                     validationSchema={validationSchema}
                                                     enableReinitialize={this.props.changeStatus}
                                                     onSubmit={(values) => {
-
                                                         if (this.props.showModal) { return; }
-
                                                         else if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveInspectionRequest();
                                                         } else if (this.props.changeStatus == true) {
                                                             this.editInspectionRequest();
                                                         } else if (this.props.changeStatus === false && this.state.docId > 0)
                                                             this.changeCurrentStep(1);
-
-                                                    }}  >
+                                                    }}>
 
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                         <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -1184,7 +1182,6 @@ class materialInspectionRequestAddEdit extends Component {
                                                                         data={this.state.discplines}
                                                                         selectedValue={this.state.selectedDiscpline}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
-
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.disciplineId}
@@ -1263,7 +1260,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                     {this.viewAttachments()}
                                                                     <Fragment>
                                                                         <div className="document-fields tableBTnabs">
-                                                                            {this.state.docId > 0  ? <AddDocAttachment   projectId={projectId} isViewMode={ this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                            {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                                         </div>
                                                                     </Fragment>
                                                                     {this.props.changeStatus === true ?
@@ -1304,6 +1301,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 showModal={this.props.showModal}
                                                                                 showOptionPanel={this.showOptionPanel}
                                                                                 permission={this.state.permission}
+                                                                                documentName={Resources.materialInspectionRequest[currentLanguage]}
                                                                             />
                                                                         </div>
                                                                     </div>
@@ -1320,7 +1318,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                         </button> :
                                                                         this.showBtnsSaving()}
                                                                 </div>
-                                                            } 
+                                                            }
                                                         </Form>
                                                     )}
                                                 </Formik>

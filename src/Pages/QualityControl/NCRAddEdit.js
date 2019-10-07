@@ -11,17 +11,14 @@ import Api from '../../api';
 import { withRouter } from "react-router-dom";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
-
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import  { SkyLightStateless } from 'react-skylight';
+import { SkyLightStateless } from 'react-skylight';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
@@ -426,7 +423,7 @@ class NCRAddEdit extends Component {
         }
     }
 
-    saveAndExit = () => { 
+    saveAndExit = () => {
 
         if (this.state.isApproveMode === false) {
             this.props.history.push(this.state.perviousRoute);
@@ -727,7 +724,8 @@ class NCRAddEdit extends Component {
                 {this.state.Loading ? <LoadingSection /> : null}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.NCRLog[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
+                        docTitle={Resources.NCRLog[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
 
                     <div className="doc-container">
@@ -742,7 +740,7 @@ class NCRAddEdit extends Component {
                                             if (this.props.showModal) { return; }
 
                                             this.saveNCR();
-                                        }}  >
+                                        }}>
 
                                         {({ errors, touched, handleBlur, values, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                             <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
@@ -868,7 +866,7 @@ class NCRAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div className="linebylineInput valid-input mix_dropdown">
                                                         <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
@@ -889,8 +887,6 @@ class NCRAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                             
 
                                                     <div className="linebylineInput valid-input">
                                                         <Dropdown data={this.state.contractsPos} selectedValue={this.state.selectedContract}
@@ -1002,7 +998,7 @@ class NCRAddEdit extends Component {
                                                         {this.viewAttachments()}
                                                         <Fragment>
                                                             <div className="document-fields tableBTnabs">
-                                                                {this.state.docId > 0 ? <AddDocAttachment   isViewMode={ this.state.isViewMode}  projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                {this.state.docId > 0 ? <AddDocAttachment isViewMode={this.state.isViewMode} projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                             </div>
                                                         </Fragment>
                                                         {this.props.changeStatus === true ?
@@ -1086,8 +1082,7 @@ class NCRAddEdit extends Component {
                                         showModal={this.props.showModal}
                                         showOptionPanel={this.showOptionPanel}
                                         permission={this.state.permission}
-                                        
-                                        documentName='ncr'
+                                        documentName={Resources.NCRLog[currentLanguage]}
                                     />
                                 </div>
                             </div>
