@@ -1,28 +1,11 @@
 var widgets = [
   {
     widgetCategory: "mainAlerts",
-    refrence: 0, 
+    refrence: 0,
     canView: false,
     order: 1,
     checked: false,
     widgets: [
-      {
-        title: "timesheetLog",
-        permission: 0, 
-        canView: false,
-        order: 1,
-        type: "oneWidget",
-        props: {
-          api: "GetTimeSheetSummary",
-          apiDetails: "",
-          route: "TimeSheetDetails",
-          value: "total",
-          listType: "item",
-          action: "action",
-          isModal: false 
-        },
-        checked: false
-      },
       {
         title: "docApproval",
         permission: 0,
@@ -41,25 +24,6 @@ var widgets = [
           // key: "0-1-2"
         },
         checked: false
-      },
-      {
-        title: "pendingExpenses",
-        permission: 0,
-        // key: "0-1-3",
-        canView: false,
-        checked: false,
-        order: 3,
-        type: "oneWidget",
-        props: {
-          api: "GetPendingExpensesSummary",
-          apiDetails: "",
-          route: "PendingExpensesDetails",
-          value: "total",
-          listType: "item",
-          action: "action",
-          isModal: false,
-          // key: "0-1-3"
-        }
       },
       {
         title: "docRejected",
@@ -117,19 +81,35 @@ var widgets = [
           isModal: false,
           // key: "0-1-6"
         }
+      }, {
+        title: "monitorTasks",
+        permission: 0,
+        canView: false,
+        checked: false,
+        order: 7,
+        type: "oneWidget",
+        props: {
+          api: "GetCountMonitorTasks",
+          apiDetails: "",
+          route: "MonitorTasks",
+          value: "total",
+          listType: "item",
+          action: "action",
+          isModal: false,
+        }
       }
     ]
   },
   {
     widgetCategory: "summaries",
-    refrence: 0, 
+    refrence: 0,
     canView: false,
     checked: false,
     order: 2,
     widgets: [
       {
         title: "alertingQntySummary",
-        permission: 0, 
+        permission: 0,
         canView: false,
         checked: false,
         order: 1,
@@ -549,7 +529,7 @@ var widgets = [
       }
     ]
   },
-  { 
+  {
     widgetCategory: "risk",
     refrence: 0,
     // key: "0-4",
@@ -605,7 +585,7 @@ var widgets = [
   },
   {
     widgetCategory: "counters",
-    refrence: 1, 
+    refrence: 1,
     canView: false,
     checked: false,
     order: 1,
@@ -631,7 +611,7 @@ var widgets = [
       },
       {
         title: "materialRequestcount",
-        permission: 3343, 
+        permission: 3343,
         canView: false,
         checked: false,
         order: 2,
@@ -649,7 +629,7 @@ var widgets = [
       },
       {
         title: "rejectedTimeSheet",
-        permission: 0, 
+        permission: 0,
         canView: false,
         checked: false,
         order: 3,
@@ -667,7 +647,7 @@ var widgets = [
       },
       {
         title: "monthlyPaymentRequisitions",
-        permission: 0, 
+        permission: 0,
         canView: false,
         checked: false,
         order: 4,
@@ -679,32 +659,15 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false, 
-        }
-      },
-      {
-        title: "monitorTasks",
-        permission: 0, 
-        canView: false,
-        checked: false,
-        order: 5,
-        type: "oneWidget",
-        props: {
-          api: "GetCountMonitorTasks",
-          apiDetails: "",
-          route: "MonitorTasks",
-          value: "total",
-          listType: "item",
-          action: "action",
-          isModal: false, 
+          isModal: false,
         }
       },
       {
         title: "monthlyTasks",
-        permission: 0, 
+        permission: 0,
         canView: false,
         checked: false,
-        order: 6,
+        order: 5,
         type: "oneWidget",
         props: {
           api: "GetCounMonthlyTasks",
@@ -713,15 +676,15 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false 
+          isModal: false
         }
       },
       {
         title: "followUpsSummary",
-        permission: 0, 
+        permission: 0,
         canView: false,
         checked: false,
-        order: 7,
+        order: 6,
         type: "oneWidget",
         props: {
           api: "SelectByAccountIdCount",
@@ -730,14 +693,50 @@ var widgets = [
           value: "total",
           listType: "item",
           action: "action",
-          isModal: false 
+          isModal: false
         }
-      }
+      },
+      {
+        title: "timesheetLog",
+        permission: 0,
+        canView: false,
+        order: 7,
+        type: "oneWidget",
+        props: {
+          api: "GetTimeSheetSummary",
+          apiDetails: "",
+          route: "TimeSheetDetails",
+          value: "total",
+          listType: "item",
+          action: "action",
+          isModal: false
+        },
+        checked: false
+      },
+      {
+        title: "pendingExpenses",
+        permission: 0,
+        // key: "0-1-3",
+        canView: false,
+        checked: false,
+        order: 8,
+        type: "oneWidget",
+        props: {
+          api: "GetPendingExpensesSummary",
+          apiDetails: "",
+          route: "PendingExpensesDetails",
+          value: "total",
+          listType: "item",
+          action: "action",
+          isModal: false,
+          // key: "0-1-3"
+        }
+      },
     ]
   },
   {
     widgetCategory: "Submittal",
-    refrence: 1, 
+    refrence: 1,
     canView: false,
     checked: false,
     order: 2,
@@ -802,7 +801,7 @@ var widgets = [
   },
   {
     widgetCategory: "communication",
-    refrence: 1, 
+    refrence: 1,
     canView: false,
     checked: false,
     order: 3,
@@ -886,7 +885,7 @@ var widgets = [
   },
   {
     widgetCategory: "inspectionRequest",
-    refrence: 1, 
+    refrence: 1,
     canView: false,
     checked: false,
     order: 4,
@@ -951,7 +950,7 @@ var widgets = [
   },
   {
     widgetCategory: "respondTime",
-    refrence: 1, 
+    refrence: 1,
     canView: false,
     checked: false,
     order: 5,
@@ -1092,7 +1091,7 @@ var widgets = [
   },
   {
     widgetCategory: "qualityControl",
-    refrence: 1, 
+    refrence: 1,
     canView: false,
     checked: false,
     order: 6,
@@ -1174,7 +1173,7 @@ var widgets = [
   },
   {
     widgetCategory: "po",
-    refrence: 1, 
+    refrence: 1,
     canView: false,
     checked: false,
     order: 7,
@@ -1220,7 +1219,7 @@ var widgets = [
   },
   {
     widgetCategory: "bar",
-    refrence: 2, 
+    refrence: 2,
     canView: false,
     checked: false,
     order: 1,
@@ -1357,7 +1356,7 @@ var widgets = [
   },
   {
     widgetCategory: "pie",
-    refrence: 2, 
+    refrence: 2,
     canView: false,
     checked: false,
     order: 2,
@@ -1365,7 +1364,7 @@ var widgets = [
   },
   {
     widgetCategory: "line",
-    refrence: 2, 
+    refrence: 2,
     canView: false,
     checked: false,
     order: 3,

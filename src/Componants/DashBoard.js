@@ -340,9 +340,7 @@ class DashBoard extends Component {
                                 </div>
                                 <div className="project__title">
                                     <h3>
-                                        {
-                                            Resources[widget.title][currentLanguage]
-                                        }
+                                        {Resources[widget.title][currentLanguage]}
                                     </h3>
                                 </div>
                             </div>
@@ -353,20 +351,11 @@ class DashBoard extends Component {
                 }
             }) : null;
 
-        let widgetCurrentOrder =
-            this.state.showWidgets && this.state.widgetOrders[1]
-                ? this.state.widgetOrders[this.state.type][this.state.category]
-                    .order
-                : null;
+        let widgetCurrentOrder = this.state.showWidgets && this.state.widgetOrders[1] ? this.state.widgetOrders[this.state.type][this.state.category].order : null;
 
-        let categoryPanes =
-            this.state.types && this.state.types.length
-                ? this.renderCategories()
-                : [];
+        let categoryPanes = this.state.types && this.state.types.length ? this.renderCategories() : [];
 
-        let currentCategoryChecked = this.state.showWidgets ?
-
-            this.state.selected[this.state.category].length === this.state.types[this.state.type - 1].categories.find(category => category.id === this.state.category).widgets.length : false;
+        let currentCategoryChecked = this.state.showWidgets ? this.state.selected[this.state.category].length === this.state.types[this.state.type - 1].categories.find(category => category.id === this.state.category).widgets.length : false;
 
         return (
             <div className="customeTabs">
@@ -402,9 +391,7 @@ class DashBoard extends Component {
                             </h2>
                         </div>
                         {this.state.categoryOrder.length ? (
-                            <Tabs
-                                className="dashboard__Project"
-                                selectedIndex={this.state.dashBoardIndex}
+                            <Tabs className="dashboard__Project" selectedIndex={this.state.dashBoardIndex}
                                 onSelect={dashBoardIndex =>
                                     this.toggleTab(dashBoardIndex + 1)
                                 }>
@@ -413,326 +400,319 @@ class DashBoard extends Component {
                                         <Tab>
                                             {/* general */}
                                             <span className="subUlTitle">
-                                                {
-                                                    Resources["general"][currentLanguage]
-                                                }
+                                                {Resources["general"][currentLanguage]}
                                             </span>
                                         </Tab>
                                         <Tab>
                                             {/* counters */}
                                             <span className="subUlTitle">
-                                                {
-                                                    Resources["counters"][currentLanguage]
-                                                }
+                                                {Resources["counters"][currentLanguage]}
                                             </span>
                                         </Tab>
                                         <Tab>
                                             {/* chart */}
                                             <span className="subUlTitle">
-                                                {
-                                                    Resources["chart"][currentLanguage]
-                                                }
+                                                {Resources["chart"][currentLanguage]}
                                             </span>
                                         </Tab>
                                     </TabList>
                                 </div>
                                 <TabPanel>
                                     {this.state.type === 1 ? (
-
                                         <div className="dash__content ui tab active">
                                             <div className="project__content">
                                                 {/* general */}
                                                 <SortablePane
                                                     direction="vertical"
                                                     order={this.state.categoryOrder[0]}
-                                                onDragStop={(e, key, el, order) => this.categoryOrderChanged(order)}
-                                                onOrderChange={order => this.changeCategoryOrder(order, 1)}>
-                                                {categoryPanes[1]}
-                                            </SortablePane>
-                                        </div>
+                                                    onDragStop={(e, key, el, order) => this.categoryOrderChanged(order)}
+                                                    onOrderChange={order => this.changeCategoryOrder(order, 1)}>
+                                                    {categoryPanes[1]}
+                                                </SortablePane>
+                                            </div>
                                             {this.state.showWidgets ?
                                                 <div className={"project__content" + (this.state.showWidgets ? "  " : " ")}>
-                                        {widgets ? (
-                                            <Fragment>
-                                                <Pane width='100%' height="100%" minHeight='unset'>
-                                                    <div className="secondTabs project__select ui-state-default">
-                                                        <img src={dashBoardLogo} />
-                                                        <div className={"ui checkbox checkBoxGray300 count" + (currentCategoryChecked ? " checked" : "")}
-                                                            onClick={event => this.toggleCheckAll(this.state.type, this.state.category)}>
-                                                            <input name="CheckBox" type="checkbox" id="terms" tabIndex={0}
-                                                                className="hidden"
-                                                                checked={
-                                                                    currentCategoryChecked
-                                                                }
-                                                                onChange={() => { }}
-                                                            />
-                                                            <label />
-                                                        </div>
-                                                        <div className="project__title">
-                                                            <h3>
-                                                                {Resources["selectAll"][currentLanguage]}
-                                                            </h3>
-                                                        </div>
-                                                    </div>
-                                                </Pane>
-                                                {widgets}
-                                            </Fragment>
-                                        ) : null}
-                                    </div>
-                                    : null
-                                }
-                                        </div>
-                                ) : null}
-                                </TabPanel>
-                            <TabPanel>
-                                {this.state.type === 2 ? (
-                                    <div className="dash__content ui tab">
-                                        <div className="project__content">
-                                            {/* counters */}
-                                            <SortablePane
-                                                direction="vertical"
-                                                order={
-                                                    this.state
-                                                        .categoryOrder[1]
-                                                }
-                                                onDragStop={(
-                                                    e,
-                                                    key,
-                                                    el,
-                                                    order
-                                                ) =>
-                                                    this.categoryOrderChanged(
-                                                        order
-                                                    )
-                                                }
-                                                onOrderChange={order =>
-                                                    this.changeCategoryOrder(
-                                                        order,
-                                                        2
-                                                    )
-                                                }>
-                                                {categoryPanes[2]}
-                                            </SortablePane>
-                                        </div>
-                                        <div className="project__content">
-                                            {widgets ? (
-                                                <Fragment>
-                                                    <Pane>
-                                                        <div className="secondTabs project__select ui-state-default">
-                                                            <img
-                                                                src={
-                                                                    dashBoardLogo
-                                                                }
-                                                            />
-                                                            <div
-                                                                className={
-                                                                    "ui checkbox checkBoxGray300 count" +
-                                                                    (currentCategoryChecked
-                                                                        ? " checked"
-                                                                        : "")
-                                                                }
-                                                                onClick={event =>
-                                                                    this.toggleCheckAll(
-                                                                        this
-                                                                            .state
-                                                                            .type,
-                                                                        this
-                                                                            .state
-                                                                            .category
-                                                                    )
-                                                                }>
-                                                                <input
-                                                                    name="CheckBox"
-                                                                    type="checkbox"
-                                                                    id="terms"
-                                                                    tabIndex={
-                                                                        1
-                                                                    }
-                                                                    className="hidden"
-                                                                    checked={
-                                                                        currentCategoryChecked
-                                                                    }
-                                                                />
-                                                                <label />
-                                                            </div>
-                                                            <div className="project__title">
-                                                                <h3>
-                                                                    {
-                                                                        Resources[
-                                                                        "selectAll"
-                                                                        ][
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
-                                                                </h3>
-                                                            </div>
-                                                        </div>
-                                                    </Pane>
-                                                    <SortablePane
-                                                        direction="vertical"
-                                                        order={
-                                                            widgetCurrentOrder
-                                                        }
-                                                        onDragStop={(
-                                                            e,
-                                                            key,
-                                                            el,
-                                                            order
-                                                        ) =>
-                                                            this.widgetOrderChanged(
-                                                                order
-                                                            )
-                                                        }
-                                                        onOrderChange={order =>
-                                                            this.changeWidgetCategoryOrder(
-                                                                order,
-                                                                2,
-                                                                this.state
-                                                                    .category
-                                                            )
-                                                        }>
-                                                        {widgets}
-                                                    </SortablePane>
-                                                </Fragment>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                ) : null}
-                            </TabPanel>
-                            <TabPanel>
-                                {this.state.type === 3 ? (
-                                    <div className="dash__content ui tab">
-                                        <div className="project__content">
-                                            {/* chart */}
-                                            <SortablePane
-                                                direction="vertical"
-                                                order={
-                                                    this.state
-                                                        .categoryOrder[2]
-                                                }
-                                                onDragStop={(
-                                                    e,
-                                                    key,
-                                                    el,
-                                                    order
-                                                ) =>
-                                                    this.categoryOrderChanged(
-                                                        order
-                                                    )
-                                                }
-                                                onOrderChange={order =>
-                                                    this.changeCategoryOrder(
-                                                        order,
-                                                        3
-                                                    )
-                                                }>
-                                                {categoryPanes[3]}
-                                            </SortablePane>
-                                        </div>
-                                        <div className="project__content">
-                                            {widgets ? (
-                                                <Fragment>
-                                                    <Pane>
-                                                        {this.state
-                                                            .widgetOrders[
-                                                            this.state.type
-                                                        ][
-                                                            this.state
-                                                                .category
-                                                        ].order.length >
-                                                            0 ? (
+                                                    {widgets ? (
+                                                        <Fragment>
+                                                            <Pane width='100%' height="100%" minHeight='unset'>
                                                                 <div className="secondTabs project__select ui-state-default">
-                                                                    <img
-                                                                        src={
-                                                                            dashBoardLogo
-                                                                        }
-                                                                    />
-                                                                    <div
-                                                                        className={
-                                                                            "ui checkbox checkBoxGray300 count" +
-                                                                            (currentCategoryChecked
-                                                                                ? " checked"
-                                                                                : "")
-                                                                        }
-                                                                        onClick={event =>
-                                                                            this.toggleCheckAll(
-                                                                                this
-                                                                                    .state
-                                                                                    .type,
-                                                                                this
-                                                                                    .state
-                                                                                    .category
-                                                                            )
-                                                                        }>
-                                                                        <input
-                                                                            name="CheckBox"
-                                                                            type="checkbox"
-                                                                            id="terms"
-                                                                            tabIndex={
-                                                                                2
-                                                                            }
+                                                                    <img src={dashBoardLogo} />
+                                                                    <div className={"ui checkbox checkBoxGray300 count" + (currentCategoryChecked ? " checked" : "")}
+                                                                        onClick={event => this.toggleCheckAll(this.state.type, this.state.category)}>
+                                                                        <input name="CheckBox" type="checkbox" id="terms" tabIndex={0}
                                                                             className="hidden"
                                                                             checked={
                                                                                 currentCategoryChecked
                                                                             }
+                                                                            onChange={() => { }}
                                                                         />
                                                                         <label />
                                                                     </div>
                                                                     <div className="project__title">
                                                                         <h3>
-                                                                            {
-                                                                                Resources[
-                                                                                "selectAll"
-                                                                                ][
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
+                                                                            {Resources["selectAll"][currentLanguage]}
                                                                         </h3>
                                                                     </div>
                                                                 </div>
-                                                            ) : null}
-                                                    </Pane>
-                                                    {this.state
-                                                        .widgetOrders[
-                                                        this.state.type
-                                                    ][this.state.category]
-                                                        .order.length >
-                                                        0 ? (
-                                                            <SortablePane
-                                                                direction="vertical"
-                                                                order={
-                                                                    widgetCurrentOrder
-                                                                }
-                                                                onDragStop={(
-                                                                    e,
-                                                                    key,
-                                                                    el,
-                                                                    order
-                                                                ) =>
-                                                                    this.widgetOrderChanged(
-                                                                        order
-                                                                    )
-                                                                }
-                                                                onOrderChange={order =>
-                                                                    this.changeWidgetCategoryOrder(
-                                                                        order,
-                                                                        3,
-                                                                        this
-                                                                            .state
-                                                                            .category
-                                                                    )
-                                                                }>
-                                                                {widgets}
-                                                            </SortablePane>
-                                                        ) : null}
-                                                </Fragment>
-                                            ) : null}
+                                                            </Pane>
+                                                            {widgets}
+                                                        </Fragment>
+                                                    ) : null}
+                                                </div>
+                                                : null
+                                            }
                                         </div>
-                                    </div>
-                                ) : null}
-                            </TabPanel>
+                                    ) : null}
+                                </TabPanel>
+                                <TabPanel>
+                                    {this.state.type === 2 ? (
+                                        <div className="dash__content ui tab">
+                                            <div className="project__content">
+                                                {/* counters */}
+                                                <SortablePane
+                                                    direction="vertical"
+                                                    order={
+                                                        this.state
+                                                            .categoryOrder[1]
+                                                    }
+                                                    onDragStop={(
+                                                        e,
+                                                        key,
+                                                        el,
+                                                        order
+                                                    ) =>
+                                                        this.categoryOrderChanged(
+                                                            order
+                                                        )
+                                                    }
+                                                    onOrderChange={order =>
+                                                        this.changeCategoryOrder(
+                                                            order,
+                                                            2
+                                                        )
+                                                    }>
+                                                    {categoryPanes[2]}
+                                                </SortablePane>
+                                            </div>
+                                            <div className="project__content">
+                                                {widgets ? (
+                                                    <Fragment>
+                                                        <Pane>
+                                                            <div className="secondTabs project__select ui-state-default">
+                                                                <img
+                                                                    src={
+                                                                        dashBoardLogo
+                                                                    }
+                                                                />
+                                                                <div
+                                                                    className={
+                                                                        "ui checkbox checkBoxGray300 count" +
+                                                                        (currentCategoryChecked
+                                                                            ? " checked"
+                                                                            : "")
+                                                                    }
+                                                                    onClick={event =>
+                                                                        this.toggleCheckAll(
+                                                                            this
+                                                                                .state
+                                                                                .type,
+                                                                            this
+                                                                                .state
+                                                                                .category
+                                                                        )
+                                                                    }>
+                                                                    <input
+                                                                        name="CheckBox"
+                                                                        type="checkbox"
+                                                                        id="terms"
+                                                                        tabIndex={
+                                                                            1
+                                                                        }
+                                                                        className="hidden"
+                                                                        checked={
+                                                                            currentCategoryChecked
+                                                                        }
+                                                                    />
+                                                                    <label />
+                                                                </div>
+                                                                <div className="project__title">
+                                                                    <h3>
+                                                                        {
+                                                                            Resources[
+                                                                            "selectAll"
+                                                                            ][
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </h3>
+                                                                </div>
+                                                            </div>
+                                                        </Pane>
+                                                        <SortablePane
+                                                            direction="vertical"
+                                                            order={
+                                                                widgetCurrentOrder
+                                                            }
+                                                            onDragStop={(
+                                                                e,
+                                                                key,
+                                                                el,
+                                                                order
+                                                            ) =>
+                                                                this.widgetOrderChanged(
+                                                                    order
+                                                                )
+                                                            }
+                                                            onOrderChange={order =>
+                                                                this.changeWidgetCategoryOrder(
+                                                                    order,
+                                                                    2,
+                                                                    this.state
+                                                                        .category
+                                                                )
+                                                            }>
+                                                            {widgets}
+                                                        </SortablePane>
+                                                    </Fragment>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </TabPanel>
+                                <TabPanel>
+                                    {this.state.type === 3 ? (
+                                        <div className="dash__content ui tab">
+                                            <div className="project__content">
+                                                {/* chart */}
+                                                <SortablePane
+                                                    direction="vertical"
+                                                    order={
+                                                        this.state
+                                                            .categoryOrder[2]
+                                                    }
+                                                    onDragStop={(
+                                                        e,
+                                                        key,
+                                                        el,
+                                                        order
+                                                    ) =>
+                                                        this.categoryOrderChanged(
+                                                            order
+                                                        )
+                                                    }
+                                                    onOrderChange={order =>
+                                                        this.changeCategoryOrder(
+                                                            order,
+                                                            3
+                                                        )
+                                                    }>
+                                                    {categoryPanes[3]}
+                                                </SortablePane>
+                                            </div>
+                                            <div className="project__content">
+                                                {widgets ? (
+                                                    <Fragment>
+                                                        <Pane>
+                                                            {this.state
+                                                                .widgetOrders[
+                                                                this.state.type
+                                                            ][
+                                                                this.state
+                                                                    .category
+                                                            ].order.length >
+                                                                0 ? (
+                                                                    <div className="secondTabs project__select ui-state-default">
+                                                                        <img
+                                                                            src={
+                                                                                dashBoardLogo
+                                                                            }
+                                                                        />
+                                                                        <div
+                                                                            className={
+                                                                                "ui checkbox checkBoxGray300 count" +
+                                                                                (currentCategoryChecked
+                                                                                    ? " checked"
+                                                                                    : "")
+                                                                            }
+                                                                            onClick={event =>
+                                                                                this.toggleCheckAll(
+                                                                                    this
+                                                                                        .state
+                                                                                        .type,
+                                                                                    this
+                                                                                        .state
+                                                                                        .category
+                                                                                )
+                                                                            }>
+                                                                            <input
+                                                                                name="CheckBox"
+                                                                                type="checkbox"
+                                                                                id="terms"
+                                                                                tabIndex={
+                                                                                    2
+                                                                                }
+                                                                                className="hidden"
+                                                                                checked={
+                                                                                    currentCategoryChecked
+                                                                                }
+                                                                            />
+                                                                            <label />
+                                                                        </div>
+                                                                        <div className="project__title">
+                                                                            <h3>
+                                                                                {
+                                                                                    Resources[
+                                                                                    "selectAll"
+                                                                                    ][
+                                                                                    currentLanguage
+                                                                                    ]
+                                                                                }
+                                                                            </h3>
+                                                                        </div>
+                                                                    </div>
+                                                                ) : null}
+                                                        </Pane>
+                                                        {this.state
+                                                            .widgetOrders[
+                                                            this.state.type
+                                                        ][this.state.category]
+                                                            .order.length >
+                                                            0 ? (
+                                                                <SortablePane
+                                                                    direction="vertical"
+                                                                    order={
+                                                                        widgetCurrentOrder
+                                                                    }
+                                                                    onDragStop={(
+                                                                        e,
+                                                                        key,
+                                                                        el,
+                                                                        order
+                                                                    ) =>
+                                                                        this.widgetOrderChanged(
+                                                                            order
+                                                                        )
+                                                                    }
+                                                                    onOrderChange={order =>
+                                                                        this.changeWidgetCategoryOrder(
+                                                                            order,
+                                                                            3,
+                                                                            this
+                                                                                .state
+                                                                                .category
+                                                                        )
+                                                                    }>
+                                                                    {widgets}
+                                                                </SortablePane>
+                                                            ) : null}
+                                                    </Fragment>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </TabPanel>
                             </Tabs>
-                    ) : null}
+                        ) : null}
                     </div>
                 </div>
             </div>

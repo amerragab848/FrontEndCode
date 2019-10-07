@@ -96,13 +96,15 @@ class wfApproval extends Component {
         if (result === true) {
           this.setState({ submitLoading: true });
           Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
+
             this.setState({ submitLoading: false });
+
             this.props.actions.showOptionPanel(false);
-            if (this.props.isReject === true) {
-              this.props.history.push("/DocApprovalDetails?action=2");
-            } else {
-              this.props.history.push("/DocApprovalDetails?action=1");
-            }
+
+            const previousRoute = localStorage.getItem('lastRoute');
+
+            this.props.history.push(previousRoute);
+
           });
         } else {
           toast.error(Resources["invalidPassword"][currentLanguage]);
@@ -112,6 +114,7 @@ class wfApproval extends Component {
       });
     }
   }
+
 
   render() {
     return (
@@ -165,7 +168,6 @@ class wfApproval extends Component {
                     </div>
                   </span>
                 )}
-
             </Form>
           )}
         </Formik>
@@ -177,8 +179,7 @@ class wfApproval extends Component {
 function mapStateToProps(state, ownProps) {
   return {
 
-    showModal: state.communication.showModal,
-    isReject: state.communication.isReject
+    showModal: state.communication.showModal
   };
 }
 

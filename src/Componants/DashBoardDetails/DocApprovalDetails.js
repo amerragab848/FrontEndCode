@@ -329,6 +329,7 @@ class DocApprovalDetails extends Component {
 
     for (let param of query.entries()) {
       action = param[1];
+
     }
 
     if (action === "1") {
@@ -336,7 +337,7 @@ class DocApprovalDetails extends Component {
         pageTitle: Resources["docRejected"][currentLanguage]
       });
 
-      this.props.actions.checkLog(false);
+      localStorage.setItem("lastRoute", "/DocApprovalDetails?action=1");
 
       Api.get("GetRejectedRequestsDocApprove").then(result => {
         this.setState({
@@ -349,7 +350,7 @@ class DocApprovalDetails extends Component {
         pageTitle: Resources["docApproval"][currentLanguage]
       });
 
-      this.props.actions.checkLog(true);
+      localStorage.setItem("lastRoute", "/DocApprovalDetails?action=2");
 
       Api.get("GetApprovalRequestsDocApprove").then(result => {
         this.setState({
@@ -538,8 +539,7 @@ class DocApprovalDetails extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    showLeftMenu: state.communication.showLeftMenu,
-    isReject: state.communication.isReject
+    showLeftMenu: state.communication.showLeftMenu
   }
 }
 

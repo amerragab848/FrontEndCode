@@ -158,7 +158,7 @@ class LettersAddEdit extends Component {
                 message: ""
             };
             this.setState({ document: letter });
-            console.log(letter);
+         
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
         }
@@ -176,7 +176,7 @@ class LettersAddEdit extends Component {
 
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
-            console.log('getDerivedStateFromProps......', nextProps, state);
+           
             return {
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
