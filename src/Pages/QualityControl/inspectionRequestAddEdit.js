@@ -25,7 +25,6 @@ import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment
 import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
-import { tr } from "date-fns/esm/locale";
 
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -604,11 +603,9 @@ class inspectionRequestAddEdit extends Component {
             DocLoading: true
         });
 
-
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-
         saveDocument.projectId = this.state.projectId;
         if (saveDocument.contractId == "")
             saveDocument.contractId = null;
@@ -673,7 +670,7 @@ class inspectionRequestAddEdit extends Component {
     };
 
 
-    saveInspectionRequestCycle(event) {
+    saveInspectionRequestCycle(values) {
         let saveDocument = { ...this.state.documentCycle };
         saveDocument.projectId = this.state.projectId;
         saveDocument.requestForInspectionId = this.state.docId;
@@ -681,6 +678,7 @@ class inspectionRequestAddEdit extends Component {
         saveDocument.flowCompanyId = this.state.document.bicCompanyId;
         saveDocument.flowContactId = this.state.document.bicContactId;
         saveDocument.status = saveDocument.status == null ? true : false;
+        saveDocument.subject = values.subject;
 
         let api = saveDocument.typeAddOrEdit === "editLastCycle" ? 'EditInspectionRequestCycle' : 'AddInspectionRequestCycleOnly';
         if (saveDocument.typeAddOrEdit === "editLastCycle") {
@@ -788,7 +786,7 @@ class inspectionRequestAddEdit extends Component {
                     validationSchema={documentCycleValidationSchema}
                     enableReinitialize={true}
                     onSubmit={(values) => {
-                        this.saveInspectionRequestCycle()
+                        this.saveInspectionRequestCycle(values)
                     }}>
 
                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -811,7 +809,7 @@ class inspectionRequestAddEdit extends Component {
                                                 className="form-control fsadfsadsa"
                                                 placeholder={Resources.subject[currentLanguage]}
                                                 autoComplete='off'
-                                                value={this.state.documentCycle.subject}
+                                                defaultValue={this.state.documentCycle.subject + (this.props.changeStatus ? "" : "   cycle of (" + this.state.document.arrange + ')')}
                                                 onBlur={(e) => {
                                                     handleBlur(e)
                                                     handleChange(e)
@@ -1266,7 +1264,7 @@ class inspectionRequestAddEdit extends Component {
                                                                     {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
 
                                                                     <div className="document-fields tableBTnabs">
-                                                                        {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                        {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} changeStatus={this.props.changeStatus} /> : null}
                                                                     </div>
                                                                     {this.viewWorkFlowCycles()}
                                                                 </div>

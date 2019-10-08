@@ -55,7 +55,7 @@ class AddDocAttachment extends Component {
 
       let currentData = this.props.attachDocuments;
 
-      if (currentData.length === 0) {
+      if (currentData.length === 0 && this.props.changeStatus) {
 
         dataservice.GetDataGrid("GetCommunicationDocsAttachDoc?projectId=" + this.state.projectId + "&docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
 
@@ -68,7 +68,7 @@ class AddDocAttachment extends Component {
         });
       }
 
-      if (this.state.relatedLink) {
+      if (this.state.relatedLink && this.props.changeStatus) {
         dataservice.GetDataGrid("GetCommunicationDocsAttachDocByDocIdandDocType?docTypeId=" + this.state.docType + "&docId=" + this.state.docId).then(result => {
 
           let document = result || [];
