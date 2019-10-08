@@ -154,8 +154,7 @@ class DocumentActions extends Component {
                             <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(importedPaths[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
                             <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(importedPaths[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                         </div> : null
-                }
-
+                } 
                 <Fragment>
                     {this.IsAllow(importedPaths[1]['title']) ?
                         <button type="button" className="primaryBtn-2 btn middle__btn" onClick={(e) => this.handleShowAction(importedPaths[1])}>{Resources.sendToWorkFlow[currentLanguage]}</button>

@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from "react";
-
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -23,7 +21,7 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import SkyLight, { SkyLightStateless } from 'react-skylight';
+import  { SkyLightStateless } from 'react-skylight';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
@@ -428,10 +426,15 @@ class NCRAddEdit extends Component {
         }
     }
 
-    saveAndExit = () => {
-        this.props.history.push({
-            pathname: '/Ncr/' + projectId + '',
-        })
+    saveAndExit = () => { 
+
+        if (this.state.isApproveMode === false) {
+            this.props.history.push(this.state.perviousRoute);
+        }
+
+        // this.props.history.push({
+        //     pathname: '/Ncr/' + projectId + '',
+        // })
     }
 
     showBtnsSaving() {
@@ -848,27 +851,6 @@ class NCRAddEdit extends Component {
                                                         <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                         <div className="supervisor__company">
                                                             <div className="super_name">
-                                                                <Dropdown data={this.state.companies} name="bicCompanyId"
-                                                                    selectedValue={this.state.selectedActionByCompanyId}
-                                                                    handleChange={event =>
-                                                                        this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
-                                                                    styles={CompanyDropdown} classDrop="companyName1 " />
-                                                            </div>
-                                                            <div className="super_company">
-                                                                <Dropdown data={this.state.bicContacts} onChange={setFieldValue} name="bicContactId"
-                                                                    onBlur={setFieldTouched} error={errors.bicContactId} id="bicContactId"
-                                                                    touched={touched.bicContactId} index="IR-bicContactId"
-                                                                    selectedValue={this.state.selectedActionByContactId}
-                                                                    handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedActionByContactId')}
-                                                                    classDrop=" contactName1" styles={ContactDropdown} />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="linebylineInput valid-input mix_dropdown">
-                                                        <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
-                                                        <div className="supervisor__company">
-                                                            <div className="super_name">
                                                                 <Dropdown data={this.state.companies} selectedValue={this.state.selectedToCompany}
                                                                     onChange={setFieldValue} onBlur={setFieldTouched} error={errors.toCompanyId}
                                                                     touched={touched.toCompanyId} name="toCompanyId"
@@ -886,6 +868,29 @@ class NCRAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    
+                                                    <div className="linebylineInput valid-input mix_dropdown">
+                                                        <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
+                                                        <div className="supervisor__company">
+                                                            <div className="super_name">
+                                                                <Dropdown data={this.state.companies} name="bicCompanyId"
+                                                                    selectedValue={this.state.selectedActionByCompanyId}
+                                                                    handleChange={event =>
+                                                                        this.handleChangeDropDown(event, 'bicCompanyId', true, 'bicContacts', 'GetContactsByCompanyId', 'companyId', 'selectedActionByCompanyId', 'selectedActionByContactId')}
+                                                                    styles={CompanyDropdown} classDrop="companyName1 " />
+                                                            </div>
+                                                            <div className="super_company">
+                                                                <Dropdown data={this.state.bicContacts} onChange={setFieldValue} name="bicContactId"
+                                                                    onBlur={setFieldTouched} error={errors.bicContactId} id="bicContactId"
+                                                                    touched={touched.bicContactId} index="IR-bicContactId"
+                                                                    selectedValue={this.state.selectedActionByContactId}
+                                                                    handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedActionByContactId')}
+                                                                    classDrop=" contactName1" styles={ContactDropdown} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                             
 
                                                     <div className="linebylineInput valid-input">
                                                         <Dropdown data={this.state.contractsPos} selectedValue={this.state.selectedContract}
@@ -997,7 +1002,7 @@ class NCRAddEdit extends Component {
                                                         {this.viewAttachments()}
                                                         <Fragment>
                                                             <div className="document-fields tableBTnabs">
-                                                                {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                                {this.state.docId > 0 ? <AddDocAttachment   isViewMode={ this.state.isViewMode}  projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                             </div>
                                                         </Fragment>
                                                         {this.props.changeStatus === true ?

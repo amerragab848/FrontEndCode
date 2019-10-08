@@ -14171,7 +14171,7 @@ h1, h2, h3, h4, h5 {
 .card-status .card-box {
     border: 2px solid #CCD2DB;
     border-radius: 6px;
-    margin-left: 16px;
+    
     padding: 10px 0 5px 0;
     display: flex;
     flex-flow: column;
@@ -16918,9 +16918,12 @@ tfoot tr td p {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: space-between;
-    width: 835px;
+    /* width: 835px; */
     margin: 0 auto;
     height: 72px;
+    width: 100%;
+    padding-right: 56px;
+    padding-left: 40px;
 }
 
 .main__header .main__header--div {
@@ -21783,7 +21786,6 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 }
 
 .subHeader h2 {
-    /* padding-left: 20px !important; */
     font-size: 14px !important;
 }
   
@@ -21804,15 +21806,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     top: 72px;
     z-index: 155;
     background: #Fff;
-    }
-
-
-    /* .editView__tabs {
-        flex-wrap: nowrap;
-        overflow-x: scroll;
-        overflow-y: hidden;
-        padding: 0 10px;
-    } */
+}
 
 .editView__tabs::-webkit-scrollbar {
     height: 5px;
@@ -21831,11 +21825,35 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     margin-right: -40px;
 }
 
+.mainContainer:not(.main__fulldash) .approveDocument {
+    left: 88px;
+    right: 0px;
+}
+
+.mainContainer.main__fulldash .approveDocument {
+    left: 0;
+    right: 0px;
+}
+
 .projectDashboard {
     padding-left: 88px;
     padding-right: 0
 }
 
-.fixedLoading .dashboardLoading {
+.fixedLoading .dashboardLoading, .fixed__loading .dashboardLoading {
     position: fixed !important;
 }
+
+.card-status .workFlowStep .MultiPeinding .card-box:first-child {
+    margin-left: 12px
+}
+
+.card-status .workFlowStep .MultiPeinding .card-box:last-child {
+    margin-right: 8px
+}
+
+.card-status .workFlowStep .MultiPeinding .card-box:only-child {
+    margin-left: 4px;
+    margin-right: 0;
+} 
+ 

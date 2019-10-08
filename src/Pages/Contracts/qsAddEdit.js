@@ -1008,7 +1008,7 @@ class QsAddEdit extends Component {
                 changeCurrentStep={stepNo =>
                   this.changeCurrentStep(stepNo)
                 }
-                stepNo={this.state.CurrStep}
+                stepNo={this.state.CurrStep} changeStatus={docId === 0 ? false : true}
               />
             </div>
           </div>

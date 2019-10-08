@@ -92,6 +92,11 @@ export default function (state = initialState.app.adminstration, action) {
             return {
                 ...state
             };
+        case types.EXPENSEWORKFLOW:
+            state.showExpensesWF = action.data
+            return {
+                ...state
+            };
         default:
             return {
                 ...state

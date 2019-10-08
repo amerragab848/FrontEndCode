@@ -7,11 +7,11 @@ import Recycle from '../../../Styles/images/attacheRecycle.png'
 import DropdownMelcous from '../../OptionsPanels/DropdownMelcous'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
 import { withRouter } from "react-router-dom";
-import HeaderDocument from '../../OptionsPanels/HeaderDocument'
+import HeaderDocument from '../../OptionsPanels/HeaderDocument';
+import { toast } from "react-toastify";
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let id = null;
-
-
 
 class UserProjects extends Component {
     constructor(props) {
@@ -21,9 +21,9 @@ class UserProjects extends Component {
             ProjectsDataList: [],
             LoadingTable: false,
             projectIds: [],
-            showDeleteModal: false
+            showDeleteModal: false,
+            isLoading: false
         }
-
     }
 
     onCloseModal = () => {
@@ -92,13 +92,18 @@ class UserProjects extends Component {
     }
 
     SaveProjects = () => {
+
+        this.setState({ isLoading: true });
+
         const Ids = []
         this.state.projectIds.forEach(function (item) {
             Ids.push(item.value)
         })
-        console.log(Ids)
-        Api.post("AddAccountsProjectsList?accountId=" + id, Ids)
 
+        Api.post("AddAccountsProjectsList?accountId=" + id, Ids).then(result => {
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+            this.setState({ isLoading: false });
+        });
     }
 
     goBack = () => {
@@ -128,7 +133,6 @@ class UserProjects extends Component {
 
         return (
             <div className="mainContainer main__fulldash">
-
                 <div className="documents-stepper cutome__inputs noTabs__document">
                     <HeaderDocument docTitle={Resources.userProjects[currentLanguage]} />
                     <div className="doc-container">
@@ -143,8 +147,15 @@ class UserProjects extends Component {
                                         <div className="dropBtn fullWidthWrapper">
                                             <button className="primaryBtn-2 btn smallBtn" onClick={this.goBack}>Back</button>
                                             <span className="border" ></span>
-                                            <button className="primaryBtn-1 btn smallBtn" onClick={this.SaveProjects}>
+                                            {this.state.isLoading === false ? <button className="primaryBtn-1 btn smallBtn" onClick={this.SaveProjects}>
                                                 {Resources['save'][currentLanguage]}</button>
+                                                : <button className="primaryBtn-1 btn disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button>}
                                         </div>
                                     </div>
 

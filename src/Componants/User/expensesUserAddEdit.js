@@ -22,6 +22,8 @@ import * as AdminstrationActions from '../../store/actions/Adminstration';
 import { bindActionCreators } from 'redux';
 import SendToExpensesWorkFlow from './sendToExpensesWorkFlow';
 import ViewExpensesWF from './viewExpensesWF';
+import ExpensesWFApproval from './expensesWFApproval';
+import CryptoJS from "crypto-js";
 var steps_defination = [];
 steps_defination = [
     { name: "expenses", callBackFn: null },
@@ -59,15 +61,27 @@ class ExpensesUserAddEdit extends Component {
 
     constructor(props) {
         super(props);
-        let id = '';
-
         const query = new URLSearchParams(this.props.location.search);
+        let index = 0;
+        let approvalData = {};
         for (let param of query.entries()) {
-            id = param[1];
+            if (index == 0) {
+                try {
+                    let obj = JSON.parse(
+                        CryptoJS.enc.Base64.parse(param[1]).toString(
+                            CryptoJS.enc.Utf8
+                        )
+                    );
+                    approvalData = obj
+                } catch {
+                    this.props.history.goBack();
+                }
+            }
+            index++;
         }
 
         this.state = {
-            id: id,
+            id: approvalData.id,
             CurrentStep: 0,
             projectData: [],
             selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
@@ -91,40 +105,42 @@ class ExpensesUserAddEdit extends Component {
             itemEdit: {},
             selectedExpensesTypeItemEdit: {},
             itemData: [],
-            isEdit: id !== "0" ? true : false,
+            isEdit: approvalData.id !== 0 ? true : false,
             showWFModal: false,
             viewWorkFlow: false,
+            showApproval: false,
+            approvalData: approvalData,
+            workFlowData: [],
         }
 
     }
 
     componentDidMount() {
-        if (this.state.id !== '0') {
-
+        if (this.state.id > 0) {
+            // get document in edit 
             dataservice.GetRowById('GetExpensesUserForEdit?id=' + this.state.id).then(
                 result => {
                     this.setState({ isEdit: true, itemEdit: result, parentData: result });
                     this.fillDropDowns(true);
                 });
-
+            //check if this doc have workflow or no 
             dataservice.GetDataGrid('GetExpensesWorkFlowSigntureByExpensesId?expensesId=' + this.state.id).then(
                 result => {
-                    if (result) {
-                        this.setState({ viewWorkFlow: true });
+                    if (result.length) {
+                        this.setState({ viewWorkFlow: true, workFlowData: result });
                     }
                 }
             )
             this.getItems();
         }
         else {
-            //get data by id 
             this.getNextArrange();
             this.setState({ isEdit: false });
             this.fillDropDowns(false);
-
         }
     }
 
+    // get next arrange in add mood and generate arrange and ref code
     getNextArrange() {
         dataservice.GetRowById('GetNextArrangeExpenses').then(
             res => {
@@ -134,6 +150,7 @@ class ExpensesUserAddEdit extends Component {
         )
     }
 
+    // fill item table
     getItems() {
         dataservice.GetDataGrid('GetExpensesItemsByParentId?parentId=' + this.state.id).then(
             result => {
@@ -142,6 +159,7 @@ class ExpensesUserAddEdit extends Component {
         )
     }
 
+    // fill drop downs in add and edit moood 
     fillDropDowns(isEdit) {
 
         //fill Projects Drop
@@ -175,6 +193,7 @@ class ExpensesUserAddEdit extends Component {
 
     }
 
+    // fill peety cash drop and boq when select project 
     subscribeProject = (projectId, isEdit) => {
         //fill Peety Cash Drop
         dataservice.GetDataList('GetPeetyCashForDrop?projectId=' + projectId, 'subject', 'id').then(result => {
@@ -213,6 +232,7 @@ class ExpensesUserAddEdit extends Component {
         });
     }
 
+    //fill boq item drop when select boq 
     subscribeBoq(boqId, isEdit) {
         //fill boq Item Drop
         dataservice.GetDataList('getContractsBoqItemsForDrop?boqId=' + boqId, 'details', 'id').then(result => {
@@ -231,6 +251,7 @@ class ExpensesUserAddEdit extends Component {
         });
     }
 
+    // in items table select in unselecte rows 
     toggleRow(obj) {
         const newSelected = Object.assign({}, this.state.selected);
 
@@ -250,14 +271,17 @@ class ExpensesUserAddEdit extends Component {
 
     }
 
+    // change step and moved
     changeCurrentStep = stepNo => {
         this.setState({ CurrentStep: stepNo });
     };
 
+    // show cost tree popup 
     ShowCostTree = () => {
         this.setState({ ShowTree: true });
     }
 
+    //drop down events
     dropsHandleChange(value, name, selectedValue) {
         switch (name) {
             case 'projectId':
@@ -274,12 +298,14 @@ class ExpensesUserAddEdit extends Component {
         this.setState({ [selectedValue]: value });
     }
 
+    // set cost tree name when select it 
     GetNodeData = (item) => {
         this.setState({
             costCodingTreeName: item.codeTreeTitle
         });
     }
 
+    // set expenses value in tab 1 to save 
     setExpenseValues(values) {
         let obj = values
         values.projectId = this.state.selectedProject.value;
@@ -293,6 +319,7 @@ class ExpensesUserAddEdit extends Component {
         return obj;
     }
 
+    //add expense in tab 1
     save(values) {
         this.setState({ Loading: true });
         let obj = this.setExpenseValues(values);
@@ -301,8 +328,7 @@ class ExpensesUserAddEdit extends Component {
                 let parentData = obj
                 parentData.id = result.id
                 parentData.parentId = result.parentId
-                console.log(parentData)
-                this.setState({ Loading: false, parent: obj.subject, parentData });
+                this.setState({ Loading: false, parent: obj.subject, parentData, id: obj.id });
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
                 this.changeCurrentStep(1);
             }).catch(ex => {
@@ -326,7 +352,7 @@ class ExpensesUserAddEdit extends Component {
         values.subject = this.state.parentData.subject;
         return obj;
     }
-
+    // set expenses item values in tab 2 to save 
     saveItem(values, resetForm) {
         this.setState({ Loading: true });
         let obj = this.setItemValues(values);
@@ -348,8 +374,8 @@ class ExpensesUserAddEdit extends Component {
             });
     }
 
+    //in items table row click event  
     viewEditModel(data, type) {
-        console.log(data);
         if (type != "checkbox") {
             if (data) {
                 this.setState({
@@ -360,6 +386,7 @@ class ExpensesUserAddEdit extends Component {
         }
     }
 
+    //delete item from item table
     deleteItem = () => {
         this.setState({ Loading: true });
         let ids = selectedRows.map(rows => rows.id);
@@ -377,7 +404,7 @@ class ExpensesUserAddEdit extends Component {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
     }
-
+    //save edit item
     editItem(values, resetForm) {
         this.setState({ Loading: true });
         let obj = values
@@ -394,13 +421,14 @@ class ExpensesUserAddEdit extends Component {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
     }
-
-    viewWorkFlow = () => {
+    //view workflow cycles
+    viewWorkFlow() {
         this.setState({ Loading: true });
         setTimeout(() => {
-            this.setState({ viewWorkFlow: true, Loading: false });
-        }, 500);
+            this.setState({ Loading: false, viewWorkFlow: true });
+        }, 1000);
     }
+
     render() {
 
         let stepOne = () => {
@@ -539,7 +567,6 @@ class ExpensesUserAddEdit extends Component {
                                                 : null}
                                         </div>
 
-
                                         <div className="slider-Btns">
                                             {this.state.isLoading ?
                                                 <button className="primaryBtn-1 btn disabled">
@@ -552,29 +579,30 @@ class ExpensesUserAddEdit extends Component {
                                                 :
                                                 this.state.isEdit ? <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={() => this.changeCurrentStep(1)} >
                                                     {Resources.next[currentLanguage]}</button> :
-                                                    <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.next[currentLanguage]}</button>
+                                                    <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.save[currentLanguage]}</button>
                                             }
-                                            <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.setState({ showWFModal: true, viewWorkFlow: false })} >sendtoWF</button>
-                                            <button className="primaryBtn-1 btn mediumBtn" type="button"  >{Resources["approvalModalApprove"][currentLanguage]}</button>
-                                            <button className="primaryBtn-1 btn mediumBtn" type="button"  >{Resources["reject"][currentLanguage]}</button>
-
                                         </div>
                                     </Form>
                                 )}
                             </Formik>
-                            {
-                                this.state.showWFModal ?
-                                    <SendToExpensesWorkFlow expenseId={this.state.id} subject={this.state.itemEdit.description}
-                                        expenseTypeId={this.state.itemEdit.expenseTypeId} showModal={this.state.showWFModal}
-                                        viewWorkFlow={() => this.viewWorkFlow}
-                                        closeModal={e => this.setState({ showWFModal: false, viewWorkFlow: true })}
-                                    />
-                                    : null
-                            }
-                            {this.state.viewWorkFlow ?
-                                <ViewExpensesWF expensesId={this.state.id} />
-                                : null}
 
+                            {/* show work flow when in edit mood  */}
+                            {this.state.showWFModal ?
+                                <SendToExpensesWorkFlow expenseId={this.state.id} subject={this.state.itemEdit.description}
+                                    expenseTypeId={this.state.itemEdit.expenseTypeId} showModal={this.state.showWFModal}
+                                    viewWorkFlow={() => this.viewWorkFlow}
+                                    closeModal={e => this.setState({ showWFModal: false })}
+                                /> : null}
+
+                            {this.state.viewWorkFlow || this.props.Adminstration.showExpensesWF ? <ViewExpensesWF expensesId={this.state.id} workFlowData={this.state.workFlowData} /> : null}
+
+                            {/* show Expenses WF Approval wheen route from pennding expenses */}
+                            {this.state.showApproval ?
+                                <ExpensesWFApproval showApproval={this.state.showApproval}
+                                    approvalData={this.state.approvalData} approvalStatus={this.state.approvalStatus} closeModal={e => this.setState({ showApproval: false })}
+                                />
+                                : null}
+                            {/* show cost tree */}
                             <div className="skyLight__form">
                                 <SkyLightStateless onOverlayClicked={e => this.setState({ ShowTree: false })}
                                     title={Resources['add'][currentLanguage]}
@@ -587,6 +615,7 @@ class ExpensesUserAddEdit extends Component {
                                     </div>
                                 </SkyLightStateless>
                             </div>
+
                         </Fragment>
                     }
                 </div >
@@ -652,7 +681,7 @@ class ExpensesUserAddEdit extends Component {
                         {({ errors, values, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="QsForm2" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
 
-                                <div className="proForm datepickerContainer">
+                                <div className={"proForm datepickerContainer" + (this.state.viewWorkFlow ? ' readOnly_inputs' : '')}>
 
                                     <div className="linebylineInput valid-input">
                                         <Dropdown title="expensesType" data={this.state.expensesTypeData} selectedValue={this.state.selectedExpensesTypeItem}
@@ -703,21 +732,21 @@ class ExpensesUserAddEdit extends Component {
                                                 <div className="bounce3" />
                                             </div>
                                         </button>
-                                        : <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.save[currentLanguage]}</button>}
+                                        : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.viewWorkFlow ? 'disabled' : '')} type="submit" >{Resources.save[currentLanguage]}</button>}
                                 </div>
 
                             </Form>
                         )}
                     </Formik>
 
-                    <div className="precycle-grid">
+                    <div className={"precycle-grid"} >
                         <header className="main__header">
                             <div className="main__header--div">
                                 <h2 className="zero"> {Resources["items"][currentLanguage]}</h2>
                             </div>
                         </header>
 
-                        <div className="reactTableActions">
+                        <div className="reactTableActions" style={{ pointerEvents: this.state.viewWorkFlow ? 'none' : 'unset' }}>
 
                             {selectedRows.length > 0 ? (
                                 <div className={"gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} >
@@ -752,7 +781,6 @@ class ExpensesUserAddEdit extends Component {
                         </div>
 
                     </div>
-
 
                 </div >
             )
@@ -831,15 +859,6 @@ class ExpensesUserAddEdit extends Component {
                             </Form>
                         )}
                     </Formik>
-
-
-
-
-
-
-
-
-
                 </div >
             )
         }
@@ -887,10 +906,12 @@ class ExpensesUserAddEdit extends Component {
                             {this.state.CurrentStep === 0 ? <Fragment>{stepOne()}</Fragment> : <Fragment>{stepTwo()}</Fragment>}
                         </div>
 
-                        <Steps steps_defination={steps_defination}
-                            exist_link="/ProfileSetting/" docId={this.state.id}
-                            changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
-                            stepNo={this.state.CurrentStep} isEdit={this.state.isEdit} />
+                        <Fragment>
+                            <Steps steps_defination={steps_defination}
+                                exist_link="/ProfileSetting/" docId={this.state.id}
+                                changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
+                                stepNo={this.state.CurrentStep} changeStatus={this.state.id === 0 ? false : true} isEdit={this.state.isEdit} />
+                        </Fragment>
 
                     </div>
 
@@ -903,13 +924,26 @@ class ExpensesUserAddEdit extends Component {
                             buttonName="delete" clickHandlerContinue={this.deleteItem} />
                     ) : null}
                 </div >
-            </div >
 
+                {this.state.isEdit ?
+                    <div className="approveDocument">
+                        <div className="approveDocumentBTNS">
+                            {this.state.approvalData.transactionId === undefined ? null : <Fragment>
+                                <button className="primaryBtn-1 btn middle__btn" onClick={e => this.setState({ showApproval: true, approvalStatus: true })}>{Resources["approvalModalApprove"][currentLanguage]}</button>
+                                <button type="button" className="primaryBtn-2 btn middle__btn" onClick={e => this.setState({ showApproval: true, approvalStatus: false })} >{Resources["reject"][currentLanguage]}</button>
+                            </Fragment>}
+                            <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={e => this.setState({ showWFModal: true, viewWorkFlow: false })} >To Workflow</button>
+                        </div>
+                    </div>
+                    : null}
+
+            </div >
         )
     }
 }
 
 const mapStateToProps = (state) => {
+
     let sState = state;
     return sState;
 }

@@ -5,7 +5,7 @@ import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const _ = require('lodash')
- 
+
 export function documentForEdit(urlAction, docTypeId, docName) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
@@ -28,6 +28,7 @@ export function documentForEdit(urlAction, docTypeId, docName) {
         });
     }
 }
+
 export function clearCashDocument() {
     return (dispatch, getState) => {
         dispatch({
@@ -232,7 +233,7 @@ export function SendByEmail_Inbox(url, formData) {
 export function copyTo(url, formData) {
     return (dispatch, getState) => {
         return Api.post(url, formData).then(resp => {
-           toast.success(Resources["operationSuccess"][currentLanguage]);
+            toast.success(Resources["operationSuccess"][currentLanguage]);
             dispatch({
                 type: types.CopyTo,
                 showModal: false
@@ -300,7 +301,7 @@ export function GetWorkFlowCycles(urlAction) {
                 type: types.Cycles_WorkFlow,
                 workFlowCycles: result.cycles,
                 hasWorkflow: result.hasWorkFlow,
-                showModal: false
+                // showModal: false
             });
 
         }).catch((ex) => {
@@ -412,6 +413,7 @@ export function GetAttendeesTable(urlAction) {
         });
     }
 }
+
 export function GetTopicsTable(urlAction) {
     return (dispatch, getState) => {
         return Api.get(urlAction).then(resp => {
@@ -433,7 +435,7 @@ export const ViewDocsAttachment = (docs) => {
         return (
             dispatch({
                 type: types.ViewDocsAttachment,
-                attachDocuments: docs
+                attachDocuments: docs || []
             })
         )
     }
@@ -482,6 +484,23 @@ export function setDocId(docId) {
         dispatch({
             type: types.Set_DocId,
             docId: docId
+        });
+    }
+}
+export function getCommunicationDocsAttach(projectId, docType, docId) {
+    return (dispatch, getState) => {
+        return Api.get("GetCommunicationDocsAttachDoc?projectId=" + projectId + "&docTypeId=" + docType + "&docId=" + docId).then(resp => {
+
+            dispatch({
+                type: types.GET_DOCS_ATTACH,
+                data: resp
+            });
+
+        }).catch((ex) => {
+            dispatch({
+                type: types.GET_DOCS_ATTACH,
+                data: []
+            });
         });
     }
 }

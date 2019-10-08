@@ -28,7 +28,8 @@ export default {
 			projectName: "",
 			moduleName: "",
 			showSelectProject: true,
-			showLeftReportMenu: false
+			showLeftReportMenu: false,
+			docsAttachData: []
 		},
 		expensesWorkFlow: {
 			expensesWorkFlowData: {},
@@ -44,7 +45,8 @@ export default {
 			getingData: false,
 			companyList: [],
 			tabIndex: 0,
-			userTabIndex: 0
+			userTabIndex: 0,
+			showExpensesWF: false
 		},
 		Steps: {
 			currentStep: 0

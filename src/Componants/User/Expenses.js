@@ -9,6 +9,7 @@ import moment from 'moment';
 import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
+import CryptoJS from "crypto-js";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const dateFormate = ({ value }) => {
@@ -186,14 +187,24 @@ class Expenses extends Component {
 
     RouteHandler(obj) {
         if (obj) {
+            let objRout = {
+                id: obj.id,
+            }
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
             this.props.history.push({
                 pathname: "/expensesUserAddEdit",
-                search: "?id=" + obj.id
+                search: "?id=" + encodedPaylod
             });
         } else {
+            let objRout = {
+                id: "0"
+            }
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
             this.props.history.push({
                 pathname: "/expensesUserAddEdit",
-                search: "?id=" + 0
+                search: "?id=" + encodedPaylod
             });
         }
     }

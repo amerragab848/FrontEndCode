@@ -38,6 +38,8 @@ export const delete_item = 'delete_item';
 export const delete_items = 'delete_items';
 export const reset_items = 'reset_items';
 export const userSettingsTabIndex = 'userSettingsTabIndex';
+export const EXPENSEWORKFLOW = 'EXPENSEWORKFLOW';
+export const GET_DOCS_ATTACH = 'GET_DOCS_ATTACH';
 
 // ProjectActionsTypes
 

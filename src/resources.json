@@ -8230,5 +8230,9 @@
     "noDate": {
         "en": "No Date",
         "ar": "لايوجد تاريخ "
-    }
+    },
+    "editPayment": {
+        "en": "Edit Advanced Payment Amount",
+        "ar": "تعديل قيمة الدفعة المقدمة"
+    }  
 }

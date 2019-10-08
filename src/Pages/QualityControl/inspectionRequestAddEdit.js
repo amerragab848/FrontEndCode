@@ -25,6 +25,7 @@ import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment
 import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import { tr } from "date-fns/esm/locale";
 
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -171,7 +172,8 @@ class inspectionRequestAddEdit extends Component {
             CurrentStep: 0,
             CycleEditLoading: false,
             CycleAddLoading: false,
-            DocLoading: false
+            DocLoading: false,
+            isEdit: docId === 0 ? false : true
         }
 
         if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
@@ -654,6 +656,14 @@ class inspectionRequestAddEdit extends Component {
                 Config.IsAllow(3312) === true ?
                     <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={850} />
                     : null)
+                : null
+        )
+    }
+
+    viewWorkFlowCycles() {
+        return (
+            this.props.changeStatus ?
+                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                 : null
         )
     }
@@ -1248,24 +1258,21 @@ class inspectionRequestAddEdit extends Component {
                                                             </div>
                                                             <div className="doc-pre-cycle letterFullWidth">
                                                                 <div>
-                                                                    {this.state.docId > 0 && this.state.isViewMode === false ?
-                                                                        <Fragment>
-                                                                            <UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={849}
-                                                                                EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594}
-                                                                                docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                            {this.viewAttachments()}
+                                                                    {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={849}
+                                                                        EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594}
+                                                                        docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                                                    {this.viewAttachments()}
 
-                                                                        </Fragment>
-                                                                        : null}
+                                                                    {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+
                                                                     <div className="document-fields tableBTnabs">
                                                                         {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                                                    </div>
-                                                                    {this.props.changeStatus === true ?
-                                                                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                        : null
-                                                                    }
+                                                                    </div> 
+                                                                    {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+
                                                                 </div>
                                                             </div>
+
                                                             {this.props.changeStatus === true ?
                                                                 <Fragment>
                                                                     <div className="slider-Btns">
@@ -1361,6 +1368,7 @@ class inspectionRequestAddEdit extends Component {
 
 
                         </div>
+
                         <Steps
                             steps_defination={steps_defination}
                             exist_link="/inspectionRequest/"
@@ -1369,7 +1377,7 @@ class inspectionRequestAddEdit extends Component {
                                 this.changeCurrentStep(stepNo)
                             }
                             stepNo={this.state.CurrentStep}
-                        />
+                            changeStatus={docId === 0 ? false : true} />
 
                     </div>
                 </div>

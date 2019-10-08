@@ -313,7 +313,7 @@ class Index extends Component {
                         newRows.push(element)
                 })
                 this.setState({ showDeleteModal: false, isLoading: true })
-                Api.post('ProjectCompaniesDelete?id=' + this.state.selectedRowId)
+                Api.post('ProjectProjectsDelete?id=' + this.state.selectedRowId)
                     .then(result => {
                         this.setState({
                             rows: newRows,

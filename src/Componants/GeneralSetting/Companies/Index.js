@@ -8,13 +8,12 @@ import GridSetup from "../../../Pages/Communication/GridSetup";
 import Resources from "../../../resources.json";
 import Config from '../../../Services/Config'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-import { connect } from 'react-redux'
-import * as AdminstrationActions from '../../../store/actions/Adminstration'
-import { bindActionCreators } from 'redux';
 import { toast } from "react-toastify";
+
 const _ = require('lodash')
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 const filtersColumns = [
     {
         field: "companyName",
@@ -45,70 +44,57 @@ class Index extends Component {
 
             {
                 key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-
+                name: Resources["CompanyName"][currentLanguage]
             },
             {
                 key: "roleTitle",
-                name: Resources["companyRole"][currentLanguage],
-
+                name: Resources["companyRole"][currentLanguage]
             },
             {
                 key: "disciplineTitle",
-                name: Resources["disciplineTitle"][currentLanguage],
-
+                name: Resources["disciplineTitle"][currentLanguage]
             },
             {
                 key: "keyContactName",
                 name: Resources["KeyContact"][currentLanguage],
-                width: 100,
-
+                width: 100
             },
             {
                 key: "location",
-                name: Resources["location"][currentLanguage],
-
+                name: Resources["location"][currentLanguage]
             },
             {
                 key: "contactsTel",
-                name: Resources["Telephone"][currentLanguage],
-
+                name: Resources["Telephone"][currentLanguage]
             },
             {
                 key: "contactsMobile",
-                name: Resources["Mobile"][currentLanguage],
-
+                name: Resources["Mobile"][currentLanguage]
             },
             {
                 key: "contactsFax",
                 name: Resources["Fax"][currentLanguage],
-                width: 100,
-
+                width: 100
             },
             {
                 key: "grade",
-                name: Resources["Grade"][currentLanguage],
-
-            }
-            ,
+                name: Resources["Grade"][currentLanguage]
+            },
             {
                 key: "enteredBy",
-                name: Resources["enteredBy"][currentLanguage],
-
-            }
-            ,
+                name: Resources["enteredBy"][currentLanguage]
+            },
             {
                 key: "lastModified",
-                name: Resources["lastModified"][currentLanguage],
-
+                name: Resources["lastModified"][currentLanguage]
             }
         ];
+
         const columnsGrid = [
             {
                 formatter: this.customButton,
                 key: 'customBtn',
-                width: 80,
-
+                width: 80
             },
             {
                 key: "id",
@@ -205,8 +191,7 @@ class Index extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
-            }
-            ,
+            },
             {
                 key: "enteredBy",
                 name: Resources["enteredBy"][currentLanguage],
@@ -216,8 +201,7 @@ class Index extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true
-            }
-            ,
+            },
             {
                 key: "lastModified",
                 name: Resources["lastModified"][currentLanguage],
@@ -229,6 +213,7 @@ class Index extends Component {
                 sortDescendingFirst: true
             }
         ];
+       
         this.state = {
             columns: columnsGrid.filter(column => column.visible !== false),
             isLoading: true,
@@ -242,13 +227,13 @@ class Index extends Component {
             api: 'GetProjectCompaniesGrid?',
             selectedCompany: 0,
             Previous: false,
-            rowSelectedId: '',
-
+            rowSelectedId: ''
         };
     }
     customButton = () => {
         return <button className="companies_icon" onClick={this.clickHandler} ><i className="fa fa-users"></i></button>;
     };
+
     componentDidMount() {
         if (Config.IsAllow(1001105)) {
             Api.get(this.state.api + "pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
@@ -263,6 +248,7 @@ class Index extends Component {
             toast.warning("you don't have permission");
 
     }
+
     viewContact = (rowSelected) => {
         if (Config.IsAllow(14)) {
             this.props.history.push({
@@ -287,6 +273,7 @@ class Index extends Component {
             });
         }
     }
+    
     GetNextData = () => {
         let pageNumber = this.state.pageNumber + 1;
         this.setState({
@@ -449,30 +436,20 @@ class Index extends Component {
                     viewContactHandler={this.clickHandler}
                     cellClick={this.cellClick}
                     single={true}
-
                 />
             ) : <LoadingSection />;
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.ExportColumns} fileName={this.state.pageTitle} />
-            : null;
 
-        const ComponantFilter = this.state.isLoading === false ?
-            <Filter
-                filtersColumns={filtersColumns}
-                filterMethod={this.filterMethodMain}
-            /> : null;
+        const btnExport = this.state.isLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.ExportColumns} fileName={this.state.pageTitle} /> : null;
+
+        const ComponantFilter = this.state.isLoading === false ? <Filter filtersColumns={filtersColumns} filterMethod={this.filterMethodMain} /> : null;
 
         return (
-            <div >
+            <div>
                 <div className="submittalFilter">
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>
                         <span>{this.state.totalRows}</span>
-                        <div
-                            className="ui labeled icon top right pointing dropdown fillter-button"
-                            tabIndex="0"
-                            onClick={() => this.hideFilter(this.state.viewfilter)}
-                        >
+                        <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
                             <span>
                                 <svg
                                     width="16px"
@@ -540,15 +517,8 @@ class Index extends Component {
                             <i className="angle right icon" />
                         </button>
                     </div>
-
                 </div>
-                <div
-                    className="filterHidden"
-                    style={{
-                        maxHeight: this.state.viewfilter ? "" : "0px",
-                        overflow: this.state.viewfilter ? "" : "hidden"
-                    }}
-                >
+                <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
                     <div className="gridfillter-container">
                         {ComponantFilter}
                     </div>
@@ -557,15 +527,9 @@ class Index extends Component {
                     {dataGrid}
                 </div>
                 {this.state.showDeleteModal == true ? (
-                    <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
-                        closed={this.onCloseModal}
-                        showDeleteModal={this.state.showDeleteModal}
-                        clickHandlerCancel={this.clickHandlerCancelMain}
-                        buttonName='delete' clickHandlerContinue={this.ConfirmDeleteComanies}
-                    />
+                    <ConfirmationModal title={Resources['smartDeleteMessage'][currentLanguage].content} closed={this.onCloseModal} showDeleteModal={this.state.showDeleteModal}
+                        clickHandlerCancel={this.clickHandlerCancelMain} buttonName='delete' clickHandlerContinue={this.ConfirmDeleteComanies} />
                 ) : null}
-
             </div>
         );
     }

@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
+import React, { Component, Fragment } from "react"; 
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -16,8 +15,7 @@ import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
-import SkyLight from 'react-skylight';
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'; 
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
@@ -105,6 +103,7 @@ class siteInstructionsAddEdit extends Component {
             selectedContract: { label: Resources.selectContract[currentLanguage], value: "0" },
             selecetedinspectionRequest: { label: Resources.inspectionRequest[currentLanguage], value: "0" },
             message: '',
+            replayMsg: ''
         }
 
         if (!Config.IsAllow(635) && !Config.IsAllow(636) && !Config.IsAllow(638)) {
@@ -139,10 +138,12 @@ class siteInstructionsAddEdit extends Component {
             let doc = nextProps.document
             doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
             doc.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(doc.requiredDate).format('YYYY-MM-DD')
+            doc.replayDate === null ? moment().format('YYYY-MM-DD') : moment(doc.replayDate).format('YYYY-MM-DD')
             this.setState({
                 document: doc,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: nextProps.document.message,
+                replayMsg: nextProps.document.replayMsg,
                 loadingPage: false
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
@@ -203,7 +204,7 @@ class siteInstructionsAddEdit extends Component {
                 status: true,
                 docType: this.state.docTypeId,
                 requiredDate: moment().format('YYYY-MM-DD'),
-                //replayDate: moment().format('YYYY-MM-DD'),
+                replayDate: moment().format('YYYY-MM-DD'),
                 contractId: '',
                 receivedFor: '',
                 replayMsg: '',
@@ -279,31 +280,19 @@ class siteInstructionsAddEdit extends Component {
 
     }
 
-    onChangeMessage = (value) => {
+    onChangeMessage = (value, name) => {
         if (value != null) {
-            this.setState({ message: value });
-            let original_document = { ...this.state.document };
-            let updated_document = {};
-            updated_document.message = value;
-            updated_document = Object.assign(original_document, updated_document);
-            this.setState({
-                document: updated_document
-            });
+            this.setState({ [name]: value });
+            let updated_document = { ...this.state.document };
+            updated_document[name] = value;
+            this.setState({ document: updated_document });
         }
     };
 
     handleChange(e, field) {
-        let original_document = { ...this.state.document };
-
-        let updated_document = {};
-
+        let updated_document = { ...this.state.document };
         updated_document[field] = e.target.value;
-
-        updated_document = Object.assign(original_document, updated_document);
-
-        this.setState({
-            document: { ...updated_document }
-        });
+        this.setState({ document: updated_document });
     }
 
     handleChangeDate(e, field) {
@@ -620,9 +609,30 @@ class siteInstructionsAddEdit extends Component {
                                                                 <div className="inputDev ui input">
                                                                     <TextEditor
                                                                         value={this.state.message}
-                                                                        onChange={this.onChangeMessage.bind(this)} />
+                                                                        onChange={event => this.onChangeMessage(event, "message")} />
                                                                 </div>
                                                             </div>
+
+                                                            {this.props.changeStatus ?
+                                                                <Fragment>
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <label className="control-label">{Resources.answer[currentLanguage]}</label>
+                                                                        <div className="inputDev ui input">
+                                                                            <TextEditor
+                                                                                value={this.state.replayMsg}
+                                                                                onChange={event => this.onChangeMessage(event, "replayMsg")} />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div className="linebylineInput valid-input alternativeDate" style={{ alignItems: 'flex-start' }}>
+                                                                        <DatePicker title='replyDate'
+                                                                            name="requiredDate"
+                                                                            startDate={this.state.document.replayDate}
+                                                                            handleChange={e => this.handleChangeDate(e, 'replayDate')} />
+                                                                    </div>
+                                                                </Fragment>
+                                                                : null}
+
                                                         </div>
                                                         <div className="slider-Btns">
                                                             {this.props.changeStatus === false ?
@@ -682,7 +692,7 @@ class siteInstructionsAddEdit extends Component {
                                                 {this.viewAttachments()}
                                                 <Fragment>
                                                     <div className="document-fields tableBTnabs">
-                                                        {this.state.docId > 0 ? <AddDocAttachment isViewMode={this.state.isViewMode} projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                        {this.state.docId > 0 ? <AddDocAttachment title="SiteInstruction" isViewMode={this.state.isViewMode} projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                     </div>
                                                 </Fragment>
                                                 {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}

@@ -7,9 +7,6 @@ import Avatar from "../../Styles/images/avatar/xavatarBig.svg"
 import CommentImg from "../../Styles/images/flowComment.png"
 import LoadingSection from "../publicComponants/LoadingSection";
 import Resources from "../../resources.json";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as communicationActions from '../../store/actions/communication';
 const _ = require('lodash');
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class viewExpensesWF extends Component {
@@ -22,27 +19,33 @@ class viewExpensesWF extends Component {
             showPopup: false,
             comment: '',
             currentLevel: {}
-
         };
     }
 
     componentDidMount() {
-        dataService.GetDataGrid('GetExpensesWorkFlowSigntureByExpensesId?expensesId=' + this.props.expensesId).then(
-            result => {
-                let grouped = result.sort((a, b) => (a.arrangeLevel > b.arrangeLevel) ? 1 : ((b.arrangeLevel > a.arrangeLevel) ? -1 : 0));
-                let index = grouped.length - 1
-                console.log(grouped)
-                console.log(grouped[index])
-                this.setState({
-                    isloading: false,
-                    workFlowCycles: result,
-                    currentLevel: grouped[index]
-                });
-                // this.renderCycles(result);
-            }
-        )
-    }
+        if (this.props.workFlowData.length) {
+            let grouped = this.props.workFlowData.sort((a, b) => (a.arrangeLevel > b.arrangeLevel) ? 1 : ((b.arrangeLevel > a.arrangeLevel) ? -1 : 0));
+            let index = grouped.length - 1
+            this.setState({
+                isloading: false,
+                workFlowCycles: this.props.workFlowData,
+                currentLevel: grouped[index]
+            });
+        }
+        else {
+            dataService.GetDataGrid('GetExpensesWorkFlowSigntureByExpensesId?expensesId=' + this.props.expensesId).then(
+                result => {
 
+                    let grouped = result.sort((a, b) => (a.arrangeLevel > b.arrangeLevel) ? 1 : ((b.arrangeLevel > a.arrangeLevel) ? -1 : 0));
+                    let index = grouped.length - 1
+                    this.setState({
+                        isloading: false,
+                        workFlowCycles: result,
+                        currentLevel: grouped[index]
+                    });
+                })
+        }
+    }
 
     showPopup(e) {
         if (e != "") {
@@ -78,10 +81,10 @@ class viewExpensesWF extends Component {
                                             <figure className="avatarProfile smallAvatarSize">
                                                 <img alt="" title="" src={Avatar} />
                                             </figure>
-                                            <div className="avatarName"> 
-                                             <h6>{level.contactName}</h6> 
-                                             <p>{level.companyName}</p>
-                                             </div>
+                                            <div className="avatarName">
+                                                <h6>{level.contactName}</h6>
+                                                <p>{level.companyName}</p>
+                                            </div>
                                         </div>
 
                                         {level.status != null ?
@@ -91,9 +94,9 @@ class viewExpensesWF extends Component {
                                             : null}
 
                                         <div className="Status__comment">
-                                            {level.status != null ?
+                                            {level.status !== null ?
                                                 <span>
-                                                    {level.comment === null || level.comment !== "" ? null :
+                                                    {level.comment === null || level.comment === "" ? null :
                                                         <img src={CommentImg} alt="Cooment" onClick={e => this.showPopup(level.comment)} />
                                                     }
                                                 </span> : null}
@@ -116,25 +119,6 @@ class viewExpensesWF extends Component {
         return mapLevels;
     }
 
-    renderCycles(workFlowCycles) {
-        let cycles = () => {
-            return (
-                <div className="workflowWrapper" key={Math.random()} id='wfCycles'>
-                    <div className="workflow-header">
-                        <h4><p className="zero"><span>{workFlowCycles[0].subject}</span><span>{"Currently at Level:" + workFlowCycles[0].arrangeLevel}</span></p>
-                            <span> {"Sent in:" + Moment(workFlowCycles[0].requestDate).format('DD-MM-YYYY')}</span></h4>
-                    </div>
-                    <div className="card-status">
-                        {this.renderLevels(workFlowCycles[0].levels)}
-                    </div>
-                </div>
-            )
-        }
-        this.setState({
-            visualCycle: cycles
-        });
-        return cycles
-    }
 
     render() {
         return (
@@ -160,7 +144,6 @@ class viewExpensesWF extends Component {
                             {this.renderLevels(this.state.workFlowCycles)}
                         </div>
                     </div> : null}
-                {/* {this.state.visualCycle} */}
             </Fragment>
         )
     }

@@ -76,9 +76,8 @@ class EditAccount extends Component {
             let groupId = null;
             let groupName = null;
             let alternativAccountId = null;
-
+            let contactSupervisorId = null;
             dataservice.GetRowById('GetAccountById?id=' + id).then(result => {
-                console.log(result)
                 let document = {
                     userName: result.userName,
                     oldUserName: result.userName,
@@ -107,22 +106,25 @@ class EditAccount extends Component {
                 }
 
                 accountOwnerId = result.accountOwnerId;
-                companyName = result.companyName;
-                contactName = result.contactName;
-                companyId = result.companyId;
-                contactId = result.contactId;
+                companyName = result.supervisorCompanyName;
+                contactName = result.supervisorName;
+                companyId = result.companySupervisorId;
+                contactId = result.supervisorAccountId;
                 groupId = result.groupId;
                 groupName = result.groupName;
                 alternativAccountId = result.alternativAccountId;
+                contactSupervisorId = result.contactSupervisorId
 
                 dataservice.GetDataList('SelectAllAccountsActive?id=' + id, 'userName', 'id').then(result => {
                     if (result) {
                         let alternativAccount = {};
+
                         if (alternativAccountId) {
-                            alternativAccount = _.find(result, function (i) { return i.value === alternativAccountId; });
-                            this.setState({
-                                selectedAlternative: alternativAccount
-                            });
+                            alternativAccount = _.find(result, function (i) { return i.value === alternativAccountId });
+                            if (alternativAccount) {
+                                this.setState({ selectedAlternative: alternativAccount });
+                            }
+
                         }
                         this.setState({ alternativeAccounts: result });
                     }
@@ -147,7 +149,7 @@ class EditAccount extends Component {
                         if (companyId != null) {
                             const doc = {
                                 label: contactName,
-                                value: contactId
+                                value: contactSupervisorId
                             }
                             this.handleDropDown('selectedSupervisorContact', companyId, true, doc);
                         }
@@ -220,10 +222,9 @@ class EditAccount extends Component {
         }
         if (document.userName === document.oldUserName) {
             dataservice.addObject('EditAccount', document).then(res => {
-                this.setState({
-                    isLoading: false
-                })
-                this.props.history.push({ pathname: '/TemplatesSettings' })
+                this.setState({ isLoading: false });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+                this.props.history.push({ pathname: '/TemplatesSettings' });
             }
             ).catch(ex => {
                 this.props.history.push({ pathname: '/TemplatesSettings' });
@@ -231,13 +232,12 @@ class EditAccount extends Component {
         } else {
             api.authorizationApi('ProcoorAuthorization?username=' + document.oldUserName + '&emailOrpassword=' + document.userName + '&companyId=' + accountCompanyId + '&changePassword=false', null, 'PUT').then(res => {
                 dataservice.addObject('EditAccount', document).then(res => {
-                    this.setState({
-                        isLoading: false
-                    })
+                    this.setState({ isLoading: false });
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
                     this.props.history.push({ pathname: '/TemplatesSettings' })
                 }
                 ).catch(ex => {
-                    this.props.history.push({ pathname: '/TemplatesSettings' })
+                    this.props.history.push({ pathname: '/TemplatesSettings' });
                 })
             });
         }

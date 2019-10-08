@@ -119,7 +119,7 @@ class Steps extends Component {
 
 function mapStateToProps(state) {
     return {
-        changeStatus: state.communication.changeStatus,
+        //   changeStatus: state.communication.changeStatus,
         projectId: state.communication.projectId
     };
 }
