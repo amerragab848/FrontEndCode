@@ -30,6 +30,7 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: true,
                 showSelectProject: false,
                 showLeftReportMenu: false,
+                docsAttachData: [],
                 documentTitle: action.docName
             };
 
@@ -60,6 +61,7 @@ export default function (state = initialState.app.communication, action) {
                 showSelectProject: false,
                 changeStatus: false,
                 items: [],
+                docsAttachData: [],
                 projectId: state.projectId == 0 ? localStorage.getItem('lastSelectedProject') : state.projectId,
                 projectName: state.projectName == "" ? localStorage.getItem('lastSelectedprojectName') : state.projectName
             };
