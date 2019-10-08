@@ -89,7 +89,7 @@ class ViewWorkFlow extends Component {
                             </div>
                             <span className="Step-Line"></span>
                         </div>
-                        <div className="MultiPeinding">
+                        <div className={"MultiPeinding " + (i.level.length > 1 ? "" : " ")}>
                             {i.map((level, idx) => {
                                 let levelSignature = Config.getPublicConfiguartion().downloads + '/' + level.signature
                                 return (
