@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -855,11 +854,9 @@ class clientSelectionAddEdit extends Component {
                                                                 <label>{Resources.no[currentLanguage]}</label>
                                                             </div>
                                                         </div>
-
                                                     </div>
 
                                                     <div className="proForm datepickerContainer">
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.unitType[currentLanguage]}</label>
                                                             <div className="ui input inputDev"  >
@@ -951,6 +948,7 @@ class clientSelectionAddEdit extends Component {
                                             showModal={this.props.showModal}
                                             showOptionPanel={this.showOptionPanel}
                                             permission={this.state.permission}
+                                            documentName={Resources.technicalOffice[currentLanguage]}
                                         />
                                     </div>
                                 </div>

@@ -328,6 +328,8 @@ export default function (state = initialState.app.communication, action) {
 
         case types.ADD_DOCS_ATTACH:
             return { ...state, docsAttachData: action.resp || [], documentData: [] }
+        case types.SET_ISREJECT:
+            return { ...state, isReject: action.data }
 
         default:
             return {

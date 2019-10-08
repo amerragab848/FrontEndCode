@@ -21,7 +21,6 @@ import Api from '../../api'
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
-
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
@@ -106,8 +105,6 @@ class reportsAddEdit extends Component {
             this.props.history.push(this.state.perviousRoute);
         }
     }
-
-
 
     componentDidMount() {
         this.checkDocumentIsView();
@@ -627,6 +624,7 @@ class reportsAddEdit extends Component {
                                                                     showModal={this.props.showModal}
                                                                     showOptionPanel={this.showOptionPanel}
                                                                     permission={this.state.permission}
+                                                                    documentName={Resources.Reports[currentLanguage]}
                                                                 />
                                                             </div>
                                                         </div>)

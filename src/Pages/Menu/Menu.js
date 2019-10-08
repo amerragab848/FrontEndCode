@@ -53,7 +53,7 @@ class Menu extends Component {
       if (result) {
         config.contactName = result.contactName;
         localStorage.setItem('contactName', result.contactName)
-       
+
         this.setState({
           contactName: result.contactName,
           profilePath: config.getPublicConfiguartion().downloads + "/" + result.profilePath,
@@ -76,15 +76,15 @@ class Menu extends Component {
         });
       }
     });
-
   };
 
   render() {
     return (
       <div>
-        {this.state.isLoading == false ? <HeaderMenu contactName={this.state.contactName} profilePath={this.state.profilePath} /> : <div style={loadingStyle.container}><span style={loadingStyle.spinner}></span></div>}
+        {this.state.isLoading == false ?
+          <HeaderMenu contactName={this.state.contactName} profilePath={this.state.profilePath} /> :
+          <div style={loadingStyle.container}><span style={loadingStyle.spinner}></span></div>}
         <LeftMenu appComponants={this.state.appComponants} />
-
       </div>
     );
   }

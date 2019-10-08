@@ -199,8 +199,9 @@ class AddAccount extends Component {
     save = () => {
         this.setState({ saveLoading: true });
         let accountCompanyId = Config.getPublicConfiguartion().accountCompanyId;
-        Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password + '&companyId=' + accountCompanyId, null, 'POST', true).then(res => {
-            if (res.status === 200) {
+        Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password + '&companyId=' + accountCompanyId, null, 'POST', true, true).then(res => {
+
+            if (res.status === 200 && res.msg !== "Email already exists.") {
                 let obj = {
                     userName: this.state.UserName, userPassword: this.state.Password,
                     accountCompanyId: Config.getPublicConfiguartion().accountCompanyId, companyId: this.state.CompanyId.value,
@@ -213,12 +214,14 @@ class AddAccount extends Component {
                 };
                 Api.post('AddAccount', obj).then(res => {
 
-                    // this code from adding account vacation
-                    // ListOfDays.forEach(function (item) {
-                    //     var dayId = '';
-                    //     dayId = item
-                    //     // Api.post('UpdateVacations?accountId='+this.state.AccountId+'&dayId='+dayId+'').catch(ex => { })
-                    // }),
+                    try {
+                        //this code from adding account vacation
+                        ListOfDays.forEach(function (item) {
+                            var dayId = '';
+                            dayId = item;
+                            Api.post('UpdateVacations?accountId=' + res + '&dayId=' + dayId );
+                        });
+                    } catch { }
                     this.props.actions.routeToTabIndex(0);
                     this.props.history.push({ pathname: '/TemplatesSettings' });
                     toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -228,7 +231,10 @@ class AddAccount extends Component {
                     this.setState({ saveLoading: false });
                 });
             }
-            else { toast.warn("Email already exists.") }
+            else {
+                toast.warn("Email already exists.");
+                this.setState({ saveLoading: false });
+            }
         }).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
             this.setState({ saveLoading: false });

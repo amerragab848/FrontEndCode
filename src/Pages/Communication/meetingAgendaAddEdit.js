@@ -931,7 +931,7 @@ class meetingAgendaAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
 
-    onRowClick = (value, index, column) => { 
+    onRowClick = (value, index, column) => {
         let id = value["id"];
         if (!Config.IsAllow(11)) {
             toast.warning("you don't have permission");
@@ -2145,6 +2145,7 @@ class meetingAgendaAddEdit extends Component {
                                                     showModal={this.props.showModal}
                                                     showOptionPanel={this.showOptionPanel}
                                                     permission={this.state.permission}
+                                                    documentName={Resources.meetingAgendaLog[currentLanguage]}
                                                 />
                                             </div>
                                         </div>

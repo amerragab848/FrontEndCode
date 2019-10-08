@@ -228,7 +228,7 @@ class Login extends Component {
                                 <div className="form-group linebylineInput fullInputWidth">
                                     <label
                                         className="control-label"
-                                        for="username">
+                                        htmlFor="username">
                                         {Resources["UserName"][currentLanguage]}
                                     </label>
                                     <div className="inputDev ui input">
@@ -272,7 +272,7 @@ class Login extends Component {
                                 <div className="form-group linebylineInput fullInputWidth">
                                     <label
                                         className="control-label"
-                                        for="username">
+                                        htmlFor="username">
                                         {Resources["password"][currentLanguage]}
                                     </label>
                                     <div className="inputDev ui input">

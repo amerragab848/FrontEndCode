@@ -772,6 +772,7 @@ class TransmittalAddEdit extends Component {
                                                                         showModal={this.props.showModal}
                                                                         showOptionPanel={this.showOptionPanel}
                                                                         permission={this.state.permission}
+                                                                        documentName={Resources.transmittal[currentLanguage]}
                                                                     />
                                                                 </div>
                                                             </div> : null
@@ -782,7 +783,7 @@ class TransmittalAddEdit extends Component {
                                     </div>
 
                                     <div className="doc-pre-cycle tableBTnabs">
-                                        {this.state.docId > 0 ? <AddDocAttachment  isViewMode={this.state.isViewMode} projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                        {this.state.docId > 0 ? <AddDocAttachment isViewMode={this.state.isViewMode} projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>

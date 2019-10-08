@@ -14,8 +14,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
-import SkyLight from 'react-skylight';
+import moment from "moment"; 
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
@@ -668,6 +667,7 @@ class ClaimsAddEdit extends Component {
                                                                         showModal={this.props.showModal}
                                                                         showOptionPanel={this.showOptionPanel}
                                                                         permission={this.state.permission}
+                                                                        documentName={Resources.claims[currentLanguage]}
                                                                     />
                                                                 </div>
                                                             </div>

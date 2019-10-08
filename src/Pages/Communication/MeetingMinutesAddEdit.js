@@ -1923,6 +1923,7 @@ class MeetingMinutesAddEdit extends Component {
                                                     showModal={this.props.showModal}
                                                     showOptionPanel={this.showOptionPanel}
                                                     permission={this.state.permission}
+                                                    documentName={Resources.meetingMinutesLog[currentLanguage]}
                                                 />
                                             </div>
                                         </div>

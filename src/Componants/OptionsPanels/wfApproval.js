@@ -63,7 +63,7 @@ class wfApproval extends Component {
       updateWorkFlow_new = Object.assign(original_updateWorkFlow, updateWorkFlow_new);
       return {
         updateWorkFlow: updateWorkFlow_new
-      }; 
+      };
     }
     return null
   }
@@ -96,9 +96,15 @@ class wfApproval extends Component {
         if (result === true) {
           this.setState({ submitLoading: true });
           Api.post("SendWorkFlowApproval", this.state.updateWorkFlow).then(e => {
+
             this.setState({ submitLoading: false });
+
             this.props.actions.showOptionPanel(false);
-            this.props.history.push("/DocApprovalDetails?action=2");
+
+            const previousRoute = localStorage.getItem('lastRoute');
+
+            this.props.history.push(previousRoute);
+
           });
         } else {
           toast.error(Resources["invalidPassword"][currentLanguage]);
@@ -108,6 +114,7 @@ class wfApproval extends Component {
       });
     }
   }
+
 
   render() {
     return (
@@ -161,7 +168,6 @@ class wfApproval extends Component {
                     </div>
                   </span>
                 )}
-
             </Form>
           )}
         </Formik>

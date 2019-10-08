@@ -1,7 +1,7 @@
 import Api from "./api.js";
 import lf from 'lovefield';
 import IndexedDb from "./IndexedDb";
-let db = null;
+let db = null; 
 const cachedData = lf.schema.create('cachedAPI', 1);
 
 export default class Dataservice {

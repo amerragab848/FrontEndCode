@@ -677,6 +677,7 @@ class siteInstructionsAddEdit extends Component {
                                                                             showModal={this.props.showModal}
                                                                             showOptionPanel={this.showOptionPanel}
                                                                             permission={this.state.permission}
+                                                                            documentName={Resources.siteInstructions[currentLanguage]}
                                                                         />
                                                                     </div>
                                                                 </div>
