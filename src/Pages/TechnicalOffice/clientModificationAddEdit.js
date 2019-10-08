@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from "react";
-
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -17,7 +15,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
+import moment from "moment";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
@@ -235,7 +233,7 @@ class clientModificationAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-               
+
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -512,7 +510,8 @@ class clientModificationAddEdit extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.clientModificationLog[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} 
+                        docTitle={Resources.clientModificationLog[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
                     <div className="doc-container">
@@ -845,7 +844,7 @@ class clientModificationAddEdit extends Component {
                                                     <div className="bounce3" />
                                                 </div>
                                             </button> :
-                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}onClick={e => this.editLetter(e)} type="submit">{Resources.save[currentLanguage]}</button>
+                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)} type="submit">{Resources.save[currentLanguage]}</button>
                                         }
                                         <DocumentActions
                                             isApproveMode={this.state.isApproveMode}
@@ -858,6 +857,7 @@ class clientModificationAddEdit extends Component {
                                             showModal={this.props.showModal}
                                             showOptionPanel={this.showOptionPanel}
                                             permission={this.state.permission}
+                                            documentName={Resources.clientModificationLog[currentLanguage]}
                                         />
                                     </div>
                                 </div>

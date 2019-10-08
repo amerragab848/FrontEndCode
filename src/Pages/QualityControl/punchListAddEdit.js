@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from "react";
-
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -12,19 +10,15 @@ import Resources from "../../resources.json";
 import Api from '../../api';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetup from "../Communication/GridSetup";
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-
-import SkyLight, { SkyLightStateless } from 'react-skylight';
+import { SkyLightStateless } from 'react-skylight';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
@@ -497,7 +491,7 @@ class punchListAddEdit extends Component {
         }
     }
 
-    handleChange(e, field) { 
+    handleChange(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -511,7 +505,7 @@ class punchListAddEdit extends Component {
         });
     }
 
-    handleChangeDate(e, field) { 
+    handleChangeDate(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -1109,7 +1103,7 @@ class punchListAddEdit extends Component {
                     validationSchema={validationSchemaForEditItem}
                     onSubmit={(values, actions) => {
                         if (this.props.showModal) { return; }
- 
+
                         this.EditItem(values)
                     }}>
 
@@ -1226,7 +1220,8 @@ class punchListAddEdit extends Component {
                 {this.state.Loading ? <LoadingSection /> : null}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.punchList[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
+                        docTitle={Resources.punchList[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
 
                     <div className="doc-container">
@@ -1306,6 +1301,7 @@ class punchListAddEdit extends Component {
                                             showModal={this.props.showModal}
                                             showOptionPanel={this.showOptionPanel}
                                             permission={this.state.permission}
+                                            documentName={Resources.punchList[currentLanguage]}
                                         />
                                     </div>
                                 </div>

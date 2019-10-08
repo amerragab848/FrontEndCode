@@ -29,7 +29,10 @@ export default {
 			moduleName: "",
 			showSelectProject: true,
 			showLeftReportMenu: false,
-			docsAttachData: []
+			docsAttachData: [],
+			relatedLinkData: [],
+			documentData: [],
+			isReject : null
 		},
 		expensesWorkFlow: {
 			expensesWorkFlowData: {},

@@ -220,7 +220,7 @@ class DashboardProject extends Component {
                 <div className="SummeriesContainer" key={index + "DIV"}>
                     <Fragment key={index}>
                         <h2 className={"SummeriesTitle " + (category.title == "counters" ? 'disNone' : '')}>
-                            {language[category.title][currentLanguage] + ' ' + category.title}
+                            {language[category.title][currentLanguage]}
                         </h2>
                         <div className={"SummeriesContainerContent " + (category.title == "Submittal" || category.title == "communication" ? " numbersContainerContent" : " ")}>
                             {category.widgets.map((widget, widgetIndex) => {

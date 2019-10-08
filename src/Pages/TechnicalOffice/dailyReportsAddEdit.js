@@ -797,7 +797,6 @@ class dailyReportsAddEdit extends Component {
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="QsForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                 <div className="proForm first-proform">
-
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -822,7 +821,6 @@ class dailyReportsAddEdit extends Component {
                                             <label>{Resources.closed[currentLanguage]}</label>
                                         </div>
                                     </div>
-
                                 </div>
 
                                 <div className="proForm datepickerContainer">
@@ -879,6 +877,7 @@ class dailyReportsAddEdit extends Component {
                                                 showModal={this.props.showModal}
                                                 showOptionPanel={this.showOptionPanel}
                                                 permission={this.state.permission}
+                                                documentName={Resources.dailyReports[currentLanguage]}
                                             />
                                         </div>
                                     </div>

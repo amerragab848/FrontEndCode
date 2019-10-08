@@ -174,6 +174,8 @@ import dailyReportsAddEdit from "./Pages/TechnicalOffice/dailyReportsAddEdit";
 import RiskCause from './Componants/OptionsPanels/RiskCause';
 import budgetCashFlowReports from './Pages/CostControl/budgetCashFlowReport';
 
+import ExportDetails from "./Componants/OptionsPanels/ExportDetails";
+
 let setupRoutes = ProjectSetupRoutes.map((item, index) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
@@ -348,7 +350,7 @@ let originalRoutes = [
     , <Route key='r-166' path="/materialReturnedAddEdit" component={materialReturnedAddEdit} />
     , <Route key='r-167' path="/materialReleaseAddEdit" component={materialReleaseAddEdit} />
     , <Route key='r-168' path="/procurementAddEdit" component={procurementAddEdit} />
-    , <Route key='r-169' path="/RiskCause" component={RiskCause} />
+    , <Route key='r-169' path="/ExportDetails" component={ExportDetails} />
     , <Route key='r-171' path="/materialInventoryAddEdit" component={materialInventoryAddEdit} />
     , <Route key='r-172' path="/autoDeskViewer" component={autoDeskViewer} />
     , <Route key='r-173' path="/RiskConesquence" component={RiskConesquence} />

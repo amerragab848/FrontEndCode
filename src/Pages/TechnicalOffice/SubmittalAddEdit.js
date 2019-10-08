@@ -914,15 +914,18 @@ class SubmittalAddEdit extends Component {
   editSubmittal(event) {
 
     this.setState({
-      isLoading: true
+      isLoading: true,
+      CurrentStep: 1
     });
 
     let saveDocument = this.state.document;
     saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocument.forwardToDate = moment(saveDocument.forwardToDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    saveDocument.area = this.state.selectedArea.label;
-    saveDocument.location = this.state.selectedLocation.label;
+    saveDocument.area = this.state.selectedArea.value === "0" ? "" : this.state.selectedArea.label;
+    saveDocument.location = this.state.selectedLocation.value === "0" ? "" : this.state.selectedLocation.label;
+
     this.changeCurrentStep(1);
+
     dataservice.addObject("EditLogSubmittal", saveDocument).then(result => {
 
       this.setState({
@@ -952,6 +955,7 @@ class SubmittalAddEdit extends Component {
         this.setState({
           isLoading: false,
           itemData: data,
+          CurrentStep: 2,
           itemsDocumentSubmital: submittalItem,
         });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
@@ -963,7 +967,8 @@ class SubmittalAddEdit extends Component {
   addSubmittalCycle() {
 
     this.setState({
-      isLoading: true
+      isLoading: true,
+      CurrentStep: 2
     });
 
     let saveDocumentCycle = this.state.documentCycle;
@@ -1003,12 +1008,13 @@ class SubmittalAddEdit extends Component {
     if (this.props.changeStatus === false) {
 
       this.setState({
-        isLoading: true
+        isLoading: true,
+        CurrentStep: 1
       });
 
       let saveDocument = { ...this.state.document };
-      saveDocument.area = this.state.selectedArea.label;
-      saveDocument.location = this.state.selectedLocation.label;
+      saveDocument.area = this.state.selectedArea.value === "0" ? "" : this.state.selectedArea.label;
+      saveDocument.location = this.state.selectedLocation.value === "0" ? "" : this.state.selectedLocation.label;
       saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
       saveDocument.forwardToDate = moment(saveDocument.forwardToDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
@@ -1401,10 +1407,7 @@ class SubmittalAddEdit extends Component {
   }
 
   changeCurrentStep = stepNo => {
-    if (stepNo === 3) {
 
-      this.props.history.push("/submittal/" + this.state.projectId);
-    }
     this.setState({ currentStep: stepNo });
   };
 
@@ -1572,7 +1575,7 @@ class SubmittalAddEdit extends Component {
                                 <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")}>
                                   <input name="subject" className="form-control fsadfsadsa" placeholder={Resources.subject[currentLanguage]}
                                     autoComplete="off"
-                                    value={this.state.document.subject}
+                                    value={this.state.document.subject || ''}
                                     onBlur={e => { handleBlur(e); handleChange(e); }}
                                     onChange={e => this.handleChange(e, "subject")} />
                                   {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
@@ -1617,7 +1620,7 @@ class SubmittalAddEdit extends Component {
                                   {Resources.arrange[currentLanguage]}
                                 </label>
                                 <div className={"ui input inputDev fillter-item-c " + (errors.arrange && touched.arrange ? "has-error" : !errors.arrange && touched.arrange ? "has-success" : "")} >
-                                  <input type="text" className="form-control" readOnly value={this.state.document.arrange} name="arrange" placeholder={Resources.arrange[currentLanguage]}
+                                  <input type="text" className="form-control" readOnly value={this.state.document.arrange || ''} name="arrange" placeholder={Resources.arrange[currentLanguage]}
                                     onBlur={e => { handleChange(e); handleBlur(e); }}
                                     onChange={e => this.handleChange(e, "arrange")} />
                                   {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
@@ -1628,7 +1631,7 @@ class SubmittalAddEdit extends Component {
                                   {Resources.refDoc[currentLanguage]}
                                 </label>
                                 <div className={"ui input inputDev" + (errors.refNo && touched.refNo ? " has-error" : "ui input inputDev")}>
-                                  <input type="text" className="form-control" id="refNo" value={this.state.document.refNo} name="refNo"
+                                  <input type="text" className="form-control" id="refNo" value={this.state.document.refNo || ''} name="refNo"
                                     placeholder={Resources.refDoc[currentLanguage]}
                                     onBlur={e => { handleChange(e); handleBlur(e); }}
                                     onChange={e => this.handleChange(e, "refNo")} />
@@ -1710,7 +1713,7 @@ class SubmittalAddEdit extends Component {
                                 </label>
                                 <div className="inputDev ui input">
                                   <input name="fileNumber" className="form-control fsadfsadsa" id="fileNumber" placeholder={Resources.fileNumber[currentLanguage]}
-                                    autoComplete="off" value={this.state.document.fileNumber}
+                                    autoComplete="off" value={this.state.document.fileNumber || ''}
                                     onBlur={e => { handleBlur(e); handleChange(e); }}
                                     onChange={e => this.handleChange(e, "fileNumber")} />
                                 </div>
@@ -1728,7 +1731,7 @@ class SubmittalAddEdit extends Component {
                                 <div className={"inputDev ui input" + (errors.Building && touched.Building ? " has-error" : !errors.Building && touched.Building ? " has-success" : " ")}>
                                   <input name="Building" className="form-control fsadfsadsa" id="Building"
                                     placeholder={Resources.Building[currentLanguage]}
-                                    autoComplete="off" value={this.state.document.building}
+                                    autoComplete="off" value={this.state.document.building || ''}
                                     onBlur={e => { handleBlur(e); handleChange(e); }}
                                     onChange={e => this.handleChange(e, "building")} />
                                   {errors.Building && touched.Building ? (<em className="pError"> {errors.Building} </em>) : null}
@@ -1741,7 +1744,7 @@ class SubmittalAddEdit extends Component {
                                 <div className={"inputDev ui input" + (errors.apartmentNumber && touched.apartmentNumber ? " has-error" : !errors.apartmentNumber && touched.apartmentNumber ? " has-success" : " ")}>
                                   <input name="apartment" className="form-control fsadfsadsa" id="apartment"
                                     placeholder={Resources.apartmentNumber[currentLanguage]}
-                                    autoComplete="off" value={this.state.document.apartment}
+                                    autoComplete="off" value={this.state.document.apartment || ''}
                                     onBlur={e => { handleBlur(e); handleChange(e); }}
                                     onChange={e => this.handleChange(e, "apartment")} />
                                   {errors.apartmentNumber && touched.apartmentNumber ? (<em className="pError"> {errors.apartmentNumber} </em>) : null}
@@ -1758,7 +1761,7 @@ class SubmittalAddEdit extends Component {
                                 <div className="shareLinks">
                                   <div className="inputDev ui input">
                                     <input type="text" className="form-control" id="sharedSettings" onChange={e => this.handleChange(e, "sharedSettings")}
-                                      value={this.state.document.sharedSettings} name="sharedSettings" placeholder={Resources.sharedSettings[currentLanguage]} />
+                                      value={this.state.document.sharedSettings || ''} name="sharedSettings" placeholder={Resources.sharedSettings[currentLanguage]} />
                                   </div>
                                   {this.state.document.sharedSettings === '' ||
                                     this.state.document.sharedSettings === null ||
@@ -2090,7 +2093,7 @@ class SubmittalAddEdit extends Component {
                       {this.state.docId > 0 && this.state.currentStep === 0 ? (
                         <Fragment>
                           <div className="document-fields tableBTnabs">
-                            <AddDocAttachment projectId={projectId}  isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
+                            <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
                           </div>
                         </Fragment>
                       ) : null}
@@ -2115,6 +2118,7 @@ class SubmittalAddEdit extends Component {
                     showModal={this.props.showModal}
                     showOptionPanel={this.showOptionPanel}
                     permission={this.state.permission}
+                    documentName={Resources.Submittal[currentLanguage]}
                   />
                 </div>
               </div>
@@ -2151,15 +2155,12 @@ class SubmittalAddEdit extends Component {
                           {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
                         </div>
                       </div>
-
                       <Dropdown title="reviewResult" data={this.state.reviewResult} selectedValue={this.state.selectedReviewResult}
                         handleChange={event => this.handleChangeDropDownItems(event, "reviewResult", false, "", "", "", "selectedReviewResult")}
                         onChange={setFieldValue} onBlur={setFieldTouched} error={errors.reviewResult}
                         touched={touched.reviewResult} name="reviewResult" id="reviewResult" />
-
                       <ModernDatepicker startDate={this.state.itemsDocumentSubmital.submitalDate} title="submitalDate"
                         handleChange={e => this.handleChangeDateItems(e, "submitalDate")} />
-
                       <div className="fillter-status fillter-item-c">
                         <label className="control-label">
                           {Resources.arrange[currentLanguage]}

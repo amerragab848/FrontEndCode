@@ -21,7 +21,6 @@ import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
-import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -195,6 +194,7 @@ class variationOrderAddEdit extends Component {
       });
     }
     index++;
+
     steps_defination = [
       {
         name: "changeOrder",
@@ -581,7 +581,6 @@ class variationOrderAddEdit extends Component {
     }
   }
 
-
   GetPrevoiusData() {
 
     let pageNumber = this.state.pageNumber - 1;
@@ -959,31 +958,11 @@ class variationOrderAddEdit extends Component {
                                   <label className="control-label">
                                     {Resources.total[currentLanguage]}
                                   </label>
-                                  <div
-                                    className={
-                                      "ui input inputDev" +
-                                      (errors.total && touched.total
-                                        ? " has-error"
-                                        : "ui input inputDev")
-                                    }
-                                  >
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      id="total"
-                                      value={this.state.document.total}
-                                      name="total"
-                                      placeholder={
-                                        Resources.total[currentLanguage]
-                                      }
-                                      onBlur={e => {
-                                        handleChange(e);
-                                        handleBlur(e);
-                                      }}
-                                      onChange={e =>
-                                        this.handleChange(e, "total")
-                                      }
-                                    />
+                                  <div className={"ui input inputDev" + (errors.total && touched.total ? " has-error" : "ui input inputDev")} >
+                                    <input type="text" className="form-control" id="total" value={this.state.document.total}
+                                      name="total" placeholder={Resources.total[currentLanguage]}
+                                      onBlur={e => { handleChange(e); handleBlur(e); }}
+                                      onChange={e => this.handleChange(e, "total")} />
                                     {touched.total ? (
                                       <em className="pError">{errors.total}</em>
                                     ) : null}
@@ -993,38 +972,11 @@ class variationOrderAddEdit extends Component {
                                   <label className="control-label">
                                     {Resources.timeExtension[currentLanguage]}
                                   </label>
-                                  <div
-                                    className={
-                                      "ui input inputDev" +
-                                      (errors.timeExtension &&
-                                        touched.timeExtension
-                                        ? " has-error"
-                                        : "ui input inputDev")
-                                    }
-                                  >
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      id="timeExtension"
-                                      value={
-                                        this.state.document
-                                          .timeExtensionRequired
-                                      }
-                                      name="timeExtension"
-                                      placeholder={
-                                        Resources.timeExtension[currentLanguage]
-                                      }
-                                      onBlur={e => {
-                                        handleChange(e);
-                                        handleBlur(e);
-                                      }}
-                                      onChange={e =>
-                                        this.handleChange(
-                                          e,
-                                          "timeExtensionRequired"
-                                        )
-                                      }
-                                    />
+                                  <div className={"ui input inputDev" + (errors.timeExtension && touched.timeExtension ? " has-error" : "ui input inputDev")}>
+                                    <input type="text" className="form-control" id="timeExtension" value={this.state.document.timeExtensionRequired}
+                                      name="timeExtension" placeholder={Resources.timeExtension[currentLanguage]}
+                                      onBlur={e => { handleChange(e); handleBlur(e); }}
+                                      onChange={e => this.handleChange(e, "timeExtensionRequired")} />
                                     {touched.timeExtension ? (
                                       <em className="pError">
                                         {errors.timeExtension}
@@ -1055,13 +1007,6 @@ class variationOrderAddEdit extends Component {
                                 projectId={this.state.projectId}
                               />
                             ) : null}
-                          {this.state.docId > 0 && this.state.CurrentStep === 0 ? (
-                            <Fragment>
-                              <div className="document-fields tableBTnabs">
-                                <AddDocAttachment title="VariationOrder"  projectId={this.state.projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} />
-                              </div>
-                            </Fragment>
-                          ) : null}
                           {this.viewAttachments()}
                           {this.props.changeStatus === true ? (
                             <ViewWorkFlow

@@ -4011,6 +4011,10 @@
         "en": "Add Doc. Attachment",
         "ar": "اضافة مستندات مرفقة"
     },
+    "docAttachment": {
+        "en": "Document Attachments",
+        "ar": "مستندات مرفقة"
+    },
     "addInvoicesForPO": {
         "en": "Add Invoices For Purchase Order",
         "ar": "اضافة فواتيرأوامر الشراء"
@@ -8234,5 +8238,5 @@
     "editPayment": {
         "en": "Edit Advanced Payment Amount",
         "ar": "تعديل قيمة الدفعة المقدمة"
-    }  
+    }
 }

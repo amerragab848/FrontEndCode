@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -21,7 +20,6 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
-
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
@@ -559,6 +557,7 @@ class emailAddEdit extends Component {
                                                                         showModal={this.props.showModal}
                                                                         showOptionPanel={this.showOptionPanel}
                                                                         permission={this.state.permission}
+                                                                        documentName={Resources.communicationEmails[currentLanguage]}
                                                                     />
                                                                 </div>
                                                             </div>
