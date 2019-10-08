@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -25,33 +24,22 @@ import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment
 import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
-import { tr } from "date-fns/esm/locale";
 
 var steps_defination = [];
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-
-    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage])
-        .nullable(true),
-
-    toContactId: Yup.string()
-        .required(Resources['toContactRequired'][currentLanguage]),
-
-    bicContactId: Yup.string()
-        .required(Resources['actionByContactRequired'][currentLanguage]),
-
-    disciplineId: Yup.string()
-        .required(Resources['disciplineRequired'][currentLanguage])
+    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
+    toContactId: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
+    bicContactId: Yup.string().required(Resources['actionByContactRequired'][currentLanguage]),
+    disciplineId: Yup.string().required(Resources['disciplineRequired'][currentLanguage])
 })
 
 const documentCycleValidationSchema = Yup.object().shape({
-    subject: Yup.string()
-        .required(Resources['subjectRequired'][currentLanguage]).nullable(true),
-    approvalStatusId: Yup.string()
-        .required(Resources['approvalStatusSelection'][currentLanguage]).nullable(true),
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).nullable(true),
+    approvalStatusId: Yup.string().required(Resources['approvalStatusSelection'][currentLanguage]).nullable(true),
 })
 
 let columns = [
@@ -80,6 +68,11 @@ let columns = [
         accessor: 'docDate',
         format: 'date',
         width: '80px',
+        Cell: row => (
+            <span>
+                <span>{moment(row.value).format("DD/MM/YYYY")}</span>
+            </span>
+        )
     }, {
         Header: Resources['approvalStatus'][currentLanguage],
         accessor: 'approvalStatusName',
@@ -198,6 +191,7 @@ class inspectionRequestAddEdit extends Component {
 
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
                 links[i].classList.add('even');
@@ -206,7 +200,6 @@ class inspectionRequestAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -307,7 +300,6 @@ class inspectionRequestAddEdit extends Component {
                 requiredDate: moment(),
                 resultDate: moment(),
                 reasonForIssueId: ''
-
             };
 
             this.setState({ document: inspectionRequest }, function () {
@@ -604,7 +596,6 @@ class inspectionRequestAddEdit extends Component {
             DocLoading: true
         });
 
-
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         saveDocument.resultDate = moment(saveDocument.resultDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
@@ -660,21 +651,15 @@ class inspectionRequestAddEdit extends Component {
         )
     }
 
-    viewWorkFlowCycles() {
-        return (
-            this.props.changeStatus ?
-                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                : null
-        )
-    }
-
     changeCurrentStep = stepNo => {
         this.setState({ CurrentStep: stepNo });
     };
 
 
-    saveInspectionRequestCycle(event) {
+    saveInspectionRequestCycle() {
+
         let saveDocument = { ...this.state.documentCycle };
+
         saveDocument.projectId = this.state.projectId;
         saveDocument.requestForInspectionId = this.state.docId;
         saveDocument.disciplineId = this.state.document.disciplineId;
@@ -682,13 +667,16 @@ class inspectionRequestAddEdit extends Component {
         saveDocument.flowContactId = this.state.document.bicContactId;
         saveDocument.status = saveDocument.status == null ? true : false;
 
-        let api = saveDocument.typeAddOrEdit === "editLastCycle" ? 'EditInspectionRequestCycle' : 'AddInspectionRequestCycleOnly';
-        if (saveDocument.typeAddOrEdit === "editLastCycle") {
+        let api = saveDocument.typeAddOrEdit === "Edit" ? 'EditInspectionRequestCycle' : 'AddInspectionRequestCycleOnly';
+
+        if (saveDocument.typeAddOrEdit === "Edit") {
             this.setState({ CycleEditLoading: true })
         } else {
             this.setState({ CycleAddLoading: true })
         }
+
         dataservice.addObject(api, saveDocument).then(result => {
+
             if (result) {
                 let cycle = {
                     subject: result.subject,
@@ -701,19 +689,19 @@ class inspectionRequestAddEdit extends Component {
                     arrange: 0,
                     id: result.id
                 };
-                let newCycle = {
-                    subject: result.subject,
-                    docDate: result.docDate,
-                    arrange: result.arrange,
-                    flowCompanyName: this.state.selectedActionByCompanyId.label,
-                    flowContactName: this.state.selectedActionByContactId.label,
-                    progressPercent: result.progressPercent,
-                    statusName: result.status ? "Opened" : "Closed",
-                    approvalStatusName: this.state.selectedApprovalStatusId.label,
-                    cycleComment: result.cycleComment,
-                }
+
                 let IRCycles = this.state.IRCycles;
-                IRCycles.push(newCycle);
+
+                if (saveDocument.typeAddOrEdit === "Edit") {
+                    let index = IRCycles.findIndex(x => x.id === saveDocument.id);
+
+                    IRCycles.splice(index, 1);
+
+                    IRCycles.push(result);
+                } else {
+                    IRCycles.push(result);
+                }
+
                 this.setState({
                     IRCycles,
                     documentCycle: cycle,
@@ -759,13 +747,12 @@ class inspectionRequestAddEdit extends Component {
             documentCycle: updated_document,
             [selectedValue]: event
         });
-
     }
 
     newCycle(e) {
 
         let cycleObj = { ...this.state.documentCycle };
-        cycleObj.typeAddOrEdit = "";
+        cycleObj.typeAddOrEdit = "Add";
         this.setState({
             documentCycle: { ...cycleObj }
         });
@@ -774,7 +761,7 @@ class inspectionRequestAddEdit extends Component {
     editCycle(e) {
 
         let cycleObj = { ...this.state.documentCycle };
-        cycleObj.typeAddOrEdit = "editLastCycle";
+        cycleObj.typeAddOrEdit = "Edit";
         this.setState({
             documentCycle: { ...cycleObj }
         });
@@ -790,7 +777,6 @@ class inspectionRequestAddEdit extends Component {
                     onSubmit={(values) => {
                         this.saveInspectionRequestCycle()
                     }}>
-
                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                         <Form id="InspectionRequestCycleForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                             <header className="main__header">
@@ -798,11 +784,8 @@ class inspectionRequestAddEdit extends Component {
                                     <h2 className="zero">{Resources['newCycle'][currentLanguage]}</h2>
                                 </div>
                             </header>
-
                             <div className='document-fields'>
-
                                 <div className="proForm first-proform">
-
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -818,10 +801,8 @@ class inspectionRequestAddEdit extends Component {
                                                 }}
                                                 onChange={(e) => this.handleChangeCycle(e, 'subject')} />
                                             {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-
                                         </div>
                                     </div>
-
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.status[currentLanguage]}</label>
                                         <div className="ui checkbox radio radioBoxBlue">
@@ -833,7 +814,6 @@ class inspectionRequestAddEdit extends Component {
                                             <label>{Resources.closed[currentLanguage]}</label>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input">
@@ -842,7 +822,6 @@ class inspectionRequestAddEdit extends Component {
                                             data={this.state.approvalstatusList}
                                             selectedValue={this.state.selectedApprovalStatusId}
                                             handleChange={(e) => this.handleChangeCycleDropDown(e, "approvalStatusId", 'selectedApprovalStatusId')}
-
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
                                             error={errors.approvalStatusId}
@@ -852,7 +831,6 @@ class inspectionRequestAddEdit extends Component {
                                             name="approvalStatusId"
                                             id="approvalStatusId" />
                                     </div>
-
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources['comment'][currentLanguage]}</label>
                                         <div className='ui input inputDev '>
@@ -916,14 +894,10 @@ class inspectionRequestAddEdit extends Component {
 
         return (
             <div className="mainContainer">
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.inspectionRequest[currentLanguage]}
-                        moduleTitle={Resources['qualityControl'][currentLanguage]} />
-
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
+                        docTitle={Resources.inspectionRequest[currentLanguage]} moduleTitle={Resources['qualityControl'][currentLanguage]} />
                     <div className="doc-container">
-
                         <div className="step-content">
                             {this.state.CurrentStep == 0 ?
                                 <Fragment>
@@ -941,17 +915,14 @@ class inspectionRequestAddEdit extends Component {
                                                             this.saveInspectionRequest();
                                                         } else if (this.props.changeStatus == true) {
                                                             this.editInspectionRequest();
-
                                                         }
                                                         else if (this.props.changeStatus === false && this.state.docId > 0)
                                                             this.changeCurrentStep(1);
-                                                    }}  >
+                                                    }}>
 
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                         <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                                             <div className="proForm first-proform">
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                                                     <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -983,7 +954,6 @@ class inspectionRequestAddEdit extends Component {
 
                                                             </div>
                                                             <div className="proForm datepickerContainer">
-
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='docDate'
                                                                         onChange={e => setFieldValue('docDate', e)}
@@ -994,11 +964,9 @@ class inspectionRequestAddEdit extends Component {
                                                                         startDate={this.state.document.docDate}
                                                                         handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                                     <div className="ui input inputDev"  >
-
                                                                         <input type="text" className="form-control" id="arrange" readOnly
                                                                             value={this.state.document.arrange}
                                                                             name="arrange"
@@ -1010,7 +978,6 @@ class inspectionRequestAddEdit extends Component {
                                                                             onChange={(e) => this.handleChange(e, 'arrange')} />
                                                                     </div>
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                                     <div className="ui input inputDev">
@@ -1023,10 +990,8 @@ class inspectionRequestAddEdit extends Component {
                                                                                 handleBlur(e)
                                                                             }}
                                                                             onChange={(e) => this.handleChange(e, 'refDoc')} />
-
                                                                     </div>
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='requiredDateLog'
                                                                         onChange={e => setFieldValue('requiredDate', e)}
@@ -1037,7 +1002,6 @@ class inspectionRequestAddEdit extends Component {
                                                                         startDate={this.state.document.requiredDate}
                                                                         handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input alternativeDate">
                                                                     <DatePicker title='resultDate'
                                                                         onChange={e => setFieldValue('resultDate', e)}
@@ -1048,9 +1012,7 @@ class inspectionRequestAddEdit extends Component {
                                                                         startDate={this.state.document.resultDate}
                                                                         handleChange={e => this.handleChangeDate(e, 'resultDate')} />
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input mix_dropdown">
-
                                                                     <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
@@ -1065,7 +1027,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.fromCompanyId}
                                                                                 touched={touched.fromCompanyId}
-
                                                                                 index="fromCompanyId"
                                                                                 name="fromCompanyId"
                                                                                 id="fromCompanyId" styles={CompanyDropdown} classDrop="companyName1 " />
@@ -1076,7 +1037,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                 data={this.state.fromContacts}
                                                                                 selectedValue={this.state.selectedFromContact}
                                                                                 handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.fromContactId}
@@ -1089,7 +1049,6 @@ class inspectionRequestAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input mix_dropdown">
-
                                                                     <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
@@ -1126,11 +1085,9 @@ class inspectionRequestAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input mix_dropdown">
-
                                                                     <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
                                                                         <div className="super_name">
-
                                                                             <Dropdown
                                                                                 isMulti={false}
                                                                                 data={this.state.companies}
@@ -1145,7 +1102,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                 data={this.state.bicContacts}
                                                                                 selectedValue={this.state.selectedActionByContactId}
                                                                                 handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedActionByContactId')}
-
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.bicContactId}
@@ -1166,8 +1122,6 @@ class inspectionRequestAddEdit extends Component {
                                                                             handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
                                                                             index="contractId" />
                                                                     </div> :
-
-
                                                                     <div className="linebylineInput valid-input fullInputWidth">
                                                                         <label className="control-label">{Resources.contractPo[currentLanguage]}</label>
                                                                         <div className="ui input inputDev">
@@ -1177,7 +1131,6 @@ class inspectionRequestAddEdit extends Component {
                                                                         </div>
                                                                     </div>
                                                                 }
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
                                                                         title="discipline"
@@ -1185,7 +1138,6 @@ class inspectionRequestAddEdit extends Component {
                                                                         data={this.state.discplines}
                                                                         selectedValue={this.state.selectedDiscpline}
                                                                         handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
-
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.disciplineId}
@@ -1195,8 +1147,6 @@ class inspectionRequestAddEdit extends Component {
                                                                         name="disciplineId"
                                                                         id="disciplineId" />
                                                                 </div>
-
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
                                                                         title="reasonForIssue"
@@ -1205,7 +1155,6 @@ class inspectionRequestAddEdit extends Component {
                                                                         handleChange={event => this.handleChangeDropDown(event, 'reasonForIssueId', false, '', '', '', 'selectedReasonForIssue')}
                                                                         index="reasonForIssue" />
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
                                                                         title="areaName"
@@ -1214,8 +1163,6 @@ class inspectionRequestAddEdit extends Component {
                                                                         handleChange={event => this.handleChangeDropDown(event, 'areaId', false, '', '', '', 'selecetedArea')}
                                                                         index="areaId" />
                                                                 </div>
-
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
                                                                         title="Buildings"
@@ -1224,7 +1171,6 @@ class inspectionRequestAddEdit extends Component {
                                                                         handleChange={event => this.handleChangeDropDown(event, 'buildingNoId', false, '', '', '', 'selectedbuildingno')}
                                                                         index="buildingNoId" />
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
                                                                         title="apartmentNumber"
@@ -1233,8 +1179,6 @@ class inspectionRequestAddEdit extends Component {
                                                                         handleChange={event => this.handleChangeDropDown(event, 'apartmentNoId', false, '', '', '', 'selectedApartmentNoId')}
                                                                         index="apartmentNoId" />
                                                                 </div>
-
-
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                                     <div className="inputDev ui input">
@@ -1243,7 +1187,6 @@ class inspectionRequestAddEdit extends Component {
                                                                             onChange={this.onChangeRfi} />
                                                                     </div>
                                                                 </div>
-
                                                                 <div className="letterFullWidth">
                                                                     <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
                                                                     <div className="inputDev ui input">
@@ -1252,7 +1195,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                 value={this.state.answer}
                                                                                 onChange={this.onChangeAnswer} />
                                                                         </div>
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1262,17 +1204,12 @@ class inspectionRequestAddEdit extends Component {
                                                                         EditAttachments={3267} ShowDropBox={3593} ShowGoogleDrive={3594}
                                                                         docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                                     {this.viewAttachments()}
-
-                                                                    {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-
                                                                     <div className="document-fields tableBTnabs">
                                                                         {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                                                    </div> 
+                                                                    </div>
                                                                     {this.props.changeStatus === true ? (<ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
-
                                                                 </div>
                                                             </div>
-
                                                             {this.props.changeStatus === true ?
                                                                 <Fragment>
                                                                     <div className="slider-Btns">
@@ -1290,7 +1227,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                         <button className="primaryBtn-1 btn meduimBtn" >{Resources['next'][currentLanguage]}</button>
                                                                                     }
                                                                                 </div>
-
                                                                             </div> : null}
                                                                     </div>
                                                                     <div className="approveDocument">
@@ -1306,6 +1242,7 @@ class inspectionRequestAddEdit extends Component {
                                                                                 showModal={this.props.showModal}
                                                                                 showOptionPanel={this.showOptionPanel}
                                                                                 permission={this.state.permission}
+                                                                                documentName={Resources.inspectionRequest[currentLanguage]}
                                                                             />
                                                                         </div>
                                                                     </div>
@@ -1323,65 +1260,34 @@ class inspectionRequestAddEdit extends Component {
                                                                         this.showBtnsSaving()}
                                                                 </div>
                                                             }
-
                                                         </Form>
                                                     )}
                                                 </Formik>
                                             </div>
-
-                                            {/* 
-                                                : null
-                                            } */}
                                         </div>
                                     </div>
                                 </Fragment>
                                 :
                                 <div className="subiTabsContent feilds__top">
-
                                     {this.AddNewCycle()}
-
                                     <div className="doc-pre-cycle">
                                         <header>
                                             <h2 className="zero">{Resources['cyclesCount'][currentLanguage]}</h2>
                                         </header>
                                         {this.state.CycleEditLoading === false && this.state.CycleAddLoading === false ?
-                                            <ReactTable
-                                                ref={(r) => {
-                                                    this.selectTable = r;
-                                                }}
-                                                data={this.state.IRCycles}
-                                                columns={columns}
-                                                defaultPageSize={10}
-                                                minRows={2}
-                                                noDataText={Resources['noData'][currentLanguage]}
-                                            /> : null}
+                                            <ReactTable ref={(r) => { this.selectTable = r; }} data={this.state.IRCycles}
+                                                columns={columns} defaultPageSize={5} noDataText={Resources['noData'][currentLanguage]} /> : null}
                                     </div>
-                                    {this.props.changeStatus == true ?
-                                        <div className="doc-pre-cycle">
-                                            <div className="slider-Btns">
-                                                <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>{Resources['next'][currentLanguage]}</button>
-                                            </div>
-                                        </div>
-                                        : null}
                                 </div>
                             }
-
-
                         </div>
-
-                        <Steps
-                            steps_defination={steps_defination}
-                            exist_link="/inspectionRequest/"
-                            docId={this.state.docId}
-                            changeCurrentStep={stepNo =>
-                                this.changeCurrentStep(stepNo)
-                            }
+                        <Steps steps_defination={steps_defination} exist_link="/inspectionRequest/" docId={this.state.docId}
+                            changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
                             stepNo={this.state.CurrentStep}
                             changeStatus={docId === 0 ? false : true} />
-
                     </div>
                 </div>
-            </div >
+            </div>
         );
     }
 }
@@ -1405,7 +1311,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(inspectionRequestAddEdit))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(inspectionRequestAddEdit))

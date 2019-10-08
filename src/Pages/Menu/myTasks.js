@@ -99,13 +99,7 @@ class MyTasks extends Component {
     return (
       <div className="mainContainer">
         <div className="documents-stepper noTabs__document">
-          <HeaderDocument
-            docTitle={
-              Resources.Reports[currentLanguage] +
-              "  " +
-              Resources.myTasks[currentLanguage]
-            }
-          />
+          <HeaderDocument docTitle={Resources.Reports[currentLanguage] + "  " + Resources.myTasks[currentLanguage]} />
           <div className="doc-container">
             <div className="step-content">
               <div id="step1" className="step-content-body">
@@ -114,11 +108,7 @@ class MyTasks extends Component {
                     <form className="proForm">
                       {this.state.taskData.map(item => {
                         return (
-                          <div
-                            className="workingHours__cycle fullWidthWrapper textLeft"
-                            style={{ overflow: "auto" }}
-                            key={item.id}
-                          >
+                          <div className="workingHours__cycle fullWidthWrapper textLeft" style={{ overflow: "auto" }} key={item.id} >
                             <header>
                               <h3 className="zero">{item.Group}</h3>
                             </header>

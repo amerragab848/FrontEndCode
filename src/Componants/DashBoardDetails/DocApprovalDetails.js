@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 
-let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -45,7 +45,6 @@ let subjectLink = ({ value, row }) => {
       isApproveMode: true,
       perviousRoute: window.location.pathname + window.location.search
     };
-
 
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
@@ -166,7 +165,7 @@ class DocApprovalDetails extends Component {
         sortDescendingFirst: true
       },
       {
-        key: "lastApproveDate",
+        key: "lastApprovalDate",
         name: Resources["lastApproveDate"][currentLanguage],
         width: 150,
         draggable: true,
@@ -330,12 +329,15 @@ class DocApprovalDetails extends Component {
 
     for (let param of query.entries()) {
       action = param[1];
+
     }
 
     if (action === "1") {
       this.setState({
         pageTitle: Resources["docRejected"][currentLanguage]
       });
+
+      localStorage.setItem("lastRoute", "/DocApprovalDetails?action=1");
 
       Api.get("GetRejectedRequestsDocApprove").then(result => {
         this.setState({
@@ -347,6 +349,9 @@ class DocApprovalDetails extends Component {
       this.setState({
         pageTitle: Resources["docApproval"][currentLanguage]
       });
+
+      localStorage.setItem("lastRoute", "/DocApprovalDetails?action=2");
+
       Api.get("GetApprovalRequestsDocApprove").then(result => {
         this.setState({
           rows: result != null ? result : [],

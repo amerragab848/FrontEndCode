@@ -11,7 +11,7 @@ export const Get_Topics_Table = 'Get_Topics_Table';
 export const Export_Document = 'Export_Document';
 export const Clear_Cash_Document = 'Clear_Cash_Document';
 export const Show_OptionPanel = 'Show_OptionPanel';
-
+export const SET_ISREJECT = 'SET_ISREJECT';
 export const Update_Field = 'Update_Field';
 export const Delete_File = 'Delete_File';
 export const SendByEmail_Inbox = 'SendByEmail_Inbox';
@@ -39,8 +39,12 @@ export const delete_items = 'delete_items';
 export const reset_items = 'reset_items';
 export const userSettingsTabIndex = 'userSettingsTabIndex';
 export const EXPENSEWORKFLOW = 'EXPENSEWORKFLOW';
+//Docs Attachment Types
 export const GET_DOCS_ATTACH = 'GET_DOCS_ATTACH';
-
+export const GET_RELATED_LINK = 'GET_RELATED_LINK';
+export const DELETE_DOCS_ATTACH = 'DELETE_DOCS_ATTACH';
+export const ADD_DOCS_ATTACH = 'ADD_DOCS_ATTACH';
+export const GET_DOCUMNET_DATA = 'GET_DOCUMNET_DATA';
 // ProjectActionsTypes
 
 //----ExpenesWorkFlow
@@ -48,7 +52,6 @@ export const GetExpensesWorkFlow = 'GetExpensesWorkFlow';
 export const AddExpensesWorkFlow = 'AddExpensesWorkFlow';
 export const UpdateExpensesWorkFlow = 'UpdateExpensesWorkFlow';
 export const DeleteExpensesWorkFlow = 'DeleteExpensesWorkFlow';
-
 export const GetContactExpensesWorkFlow = 'GetContactExpensesWorkFlow';
 export const AddContactExpensesWorkFlow = 'AddContactExpensesWorkFlow';
 export const UpdateContactExpensesWorkFlow = 'UpdateContactExpensesWorkFlow';

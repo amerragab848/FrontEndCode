@@ -16,7 +16,7 @@ import moment from "moment";
 import { toast } from "react-toastify";
 // import { settings } from "cluster";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
- 
+
 const DashboardArrow = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -42,7 +42,6 @@ const DropdownIndicator = props => {
 };
 
 let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
-
 
 const dashboardMenu = {
   control: (styles, { isFocused }) =>

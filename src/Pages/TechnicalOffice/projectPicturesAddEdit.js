@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -15,7 +14,6 @@ import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import SkyLight from 'react-skylight';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
@@ -136,7 +134,7 @@ class projectPicturesAddEdit extends Component {
         }
     }
 
-    handleChange(e, field) { 
+    handleChange(e, field) {
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -356,7 +354,8 @@ class projectPicturesAddEdit extends Component {
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
 
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.projectPictures[currentLanguage]}
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
+                        docTitle={Resources.projectPictures[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
                     <div className="doc-container">
@@ -462,7 +461,7 @@ class projectPicturesAddEdit extends Component {
                                                 {this.state.IsEditMode === true && docId !== 0 ?
                                                     <div className="approveDocument">
                                                         <div className="approveDocumentBTNS">
-                                                           
+
                                                             {this.state.isLoading ?
                                                                 <button className="primaryBtn-1 btn disabled">
                                                                     <div className="spinner">
@@ -471,7 +470,7 @@ class projectPicturesAddEdit extends Component {
                                                                         <div className="bounce3" />
                                                                     </div>
                                                                 </button> :
-                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}onClick={this.saveNCR} type="submit">{Resources.save[currentLanguage]}</button>
+                                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={this.saveNCR} type="submit">{Resources.save[currentLanguage]}</button>
                                                             }
                                                             <DocumentActions
                                                                 isApproveMode={this.state.isApproveMode}
@@ -484,6 +483,7 @@ class projectPicturesAddEdit extends Component {
                                                                 showModal={this.props.showModal}
                                                                 showOptionPanel={this.showOptionPanel}
                                                                 permission={this.state.permission}
+                                                                documentName={Resources.projectPictures[currentLanguage]}
                                                             />
                                                         </div>
                                                     </div>

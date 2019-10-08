@@ -16,7 +16,6 @@ import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
 import moment from "moment";
-import SkyLight from "react-skylight";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
@@ -1091,6 +1090,7 @@ class weeklyReportsAddEdit extends Component {
                                                 showModal={this.props.showModal}
                                                 showOptionPanel={this.showOptionPanel}
                                                 permission={this.state.permission}
+                                                documentName={Resources.weeklyReport[currentLanguage]}
                                             />
                                         </div>
                                     </div>
@@ -2576,7 +2576,7 @@ class weeklyReportsAddEdit extends Component {
 
                     </div>
                 </div>
- 
+
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources["smartDeleteMessage"][currentLanguage].content}

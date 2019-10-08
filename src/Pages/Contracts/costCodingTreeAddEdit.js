@@ -85,6 +85,7 @@ class CostCodingTreeAddEdit extends Component {
 
   componentDidUpdate = () => {
   }
+  
   componentWillReceiveProps(nextProps) {
     if (nextProps.projectId !== this.props.projectId || nextProps.showActions == false) {
       this.getTree(nextProps.projectId)

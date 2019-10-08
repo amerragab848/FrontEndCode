@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import Api from "../../api";
 import Logo from "../../Styles/images/logo.svg";
@@ -21,8 +21,6 @@ let currentProjectId = localStorage.getItem("lastSelectedProject") == null ? 0 :
 var viewModules = true;
 var viewEps = false;
 var viewProjects = false;
-var accordion = true;
-var viewSubMenu = false;
 var ActivePanal = 0;
 
 class LeftMenu extends Component {
@@ -49,8 +47,7 @@ class LeftMenu extends Component {
           }
         }
       }
-    }
-    );
+    });
 
     //initialize of link
     Router.map(route => {
@@ -111,15 +108,12 @@ class LeftMenu extends Component {
       ListEps: [],
       viewEps: false,
       viewModules: true,
-      accordion: true,
       viewProjects: false,
       viewSubMenu: false,
       rowIndex: 0,
       ActivePanal: 0,
       titleProject: "",
       currentIndex: 0,
-      GeneralMenu: [],
-      AppComponants: [],
       generalMenu: generalMenu,
       timeMenu: timeMenu,
       procurementMenu: procurementMenu,
@@ -132,7 +126,6 @@ class LeftMenu extends Component {
       reportsMenu: reportsMenu,
       communication: communication
     };
-
   }
 
   hoverOn = () => {
@@ -148,36 +141,6 @@ class LeftMenu extends Component {
     viewModules = true;
     viewProjects = false;
 
-    // if (this.state.ActivePanal != 0) {
-
-    //   if (this.state.ActivePanal === 1) {
-    //     this.setState(state => {
-    //       return {
-    //         viewEps: true,
-    //         viewModules: false,
-    //         viewProjects: false
-    //       };
-    //     });
-
-    //     viewEps = true;
-    //     viewModules = false;
-    //     viewProjects = false;
-
-    //   } else {
-    //     this.setState(state => {
-    //       return {
-    //         viewEps: false,
-    //         viewModules: true,
-    //         viewProjects: false
-    //       };
-    //     });
-
-    //     viewEps = false;
-    //     viewModules = true;
-    //     viewProjects = false;
-    //   }
-
-    // }
   };
 
   ProjectHandler = () => {
@@ -243,36 +206,21 @@ class LeftMenu extends Component {
         projectId: state.projectId
       };
     });
-
   };
 
   EpsHandler = (id, index) => {
-    if (this.state.accordion === true) {
-      accordion = false;
-      this.setState(state => {
-        return {
-          accordion: false,
-          currentIndex: index
-        };
-      });
-    } else {
-      this.setState(state => {
-        return {
-          accordion: true,
-          currentIndex: index
-        };
-      });
-      accordion = true;
-    }
-
-    this.setState({ accordion: !this.state.accordion });
+    this.setState(state => {
+      return {
+        currentIndex: index
+      };
+    });
   };
 
   ModuleHandler = () => {
     if (this.state.projectId > 0) {
 
       if (this.state.ActivePanal === 1) {
-        accordion = false;
+
         this.setState(state => {
           return {
             viewEps: false,
@@ -297,7 +245,7 @@ class LeftMenu extends Component {
         ActivePanal = 1;
       }
     } else {
-      accordion = false;
+
       this.setState(state => {
         return {
           viewEps: false,
@@ -369,15 +317,13 @@ class LeftMenu extends Component {
 
     this.props.actions.LeftMenuClick(e, moduleName);
 
-
   };
 
   EpsComponent() {
 
     const Eps = this.state.ListEps == null ? null : this.state.ListEps.map((eps, index) => {
-
       return (
-        <div key={eps.id}>
+        <Fragment key={eps.id}>
           <ul className="MainProjectsMenuUL zero">
             <li className="EastWestProject PM-color">
               <span onClick={() => this.EpsHandler(eps.id, index)} className="EastMainLi">
@@ -386,20 +332,48 @@ class LeftMenu extends Component {
               <ul className={this.state.currentIndex === index ? "zero" : "zero closeAccordion"}>
                 {eps.projects.map(project => {
                   return (
-                    <li className="active" key={project.id} onClick={event => this.selectProjectHandler(project.id, project.name)}>
-                      <a>{project.name}</a>
+                    <li className={this.props.projectId === project.id ? "active" : ""} key={project.id} onClick={event => this.selectProjectHandler(project.id, project.name)}>
+                      <a>{project.name}</a> 
                     </li>
                   );
                 })}
               </ul>
+              {eps.epses.length > 0 ? this.childEPSCompnent(eps.epses) : null}
             </li>
           </ul>
-        </div>
-      );
 
+        </Fragment>
+      );
     })
 
     return Eps;
+  }
+
+  childEPSCompnent(childEPS) {
+    return (
+      <ul className="">
+        {childEPS.map((eps, index) => {
+          return (
+            <Fragment key={`SUB-${index}`}>
+              <li className="subEps__list">
+                <a onClick={() => this.EpsHandler(eps.id, index)}>
+                  {eps.name}
+                </a>
+                <ul className={this.state.currentIndex === index ? "zero" : "zero closeAccordion"}>
+                  {eps.projects.map(project => {
+                    return (
+                      <li className={this.props.projectId === project.id ? "active" : ""} key={project.id} onClick={event => this.selectProjectHandler(project.id, project.name)}>
+                        <a>{project.name}</a>
+                        {eps.epses.length > 0 ? this.childEPSCompnent(eps.epses) : null}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            </Fragment>)
+        })}
+      </ul>
+    );
   }
 
   ComponentName() {
@@ -500,7 +474,7 @@ class LeftMenu extends Component {
                     <div className={(viewEps) ? "MainProjectsMenu active " : "MainProjectsMenu hidden"} >
                       <div className="backToModules" onClick={this.ModuleHandler}>
                         {this.state.projectId ? (
-                          <a >
+                          <a>
                             <i className="fa fa-angle-left" aria-hidden="true" />
                             <span>
                               {Resources["backtoModules"][currentLanguage]}
@@ -510,7 +484,6 @@ class LeftMenu extends Component {
                       </div>
                       <div>{this.EpsComponent()}</div>
                     </div>
-
                     <div className={(viewModules) ? "modulesMenuIcons active " : "modulesMenuIcons  hidden "}>
                       <div className="backtoProjects" onClick={this.ModuleHandler}>
                         <div className="backtoProjectsOne" >
@@ -995,8 +968,6 @@ class LeftMenu extends Component {
                             })}
                           </ul>
                         </li>
-
-
                       </ul>
                     </div>
                   </div>

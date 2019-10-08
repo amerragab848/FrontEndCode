@@ -1,5 +1,6 @@
 import * as types from './types';
 import Api from '../../api';
+import dataservice from '../../Dataservice';
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -487,20 +488,93 @@ export function setDocId(docId) {
         });
     }
 }
-export function getCommunicationDocsAttach(projectId, docType, docId) {
-    return (dispatch, getState) => {
-        return Api.get("GetCommunicationDocsAttachDoc?projectId=" + projectId + "&docTypeId=" + docType + "&docId=" + docId).then(resp => {
 
-            dispatch({
-                type: types.GET_DOCS_ATTACH,
-                data: resp
-            });
+//#region Add Docs Attachment Actions
+
+export function getCommunicationDocsAttach(projectId, docType, docId) {
+    return (dispatch) => {
+
+        return Api.get("GetCommunicationDocsAttachDoc?projectId=" + projectId + "&docTypeId=" + docType + "&docId=" + docId).then(resp => {
+            dispatch({ type: types.GET_DOCS_ATTACH, data: resp });
+        }).catch((ex) => {
+            dispatch({ type: types.GET_DOCS_ATTACH, data: [] });
+        });
+
+    }
+}
+
+export function getCommunicationRelatedLinks(docType, docId) {
+    return (dispatch) => {
+
+        return Api.get("GetCommunicationDocsAttachDocByDocIdandDocType?docTypeId=" + docType + "&docId=" + docId).then(resp => {
+            dispatch({ type: types.GET_RELATED_LINK, data: resp });
 
         }).catch((ex) => {
-            dispatch({
-                type: types.GET_DOCS_ATTACH,
-                data: []
-            });
+            dispatch({ type: types.GET_RELATED_LINK, data: [] });
+        });
+
+    }
+}
+
+export function deleteCommunicationDocsAttach(id) {
+    return (dispatch) => {
+
+        return Api.post("CommunicationDocsAttachDocDelete?id=" + id).then(resp => {
+            dispatch({ type: types.DELETE_DOCS_ATTACH, id: id });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+
+        }).catch((ex) => {
+            dispatch({ type: types.DELETE_DOCS_ATTACH });
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
+
+    }
+}
+
+export function getCommunicationDocument(projectId, docType) {
+    return (dispatch) => {
+
+        return Api.get('GetAccountsDocAlertDocs?projectId=' + projectId + '&docType=' + docType).then(resp => {
+            dispatch({ type: types.GET_DOCUMNET_DATA, data: resp });
+        }).catch((ex) => {
+            dispatch({ type: types.GET_DOCUMNET_DATA });
+        });
+
+    }
+}
+
+export function checkLog(value) {
+
+    return (dispatch) => {
+        dispatch({
+            type: types.SET_ISREJECT,
+            data: value
         });
     }
 }
+
+export function addCommunicationDocsAttach(data, projectId, docType, docId) {
+    return (dispatch) => {
+        let document = []
+        let x = data.map(item => {
+            let obj = {
+                docId: docId, parentDocId: item.docId,
+                parentDocTypeId: item.docType, docTypeId: docType,
+                projectId: projectId,
+            }
+            document.push(obj);
+        });
+        return dataservice.addObject('AddCommunicationDocsAttachDocList', document).then(resp => {
+            dispatch({ type: types.ADD_DOCS_ATTACH, resp: resp });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch((ex) => {
+            dispatch({ type: types.ADD_DOCS_ATTACH });
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
+
+    }
+}
+
+
+//#endregion
+

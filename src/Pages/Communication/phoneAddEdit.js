@@ -526,6 +526,7 @@ class phoneAddEdit extends Component {
                                                                     showModal={this.props.showModal}
                                                                     showOptionPanel={this.showOptionPanel}
                                                                     permission={this.state.permission}
+                                                                    documentName={Resources.phoneTitle[currentLanguage]}
                                                                 />
                                                             </div>
                                                         </div>

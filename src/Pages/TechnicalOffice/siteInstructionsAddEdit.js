@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"; 
+import React, { Component, Fragment } from "react";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -15,7 +15,7 @@ import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'; 
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
@@ -677,6 +677,7 @@ class siteInstructionsAddEdit extends Component {
                                                                             showModal={this.props.showModal}
                                                                             showOptionPanel={this.showOptionPanel}
                                                                             permission={this.state.permission}
+                                                                            documentName={Resources.siteInstructions[currentLanguage]}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -692,7 +693,7 @@ class siteInstructionsAddEdit extends Component {
                                                 {this.viewAttachments()}
                                                 <Fragment>
                                                     <div className="document-fields tableBTnabs">
-                                                        {this.state.docId > 0 ? <AddDocAttachment title="SiteInstruction" isViewMode={this.state.isViewMode} projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                        {this.state.docId > 0 ? <AddDocAttachment isViewMode={this.state.isViewMode} projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                     </div>
                                                 </Fragment>
                                                 {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
