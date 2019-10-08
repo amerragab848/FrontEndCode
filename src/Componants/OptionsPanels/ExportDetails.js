@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import moment from "moment";
 import Resources from '../../resources.json';
-// import html2canvas from 'html2canvas';
-// import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import DED from './DocumentExportDefination.json'
 import { connect } from 'react-redux';
 import Profile from '../../Styles/images/icons/person.svg'
@@ -11,7 +11,7 @@ import Signature from '../../Styles/images/mySignature.png';
 import Config from "../../Services/Config";
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import Dataservice from '../../Dataservice.js'; 
+import Dataservice from '../../Dataservice.js';
 const _ = require('lodash')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -25,35 +25,75 @@ class ExportDetails extends Component {
             isExcel: "false",
             isLandscape: false,
             disNone: "disNone",
-            isLoading: false
+            isLoading: false,
+            random: 0
         };
 
         this.ExportDocument = this.ExportDocument.bind(this);
+        this.exportPDFFile = this.exportPDFFile.bind(this);
     }
 
     ExportDocument(Fields, items, name) {
         if (this.state.isExcel == "false") {
 
-            this.setState({
-                isLoading: true
-            }); 
-            var route = 'ExportDocumentServerSide'; 
-            Dataservice.GetNextArrangeMainDocument(route + `?documentName=${this.props.documentName}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`)
-                .then(result => { 
-                    if (result != null) {
-                        result = Config.getPublicConfiguartion().downloads + result;
-                        
-                        var a = document.createElement('A');
-                        a.href = result;
-                        a.download = result.substr(result.lastIndexOf('/') + 1);
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        this.setState({
-                            isLoading: false
-                        });
-                    }
+            // this.setState({
+            //     isLoading: true
+            // }); 
+            const input = document.getElementById('printPdf');
+            // input.style.height = 'auto'
+            // input.style.visibility = 'visible'
+
+            html2canvas(input).then((canvas) => {
+                var imgData = canvas.toDataURL('image/png');
+                var pageHeight = new Date().valueOf() % 2 ? 295 : 285;
+                var imgWidth = 210;
+                var imgHeight = canvas.height * imgWidth / canvas.width;
+                var heightLeft = imgHeight;
+                var doc = new jsPDF('landscape', 'mm', 'letter');
+                var position = 0;
+
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                doc.setProperties({
+                    // title: 'Title',
+                    // subject: 'This is the subject',
+                    author: 'Procoor',
+                    keywords: 'Procoor V5',
+                    creator: 'Procoor Team Development'
                 });
+
+                doc.save(Resources[this.props.documentTitle][currentLanguage] + '.pdf');
+                //input.style.visibility = 'hidden';
+                //input.style.height = '0';
+                // this.setState({
+                //     isLoading: false
+                // }); 
+            })
+
+            // var route = 'ExportDocumentServerSide'; 
+            // Dataservice.GetNextArrangeMainDocument(route + `?documentName=${this.props.documentName}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`)
+            //     .then(result => { 
+            //         if (result != null) {
+            //             result = Config.getPublicConfiguartion().downloads + result;
+
+            //             var a = document.createElement('A');
+            //             a.href = result;
+            //             a.download = result.substr(result.lastIndexOf('/') + 1);
+            //             document.body.appendChild(a);
+            //             a.click();
+            //             document.body.removeChild(a);
+            //             this.setState({
+            //                 isLoading: false
+            //             });
+            //         }
+            //     });
         }
         else {
             var uri = 'data:application/vnd.ms-excel;base64,'
@@ -109,6 +149,27 @@ class ExportDetails extends Component {
 
         }
     }
+    componentDidMount() {
+        // this.ExportDocument('salaryTable', 'testTable', 'procoor ');
+        console.log(this.props.workFlowCycles);
+    }
+
+    // static getDerivedStateFromProps(nextProps, state) {
+    //     let random = new Date().valueOf();
+    //     if (random !== state.random) {
+    //         return {
+    //             random
+    //         };
+    //     }
+    //     return null;
+
+    // }
+
+    // componentDidUpdate(prevProps, prevState) {
+    //     if (prevState.random !== this.props.random) {
+    //         this.ExportDocument('salaryTable', 'testTable', 'procoor ');
+    //     }
+    // }
 
     ifIE() {
         var isIE11 = navigator.userAgent.indexOf(".NET CLR") > -1;
@@ -531,23 +592,18 @@ class ExportDetails extends Component {
         });
     }
 
-    render() {
-        let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY')
-        let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : []
-        let cycle = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles : {}
-        let exportPdf =
+    exportPDFFile() {
+        let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY');
+        let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : [];
+        let cycleWF = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0] : null;
+        return (
             <div>
-                <div id="printPdf" className="printWrapper" style={{ height: 0, visibility: "hidden" }} >
+                <div id="printPdf" className="printWrapper">
                     <div className="company__name">
-                        <span className="company__logo"></span>
-                        <h3>Company name</h3>
+                        <span className="company__logo" style={{ background: 'transparent' }}> <img src="/static/media/logo.f73844e0.svg" alt="Procoor" title="Procoor" style={{ maxWidth: '100%' }} /></span>
+                        <h3> {Resources[this.props.documentTitle][currentLanguage]}</h3>
                     </div>
                     <div className="subiGrid printGrid">
-                        <div className="printHead">
-                            <h3 className="zero">
-                                {Resources[this.props.documentTitle][currentLanguage]}
-                            </h3>
-                        </div>
                         <div className="docStatus">
                             <div className="highClosed">
                                 <span className="subiStatus">{Resources.status[currentLanguage]} </span>
@@ -563,89 +619,101 @@ class ExportDetails extends Component {
                         </div>
 
                     </div>
-                    <div className="table__withItem">
-                        {this.drawItems_pdf()}
-                    </div>
-
-
-                    {this.drawAttachments_pdf()}
-                    {cycle ?
-                        <p id="pdfLength"><span>{cycle.subject}</span><span>{" at Level: " + cycle.currentLevel}</span><span> {" Sent:" + moment(cycle.creationDate).format('DD-MM-YYYY')}</span></p>
+                    {this.props.items.length > 0 ?
+                        < div className="table__withItem">
+                            {this.drawItems_pdf()}
+                        </div>
                         : null
                     }
-                    <div className=" printSecondPage">
-                        {levels.map((cycle, index) => {
-                            return (
-                                <div key={'row- ' + index} className="workflowPrint">
-                                    <div className="flowLevel">
-                                        <div className="flowNumber">
-                                            <span className="stepLevel">{index + 1}</span>
-                                        </div>
-                                        <div className="flowMember">
-                                            <div className="FlowText">
-                                                <h3>{cycle.contactName}</h3>
-                                                <p>{cycle.companyName}</p>
+                    {this.drawAttachments_pdf()}
+                    {this.drawattachDocuments_pdf()}
+                    {this.props.workFlowCycles.length > 0 ?
+                        <Fragment>
+                            <p id="pdfLength"><span>{cycleWF.subject}</span><span>{" at Level: " + cycleWF.currentLevel}</span><span> {" Sent:" + moment(cycleWF.creationDate).format('DD-MM-YYYY')}</span></p>
+                            <div className=" printSecondPage">
+                                {levels.map((cycle, index) => {
+                                    return (
+                                        <div key={'row- ' + index} className="workflowPrint">
+                                            <div className="flowLevel">
+                                                <div className="flowNumber">
+                                                    <span className="stepLevel">{index + 1}</span>
+                                                </div>
+                                                <div className="flowMember">
+                                                    <div className="FlowText">
+                                                        <h3>{cycle.contactName}</h3>
+                                                        <p>{cycle.companyName}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className={cycle.statusVal == null ? "flowStatus pendingStatue" : cycle.statusVal === true ? "flowStatus approvedStatue" : "flowStatus rejectedStatue"}>
+                                                <span className=" statueName">{cycle.status}</span>
+                                                <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>
+                                                <span className="statueSignature">
+                                                    <img src={cycle.statusVal == null ? null : cycle.signature != null ? cycle.signature : Signature} alt="..." />
+                                                </span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className={cycle.statusVal == null ? "flowStatus pendingStatue" : cycle.statusVal === true ? "flowStatus approvedStatue" : "flowStatus rejectedStatue"}>
-                                        <span className=" statueName">{cycle.status}</span>
-                                        <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>
-                                        <span className="statueSignature">
-                                            <img src={cycle.statusVal == null ? null : cycle.signature != null ? cycle.signature : Signature} alt="..." />
-                                        </span>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                    {this.drawattachDocuments_pdf()}
+                                    )
+                                })}
+                            </div>
+                        </Fragment>
+                        : null
+                    }
                 </div>
-            </div>
+            </div >
+        )
+    }
+    render() {
+        // let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY')
+        // let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : []
+        // let cycle = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles : {}
+        
         return (
-            <div id={'docExport'} >
-                <div className="dropWrapper">
-                    <div className="proForm customProform">
-                        <div className="fillter-status fillter-item-c">
-                            <label className="control-label">{Resources.export[currentLanguage]}</label>
-                            <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === "false" ? null : 'checked'} value={true} onChange={e => this.handleChange(e, 'isExcel')} />
-                                <label>{Resources.excel[currentLanguage]}</label>
+            <div id={'docExport'} className="mainContainer" >
+                {this.state.isLoading === true ? null :
+                    <div className="dropWrapper">
+                        <div className="proForm customProform">
+                            <div className="fillter-status fillter-item-c">
+                                <label className="control-label">{Resources.export[currentLanguage]}</label>
+                                <div className="ui checkbox radio radioBoxBlue">
+                                    <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === "false" ? null : 'checked'} value={true} onChange={e => this.handleChange(e, 'isExcel')} />
+                                    <label>{Resources.excel[currentLanguage]}</label>
+                                </div>
+                                <div className="ui checkbox radio radioBoxBlue">
+                                    <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === "false" ? 'checked' : null} value={false} onChange={e => this.handleChange(e, 'isExcel')} />
+                                    <label>{Resources.pdf[currentLanguage]}</label>
+                                </div>
                             </div>
-                            <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === "false" ? 'checked' : null} value={false} onChange={e => this.handleChange(e, 'isExcel')} />
-                                <label>{Resources.pdf[currentLanguage]}</label>
+                            <div className="fillter-status fillter-item-c">
+                                <label className="control-label">{Resources.design[currentLanguage]}</label>
+                                <div className="ui checkbox radio radioBoxBlue">
+                                    <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'isLandscape')} />
+                                    <label>{Resources.landscape[currentLanguage]}</label>
+                                </div>
+                                <div className="ui checkbox radio radioBoxBlue">
+                                    <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? 'checked' : null} value="true" onChange={e => this.handleChange(e, 'isLandscape')} />
+                                    <label>{Resources.portrait[currentLanguage]}</label>
+                                </div>
                             </div>
                         </div>
-                        <div className="fillter-status fillter-item-c">
-                            <label className="control-label">{Resources.design[currentLanguage]}</label>
-                            <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'isLandscape')} />
-                                <label>{Resources.landscape[currentLanguage]}</label>
-                            </div>
-                            <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? 'checked' : null} value="true" onChange={e => this.handleChange(e, 'isLandscape')} />
-                                <label>{Resources.portrait[currentLanguage]}</label>
-                            </div>
+                        <div className="fullWidthWrapper">
+                            <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
                         </div>
+                        <div id="exportLink"></div>
                     </div>
-                    <div className="fullWidthWrapper">
-                        <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
-                    </div>
-                    <div id="exportLink"></div>
-                </div>
+                }
 
                 {this.state.isLoading === true ?
                     <LoadingSection /> : null}
 
                 <div style={{ display: 'none' }}>
                     {this.drawFields()}
-                    {this.drawItems()}
-                    {this.drawAttachments()}
-                    {this.drawWorkFlow()}
-                    {this.drawattachDocuments()}
+                    {this.props.items.length > 0 ? this.drawItems() : null}
+                    {this.props.files.length > 0 ? this.drawAttachments() : null}
+                    {this.props.workFlowCycles.length > 0 ? this.drawWorkFlow() : null}
+                    {this.props.attachDocuments.length > 0 ? this.drawattachDocuments() : null}
                 </div>
-                {exportPdf}
+                {this.exportPDFFile()}
             </div>
         )
     }
