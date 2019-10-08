@@ -16,7 +16,6 @@ import { SkyLightStateless } from "react-skylight";
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
 class AddDocAttachment extends Component {
 
   constructor(props) {
@@ -43,11 +42,11 @@ class AddDocAttachment extends Component {
     // Get Drop Down Models Data When Open Modal To Add Attachment
     dataservice.GetDataList("GetModuleList", "modulType", "id").then(result => { this.setState({ moduls: result }) });
     //Get Data For Doc Attachment Table By DocId & ProjectId & DocType
-    if (!this.props.docsAttachData.length) {
-      this.props.actions.getCommunicationDocsAttach(this.props.projectId, this.props.docTypeId, this.props.docId);
-    }
+    //if (!this.props.docsAttachData.length) {
+    this.props.actions.getCommunicationDocsAttach(this.props.projectId, this.props.docTypeId, this.props.docId);
+    // }
     //In This Case In Two Documnets Only[ SiteInstruction & VariationRequest] You Must Show Related Links Section 
-    if (this.state.relatedLink && !this.props.docsAttachData.length) {
+    if (this.state.relatedLink) {
       this.props.actions.getCommunicationRelatedLinks(this.props.docTypeId, this.props.docId);
     }
   }
@@ -88,8 +87,10 @@ class AddDocAttachment extends Component {
 
   save() {
     if (this.state.selectedRows.length > 0) {
+
       this.props.actions.addCommunicationDocsAttach(this.state.selectedRows, this.props.projectId, this.props.docTypeId, this.props.docId);
-      this.setState({ selectDocument: this.state.initialSelectDocument, selectedRows: [] });
+      this.setState({ selectDocument: this.state.initialSelectDocument, selectedRows: [], selected: {} });
+
     }
     else {
       toast.warning(Resources["arrayEmpty"][currentLanguage]);
