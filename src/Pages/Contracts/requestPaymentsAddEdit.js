@@ -2348,135 +2348,97 @@ class requestPaymentsAddEdit extends Component {
                 itemsColumns.length > 0 ? (
                     <GridSetup
                         rows={this.state.paymentsItems}
-                        showCheckbox={
-                            isCompany && this.props.changeStatus ? true : false
-                        }
+                        showCheckbox={isCompany && this.props.changeStatus ? true : false}
                         clickHandlerDeleteRows={this.clickHandlerDeleteRows}
                         pageSize={this.state.pageSize}
                         onRowClick={this.onRowClick}
                         columns={itemsColumns}
                         onGridRowsUpdated={this._onGridRowsUpdated}
                         getCellActions={this.GetCellActions}
-                        key="PRitems"
-                    />
-                ) : (
-                    <LoadingSection />
-                );
+                        key="PRitems" />
+                ) : (<LoadingSection />);
 
         const BoqTypeContent = (
             <Fragment>
                 <div className="dropWrapper">
                     {this.state.isLoading ? <LoadingSection /> : null}
-                    <Formik
-                        enableReinitialize={true}
-                        initialValues={{
-                            boqType: "",
-                            boqChild: "",
-                            boqSubType: ""
-                        }}
+                    <Formik enableReinitialize={true} initialValues={{ boqType: "", boqChild: "", boqSubType: "" }}
                         validationSchema={BoqTypeSchema}
-                        onSubmit={values => {
-                            this.assignBoqType();
-                        }}>
-                        {({
-                            errors,
-                            touched,
-                            setFieldTouched,
-                            setFieldValue,
-                            handleBlur,
-                            handleChange
-                        }) => (
-                                <Form
-                                    id="signupForm1"
-                                    className="proForm datepickerContainer customProform"
-                                    noValidate="novalidate">
-                                    <div className="fullWidthWrapper textLeft">
-                                        <Dropdown
-                                            title="boqType"
-                                            data={this.state.boqTypes}
-                                            selectedValue={
-                                                this.state.selectedBoqTypeEdit
-                                            }
-                                            handleChange={event =>
-                                                this.handleChangeItemDropDownItems(
-                                                    event,
-                                                    "boqTypeId",
-                                                    "selectedBoqTypeEdit",
-                                                    true,
-                                                    "GetAllBoqChild",
-                                                    "parentId",
-                                                    "BoqTypeChilds"
-                                                )
-                                            }
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.boqType}
-                                            touched={touched.boqType}
-                                            name="boqType"
-                                            index="boqType"
-                                        />
-                                    </div>
-                                    <Dropdown
-                                        title="boqTypeChild"
-                                        data={this.state.BoqTypeChilds}
-                                        selectedValue={
-                                            this.state.selectedBoqTypeChildEdit
-                                        }
-                                        handleChange={event =>
-                                            this.handleChangeItemDropDownItems(
-                                                event,
-                                                "boqTypeChildId",
-                                                "selectedBoqTypeChildEdit",
-                                                true,
-                                                "GetAllBoqChild",
-                                                "parentId",
-                                                "BoqSubTypes"
-                                            )
-                                        }
+                        onSubmit={values => { this.assignBoqType(); }}>
+                        {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                            <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate">
+                                <div className="fullWidthWrapper textLeft">
+                                    <Dropdown title="boqType" data={this.state.boqTypes} selectedValue={this.state.selectedBoqTypeEdit}
+                                        handleChange={event => this.handleChangeItemDropDownItems(event, "boqTypeId", "selectedBoqTypeEdit", true, "GetAllBoqChild", "parentId", "BoqTypeChilds")}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
-                                        error={errors.boqChild}
-                                        touched={touched.boqChild}
-                                        name="boqChild"
-                                        index="boqChild"
+                                        error={errors.boqType}
+                                        touched={touched.boqType}
+                                        name="boqType"
+                                        index="boqType"
                                     />
-                                    <Dropdown
-                                        title="boqSubType"
-                                        data={this.state.BoqSubTypes}
-                                        selectedValue={
-                                            this.state.selectedBoqSubTypeEdit
+                                </div>
+                                <Dropdown
+                                    title="boqTypeChild"
+                                    data={this.state.BoqTypeChilds}
+                                    selectedValue={
+                                        this.state.selectedBoqTypeChildEdit
+                                    }
+                                    handleChange={event =>
+                                        this.handleChangeItemDropDownItems(
+                                            event,
+                                            "boqTypeChildId",
+                                            "selectedBoqTypeChildEdit",
+                                            true,
+                                            "GetAllBoqChild",
+                                            "parentId",
+                                            "BoqSubTypes"
+                                        )
+                                    }
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.boqChild}
+                                    touched={touched.boqChild}
+                                    name="boqChild"
+                                    index="boqChild"
+                                />
+                                <Dropdown
+                                    title="boqSubType"
+                                    data={this.state.BoqSubTypes}
+                                    selectedValue={
+                                        this.state.selectedBoqSubTypeEdit
+                                    }
+                                    handleChange={event =>
+                                        this.handleChangeItemDropDownItems(
+                                            event,
+                                            "boqSubTypeId",
+                                            "selectedBoqSubTypeEdit",
+                                            false,
+                                            "",
+                                            "",
+                                            ""
+                                        )
+                                    }
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.boqSubType}
+                                    touched={touched.boqSubType}
+                                    name="boqSubType"
+                                    index="boqSubType"
+                                />
+                                <div className={"slider-Btns fullWidthWrapper"}>
+                                    <button
+                                        className={
+                                            this.state.isViewMode === true
+                                                ? "primaryBtn-1 btn  disNone"
+                                                : "primaryBtn-1 btn "
                                         }
-                                        handleChange={event =>
-                                            this.handleChangeItemDropDownItems(
-                                                event,
-                                                "boqSubTypeId",
-                                                "selectedBoqSubTypeEdit",
-                                                false,
-                                                "",
-                                                "",
-                                                ""
-                                            )
-                                        }
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.boqSubType}
-                                        touched={touched.boqSubType}
-                                        name="boqSubType"
-                                        index="boqSubType"
-                                    />
-                                    <div className={"slider-Btns fullWidthWrapper"}>
-                                        <button
-                                            className={
-                                                this.state.isViewMode === true
-                                                    ? "primaryBtn-1 btn  disNone"
-                                                    : "primaryBtn-1 btn "
-                                            }
-                                            type="submit">
-                                            {Resources["save"][currentLanguage]}
-                                        </button>
-                                    </div>
-                                </Form>
-                            )}
+                                        type="submit">
+                                        {Resources["save"][currentLanguage]}
+                                    </button>
+                                </div>
+                            </Form>
+                        )}
                     </Formik>
                 </div>
             </Fragment>
