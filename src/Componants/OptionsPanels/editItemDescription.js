@@ -33,6 +33,7 @@ const documentItemValidationSchema = Yup.object().shape({
     quantity: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage])
 });
 class addItemDescription extends Component {
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -86,6 +87,7 @@ class addItemDescription extends Component {
         if (this.props.isViewMode !== prevProps.isViewMode) {
         }
     }
+
     componentWillMount() {
         this.fillTable();
         DataService.GetDataList("GetDefaultListForUnit?listType=unit", "listType", "listType").then(res => {

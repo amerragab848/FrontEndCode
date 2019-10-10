@@ -24,6 +24,8 @@ import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
 import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
+import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
+import SkyLight from "react-skylight";
 
 var steps_defination = [];
 
@@ -169,6 +171,7 @@ class VariationRequestAdd extends Component {
 
 
         this.state = {
+            showPopUp: false,
             itemsColumns: itemsColumns,
             isViewMode: false,
             isApproveMode: isApproveMode,
@@ -176,6 +179,7 @@ class VariationRequestAdd extends Component {
             isView: false,
             docId: docId,
             docTypeId: 108,
+            selectedRow: {},
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
@@ -532,7 +536,56 @@ class VariationRequestAdd extends Component {
         this.setState({ CurrentStep: stepNo });
     };
 
+    _executeBeforeModalOpen = () => {
+        this.setState({
+            btnText: "save"
+        });
+    };
+
+    _executeBeforeModalClose = () => {
+        this.setState({
+            showPopUp: false,
+            btnText: "add",
+            showBoqModal: false
+        });
+    };
+
+
+    onRowClick = (value, index, column) => {
+
+        if (this.state.CurrStep == 1) {
+            this.setState({
+                showPopUp: true,
+                btnText: "save",
+                selectedRow: value
+            });
+            this.simpleDialog1.show();
+        }
+
+    };
+
     render() {
+
+        const itemsContent = (
+            <Fragment>
+                <div
+                    className=" proForm datepickerContainer customProform document-fields"
+                    key="editItem">
+                    <EditItemDescription
+                        showImportExcel={false}
+                        docType="vr"
+                        isViewMode={this.state.isViewMode}
+                        //mainColumn="boqId"
+                        editItemApi="EditVRItem"
+                        projectId={this.state.projectId}
+                        showItemType={true}
+                        item={this.state.selectedRow}
+                        onSave={e => this._executeBeforeModalClose()}
+                    />
+                </div>
+            </Fragment>
+        );
+
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
@@ -743,11 +796,11 @@ class VariationRequestAdd extends Component {
                                         <AddItemDescription
                                             docLink="/Downloads/Excel/BOQ.xlsx"
                                             showImportExcel={this.state.document.isRaisedPrices}
-                                            docType="vo"
+                                            docType="vr"
                                             isViewMode={this.state.isViewMode}
                                             docId={this.state.docId}
-                                            mainColumn="changeOrderId"
-                                            addItemApi="AddVOItems"
+                                            //mainColumn="changeOrderId"
+                                            addItemApi="AddVRItems"
                                             projectId={this.state.projectId}
                                             showItemType={false}
                                         />
@@ -755,6 +808,7 @@ class VariationRequestAdd extends Component {
                                             <GridSetupWithFilter
                                                 rows={this.state.items}
                                                 pageSize={10}
+                                                onRowClick={this.onRowClick}
                                                 columns={this.state.itemsColumns}
                                                 key='items'
                                             />
@@ -795,7 +849,17 @@ class VariationRequestAdd extends Component {
                                 </div> : null
                         }
                     </div>
-
+                    <div
+                        className="largePopup largeModal "
+                        style={{ display: this.state.showPopUp ? "block" : "none" }}>
+                        <SkyLight hideOnOverlayClicked
+                            ref={ref => (this.simpleDialog1 = ref)}
+                            title={Resources.editTitle[currentLanguage] + " - " + Resources.edit[currentLanguage]}
+                            beforeClose={this._executeBeforeModalClose}
+                            beforeOpen={this._executeBeforeModalOpen}>
+                            {itemsContent}
+                        </SkyLight>
+                    </div>
                 </div>
             </div>
         );
