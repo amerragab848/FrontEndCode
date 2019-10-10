@@ -19,12 +19,8 @@ import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
 import moment from "moment";
 import SkyLight from "react-skylight";
-import Distribution from "../../Componants/OptionsPanels/DistributionList";
-import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
-import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
-import { func } from "prop-types";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -1149,7 +1145,7 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true
             });
             dataservice
-                .GetDataGridPost(
+                .GetDataGrid(
                     "GetTotalForReqPay?projectId=" +
                     projectId +
                     "&contractId=" +
@@ -2452,18 +2448,7 @@ class requestPaymentsAddEdit extends Component {
                             <td colSpan="9">
                                 <div className="contentCell tableCell-2">
                                     <a>
-                                        {i.workDescription != null
-                                            ? i.workDescription.slice(
-                                                0,
-                                                i.workDescription.lastIndexOf(
-                                                    "-"
-                                                ) == -1
-                                                    ? i.workDescription.length
-                                                    : i.workDescription.lastIndexOf(
-                                                        "-"
-                                                    )
-                                            )
-                                            : ""}
+                                        {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
                                     </a>
                                 </div>
                             </td>
@@ -2473,35 +2458,9 @@ class requestPaymentsAddEdit extends Component {
                                         <div className="contentCell tableCell-2">
                                             <a
                                                 data-toggle="tooltip"
-                                                title={
-                                                    i.workDescription != null
-                                                        ? i.workDescription.slice(
-                                                            0,
-                                                            i.workDescription.lastIndexOf(
-                                                                "-"
-                                                            ) == -1
-                                                                ? i
-                                                                    .workDescription
-                                                                    .length
-                                                                : i.workDescription.lastIndexOf(
-                                                                    "-"
-                                                                )
-                                                        )
-                                                        : ""
+                                                title={i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""
                                                 }>
-                                                {i.workDescription != null
-                                                    ? i.workDescription.slice(
-                                                        0,
-                                                        i.workDescription.lastIndexOf(
-                                                            "-"
-                                                        ) == -1
-                                                            ? i.workDescription
-                                                                .length
-                                                            : i.workDescription.lastIndexOf(
-                                                                "-"
-                                                            )
-                                                    )
-                                                    : ""}
+                                                {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
                                             </a>
                                         </div>
                                     </td>
