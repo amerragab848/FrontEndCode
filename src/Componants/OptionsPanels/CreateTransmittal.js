@@ -183,7 +183,7 @@ class CreateTransmittal extends Component {
                             />
                             <Dropdown
                                 title="submittedFor"
-                                data={this.state.PriorityData}
+                                data={this.state.SubmittedForData}
                                 handleChange={this.SubmittedFor_handelChange}
                                 name='submittedFor'
                             />

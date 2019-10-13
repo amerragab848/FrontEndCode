@@ -17259,7 +17259,7 @@
         "exportDataType": "d"
       },
       {
-        "field": "approvedDate",
+        "field": "lastApprovalDate",
         "friendlyName": "lastApproveDate",
         "minWidth": 85,
         "width": "15%",
