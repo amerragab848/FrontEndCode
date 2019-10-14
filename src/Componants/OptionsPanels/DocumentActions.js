@@ -4,7 +4,6 @@ import DropDown from './DropdownMelcous'
 import SkyLight from 'react-skylight';
 import Config from '../../Services/Config';
 import find from 'lodash/find'
-//import { withRouter } from "react-router-dom";
 
 ////array hold information fro panels (path,title and value  )
 const importedPaths = [
@@ -106,17 +105,12 @@ class DocumentActions extends Component {
                 ///cahnage approvalStatus (true or false ) to set correct parameter for document approvel 
                 if (item.value == 3)
                     this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: false, currentArrange: this.props.currentArrange });
-                // else if (item.value === 4)
-                //     this.props.history.push({ pathname: "/ExportDetails" });
-                //ExportDetails
                 else
                     this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: true, currentArrange: this.props.currentArrange });
 
-                //if (item.value !== 4) {
                 this.setState({ module: module.default, currentTitle: item.title })
                 this.props.showOptionPanel();
                 this.simpleDialog.show();
-                // }
             });
         }
     }
