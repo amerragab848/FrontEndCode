@@ -431,16 +431,6 @@ export function GetTopicsTable(urlAction) {
     }
 }
 
-export const ViewDocsAttachment = (docs) => {
-    return (dispatch, getState) => {
-        return (
-            dispatch({
-                type: types.ViewDocsAttachment,
-                attachDocuments: docs || []
-            })
-        )
-    }
-}
 
 function BuildWorkFlowCycleStracture(result) {
     let levels = [];
@@ -490,6 +480,17 @@ export function setDocId(docId) {
 }
 
 //#region Add Docs Attachment Actions
+
+export const ViewDocsAttachment = (docs) => {
+    return (dispatch, getState) => {
+        return (
+            dispatch({
+                type: types.ViewDocsAttachment,
+                data: docs || []
+            })
+        )
+    }
+}
 
 export function getCommunicationDocsAttach(projectId, docType, docId) {
     return (dispatch) => {

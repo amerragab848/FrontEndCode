@@ -8,12 +8,6 @@ export default function (state = initialState.app.communication, action) {
 
     switch (action.type) {
 
-        case types.ViewDocsAttachment:
-            state.attachDocuments = action.attachDocuments
-            return {
-                ...state
-            }
-
         case types.Export_Document:
             let _items = state.items.length > 0 ? state.items : action.items.length > 0 ? action.items : []
             return {
@@ -30,7 +24,7 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: true,
                 showSelectProject: false,
                 showLeftReportMenu: false,
-                docsAttachData: [],
+                //docsAttachData: [],
                 documentTitle: action.docName
             };
 
@@ -309,6 +303,12 @@ export default function (state = initialState.app.communication, action) {
 
         case types.GET_DOCS_ATTACH:
             return { ...state, docsAttachData: action.data }
+
+        case types.ViewDocsAttachment:
+            state.docsAttachData = action.data
+            return {
+                ...state
+            }
 
         case types.GET_RELATED_LINK:
             return { ...state, relatedLinkData: action.data || [] }
