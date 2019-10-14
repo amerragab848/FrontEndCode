@@ -125,7 +125,13 @@ class LettersAddEdit extends Component {
                 label: Resources.replyletter[currentLanguage],
                 value: "0"
             },
-            message: ""
+            message: "",
+
+            selectedWorkFlow: { label: "select WorkFlow", value: 0 },
+            selectedApproveId: { label: "select To Contact", value: 0 },
+            submitLoading: false,
+            WorkFlowData: [],
+            WorkFlowContactData: []
         };
 
         if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
@@ -133,6 +139,39 @@ class LettersAddEdit extends Component {
             this.props.history.push(this.state.perviousRoute);
         }
     }
+
+    workFlowhandelChangeLetter = (item) => {
+
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+        updated_document.workFlowId = item.value;
+        updated_document = Object.assign(original_document, updated_document);
+
+        let url = "GetProjectWorkFlowContactsFirstLevelForList?workFlow=" + item.value;
+        dataservice.GetDataList(url, "contactName", "id").then(result => {
+            this.setState({
+                document: updated_document,
+                WorkFlowContactData: [...result],
+                selectedWorkFlow: item
+            });
+        });
+
+    }
+
+    toAccounthandelChangeLetter = (item) => {
+
+        let original_document = { ...this.state.document };
+        let updated_document = {};
+        updated_document.toAccountId = item.value;
+        updated_document = Object.assign(original_document, updated_document);
+
+        this.setState({
+            document: updated_document,
+            selectedApproveId: item
+        });
+        console.log(updated_document)
+    }
+
 
     componentDidMount() {
 
@@ -155,7 +194,9 @@ class LettersAddEdit extends Component {
                 disciplineId: "",
                 refDoc: "",
                 sharedSettings: '',
-                message: ""
+                message: "",
+                workFlowId: "",
+                toAccountId: ""
             };
             this.setState({ document: letter });
 
@@ -258,37 +299,43 @@ class LettersAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId")
-            .then(result => {
-                if (isEdit) {
-                    let companyId = this.props.document.fromCompanyId;
-                    if (companyId) {
-                        this.setState({
-                            selectedFromCompany: {
-                                label: this.props.document.fromCompanyName,
-                                value: companyId
-                            }
-                        });
-                        this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "fromContactId", "selectedFromContact", "fromContacts");
-                    }
-
-                    let toCompanyId = this.props.document.toCompanyId;
-                    if (toCompanyId) {
-                        this.setState({
-                            selectedToCompany: {
-                                label: this.props.document.toCompanyName,
-                                value: toCompanyId
-                            }
-                        });
-
-                        this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts"
-                        );
-                    }
-                }
+        if (isEdit === false) {
+            dataservice.GetDataList("ProjectWorkFlowGetList?projectId=" + this.state.projectId, "subject", "id").then(result => {
                 this.setState({
-                    companies: [...result]
+                    WorkFlowData: [...result]
                 });
             });
+        }
+        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId").then(result => {
+            if (isEdit) {
+                let companyId = this.props.document.fromCompanyId;
+                if (companyId) {
+                    this.setState({
+                        selectedFromCompany: {
+                            label: this.props.document.fromCompanyName,
+                            value: companyId
+                        }
+                    });
+                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "fromContactId", "selectedFromContact", "fromContacts");
+                }
+
+                let toCompanyId = this.props.document.toCompanyId;
+                if (toCompanyId) {
+                    this.setState({
+                        selectedToCompany: {
+                            label: this.props.document.toCompanyName,
+                            value: toCompanyId
+                        }
+                    });
+
+                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts"
+                    );
+                }
+            }
+            this.setState({
+                companies: [...result]
+            });
+        });
 
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id")//,'defaultLists', "discipline")
             .then(result => {
@@ -899,41 +946,18 @@ class LettersAddEdit extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput valid-input mix_dropdown">
-                                                                <label className="control-label">
-                                                                    {
-                                                                        Resources
-                                                                            .toCompany[
-                                                                        currentLanguage
-                                                                        ]
-                                                                    }
+                                                                <label className="control-label">{Resources.toCompany[currentLanguage]}
                                                                 </label>
                                                                 <div className="supervisor__company">
                                                                     <div className="super_name">
-                                                                        <Dropdown
-                                                                            isMulti={
-                                                                                false
-                                                                            }
-                                                                            data={
-                                                                                this
-                                                                                    .state
-                                                                                    .companies
-                                                                            }
+                                                                        <Dropdown isMulti={
+                                                                            false}
+                                                                            data={this.state.companies}
                                                                             selectedValue={
-                                                                                this
-                                                                                    .state
-                                                                                    .selectedToCompany
+                                                                                this.state.selectedToCompany
                                                                             }
-                                                                            handleChange={event =>
-                                                                                this.handleChangeDropDown(
-                                                                                    event,
-                                                                                    "toCompanyId",
-                                                                                    true,
-                                                                                    "ToContacts",
-                                                                                    "GetContactsByCompanyId",
-                                                                                    "companyId",
-                                                                                    "selectedToCompany",
-                                                                                    "selectedToContact"
-                                                                                )
+                                                                            handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact"
+                                                                            )
                                                                             }
                                                                             onChange={
                                                                                 setFieldValue
@@ -1066,6 +1090,22 @@ class LettersAddEdit extends Component {
                                                                     />
                                                                 </div>
                                                             </div>
+                                                            <div className="dropWrapper proForm">
+                                                                <Dropdown title="workFlow"
+                                                                    data={this.state.WorkFlowData}
+                                                                    handleChange={this.workFlowhandelChangeLetter}
+                                                                    selectedValue={this.state.selectedWorkFlow}
+                                                                    index='ddlworkFlowId' />
+
+                                                                <Dropdown title="contact"
+                                                                    data={this.state.WorkFlowContactData}
+                                                                    name="ddlApproveTo"
+                                                                    selectedValue={this.state.selectedApproveId}
+                                                                    index='ddlApproveTo'
+                                                                    handleChange={this.toAccounthandelChangeLetter}
+                                                                    className={this.state.toCompanyClass} />
+
+                                                            </div>
                                                         </div>
                                                         <div className="slider-Btns">
                                                             {this.state.isLoading ?
@@ -1081,6 +1121,7 @@ class LettersAddEdit extends Component {
                                                                     {this.showBtnsSaving()}
                                                                 </div>}
                                                         </div>
+
                                                         {this.props.changeStatus ===
                                                             true ? (
                                                                 <div className="approveDocument">
