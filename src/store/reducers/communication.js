@@ -4,7 +4,10 @@ import * as types from '../../store/actions/types';
 import initialState from '../initialState';
 import { parse } from 'url';
 
+
 export default function (state = initialState.app.communication, action) {
+
+    let totalCost = 0;
 
     switch (action.type) {
 
@@ -69,10 +72,19 @@ export default function (state = initialState.app.communication, action) {
 
         case types.add_item:
             let docId = state.docId == 0 ? action.docId : state.docId;
+            const originalItemData = [...state.items, ...action.item];
+
+            totalCost = 0;
+
+            originalItemData.forEach(item => {
+                return totalCost += item.total;
+            })
             return {
                 ...state,
                 docId,
-                items: [...state.items, ...action.item]
+                items: originalItemData,
+                totalCost,
+                isLoading: false
             };
 
         case types.reset_items:
@@ -82,26 +94,49 @@ export default function (state = initialState.app.communication, action) {
             };
 
         case types.edit_item:
-            let updateRow = action.item;
-            let items = []
-            state.items.forEach(item => {
-                if (item.id == updateRow.id)
-                    item = updateRow
-                items.push(item)
+            //let updateRow = action.item;
+            //let items = [];
+            totalCost = 0;
+
+            let originalItemDataForEdit = state.items.filter(x => x.id !== action.item[0].id);
+
+            originalItemDataForEdit.push(action.item[0]);
+
+            originalItemDataForEdit.forEach(item => {
+                // if (item.id == updateRow.id)
+                //     item = updateRow
+                // items.push(item)
+
+                totalCost += item.total;
             })
+
             return {
                 ...state,
-                items
+                items: originalItemDataForEdit,
+                totalCost,
+                isLoading: false
             };
 
         case types.delete_item:
             let originalData = state.items;
+
+            totalCost = 0;
+
             action.data.forEach(item => {
-                let getIndex = originalData.findIndex(x => x.id === item.id);
-
+                let getIndex = originalData.findIndex(x => x.id === item);
                 originalData.splice(getIndex, 1);
-
             });
+
+            originalData.forEach(item => {
+                totalCost += item.total;
+            });
+
+            return {
+                ...state,
+                items: originalData,
+                totalCost,
+                isLoading: false
+            };
 
         case types.delete_items:
             return {
@@ -332,6 +367,9 @@ export default function (state = initialState.app.communication, action) {
             return { ...state, docsAttachData: action.resp || [], documentData: [] }
         case types.SET_ISREJECT:
             return { ...state, isReject: action.data }
+
+        case types.SET_LOADING:
+            return { ...state, isLoading: true }
 
         default:
             return {

@@ -2,7 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../Pages/Communication/GridSetup";
+//import GridSetup from "../../../Pages/Communication/GridSetup";
+import GridSetupWithFilter from "../../../Pages/Communication/GridSetupWithFilter";
 import Export from "../../OptionsPanels/Export";
 import { SkyLightStateless } from 'react-skylight';
 import Select from '../../OptionsPanels/DropdownMelcous';
@@ -319,11 +320,20 @@ class GeneralList extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
+                <GridSetupWithFilter
+                    rows={this.state.rows}
                     showCheckbox={this.state.showCheckbox}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                     pageSize={this.state.pageSize}
                     onRowClick={this.onRowClick.bind(this)}
+                    columns={this.state.columns}
+                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+
+                    onRowsSelected={this.onRowsSelected}
+                    onRowsDeselected={this.onRowsDeselected}
+                    onGridRowsUpdated={this._onGridRowsUpdated}
+                    assign={true}
+                    assignFn={() => this.assign()}
+                    key="items"
                 />
             ) : <LoadingSection />
 
@@ -456,15 +466,13 @@ class GeneralList extends Component {
                 </SkyLightStateless>
 
                 {this.state.showDeleteModal == true ? (
-                    <ConfirmationModal
-                        title={Resources['smartDeleteMessage'][currentLanguage].content}
+                    <ConfirmationModal title={Resources['smartDeleteMessage'][currentLanguage].content}
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}
                         buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
                     />
                 ) : null}
-
             </Fragment>
         )
     }

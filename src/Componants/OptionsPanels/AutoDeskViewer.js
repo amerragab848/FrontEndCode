@@ -37,17 +37,17 @@ let oViews3D = null,
 let urn = null;
 class AutoDeskViewer extends Component {
     constructor(props) {
+
         super(props);
+
         const query = new URLSearchParams(this.props.location.search);
+
         let index = 0;
+
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
-                    let obj = JSON.parse(
-                        CryptoJS.enc.Base64.parse(param[1]).toString(
-                            CryptoJS.enc.Utf8
-                        )
-                    );
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
                     docId = obj.docId;
                     docTypeId = obj.docTypeId;
                     encrypte = obj.encrypte;
@@ -60,6 +60,7 @@ class AutoDeskViewer extends Component {
             }
             index++;
         }
+
         this.state = {
             docId: docId,
             projectId: projectId,
@@ -69,15 +70,12 @@ class AutoDeskViewer extends Component {
             attachFile: encrypte,
             view: null,
             loaded: false,
-            showCheckBox: false,
+            showCheckBox: true,
             selectedMode: { label: "Select Mode", value: 0 },
             isViewEdit: false,
             viewLoading: true,
             viewEditMarkUps: false,
-            contactName:
-                localStorage.getItem("contactName") !== null
-                    ? localStorage.getItem("contactName")
-                    : "Procoor User",
+            contactName: localStorage.getItem("contactName") !== null ? localStorage.getItem("contactName") : "Procoor User",
             showAll: true,
             markupId: 0,
             modeId: 0,
@@ -104,7 +102,6 @@ class AutoDeskViewer extends Component {
         }
     }
 
-    componentWillMount() { }
 
     componentDidMount() {
         var PercentageID = document.getElementById("precent");
@@ -120,20 +117,17 @@ class AutoDeskViewer extends Component {
             this.showModel(data);
         });
 
-        Api.get(
-            "GetAllMarkUps?docId=" +
-            this.state.docId +
-            "&docType=" +
-            this.state.docType +
-            "&docFileId=" +
-            this.state.docFileId
-        ).then(markups => {
+        Api.get("GetAllMarkUps?docId=" + this.state.docId + "&docType=" + this.state.docType + "&docFileId=" + this.state.docFileId).then(markups => {
             this.setState({ markups });
             let markupsList = [];
             markups.forEach((item, index) => {
                 markupsList.push({ label: item.viewerState, value: index });
             });
             this.setState({ markupsList });
+        });
+
+        this.setState({
+            selectedMode: { label: "View Markups", value: 2 }
         });
     }
 
@@ -152,28 +146,34 @@ class AutoDeskViewer extends Component {
     }
 
     showAllToggle = () => {
-        if (this.state.showAll == true) {
-            this.setState({ showAll: false, viewEditMarkUps: true });
-        } else {
-            this.setState({ viewEditMarkUps: false, showAll: true });
-            this.state.markups.forEach(item => {
-                this.restoreState(item.svg, item.viewerState);
-            });
-        }
+
+        this.setState({
+            showCheckBox: !this.state.showCheckBox,
+            showAll: !this.state.showAll,
+            isViewEdit: !this.state.isViewEdit,
+            viewEditMarkUps: !this.state.viewEditMarkUps,
+        });
+
+        // if (this.state.showAll == true) {
+        //     this.setState({ showAll: false, viewEditMarkUps: true });
+        // } else {
+        //     this.setState({ viewEditMarkUps: false, showAll: true });
+        //     this.state.markups.forEach(item => {
+        //         this.restoreState(item.svg, item.viewerState);
+        //     });
+        // }
     };
 
     restoreState = (svg, name) => {
         let markup = svg;
         let viewer = this.state.viewer;
-        viewer
-            .loadExtension("Autodesk.Viewing.MarkupsCore")
-            .then(markupsExt => {
-                let markupCore = markupsExt;
-                // load the markups
-                markupCore.show();
-                markupCore.loadMarkups(markup, name);
-                this.setState({ markupCore });
-            });
+        viewer.loadExtension("Autodesk.Viewing.MarkupsCore").then(markupsExt => {
+            let markupCore = markupsExt;
+            // load the markups
+            markupCore.show();
+            markupCore.loadMarkups(markup, name);
+            this.setState({ markupCore });
+        });
     };
 
     modeIdToggle = value => {
@@ -214,21 +214,18 @@ class AutoDeskViewer extends Component {
     editingMarkUps = () => {
         if (this.state.markups.length > 0) {
             this.state.markups.forEach(item => {
-                this.state.viewer
-                    .loadExtension("Autodesk.Viewing.MarkupsCore")
-                    .then(markupsExt => {
-                        let markupCore = markupsExt;
-                        // load the markups
-                        markupCore.show();
-                        markupCore.loadMarkups(item.svg, item.viewerState);
-                        markupCore.enterEditMode();
-                        this.setState({ markupCore });
-                    });
+                this.state.viewer.loadExtension("Autodesk.Viewing.MarkupsCore").then(markupsExt => {
+                    let markupCore = markupsExt;
+                    // load the markups
+                    markupCore.show();
+                    markupCore.loadMarkups(item.svg, item.viewerState);
+                    markupCore.enterEditMode();
+                    this.setState({ markupCore });
+                });
             });
         } else {
             let viewer = this.state.viewer;
-            viewer
-                .loadExtension("Autodesk.Viewing.MarkupsCore")
+            viewer.loadExtension("Autodesk.Viewing.MarkupsCore")
                 .then(markupsExt => {
                     this.setState({ markupCore: markupsExt, viewer });
                 });
@@ -245,48 +242,39 @@ class AutoDeskViewer extends Component {
 
         var documentId = "urn:" + urn;
         Autodesk.Viewing.Initializer(options, () => {
-            Autodesk.Viewing.Document.load(
-                documentId,
-                doc => {
-                    // A document contains references to 3D and 2D geometries.
-                    var geometries = doc.getRoot().search({ type: "geometry" });
-                    if (geometries.length === 0) {
-                        console.error("Document contains no geometries.");
-                        return;
-                    }
-                    // Choose any of the avialable geometries
-                    var initGeom = geometries[0];
-                    // Create Viewer instance
-                    var viewerDiv = document.getElementById("forgeViewer");
-                    var config = {
-                        extensions: initGeom.extensions() || []
-                    };
-                    var viewer = new Autodesk.Viewing.Private.GuiViewer3D(
-                        viewerDiv,
-                        config
-                    );
-                    var svfUrl = doc.getViewablePath(initGeom);
-                    var modelOptions = {
-                        sharedPropertyDbPath: doc.getPropertyDbPath()
-                    }; 
-                    viewer.start(
-                        svfUrl,
-                        modelOptions,
-                        () => {
-                            this.state.markups.forEach(item => {
-                                this.restoreState(item.svg, item.viewerState);
-                            });
-                        },
-                        console.log("....Loading fail model autoDesk")
-                    );
-                    this.setState({ viewer, loaded: true });
+            Autodesk.Viewing.Document.load(documentId, doc => {
+                // A document contains references to 3D and 2D geometries.
+                var geometries = doc.getRoot().search({ type: "geometry" });
+                if (geometries.length === 0) {
+                    console.error("Document contains no geometries.");
+                    return;
+                }
+                // Choose any of the avialable geometries
+                var initGeom = geometries[0];
+                // Create Viewer instance
+                var viewerDiv = document.getElementById("forgeViewer");
+                var config = {
+                    extensions: initGeom.extensions() || []
+                };
+                var viewer = new Autodesk.Viewing.Private.GuiViewer3D(
+                    viewerDiv,
+                    config
+                );
+                var svfUrl = doc.getViewablePath(initGeom);
+                var modelOptions = {
+                    sharedPropertyDbPath: doc.getPropertyDbPath()
+                };
+                viewer.start(svfUrl, modelOptions, () => {
+                    this.state.markups.forEach(item => {
+                        this.restoreState(item.svg, item.viewerState);
+                    });
                 },
+                    console.log("....Loading fail model autoDesk")
+                );
+                this.setState({ viewer, loaded: true });
+            },
                 function (errorCode, errorMessage) {
-                    console.log(
-                        "....Loading fail model autoDesk",
-                        errorCode,
-                        errorMessage
-                    );
+                    console.log("....Loading fail model autoDesk", errorCode, errorMessage);
                 }
             );
             this.setState({ loadingPer: true });
@@ -296,9 +284,7 @@ class AutoDeskViewer extends Component {
     getAccessToken = () => {
         var xmlHttp = null;
         xmlHttp = new XMLHttpRequest();
-        xmlHttp.open(
-            "GET",
-            Config.getPublicConfiguartion().static + "/api/Procoor/getAccessToken",
+        xmlHttp.open("GET", Config.getPublicConfiguartion().static + "/api/Procoor/getAccessToken",
             false /*forge viewer requires SYNC*/
         );
         xmlHttp.send(null);
@@ -417,12 +403,7 @@ class AutoDeskViewer extends Component {
             // current view state (zoom, direction, sections)
             let markUpObj = markUpsModel;
             markUpObj.svg = markupsPersist;
-            markUpObj.viewerState =
-                this.state.contactName +
-                "-" +
-                moment().format("DD/MM/YYYY") +
-                "-" +
-                new Date().getTime();
+            markUpObj.viewerState = this.state.contactName + "-" + moment().format("DD/MM/YYYY") + "-" + new Date().getTime();
             markUpObj.docType = this.state.docType;
             markUpObj.docId = this.state.docId;
             markUpObj.docFileId = this.state.docFileId;
@@ -461,10 +442,7 @@ class AutoDeskViewer extends Component {
                     <Fragment>
                         <div className="autoDisk__dropdown">
                             <div className="autoDisk__dropdown--comp">
-                                <Dropdown
-                                    title="mode"
-                                    data={listOfOptions}
-                                    selectedValue={this.state.selectedMode}
+                                <Dropdown title="mode" data={listOfOptions} selectedValue={this.state.selectedMode}
                                     handleChange={event => {
                                         this.modeIdToggle(event.value);
                                         this.setState({ selectedMode: event });
@@ -472,49 +450,18 @@ class AutoDeskViewer extends Component {
                                     index="mode"
                                 />
                             </div>
-                            {this.state.showCheckBox == true ? (
-                                <div
-                                    id="markupBox"
-                                    className={
-                                        "ui checkbox checkBoxGray300 " +
-                                        (this.state.showAll == true
-                                            ? "checked"
-                                            : "")
-                                    }
-                                    onClick={this.showAllToggle}>
-                                    <input
-                                        name="CheckBox"
-                                        type="checkbox"
-                                        id="allPermissionInput"
-                                        checked={
-                                            this.state.showAll == true
-                                                ? "checked"
-                                                : ""
-                                        }
-                                    />
-                                    <label>Show</label>
-                                </div>
-                            ) : null}
-                            {this.state.viewEditMarkUps == true ? (
-                                <div className="autoDisk__dropdown--comp">
-                                    <Dropdown
-                                        title="markups"
-                                        data={this.state.markupsList}
-                                        selectedValue={
-                                            this.state.selectedMarkup
-                                        }
-                                        handleChange={event =>
-                                            this.changeMarkup(event.value)
-                                        }
-                                        index="markups"
-                                    />
-                                </div>
-                            ) : null}
+                            <div id="markupBox" className={"ui checkbox checkBoxGray300 " + (this.state.showAll == true ? "checked" : "")} onClick={this.showAllToggle}>
+                                <input name="CheckBox" type="checkbox" id="allPermissionInput"
+                                    checked={this.state.showAll == true ? "checked" : ""} />
+                                <label>Show</label>
+                            </div>
+                            <div className="autoDisk__dropdown--comp">
+                                <Dropdown title="markups" data={this.state.markupsList} selectedValue={this.state.selectedMarkup}
+                                    handleChange={event => this.changeMarkup(event.value)} index="markups" />
+                            </div>
                         </div>
                         {this.state.isViewEdit == true ? (
-                            <div
-                                id="markup-panel"
-                                className="docking-panel"
+                            <div id="markup-panel" className="docking-panel"
                                 style={{
                                     resize: "none",
                                     border: "1px solid rgba(0, 0, 0, 0.2)",
@@ -525,8 +472,7 @@ class AutoDeskViewer extends Component {
                                     maxHeight: "513px",
                                     maxWidth: "881.406px"
                                 }}>
-                                <section
-                                    className="docking-panel-title"
+                                <section className="docking-panel-title"
                                     style={{
                                         color: "#0a131c",
                                         backgroundColor: "transparent",
@@ -537,125 +483,46 @@ class AutoDeskViewer extends Component {
                                 </section>
                                 <section className="docking-panel-close" />
                                 <div className="docking-panel-footer" />
-                                <div
-                                    className="docking-panel-scroll docking-panel-container-solid-color-a right"
-                                    id="markup-panel-scroll-container">
+                                <div className="docking-panel-scroll docking-panel-container-solid-color-a right" id="markup-panel-scroll-container">
                                     <div className="markups-panel-content">
                                         <div className="edit-tools">
-                                            <div
-                                                className="markup-actions"
+                                            <div className="markup-actions"
                                                 style={{
                                                     marginTop: "7%",
                                                     textAlign: "center"
                                                 }}>
-                                                <button
-                                                    className="primaryBtn-1 btn"
-                                                    dataToggle="tooltip"
-                                                    title="Undo"
-                                                    onClick={this.undo}>
+                                                <button className="primaryBtn-1 btn" dataToggle="tooltip" title="Undo" onClick={this.undo}>
                                                     Undo
                                                 </button>
-                                                <button
-                                                    className="primaryBtn-2 btnbtn table-btn-tooltip btn-xs btn-default"
-                                                    dataToggle="tooltip"
-                                                    title="Redo"
-                                                    onClick={this.redo}>
+                                                <button className="primaryBtn-2 btnbtn table-btn-tooltip btn-xs btn-default" dataToggle="tooltip" title="Redo" onClick={this.redo}>
                                                     Redo
                                                 </button>
                                             </div>
-                                            <div
-                                                className="markup-buttons"
-                                                style={{
-                                                    marginTop: "7%",
-                                                    textAlign: "center"
-                                                }}>
-                                                <button
-                                                    className="btn primaryBtn-2"
-                                                    dataToggle="tooltip"
-                                                    title="Arrow"
-                                                    onClick={this.addArrow}>
-                                                    <i
-                                                        style={{
-                                                            fontSize: "1.6em"
-                                                        }}
-                                                        className="fa fa-long-arrow-up"
-                                                    />
+                                            <div className="markup-buttons" style={{ marginTop: "7%", textAlign: "center" }}>
+                                                <button className="btn primaryBtn-2" dataToggle="tooltip" title="Arrow" onClick={this.addArrow}>
+                                                    <i style={{ fontSize: "1.6em" }} className="fa fa-long-arrow-up" />
                                                 </button>
-                                                <button
-                                                    className="primaryBtn-1 btn"
-                                                    dataToggle="tooltip"
-                                                    title="Comment"
-                                                    onClick={this.addComment}>
-                                                    <i
-                                                        style={{
-                                                            fontSize: "1.6em"
-                                                        }}
-                                                        className="fa fa-comments"
-                                                    />
+                                                <button className="primaryBtn-1 btn" dataToggle="tooltip" title="Comment" onClick={this.addComment}>
+                                                    <i style={{ fontSize: "1.6em" }} className="fa fa-comments" />
                                                 </button>
-                                                <button
-                                                    className="btn primaryBtn-2"
-                                                    dataToggle="tooltip"
-                                                    title="Circle"
-                                                    onClick={this.addCircle}>
-                                                    <i
-                                                        style={{
-                                                            fontSize: "1.6em"
-                                                        }}
-                                                        className="fa fa-circle"
-                                                    />
+                                                <button className="btn primaryBtn-2" dataToggle="tooltip" title="Circle" onClick={this.addCircle}>
+                                                    <i style={{ fontSize: "1.6em" }} className="fa fa-circle" />
                                                 </button>
-                                                <button
-                                                    className="primaryBtn-1 btn"
-                                                    dataToggle="tooltip"
-                                                    title="Rectangle"
-                                                    onClick={this.addRectangle}>
-                                                    <i
-                                                        style={{
-                                                            fontSize: "1.6em"
-                                                        }}
-                                                        className="fa fa-square-o"
-                                                    />
+                                                <button className="primaryBtn-1 btn" dataToggle="tooltip" title="Rectangle" onClick={this.addRectangle}>
+                                                    <i style={{ fontSize: "1.6em" }} className="fa fa-square-o" />
                                                 </button>
-                                                <button
-                                                    className="btn primaryBtn-2"
-                                                    dataToggle="tooltip"
-                                                    title="Freehand"
-                                                    onClick={this.Freehand}>
-                                                    <i
-                                                        style={{
-                                                            fontSize: "1.6em"
-                                                        }}
-                                                        className="fa fa-pencil"
-                                                    />
+                                                <button className="btn primaryBtn-2" dataToggle="tooltip" title="Freehand" onClick={this.Freehand}>
+                                                    <i style={{ fontSize: "1.6em" }} className="fa fa-pencil" />
                                                 </button>
                                             </div>
-                                            <div
-                                                className="panel-actions"
-                                                style={{
-                                                    marginTop: "7%",
-                                                    textAlign: "center"
-                                                }}>
-                                                <button
-                                                    className="btn primaryBtn-2"
-                                                    dataToggle="tooltip"
-                                                    title="Clear"
-                                                    onClick={this.clear}>
+                                            <div className="panel-actions" style={{ marginTop: "7%", textAlign: "center" }}>
+                                                <button className="btn primaryBtn-2" dataToggle="tooltip" title="Clear" onClick={this.clear}>
                                                     Clear
                                                 </button>
-                                                <button
-                                                    className="primaryBtn-1 btn"
-                                                    style={{ margin: "0 5px" }}
-                                                    dataToggle="tooltip"
-                                                    title="Close"
-                                                    onClick={this.close}>
+                                                <button className="primaryBtn-1 btn" style={{ margin: "0 5px" }} dataToggle="tooltip" title="Close" onClick={this.close}>
                                                     Close
                                                 </button>
-                                                <button
-                                                    className="btn primaryBtn-2"
-                                                    dataToggle="tooltip"
-                                                    title="Save"
-                                                    onClick={this.saveState}>
+                                                <button className="btn primaryBtn-2" dataToggle="tooltip" title="Save" onClick={this.saveState}>
                                                     Save
                                                 </button>
                                             </div>
