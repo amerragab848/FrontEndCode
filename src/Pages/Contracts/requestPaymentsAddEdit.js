@@ -181,7 +181,8 @@ class requestPaymentsAddEdit extends Component {
                 { label: "ReCalculator Payment", value: "2" },
                 { label: "Update Items From VO", value: "3" },
                 { label: "Add Missing Items", value: "4" },
-                { label: "Edit Advanced Payment Amount", value: "5" }
+                { label: "Edit Advanced Payment Amount", value: "5" },
+                { label: "Calculate Interim Invoice", value: "6" }
             ],
             selectedDropDownTrees: {
                 label: Resources.codingTree[currentLanguage],
@@ -215,7 +216,7 @@ class requestPaymentsAddEdit extends Component {
             BoqSubTypes: [],
             boqStractureObj: {},
             documentDeduction: {},
-            currentAndPreviousTotal: [],
+            interimInvoicedTable: [],
             approvedInvoicesParent: [],
             approvedInvoicesChilds: [],
             deductionObservableArray: [],
@@ -1139,23 +1140,20 @@ class requestPaymentsAddEdit extends Component {
 
     FillSummariesTab = () => {
         let contractId = this.state.document.contractId;
-        let currentAndPreviousTotal = [...this.state.currentAndPreviousTotal];
-        if (currentAndPreviousTotal.length == 0) {
+        let interimInvoicedTable = [...this.state.interimInvoicedTable];
+        if (interimInvoicedTable.length == 0) {
             this.setState({
                 isLoading: true
             });
-            dataservice
-                .GetDataGrid(
-                    "GetTotalForReqPay?projectId=" +
-                    projectId +
-                    "&contractId=" +
-                    contractId +
-                    "&requestId=" +
-                    this.state.docId
-                )
+            dataservice.GetDataGrid("GetTotalForReqPay?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId)
                 .then(result => {
                     this.setState({
-                        currentAndPreviousTotal: result,
+                        interimInvoicedTable: result,
+                        isLoading: false
+                    });
+                }).catch(res => {
+                    this.setState({
+                        interimInvoicedTable: [],
                         isLoading: false
                     });
                 });
@@ -1166,67 +1164,52 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true
             });
             let rowTotal = 0;
-            dataservice
-                .GetDataGridPost(
-                    "GetApprovedInvoicesParent?contractId=" +
-                    contractId +
-                    "&requestId=" +
-                    this.state.docId
-                )
-                .then(result => {
-                    var obj = {};
-                    var conditionString = "";
-                    dataservice
-                        .GetDataGridPost(
-                            "GetApprovedInvoicesChilds?projectId=" +
-                            projectId +
-                            "&contractId=" +
-                            contractId +
-                            "&requestId=" +
-                            this.state.docId
-                        )
-                        .then(res => {
-                            let approvedInvoicesParent = [];
+            dataservice.GetDataGridPost("GetApprovedInvoicesParent?contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
+                var obj = {};
+                var conditionString = "";
+                dataservice.GetDataGridPost("GetApprovedInvoicesChilds?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId)
+                    .then(res => {
+                        let approvedInvoicesParent = [];
 
-                            result.map(parent => {
-                                let sumRowTotal = 0;
-                                let sumtotal = 0;
+                        result.map(parent => {
+                            let sumRowTotal = 0;
+                            let sumtotal = 0;
 
-                                res.map(child => {
+                            res.map(child => {
 
-                                    var total = child[parent.details];
-                                    sumRowTotal += parseFloat(child.rowTotal);
-                                    sumtotal = total + sumtotal;
-                                    parent.total = sumtotal;
-                                });
-
-                                rowTotal = sumRowTotal;
-
-                                conditionString = parent.details;
-
-                                obj.building = "Total";
-                                obj.code = "";
-                                obj.exists = "";
-                                obj.serial = "";
-                                obj[conditionString] = parent.total;
-                                obj.rowTotal = rowTotal;
-
-                                approvedInvoicesChilds.push(obj);
-                                if (parent.total === null) {
-                                    parent.total = 0;
-                                }
-
-                                approvedInvoicesParent.push(parent);
+                                var total = child[parent.details];
+                                sumRowTotal += parseFloat(child.rowTotal);
+                                sumtotal = total + sumtotal;
+                                parent.total = sumtotal;
                             });
 
-                            this.setState({
-                                approvedInvoicesChilds: res,
-                                approvedInvoicesParent: approvedInvoicesParent,
-                                isLoading: false,
-                                rowTotal: rowTotal
-                            });
+                            rowTotal = sumRowTotal;
+
+                            conditionString = parent.details;
+
+                            obj.building = "Total";
+                            obj.code = "";
+                            obj.exists = "";
+                            obj.serial = "";
+                            obj[conditionString] = parent.total;
+                            obj.rowTotal = rowTotal;
+
+                            approvedInvoicesChilds.push(obj);
+                            if (parent.total === null) {
+                                parent.total = 0;
+                            }
+
+                            approvedInvoicesParent.push(parent);
                         });
-                });
+
+                        this.setState({
+                            approvedInvoicesChilds: res,
+                            approvedInvoicesParent: approvedInvoicesParent,
+                            isLoading: false,
+                            rowTotal: rowTotal
+                        });
+                    });
+            });
         }
     };
 
@@ -1806,6 +1789,17 @@ class requestPaymentsAddEdit extends Component {
                 break;
             case "5":
                 this.editPayment.show();
+                break;
+            case "6":
+                dataservice.GetDataGrid("UpdateInterimForRequest?requestId=" + this.state.docId + "&contractId=" + this.state.document.contractId).then(result => {
+                    toast.success(
+                        Resources["operationSuccess"][currentLanguage]
+                    );
+                }).catch(res => {
+                    toast.error(
+                        Resources["operationCanceled"][currentLanguage]
+                    );
+                });
                 break;
         }
 
@@ -2440,76 +2434,55 @@ class requestPaymentsAddEdit extends Component {
             </Fragment>
         );
 
-        let interimTable =
-            this.state.isLoading === false ? (
-                this.state.currentAndPreviousTotal.map(i => (
-                    <tr key={i.id}>
-                        {i.comment == "True" ? (
-                            <td colSpan="9">
-                                <div className="contentCell tableCell-2">
-                                    <a>
-                                        {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
-                                    </a>
-                                </div>
-                            </td>
-                        ) : (
-                                <Fragment>
-                                    <td colSpan="6">
-                                        <div className="contentCell tableCell-2">
-                                            <a
-                                                data-toggle="tooltip"
-                                                title={i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""
-                                                }>
-                                                {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="contentCell">
-                                            {i.previous != null
-                                                ? parseFloat(i.previous)
-                                                    .toFixed(2)
-                                                    .replace(
-                                                        /\B(?=(\d{3})+(?!\d))/g,
-                                                        ","
-                                                    )
-                                                : 0}
-                                        </div>{" "}
-                                    </td>
-                                    <td>
-                                        <div className="contentCell">
-                                            {i.current != null
-                                                ? parseFloat(i.current.toString())
-                                                    .toFixed(2)
-                                                    .replace(
-                                                        /\B(?=(\d{3})+(?!\d))/g,
-                                                        ","
-                                                    )
-                                                : 0}
-                                        </div>{" "}
-                                    </td>
-                                    <td>
-                                        <div className="contentCell">
-                                            {i.total != null
-                                                ? parseFloat(i.total.toString())
-                                                    .toFixed(2)
-                                                    .replace(
-                                                        /\B(?=(\d{3})+(?!\d))/g,
-                                                        ","
-                                                    )
-                                                : 0}
-                                        </div>{" "}
-                                    </td>
-                                    <td>
-                                        <div className="contentCell">
-                                            {i.comment}
-                                        </div>
-                                    </td>
-                                </Fragment>
-                            )}
-                    </tr>
-                ))
-            ) : (<LoadingSection />);
+        let interimTable = this.state.isLoading === false ? (
+            this.state.interimInvoicedTable.map(i => (
+                <tr key={i.id}>
+                    {i.comment == "True" ? (
+                        <td colSpan="9">
+                            <div className="contentCell tableCell-2">
+                                <a>
+                                    {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
+                                </a>
+                            </div>
+                        </td>
+                    ) : (
+                            <Fragment>
+                                <td colSpan="6">
+                                    <div className="contentCell tableCell-2">
+                                        <a
+                                            data-toggle="tooltip"
+                                            title={i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""
+                                            }>
+                                            {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="contentCell">
+                                        {i.prevoiuse != null ? parseFloat(i.prevoiuse).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>{" "}
+                                </td>
+                                <td>
+                                    <div className="contentCell">
+                                        {i.currentValue != null ? parseFloat(i.currentValue.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>{" "}
+                                </td>
+                                <td>
+                                    <div className="contentCell">
+                                        {i.total != null
+                                            ? parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>{" "}
+                                </td>
+                                <td>
+                                    <div className="contentCell">
+                                        {i.comment}
+                                    </div>
+                                </td>
+                            </Fragment>
+                        )}
+                </tr>
+            ))
+        ) : (<LoadingSection />);
 
         let viewHistory = (
             <div className="doc-pre-cycle">

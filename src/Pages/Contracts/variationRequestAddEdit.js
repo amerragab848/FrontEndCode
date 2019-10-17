@@ -26,7 +26,7 @@ import AddItemDescription from "../../Componants/OptionsPanels/addItemDescriptio
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import SkyLight from "react-skylight";
-
+ 
 var steps_defination = [];
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -799,7 +799,7 @@ class VariationRequestAdd extends Component {
                                             docType="vr"
                                             isViewMode={this.state.isViewMode}
                                             docId={this.state.docId}
-                                            //mainColumn="changeOrderId"
+                                            mainColumn="variationRequestId"
                                             addItemApi="AddVRItems"
                                             projectId={this.state.projectId}
                                             showItemType={false}
