@@ -26,7 +26,9 @@ import AddItemDescription from "../../Componants/OptionsPanels/addItemDescriptio
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import SkyLight from "react-skylight";
- 
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import LoadingSection from '../../Componants/publicComponants/LoadingSection';
+
 var steps_defination = [];
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -171,6 +173,7 @@ class VariationRequestAdd extends Component {
 
 
         this.state = {
+            showDeleteModal: false,
             showPopUp: false,
             itemsColumns: itemsColumns,
             isViewMode: false,
@@ -198,7 +201,9 @@ class VariationRequestAdd extends Component {
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
             selectedContractSubject: { label: Resources.contractSubject[currentLanguage], value: "0" },
             CurrentStep: 0,
-            totalCost: 0
+            items: [],
+            totalCost: 0,
+            selectedRows: []
         }
 
         if (!Config.IsAllow(3162) && !Config.IsAllow(3163) && !Config.IsAllow(3165)) {
@@ -237,7 +242,10 @@ class VariationRequestAdd extends Component {
         if (nextProps.document.id) {
             this.setState({
                 document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow
+                hasWorkflow: nextProps.hasWorkflow,
+                items: nextProps.items,
+                totalCost: nextProps.totalCost,
+                isLoading: nextProps.isLoading
             });
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
@@ -285,6 +293,9 @@ class VariationRequestAdd extends Component {
             let url = "GetContractsVariationRequestForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'cvr');
 
+            dataservice.GetDataGrid(`GetVRItems?variationRequestId=${this.state.docId}`).then(result => {
+                this.props.actions.addItemDescription(result);
+            })
         } else {
             let Variation = {
                 subject: '',
@@ -553,40 +564,64 @@ class VariationRequestAdd extends Component {
 
     onRowClick = (value, index, column) => {
 
-        if (this.state.CurrStep == 1) {
-            this.setState({
-                showPopUp: true,
-                btnText: "save",
-                selectedRow: value
-            });
-            this.simpleDialog1.show();
-        }
-
+        this.setState({
+            showPopUp: true,
+            btnText: "save",
+            selectedRow: value,
+        });
+        this.simpleDialog1.show();
     };
 
+    disablePopUp = () => {
+        this.setState({
+            showPopUp: false
+        });
+    }
+
+    onCloseModal = () => {
+        this.setState({ showDeleteModal: false });
+    };
+
+    clickHandlerCancelMain = () => {
+        this.setState({ showDeleteModal: false });
+    };
+
+    clickHandlerContinueMain = () => {
+        this.setState({
+            isLoading: true
+        });
+
+        this.props.actions.setLoading();
+
+        dataservice.addObject(`DeleteMultiVrItems`, this.state.selectedRows).then(result => {
+
+            this.props.actions.deleteItemDescription(this.state.selectedRows);
+
+            this.setState({
+                isLoading: false,
+                showDeleteModal: false,
+                selectedRows: []
+            });
+
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+
+        }).catch(ex => {
+            this.setState({
+                isLoading: false,
+                showDeleteModal: false
+            });
+        });
+    };
+
+    clickHandlerDeleteRowsMain = (selectedRows) => {
+        this.setState({
+            showDeleteModal: true,
+            selectedRows: selectedRows
+        });
+    }
+
     render() {
-
-        const itemsContent = (
-            <Fragment>
-                <div
-                    className=" proForm datepickerContainer customProform document-fields"
-                    key="editItem">
-                    <EditItemDescription
-                        showImportExcel={false}
-                        docType="vr"
-                        isViewMode={this.state.isViewMode}
-                        //mainColumn="boqId"
-                        editItemApi="EditVRItem"
-                        projectId={this.state.projectId}
-                        showItemType={true}
-                        item={this.state.selectedRow}
-                        onSave={e => this._executeBeforeModalClose()}
-                    />
-                </div>
-            </Fragment>
-        );
-
-        return (
+        return this.state.isLoading ? <LoadingSection /> :
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.variationRequest[currentLanguage]} moduleTitle={Resources['contracts'][currentLanguage]} />
@@ -621,7 +656,7 @@ class VariationRequestAdd extends Component {
                                                                         <input name='subject' className="form-control fsadfsadsa" id="subject"
                                                                             placeholder={Resources.subject[currentLanguage]}
                                                                             autoComplete='off'
-                                                                            value={this.state.document.subject}
+                                                                            value={this.state.document.subject || ''}
                                                                             onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                                             onChange={(e) => this.handleChange(e, 'subject')} />
                                                                         {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
@@ -647,7 +682,7 @@ class VariationRequestAdd extends Component {
                                                                     <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                                     <div className="ui input inputDev"  >
                                                                         <input type="text" className="form-control" id="arrange"
-                                                                            value={this.state.document.arrange} name="arrange"
+                                                                            value={this.state.document.arrange || ''} name="arrange"
                                                                             placeholder={Resources.arrange[currentLanguage]}
                                                                             onBlur={(e) => { handleChange(e); handleBlur(e) }}
                                                                             onChange={(e) => this.handleChange(e, 'arrange')} />
@@ -656,7 +691,7 @@ class VariationRequestAdd extends Component {
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                                     <div className={"ui input inputDev"}>
-                                                                        <input type="text" className="form-control" id="refDoc" value={this.state.document.refDoc}
+                                                                        <input type="text" className="form-control" id="refDoc" value={this.state.document.refDoc || ''}
                                                                             name="refDoc" placeholder={Resources.refDoc[currentLanguage]}
                                                                             onBlur={(e) => { handleChange(e); handleBlur(e) }}
                                                                             onChange={(e) => this.handleChange(e, 'refDoc')} />
@@ -746,7 +781,7 @@ class VariationRequestAdd extends Component {
                                                                     <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                                     <div className={"ui input inputDev" + (errors.description && touched.description ? (" has-error") : (!errors.description && touched.description ? (" has-success") : "ui input inputDev has-success"))} >
                                                                         <input type="text" className="form-control" id="description"
-                                                                            value={this.state.document.description}
+                                                                            value={this.state.document.description || ''}
                                                                             name="description"
                                                                             placeholder={Resources.description[currentLanguage]}
                                                                             onBlur={(e) => {
@@ -761,7 +796,7 @@ class VariationRequestAdd extends Component {
                                                                     <label className="control-label">{Resources.totalCost[currentLanguage]}</label>
                                                                     <div className="ui input inputDev">
                                                                         <input type="text" className="form-control" id="totalCost"
-                                                                            value={this.state.totalCost} name="totalCost"
+                                                                            value={this.state.totalCost || ''} name="totalCost" readOnly
                                                                             placeholder={Resources.totalCost[currentLanguage]} />
                                                                     </div>
                                                                 </div> : null}
@@ -795,20 +830,22 @@ class VariationRequestAdd extends Component {
                                     <div className="subiTabsContent feilds__top">
                                         <AddItemDescription
                                             docLink="/Downloads/Excel/BOQ.xlsx"
-                                            showImportExcel={this.state.document.isRaisedPrices}
                                             docType="vr"
                                             isViewMode={this.state.isViewMode}
                                             docId={this.state.docId}
                                             mainColumn="variationRequestId"
+                                            showBoqType={true}
                                             addItemApi="AddVRItems"
                                             projectId={this.state.projectId}
                                             showItemType={false}
+                                            showImportExcel={false}
                                         />
                                         <div className="doc-pre-cycle">
                                             <GridSetupWithFilter
                                                 rows={this.state.items}
                                                 pageSize={10}
-                                                onRowClick={this.onRowClick}
+                                                clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
+                                                onRowClick={this.onRowClick.bind(this)}
                                                 columns={this.state.itemsColumns}
                                                 key='items'
                                             />
@@ -823,46 +860,60 @@ class VariationRequestAdd extends Component {
                                     </div>
                                 </Fragment>
                             }
+
+                            <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? "block" : "none" }}>
+                                <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog1 = ref)}
+                                    title={Resources.editTitle[currentLanguage] + " - " + Resources.edit[currentLanguage]}>
+                                    <Fragment>
+                                        <div className=" proForm datepickerContainer customProform document-fields" key="editItem">
+                                            <EditItemDescription
+                                                showImportExcel={false}
+                                                docType="vr"
+                                                isViewMode={this.state.isViewMode}
+                                                mainColumn="variationRequestId"
+                                                editItemApi="EditVRItem"
+                                                projectId={this.state.projectId}
+                                                showItemType={false}
+                                                item={this.state.selectedRow}
+                                                showBoqType={true}
+                                                isViewMode={this.state.isViewMode}
+                                                onRowClick={this.state.showPopUp}
+                                                disablePopUp={this.disablePopUp}
+                                            />
+                                        </div>
+                                    </Fragment>
+                                </SkyLight>
+                            </div>
+                            <div>
+                                {this.state.showDeleteModal == true ? (
+                                    <ConfirmationModal
+                                        title={Resources["smartDeleteMessage"][currentLanguage].content}
+                                        buttonName="delete"
+                                        closed={this.onCloseModal}
+                                        showDeleteModal={this.state.showDeleteModal}
+                                        clickHandlerCancel={this.clickHandlerCancelMain}
+                                        clickHandlerContinue={this.clickHandlerContinueMain}
+                                    />
+                                ) : null}
+                            </div>
                         </div>
-                        <Steps steps_defination={steps_defination} exist_link="/variationRequest/"
-                            docId={this.state.docId}
-                            changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
-                            stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true}
-                        />
+                        <Steps steps_defination={steps_defination} exist_link="/variationRequest/" docId={this.state.docId}
+                            changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)} stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true} />
                         {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
-                                        <DocumentActions
-                                            isApproveMode={this.state.isApproveMode}
-                                            docTypeId={this.state.docTypeId}
-                                            docId={this.state.docId}
-                                            projectId={this.state.projectId}
-                                            previousRoute={this.state.previousRoute}
-                                            docApprovalId={this.state.docApprovalId}
-                                            currentArrange={this.state.arrange}
-                                            showModal={this.props.showModal}
-                                            showOptionPanel={this.showOptionPanel}
-                                            permission={this.state.permission}
-                                        />
+                                        <DocumentActions isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId}
+                                            docId={this.state.docId} projectId={this.state.projectId} previousRoute={this.state.previousRoute}
+                                            docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange}
+                                            showModal={this.props.showModal} showOptionPanel={this.showOptionPanel} permission={this.state.permission} />
                                     </div>
                                 </div> : null
                         }
                     </div>
-                    <div
-                        className="largePopup largeModal "
-                        style={{ display: this.state.showPopUp ? "block" : "none" }}>
-                        <SkyLight hideOnOverlayClicked
-                            ref={ref => (this.simpleDialog1 = ref)}
-                            title={Resources.editTitle[currentLanguage] + " - " + Resources.edit[currentLanguage]}
-                            beforeClose={this._executeBeforeModalClose}
-                            beforeOpen={this._executeBeforeModalOpen}>
-                            {itemsContent}
-                        </SkyLight>
-                    </div>
+
                 </div>
             </div>
-        );
     }
 }
 
@@ -875,7 +926,9 @@ function mapStateToProps(state, ownProps) {
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
         projectId: state.communication.projectId,
-        showModal: state.communication.showModal
+        showModal: state.communication.showModal,
+        items: state.communication.items,
+        totalCost: state.communication.totalCost,
     }
 }
 

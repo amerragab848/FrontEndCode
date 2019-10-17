@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
@@ -12,7 +11,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import { toast } from "react-toastify";
-import _ from "lodash"; 
+import _ from "lodash";
 import Config from "../../Services/Config.js";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -24,10 +23,10 @@ const documentItemValidationSchema = Yup.object().shape({
     days: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]),
     quantity: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage])
 });
+
 class addItemDescription extends Component {
     constructor(props) {
         super(props);
-
 
         let maxArrange = this.props.items;
 
@@ -117,6 +116,9 @@ class addItemDescription extends Component {
     }
 
     saveVariationOrderItem(event) {
+
+        this.props.actions.setLoading();
+
         this.setState({ isLoading: true });
 
         let saveDocument = { ...this.state.itemDescription };
@@ -280,8 +282,7 @@ class addItemDescription extends Component {
                                                     placeholder={Resources.unitPrice[currentLanguage]}
                                                     onChange={e => this.handleChangeItem(e, "unitPrice")}
                                                 />
-                                                {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>
-                                                ) : null}
+                                                {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input">
@@ -297,7 +298,6 @@ class addItemDescription extends Component {
                                                 {errors.itemCode ? (<em className="pError">{errors.itemCode}</em>) : null}
                                             </div>
                                         </div>
-
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">
                                                 {Resources["resourceCode"][currentLanguage]}
@@ -308,10 +308,7 @@ class addItemDescription extends Component {
                                                     autoComplete="off"
                                                     onBlur={handleBlur}
                                                     value={this.state.itemDescription.resourceCode}
-                                                    onChange={e =>
-                                                        this.handleChangeItem(e, "resourceCode")
-                                                    }
-                                                />
+                                                    onChange={e => this.handleChangeItem(e, "resourceCode")} />
                                             </div>
                                         </div>
                                         <div className="linebylineInput valid-input">
@@ -320,170 +317,49 @@ class addItemDescription extends Component {
                                         </div>
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">
-                                                {
-                                                    Resources["days"][
-                                                    currentLanguage
-                                                    ]
-                                                }{" "}
+                                                {Resources["days"][currentLanguage]}
                                             </label>
-                                            <div
-                                                className={
-                                                    "inputDev ui input " +
-                                                    (errors.days
-                                                        ? "has-error"
-                                                        : !errors.days &&
-                                                            touched.days
-                                                            ? " has-success"
-                                                            : " ")
-                                                }>
-                                                <input
-                                                    name="days"
-                                                    className="form-control"
-                                                    id="days"
-                                                    placeholder={
-                                                        Resources["days"][
-                                                        currentLanguage
-                                                        ]
-                                                    }
+                                            <div className={"inputDev ui input " + (errors.days ? "has-error" : !errors.days && touched.days ? " has-success" : " ")}>
+                                                <input name="days" className="form-control" id="days"
+                                                    placeholder={Resources["days"][currentLanguage]}
                                                     autoComplete="off"
                                                     onBlur={handleBlur}
-                                                    value={
-                                                        this.state
-                                                            .itemDescription
-                                                            .days
-                                                    }
-                                                    onChange={e =>
-                                                        this.handleChangeItem(
-                                                            e,
-                                                            "days"
-                                                        )
-                                                    }
-                                                />
-                                                {errors.days ? (
-                                                    <em className="pError">
-                                                        {errors.days}
-                                                    </em>
-                                                ) : null}
+                                                    value={this.state.itemDescription.days}
+                                                    onChange={e => this.handleChangeItem(e, "days")} />
+                                                {errors.days ? (<em className="pError"> {errors.days} </em>) : null}
                                             </div>
                                         </div>
                                         {this.props.showBoqType == true ? (
                                             <React.Fragment>
                                                 <div className="linebylineInput valid-input">
-                                                    <Dropdown
-                                                        title="boqType"
-                                                        data={
-                                                            this.state.boqTypes
-                                                        }
-                                                        selectedValue={
-                                                            this.state
-                                                                .selectedBOQType
-                                                        }
-                                                        handleChange={event =>
-                                                            this.handleChangeItemDropDown(
-                                                                event,
-                                                                "boqTypeId",
-                                                                "selectedBOQType",
-                                                                true,
-                                                                "GetAllBoqChild",
-                                                                "parentId",
-                                                                "BoqTypeChilds",
-                                                                "boqType"
-                                                            )
-                                                        }
-                                                        name="boqType"
-                                                        index="boqType"
-                                                    />
+                                                    <Dropdown title="boqType" data={this.state.boqTypes}
+                                                        selectedValue={this.state.selectedBOQType}
+                                                        handleChange={event => this.handleChangeItemDropDown(event, "boqTypeId", "selectedBOQType", true, "GetAllBoqChild", "parentId", "BoqTypeChilds", "boqType")}
+                                                        name="boqType" index="boqType" />
                                                 </div>
                                                 <div className="linebylineInput valid-input">
-                                                    <Dropdown
-                                                        title="boqTypeChild"
-                                                        data={
-                                                            this.state
-                                                                .BoqTypeChilds
-                                                        }
-                                                        selectedValue={
-                                                            this.state
-                                                                .selectedBOQSubTypeChild
-                                                        }
-                                                        handleChange={event =>
-                                                            this.handleChangeItemDropDown(
-                                                                event,
-                                                                "boqChildTypeId",
-                                                                "selectedBOQSubTypeChild",
-                                                                true,
-                                                                "GetAllBoqChild",
-                                                                "parentId",
-                                                                "BoqSubTypes",
-                                                                "boqChildType"
-                                                            )
-                                                        }
-                                                        name="boqTypeChild"
-                                                        index="boqTypeChild"
-                                                    />
+                                                    <Dropdown title="boqTypeChild" data={this.state.BoqTypeChilds}
+                                                        selectedValue={this.state.selectedBOQSubTypeChild}
+                                                        handleChange={event => this.handleChangeItemDropDown(event, "boqChildTypeId", "selectedBOQSubTypeChild", true, "GetAllBoqChild", "parentId", "BoqSubTypes", "boqChildType")}
+                                                        name="boqTypeChild" index="boqTypeChild" />
                                                 </div>
                                                 <div className="letterFullWidth">
                                                     <div className="linebylineInput valid-input">
-                                                        <Dropdown
-                                                            title="boqSubType"
-                                                            data={
-                                                                this.state
-                                                                    .BoqSubTypes
-                                                            }
-                                                            selectedValue={
-                                                                this.state
-                                                                    .selectedBOQSubType
-                                                            }
-                                                            handleChange={event =>
-                                                                this.handleChangeItemDropDown(
-                                                                    event,
-                                                                    "boqSubTypeId",
-                                                                    "selectedBoqSubType",
-                                                                    false,
-                                                                    "",
-                                                                    "",
-                                                                    "",
-                                                                    "boqSubType"
-                                                                )
-                                                            }
-                                                            name="boqSubType"
-                                                            index="boqSubType"
-                                                        />
+                                                        <Dropdown title="boqSubType" data={this.state.BoqSubTypes}
+                                                            selectedValue={this.state.selectedBOQSubType}
+                                                            handleChange={event => this.handleChangeItemDropDown(event, "boqSubTypeId", "selectedBOQSubType", false, "", "", "", "boqSubType")}
+                                                            name="boqSubType" index="boqSubType" />
                                                     </div>
                                                 </div>
                                             </React.Fragment>
                                         ) : null}
                                         <div
-                                            className={
-                                                "linebylineInput valid-input " +
-                                                (this.props.showItemType !==
-                                                    false
-                                                    ? " "
-                                                    : " disNone")
-                                            }>
-                                            <Dropdown
-                                                title="itemType"
-                                                data={this.state.itemTypes}
-                                                selectedValue={
-                                                    this.state.selectedItemType
-                                                }
-                                                handleChange={event =>
-                                                    this.handleChangeItemDropDown(
-                                                        event,
-                                                        "itemType",
-                                                        "selectedItemType",
-                                                        false,
-                                                        "",
-                                                        "",
-                                                        ""
-                                                    )
-                                                }
-                                                onChange={setFieldValue}
-                                                onBlur={setFieldTouched}
-                                                error={errors.itemType}
-                                                touched={touched.itemType}
-                                                name="itemType"
-                                                index="itemType"
-                                            />
+                                            className={"linebylineInput valid-input " + (this.props.showItemType !== false ? " " : " disNone")}>
+                                            <Dropdown title="itemType" data={this.state.itemTypes}
+                                                selectedValue={this.state.selectedItemType}
+                                                handleChange={event => this.handleChangeItemDropDown(event, "itemType", "selectedItemType", false, "", "", "")}
+                                                onChange={setFieldValue} onBlur={setFieldTouched} error={errors.itemType} touched={touched.itemType}
+                                                name="itemType" index="itemType" />
                                         </div>
 
                                         {this.state.action == 2 ? (
@@ -501,16 +377,14 @@ class addItemDescription extends Component {
                                                     {Resources["save"][currentLanguage]}
                                                 </button>
                                             ) : (
-                                                    <button
-                                                        className="primaryBtn-1 btn  disabled"
-                                                        disabled="disabled">
+                                                    <button className="primaryBtn-1 btn  disabled" disabled="disabled">
                                                         <div className="spinner">
                                                             <div className="bounce1" />
                                                             <div className="bounce2" />
                                                             <div className="bounce3" />
                                                         </div>
                                                     </button>
-                                                )}{" "}
+                                                )}
                                         </div>
                                     </div>
                                 </div>

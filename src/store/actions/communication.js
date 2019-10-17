@@ -155,6 +155,8 @@ export function addItemDescription(item) {
     }
 }
 
+
+
 export function deleteItemDescription(item) {
     return (dispatch, getState) => {
         dispatch({
@@ -573,6 +575,15 @@ export function addCommunicationDocsAttach(data, projectId, docType, docId) {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
 
+    }
+}
+
+
+export function setLoading() {
+    return (dispatch) => {
+        dispatch({
+            type: types.SET_LOADING
+        });
     }
 }
 
