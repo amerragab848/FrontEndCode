@@ -38,47 +38,11 @@ class ExportDetails extends Component {
 
             this.setState({
                 isLoading: true
-            });
-            // const input = document.getElementById('printPdf');
-            // // input.style.height = 'auto'
-            // // input.style.visibility = 'visible'
-
-            // html2canvas(input).then((canvas) => {
-            //     var imgData = canvas.toDataURL('image/png');
-            //     var pageHeight = new Date().valueOf() % 2 ? 295 : 285;
-            //     var imgWidth = 210;
-            //     var imgHeight = canvas.height * imgWidth / canvas.width;
-            //     var heightLeft = imgHeight;
-            //     var doc = new jsPDF('landscape', 'mm', 'letter');
-            //     var position = 0;
-
-            //     doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            //     heightLeft -= pageHeight;
-
-            //     while (heightLeft >= 0) {
-            //         position = heightLeft - imgHeight;
-            //         doc.addPage();
-            //         doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            //         heightLeft -= pageHeight;
-            //     }
-            //     doc.setProperties({
-            //         // title: 'Title',
-            //         // subject: 'This is the subject',
-            //         author: 'Procoor',
-            //         keywords: 'Procoor V5',
-            //         creator: 'Procoor Team Development'
-            //     });
-
-            //     doc.save(Resources[this.props.documentTitle][currentLanguage] + '.pdf');
-            //     //input.style.visibility = 'hidden';
-            //     //input.style.height = '0';
-            //     // this.setState({
-            //     //     isLoading: false
-            //     // }); 
-            // })
-
+            }); 
             var route = 'ExportDocumentServerSide';
-            Dataservice.GetNextArrangeMainDocument(route + `?documentName=${this.props.documentName}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`)
+            var title =this.props.documentName.replace(/ /g,'_');
+             
+            Dataservice.GetNextArrangeMainDocument(route + `?documentName=${title}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`)
                 .then(result => {
                     if (result != null) {
                         result = Config.getPublicConfiguartion().downloads + result;
@@ -669,7 +633,7 @@ class ExportDetails extends Component {
         // let cycle = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles : {}
 
         return (
-            <div id={'docExport'} className="mainContainer" >
+            <div id={'docExport'}   >
                 {this.state.isLoading === true ? null :
                     <div className="dropWrapper">
                         <div className="proForm customProform">

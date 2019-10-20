@@ -399,7 +399,7 @@ class addItemDescription extends Component {
 
 function mapStateToProps(state) {
     return {
-        docId: state.communication.docId,
+        //docId: state.communication.docId,
         changeStatus: state.communication.changeStatus,
         items: state.communication.items
     };

@@ -215,7 +215,7 @@ class CommonLog extends Component {
         });
       });
     }
-  }
+  } 
 
   GetNextData() {
 

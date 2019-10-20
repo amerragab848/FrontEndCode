@@ -163,16 +163,15 @@ class UploadAttachment extends Component {
         return (
             <Fragment>
                 <DropboxChooser
-                    appKey={"einhoekbvh9jws7"}
+                    appKey={Config.getPublicConfiguartion().dropBoxappKey}
+                    accessToken={Config.getPublicConfiguartion().dropBoxToken}
                     success={files => this.onSuccess(files)}
                     cancel={() => this.onCancel()}
                     multiselect={true}
-                    accessToken={"l7phamm2skocwwy"}
                     extensions={[".pdf", ".doc", ".docx", ".png", ".dwg", ".rvt"]}>
                     <div className="drive__button--tooltip">
                         <div className="drive__button Dbox">
-                            <img src={dropbox} alt="drobBox" />
-
+                            <img src={dropbox} alt="drobBox" /> 
                         </div>
                         <div className="drive__toolTip">Dropbox</div>
                     </div>
@@ -184,8 +183,8 @@ class UploadAttachment extends Component {
     renderGoogleDrive = () => {
         return (
             <GooglePicker
-                clientId={"850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com"}
-                developerKey={"uof5qzvtwpq1dao"}
+                clientId={Config.getPublicConfiguartion().googleDriveClientId}
+                developerKey={Config.getPublicConfiguartion().googleDriveKey}
                 scope={["https://www.googleapis.com/auth/drive.readonly"]}
                 onChange={data => console.log("on change:", data)}
                 onAuthFailed={data => console.log("on auth failed:", data)}
@@ -205,7 +204,7 @@ class UploadAttachment extends Component {
                     const picker = new window.google.picker.PickerBuilder()
                         .addView(docsView)
                         .setOAuthToken(oauthToken)
-                        .setDeveloperKey("AIzaSyDS-GpZszvOVwnS_E8I7CVZX7gNaVwvBHg")
+                        .setDeveloperKey(Config.getPublicConfiguartion().googleDriveKey)
                         .setCallback(() => {
                         });
 
