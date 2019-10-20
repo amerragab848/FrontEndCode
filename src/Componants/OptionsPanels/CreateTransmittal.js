@@ -4,12 +4,9 @@ import Dropdown from "./DropdownMelcous";
 import Resources from '../../resources.json';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-
 import { toast } from "react-toastify";
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
+import { bindActionCreators } from 'redux';
 
 import * as communicationActions from '../../store/actions/communication';
 
@@ -29,7 +26,7 @@ class CreateTransmittal extends Component {
             sendingData: {
                 projectId: this.props.projectId,
                 docId: this.props.docId,
-                docTypeId: this.props.docTypeId,
+                docType: this.props.docTypeId,
                 arrange: "",
                 priorityId: null,
                 toCompanyId: null,
@@ -158,7 +155,6 @@ class CreateTransmittal extends Component {
                                 onBlur={setFieldTouched}
                                 error={errors.toCompany}
                                 touched={touched.toCompany}
-
                                 name='toCompany'
                             />
                             <Dropdown
@@ -187,7 +183,6 @@ class CreateTransmittal extends Component {
                                 handleChange={this.SubmittedFor_handelChange}
                                 name='submittedFor'
                             />
-
                             <div className="fullWidthWrapper">
                                 {!this.state.submitLoading ?
                                     <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>
@@ -217,21 +212,16 @@ class CreateTransmittal extends Component {
                 obj.value = item[value];
 
                 Data.push(obj);
-
             });
-
             this.setState({
                 [currState]: [...Data]
             });
         }).catch(ex => {
         });
-
     }
-
 }
 
 function mapStateToProps(state) {
-
     return {
         document: state.communication.document,
         showModal: state.communication.showModal
@@ -244,7 +234,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CreateTransmittal);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTransmittal);
