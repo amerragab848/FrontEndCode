@@ -94,6 +94,8 @@ class CreateTransmittal extends Component {
         this.setState({ sendingData: { ...this.state.sendingData, subject: e.target.value } });
     }
 
+
+    //dropsubmittalfor
     SubmittedFor_handelChange = (item) => {
         this.setState({
             sendingData: { ...this.state.sendingData, submittFor: item.value }
@@ -106,7 +108,7 @@ class CreateTransmittal extends Component {
         })
     }
 
-    render() {
+    render() {   
         return (
             <div className="dropWrapper">
                 <Formik key="create-trans-panel-form"
