@@ -1008,8 +1008,7 @@ class SubmittalAddEdit extends Component {
     if (this.props.changeStatus === false) {
 
       this.setState({
-        isLoading: true,
-        CurrentStep: 1
+        isLoading: true 
       });
 
       let saveDocument = { ...this.state.document };
@@ -2089,7 +2088,12 @@ class SubmittalAddEdit extends Component {
                     )}
                   <div className="doc-pre-cycle letterFullWidth">
                     <div>
-                      {this.state.docId > 0 && this.state.isViewMode === false && this.state.currentStep === 0 ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={883} EditAttachments={3261} ShowDropBox={3581} ShowGoogleDrive={3582} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                      {this.state.docId > 0 && this.state.isViewMode === false && this.state.currentStep === 0 ?
+                        (<UploadAttachment changeStatus={this.props.changeStatus}
+                          AddAttachments={883} EditAttachments={3261} ShowDropBox={3581}
+                          ShowGoogleDrive={3582} docTypeId={this.state.docTypeId}
+                          docId={this.state.docId} projectId={this.state.projectId} />) : null
+                      }
                       {this.state.docId > 0 && this.state.currentStep === 0 ? (
                         <Fragment>
                           <div className="document-fields tableBTnabs">

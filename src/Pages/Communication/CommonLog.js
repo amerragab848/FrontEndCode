@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import Config from "../../Services/Config.js";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
-
+ 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : Resources.noDate[currentLanguage];
 };
