@@ -7,6 +7,11 @@ import GridSetup from "../../Pages/Communication/GridSetup";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import CryptoJS from "crypto-js";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as communicationActions from '../../store/actions/communication';
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const dateFormate = ({ value }) => {
@@ -20,7 +25,7 @@ const subjectLink = ({ value, row }) => {
   if (row) {
 
     let obj = {
-      docId: row.docId,
+      docId: row.id,
       projectId: row.projectId,
       projectName: row.projectName,
       arrange: row.arrange,
@@ -40,7 +45,7 @@ const subjectLink = ({ value, row }) => {
 };
 
 
-export default class MonitorTasks extends Component {
+class MonitorTasks extends Component {
   constructor(props) {
     super(props);
 
@@ -357,3 +362,20 @@ export default class MonitorTasks extends Component {
     );
   }
 }
+
+
+
+function mapStateToProps(state) {
+  return {
+      document: state.communication.document,
+      showModal: state.communication.showModal
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+      actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MonitorTasks);
