@@ -1,4 +1,4 @@
-import CryptoJS from "crypto-js"; 
+import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
 import Config from "./Services/Config";
 
@@ -230,15 +230,8 @@ export default class Api {
         const url = `${host}${route}`;
         let json = null;
 
-        let options = Object.assign(
-            {
-                method: method === null ? "PUT" : method
-            },
-            params
-                ? {
-                    body: JSON.stringify(params)
-                }
-                : null
+        let options = Object.assign({ method: method === null ? "PUT" : method },
+            params ? { body: JSON.stringify(params) } : null
         );
 
         options.headers = Api.headers();
@@ -266,6 +259,12 @@ export default class Api {
             }else if (reponse.status === 400) {
                 returnObject.status = 400;
                 returnObject.msg = "Email already Belonge to Another Company.";
+                
+                json = returnObject;
+                return json;
+            } else if (reponse.status === 404) {
+                returnObject.status = 404;
+                returnObject.msg = "This Email Not Belongs to This Company";
                 json = returnObject;
                 return json;
             }
