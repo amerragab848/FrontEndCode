@@ -239,8 +239,8 @@ export default class Api {
         return fetch(url, options).then(reponse => {
             if (reponse.status === 200) {
                 returnObject.status = 200;
-                if (isCheck) {
-
+                alert(reponse);
+                if (isCheck) { 
                     returnObject.msg = "Email already exists.";
                 } else {
 
@@ -256,9 +256,15 @@ export default class Api {
                 returnObject.msg = "Email already exists.";
                 json = returnObject;
                 return json;
+            }else if (reponse.status === 400) {
+                returnObject.status = 400;
+                returnObject.msg = "Email already Belonge to Another Company.";
+                
+                json = returnObject;
+                return json;
             } else if (reponse.status === 404) {
                 returnObject.status = 404;
-                returnObject.msg = "This Email Not Belongs to This Company"
+                returnObject.msg = "This Email Not Belongs to This Company";
                 json = returnObject;
                 return json;
             }

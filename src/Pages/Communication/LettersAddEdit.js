@@ -162,8 +162,7 @@ class LettersAddEdit extends Component {
         });
         console.log(updated_document)
     }
-
-
+ 
     componentDidMount() {
 
         if (this.state.docId > 0) {

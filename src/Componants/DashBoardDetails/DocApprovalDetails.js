@@ -375,25 +375,10 @@ class DocApprovalDetails extends Component {
       query: stringifiedQuery
     });
 
-    Api.get("").then(result => {
-      if (result.length > 0) {
-        this.setState({
-          rows: result != null ? result : [],
-          isLoading: false
-        });
-      } else {
-        this.setState({
-          isLoading: false
-        });
-      }
-    })
-      .catch(ex => {
-        alert(ex);
-        this.setState({
-          rows: [],
-          isLoading: false
-        });
-      });
+    this.setState({ 
+      isLoading: false
+    });
+ 
   };
 
   onRowClick = (obj) => {

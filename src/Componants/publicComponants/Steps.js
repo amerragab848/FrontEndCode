@@ -10,15 +10,26 @@ class Steps extends Component {
         super(props);
         this.state = {
             completedTabs: [],
-            stepNo: 0
+            stepNo: null
         };
     }
 
-    componentWillReceiveProps(props) {
-        if (props.stepNo && props.stepNo != this.state.stepNo)
-            this.setCurrentStep(props.stepNo);
+    static getDerivedStateFromProps(nextProps, prevState) { 
+        if (nextProps.stepNo != prevState.stepNo) { 
+            return {
+                stepNo: nextProps.stepNo
+            };
+        }
+        return null
     }
 
+    componentDidUpdate(prevProps, prevState) {  
+        if (prevProps.stepNo !== this.state.stepNo) {
+
+            this.setCurrentStep(this.props.stepNo);
+        }
+    }
+ 
     /// click over steps in edit mode
     /// params: stepNo to specify the desired step
     setCurrentStep = stepNo => {
@@ -52,7 +63,7 @@ class Steps extends Component {
     /// traverse over steps in edit mode using next , previous btn top of steps panel
     /// params: flag to specify next or previous [+1] for right , [-1] for previous
     nxt_prev = flag => {
-        let length = this.props.steps_defination.length;
+        //let length = this.props.steps_defination.length;
         let stepNo = this.state.stepNo + flag;
         this.setCurrentStep(stepNo);
     };
@@ -96,8 +107,6 @@ class Steps extends Component {
 
         return (
             <Fragment>
-                {/* Next & Previous */}
-
                 {/* Steps Active  */}
                 {this.props.changeStatus == true || this.props.isEdit == true ?
                     <div className="editView__tabs">
@@ -119,7 +128,6 @@ class Steps extends Component {
 
 function mapStateToProps(state) {
     return {
-        //   changeStatus: state.communication.changeStatus,
         projectId: state.communication.projectId
     };
 }

@@ -134,7 +134,7 @@ class siteInstructionsAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
+        if (nextProps.document.id !== this.props.document.id) {
             let doc = nextProps.document
             doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
             doc.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(doc.requiredDate).format('YYYY-MM-DD')
@@ -689,7 +689,12 @@ class siteInstructionsAddEdit extends Component {
                                         </div>
                                         <div className="doc-pre-cycle letterFullWidth">
                                             <div>
-                                                {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={863} EditAttachments={3269} ShowDropBox={3601} ShowGoogleDrive={3602} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                                {this.state.docId > 0 && this.state.isViewMode === false ? (
+                                                <UploadAttachment changeStatus={this.props.changeStatus} 
+                                                AddAttachments={863} EditAttachments={3269} ShowDropBox={3601}
+                                                 ShowGoogleDrive={3602} docTypeId={this.state.docTypeId} 
+                                                 docId={this.state.docId} 
+                                                 projectId={this.state.projectId} />) : null}
                                                 {this.viewAttachments()}
                                                 <Fragment>
                                                     <div className="document-fields tableBTnabs">

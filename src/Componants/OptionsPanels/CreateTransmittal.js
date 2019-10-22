@@ -23,7 +23,7 @@ class CreateTransmittal extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            sendingData: {
+            transmittal: {
                 projectId: this.props.projectId,
                 docId: this.props.docId,
                 docType: this.props.docTypeId,
@@ -48,7 +48,7 @@ class CreateTransmittal extends Component {
     clickHandler = (e) => {
         this.setState({ submitLoading: true })
 
-        let inboxDto = { ...this.state.sendingData };
+        let inboxDto = { ...this.state.transmittal };
         Api.post("CreateTransmittal", inboxDto).then(res => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
             this.setState({ submitLoading: false })
@@ -64,12 +64,12 @@ class CreateTransmittal extends Component {
 
         this.setState({
             selectedOption: e.currentTarget.value,
-            sendingData: { ...this.state.sendingData, status: e.currentTarget.value }
+            transmittal: { ...this.state.transmittal, status: e.currentTarget.value }
         });
     }
 
     componentDidMount = () => {
-        let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.sendingData.projectId;
+        let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.transmittal.projectId;
         this.GetData(url, 'companyName', 'companyId', 'ToCompany');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
         this.GetData("GetAccountsDefaultList?listType=transmittalsubmittedfor&pageNumber=0&pageSize=10000", 'title', 'id', 'SubmittedForData')
@@ -79,32 +79,32 @@ class CreateTransmittal extends Component {
     To_company_handleChange = (selectedOption) => {
         let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
         this.setState({
-            sendingData: { ...this.state.sendingData, toCompanyId: selectedOption.value },
+            transmittal: { ...this.state.transmittal, toCompanyId: selectedOption.value },
         });
         this.GetData(url, "contactName", "id", "AttentionData");
     }
 
     Priority_handelChange = (item) => {
         this.setState({
-            sendingData: { ...this.state.sendingData, priorityId: item.value },
+            transmittal: { ...this.state.transmittal, priorityId: item.value },
         })
     }
 
     inputChangeHandler = (e) => {
-        this.setState({ sendingData: { ...this.state.sendingData, subject: e.target.value } });
+        this.setState({ transmittal: { ...this.state.transmittal, subject: e.target.value } });
     }
 
 
     //dropsubmittalfor
     SubmittedFor_handelChange = (item) => {
         this.setState({
-            sendingData: { ...this.state.sendingData, submittFor: item.value }
+            transmittal: { ...this.state.transmittal, submittFor: item.value }
         })
     }
 
     Attention_handleChange = (item) => {
         this.setState({
-            sendingData: { ...this.state.sendingData, toContactId: item.value }
+            transmittal: { ...this.state.transmittal, toContactId: item.value }
         })
     }
 
@@ -113,7 +113,7 @@ class CreateTransmittal extends Component {
             <div className="dropWrapper">
                 <Formik key="create-trans-panel-form"
                     validationSchema={validationSchema_createTransmittal}
-                    initialValues={{ ...this.state.sendingData }}
+                    initialValues={{ ...this.state.transmittal }}
                     onSubmit={(values) => {
                         this.clickHandler()
                     }}                >
@@ -128,7 +128,7 @@ class CreateTransmittal extends Component {
                                             id="subject"
                                             placeholder={Resources.subject[currentLanguage]}
                                             autoComplete='off'
-                                            defaultValue={this.state.sendingData.subject}
+                                            defaultValue={this.state.transmittal.subject}
                                             onBlur={(e) => {
                                                 handleBlur(e)
                                                 handleChange(e)
