@@ -122,7 +122,8 @@ class ViewAttachmments extends Component {
 
     viewAutoDeskModal = (obj, e) => {
 
-        var encrypte = encodeURIComponent(obj.attachFile);
+        let attachFile=obj.attachFile.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
+        var encrypte = encodeURIComponent(attachFile);
         // if (obj.isCloud === true) {
         //     let checkDropbox = obj.attachFile.includes('www.dropbox.com');
         //     if (checkDropbox) {
@@ -133,6 +134,7 @@ class ViewAttachmments extends Component {
         //         encrypte = encodeURIComponent(urlFile);
         //     }
         // }
+        
         let obj1 = {
             fileName: obj.fileName,
             encrypte: encrypte,

@@ -224,8 +224,7 @@ class LettersAddEdit extends Component {
             //         //976 976 close modal
             //         //alert('recieve....'); 
             //         //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
-
-            console.log('componentDidUpdate......', prevProps);
+ 
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
