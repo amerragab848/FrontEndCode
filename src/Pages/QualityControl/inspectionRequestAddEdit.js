@@ -203,7 +203,7 @@ class inspectionRequestAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
+        if (nextProps.document.id !== this.props.document.id) {
             let serverInspectionRequest = { ...nextProps.document };
             serverInspectionRequest.docDate = serverInspectionRequest.docDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.docDate).format('YYYY-MM-DD')
             serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD')
@@ -612,7 +612,7 @@ class inspectionRequestAddEdit extends Component {
                     status: 'false',
                     approvalStatusId: null,
                     cycleComment: '',
-                    arrange: 0
+                    arrange: 1
                 };
                 this.setState({
                     docId: result.id,
@@ -793,7 +793,7 @@ class inspectionRequestAddEdit extends Component {
                                                 className="form-control fsadfsadsa"
                                                 placeholder={Resources.subject[currentLanguage]}
                                                 autoComplete='off'
-                                                defaultValue={this.state.documentCycle.subject + (this.props.changeStatus ? "" : "   cycle of (" + this.state.document.arrange + ')')}
+                                                defaultValue={this.state.documentCycle.subject + (this.props.changeStatus ? "" : "   cycle of (" + this.state.documentCycle.arrange + ')')}
                                                 onBlur={(e) => {
                                                     handleBlur(e)
                                                     handleChange(e)

@@ -222,89 +222,7 @@ class SubmittalAddEdit extends Component {
       }
     }
 
-    this.checkDocumentIsView();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.document.id !== this.props.document.id) {
-
-      let doc = nextProps.document
-
-      doc.docDate = doc.docDate !== null ? moment(doc.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-      doc.forwardToDate !== null ? moment(doc.forwardToDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-
-      let obj = this.state.SubmittalTypes.find(o => o.label === nextProps.document.submittalType);
-
-      this.setState({
-
-        selectedSubmittalType: nextProps.document.submittalType != null && nextProps.document.submittalType ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
-        isEdit: true,
-        document: doc,
-        hasWorkflow: nextProps.hasWorkflow
-      });
-
-      dataservice.GetRowById("GetLogSubmittalCyclesForEdit?id=" + nextProps.document.id).then(result => {
-        if (result) {
-          let cycle = result
-
-          result.docDate = result.docDate != null ? moment(result.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-          result.approvedDate = result.approvedDate != null ? moment(result.approvedDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-
-          this.setState({
-            documentCycle: { ...cycle },
-            addCycleSubmital: { ...cycle },
-            selectedFromContactCycles: { label: cycle.flowContactName, value: cycle.flowContactId }
-          });
-        }
-
-        dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
-          this.setState({
-            itemData: data
-          });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-
-        dataservice.GetDataGrid("GetLogsSubmittalsCyclessBySubmittalId?submittalId=" + this.state.docId).then(result => {
-          this.setState({
-            submittalItemData: result
-          });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-
-        this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-      });
-
-      this.checkDocumentIsView();
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-      this.checkDocumentIsView();
-    }
-  }
-
-  checkDocumentIsView() {
-    if (this.props.changeStatus === true) {
-      if (!Config.IsAllow(221)) {
-        this.setState({ isViewMode: true });
-      }
-      if (this.state.isApproveMode != true && Config.IsAllow(221)) {
-        if (this.props.hasWorkflow == false && Config.IsAllow(221)) {
-          if (this.props.document.status == true && Config.IsAllow(221)) {
-            this.setState({ isViewMode: false });
-          } else {
-            this.setState({ isViewMode: true });
-          }
-        } else {
-          this.setState({ isViewMode: true });
-        }
-      }
-    } else {
-      this.setState({ isViewMode: false });
-    }
-  }
-
-  componentWillMount() {
-    const submittalDocumentCycles = {
+    let submittalDocumentCycles = {
       //field
       id: 0,
       submittalId: "",
@@ -324,18 +242,24 @@ class SubmittalAddEdit extends Component {
     };
 
     if (this.state.docId > 0) {
-      let url = "GetLogsSubmittalForEdit?id=" + this.state.docId;
 
+      let url = "GetLogsSubmittalForEdit?id=" + this.state.docId; 
       this.props.actions.documentForEdit(url, this.state.docTypeId, 'Submittal');
 
       dataservice.GetDataGrid("GetLogsSubmittalsCyclessBySubmittalId?submittalId=" + this.state.docId).then(res => {
         let data = { items: res }
+        this.setState({
+          submittalItemData: res
+        });
         this.props.actions.ExportingData(data);
-      })
 
-      this.setState({
-        addCycleSubmital: submittalDocumentCycles
       });
+      dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
+        this.setState({
+          itemData: data
+        });
+      }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+ 
     } else {
       const submittalDocument = {
         //field
@@ -386,6 +310,97 @@ class SubmittalAddEdit extends Component {
       this.fillDropDowns(false);
       this.props.actions.documentForAdding();
     }
+    this.checkDocumentIsView();
+  }
+
+  static getDerivedStateFromProps(nextProps, state) {
+    if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+      let doc = nextProps.document
+      doc.docDate = doc.docDate !== null ? moment(doc.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+      doc.forwardToDate !== null ? moment(doc.forwardToDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+      return {
+        document: doc,
+        hasWorkflow: nextProps.hasWorkflow
+      };
+    }
+    return null
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+      if (prevState.document.id !== this.props.document.id) {
+
+        let submittalDocumentCycles = {
+          id: 0,
+          submittalId: "",
+          docDate: moment(),
+          approvedDate: moment(),
+          CycleStatus: "true",
+          flowCompanyName: "",
+          flowContactName: "",
+          status: "true",
+          subject: "Cycle No. R " + 1,
+          approvalStatusId: "",
+          arrange: "1",
+          flowCompanyId: "",
+          flowContactId: "",
+          fromContactId: "",
+          approvalAction: "1"
+        };
+
+        dataservice.GetRowById("GetLogSubmittalCyclesForEdit?id=" + this.props.document.id).then(result => {
+          if (result) {
+            let cycle = result
+
+            cycle.docDate = result.docDate != null ? moment(result.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+            cycle.approvedDate = result.approvedDate != null ? moment(result.approvedDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+
+            this.setState({
+              documentCycle: cycle,
+              addCycleSubmital: cycle,
+              selectedFromContactCycles: { label: cycle.flowContactName, value: cycle.flowContactId }
+            });
+          } else {
+            this.setState({
+              documentCycle: submittalDocumentCycles,
+              addCycleSubmital: submittalDocumentCycles
+            });
+          }
+        });
+
+      }
+      this.fillCycleDropDown(true);
+
+      this.fillDropDowns(this.props.document.id > 0 ? true : false);
+
+      this.checkDocumentIsView();
+    }
+
+    if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+      this.checkDocumentIsView();
+    }
+
+  }
+
+  checkDocumentIsView() {
+    if (this.props.changeStatus === true) {
+      if (!Config.IsAllow(221)) {
+        this.setState({ isViewMode: true });
+      }
+      if (this.state.isApproveMode != true && Config.IsAllow(221)) {
+        if (this.props.hasWorkflow == false && Config.IsAllow(221)) {
+          if (this.props.document.status == true && Config.IsAllow(221)) {
+            this.setState({ isViewMode: false });
+          } else {
+            this.setState({ isViewMode: true });
+          }
+        } else {
+          this.setState({ isViewMode: true });
+        }
+      }
+    } else {
+      this.setState({ isViewMode: false });
+    }
   }
 
   fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
@@ -419,11 +434,43 @@ class SubmittalAddEdit extends Component {
         }
       }
     });
+
+
+  }
+
+  fillCycleDropDown(isEdit) {
+
+    //approvalStatus
+    dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id")
+      .then(result => {
+
+        if (isEdit) {
+
+          let approval = this.state.documentCycle.approvalStatusId;
+
+          if (approval) {
+
+            let approvalName = result.find(i => i.value === parseInt(approval));
+
+            if (approvalName) {
+              this.setState({
+                selectedApprovalStatus: { label: approvalName.label, value: approval }
+              });
+            }
+          }
+        }
+        this.setState({
+          approvales: [...result]
+        });
+      });
+
   }
 
   fillDropDowns(isEdit) {
     //from Companies
     dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+
+      let obj = this.state.SubmittalTypes.find(o => o.label === this.props.document.submittalType);
 
       if (isEdit) {
 
@@ -450,6 +497,7 @@ class SubmittalAddEdit extends Component {
         }
       }
       this.setState({
+        selectedSubmittalType: this.props.document.submittalType != null && this.props.document.submittalType ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
         companies: [...result]
       });
     });
@@ -589,29 +637,6 @@ class SubmittalAddEdit extends Component {
 
       this.setState({
         specsSection: [...result]
-      });
-    });
-
-    //approvalStatus
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id").then(result => {
-
-      if (isEdit) {
-
-        let approval = this.props.document.approvalStatusId;
-
-        if (approval) {
-
-          let approvalName = result.find(i => i.value === parseInt(approval));
-
-          if (approvalName) {
-            this.setState({
-              selectedApprovalStatus: { label: approvalName.label, value: approval }
-            });
-          }
-        }
-      }
-      this.setState({
-        approvales: [...result]
       });
     });
 
@@ -792,6 +817,7 @@ class SubmittalAddEdit extends Component {
           document: updated_document
         });
       });
+
     }
 
     if (isSubscrib) {
@@ -939,8 +965,9 @@ class SubmittalAddEdit extends Component {
   editSubmittalCycle() {
     let saveDocumentCycle = this.state.documentCycle;
     saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+    saveDocumentCycle.submittalId = this.state.docId;
     saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-    this.changeCurrentStep(2);
+    // this.changeCurrentStep(2);
     dataservice.addObject("EditLogSubmittalCycle", saveDocumentCycle).then(data => {
       dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
 
@@ -1008,7 +1035,7 @@ class SubmittalAddEdit extends Component {
     if (this.props.changeStatus === false) {
 
       this.setState({
-        isLoading: true 
+        isLoading: true
       });
 
       let saveDocument = { ...this.state.document };
@@ -1019,6 +1046,7 @@ class SubmittalAddEdit extends Component {
 
       dataservice.addObject("AddLogsSubmittal", saveDocument).then(result => {
         toast.success(Resources["operationSuccess"][currentLanguage]);
+        this.fillCycleDropDown(false);
 
         this.setState({
           docId: result.id,
@@ -1031,8 +1059,6 @@ class SubmittalAddEdit extends Component {
 
         toast.error(Resources["failError"][currentLanguage]);
       });
-    } else {
-      this.changeCurrentStep(1);
     }
   }
 
@@ -1553,12 +1579,13 @@ class SubmittalAddEdit extends Component {
                     <div className="document-fields">
                       <Formik initialValues={this.state.document}
                         validationSchema={validationSchema}
-                        enableReinitialize={this.props.changeStatus}
+                        enableReinitialize={true}
                         onSubmit={values => {
                           if (this.props.showModal) { return; }
                           if (this.props.changeStatus === true && this.state.docId > 0) {
                             this.editSubmittal();
                           } else if (this.props.changeStatus === false && this.state.docId === 0) {
+
                             this.saveSubmittal();
                           } else {
                             this.saveAndExit();
@@ -1578,6 +1605,7 @@ class SubmittalAddEdit extends Component {
                                     onBlur={e => { handleBlur(e); handleChange(e); }}
                                     onChange={e => this.handleChange(e, "subject")} />
                                   {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+
                                 </div>
                               </div>
                               <div className="linebylineInput valid-input">
@@ -1829,7 +1857,7 @@ class SubmittalAddEdit extends Component {
                                       <div className={"ui input inputDev fillter-item-c " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")} >
                                         <input name="subject" className="form-control fsadfsadsa"
                                           placeholder={Resources.subject[currentLanguage]} autoComplete="off"
-                                          value={this.state.documentCycle.subject}
+                                          value={this.state.documentCycle.subject + (this.props.changeStatus ? "" : "   cycle of (" + this.state.documentCycle.arrange + ')')}
                                           onBlur={e => { handleBlur(e); handleChange(e); }}
                                           onChange={e => this.handleChangeCycles(e, "subject")} />
                                         {errors.subject && touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
@@ -2090,8 +2118,11 @@ class SubmittalAddEdit extends Component {
                     <div>
                       {this.state.docId > 0 && this.state.isViewMode === false && this.state.currentStep === 0 ?
                         (<UploadAttachment changeStatus={this.props.changeStatus}
-                          AddAttachments={883} EditAttachments={3261} ShowDropBox={3581}
-                          ShowGoogleDrive={3582} docTypeId={this.state.docTypeId}
+                          AddAttachments={883}
+                          EditAttachments={3261}
+                          ShowDropBox={3581}
+                          ShowGoogleDrive={3582}
+                          docTypeId={this.state.docTypeId}
                           docId={this.state.docId} projectId={this.state.projectId} />) : null
                       }
                       {this.state.docId > 0 && this.state.currentStep === 0 ? (
@@ -2116,6 +2147,7 @@ class SubmittalAddEdit extends Component {
                     docTypeId={this.state.docTypeId}
                     docId={this.state.docId}
                     projectId={this.state.projectId}
+                    subject={this.props.document.subject}
                     previousRoute={this.state.previousRoute}
                     docApprovalId={this.state.docApprovalId}
                     currentArrange={this.state.arrange}
@@ -2127,8 +2159,13 @@ class SubmittalAddEdit extends Component {
                 </div>
               </div>
             ) : null}
-            <Steps steps_defination={steps_defination} exist_link="/submittal/" docId={this.state.docId}
-              changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)} stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true} />
+            <Steps
+              steps_defination={steps_defination}
+              exist_link="/submittal/"
+              docId={this.state.docId}
+              changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
+              stepNo={this.state.currentStep}
+              changeStatus={docId === 0 ? false : true} />
           </div>
         </div>
         <div>

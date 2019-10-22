@@ -117,7 +117,7 @@ class ViewWorkFlow extends Component {
                                                 </span> : null}
                                             <div className="box-statue">
                                                 <h5>{level.status}</h5>
-                                                <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>
+                                                {level.statusVal != null ? <p>{Moment(level.date).format('DD-MM-YYYY')}</p> : <p>No Date</p>}
                                             </div>
                                         </div>
 
