@@ -8229,6 +8229,20 @@ h1, h2, h3, h4, h5 {
     height: 100%;
 }
 
+.uploadForm.zeropercent .progressBar .smallProgress {
+    width: 80%;
+    transition: all 5s ease-in
+}
+
+.uploadForm.zeropercent, .uploadForm.hundredPercent {
+    border: 3px solid #83B4FC;
+}
+
+.uploadForm.done .progressBar .smallProgress,.uploadForm.hundredPercent .progressBar .smallProgress {
+    width: 95%;
+    transition: all 2s ease-in
+}
+
 .uploadForm .dragHoverDiv {
     display: none;
     align-items: center;

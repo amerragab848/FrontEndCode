@@ -33,6 +33,7 @@ export default {
 			relatedLinkData: [],
 			documentData: [],
 			isReject: null,
+			isLoadingFilesUpload: false,
 			totalCost: 0
 		},
 		expensesWorkFlow: {

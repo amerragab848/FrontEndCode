@@ -67,7 +67,7 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 files: [...state.files, action.file],
-                isLoadingFiles: true
+                isLoadingFilesUpload: false
             };
 
         case types.add_item:
@@ -369,7 +369,7 @@ export default function (state = initialState.app.communication, action) {
             return { ...state, isReject: action.data }
 
         case types.SET_LOADING:
-            return { ...state, isLoading: true }
+            return { ...state, isLoading: true, isLoadingFilesUpload: true }
 
         default:
             return {

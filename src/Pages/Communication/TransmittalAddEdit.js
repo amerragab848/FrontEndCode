@@ -533,7 +533,7 @@ class TransmittalAddEdit extends Component {
                                     <div className="document-fields">
                                         <Formik initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
-                                            enableReinitialize={this.props.changeStatus}
+                                            enableReinitialize={true}
                                             onSubmit={(values) => {
 
                                                 if (this.props.showModal) {

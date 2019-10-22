@@ -116,6 +116,7 @@ export function deleteFile(urlDelete, file) {
 
 export function uploadFile(BlobUpload, formData, header) {
     return (dispatch, getState) => {
+
         return Api.postFile(BlobUpload, formData, header).then(resp => {
             dispatch({
                 type: types.File_Upload,
@@ -126,6 +127,14 @@ export function uploadFile(BlobUpload, formData, header) {
                 type: types.File_Upload,
                 file: {}
             });
+        });
+    }
+}
+
+export function setLoadingFiles() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.SET_LOADING 
         });
     }
 }

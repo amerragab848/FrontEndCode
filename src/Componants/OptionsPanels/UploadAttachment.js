@@ -24,11 +24,10 @@ class UploadAttachment extends Component {
             docId: this.props.docId,
             link: this.props.link,
             parentId: "",
-            _className: ""
+            _className: "",
+            onDragUpload: ''
         };
     }
-
-    onCancel(files) { }
 
     onSuccess(files) {
         let selectedFiles = [];
@@ -46,6 +45,8 @@ class UploadAttachment extends Component {
     }
 
     onDrop = (acceptedFiles, rejectedFiles) => {
+        this.props.actions.setLoadingFiles();
+
         this.setState({ _className: " dragHover dropHover fullProgressBar" });
     };
 
@@ -56,9 +57,9 @@ class UploadAttachment extends Component {
     };
 
     onDropAcceptedHandler = acceptedFiles => {
-        setTimeout(() => {
-            this.setState({ _className: "hundredPercent" });
-        }, 500);
+
+        this.setState({ _className: "hundredPercent" });
+
 
         acceptedFiles.forEach(element => {
             let formData = new FormData();
@@ -70,18 +71,32 @@ class UploadAttachment extends Component {
             };
             this.props.actions.uploadFile("BlobUpload", formData, header);
         });
-        setTimeout(() => {
-            this.setState({ _className: "zeropercent" });
-        }, 1000);
+        // setTimeout(() => {
+
+        // }, 1000);
+        this.setState({ _className: "zeropercent" });
     };
+
+    static getDerivedStateFromProps(props, state) {
+        if (!props.isLoadingFilesUpload) {
+
+            return {
+                _className: ""
+            }
+        }
+    }
+
+    dragOverDiv = () => {
+        this.props.actions.setLoadingFiles();
+        this.setState({ _className: "dragHover" });
+    }
 
     renderAddAttachments = () => {
         return (
             <Dropzone onDrop={e => this.onDrop(e)} onDragLeave={e => this.setState({ _className: " " })}
-                onDragOver={e => this.setState({ _className: "dragHover" })}
+                onDragOver={this.dragOverDiv}
                 onDropAccepted={e => this.onDropAcceptedHandler(e)}
-                onDropRejected={this.onDropRejected}
-            >
+                onDropRejected={this.onDropRejected} >
                 {({ getRootProps, getInputProps, isDragActive }) => {
                     return (
                         <Fragment>
@@ -103,7 +118,7 @@ class UploadAttachment extends Component {
                                             </div>
                                         </div>
                                         <div className="progressBar">
-                                            <div className="smallProgress" />
+                                            <div className={("smallProgress" + this.state.onDragUpload)} />
                                         </div>
                                     </div>
                                 }
@@ -111,14 +126,14 @@ class UploadAttachment extends Component {
                         </Fragment>
                     );
                 }}
-            </Dropzone>
+            </Dropzone >
         );
     };
 
     renderEditAttachments = () => {
         return (
             <Dropzone onDrop={e => this.onDrop(e)} onDragLeave={e => this.setState({ _className: " " })}
-                onDragOver={e => this.setState({ _className: "dragHover" })}
+                onDragOver={this.dragOverDiv}
                 onDropAccepted={e => this.onDropAcceptedHandler(e)}
                 onDropRejected={this.onDropRejected}>
                 {({ getRootProps, getInputProps, isDragActive }) => {
@@ -171,7 +186,7 @@ class UploadAttachment extends Component {
                     extensions={[".pdf", ".doc", ".docx", ".png", ".dwg", ".rvt"]}>
                     <div className="drive__button--tooltip">
                         <div className="drive__button Dbox">
-                            <img src={dropbox} alt="drobBox" /> 
+                            <img src={dropbox} alt="drobBox" />
                         </div>
                         <div className="drive__toolTip">Dropbox</div>
                     </div>
@@ -253,7 +268,9 @@ function mapStateToProps(state) {
     return {
         file: state.communication.file,
         files: state.communication.files,
-        isLoadingFiles: state.communication.isLoadingFiles
+        isLoadingFiles: state.communication.isLoadingFiles,
+        isLoadingFilesUpload: state.communication.isLoadingFilesUpload
+
     };
 }
 
