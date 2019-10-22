@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
     }).required(Resources['ComapnyNameRequired'][currentLanguage]),
     ContactNameEn: Yup.string().max(450, Resources['maxLength'][currentLanguage]).required(Resources['contactNameRequired'][currentLanguage]),
     ContactNameAr: Yup.string().max(450, Resources['maxLength'][currentLanguage]).required(Resources['contactNameRequired'][currentLanguage]),
-    Mobile: Yup.number().max(50, Resources['maxLength'][currentLanguage]).required(Resources['mobileRequired'][currentLanguage]),
+    Mobile: Yup.string().max(50, Resources['maxLength'][currentLanguage]).required(Resources['mobileRequired'][currentLanguage]),
     positionEn: Yup.string().max(50, Resources['maxLength'][currentLanguage]),
     positionAr: Yup.string().max(50, Resources['maxLength'][currentLanguage]),
     addressAr: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
