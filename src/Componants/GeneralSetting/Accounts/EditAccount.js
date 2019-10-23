@@ -416,11 +416,11 @@ class EditAccount extends Component {
                                                         <div className="linebylineInput">
                                                             <label data-toggle="tooltip" title={Resources['designTeam'][currentLanguage]} className="control-label"> {Resources['designTeam'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="designTeam" defaultChecked={this.state.accountDocument.designTeam ? 'checked' : null} value="true" onChange={(e) => { setFieldValue('designTeam', e.target.value) }} />
+                                                                <input type="radio" name="designTeam" checked={values.designTeam === true} value={values.designTeam} onChange={(e) => { setFieldValue('designTeam', true) }} />
                                                                 <label>{Resources['yes'][currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue checked">
-                                                                <input type="radio" defaultChecked={this.state.accountDocument.designTeam ? null : 'checked'} name="designTeam" value="false" onChange={(e) => { setFieldValue('designTeam', e.target.value) }} />
+                                                                <input type="radio" checked={values.designTeam === false} name="designTeam" value={values.designTeam} onChange={(e) => { setFieldValue('designTeam', false) }} />
                                                                 <label> {Resources['no'][currentLanguage]}</label>
                                                             </div>
                                                         </div>
@@ -429,11 +429,11 @@ class EditAccount extends Component {
                                                         <div className="linebylineInput">
                                                             <label data-toggle="tooltip" title={Resources['isTaskAdmin'][currentLanguage]} className="control-label"> {Resources['isTaskAdmin'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="TaskAdmin" defaultChecked={this.state.accountDocument.isTaskAdmin ? 'checked' : null} value="true" onChange={(e) => { setFieldValue('isTaskAdmin', e.target.value) }} />
+                                                                <input type="radio" name="TaskAdmin" checked={values.isTaskAdmin === true} value={values.isTaskAdmin} onChange={(e) => { setFieldValue('isTaskAdmin', true) }} />
                                                                 <label>{Resources['yes'][currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue checked">
-                                                                <input type="radio" defaultChecked name="TaskAdmin" defaultChecked={this.state.accountDocument.isTaskAdmin ? null : 'checked'} value="false" onChange={(e) => { setFieldValue('isTaskAdmin', e.target.value) }} />
+                                                                <input type="radio" name="TaskAdmin" checked={values.isTaskAdmin === false} value={values.isTaskAdmin} onChange={(e) => { setFieldValue('isTaskAdmin', false) }} />
                                                                 <label> {Resources['no'][currentLanguage]}</label>
                                                             </div>
                                                         </div>
@@ -442,11 +442,11 @@ class EditAccount extends Component {
                                                         <div className="linebylineInput">
                                                             <label data-toggle="tooltip" title={Resources['usePermissionsOnLogs'][currentLanguage]} className="control-label"> {Resources['usePermissionsOnLogs'][currentLanguage]} </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="usePermissionsOnLogs" defaultChecked={this.state.accountDocument.usePermissionsOnLogs ? 'checked' : null} value="true" onChange={(e) => { setFieldValue('usePermissionsOnLogs', e.target.value) }} />
+                                                                <input type="radio" name="usePermissionsOnLogs" checked={values.usePermissionsOnLogs === true} value={values.usePermissionsOnLogs} onChange={(e) => { setFieldValue('usePermissionsOnLogs', true) }} />
                                                                 <label>{Resources['yes'][currentLanguage]}</label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue ">
-                                                                <input type="radio" defaultChecked name="usePermissionsOnLogs" defaultChecked={this.state.accountDocument.usePermissionsOnLogs ? null : 'checked'} value="false" onChange={(e) => { setFieldValue('usePermissionsOnLogs', e.target.value) }} />
+                                                                <input type="radio" name="usePermissionsOnLogs" checked={values.usePermissionsOnLogs === false} value={values.usePermissionsOnLogs} onChange={(e) => { setFieldValue('usePermissionsOnLogs', false) }} />
                                                                 <label> {Resources['no'][currentLanguage]}</label>
                                                             </div>
                                                         </div>

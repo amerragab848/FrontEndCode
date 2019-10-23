@@ -29,7 +29,7 @@ export function documentForEdit(urlAction, docTypeId, docName) {
         });
     }
 }
-
+ 
 export function clearCashDocument() {
     return (dispatch, getState) => {
         dispatch({
@@ -116,6 +116,7 @@ export function deleteFile(urlDelete, file) {
 
 export function uploadFile(BlobUpload, formData, header) {
     return (dispatch, getState) => {
+
         return Api.postFile(BlobUpload, formData, header).then(resp => {
             dispatch({
                 type: types.File_Upload,
@@ -126,6 +127,14 @@ export function uploadFile(BlobUpload, formData, header) {
                 type: types.File_Upload,
                 file: {}
             });
+        });
+    }
+}
+
+export function setLoadingFiles() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.SET_LOADING 
         });
     }
 }
@@ -154,6 +163,8 @@ export function addItemDescription(item) {
         });
     }
 }
+
+
 
 export function deleteItemDescription(item) {
     return (dispatch, getState) => {
@@ -431,16 +442,6 @@ export function GetTopicsTable(urlAction) {
     }
 }
 
-export const ViewDocsAttachment = (docs) => {
-    return (dispatch, getState) => {
-        return (
-            dispatch({
-                type: types.ViewDocsAttachment,
-                attachDocuments: docs || []
-            })
-        )
-    }
-}
 
 function BuildWorkFlowCycleStracture(result) {
     let levels = [];
@@ -490,6 +491,17 @@ export function setDocId(docId) {
 }
 
 //#region Add Docs Attachment Actions
+
+export const ViewDocsAttachment = (docs) => {
+    return (dispatch, getState) => {
+        return (
+            dispatch({
+                type: types.ViewDocsAttachment,
+                data: docs || []
+            })
+        )
+    }
+}
 
 export function getCommunicationDocsAttach(projectId, docType, docId) {
     return (dispatch) => {
@@ -572,6 +584,15 @@ export function addCommunicationDocsAttach(data, projectId, docType, docId) {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
 
+    }
+}
+
+
+export function setLoading() {
+    return (dispatch) => {
+        dispatch({
+            type: types.SET_LOADING
+        });
     }
 }
 

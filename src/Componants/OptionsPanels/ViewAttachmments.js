@@ -122,7 +122,8 @@ class ViewAttachmments extends Component {
 
     viewAutoDeskModal = (obj, e) => {
 
-        var encrypte = encodeURIComponent(obj.attachFile);
+        let attachFile = obj.attachFile.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
+        var encrypte = encodeURIComponent(attachFile);
         // if (obj.isCloud === true) {
         //     let checkDropbox = obj.attachFile.includes('www.dropbox.com');
         //     if (checkDropbox) {
@@ -133,6 +134,7 @@ class ViewAttachmments extends Component {
         //         encrypte = encodeURIComponent(urlFile);
         //     }
         // }
+
         let obj1 = {
             fileName: obj.fileName,
             encrypte: encrypte,
@@ -171,7 +173,7 @@ class ViewAttachmments extends Component {
                 this.setState({
                     activeURL: fileURL,
                     view: true
-                }); 
+                });
                 this.simpleDialog.show();
             }
         }).catch(error => {
@@ -424,7 +426,7 @@ class ViewAttachmments extends Component {
                                         </a>
                                     ) : null}
 
-                                    <a href={item["attachFile"]} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
+                                    <a href={item["attachFile"]} download={item.fileNameDisplay} target="_" className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
 
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                             <g fill="none" fillRule="evenodd" transform="translate(1)">
@@ -554,7 +556,7 @@ class ViewAttachmments extends Component {
                     <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialogImage = ref)}>
                         <div className="dropWrapper">
                             <div className="fullWidthWrapper">
-                                <img src={this.state.imagePath} alt="doc img" style={{ maxWidth: '100 %' }} />
+                                <img src={this.state.imagePath.replace('www.dropbox.com', 'dl.dropboxusercontent.com')} alt="doc img" style={{ maxWidth: '100 %' }} />
                             </div>
                         </div>
                     </SkyLight>

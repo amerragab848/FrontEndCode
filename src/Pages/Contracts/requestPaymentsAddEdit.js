@@ -19,12 +19,8 @@ import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
 import moment from "moment";
 import SkyLight from "react-skylight";
-import Distribution from "../../Componants/OptionsPanels/DistributionList";
-import SendToWorkflow from "../../Componants/OptionsPanels/SendWorkFlow";
-import DocumentApproval from "../../Componants/OptionsPanels/wfApproval";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
-import { func } from "prop-types";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -185,7 +181,8 @@ class requestPaymentsAddEdit extends Component {
                 { label: "ReCalculator Payment", value: "2" },
                 { label: "Update Items From VO", value: "3" },
                 { label: "Add Missing Items", value: "4" },
-                { label: "Edit Advanced Payment Amount", value: "5" }
+                { label: "Edit Advanced Payment Amount", value: "5" },
+                { label: "Calculate Interim Invoice", value: "6" }
             ],
             selectedDropDownTrees: {
                 label: Resources.codingTree[currentLanguage],
@@ -219,7 +216,7 @@ class requestPaymentsAddEdit extends Component {
             BoqSubTypes: [],
             boqStractureObj: {},
             documentDeduction: {},
-            currentAndPreviousTotal: [],
+            interimInvoicedTable: [],
             approvedInvoicesParent: [],
             approvedInvoicesChilds: [],
             deductionObservableArray: [],
@@ -1143,23 +1140,20 @@ class requestPaymentsAddEdit extends Component {
 
     FillSummariesTab = () => {
         let contractId = this.state.document.contractId;
-        let currentAndPreviousTotal = [...this.state.currentAndPreviousTotal];
-        if (currentAndPreviousTotal.length == 0) {
+        let interimInvoicedTable = [...this.state.interimInvoicedTable];
+        if (interimInvoicedTable.length == 0) {
             this.setState({
                 isLoading: true
             });
-            dataservice
-                .GetDataGridPost(
-                    "GetTotalForReqPay?projectId=" +
-                    projectId +
-                    "&contractId=" +
-                    contractId +
-                    "&requestId=" +
-                    this.state.docId
-                )
+            dataservice.GetDataGrid("GetTotalForReqPay?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId)
                 .then(result => {
                     this.setState({
-                        currentAndPreviousTotal: result,
+                        interimInvoicedTable: result,
+                        isLoading: false
+                    });
+                }).catch(res => {
+                    this.setState({
+                        interimInvoicedTable: [],
                         isLoading: false
                     });
                 });
@@ -1170,67 +1164,52 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true
             });
             let rowTotal = 0;
-            dataservice
-                .GetDataGridPost(
-                    "GetApprovedInvoicesParent?contractId=" +
-                    contractId +
-                    "&requestId=" +
-                    this.state.docId
-                )
-                .then(result => {
-                    var obj = {};
-                    var conditionString = "";
-                    dataservice
-                        .GetDataGridPost(
-                            "GetApprovedInvoicesChilds?projectId=" +
-                            projectId +
-                            "&contractId=" +
-                            contractId +
-                            "&requestId=" +
-                            this.state.docId
-                        )
-                        .then(res => {
-                            let approvedInvoicesParent = [];
+            dataservice.GetDataGridPost("GetApprovedInvoicesParent?contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
+                var obj = {};
+                var conditionString = "";
+                dataservice.GetDataGridPost("GetApprovedInvoicesChilds?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId)
+                    .then(res => {
+                        let approvedInvoicesParent = [];
 
-                            result.map(parent => {
-                                let sumRowTotal = 0;
-                                let sumtotal = 0;
+                        result.map(parent => {
+                            let sumRowTotal = 0;
+                            let sumtotal = 0;
 
-                                res.map(child => {
+                            res.map(child => {
 
-                                    var total = child[parent.details];
-                                    sumRowTotal += parseFloat(child.rowTotal);
-                                    sumtotal = total + sumtotal;
-                                    parent.total = sumtotal;
-                                });
-
-                                rowTotal = sumRowTotal;
-
-                                conditionString = parent.details;
-
-                                obj.building = "Total";
-                                obj.code = "";
-                                obj.exists = "";
-                                obj.serial = "";
-                                obj[conditionString] = parent.total;
-                                obj.rowTotal = rowTotal;
-
-                                approvedInvoicesChilds.push(obj);
-                                if (parent.total === null) {
-                                    parent.total = 0;
-                                }
-
-                                approvedInvoicesParent.push(parent);
+                                var total = child[parent.details];
+                                sumRowTotal += parseFloat(child.rowTotal);
+                                sumtotal = total + sumtotal;
+                                parent.total = sumtotal;
                             });
 
-                            this.setState({
-                                approvedInvoicesChilds: res,
-                                approvedInvoicesParent: approvedInvoicesParent,
-                                isLoading: false,
-                                rowTotal: rowTotal
-                            });
+                            rowTotal = sumRowTotal;
+
+                            conditionString = parent.details;
+
+                            obj.building = "Total";
+                            obj.code = "";
+                            obj.exists = "";
+                            obj.serial = "";
+                            obj[conditionString] = parent.total;
+                            obj.rowTotal = rowTotal;
+
+                            approvedInvoicesChilds.push(obj);
+                            if (parent.total === null) {
+                                parent.total = 0;
+                            }
+
+                            approvedInvoicesParent.push(parent);
                         });
-                });
+
+                        this.setState({
+                            approvedInvoicesChilds: res,
+                            approvedInvoicesParent: approvedInvoicesParent,
+                            isLoading: false,
+                            rowTotal: rowTotal
+                        });
+                    });
+            });
         }
     };
 
@@ -1811,6 +1790,17 @@ class requestPaymentsAddEdit extends Component {
             case "5":
                 this.editPayment.show();
                 break;
+            case "6":
+                dataservice.GetDataGrid("UpdateInterimForRequest?requestId=" + this.state.docId + "&contractId=" + this.state.document.contractId).then(result => {
+                    toast.success(
+                        Resources["operationSuccess"][currentLanguage]
+                    );
+                }).catch(res => {
+                    toast.error(
+                        Resources["operationCanceled"][currentLanguage]
+                    );
+                });
+                break;
         }
 
         this.setState({
@@ -2348,247 +2338,151 @@ class requestPaymentsAddEdit extends Component {
                 itemsColumns.length > 0 ? (
                     <GridSetup
                         rows={this.state.paymentsItems}
-                        showCheckbox={
-                            isCompany && this.props.changeStatus ? true : false
-                        }
+                        showCheckbox={isCompany && this.props.changeStatus ? true : false}
                         clickHandlerDeleteRows={this.clickHandlerDeleteRows}
                         pageSize={this.state.pageSize}
                         onRowClick={this.onRowClick}
                         columns={itemsColumns}
                         onGridRowsUpdated={this._onGridRowsUpdated}
                         getCellActions={this.GetCellActions}
-                        key="PRitems"
-                    />
-                ) : (
-                    <LoadingSection />
-                );
+                        key="PRitems" />
+                ) : (<LoadingSection />);
 
         const BoqTypeContent = (
             <Fragment>
                 <div className="dropWrapper">
                     {this.state.isLoading ? <LoadingSection /> : null}
-                    <Formik
-                        enableReinitialize={true}
-                        initialValues={{
-                            boqType: "",
-                            boqChild: "",
-                            boqSubType: ""
-                        }}
+                    <Formik enableReinitialize={true} initialValues={{ boqType: "", boqChild: "", boqSubType: "" }}
                         validationSchema={BoqTypeSchema}
-                        onSubmit={values => {
-                            this.assignBoqType();
-                        }}>
-                        {({
-                            errors,
-                            touched,
-                            setFieldTouched,
-                            setFieldValue,
-                            handleBlur,
-                            handleChange
-                        }) => (
-                                <Form
-                                    id="signupForm1"
-                                    className="proForm datepickerContainer customProform"
-                                    noValidate="novalidate">
-                                    <div className="fullWidthWrapper textLeft">
-                                        <Dropdown
-                                            title="boqType"
-                                            data={this.state.boqTypes}
-                                            selectedValue={
-                                                this.state.selectedBoqTypeEdit
-                                            }
-                                            handleChange={event =>
-                                                this.handleChangeItemDropDownItems(
-                                                    event,
-                                                    "boqTypeId",
-                                                    "selectedBoqTypeEdit",
-                                                    true,
-                                                    "GetAllBoqChild",
-                                                    "parentId",
-                                                    "BoqTypeChilds"
-                                                )
-                                            }
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.boqType}
-                                            touched={touched.boqType}
-                                            name="boqType"
-                                            index="boqType"
-                                        />
-                                    </div>
-                                    <Dropdown
-                                        title="boqTypeChild"
-                                        data={this.state.BoqTypeChilds}
-                                        selectedValue={
-                                            this.state.selectedBoqTypeChildEdit
-                                        }
-                                        handleChange={event =>
-                                            this.handleChangeItemDropDownItems(
-                                                event,
-                                                "boqTypeChildId",
-                                                "selectedBoqTypeChildEdit",
-                                                true,
-                                                "GetAllBoqChild",
-                                                "parentId",
-                                                "BoqSubTypes"
-                                            )
-                                        }
+                        onSubmit={values => { this.assignBoqType(); }}>
+                        {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                            <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate">
+                                <div className="fullWidthWrapper textLeft">
+                                    <Dropdown title="boqType" data={this.state.boqTypes} selectedValue={this.state.selectedBoqTypeEdit}
+                                        handleChange={event => this.handleChangeItemDropDownItems(event, "boqTypeId", "selectedBoqTypeEdit", true, "GetAllBoqChild", "parentId", "BoqTypeChilds")}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
-                                        error={errors.boqChild}
-                                        touched={touched.boqChild}
-                                        name="boqChild"
-                                        index="boqChild"
+                                        error={errors.boqType}
+                                        touched={touched.boqType}
+                                        name="boqType"
+                                        index="boqType"
                                     />
-                                    <Dropdown
-                                        title="boqSubType"
-                                        data={this.state.BoqSubTypes}
-                                        selectedValue={
-                                            this.state.selectedBoqSubTypeEdit
+                                </div>
+                                <Dropdown
+                                    title="boqTypeChild"
+                                    data={this.state.BoqTypeChilds}
+                                    selectedValue={
+                                        this.state.selectedBoqTypeChildEdit
+                                    }
+                                    handleChange={event =>
+                                        this.handleChangeItemDropDownItems(
+                                            event,
+                                            "boqTypeChildId",
+                                            "selectedBoqTypeChildEdit",
+                                            true,
+                                            "GetAllBoqChild",
+                                            "parentId",
+                                            "BoqSubTypes"
+                                        )
+                                    }
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.boqChild}
+                                    touched={touched.boqChild}
+                                    name="boqChild"
+                                    index="boqChild"
+                                />
+                                <Dropdown
+                                    title="boqSubType"
+                                    data={this.state.BoqSubTypes}
+                                    selectedValue={
+                                        this.state.selectedBoqSubTypeEdit
+                                    }
+                                    handleChange={event =>
+                                        this.handleChangeItemDropDownItems(
+                                            event,
+                                            "boqSubTypeId",
+                                            "selectedBoqSubTypeEdit",
+                                            false,
+                                            "",
+                                            "",
+                                            ""
+                                        )
+                                    }
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.boqSubType}
+                                    touched={touched.boqSubType}
+                                    name="boqSubType"
+                                    index="boqSubType"
+                                />
+                                <div className={"slider-Btns fullWidthWrapper"}>
+                                    <button
+                                        className={
+                                            this.state.isViewMode === true
+                                                ? "primaryBtn-1 btn  disNone"
+                                                : "primaryBtn-1 btn "
                                         }
-                                        handleChange={event =>
-                                            this.handleChangeItemDropDownItems(
-                                                event,
-                                                "boqSubTypeId",
-                                                "selectedBoqSubTypeEdit",
-                                                false,
-                                                "",
-                                                "",
-                                                ""
-                                            )
-                                        }
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.boqSubType}
-                                        touched={touched.boqSubType}
-                                        name="boqSubType"
-                                        index="boqSubType"
-                                    />
-                                    <div className={"slider-Btns fullWidthWrapper"}>
-                                        <button
-                                            className={
-                                                this.state.isViewMode === true
-                                                    ? "primaryBtn-1 btn  disNone"
-                                                    : "primaryBtn-1 btn "
-                                            }
-                                            type="submit">
-                                            {Resources["save"][currentLanguage]}
-                                        </button>
-                                    </div>
-                                </Form>
-                            )}
+                                        type="submit">
+                                        {Resources["save"][currentLanguage]}
+                                    </button>
+                                </div>
+                            </Form>
+                        )}
                     </Formik>
                 </div>
             </Fragment>
         );
 
-        let interimTable =
-            this.state.isLoading === false ? (
-                this.state.currentAndPreviousTotal.map(i => (
-                    <tr key={i.id}>
-                        {i.comment == "True" ? (
-                            <td colSpan="9">
-                                <div className="contentCell tableCell-2">
-                                    <a>
-                                        {i.workDescription != null
-                                            ? i.workDescription.slice(
-                                                0,
-                                                i.workDescription.lastIndexOf(
-                                                    "-"
-                                                ) == -1
-                                                    ? i.workDescription.length
-                                                    : i.workDescription.lastIndexOf(
-                                                        "-"
-                                                    )
-                                            )
-                                            : ""}
-                                    </a>
-                                </div>
-                            </td>
-                        ) : (
-                                <Fragment>
-                                    <td colSpan="6">
-                                        <div className="contentCell tableCell-2">
-                                            <a
-                                                data-toggle="tooltip"
-                                                title={
-                                                    i.workDescription != null
-                                                        ? i.workDescription.slice(
-                                                            0,
-                                                            i.workDescription.lastIndexOf(
-                                                                "-"
-                                                            ) == -1
-                                                                ? i
-                                                                    .workDescription
-                                                                    .length
-                                                                : i.workDescription.lastIndexOf(
-                                                                    "-"
-                                                                )
-                                                        )
-                                                        : ""
-                                                }>
-                                                {i.workDescription != null
-                                                    ? i.workDescription.slice(
-                                                        0,
-                                                        i.workDescription.lastIndexOf(
-                                                            "-"
-                                                        ) == -1
-                                                            ? i.workDescription
-                                                                .length
-                                                            : i.workDescription.lastIndexOf(
-                                                                "-"
-                                                            )
-                                                    )
-                                                    : ""}
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="contentCell">
-                                            {i.previous != null
-                                                ? parseFloat(i.previous)
-                                                    .toFixed(2)
-                                                    .replace(
-                                                        /\B(?=(\d{3})+(?!\d))/g,
-                                                        ","
-                                                    )
-                                                : 0}
-                                        </div>{" "}
-                                    </td>
-                                    <td>
-                                        <div className="contentCell">
-                                            {i.current != null
-                                                ? parseFloat(i.current.toString())
-                                                    .toFixed(2)
-                                                    .replace(
-                                                        /\B(?=(\d{3})+(?!\d))/g,
-                                                        ","
-                                                    )
-                                                : 0}
-                                        </div>{" "}
-                                    </td>
-                                    <td>
-                                        <div className="contentCell">
-                                            {i.total != null
-                                                ? parseFloat(i.total.toString())
-                                                    .toFixed(2)
-                                                    .replace(
-                                                        /\B(?=(\d{3})+(?!\d))/g,
-                                                        ","
-                                                    )
-                                                : 0}
-                                        </div>{" "}
-                                    </td>
-                                    <td>
-                                        <div className="contentCell">
-                                            {i.comment}
-                                        </div>
-                                    </td>
-                                </Fragment>
-                            )}
-                    </tr>
-                ))
-            ) : (<LoadingSection />);
+        let interimTable = this.state.isLoading === false ? (
+            this.state.interimInvoicedTable.map(i => (
+                <tr key={i.id}>
+                    {i.comment == "True" ? (
+                        <td colSpan="9">
+                            <div className="contentCell tableCell-2">
+                                <a>
+                                    {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
+                                </a>
+                            </div>
+                        </td>
+                    ) : (
+                            <Fragment>
+                                <td colSpan="6">
+                                    <div className="contentCell tableCell-2">
+                                        <a
+                                            data-toggle="tooltip"
+                                            title={i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""
+                                            }>
+                                            {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="contentCell">
+                                        {i.prevoiuse != null ? parseFloat(i.prevoiuse).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>{" "}
+                                </td>
+                                <td>
+                                    <div className="contentCell">
+                                        {i.currentValue != null ? parseFloat(i.currentValue.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>{" "}
+                                </td>
+                                <td>
+                                    <div className="contentCell">
+                                        {i.total != null
+                                            ? parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>{" "}
+                                </td>
+                                <td>
+                                    <div className="contentCell">
+                                        {i.comment}
+                                    </div>
+                                </td>
+                            </Fragment>
+                        )}
+                </tr>
+            ))
+        ) : (<LoadingSection />);
 
         let viewHistory = (
             <div className="doc-pre-cycle">

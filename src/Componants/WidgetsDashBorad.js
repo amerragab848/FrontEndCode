@@ -97,6 +97,23 @@ var widgets = [
           action: "action",
           isModal: false,
         }
+      },
+      {
+        title: "followUpsSummary",
+        permission: 0,
+        canView: false,
+        checked: false,
+        order: 6,
+        type: "oneWidget",
+        props: {
+          api: "SelectByAccountIdCount",
+          apiDetails: "",
+          route: "FollowUpsSummaryDetails",
+          value: "total",
+          listType: "item",
+          action: "action",
+          isModal: false
+        }
       }
     ]
   },
@@ -673,23 +690,6 @@ var widgets = [
           api: "GetCounMonthlyTasks",
           apiDetails: "",
           route: "MonthlyTasksDetails",
-          value: "total",
-          listType: "item",
-          action: "action",
-          isModal: false
-        }
-      },
-      {
-        title: "followUpsSummary",
-        permission: 0,
-        canView: false,
-        checked: false,
-        order: 6,
-        type: "oneWidget",
-        props: {
-          api: "SelectByAccountIdCount",
-          apiDetails: "",
-          route: "FollowUpsSummaryDetails",
           value: "total",
           listType: "item",
           action: "action",

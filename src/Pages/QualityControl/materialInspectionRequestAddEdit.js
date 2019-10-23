@@ -148,6 +148,7 @@ class materialInspectionRequestAddEdit extends Component {
             discplines: [],
             letters: [],
             IRCycles: [],
+            specsSections: [],
             permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
             { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
@@ -161,6 +162,7 @@ class materialInspectionRequestAddEdit extends Component {
             selectedActionByCompanyId: { label: Resources.actionByCompany[currentLanguage], value: "0" },
             selectedContract: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
             selectedApprovalStatusId: { label: Resources.approvalStatus[currentLanguage], value: "0" },
+            selectedspecsSection: { label: Resources.specsSection[currentLanguage], value: "0" },
             bicContacts: [],
             contractsPos: [],
             reasonForIssues: [],
@@ -218,7 +220,7 @@ class materialInspectionRequestAddEdit extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
+        if (nextProps.document.id !== this.props.document.id) {
             let serverInspectionRequest = { ...nextProps.document };
             serverInspectionRequest.docDate = serverInspectionRequest.docDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.docDate).format('YYYY-MM-DD')
             serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD')
@@ -238,7 +240,7 @@ class materialInspectionRequestAddEdit extends Component {
 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -503,7 +505,14 @@ class materialInspectionRequestAddEdit extends Component {
                     this.setState({ contractText: contract.label });
             }
         });
-
+        dataservice.GetDataList("GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+            if (isEdit == false)
+                this.setState({ specsSections: [...result] });
+            else {
+                let specsSection = result.find(item => item.value == this.props.document.specsSectionId);
+                this.setState({ specsSections: [...result], selectedspecsSection: specsSection });
+            }
+        });
 
     }
 
@@ -623,18 +632,17 @@ class materialInspectionRequestAddEdit extends Component {
         }
         saveDocument.projectId = this.state.projectId;
 
-
         dataservice.addObject('AddMaterialRequestOnly', saveDocument).then(result => {
             if (result.id) {
                 let cycle = {
                     materialRequestForInspectionId: result.id,
-                    subject: this.state.document.subject,
+                    subject: this.state.document.subject + '( 1 )',
                     docDate: this.state.document.docDate,
                     progressPercent: 0,
-                    status: 'false',
+                    status: 'true',
                     approvalStatusId: null,
-                    cycleComment: '',
-                    arrange: 0
+                    comment: '',
+                    arrange: 1
                 };
                 this.setState({
                     docId: result.id,
@@ -666,7 +674,7 @@ class materialInspectionRequestAddEdit extends Component {
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
-                Config.IsAllow(3317) === true ?
+                Config.IsAllow(3316) === true ?
                     <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
                     : null)
                 : null
@@ -677,7 +685,7 @@ class materialInspectionRequestAddEdit extends Component {
         this.setState({ CurrentStep: stepNo });
     };
 
-    saveInspectionRequestCycle(event) {
+    saveInspectionRequestCycle(values) {
 
 
         let saveDocument = { ...this.state.documentCycle };
@@ -686,7 +694,8 @@ class materialInspectionRequestAddEdit extends Component {
         saveDocument.disciplineId = this.state.document.disciplineId;
         saveDocument.flowCompanyId = this.state.document.bicCompanyId;
         saveDocument.flowContactId = this.state.document.bicContactId;
-        saveDocument.status = saveDocument.status == null ? true : false;
+        saveDocument.status = saveDocument.status == null ? true : saveDocument.status;
+        saveDocument.subject = values.subject;
         let api = saveDocument.typeAddOrEdit === "editLastCycle" ? 'EditMaterialRequestCycle' : 'AddMaterialRequestCycleOnly';
         if (saveDocument.typeAddOrEdit === "editLastCycle") {
             this.setState({ CycleEditLoading: true })
@@ -704,7 +713,8 @@ class materialInspectionRequestAddEdit extends Component {
                     status: result.cycleStatus,
                     materialRequestForInspectionId: this.state.docId,
                     approvalStatusId: result.approvalStatusId,
-                    cycleComment: result.cycleComment,
+                    comment: result.cycleComment,
+                    status: result.status,
                     arrange: 0,
                     id: result.id
                 };
@@ -716,8 +726,9 @@ class materialInspectionRequestAddEdit extends Component {
                     flowContactName: this.state.selectedActionByContactId.label,
                     progressPercent: result.progressPercent,
                     statusName: result.status ? "Opened" : "Closed",
+                    status: result.status,
                     approvalStatusName: this.state.selectedApprovalStatusId.label,
-                    cycleComment: result.cycleComment,
+                    comment: result.cycleComment,
                 }
                 let IRCycles = this.state.IRCycles;
                 IRCycles.push(newCycle);
@@ -796,7 +807,7 @@ class materialInspectionRequestAddEdit extends Component {
                     validationSchema={documentCycleValidationSchema}
                     enableReinitialize={true}
                     onSubmit={(values) => {
-                        this.saveInspectionRequestCycle()
+                        this.saveInspectionRequestCycle(values)
                     }}>
 
                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -817,7 +828,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                 className="form-control fsadfsadsa"
                                                 placeholder={Resources.subject[currentLanguage]}
                                                 autoComplete='off'
-                                                value={this.state.documentCycle.subject}
+                                                defaultValue={this.state.documentCycle.subject + (this.props.changeStatus ? "" : "   cycle of (" + this.state.documentCycle.arrange + ')')}
                                                 onBlur={(e) => {
                                                     handleBlur(e)
                                                     handleChange(e)
@@ -831,11 +842,11 @@ class materialInspectionRequestAddEdit extends Component {
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.status[currentLanguage]}</label>
                                         <div className="ui checkbox radio radioBoxBlue">
-                                            <input type="radio" name="IR-cycle-status" defaultChecked={this.state.documentCycle.cycleStatus === false ? null : 'checked'} value="true" onChange={e => this.handleChangeCycle(e, 'status')} />
+                                            <input type="radio" name="IR-cycle-status" defaultChecked={this.state.documentCycle.status === false ? null : 'checked'} value="true" onChange={e => this.handleChangeCycle(e, 'status')} />
                                             <label>{Resources.oppened[currentLanguage]}</label>
                                         </div>
                                         <div className="ui checkbox radio radioBoxBlue">
-                                            <input type="radio" name="IR-cycle-status" defaultChecked={this.state.documentCycle.cycleStatus === false ? 'checked' : null} value="false" onChange={e => this.handleChangeCycle(e, 'status')} />
+                                            <input type="radio" name="IR-cycle-status" defaultChecked={this.state.documentCycle.status === false ? 'checked' : null} value="false" onChange={e => this.handleChangeCycle(e, 'status')} />
                                             <label>{Resources.closed[currentLanguage]}</label>
                                         </div>
                                     </div>
@@ -863,10 +874,10 @@ class materialInspectionRequestAddEdit extends Component {
                                         <label className="control-label">{Resources['comment'][currentLanguage]}</label>
                                         <div className='ui input inputDev '>
                                             <input autoComplete="off"
-                                                value={this.state.documentCycle.cycleComment}
+                                                value={this.state.documentCycle.comment}
                                                 className="form-control" name="comment"
                                                 onBlur={(e) => { handleBlur(e) }}
-                                                onChange={(e) => { this.handleChangeCycle(e, 'cycleComment') }}
+                                                onChange={(e) => { this.handleChangeCycle(e, 'comment') }}
                                                 placeholder={Resources['comment'][currentLanguage]} />
                                         </div>
                                     </div>
@@ -924,7 +935,6 @@ class materialInspectionRequestAddEdit extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
                         docTitle={Resources.materialInspectionRequest[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
@@ -1204,6 +1214,15 @@ class materialInspectionRequestAddEdit extends Component {
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <Dropdown
+                                                                        title="specsSection"
+                                                                        data={this.state.specsSections}
+                                                                        selectedValue={this.state.selectedspecsSection}
+                                                                        handleChange={event => this.handleChangeDropDown(event, 'specsSectionId', false, '', '', '', 'selectedspecsSection')}
+                                                                        index="specsSection" />
+                                                                </div>
+
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown
                                                                         title="areaName"
                                                                         data={this.state.areas}
                                                                         selectedValue={this.state.selecetedArea}
@@ -1251,24 +1270,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="doc-pre-cycle letterFullWidth">
-                                                                <div>
-                                                                    {this.state.docId > 0 ? this.props.changeStatus === false ?
-                                                                        (Config.IsAllow(839) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) :
-                                                                        (Config.IsAllow(3223) ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null) : null
-                                                                    }
-                                                                    {this.viewAttachments()}
-                                                                    <Fragment>
-                                                                        <div className="document-fields tableBTnabs">
-                                                                            {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
-                                                                        </div>
-                                                                    </Fragment>
-                                                                    {this.props.changeStatus === true ?
-                                                                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                                        : null
-                                                                    }
-                                                                </div>
-                                                            </div>
+
                                                             {this.props.changeStatus === true ?
                                                                 <Fragment>
                                                                     <div className="slider-Btns">
@@ -1356,7 +1358,31 @@ class materialInspectionRequestAddEdit extends Component {
                                         : null}
                                 </div>
                             }
+                            <div className="doc-pre-cycle letterFullWidth">
+                                <div>
+                                    {this.state.docId > 0 && this.state.isViewMode === false  ?
+                                        <UploadAttachment changeStatus={this.props.changeStatus}
+                                            AddAttachments={940}
+                                            EditAttachments={3271}
+                                            ShowDropBox={3605}
+                                            ShowGoogleDrive={3606}
+                                            docTypeId={this.state.docTypeId}
+                                            docId={this.state.docId}
+                                            projectId={this.state.projectId} /> : null
 
+                                    }
+                                    {this.viewAttachments()}
+                                    <Fragment>
+                                        <div className="document-fields tableBTnabs">
+                                            {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} changeStatus={this.props.changeStatus} /> : null}
+                                        </div>
+                                    </Fragment>
+                                    {this.props.changeStatus === true ?
+                                        <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
+                                        : null
+                                    }
+                                </div>
+                            </div>
                         </div>
                         <Steps
                             steps_defination={steps_defination}

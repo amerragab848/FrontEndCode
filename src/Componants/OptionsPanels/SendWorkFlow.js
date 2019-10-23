@@ -40,7 +40,7 @@ class SendWorkFlow extends Component {
 
         let url = "GetProjectWorkFlowContactsFirstLevelForList?workFlow=" + item.value;
 
-        this.GetData(url, "contactName", "id", "WorkFlowContactData", 2);
+        this.GetData(url, "contactName", "accountId", "WorkFlowContactData", 2);
 
     }
 

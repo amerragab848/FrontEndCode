@@ -13,6 +13,7 @@ import Resources from "../../../resources.json";
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker";
+import companyId from '../../../IP_Configrations.json'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const _ = require('lodash')
 const dateFormate = ({ value }) => {
@@ -335,14 +336,16 @@ class Accounts extends Component {
         let rowsData = this.state.rows;
         let userName = _.find(rowsData, { 'id': id })
 
-        Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName +
-            '&emailOrPassword=' + this.state.NewPassword +
-            '&companyId=' + publicConfiguarion.cmi +
-            '&changePassword=true', null, 'PUT').then(
-                Api.post('ResetPassword?accountId=' + id + '&password=' + this.state.NewPassword + '').then(
-                    this.setState({ showResetPasswordModal: false }))
+        Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName + '&emailOrPassword=' + this.state.NewPassword + '&companyId=' + companyId.accountCompanyId + '&changePassword=true', null, 'PUT').then(data => {
+            if (data.status == 200) {
+                Api.post('ResetPassword?accountId=' + id + '&password=' + this.state.NewPassword + '').then(result => {
 
-            )
+                    this.setState({ showResetPasswordModal: false })
+                })
+            } else {
+                toast.warn(data.msg);
+            }
+        })
     }
 
     cellClick = (rowID, colID) => {

@@ -1,4 +1,4 @@
-import CryptoJS from "crypto-js"; 
+import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
 import Config from "./Services/Config";
 
@@ -223,22 +223,15 @@ export default class Api {
                 });
             })
             .then(json => (json.result ? json.result : json));
-    }
+    } 
 
     static authorizationApi(route, params, method, isCheck) {
         const host = Config.getPublicConfiguartion().loginServer + "/api/";
         const url = `${host}${route}`;
         let json = null;
 
-        let options = Object.assign(
-            {
-                method: method === null ? "PUT" : method
-            },
-            params
-                ? {
-                    body: JSON.stringify(params)
-                }
-                : null
+        let options = Object.assign({ method: method === null ? "PUT" : method },
+            params ? { body: JSON.stringify(params) } : null
         );
 
         options.headers = Api.headers();
@@ -246,8 +239,8 @@ export default class Api {
         return fetch(url, options).then(reponse => {
             if (reponse.status === 200) {
                 returnObject.status = 200;
-                if (isCheck) {
-
+               
+                if (isCheck) { 
                     returnObject.msg = "Email already exists.";
                 } else {
 
@@ -261,6 +254,17 @@ export default class Api {
             } else if (reponse.status === 401) {
                 returnObject.status = 401;
                 returnObject.msg = "Email already exists.";
+                json = returnObject;
+                return json;
+            }else if (reponse.status === 400) {
+                returnObject.status = 400;
+                returnObject.msg = "Email already Belonge to Another Company.";
+                
+                json = returnObject;
+                return json;
+            } else if (reponse.status === 404) {
+                returnObject.status = 404;
+                returnObject.msg = "This Email Not Belongs to This Company";
                 json = returnObject;
                 return json;
             }

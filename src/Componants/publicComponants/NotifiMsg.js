@@ -14,6 +14,7 @@ import React, { Component } from "react";
     
     componentWillReceiveProps(nextProps, prevProps) {
       if (prevProps.showNotify != nextProps.showNotify) {
+       
         this.setState({
           animationBlock: "animationBlock",
           showNotify: nextProps.showNotify

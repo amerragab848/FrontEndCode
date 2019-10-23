@@ -30,15 +30,22 @@ class AddDocAttachment extends Component {
       documents: [],
       selected: {},
       showDeleteModal: false,
-      currentId: null,
-      storedDocuments: [],
+      currentId: null, 
       selectedRows: [],
       modalAdd: false,
-      relatedLink: this.props.docTypeId === 108 || this.props.docTypeId === 90 ? true : false,
+      isRelatedLink: this.props.docTypeId === 108 || this.props.docTypeId === 90 ? true : false,
     };
   }
-
+ 
   componentDidMount() {
+    if (this.state.docId > 0) {
+      dataservice.GetDataList("GetModuleList", "modulType", "id").then(result => {
+        this.setState({
+          moduls: [...result]
+        });
+      });
+    }
+    this.props.actions.ViewDocsAttachment([]);
     // Get Drop Down Models Data When Open Modal To Add Attachment
     dataservice.GetDataList("GetModuleList", "modulType", "id").then(result => { this.setState({ moduls: result }) });
     //Get Data For Doc Attachment Table By DocId & ProjectId & DocType
@@ -46,7 +53,7 @@ class AddDocAttachment extends Component {
     this.props.actions.getCommunicationDocsAttach(this.props.projectId, this.props.docTypeId, this.props.docId);
     // }
     //In This Case In Two Documnets Only[ SiteInstruction & VariationRequest] You Must Show Related Links Section 
-    if (this.state.relatedLink) {
+    if (this.state.isRelatedLink) {
       this.props.actions.getCommunicationRelatedLinks(this.props.docTypeId, this.props.docId);
     }
   }
@@ -86,11 +93,9 @@ class AddDocAttachment extends Component {
   }
 
   save() {
-    if (this.state.selectedRows.length > 0) {
-
+    if (this.state.selectedRows.length > 0) { 
       this.props.actions.addCommunicationDocsAttach(this.state.selectedRows, this.props.projectId, this.props.docTypeId, this.props.docId);
       this.setState({ selectDocument: this.state.initialSelectDocument, selectedRows: [], selected: {} });
-
     }
     else {
       toast.warning(Resources["arrayEmpty"][currentLanguage]);
@@ -281,8 +286,11 @@ class AddDocAttachment extends Component {
               <h2 className="zero">{Resources.relatedLink[currentLanguage]}</h2>
             </header>
 
-            <ReactTable id="relatedLink" data={this.props.relatedLinkData}
-              columns={relatedColumns} defaultPageSize={5}
+            <ReactTable
+              id="relatedLink"
+              data={this.props.relatedLinkData}
+              columns={relatedColumns}
+              defaultPageSize={5}
               noDataText={Resources["noData"][currentLanguage]}
               className="-striped -highlight" />
 
@@ -298,20 +306,23 @@ class AddDocAttachment extends Component {
             onClick={() => this.setState({ modalAdd: true })}>
             {Resources["addDocAttachment"][currentLanguage]} </button> : null}
 
-        {this.props.docsAttachData.length ?
+        {this.props.docsAttachData.length > 0 ?
 
           <div className="precycle-grid modalTable doc-pre-cycle">
             <header>
               <h2 className="zero">{Resources.docAttachment[currentLanguage]}</h2>
             </header>
 
-            <ReactTable data={this.props.docsAttachData} id="attachDocuments"
-              columns={columnsDocument} defaultPageSize={5}
+            <ReactTable
+              data={this.props.docsAttachData}
+              id="attachDocuments"
+              columns={columnsDocument}
+              defaultPageSize={5}
               noDataText={Resources["noData"][currentLanguage]}
               className="-striped -highlight" />
           </div>
           : null}
-        {this.state.relatedLink ? relatedLink() : null}
+        {this.state.isRelatedLink ? relatedLink() : null}
 
 
         <SkyLightStateless onCloseClicked={e => this.setState({ modalAdd: false })}
@@ -337,12 +348,11 @@ class AddDocAttachment extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    attachDocuments: state.communication.attachDocuments,
-
-
+    //docsAttachData: state.communication.docsAttachData, 
     docsAttachData: state.communication.docsAttachData,
     relatedLinkData: state.communication.relatedLinkData,
     documentData: state.communication.documentData,
+    changeStatus: state.communication.changeStatus
   }
 }
 

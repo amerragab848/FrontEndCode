@@ -112,7 +112,7 @@ class LeftMenu extends Component {
       viewSubMenu: false,
       rowIndex: 0,
       ActivePanal: 0,
-      titleProject: "",
+      titleProject: this.props.projectName,
       currentIndex: 0,
       generalMenu: generalMenu,
       timeMenu: timeMenu,
@@ -333,7 +333,7 @@ class LeftMenu extends Component {
                 {eps.projects.map(project => {
                   return (
                     <li className={this.props.projectId === project.id ? "active" : ""} key={project.id} onClick={event => this.selectProjectHandler(project.id, project.name)}>
-                      <a>{project.name}</a> 
+                      <a>{project.name}</a>
                     </li>
                   );
                 })}
@@ -511,7 +511,7 @@ class LeftMenu extends Component {
                           </span>
                         </div>
                         <div className="backToModulesName">
-                          <h2 className="zero">{this.state.titleProject}</h2>
+                          <h2 className="zero">{this.props.projectName}</h2>
                         </div>
                       </div>
                       <ul className="ui accordion MenuUl PM-color zero">
