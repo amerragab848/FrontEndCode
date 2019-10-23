@@ -29,7 +29,7 @@ export function documentForEdit(urlAction, docTypeId, docName) {
         });
     }
 }
-
+ 
 export function clearCashDocument() {
     return (dispatch, getState) => {
         dispatch({

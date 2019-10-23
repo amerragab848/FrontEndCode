@@ -199,7 +199,7 @@ class AddAccount extends Component {
     save = () => {
         this.setState({ saveLoading: true });
         let accountCompanyId = Config.getPublicConfiguartion().accountCompanyId;
-        Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password + '&companyId=' + accountCompanyId +'&isActive=true&isNewVersion=true', null, 'POST', true, false).then(res => {
+        Api.authorizationApi('ProcoorAuthorization?username=' + this.state.UserName + '&password=' + this.state.Password + '&companyId=' + accountCompanyId +'&isActive=true&isNewVersion=true', null, 'POST',  false).then(res => {
             //Successfuly created account.
             if (res.status === 200 && res.msg !== "Email already exists.") {
                 let obj = {

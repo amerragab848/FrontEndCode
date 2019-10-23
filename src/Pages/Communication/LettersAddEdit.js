@@ -517,7 +517,7 @@ class LettersAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
-
+ 
 
     render() {
         return (
