@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"; 
 import { Route, Switch } from "react-router-dom";
 import DashBoard from "./Pages/DashBoard";
 import ActionBySummaryDetails from "./Componants/DashBoardDetails/ActionBySummaryDetails";
@@ -171,7 +171,7 @@ import specSectionChild from './Componants/GeneralSetting/MenuDefaultData/specSe
 import RiskRealisation from './Componants/publicComponants/RiskRealisation';
 import WeeklyReportsAddEdit from "./Pages/TechnicalOffice/weeklyReportsAddEdit";
 import dailyReportsAddEdit from "./Pages/TechnicalOffice/dailyReportsAddEdit";
-import RiskCause from './Componants/OptionsPanels/RiskCause';
+//import RiskCause from './Componants/OptionsPanels/RiskCause';
 import budgetCashFlowReports from './Pages/CostControl/budgetCashFlowReport';
 
 import ExportDetails from "./Componants/OptionsPanels/ExportDetails";

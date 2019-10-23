@@ -1,5 +1,5 @@
 var routes = [
-    {
+    { 
         route: "/",
         moduleId: "login",
         title: "Login",

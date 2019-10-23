@@ -243,7 +243,7 @@ class SubmittalAddEdit extends Component {
 
     if (this.state.docId > 0) {
 
-      let url = "GetLogsSubmittalForEdit?id=" + this.state.docId; 
+      let url = "GetLogsSubmittalForEdit?id=" + this.state.docId;
       this.props.actions.documentForEdit(url, this.state.docTypeId, 'Submittal');
 
       dataservice.GetDataGrid("GetLogsSubmittalsCyclessBySubmittalId?submittalId=" + this.state.docId).then(res => {
@@ -259,7 +259,7 @@ class SubmittalAddEdit extends Component {
           itemData: data
         });
       }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
- 
+
     } else {
       const submittalDocument = {
         //field
@@ -368,6 +368,11 @@ class SubmittalAddEdit extends Component {
           }
         });
 
+        this.fillCycleDropDown(true);
+
+        this.fillDropDowns(this.props.document.id > 0 ? true : false);
+
+        this.checkDocumentIsView();
       }
       this.fillCycleDropDown(true);
 
@@ -441,28 +446,27 @@ class SubmittalAddEdit extends Component {
   fillCycleDropDown(isEdit) {
 
     //approvalStatus
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id")
-      .then(result => {
+    dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id").then(result => {
 
-        if (isEdit) {
+      if (isEdit) {
 
-          let approval = this.state.documentCycle.approvalStatusId;
+        let approval = this.state.documentCycle.approvalStatusId;
 
-          if (approval) {
+        if (approval) {
 
-            let approvalName = result.find(i => i.value === parseInt(approval));
+          let approvalName = result.find(i => i.value === parseInt(approval));
 
-            if (approvalName) {
-              this.setState({
-                selectedApprovalStatus: { label: approvalName.label, value: approval }
-              });
-            }
+          if (approvalName) {
+            this.setState({
+              selectedApprovalStatus: { label: approvalName.label, value: approval }
+            });
           }
         }
-        this.setState({
-          approvales: [...result]
-        });
+      }
+      this.setState({
+        approvales: [...result]
       });
+    });
 
   }
 
