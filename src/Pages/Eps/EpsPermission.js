@@ -49,9 +49,7 @@ class EpsPermission extends Component {
 
         if (!Config.IsAllow(1260) || !Config.IsAllow(1263) || !Config.IsAllow(1264)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push({
-                pathname: "/"
-            });
+            this.props.history.push({ pathname: "/" });
         }
     }
 
@@ -66,6 +64,7 @@ class EpsPermission extends Component {
                     { title: this.state.values.englishTitle },
                     { titleAr: this.state.values.arabicTitle },
                     { titleEn: this.state.values.englishTitle },
+                    { abbrevation: this.state.values.abbrevation },
                     { showInReport: this.state.values.showInReport }
                 )
                 Dataservice.addObject("EditEpsById", item).then((res) => {
@@ -76,20 +75,19 @@ class EpsPermission extends Component {
 
                 });
             }
-
         } else {
             if (this.state.type != 'child' && !Config.IsAllow(1261)) {
                 toast.success(Resources["missingPermissions"][currentLanguage]);
             }
             else if (this.state.type == 'child' && !Config.IsAllow(1262)) {
                 toast.success(Resources["missingPermissions"][currentLanguage]);
-
             }
             else {
                 let Eps = {
                     parentId: this.state.type == 'child' ? this.state.item.id : null,
                     titleEn: this.state.values.englishTitle,
                     titleAr: this.state.values.arabicTitle,
+                    abbrevation: this.state.values.abbrevation,
                     showInReport: this.state.values.showInReport
                 }
                 this.setState({ isLoading: true })
@@ -101,8 +99,6 @@ class EpsPermission extends Component {
 
                 });
             }
-
-
         }
     }
 
@@ -116,7 +112,6 @@ class EpsPermission extends Component {
                 })
                 this.setState({ projectsList: res, isLoading: false, projects })
             }
-
         })
         this.getData()
     }
@@ -158,7 +153,6 @@ class EpsPermission extends Component {
                 this.setState({ isLoading: false, showModal: false })
             });
         }
-
     }
 
     getData() {
@@ -186,19 +180,18 @@ class EpsPermission extends Component {
                 search: "?id=" + encodedPaylod
             });
         }
-
     }
 
     openModal = (item, isEdit) => {
         if (isEdit) {
             this.setState({
-                values: { ...this.state.values, englishTitle: item.titleEn, arabicTitle: item.titleAr, showInReport: item.showInReport },
+                values: { ...this.state.values, englishTitle: item.titleEn, arabicTitle: item.titleAr, abbrevation: item.abbrevation, showInReport: item.showInReport },
                 showModal: true
             })
             setTimeout(() => this.simpleDialog.show(), 300)
         }
         else {
-            this.setState({ showModal: true, values: { ...this.state.values, englishTitle: '', arabicTitle: '', showInReport: false }, })
+            this.setState({ showModal: true, values: { ...this.state.values, englishTitle: '', arabicTitle: '', abbrevation: '', showInReport: false }, })
             this.simpleDialog.show()
         }
     }
@@ -220,11 +213,9 @@ class EpsPermission extends Component {
                 search: "?id=" + encodedPaylod
             });
         }
-
     }
 
     search(id, trees, updateTrees, parentId) {
-
         trees.map(item => {
             updateTrees.push(item);
             if (item.epses.length > 0) {
@@ -257,15 +248,12 @@ class EpsPermission extends Component {
                         <div className={this.state[item.id] == -1 ? ' epsTitle' : this.state['_' + item.id] === true ? 'epsTitle active' : 'epsTitle'} key={item.id} onClick={() => this.viewChild(item)}
                             style={{ display: this.state[item.id] == -1 ? 'none' : '' }} >
                             <div className="listTitle">
-
                                 <span className="dropArrow" style={{ visibility: (item.epses.length > 0 ? '' : 'hidden') }}>
                                     <i className="dropdown icon" />
                                 </span>
-
                                 <span className="accordionTitle">{this.state[item.id] ? this.state[item.id].titleEn : item.titleEn}
                                 </span>
                             </div>
-
                             <div className="Project__num">
                                 <div className="eps__actions">
                                     <a className="editIcon" onClick={() => { this.setState({ item: item, isEdit: true, type: 'child' }, function () { this.openModal(item, true); }) }}>
@@ -312,6 +300,7 @@ class EpsPermission extends Component {
                     initialValues={{
                         englishTitle: this.state.values.englishTitle,
                         arabicTitle: this.state.values.arabicTitle,
+                        abbrevation: this.state.values.abbrevation
                     }}
                     enableReinitialize={true}
                     validationSchema={validationSchema}
@@ -327,7 +316,7 @@ class EpsPermission extends Component {
                                         <input name='englishTitle'
                                             className="form-control"
                                             id="englishTitle" placeholder={Resources['titleEn'][currentLanguage]} autoComplete='off'
-                                            onBlur={handleBlur} value={values.englishTitle}
+                                            onBlur={handleBlur} value={values.englishTitle || ''}
                                             onChange={e => {
                                                 handleChange(e);
                                                 this.setState({ values: { ...this.state.values, englishTitle: e.target.value } })
@@ -341,12 +330,25 @@ class EpsPermission extends Component {
                                         <input name='arabicTitle'
                                             className="form-control"
                                             id="arabicTitle" placeholder={Resources['titleAr'][currentLanguage]} autoComplete='off'
-                                            onBlur={handleBlur} value={values.arabicTitle}
+                                            onBlur={handleBlur} value={values.arabicTitle || ''}
                                             onChange={e => {
                                                 handleChange(e);
                                                 this.setState({ values: { ...this.state.values, arabicTitle: e.target.value } })
                                             }} />
                                         {errors.arabicTitle ? (<em className="pError">{errors.arabicTitle}</em>) : null}
+                                    </div>
+                                </div>
+                                <div className="fillter-status fillter-item-c">
+                                    <label className="control-label">{Resources['abbrevation'][currentLanguage]} </label>
+                                    <div className="inputDev ui input ">
+                                        <input name='abbrevation'
+                                            className="form-control"
+                                            id="abbrevation" placeholder={Resources['abbrevation'][currentLanguage]} autoComplete='off'
+                                            onBlur={handleBlur} value={values.abbrevation || ''}
+                                            onChange={e => {
+                                                handleChange(e);
+                                                this.setState({ values: { ...this.state.values, abbrevation: e.target.value } })
+                                            }} />
                                     </div>
                                 </div>
                                 <div className="fillter-status fillter-item-c">
@@ -369,23 +371,20 @@ class EpsPermission extends Component {
         </Fragment>
 
         return (
-            <div className="mainContainer main__fulldash white-bg" style={{padding: '40px'}}>
+            <div className="mainContainer main__fulldash white-bg" style={{ padding: '40px' }}>
                 <Dropdown title="chooseProject" handleChange={event => this.routeProjects(event)}
                     data={this.state.projects} selectedValue={this.state.selectedProject} />
 
                 {this.state.isLoadingEps == true ? <LoadingSection /> :
-
                     <Fragment>
                         <div className="tree__header" >
                             <h2 className="zero"></h2>
                             <button className="primaryBtn-1 btn" onClick={() => { this.setState({ isEdit: false, type: 'parent' }, function () { this.openModal('', false); }) }}>{Resources.addNew[currentLanguage]}</button>
                         </div>
-
                         <div className="documents-stepper noTabs__document">
                             <div className="tree__header">
                                 <h2 className="zero">{Resources.EPS[currentLanguage]}</h2>
                             </div>
-
                             <div className="Eps__list">
                                 {this.state.eps.map((item, i) => {
                                     if (treeContainer != null)
@@ -398,11 +397,9 @@ class EpsPermission extends Component {
                                                     <span className="dropArrow" style={{ visibility: (item.epses.length > 0 ? '' : 'hidden') }}>
                                                         <i className="dropdown icon" />
                                                     </span>
-
                                                     <span className="accordionTitle" >{this.state[item.id] ? this.state[item.id].titleEn : item.titleEn}
                                                     </span>
                                                 </div>
-
                                                 <div className="Project__num">
                                                     <div className="eps__actions">
                                                         <a className="editIcon" onClick={() => { this.setState({ item: item, isEdit: true, type: 'child' }, function () { this.openModal(item, true); }) }}>
@@ -425,19 +422,11 @@ class EpsPermission extends Component {
                                             </div>
                                         </Fragment>
                                     )
-                                })
-                                }
+                                })}
                             </div>
                         </div>
                     </Fragment>
                 }
-
-
-
-
-
-
-
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources['smartDeleteMessage'][currentLanguage].content}
@@ -447,7 +436,6 @@ class EpsPermission extends Component {
                         buttonName='delete' clickHandlerContinue={this.ConfirmDelete}
                     />
                 ) : null}
-
                 <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                     <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref}
                         title={this.state.isEdit ? Resources['editEPS'][currentLanguage] : Resources['addEPS'][currentLanguage]}>
@@ -457,7 +445,6 @@ class EpsPermission extends Component {
             </div>
         )
     }
-
 }
 
 function mapStateToProps(state, ownProps) {

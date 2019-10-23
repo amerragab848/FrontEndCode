@@ -8238,5 +8238,29 @@
     "editPayment": {
         "en": "Edit Advanced Payment Amount",
         "ar": "تعديل قيمة الدفعة المقدمة"
+    },
+    "abbrevation": {
+        "en": "Abbrevation",
+        "ar": "الأختصار"
+    },
+    "abbrevationEn": {
+        "en": "Abbrevation En",
+        "ar": "الأختصار"
+    },
+    "abbrevationAr": {
+        "en": "Abbrevation Ar",
+        "ar": "الأختصار"
+    },
+    "showInWorkOrder": {
+        "en": "Show In WorkOrder",
+        "ar": "Show In WorkOrder"
+    },
+    "automatic": {
+        "en": "Automatic",
+        "ar": "اوتوماتيك"
+    },
+    "refrenceDocument": {
+        "en": "Refrence Document",
+        "ar": "Refrence Document"
     }
 }
