@@ -223,7 +223,7 @@ export default class Api {
                 });
             })
             .then(json => (json.result ? json.result : json));
-    }
+    } 
 
     static authorizationApi(route, params, method, isCheck) {
         const host = Config.getPublicConfiguartion().loginServer + "/api/";
@@ -239,7 +239,7 @@ export default class Api {
         return fetch(url, options).then(reponse => {
             if (reponse.status === 200) {
                 returnObject.status = 200;
-                alert(reponse);
+               
                 if (isCheck) { 
                     returnObject.msg = "Email already exists.";
                 } else {

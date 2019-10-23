@@ -16,7 +16,7 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state, items: _items
             }
-
+ 
         case types.Document_for_Edit:
             return {
                 ...state,
