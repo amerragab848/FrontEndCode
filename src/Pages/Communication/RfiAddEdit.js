@@ -34,7 +34,7 @@ const validationSchema = Yup.object().shape({
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
-let isApproveMode = 0;
+let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
@@ -156,12 +156,12 @@ class RfiAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(49))) {
+            if (!(Config.IsAllow(76))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(49)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
-                    if (this.props.document.status == true && Config.IsAllow(49)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(76)) { 
+                if (this.props.hasWorkflow == false && Config.IsAllow(76)) {
+                    if (this.props.document.status == true && Config.IsAllow(76)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });

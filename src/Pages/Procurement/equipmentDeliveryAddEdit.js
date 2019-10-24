@@ -54,13 +54,9 @@ const validationSchema = Yup.object().shape({
 })
 
 const documentItemValidationSchema = Yup.object().shape({
-
-    quantity: Yup.number().required(Resources['quantity'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
-
+    quantity: Yup.number().required(Resources['quantity'][currentLanguage]).typeError(Resources['onlyNumbers'][currentLanguage]),
     arrangeItem: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
-
-    resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
+    resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage])
 })
 
 let ApproveOrRejectData = [
