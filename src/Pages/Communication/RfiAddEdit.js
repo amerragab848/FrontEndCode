@@ -238,7 +238,7 @@ class RfiAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         //from Companies
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
@@ -260,10 +260,9 @@ class RfiAddEdit extends Component {
             this.setState({
                 companies: [...result]
             });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-
+        });
         //discplines
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.disciplineId;
                 if (disciplineId) {
@@ -278,9 +277,10 @@ class RfiAddEdit extends Component {
             this.setState({
                 discplines: [...result]
             });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-        //area
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "title").then(result => {
+        });
+        //area       
+         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
+ 
             if (isEdit) {
                 let areaId = this.props.document.area;
                 if (areaId) {
@@ -295,9 +295,9 @@ class RfiAddEdit extends Component {
             this.setState({
                 areas: [...result]
             });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+        });
         //location
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", "title", "title").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "title", 'defaultLists', "location", "listType").then(result => {
             if (isEdit) {
 
                 let locationId = this.props.document.location;
@@ -314,7 +314,7 @@ class RfiAddEdit extends Component {
             this.setState({
                 locations: [...result]
             });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+        });
     }
 
     onChangeMessageRfi = (value) => {

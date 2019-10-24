@@ -6,7 +6,7 @@ import DropboxChooser from "react-dropbox-chooser";
 import GooglePicker from "react-google-picker";
 import Dropzone from "react-dropzone";
 import Drive from '../../Styles/images/gdrive.png';
-import dropbox from '../../Styles/images/dropbox.png';
+import dropbox from '../../Styles/images/dropbox.png'; 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
