@@ -21,9 +21,7 @@ let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const ValidtionSchema = Yup.object().shape({
-    SelectedManageCompanies: Yup.string()
-        .required(Resources['selectCompany'][currentLanguage])
-        .nullable(true),
+    SelectedManageCompanies: Yup.string().required(Resources['selectCompany'][currentLanguage]).nullable(true)
 });
 
 class ProjectCompanies extends Component {
@@ -38,66 +36,55 @@ class ProjectCompanies extends Component {
             })
         }
 
-        this.ExportColumns = [
+        let projectId = this.props.projectId != 0 ? this.props.projectId : localStorage.getItem("lastSelectedProject");
 
+        this.ExportColumns = [
             {
                 key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-
+                name: Resources["CompanyName"][currentLanguage]
             },
             {
                 key: "roleTitle",
-                name: Resources["companyRole"][currentLanguage],
-
+                name: Resources["companyRole"][currentLanguage]
             },
             {
                 key: "disciplineTitle",
-                name: Resources["disciplineTitle"][currentLanguage],
-
+                name: Resources["disciplineTitle"][currentLanguage]
             },
             {
                 key: "keyContactName",
                 name: Resources["KeyContact"][currentLanguage],
-                width: 100,
-
+                width: 100
             },
             {
                 key: "location",
-                name: Resources["location"][currentLanguage],
-
+                name: Resources["location"][currentLanguage]
             },
             {
                 key: "contactsTel",
-                name: Resources["Telephone"][currentLanguage],
-
+                name: Resources["Telephone"][currentLanguage]
             },
             {
                 key: "contactsMobile",
-                name: Resources["Mobile"][currentLanguage],
-
+                name: Resources["Mobile"][currentLanguage]
             },
             {
                 key: "contactsFax",
                 name: Resources["Fax"][currentLanguage],
-                width: 100,
-
+                width: 100
             },
             {
                 key: "grade",
                 name: Resources["Grade"][currentLanguage],
 
-            }
-            ,
+            },
             {
                 key: "enteredBy",
-                name: Resources["enteredBy"][currentLanguage],
-
-            }
-            ,
+                name: Resources["enteredBy"][currentLanguage]
+            },
             {
                 key: "lastModified",
-                name: Resources["lastModified"][currentLanguage],
-
+                name: Resources["lastModified"][currentLanguage]
             }
         ];
 
@@ -105,7 +92,6 @@ class ProjectCompanies extends Component {
             {
                 formatter: this.customButton,
                 key: 'customBtn'
-
             },
             {
                 key: "companyName",
@@ -187,7 +173,6 @@ class ProjectCompanies extends Component {
                 filterable: true,
                 sortDescendingFirst: true
             }
-
         ];
 
         this.state = {
@@ -199,14 +184,13 @@ class ProjectCompanies extends Component {
             selectedCompany: 0,
             Previous: false,
             rowSelectedId: '',
-            projectId: this.props.projectId,
+            projectId: projectId,
             ShowPopup: false,
             ManageCompaniesData: [],
             SelectedManageCompanies: [],
-            HiddenBtnManage: false
-
+            HiddenBtnManage: false,
+            selectedRowId: []
         }
-
     }
 
     customButton = () => {
@@ -215,7 +199,7 @@ class ProjectCompanies extends Component {
 
     componentDidMount() {
         if (Config.IsAllow(3)) {
-            Api.get('GetProjectProjectsCompanies?projectId=' + this.state.projectId + '').then(result => {
+            Api.get('GetProjectProjectsCompanies?projectId=' + this.state.projectId).then(result => {
                 this.setState({
                     rows: result,
                     isLoading: false,
@@ -225,7 +209,6 @@ class ProjectCompanies extends Component {
         }
         else
             toast.warning("you don't have permission");
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -233,7 +216,7 @@ class ProjectCompanies extends Component {
             this.setState({
                 isLoading: true
             })
-            dataservice.GetDataGrid('GetProjectProjectsCompanies?projectId=' + this.props.projectId + '').then(data => {
+            dataservice.GetDataGrid('GetProjectProjectsCompanies?projectId=' + this.props.projectId).then(data => {
                 this.setState({
                     rows: data,
                     projectId: nextProps.projectId,
@@ -268,16 +251,12 @@ class ProjectCompanies extends Component {
                     pathname: "/AddEditCompany/" + id,
                 });
             }
-
         }
     }
 
-
     addRecord = () => {
         if (Config.IsAllow(810))
-            this.props.history.push({
-                pathname: "/AddEditCompany/0",
-            });
+            this.props.history.push({ pathname: "/AddEditCompany/0" });
         else
             toast.warning("you don't have permission");
     }
@@ -300,43 +279,39 @@ class ProjectCompanies extends Component {
     }
 
     ConfirmDeleteComanies = () => {
+
         this.setState({ showDeleteModal: true })
 
         if (Config.IsAllow(2)) {
             this.setState({ isLoading: true })
-            let newRows = []
-            let selectedRow = {}
-            this.state.rows.forEach(element => {
-                if (element.id == this.state.selectedRowId)
-                    selectedRow = element
-                else
-                    newRows.push(element)
-            })
-            if (selectedRow.deletable == true)
-                toast.warning("you can't remove this company !")
-            else {
-                Api.post('ProjectProjectsCompaniesMultipleDelete', this.state.selectedRowId)
-                    .then(result => {
-                        this.setState({
-                            rows: newRows,
-                            totalRows: newRows.length,
-                            isLoading: false,
-                            showDeleteModal: false,
-                            IsActiveShow: false
-                        });
-                        toast.success("operation complete successful")
+            Api.post('ProjectProjectsCompaniesMultipleDelete', this.state.selectedRowId)
+                .then(result => {
+
+                    let ids = this.state.selectedRowId;
+
+                    let newRows = this.state.rows;
+
+                    ids.forEach(id => {
+                        newRows = newRows.filter(x => x.id !== id);
                     })
-                    .catch(ex => {
-                        this.setState({
-                            showDeleteModal: false,
-                            IsActiveShow: false
-                        })
+
+                    this.setState({
+                        rows: newRows,
+                        totalRows: newRows.length,
+                        isLoading: false,
+                        showDeleteModal: false,
+                        IsActiveShow: false
+                    });
+                    toast.success("operation complete successful")
+                }).catch(ex => {
+                    this.setState({
+                        showDeleteModal: false,
+                        IsActiveShow: false
                     })
-            }
+                })
         }
         else
             toast.warning("you don't have permission");
-
     }
 
     ShowPopupModel = () => {
@@ -360,7 +335,6 @@ class ProjectCompanies extends Component {
     }
 
     AddMangeCompanies = () => {
-
         let selectedCompanies = []
         this.state.SelectedManageCompanies.map(i => {
             selectedCompanies.push(i.value)
@@ -371,6 +345,7 @@ class ProjectCompanies extends Component {
             projectId: this.state.projectId,
             selectedCompanies: selectedCompanies
         }
+
         Api.post('AddProjectProjectsCompaniesList', obj).then(
             res => {
                 this.setState({
@@ -390,25 +365,17 @@ class ProjectCompanies extends Component {
                     showCheckbox={true}
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                     viewContactHandler={this.clickHandler}
-                    cellClick={this.cellClick}
-                    single={true}
+                    cellClick={this.cellClick} />) : <LoadingSection />;
 
-                />
-            ) : <LoadingSection />;
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.ExportColumns} fileName={this.state.pageTitle} />
-            : null;
+        const btnExport = this.state.isLoading === false ? <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.ExportColumns} fileName={this.state.pageTitle} /> : null;
 
         return (
-
             <div className='mainContainer'>
-
                 <div className="submittalFilter">
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>
                         <span>{this.state.totalRows}</span>
                     </div>
-
                     <div className="filterBTNS">
                         {this.state.HiddenBtnManage === false ?
                             Config.IsAllow(5) ?
@@ -425,14 +392,11 @@ class ProjectCompanies extends Component {
                         {Config.IsAllow(810) ?
                             <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord}>{Resources['add'][currentLanguage]}</button>
                             : null}
-
                     </div>
                 </div>
-
                 <div className="grid-container">
                     {dataGrid}
                 </div>
-
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources['smartDeleteMessage'][currentLanguage].content}
@@ -442,31 +406,18 @@ class ProjectCompanies extends Component {
                         buttonName='delete' clickHandlerContinue={this.ConfirmDeleteComanies}
                     />
                 ) : null}
-
-
-
-
                 <div className="skyLight__form">
                     <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false })}
                         title={Resources['manageCompanies'][currentLanguage]}
                         onCloseClicked={() => this.setState({ ShowPopup: false })} isVisible={this.state.ShowPopup}>
-
-                        <Formik
-                            initialValues={{ SelectedManageCompanies: '' }}
-
+                        <Formik initialValues={{ SelectedManageCompanies: '' }}
                             enableReinitialize={true}
-
                             validationSchema={ValidtionSchema}
-
                             onSubmit={(values, actions) => {
-
                                 this.AddMangeCompanies(values, actions)
                             }}>
-
                             {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                                 <Form onSubmit={handleSubmit}>
-
-
                                     <div className='dropWrapper'>
                                         <div className="letterFullWidth multiChoice">
                                             <DropdownMelcous title='Companies' data={this.state.ManageCompaniesData} name='SelectedManageCompanies'
@@ -485,14 +436,8 @@ class ProjectCompanies extends Component {
                                 </Form>
                             )}
                         </Formik>
-
-
                     </SkyLightStateless>
                 </div>
-
-
-
-
             </div>
         )
     }
@@ -504,7 +449,5 @@ function mapStateToProps(state) {
         projectId: state.communication.projectId,
     }
 }
-export default connect(
-    mapStateToProps,
 
-)(withRouter(ProjectCompanies))
+export default connect(mapStateToProps)(withRouter(ProjectCompanies))
