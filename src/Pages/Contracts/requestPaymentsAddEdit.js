@@ -29,56 +29,27 @@ import Api from "../../api";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(
-        Resources["subjectRequired"][currentLanguage]
-    ),
-    contractId: Yup.string()
-        .required(Resources["selectContract"][currentLanguage])
-        .nullable(true),
-    vat: Yup.string().matches(
-        /(^[0-9]+$)/,
-        Resources["onlyNumbers"][currentLanguage]
-    ),
-    tax: Yup.string().matches(
-        /(^[0-9]+$)/,
-        Resources["onlyNumbers"][currentLanguage]
-    ),
-    insurance: Yup.string().matches(
-        /(^[0-9]+$)/,
-        Resources["onlyNumbers"][currentLanguage]
-    ),
-    advancePaymentPercent: Yup.string().matches(
-        /(^[0-9]+$)/,
-        Resources["onlyNumbers"][currentLanguage]
-    ),
-    retainagePercent: Yup.string().matches(
-        /(^[0-9]+$)/,
-        Resources["onlyNumbers"][currentLanguage]
-    )
+    subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
+    contractId: Yup.string().required(Resources["selectContract"][currentLanguage]).nullable(true),
+    vat: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
+    tax: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
+    insurance: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
+    advancePaymentPercent: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
+    retainagePercent: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage])
 });
 
 const validationDeductionSchema = Yup.object().shape({
     title: Yup.string().required(Resources["description"][currentLanguage]),
-    deductionValue: Yup.string().matches(
-        /(^[0-9]+$)/,
-        Resources["onlyNumbers"][currentLanguage]
-    )
+    deductionValue: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage])
 });
 
 const validationItemsSchema = Yup.object().shape({
-    percentComplete: Yup.number()
-        .typeError(Resources["onlyNumbers"][currentLanguage])
-        .required(Resources["percentComplete"][currentLanguage]),
-    quantityComplete: Yup.number()
-        .typeError(Resources["onlyNumbers"][currentLanguage])
-        .required(Resources["quantityComplete"][currentLanguage]),
-    paymentPercent: Yup.number()
-        .typeError(Resources["onlyNumbers"][currentLanguage])
-        .required(Resources["paymentPercent"][currentLanguage])
+    percentComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["percentComplete"][currentLanguage]),
+    quantityComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["quantityComplete"][currentLanguage]),
+    paymentPercent: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["paymentPercent"][currentLanguage])
 });
 
 const BoqTypeSchema = Yup.object().shape({
@@ -87,7 +58,8 @@ const BoqTypeSchema = Yup.object().shape({
     boqSubType: Yup.string().required(Resources["boqSubType"][currentLanguage])
 });
 
-let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
+let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif';
+
 const actionPanel = {
     control: (styles, { isFocused }) => ({
         ...styles,
@@ -147,11 +119,7 @@ class requestPaymentsAddEdit extends Component {
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
-                    let obj = JSON.parse(
-                        CryptoJS.enc.Base64.parse(param[1]).toString(
-                            CryptoJS.enc.Utf8
-                        )
-                    );
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
                     docId = obj.docId;
                     projectId = obj.projectId;
@@ -176,22 +144,18 @@ class requestPaymentsAddEdit extends Component {
             showCostCodingTree: false,
             showDeleteModal: false,
             userType: userType.uty,
+            addDeducation: false,
             fillDropDown: [
                 { label: "Add Missing Amendments", value: "1" },
                 { label: "ReCalculator Payment", value: "2" },
                 { label: "Update Items From VO", value: "3" },
                 { label: "Add Missing Items", value: "4" },
                 { label: "Edit Advanced Payment Amount", value: "5" },
-                { label: "Calculate Interim Invoice", value: "6" }
+                { label: "Calculate Interim Invoice", value: "6" },
+                { label: "Add Deductions", value: "7" },
             ],
-            selectedDropDownTrees: {
-                label: Resources.codingTree[currentLanguage],
-                value: "0"
-            },
-            selectedPercentageStatus: {
-                label: Resources.percentageStatus[currentLanguage],
-                value: "0"
-            },
+            selectedDropDownTrees: { label: Resources.codingTree[currentLanguage], value: "0" },
+            selectedPercentageStatus: { label: Resources.percentageStatus[currentLanguage], value: "0" },
             fillDropDownTress: [],
             fillDropDownExport: [
                 { label: "Export", value: "1" },
@@ -199,18 +163,9 @@ class requestPaymentsAddEdit extends Component {
             ],
             selectedDropDown: [{ label: "Admin Actions", value: "0" }],
             selectedDropDownExport: [{ label: "Export File", value: "0" }],
-            selectedBoqTypeEdit: {
-                label: Resources.boqType[currentLanguage],
-                value: "0"
-            },
-            selectedBoqTypeChildEdit: {
-                label: Resources.boqTypeChild[currentLanguage],
-                value: "0"
-            },
-            selectedBoqSubTypeEdit: {
-                label: Resources.boqSubType[currentLanguage],
-                value: "0"
-            },
+            selectedBoqTypeEdit: { label: Resources.boqType[currentLanguage], value: "0" },
+            selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
+            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" },
             boqTypes: [],
             BoqTypeChilds: [],
             BoqSubTypes: [],
@@ -233,9 +188,7 @@ class requestPaymentsAddEdit extends Component {
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
-            document: this.props.document
-                ? Object.assign({}, this.props.document)
-                : {},
+            document: this.props.document ? Object.assign({}, this.props.document) : {},
             voItem: {},
             permission: [
                 { name: "sendByEmail", code: 54 },
@@ -247,10 +200,7 @@ class requestPaymentsAddEdit extends Component {
                 { name: "viewAttachments", code: 3317 },
                 { name: "deleteAttachments", code: 840 }
             ],
-            selectContract: {
-                label: Resources.selectContract[currentLanguage],
-                value: "0"
-            },
+            selectContract: { label: Resources.selectContract[currentLanguage], value: "0" },
             contractsPos: [],
             paymentsItems: [],
             CurrentStep: 0,
@@ -411,11 +361,9 @@ class requestPaymentsAddEdit extends Component {
             return null;
         };
 
+        if (this.state.isViewMode !== true) { itemsColumns.push({ key: "BtnActions", width: 150 }) }
+
         itemsColumns = [
-            {
-                key: "BtnActions",
-                width: 150
-            },
             {
                 key: "arrange",
                 name: Resources["no"][currentLanguage],
@@ -701,9 +649,7 @@ class requestPaymentsAddEdit extends Component {
     }
 
     componentDidMount() {
-        var links = document.querySelectorAll(
-            ".noTabs__document .doc-container .linebylineInput"
-        );
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
                 links[i].classList.add("even");
@@ -716,37 +662,15 @@ class requestPaymentsAddEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.document.id) {
             let serverChangeOrder = { ...nextProps.document };
-            serverChangeOrder.docDate = moment(
-                serverChangeOrder.docDate
-            ).format("YYYY-MM-DD");
-            serverChangeOrder.advancePaymentPercent =
-                serverChangeOrder.advancePaymentPercent != null
-                    ? serverChangeOrder.advancePaymentPercent
-                    : 0;
-            serverChangeOrder.tax =
-                serverChangeOrder.tax != null ? serverChangeOrder.tax : 0;
-            serverChangeOrder.vat =
-                serverChangeOrder.vat != null ? serverChangeOrder.vat : 0;
-            serverChangeOrder.insurance =
-                serverChangeOrder.insurance != null
-                    ? serverChangeOrder.insurance
-                    : 0;
-            serverChangeOrder.actualPayment =
-                serverChangeOrder.actualPayment != null
-                    ? serverChangeOrder.actualPayment
-                    : 0;
-            serverChangeOrder.advancedPaymentAmount =
-                serverChangeOrder.advancedPaymentAmount != null
-                    ? serverChangeOrder.advancedPaymentAmount
-                    : 0;
-            serverChangeOrder.retainagePercent =
-                serverChangeOrder.retainagePercent != null
-                    ? serverChangeOrder.retainagePercent
-                    : 0;
-            serverChangeOrder.remainingPayment =
-                serverChangeOrder.remainingPayment != null
-                    ? serverChangeOrder.remainingPayment
-                    : 0;
+            serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format("YYYY-MM-DD");
+            serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0;
+            serverChangeOrder.tax = serverChangeOrder.tax != null ? serverChangeOrder.tax : 0;
+            serverChangeOrder.vat = serverChangeOrder.vat != null ? serverChangeOrder.vat : 0;
+            serverChangeOrder.insurance = serverChangeOrder.insurance != null ? serverChangeOrder.insurance : 0;
+            serverChangeOrder.actualPayment = serverChangeOrder.actualPayment != null ? serverChangeOrder.actualPayment : 0;
+            serverChangeOrder.advancedPaymentAmount = serverChangeOrder.advancedPaymentAmount != null ? serverChangeOrder.advancedPaymentAmount : 0;
+            serverChangeOrder.retainagePercent = serverChangeOrder.retainagePercent != null ? serverChangeOrder.retainagePercent : 0;
+            serverChangeOrder.remainingPayment = serverChangeOrder.remainingPayment != null ? serverChangeOrder.remainingPayment : 0;
             serverChangeOrder.percentComplete = "";
             serverChangeOrder.quantityComplete = "";
             serverChangeOrder.paymentPercent = "";
@@ -782,10 +706,7 @@ class requestPaymentsAddEdit extends Component {
             if (this.state.isApproveMode != true && Config.IsAllow(187)) {
                 if (this.props.hasWorkflow == false && Config.IsAllow(187)) {
                     //close => false
-                    if (
-                        this.props.document.status !== false &&
-                        Config.IsAllow(187)
-                    ) {
+                    if (this.props.document.status !== false && Config.IsAllow(187)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -806,22 +727,13 @@ class requestPaymentsAddEdit extends Component {
         };
 
         if (this.state.docId > 0) {
-            this.props.actions.documentForEdit(
-                "GetContractsRequestPaymentsForEdit?id=" + this.state.docId
-            );
+            this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
 
-            dataservice
-                .GetDataList(
-                    "GetCostCodingTreeByProjectId?projectId=" +
-                    this.state.projectId,
-                    "codeTreeTitle",
-                    "id"
-                )
-                .then(result => {
-                    this.setState({
-                        fillDropDownTress: result
-                    });
+            dataservice.GetDataList("GetCostCodingTreeByProjectId?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
+                this.setState({
+                    fillDropDownTress: result
                 });
+            });
 
             this.setState({
                 isLoading: true,
@@ -865,19 +777,16 @@ class requestPaymentsAddEdit extends Component {
 
     GetNExtArrange() {
         let original_document = { ...this.state.document };
+
         let updated_document = {};
-        let url =
-            "GetNextArrangeMainDoc?projectId=" +
-            this.state.projectId +
-            "&docType=" +
-            this.state.docTypeId +
-            "&companyId=0&contactId=0";
+
+        let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
+
         dataservice.GetNextArrangeMainDocument(url).then(res => {
+
             updated_document.arrange = res;
-            updated_document = Object.assign(
-                original_document,
-                updated_document
-            );
+
+            updated_document = Object.assign(original_document, updated_document);
 
             this.setState({
                 document: updated_document
@@ -895,6 +804,7 @@ class requestPaymentsAddEdit extends Component {
                     obj.value = item["id"];
                     Data.push(obj);
                 });
+
                 this.setState({
                     contractsPos: [...Data],
                     contractsPool: result
@@ -915,11 +825,10 @@ class requestPaymentsAddEdit extends Component {
             let original_document = { ...this.state.document };
 
             let updated_document = {};
+
             updated_document.comment = value;
-            updated_document = Object.assign(
-                original_document,
-                updated_document
-            );
+
+            updated_document = Object.assign(original_document, updated_document);
 
             this.setState({
                 document: updated_document,
@@ -929,6 +838,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     handleChange(e, field) {
+
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -993,21 +903,14 @@ class requestPaymentsAddEdit extends Component {
                     month = objDate.toLocaleString("en", { month: "long" });
                 var year = objDate.getFullYear();
 
-                updated_document.subject = "Payment Requisition " + contract.subject + " (" + year + "/" + month + ") " +
-                    original_document.arrange;
+                updated_document.subject = "Payment Requisition " + contract.subject + " (" + year + "/" + month + ") " + original_document.arrange;
+
                 updated_document.vat = parseFloat(contract.vat);
                 updated_document.tax = parseFloat(contract.tax);
                 updated_document.insurance = parseFloat(contract.insurance);
-                updated_document.advancePaymentPercent = parseFloat(
-                    contract.advancedPayment
-                );
-                updated_document.retainagePercent = parseFloat(
-                    contract.retainage
-                );
-                updated_document.advancedPaymentAmount =
-                    contract.advancedPaymentAmount != null
-                        ? parseFloat(contract.advancedPaymentAmount)
-                        : 0;
+                updated_document.advancePaymentPercent = parseFloat(contract.advancedPayment);
+                updated_document.retainagePercent = parseFloat(contract.retainage);
+                updated_document.advancedPaymentAmount = contract.advancedPaymentAmount != null ? parseFloat(contract.advancedPaymentAmount) : 0;
 
                 this.setState({
                     document: updated_document
@@ -1023,25 +926,19 @@ class requestPaymentsAddEdit extends Component {
 
         let saveDocument = this.state.document;
         this.changeCurrentStep(1);
-        saveDocument.docDate = moment(
-            saveDocument.docDate,
-            "YYYY-MM-DD"
-        ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
-        dataservice
-            .addObject("EditContractsRequestPayments", saveDocument)
-            .then(result => {
-                this.setState({
-                    isLoading: false
-                });
-
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-            })
-            .catch(res => {
-                this.setState({
-                    isLoading: false
-                });
-                toast.error(Resources["operationCanceled"][currentLanguage]);
+        saveDocument.docDate = moment(saveDocument.docDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        dataservice.addObject("EditContractsRequestPayments", saveDocument).then(result => {
+            this.setState({
+                isLoading: false
             });
+
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(res => {
+            this.setState({
+                isLoading: false
+            });
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
     }
 
     saveVariationOrder(event) {
@@ -1050,30 +947,23 @@ class requestPaymentsAddEdit extends Component {
         });
         let saveDocument = { ...this.state.document };
 
-        saveDocument.docDate = moment(
-            saveDocument.docDate,
-            "YYYY-MM-DD"
-        ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+        saveDocument.docDate = moment(saveDocument.docDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
         saveDocument.projectId = this.state.projectId;
         this.changeCurrentStep(1);
-        dataservice
-            .addObject("AddContractsRequestPayment", saveDocument)
-            .then(result => {
-                if (result.id) {
-                    this.setState({
-                        docId: result.id,
-                        isLoading: false
-                    });
+        dataservice.addObject("AddContractsRequestPayment", saveDocument).then(result => {
+            if (result.id) {
 
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
-                }
-            })
-            .catch(res => {
-                toast.error(Resources["operationCanceled"][currentLanguage]);
-            });
+                this.setState({
+                    docId: result.id,
+                    isLoading: false
+                });
+
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }
+        }).catch(res => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
     }
 
     showBtnsSaving() {
@@ -1086,13 +976,7 @@ class requestPaymentsAddEdit extends Component {
             );
         } else if (this.state.docId > 0) {
             btn = (
-                <button
-                    className={
-                        this.state.isViewMode === true
-                            ? "primaryBtn-1 btn meduimBtn disNone"
-                            : "primaryBtn-1 btn meduimBtn"
-                    }
-                    type="submit">
+                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type="submit">
                     {Resources.next[currentLanguage]}
                 </button>
             );
@@ -1127,13 +1011,12 @@ class requestPaymentsAddEdit extends Component {
             if (paymentsItems.length == 0) {
                 this.buildColumns(this.props.changeStatus);
                 this.setState({ isLoading: true });
-                dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize)
-                    .then(result => {
-                        this.setState({
-                            paymentsItems: result != null ? result : [],
-                            isLoading: false
-                        });
+                dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                    this.setState({
+                        paymentsItems: result != null ? result : [],
+                        isLoading: false
                     });
+                });
             }
         }
     };
@@ -1145,70 +1028,73 @@ class requestPaymentsAddEdit extends Component {
             this.setState({
                 isLoading: true
             });
-            dataservice.GetDataGrid("GetTotalForReqPay?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId)
-                .then(result => {
-                    this.setState({
-                        interimInvoicedTable: result,
-                        isLoading: false
-                    });
-                }).catch(res => {
-                    this.setState({
-                        interimInvoicedTable: [],
-                        isLoading: false
-                    });
+
+            dataservice.GetDataGrid("GetTotalForReqPay?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
+                this.setState({
+                    interimInvoicedTable: result || [],
+                    isLoading: false
                 });
+            }).catch(res => {
+                this.setState({
+                    interimInvoicedTable: [],
+                    isLoading: false
+                });
+            });
         }
+
         let approvedInvoicesChilds = [...this.state.approvedInvoicesChilds];
+
         if (approvedInvoicesChilds.length == 0) {
             this.setState({
                 isLoading: true
             });
             let rowTotal = 0;
+
             dataservice.GetDataGridPost("GetApprovedInvoicesParent?contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
                 var obj = {};
                 var conditionString = "";
-                dataservice.GetDataGridPost("GetApprovedInvoicesChilds?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId)
-                    .then(res => {
-                        let approvedInvoicesParent = [];
+                dataservice.GetDataGridPost("GetApprovedInvoicesChilds?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(res => {
 
-                        result.map(parent => {
-                            let sumRowTotal = 0;
-                            let sumtotal = 0;
+                    let approvedInvoicesParent = [];
 
-                            res.map(child => {
+                    result.map(parent => {
+                        let sumRowTotal = 0;
+                        let sumtotal = 0;
 
-                                var total = child[parent.details];
-                                sumRowTotal += parseFloat(child.rowTotal);
-                                sumtotal = total + sumtotal;
-                                parent.total = sumtotal;
-                            });
+                        res.map(child => {
 
-                            rowTotal = sumRowTotal;
-
-                            conditionString = parent.details;
-
-                            obj.building = "Total";
-                            obj.code = "";
-                            obj.exists = "";
-                            obj.serial = "";
-                            obj[conditionString] = parent.total;
-                            obj.rowTotal = rowTotal;
-
-                            approvedInvoicesChilds.push(obj);
-                            if (parent.total === null) {
-                                parent.total = 0;
-                            }
-
-                            approvedInvoicesParent.push(parent);
+                            var total = child[parent.details];
+                            sumRowTotal += parseFloat(child.rowTotal);
+                            sumtotal = total + sumtotal;
+                            parent.total = sumtotal;
                         });
 
-                        this.setState({
-                            approvedInvoicesChilds: res,
-                            approvedInvoicesParent: approvedInvoicesParent,
-                            isLoading: false,
-                            rowTotal: rowTotal
-                        });
+                        rowTotal = sumRowTotal;
+
+                        conditionString = parent.details;
+
+                        obj.building = "Total";
+                        obj.code = "";
+                        obj.exists = "";
+                        obj.serial = "";
+                        obj[conditionString] = parent.total;
+                        obj.rowTotal = rowTotal;
+
+                        approvedInvoicesChilds.push(obj);
+                        if (parent.total === null) {
+                            parent.total = 0;
+                        }
+
+                        approvedInvoicesParent.push(parent);
                     });
+
+                    this.setState({
+                        approvedInvoicesChilds: res,
+                        approvedInvoicesParent: approvedInvoicesParent,
+                        isLoading: false,
+                        rowTotal: rowTotal
+                    });
+                });
             });
         }
     };
@@ -1221,22 +1107,17 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true
             });
 
-            dataservice
-                .GetDataGrid(
-                    "GetContractsRequestPaymentsDeductions?requestId=" +
-                    this.state.docId
-                )
-                .then(result => {
-                    this.setState({
-                        deductionObservableArray: result,
-                        isLoading: false
-                    });
-                })
-                .catch(res => {
-                    this.setState({
-                        isLoading: false
-                    });
+            dataservice.GetDataGrid("GetContractsRequestPaymentsDeductions?requestId=" + this.state.docId).then(result => {
+
+                this.setState({
+                    deductionObservableArray: result,
+                    isLoading: false
                 });
+            }).catch(res => {
+                this.setState({
+                    isLoading: false
+                });
+            });
         }
     };
 
@@ -1245,30 +1126,28 @@ class requestPaymentsAddEdit extends Component {
     };
 
     saveVariationOrderItem(event) {
+
         let saveDocument = { ...this.state.voItem };
 
         saveDocument.changeOrderId = this.state.docId;
 
-        dataservice
-            .addObject("AddVOItems", saveDocument)
-            .then(result => {
-                if (result) {
-                    let oldItems = [...this.state.voItems];
-                    oldItems.push(result);
-                    this.setState({
-                        voItems: [...oldItems]
-                    });
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
-                }
-            })
-            .catch(res => {
-                toast.error(Resources["operationCanceled"][currentLanguage]);
-            });
+        dataservice.addObject("AddVOItems", saveDocument).then(result => {
+
+            if (result) {
+                let oldItems = [...this.state.voItems];
+                oldItems.push(result);
+                this.setState({
+                    voItems: [...oldItems]
+                });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }
+        }).catch(res => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
     }
 
     handleChangeItem(e, field) {
+
         let original_document = { ...this.state.documentDeduction };
 
         let updated_document = {};
@@ -1282,15 +1161,8 @@ class requestPaymentsAddEdit extends Component {
         });
     }
 
-    handleChangeItemDropDown(
-        event,
-        field,
-        selectedValue,
-        isSubscribe,
-        url,
-        param,
-        nextTragetState
-    ) {
+    handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState) {
+
         if (event == null) return;
         let original_document = { ...this.state.voItem };
         let updated_document = {};
@@ -1314,31 +1186,24 @@ class requestPaymentsAddEdit extends Component {
 
     onRowClick = (value, index, column) => {
         if (column.key != "BtnActions" && column.key != "actions") {
+
             let userType = Config.getPayload();
 
             if (userType.uty != "user") {
                 if (this.props.hasWorkflow == false && Config.IsAllow(185)) {
                     if (this.props.changeStatus) {
-                        if (
-                            this.state.document.status === true &&
-                            this.state.document.editable === true
-                        ) {
+                        if (this.state.document.status === true && this.state.document.editable === true) {
+
                             let original_document = { ...this.state.document };
 
                             let updated_document = {};
 
-                            updated_document.percentComplete =
-                                value.percentComplete;
-                            updated_document.quantityComplete =
-                                value.quantityComplete;
-                            updated_document.paymentPercent =
-                                value.paymentPercent;
+                            updated_document.percentComplete = value.percentComplete;
+                            updated_document.quantityComplete = value.quantityComplete;
+                            updated_document.paymentPercent = value.paymentPercent;
                             updated_document.lastComment = value.lastComment;
 
-                            updated_document = Object.assign(
-                                original_document,
-                                updated_document
-                            );
+                            updated_document = Object.assign(original_document, updated_document);
 
                             this.setState({
                                 viewPopUpRows: true,
@@ -1351,22 +1216,15 @@ class requestPaymentsAddEdit extends Component {
                 }
             }
         } else if (column.key === "actions") {
-            dataservice
-                .GetDataGrid(
-                    "GetReqPayCostCodingByRequestItemId?requestId=" +
-                    this.state.docId +
-                    "&reqItemId=" +
-                    value.id
-                )
-                .then(result => {
-                    this.setState({
-                        itemId: value.id,
-                        quantityComplete: value.quantityComplete,
-                        trees: result != null ? result : [],
-                        showCostCodingTree: true
-                    });
-                    this.costCodingTree.show();
+            dataservice.GetDataGrid("GetReqPayCostCodingByRequestItemId?requestId=" + this.state.docId + "&reqItemId=" + value.id).then(result => {
+                this.setState({
+                    itemId: value.id,
+                    quantityComplete: value.quantityComplete,
+                    trees: result != null ? result : [],
+                    showCostCodingTree: true
                 });
+                this.costCodingTree.show();
+            });
         }
     };
 
@@ -1375,99 +1233,75 @@ class requestPaymentsAddEdit extends Component {
             return [
                 {
                     icon: "fa fa-pencil",
-                    actions: [
-                        this.props.changeStatus
-                            ? {
-                                text:
-                                    Resources["viewHistory"][currentLanguage],
-                                callback: e => {
-                                    if (this.props.changeStatus) {
-                                        this.setState({
-                                            isLoading: true
-                                        });
-                                        dataservice
-                                            .GetDataGrid(
-                                                "/GetContractsRequestPaymentsItemsHistory?id=" +
-                                                this.state.docId
-                                            )
-                                            .then(result => {
-                                                this.setState({
-                                                    paymentRequestItemsHistory: result,
-                                                    isLoading: false,
-                                                    showViewHistoryModal: true
-                                                });
-
-                                                this.ViewHistoryModal.show();
-                                            });
-                                    }
-                                }
-                            }
-                            : null,
-                        {
-                            text: "showAddComment",
-                            callback: () => {
-                                if (Config.IsAllow(1001103)) {
+                    actions: [this.props.changeStatus ? {
+                        text: Resources["viewHistory"][currentLanguage],
+                        callback: e => {
+                            if (this.props.changeStatus) {
+                                this.setState({
+                                    isLoading: true
+                                });
+                                dataservice.GetDataGrid("/GetContractsRequestPaymentsItemsHistory?id=" + this.state.docId).then(result => {
                                     this.setState({
-                                        showCommentModal: true,
-                                        comment: row.comment
+                                        paymentRequestItemsHistory: result,
+                                        isLoading: false,
+                                        showViewHistoryModal: true
                                     });
-                                    this.addCommentModal.show();
-                                }
-                            }
-                        },
-                        {
-                            text: Resources["editBoq"][currentLanguage],
-                            callback: () => {
-                                if (Config.IsAllow(1001104)) {
-                                    let boqStractureObj = {
-                                        ...this.state.boqStractureObj
-                                    };
-                                    let boqTypes = [...this.state.boqTypes];
-                                    boqStractureObj.id = row.id;
-                                    boqStractureObj.requestId = this.state.docId;
-                                    boqStractureObj.contractId = this.state.document.contractId;
 
-                                    if (boqTypes.length > 0) {
+                                    this.ViewHistoryModal.show();
+                                });
+                            }
+                        }
+                    }
+                        : null,
+                    {
+                        text: "showAddComment",
+                        callback: () => {
+                            if (Config.IsAllow(1001103)) {
+                                this.setState({
+                                    showCommentModal: true,
+                                    comment: row.comment
+                                });
+                                this.addCommentModal.show();
+                            }
+                        }
+                    },
+                    {
+                        text: Resources["editBoq"][currentLanguage],
+                        callback: () => {
+                            if (Config.IsAllow(1001104)) {
+                                let boqStractureObj = {
+                                    ...this.state.boqStractureObj
+                                };
+                                let boqTypes = [...this.state.boqTypes];
+                                boqStractureObj.id = row.id;
+                                boqStractureObj.requestId = this.state.docId;
+                                boqStractureObj.contractId = this.state.document.contractId;
+
+                                if (boqTypes.length > 0) {
+                                    this.setState({
+                                        boqStractureObj: boqStractureObj,
+                                        showBoqModal: true
+                                    });
+                                    this.boqTypeModal.show();
+                                } else {
+                                    dataservice.GetDataList("GetAllBoqParentNull?projectId=" + projectId, "title", "id").then(data => {
                                         this.setState({
+                                            boqTypes: data,
                                             boqStractureObj: boqStractureObj,
                                             showBoqModal: true
                                         });
                                         this.boqTypeModal.show();
-                                    } else {
-                                        dataservice
-                                            .GetDataList(
-                                                "GetAllBoqParentNull?projectId=" +
-                                                projectId,
-                                                "title",
-                                                "id"
-                                            )
-                                            .then(data => {
-                                                this.setState({
-                                                    boqTypes: data,
-                                                    boqStractureObj: boqStractureObj,
-                                                    showBoqModal: true
-                                                });
-                                                this.boqTypeModal.show();
-                                            });
-                                    }
+                                    });
                                 }
                             }
                         }
-                    ]
+                    }]
                 }
             ];
         }
     }
 
-    handleChangeItemDropDownItems(
-        event,
-        field,
-        selectedValue,
-        isSubscribe,
-        url,
-        param,
-        nextTragetState
-    ) {
+    handleChangeItemDropDownItems(event, field, selectedValue, isSubscribe, url, param, nextTragetState) {
         if (event == null) return;
         let original_document = { ...this.state.boqStractureObj };
         let updated_document = {};
@@ -1502,43 +1336,32 @@ class requestPaymentsAddEdit extends Component {
                 return { paymentsItems };
             },
             function () {
-                if (
-                    updateRow[Object.keys(updated)[0]] !==
-                    updated[Object.keys(updated)[0]]
-                ) {
-                    if (
-                        updateRow.revisedQuantity == 0 &&
-                        (updateRow.siteQuantityComplete > 0 ||
-                            updateRow.sitePercentComplete > 0)
-                    ) {
+                if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
+                    if (updateRow.revisedQuantity == 0 && (updateRow.siteQuantityComplete > 0 || updateRow.sitePercentComplete > 0)) {
                         updateRow.revisedQuantity = 1;
                     }
+
                     let newValue = parseFloat(updated[Object.keys(updated)[0]]);
+
                     updateRow[Object.keys(updated)[0]] = parseFloat(
                         updated[Object.keys(updated)[0]]
                     );
 
                     switch (Object.keys(updated)[0]) {
                         case "quantityComplete":
-                            updateRow.percentComplete =
-                                (newValue / updateRow.revisedQuantity) * 100;
+                            updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
                             break;
                         case "percentComplete":
-                            updateRow.quantityComplete =
-                                (newValue / 100) * updateRow.revisedQuantity;
+                            updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
                             break;
                         case "sitePercentComplete":
-                            updateRow.siteQuantityComplete =
-                                (newValue / 100) * updateRow.revisedQuantity;
-
+                            updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
                             break;
                         case "siteQuantityComplete":
-                            updateRow.sitePercentComplete =
-                                (newValue / updateRow.revisedQuantity) * 100;
+                            updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
+
                             if (this.props.changeStatus == false) {
-                                updateRow.percentComplete =
-                                    (newValue / updateRow.revisedQuantity) *
-                                    100;
+                                updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
                             }
                             break;
                     }
@@ -1548,11 +1371,13 @@ class requestPaymentsAddEdit extends Component {
                     let sameRow = _.find(editRows, function (x) {
                         return x.id === updateRow.id;
                     });
+
                     if (sameRow) {
                         editRows = editRows.filter(function (i) {
                             return i.id != updateRow.id;
                         });
                     }
+
                     editRows.push(updateRow);
 
                     this.setState({
@@ -1572,29 +1397,22 @@ class requestPaymentsAddEdit extends Component {
             if (i.revisedQuantity == 0 && i.siteQuantityComplete > 0) {
                 i.revisedQuantity = 1;
             }
-            i.percentComplete =
-                (parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100;
-            i.sitePercentComplete =
-                (parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100;
+            i.percentComplete = (parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100;
+            i.sitePercentComplete = (parseFloat(i.siteQuantityComplete) / i.revisedQuantity) * 100;
             i.contractId = this.state.document.contractId;
             i.requestId = this.state.docId;
             i.projectId = projectId;
         });
 
-        let api =
-            this.props.changeStatus === true
-                ? "EditContractsRequestPaymentsItems"
-                : "AddContractsRequestPaymentsItemsNewScenario";
-        dataservice
-            .addObject(api, editItems)
-            .then(() => {
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-                this.setState({ isLoading: false });
-            })
-            .catch(() => {
-                toast.error(Resources["operationCanceled"][currentLanguage]);
-                this.setState({ isLoading: false });
-            });
+        let api = this.props.changeStatus === true ? "EditContractsRequestPaymentsItems" : "AddContractsRequestPaymentsItemsNewScenario";
+        dataservice.addObject(api, editItems).then(() => {
+
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+            this.setState({ isLoading: false });
+        }).catch(() => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+            this.setState({ isLoading: false });
+        });
     }
 
     assign = () => {
@@ -1611,31 +1429,30 @@ class requestPaymentsAddEdit extends Component {
 
         saveDocument.requestId = this.state.docId;
 
-        dataservice
-            .addObject("AddContractsRequestPaymentsDeductions", saveDocument)
-            .then(result => {
-                let list = [...this.state.deductionObservableArray];
-                list.push(result);
+        dataservice.addObject("AddContractsRequestPaymentsDeductions", saveDocument).then(result => {
 
-                let documentDeduction = {
-                    title: "",
-                    deductionValue: 0,
-                    deductionObservableArray: list
-                };
-                this.setState({
-                    isLoading: false,
-                    documentDeduction: documentDeduction,
-                    deductionObservableArray: list
-                });
+            let list = [...this.state.deductionObservableArray];
+            list.push(result);
 
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-            })
-            .catch(res => {
-                this.setState({
-                    isLoading: false
-                });
-                toast.error(Resources["operationCanceled"][currentLanguage]);
+            let documentDeduction = {
+                title: "",
+                deductionValue: 0,
+                deductionObservableArray: list
+            };
+
+            this.setState({
+                isLoading: false,
+                documentDeduction: documentDeduction,
+                deductionObservableArray: list
             });
+
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(res => {
+            this.setState({
+                isLoading: false
+            });
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
     }
 
     assignBoqType = () => {
@@ -1643,16 +1460,14 @@ class requestPaymentsAddEdit extends Component {
 
         this.setState({ showBoqModal: true, isLoading: true });
 
-        dataservice
-            .addObject("EditBoqStarcureRequestItem", boqStractureObj)
-            .then(() => {
-                this.setState({ showBoqModal: false, isLoading: false });
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-            })
-            .catch(() => {
-                toast.error(Resources["operationCanceled"][currentLanguage]);
-                this.setState({ showBoqModal: false, isLoading: false });
-            });
+        dataservice.addObject("EditBoqStarcureRequestItem", boqStractureObj).then(() => {
+
+            this.setState({ showBoqModal: false, isLoading: false });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(() => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+            this.setState({ showBoqModal: false, isLoading: false });
+        });
     };
 
     addCommentClick = () => {
@@ -1671,38 +1486,25 @@ class requestPaymentsAddEdit extends Component {
 
         switch (updated) {
             case "quantityComplete":
-                updateRow.percentComplete =
-                    (parseFloat(e.target.value) / updateRow.revisedQuantity) *
-                    100;
+                updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
                 break;
             case "percentComplete":
-                updateRow.quantityComplete =
-                    (parseFloat(e.target.value) / 100) *
-                    updateRow.revisedQuantity;
+                updateRow.quantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
                 break;
             case "sitePercentComplete":
-                updateRow.siteQuantityComplete =
-                    (parseFloat(e.target.value) / 100) *
-                    updateRow.revisedQuantity;
+                updateRow.siteQuantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
                 break;
             case "lastComment":
                 updateRow.lastComment = e.target.value;
                 break;
             case "siteQuantityComplete":
-                updateRow.sitePercentComplete =
-                    (parseFloat(e.target.value) / updateRow.revisedQuantity) *
-                    100;
+                updateRow.sitePercentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
                 if (this.props.changeStatus == false) {
-                    updateRow.percentComplete =
-                        (parseFloat(e.target.value) /
-                            updateRow.revisedQuantity) *
-                        100;
+                    updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
                 }
                 break;
 
-                let getIndex = originalData.findIndex(
-                    x => x.id === updateRow.id
-                );
+                let getIndex = originalData.findIndex(x => x.id === updateRow.id);
 
                 originalData.splice(getIndex, 1);
 
@@ -1714,23 +1516,24 @@ class requestPaymentsAddEdit extends Component {
     };
 
     editPaymentRequistionItems = () => {
+
         let mainDoc = this.state.currentObject;
+
         mainDoc.requestId = this.state.docId;
 
         this.setState({
             isLoading: true
         });
 
-        dataservice
-            .addObject("EditRequestPaymentItem", mainDoc)
-            .then(result => {
-                toast.success(Resources["operationSuccess"][currentLanguage]);
+        dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
 
-                this.setState({
-                    viewPopUpRows: false,
-                    isLoading: false
-                });
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+
+            this.setState({
+                viewPopUpRows: false,
+                isLoading: false
             });
+        });
     };
 
     handleDropAction(event) {
@@ -1741,43 +1544,14 @@ class requestPaymentsAddEdit extends Component {
                     toast.success(
                         Resources["operationSuccess"][currentLanguage]
                     );
-                })
-                    .catch(res => {
-                        toast.error(
-                            Resources["operationCanceled"][currentLanguage]
-                        );
-                    });
+                }).catch(res => {
+                    toast.error(
+                        Resources["operationCanceled"][currentLanguage]
+                    );
+                });
                 break;
             case "2":
                 dataservice.GetDataGrid("UpdatePayemtRequistionTotals?id=" + this.state.docId).then(result => {
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
-                })
-                    .catch(res => {
-                        toast.error(
-                            Resources["operationCanceled"][currentLanguage]
-                        );
-                    });
-                break;
-            case "3":
-                dataservice.GetDataGrid(
-                    "UpdatePRItemsByVariationOrders?requestId=" +
-                    this.state.docId
-                )
-                    .then(result => {
-                        toast.success(
-                            Resources["operationSuccess"][currentLanguage]
-                        );
-                    })
-                    .catch(res => {
-                        toast.error(
-                            Resources["operationCanceled"][currentLanguage]
-                        );
-                    });
-                break;
-            case "4":
-                dataservice.GetDataGrid("AddMissingItems?requestId=" + this.state.docId + "&contractId=" + this.state.document.contractId).then(result => {
                     toast.success(
                         Resources["operationSuccess"][currentLanguage]
                     );
@@ -1785,6 +1559,20 @@ class requestPaymentsAddEdit extends Component {
                     toast.error(
                         Resources["operationCanceled"][currentLanguage]
                     );
+                });
+                break;
+            case "3":
+                dataservice.GetDataGrid("UpdatePRItemsByVariationOrders?requestId=" + this.state.docId).then(result => {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(res => {
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
+                });
+                break;
+            case "4":
+                dataservice.GetDataGrid("AddMissingItems?requestId=" + this.state.docId + "&contractId=" + this.state.document.contractId).then(result => {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(res => {
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
                 });
                 break;
             case "5":
@@ -1792,14 +1580,16 @@ class requestPaymentsAddEdit extends Component {
                 break;
             case "6":
                 dataservice.GetDataGrid("UpdateInterimForRequest?requestId=" + this.state.docId + "&contractId=" + this.state.document.contractId).then(result => {
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(res => {
-                    toast.error(
-                        Resources["operationCanceled"][currentLanguage]
-                    );
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
                 });
+
+            case "7":
+                this.setState({
+                    addDeducation: true
+                });
+
                 break;
         }
 
@@ -1824,79 +1614,64 @@ class requestPaymentsAddEdit extends Component {
         if (this.state.currentDocument === "deduction") {
             let id = this.state.currentId;
 
-            dataservice
-                .GetDataGrid(
-                    "ContractsRequestPaymentsDeductionsDelete?id=" +
-                    id +
-                    "&requestId=" +
-                    this.state.docId
-                )
-                .then(result => {
-                    let originalData = this.state.deductionObservableArray;
+            dataservice.GetDataGrid("ContractsRequestPaymentsDeductionsDelete?id=" + id + "&requestId=" + this.state.docId).then(result => {
 
-                    let getIndex = originalData.findIndex(x => x.id === id);
+                let originalData = this.state.deductionObservableArray;
 
-                    originalData.splice(getIndex, 1);
+                let getIndex = originalData.findIndex(x => x.id === id);
 
-                    this.setState({
-                        deductionObservableArray: originalData,
-                        showDeleteModal: false
-                    });
+                originalData.splice(getIndex, 1);
 
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
-                })
-                .catch(ex => {
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
+                this.setState({
+                    deductionObservableArray: originalData,
+                    showDeleteModal: false
                 });
+
+                toast.success(
+                    Resources["operationSuccess"][currentLanguage]
+                );
+            }).catch(ex => {
+                toast.success(
+                    Resources["operationSuccess"][currentLanguage]
+                );
+            });
         } else if (this.state.currentDocument === "requestItems") {
             this.setState({ isLoading: true });
-            Api.post("DeletePaymentRequestItems", this.state.currentId)
-                .then(result => {
-                    let originalData = this.state.paymentsItems;
-                    let ids = this.state.currentId;
-                    let newItems = originalData.filter(
-                        item => !ids.includes(item.id)
-                    );
-                    this.setState({
-                        paymentsItems: newItems,
-                        showDeleteModal: false,
-                        isLoading: false
-                    });
-                    toast.success(
-                        Resources["operationSuccess"][currentLanguage]
-                    );
-                })
-                .catch(ex => {
-                    toast.success(
-                        Resources["operationCanceled"][currentLanguage]
-                    );
-                    this.setState({
-                        showDeleteModal: false,
-                        isLoading: false
-                    });
+            Api.post("DeletePaymentRequestItems", this.state.currentId).then(result => {
+
+                let originalData = this.state.paymentsItems;
+                let ids = this.state.currentId;
+                let newItems = originalData.filter(
+                    item => !ids.includes(item.id)
+                );
+                this.setState({
+                    paymentsItems: newItems,
+                    showDeleteModal: false,
+                    isLoading: false
                 });
+                toast.success(
+                    Resources["operationSuccess"][currentLanguage]
+                );
+            }).catch(ex => {
+
+                toast.success(
+                    Resources["operationCanceled"][currentLanguage]
+                );
+                this.setState({
+                    showDeleteModal: false,
+                    isLoading: false
+                });
+            });
         } else {
             if (this.props.changeStatus) {
-                dataservice
-                    .GetDataGrid(
-                        "DeleteDistributionItems?id=" + this.state.currentId
-                    )
-                    .then(result => {
-                        toast.success(
-                            Resources["operationSuccess"][currentLanguage]
-                        );
-                    });
+                dataservice.GetDataGrid("DeleteDistributionItems?id=" + this.state.currentId).then(result => {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                });
             }
 
             let originalData = this.state.trees;
 
-            let getIndex = originalData.findIndex(
-                x => x.id === this.state.currentId
-            );
+            let getIndex = originalData.findIndex(x => x.id === this.state.currentId);
 
             originalData.splice(getIndex, 1);
 
@@ -1918,29 +1693,17 @@ class requestPaymentsAddEdit extends Component {
             );
 
             exportFile = (
-                <Export
-                    isExportRequestPayment={true}
-                    type={1}
-                    rows={
-                        this.state.isLoading === false
-                            ? this.state.paymentsItems
-                            : []
-                    }
+                <Export isExportRequestPayment={true} type={1}
+                    rows={this.state.isLoading === false ? this.state.paymentsItems : []}
                     columns={ExportColumns}
-                    fileName={"Request Payments Items"}
-                />
+                    fileName={"Request Payments Items"} />
             );
         } else {
             this.setState({ isView: false, exportFile: "" });
 
             exportFile = (
-                <Export
-                    isExportRequestPayment={true}
-                    rows={
-                        this.state.isLoading === false
-                            ? this.state.paymentsItems
-                            : []
-                    }
+                <Export isExportRequestPayment={true}
+                    rows={this.state.isLoading === false ? this.state.paymentsItems : []}
                     columns={VOItemsColumns}
                     fileName={"Request Payments Items"}
                 />
@@ -1962,55 +1725,47 @@ class requestPaymentsAddEdit extends Component {
 
         obj.actualPayment = this.state.actualPayments;
 
-        dataservice
-            .addObject("EditActualPayment", obj)
-            .then(result => {
-                this.setState({ viewUpdatePayment: false });
+        dataservice.addObject("EditActualPayment", obj).then(result => {
 
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-            })
-            .catch(res => {
-                this.setState({
-                    viewUpdatePayment: false
-                });
-                toast.error(Resources["operationCanceled"][currentLanguage]);
+            this.setState({ viewUpdatePayment: false });
+
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(res => {
+
+            this.setState({
+                viewUpdatePayment: false
             });
+
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
     };
 
     updatePayemtWithVariationOrderByAdmin = () => {
+
         this.setState({ viewUpdateCalc: true });
 
         let requestId = this.state.docId;
 
         let contactId = this.state.document.contractId;
 
-        dataservice
-            .GetDataGrid(
-                "UpdatePayemtWithVariationOrderByAdmin?requestId=" +
-                requestId +
-                "&contractId=" +
-                contactId
-            )
-            .then(result => {
-                this.setState({ viewUpdateCalc: false });
+        dataservice.GetDataGrid("UpdatePayemtWithVariationOrderByAdmin?requestId=" + requestId + "&contractId=" + contactId).then(result => {
+            this.setState({ viewUpdateCalc: false });
 
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-            })
-            .catch(res => {
-                this.setState({
-                    viewUpdateCalc: false
-                });
-                toast.error(Resources["operationCanceled"][currentLanguage]);
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+        }).catch(res => {
+            this.setState({
+                viewUpdateCalc: false
             });
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+        });
     };
 
     addCostTree = () => {
+
         let costCodingId = this.state.selectedDropDownTrees.value;
 
         if (costCodingId != "0") {
-            let isExist = this.state.trees.find(
-                x => x.costCodingId === costCodingId
-            );
+            let isExist = this.state.trees.find(x => x.costCodingId === costCodingId);
 
             if (isExist == undefined) {
                 let objTree = {};
@@ -2023,22 +1778,17 @@ class requestPaymentsAddEdit extends Component {
                 objTree.value = 0;
                 objTree.percentageId = 1;
                 objTree.qtyCompelete = this.state.quantityComplete;
-                objTree.date = moment(
-                    this.state.document.docDate,
-                    "YYYY-MM-DD"
-                ).format("YYYY-MM-DD[T]HH:mm:ss.SSS");
+                objTree.date = moment(this.state.document.docDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
                 if (this.props.changeStatus) {
                     let lastCodingItems = this.state.trees;
 
-                    dataservice
-                        .addObject("AddDistributionQuantityForEdit", objTree)
-                        .then(result => {
-                            lastCodingItems.push(objTree);
-                            this.setState({
-                                trees: lastCodingItems
-                            });
+                    dataservice.addObject("AddDistributionQuantityForEdit", objTree).then(result => {
+                        lastCodingItems.push(objTree);
+                        this.setState({
+                            trees: lastCodingItems
                         });
+                    });
                 } else {
                     let lastCodingItems = this.state.trees;
 
@@ -2067,16 +1817,7 @@ class requestPaymentsAddEdit extends Component {
 
     renderEditableValue = cellInfo => {
         return (
-            <div
-                style={{
-                    color: "#4382f9 ",
-                    padding: "0px 6px",
-                    margin: "5px 0px",
-                    border: "1px dashed",
-                    cursor: "pointer"
-                }}
-                contentEditable
-                suppressContentEditableWarning
+            <div style={{ color: "#4382f9 ", padding: "0px 6px", margin: "5px 0px", border: "1px dashed", cursor: "pointer" }} contentEditable suppressContentEditableWarning
                 onBlur={e => {
                     const trees = [...this.state.trees];
                     trees[cellInfo.index][cellInfo.column.id] =
@@ -2115,14 +1856,12 @@ class requestPaymentsAddEdit extends Component {
 
             let originalData = this.state.trees;
 
-            originalData = originalData.map(
-                x => (x.value = parseFloat(x.value))
-            );
+            originalData = originalData.map(x => (x.value = parseFloat(x.value)));
 
             dataservice.addObject("AddDistributionQuantity", originalData).then(result => {
-                toast.success(
-                    Resources["operationSuccess"][currentLanguage]
-                );
+
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+
                 this.setState({
                     showCostCodingTree: false,
                     isLoading: false
@@ -2144,21 +1883,20 @@ class requestPaymentsAddEdit extends Component {
 
             let oldRows = [...this.state.paymentsItems];
 
-            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize)
-                .then(result => {
-                    const newRows = [...this.state.paymentsItems, ...result];
+            dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
 
-                    this.setState({
-                        paymentsItems: newRows,
-                        isLoading: false
-                    });
-                })
-                .catch(ex => {
-                    this.setState({
-                        paymentsItems: oldRows,
-                        isLoading: false
-                    });
+                const newRows = [...this.state.paymentsItems, ...result];
+
+                this.setState({
+                    paymentsItems: newRows,
+                    isLoading: false
                 });
+            }).catch(ex => {
+                this.setState({
+                    paymentsItems: oldRows,
+                    isLoading: false
+                });
+            });
         }
     }
 
@@ -2172,21 +1910,19 @@ class requestPaymentsAddEdit extends Component {
 
         let oldRows = [...this.state.paymentsItems];
 
-        dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize)
-            .then(result => {
-                const newRows = [...this.state.paymentsItems, ...result];
+        dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + this.state.document.contractId + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" + pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+            const newRows = [...this.state.paymentsItems, ...result];
 
-                this.setState({
-                    paymentsItems: newRows,
-                    isLoading: false
-                });
-            })
-            .catch(ex => {
-                this.setState({
-                    paymentsItems: oldRows,
-                    isLoading: false
-                });
+            this.setState({
+                paymentsItems: newRows,
+                isLoading: false
             });
+        }).catch(ex => {
+            this.setState({
+                paymentsItems: oldRows,
+                isLoading: false
+            });
+        });
     }
 
     clickHandlerDeleteRows = rows => {
@@ -2222,19 +1958,9 @@ class requestPaymentsAddEdit extends Component {
                     accessor: "id",
                     Cell: ({ row }) => {
                         return (
-                            <div
-                                className="btn table-btn-tooltip"
-                                style={{ marginLeft: "5px" }}
-                                onClick={() =>
-                                    this.viewConfirmDelete(
-                                        row._original.id,
-                                        "deduction"
-                                    )
-                                }>
-                                <i
-                                    style={{ fontSize: "1.6em" }}
-                                    className="fa fa-trash-o"
-                                />
+                            <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }}
+                                onClick={() => this.viewConfirmDelete(row._original.id, "deduction")}>
+                                <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
                             </div>
                         );
                     },
@@ -2277,19 +2003,9 @@ class requestPaymentsAddEdit extends Component {
                 accessor: "id",
                 Cell: ({ row }) => {
                     return (
-                        <div
-                            className="btn table-btn-tooltip"
-                            style={{ marginLeft: "5px" }}
-                            onClick={() =>
-                                this.viewConfirmDelete(
-                                    row._original.id,
-                                    "trees"
-                                )
-                            }>
-                            <i
-                                style={{ fontSize: "1.6em" }}
-                                className="fa fa-trash-o"
-                            />
+                        <div className="btn table-btn-tooltip" style={{ marginLeft: "5px" }}
+                            onClick={() => this.viewConfirmDelete(row._original.id, "trees")}>
+                            <i style={{ fontSize: "1.6em" }} className="fa fa-trash-o" />
                         </div>
                     );
                 },
@@ -2313,15 +2029,9 @@ class requestPaymentsAddEdit extends Component {
                 Cell: ({ row }) => {
                     return (
                         <div className="shareLinks">
-                            <Dropdown
-                                title=""
-                                data={this.state.percentageStatus}
-                                handleChange={e =>
-                                    this.actionHandler(row._original, e)
-                                }
-                                selectedValue={
-                                    this.state[row._original.id + "-drop"]
-                                }
+                            <Dropdown title="" data={this.state.percentageStatus}
+                                handleChange={e => this.actionHandler(row._original, e)}
+                                selectedValue={this.state[row._original.id + "-drop"]}
                                 name={row._original.id + "-drop"}
                                 index={Date.now()}
                             />
@@ -2332,21 +2042,18 @@ class requestPaymentsAddEdit extends Component {
             }
         ];
 
-        const ItemsGrid =
-            this.state.isLoading === false &&
-                this.state.currentStep === 1 &&
-                itemsColumns.length > 0 ? (
-                    <GridSetup
-                        rows={this.state.paymentsItems}
-                        showCheckbox={isCompany && this.props.changeStatus ? true : false}
-                        clickHandlerDeleteRows={this.clickHandlerDeleteRows}
-                        pageSize={this.state.pageSize}
-                        onRowClick={this.onRowClick}
-                        columns={itemsColumns}
-                        onGridRowsUpdated={this._onGridRowsUpdated}
-                        getCellActions={this.GetCellActions}
-                        key="PRitems" />
-                ) : (<LoadingSection />);
+        const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 && itemsColumns.length > 0 ? (
+            <GridSetup
+                rows={this.state.paymentsItems}
+                showCheckbox={isCompany && this.props.changeStatus ? true : false}
+                clickHandlerDeleteRows={this.clickHandlerDeleteRows}
+                pageSize={this.state.pageSize}
+                onRowClick={this.onRowClick}
+                columns={itemsColumns}
+                onGridRowsUpdated={this._onGridRowsUpdated}
+                getCellActions={this.GetCellActions}
+                key="PRitems" />
+        ) : (<LoadingSection />);
 
         const BoqTypeContent = (
             <Fragment>
@@ -2368,23 +2075,9 @@ class requestPaymentsAddEdit extends Component {
                                         index="boqType"
                                     />
                                 </div>
-                                <Dropdown
-                                    title="boqTypeChild"
-                                    data={this.state.BoqTypeChilds}
-                                    selectedValue={
-                                        this.state.selectedBoqTypeChildEdit
-                                    }
-                                    handleChange={event =>
-                                        this.handleChangeItemDropDownItems(
-                                            event,
-                                            "boqTypeChildId",
-                                            "selectedBoqTypeChildEdit",
-                                            true,
-                                            "GetAllBoqChild",
-                                            "parentId",
-                                            "BoqSubTypes"
-                                        )
-                                    }
+                                <Dropdown title="boqTypeChild" data={this.state.BoqTypeChilds}
+                                    selectedValue={this.state.selectedBoqTypeChildEdit}
+                                    handleChange={event => this.handleChangeItemDropDownItems(event, "boqTypeChildId", "selectedBoqTypeChildEdit", true, "GetAllBoqChild", "parentId", "BoqSubTypes")}
                                     onChange={setFieldValue}
                                     onBlur={setFieldTouched}
                                     error={errors.boqChild}
@@ -2392,23 +2085,9 @@ class requestPaymentsAddEdit extends Component {
                                     name="boqChild"
                                     index="boqChild"
                                 />
-                                <Dropdown
-                                    title="boqSubType"
-                                    data={this.state.BoqSubTypes}
-                                    selectedValue={
-                                        this.state.selectedBoqSubTypeEdit
-                                    }
-                                    handleChange={event =>
-                                        this.handleChangeItemDropDownItems(
-                                            event,
-                                            "boqSubTypeId",
-                                            "selectedBoqSubTypeEdit",
-                                            false,
-                                            "",
-                                            "",
-                                            ""
-                                        )
-                                    }
+                                <Dropdown title="boqSubType" data={this.state.BoqSubTypes}
+                                    selectedValue={this.state.selectedBoqSubTypeEdit}
+                                    handleChange={event => this.handleChangeItemDropDownItems(event, "boqSubTypeId", "selectedBoqSubTypeEdit", false, "", "", "")}
                                     onChange={setFieldValue}
                                     onBlur={setFieldTouched}
                                     error={errors.boqSubType}
@@ -2417,13 +2096,7 @@ class requestPaymentsAddEdit extends Component {
                                     index="boqSubType"
                                 />
                                 <div className={"slider-Btns fullWidthWrapper"}>
-                                    <button
-                                        className={
-                                            this.state.isViewMode === true
-                                                ? "primaryBtn-1 btn  disNone"
-                                                : "primaryBtn-1 btn "
-                                        }
-                                        type="submit">
+                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn  disNone" : "primaryBtn-1 btn "} type="submit">
                                         {Resources["save"][currentLanguage]}
                                     </button>
                                 </div>
@@ -2449,10 +2122,7 @@ class requestPaymentsAddEdit extends Component {
                             <Fragment>
                                 <td colSpan="6">
                                     <div className="contentCell tableCell-2">
-                                        <a
-                                            data-toggle="tooltip"
-                                            title={i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""
-                                            }>
+                                        <a data-toggle="tooltip" title={i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}>
                                             {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
                                         </a>
                                     </div>
@@ -2460,18 +2130,17 @@ class requestPaymentsAddEdit extends Component {
                                 <td>
                                     <div className="contentCell">
                                         {i.prevoiuse != null ? parseFloat(i.prevoiuse).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
-                                    </div>{" "}
+                                    </div>
                                 </td>
                                 <td>
                                     <div className="contentCell">
                                         {i.currentValue != null ? parseFloat(i.currentValue.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
-                                    </div>{" "}
+                                    </div>
                                 </td>
                                 <td>
                                     <div className="contentCell">
-                                        {i.total != null
-                                            ? parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
-                                    </div>{" "}
+                                        {i.total != null ? parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>
                                 </td>
                                 <td>
                                     <div className="contentCell">
@@ -2496,20 +2165,12 @@ class requestPaymentsAddEdit extends Component {
                             </th>
                             <th>
                                 <div className="headCell">
-                                    {
-                                        Resources["completedQuantity"][
-                                        currentLanguage
-                                        ]
-                                    }
+                                    {Resources["completedQuantity"][currentLanguage]}
                                 </div>
                             </th>
                             <th>
                                 <div className="headCell">
-                                    {
-                                        Resources["paymentPercent"][
-                                        currentLanguage
-                                        ]
-                                    }
+                                    {Resources["paymentPercent"][currentLanguage]}
                                 </div>
                             </th>
                             <th>
@@ -2536,34 +2197,32 @@ class requestPaymentsAddEdit extends Component {
                                     <td>
                                         <div className="contentCell">
                                             {i.description}
-                                        </div>{" "}
+                                        </div>
                                     </td>
                                     <td>
                                         <div className="contentCell">
                                             {i.completedQnty}
-                                        </div>{" "}
+                                        </div>
                                     </td>
                                     <td>
                                         <div className="contentCell">
                                             {i.paymentPercent}
-                                        </div>{" "}
+                                        </div>
                                     </td>
                                     <td>
                                         <div className="contentCell">
                                             {i.addedByName}
-                                        </div>{" "}
+                                        </div>
                                     </td>
                                     <td>
                                         <div className="contentCell">
-                                            {moment(i.addedDate).format(
-                                                "YYYY-MM-DD"
-                                            )}
-                                        </div>{" "}
+                                            {moment(i.addedDate).format("YYYY-MM-DD")}
+                                        </div>
                                     </td>
                                     <td>
                                         <div className="contentCell">
                                             {i.comment}
-                                        </div>{" "}
+                                        </div>
                                     </td>
                                 </Fragment>
                             </tr>
@@ -2578,11 +2237,7 @@ class requestPaymentsAddEdit extends Component {
                 <Fragment>
                     <header>
                         <h2 className="zero">
-                            {
-                                Resources["summaryOfApprovedInvoices"][
-                                currentLanguage
-                                ]
-                            }
+                            {Resources["summaryOfApprovedInvoices"][currentLanguage]}
                         </h2>
                     </header>
                     <table
@@ -2595,14 +2250,11 @@ class requestPaymentsAddEdit extends Component {
                                 </td>
                                 {this.state.approvedInvoicesParent.map(i => (
                                     <td>
-                                        {i.details.slice(
-                                            0,
-                                            i.details.lastIndexOf("-")
-                                        )}
+                                        {i.details.slice(0, i.details.lastIndexOf("-"))}
                                     </td>
                                 ))}
                                 <td width="10%">
-                                    {Resources["total"][currentLanguage]}{" "}
+                                    {Resources["total"][currentLanguage]}
                                 </td>
                             </tr>
                         </thead>
@@ -2610,52 +2262,30 @@ class requestPaymentsAddEdit extends Component {
                             {this.state.approvedInvoicesChilds.map(i => (
                                 <tr>
                                     <td>
-                                        {i.building.slice(
-                                            0,
-                                            i.building.lastIndexOf("-")
-                                        )}
+                                        {i.building.slice(0, i.building.lastIndexOf("-"))}
                                     </td>
 
                                     {this.state.approvedInvoicesParent.map(
                                         data => (
                                             <td>
-                                                {parseFloat(i[data.details])
-                                                    .toFixed(2)
-                                                    .replace(
-                                                        /\B(?=(\d{3})+(?!\d))/g,
-                                                        ","
-                                                    )}
+                                                {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                             </td>
                                         )
                                     )}
                                     <td>
-                                        {parseFloat(i.rowTotal)
-                                            .toFixed(2)
-                                            .replace(
-                                                /\B(?=(\d{3})+(?!\d))/g,
-                                                " ,"
-                                            )}
+                                        {parseFloat(i.rowTotal).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ,")}
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                         <tfoot>
-                            <tr
-                                style={{
-                                    backgroundColor: "whitesmoke",
-                                    color: "black"
-                                }}>
+                            <tr style={{ backgroundColor: "whitesmoke", color: "black" }}>
                                 <td width="15%">
                                     {Resources["total"][currentLanguage]}
                                 </td>
                                 {this.state.approvedInvoicesParent.map(i => (
                                     <td>
-                                        {parseFloat(i.total.toString())
-                                            .toFixed(2)
-                                            .replace(
-                                                /\B(?=(\d{3})+(?!\d))/g,
-                                                ","
-                                            )}
+                                        {parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                     </td>
                                 ))}
                                 <td>{this.state.rowTotal} </td>
@@ -2669,953 +2299,630 @@ class requestPaymentsAddEdit extends Component {
 
         return (
             <div className="mainContainer">
-                <div
-                    className={
-                        this.state.isViewMode === true
-                            ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
-                            : "documents-stepper noTabs__document one__tab one_step"
-                    }>
-                    <HeaderDocument
-                        projectName={projectName}
-                        isViewMode={this.state.isViewMode}
-                        perviousRoute={this.state.perviousRoute}
-                        docTitle={
-                            Resources.paymentRequisitions[currentLanguage]
-                        }
-                        moduleTitle={Resources["contracts"][currentLanguage]}
-                    />
+                <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
+                        docTitle={Resources.paymentRequisitions[currentLanguage]} moduleTitle={Resources["contracts"][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
                             {this.state.currentStep == 0 ? (
                                 <Fragment>
-                                    <div
-                                        id="step1"
-                                        className="step-content-body">
+                                    <div id="step1" className="step-content-body">
                                         <div className="subiTabsContent">
                                             <div className="document-fields">
-                                                <Formik
-                                                    initialValues={{
-                                                        ...this.state.document
-                                                    }}
-                                                    validationSchema={
-                                                        validationSchema
-                                                    }
-                                                    enableReinitialize={
-                                                        this.props.changeStatus
-                                                    }
+                                                <Formik initialValues={{ ...this.state.document }}
+                                                    validationSchema={validationSchema}
+                                                    enableReinitialize={this.props.changeStatus}
                                                     onSubmit={values => {
-                                                        if (
-                                                            this.props.showModal
-                                                        ) {
-                                                            return;
-                                                        }
+                                                        if (this.props.showModal) { return; }
 
-                                                        if (
-                                                            this.props
-                                                                .changeStatus ===
-                                                            false &&
-                                                            this.state.docId ===
-                                                            0
-                                                        ) {
+                                                        if (this.props.changeStatus === false && this.state.docId === 0) {
                                                             this.saveVariationOrder();
                                                         } else {
                                                             this.editPaymentRequistion();
                                                         }
                                                     }}>
-                                                    {({
-                                                        errors,
-                                                        touched,
-                                                        handleBlur,
-                                                        handleChange,
-                                                        handleSubmit,
-                                                        setFieldValue,
-                                                        setFieldTouched
-                                                    }) => (
-                                                            <Form
-                                                                id="InspectionRequestForm"
-                                                                className="customProform"
-                                                                noValidate="novalidate"
-                                                                onSubmit={
-                                                                    handleSubmit
-                                                                }>
-                                                                <div className="proForm first-proform">
-                                                                    <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">
-                                                                            {
-                                                                                Resources
-                                                                                    .subject[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                        </label>
-                                                                        <div
-                                                                            className={
-                                                                                "inputDev ui input" +
-                                                                                (errors.subject &&
-                                                                                    touched.subject
-                                                                                    ? " has-error"
-                                                                                    : !errors.subject &&
-                                                                                        touched.subject
-                                                                                        ? " has-success"
-                                                                                        : " ")
-                                                                            }>
-                                                                            <input
-                                                                                name="subject"
-                                                                                className="form-control fsadfsadsa"
-                                                                                id="subject"
-                                                                                placeholder={
-                                                                                    Resources
-                                                                                        .subject[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                                autoComplete="off"
-                                                                                value={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .subject
-                                                                                }
-                                                                                onBlur={e => {
-                                                                                    handleBlur(
-                                                                                        e
-                                                                                    );
-                                                                                    handleChange(
-                                                                                        e
-                                                                                    );
-                                                                                }}
-                                                                                onChange={e =>
-                                                                                    this.handleChange(
-                                                                                        e,
-                                                                                        "subject"
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            {touched.subject ? (
-                                                                                <em className="pError">
-                                                                                    {
-                                                                                        errors.subject
-                                                                                    }
-                                                                                </em>
-                                                                            ) : null}
-                                                                        </div>
+                                                    {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                                        <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate"
+                                                            onSubmit={handleSubmit}>
+                                                            <div className="proForm first-proform">
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">
+                                                                        {Resources.subject[currentLanguage]}
+                                                                    </label>
+                                                                    <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
+                                                                        <input name="subject" className="form-control fsadfsadsa" id="subject"
+                                                                            placeholder={Resources.subject[currentLanguage]}
+                                                                            autoComplete="off" value={this.state.document.subject}
+                                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                                            onChange={e => this.handleChange(e, "subject")} />
+                                                                        {touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
                                                                     </div>
+                                                                </div>
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">
+                                                                        {Resources.status[currentLanguage]}
+                                                                    </label>
+                                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                                        <input type="radio" name="letter-status"
+                                                                            defaultChecked={this.state.document.status === false ? null : "checked"}
+                                                                            value="true" onChange={e => this.handleChange(e, "status")} />
+                                                                        <label>
+                                                                            {Resources.oppened[currentLanguage]}
+                                                                        </label>
+                                                                    </div>
+                                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                                        <input type="radio" name="letter-status"
+                                                                            defaultChecked={this.state.document.status === false ? "checked" : null}
+                                                                            value="false" onChange={e => this.handleChange(e, "status")} />
+                                                                        <label>
+                                                                            {Resources.closed[currentLanguage]}
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="proForm datepickerContainer">
+                                                                <div className="linebylineInput valid-input alternativeDate">
+                                                                    <DatePicker title="docDate"
+                                                                        onChange={e => setFieldValue("docDate", e)}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.docDate}
+                                                                        touched={touched.docDate}
+                                                                        name="docDate"
+                                                                        startDate={this.state.document.docDate}
+                                                                        handleChange={e => this.handleChangeDate(e, "docDate")} />
+                                                                </div>
+
+                                                                <div className="linebylineInput  account__checkbox">
                                                                     <div className="linebylineInput valid-input">
                                                                         <label className="control-label">
-                                                                            {
-                                                                                Resources
-                                                                                    .status[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
+                                                                            {Resources.collectedStatus[currentLanguage]}
                                                                         </label>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input
-                                                                                type="radio"
-                                                                                name="letter-status"
-                                                                                defaultChecked={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .status ===
-                                                                                        false
-                                                                                        ? null
-                                                                                        : "checked"
-                                                                                }
-                                                                                value="true"
-                                                                                onChange={e =>
-                                                                                    this.handleChange(
-                                                                                        e,
-                                                                                        "status"
-                                                                                    )
-                                                                                }
-                                                                            />
+                                                                            <input type="radio" name="PR-collected"
+                                                                                defaultChecked={this.state.document.collected === false ? null : "checked"}
+                                                                                value="1" onChange={e => this.handleChange(e, "collected")} />
                                                                             <label>
-                                                                                {
-                                                                                    Resources
-                                                                                        .oppened[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
+                                                                                {Resources.yes[currentLanguage]}
                                                                             </label>
                                                                         </div>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input
-                                                                                type="radio"
-                                                                                name="letter-status"
-                                                                                defaultChecked={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .status ===
-                                                                                        false
-                                                                                        ? "checked"
-                                                                                        : null
-                                                                                }
-                                                                                value="false"
-                                                                                onChange={e =>
-                                                                                    this.handleChange(
-                                                                                        e,
-                                                                                        "status"
-                                                                                    )
-                                                                                }
-                                                                            />
+                                                                            <input type="radio" name="PR-collected"
+                                                                                defaultChecked={this.state.document.collected === false ? "checked" : null}
+                                                                                value="0" onChange={e => this.handleChange(e, "collected")} />
                                                                             <label>
-                                                                                {
-                                                                                    Resources
-                                                                                        .closed[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
+                                                                                {Resources.no[currentLanguage]}
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div className="linebylineInput valid-input">
+                                                                        <label className="control-label">
+                                                                            {Resources.useCommulative[currentLanguage]}
+                                                                        </label>
+                                                                        <div className="ui checkbox radio radioBoxBlue">
+                                                                            <input type="radio" name="PR-useCommulativeValue"
+                                                                                defaultChecked={this.state.document.useCommulativeValue === false ? null : "checked"}
+                                                                                value="true" onChange={e => this.handleChange(e, "useCommulativeValue")} />
+                                                                            <label>
+                                                                                {Resources.yes[currentLanguage]}
+                                                                            </label>
+                                                                        </div>
+                                                                        <div className="ui checkbox radio radioBoxBlue">
+                                                                            <input type="radio" name="PR-useCommulativeValue"
+                                                                                defaultChecked={this.state.document.useCommulativeValue === false ? "checked" : null}
+                                                                                value="false" onChange={e => this.handleChange(e, "useCommulativeValue")} />
+                                                                            <label>
+                                                                                {Resources.no[currentLanguage]}
                                                                             </label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="proForm datepickerContainer">
-                                                                    <div className="linebylineInput valid-input alternativeDate">
-                                                                        <DatePicker
-                                                                            title="docDate"
-                                                                            onChange={e =>
-                                                                                setFieldValue(
-                                                                                    "docDate",
-                                                                                    e
-                                                                                )
-                                                                            }
-                                                                            onBlur={
-                                                                                setFieldTouched
-                                                                            }
-                                                                            error={
-                                                                                errors.docDate
-                                                                            }
-                                                                            touched={
-                                                                                touched.docDate
-                                                                            }
-                                                                            name="docDate"
-                                                                            startDate={
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">
+                                                                        {Resources.arrange[currentLanguage]}
+                                                                    </label>
+                                                                    <div className="ui input inputDev">
+                                                                        <input type="text" className="form-control" id="arrange"
+                                                                            readOnly value={this.state.document.arrange}
+                                                                            name="arrange" placeholder={Resources.arrange[currentLanguage]}
+                                                                            onBlur={e => {
+                                                                                handleChange(e);
+                                                                                handleBlur(e);
+                                                                            }}
+                                                                            onChange={e => this.handleChange(e, "arrange")} />
+                                                                    </div>
+                                                                </div>
+
+                                                                {this.props.changeStatus === true ? (
+                                                                    <div className="proForm first-proform letterFullWidth proform__twoInput">
+                                                                        <div className="linebylineInput valid-input">
+                                                                            <label className="control-label">
+                                                                                {
+                                                                                    Resources.contractName[currentLanguage]
+                                                                                }
+                                                                            </label>
+                                                                            <div className="ui input inputDev">
+                                                                                <input
+                                                                                    type="text"
+                                                                                    className="form-control"
+                                                                                    id="contractSubject"
+                                                                                    readOnly
+                                                                                    value={
+                                                                                        this
+                                                                                            .state
+                                                                                            .document
+                                                                                            .contractName
+                                                                                    }
+                                                                                    name="contractSubject"
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                        <div className="linebylineInput valid-input">
+                                                                            <Dropdown
+                                                                                title="contractName"
+                                                                                data={
+                                                                                    this
+                                                                                        .state
+                                                                                        .contractsPos
+                                                                                }
+                                                                                selectedValue={
+                                                                                    this
+                                                                                        .state
+                                                                                        .selectContract
+                                                                                }
+                                                                                handleChange={event =>
+                                                                                    this.handleChangeDropDownContract(
+                                                                                        event,
+                                                                                        "contractId",
+                                                                                        "selectContract"
+                                                                                    )
+                                                                                }
+                                                                                index="contractId"
+                                                                                onChange={
+                                                                                    setFieldValue
+                                                                                }
+                                                                                onBlur={
+                                                                                    setFieldTouched
+                                                                                }
+                                                                                error={
+                                                                                    errors.contractId
+                                                                                }
+                                                                                touched={
+                                                                                    touched.contractId
+                                                                                }
+                                                                                isClear={
+                                                                                    false
+                                                                                }
+                                                                                name="contractId"
+                                                                            />
+                                                                        </div>
+                                                                    )}
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">
+                                                                        {
+                                                                            Resources
+                                                                                .advancePaymentPercent[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </label>
+                                                                    <div
+                                                                        className={
+                                                                            "ui input inputDev" +
+                                                                            (errors.advancePaymentPercent &&
+                                                                                touched.advancePaymentPercent
+                                                                                ? " has-error"
+                                                                                : "ui input inputDev")
+                                                                        }>
+                                                                        <input
+                                                                            type="text"
+                                                                            className="form-control"
+                                                                            value={
                                                                                 this
                                                                                     .state
                                                                                     .document
-                                                                                    .docDate
+                                                                                    .advancePaymentPercent
                                                                             }
-                                                                            handleChange={e =>
-                                                                                this.handleChangeDate(
-                                                                                    e,
-                                                                                    "docDate"
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                    </div>
-
-                                                                    <div className="linebylineInput  account__checkbox">
-                                                                        <div className="linebylineInput valid-input">
-                                                                            <label className="control-label">
-                                                                                {
-                                                                                    Resources
-                                                                                        .collectedStatus[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                            </label>
-                                                                            <div className="ui checkbox radio radioBoxBlue">
-                                                                                <input
-                                                                                    type="radio"
-                                                                                    name="PR-collected"
-                                                                                    defaultChecked={
-                                                                                        this
-                                                                                            .state
-                                                                                            .document
-                                                                                            .collected ===
-                                                                                            false
-                                                                                            ? null
-                                                                                            : "checked"
-                                                                                    }
-                                                                                    value="1"
-                                                                                    onChange={e =>
-                                                                                        this.handleChange(
-                                                                                            e,
-                                                                                            "collected"
-                                                                                        )
-                                                                                    }
-                                                                                />
-                                                                                <label>
-                                                                                    {
-                                                                                        Resources
-                                                                                            .yes[
-                                                                                        currentLanguage
-                                                                                        ]
-                                                                                    }
-                                                                                </label>
-                                                                            </div>
-                                                                            <div className="ui checkbox radio radioBoxBlue">
-                                                                                <input
-                                                                                    type="radio"
-                                                                                    name="PR-collected"
-                                                                                    defaultChecked={
-                                                                                        this
-                                                                                            .state
-                                                                                            .document
-                                                                                            .collected ===
-                                                                                            false
-                                                                                            ? "checked"
-                                                                                            : null
-                                                                                    }
-                                                                                    value="0"
-                                                                                    onChange={e =>
-                                                                                        this.handleChange(
-                                                                                            e,
-                                                                                            "collected"
-                                                                                        )
-                                                                                    }
-                                                                                />
-                                                                                <label>
-                                                                                    {
-                                                                                        Resources
-                                                                                            .no[
-                                                                                        currentLanguage
-                                                                                        ]
-                                                                                    }
-                                                                                </label>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div className="linebylineInput valid-input">
-                                                                            <label className="control-label">
-                                                                                {
-                                                                                    Resources
-                                                                                        .useCommulative[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                            </label>
-                                                                            <div className="ui checkbox radio radioBoxBlue">
-                                                                                <input
-                                                                                    type="radio"
-                                                                                    name="PR-useCommulativeValue"
-                                                                                    defaultChecked={
-                                                                                        this
-                                                                                            .state
-                                                                                            .document
-                                                                                            .useCommulativeValue ===
-                                                                                            false
-                                                                                            ? null
-                                                                                            : "checked"
-                                                                                    }
-                                                                                    value="true"
-                                                                                    onChange={e =>
-                                                                                        this.handleChange(
-                                                                                            e,
-                                                                                            "useCommulativeValue"
-                                                                                        )
-                                                                                    }
-                                                                                />
-                                                                                <label>
-                                                                                    {
-                                                                                        Resources
-                                                                                            .yes[
-                                                                                        currentLanguage
-                                                                                        ]
-                                                                                    }
-                                                                                </label>
-                                                                            </div>
-                                                                            <div className="ui checkbox radio radioBoxBlue">
-                                                                                <input
-                                                                                    type="radio"
-                                                                                    name="PR-useCommulativeValue"
-                                                                                    defaultChecked={
-                                                                                        this
-                                                                                            .state
-                                                                                            .document
-                                                                                            .useCommulativeValue ===
-                                                                                            false
-                                                                                            ? "checked"
-                                                                                            : null
-                                                                                    }
-                                                                                    value="false"
-                                                                                    onChange={e =>
-                                                                                        this.handleChange(
-                                                                                            e,
-                                                                                            "useCommulativeValue"
-                                                                                        )
-                                                                                    }
-                                                                                />
-                                                                                <label>
-                                                                                    {
-                                                                                        Resources
-                                                                                            .no[
-                                                                                        currentLanguage
-                                                                                        ]
-                                                                                    }
-                                                                                </label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">
-                                                                            {
-                                                                                Resources
-                                                                                    .arrange[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                        </label>
-
-                                                                        <div className="ui input inputDev">
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                id="arrange"
-                                                                                readOnly
-                                                                                value={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .arrange
-                                                                                }
-                                                                                name="arrange"
-                                                                                placeholder={
-                                                                                    Resources
-                                                                                        .arrange[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                                onBlur={e => {
-                                                                                    handleChange(
-                                                                                        e
-                                                                                    );
-                                                                                    handleBlur(
-                                                                                        e
-                                                                                    );
-                                                                                }}
-                                                                                onChange={e =>
-                                                                                    this.handleChange(
-                                                                                        e,
-                                                                                        "arrange"
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {this.props
-                                                                        .changeStatus ===
-                                                                        true ? (
-                                                                            <div className="proForm first-proform letterFullWidth proform__twoInput">
-                                                                                <div className="linebylineInput valid-input">
-                                                                                    <label className="control-label">
-                                                                                        {
-                                                                                            Resources
-                                                                                                .contractName[
-                                                                                            currentLanguage
-                                                                                            ]
-                                                                                        }
-                                                                                    </label>
-                                                                                    <div className="ui input inputDev">
-                                                                                        <input
-                                                                                            type="text"
-                                                                                            className="form-control"
-                                                                                            id="contractSubject"
-                                                                                            readOnly
-                                                                                            value={
-                                                                                                this
-                                                                                                    .state
-                                                                                                    .document
-                                                                                                    .contractName
-                                                                                            }
-                                                                                            name="contractSubject"
-                                                                                        />
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        ) : (
-                                                                            <div className="linebylineInput valid-input">
-                                                                                <Dropdown
-                                                                                    title="contractName"
-                                                                                    data={
-                                                                                        this
-                                                                                            .state
-                                                                                            .contractsPos
-                                                                                    }
-                                                                                    selectedValue={
-                                                                                        this
-                                                                                            .state
-                                                                                            .selectContract
-                                                                                    }
-                                                                                    handleChange={event =>
-                                                                                        this.handleChangeDropDownContract(
-                                                                                            event,
-                                                                                            "contractId",
-                                                                                            "selectContract"
-                                                                                        )
-                                                                                    }
-                                                                                    index="contractId"
-                                                                                    onChange={
-                                                                                        setFieldValue
-                                                                                    }
-                                                                                    onBlur={
-                                                                                        setFieldTouched
-                                                                                    }
-                                                                                    error={
-                                                                                        errors.contractId
-                                                                                    }
-                                                                                    touched={
-                                                                                        touched.contractId
-                                                                                    }
-                                                                                    isClear={
-                                                                                        false
-                                                                                    }
-                                                                                    name="contractId"
-                                                                                />
-                                                                            </div>
-                                                                        )}
-                                                                    <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">
-                                                                            {
+                                                                            name="advancePaymentPercent"
+                                                                            placeholder={
                                                                                 Resources
                                                                                     .advancePaymentPercent[
                                                                                 currentLanguage
                                                                                 ]
                                                                             }
-                                                                        </label>
-                                                                        <div
-                                                                            className={
-                                                                                "ui input inputDev" +
-                                                                                (errors.advancePaymentPercent &&
-                                                                                    touched.advancePaymentPercent
-                                                                                    ? " has-error"
-                                                                                    : "ui input inputDev")
-                                                                            }>
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                value={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .advancePaymentPercent
+                                                                            onBlur={e => {
+                                                                                handleChange(
+                                                                                    e
+                                                                                );
+                                                                                handleBlur(
+                                                                                    e
+                                                                                );
+                                                                            }}
+                                                                            onChange={e =>
+                                                                                this.handleChange(
+                                                                                    e,
+                                                                                    "advancePaymentPercent"
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                        {touched.advancePaymentPercent ? (
+                                                                            <em className="pError">
+                                                                                {
+                                                                                    errors.advancePaymentPercent
                                                                                 }
-                                                                                name="advancePaymentPercent"
-                                                                                placeholder={
-                                                                                    Resources
-                                                                                        .advancePaymentPercent[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                                onBlur={e => {
-                                                                                    handleChange(
-                                                                                        e
-                                                                                    );
-                                                                                    handleBlur(
-                                                                                        e
-                                                                                    );
-                                                                                }}
-                                                                                onChange={e =>
-                                                                                    this.handleChange(
-                                                                                        e,
-                                                                                        "advancePaymentPercent"
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            {touched.advancePaymentPercent ? (
-                                                                                <em className="pError">
-                                                                                    {
-                                                                                        errors.advancePaymentPercent
-                                                                                    }
-                                                                                </em>
-                                                                            ) : null}
-                                                                        </div>
+                                                                            </em>
+                                                                        ) : null}
                                                                     </div>
-                                                                    <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">
-                                                                            {
+                                                                </div>
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">
+                                                                        {
+                                                                            Resources
+                                                                                .retainagePercent[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </label>
+                                                                    <div
+                                                                        className={
+                                                                            "ui input inputDev" +
+                                                                            (errors.retainagePercent &&
+                                                                                touched.retainagePercent
+                                                                                ? " has-error"
+                                                                                : "ui input inputDev")
+                                                                        }>
+                                                                        <input
+                                                                            type="text"
+                                                                            className="form-control"
+                                                                            id="retainagePercent"
+                                                                            name="retainagePercent"
+                                                                            readOnly
+                                                                            value={
+                                                                                this
+                                                                                    .state
+                                                                                    .document
+                                                                                    .retainagePercent
+                                                                            }
+                                                                            placeholder={
                                                                                 Resources
                                                                                     .retainagePercent[
                                                                                 currentLanguage
                                                                                 ]
                                                                             }
-                                                                        </label>
-                                                                        <div
-                                                                            className={
-                                                                                "ui input inputDev" +
-                                                                                (errors.retainagePercent &&
-                                                                                    touched.retainagePercent
-                                                                                    ? " has-error"
-                                                                                    : "ui input inputDev")
-                                                                            }>
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                id="retainagePercent"
-                                                                                name="retainagePercent"
-                                                                                readOnly
-                                                                                value={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .retainagePercent
+                                                                            onBlur={e => {
+                                                                                handleChange(
+                                                                                    e
+                                                                                );
+                                                                                handleBlur(
+                                                                                    e
+                                                                                );
+                                                                            }}
+                                                                            onChange={e =>
+                                                                                this.handleChange(
+                                                                                    e,
+                                                                                    "retainagePercent"
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                        {touched.retainagePercent ? (
+                                                                            <em className="pError">
+                                                                                {
+                                                                                    errors.retainagePercent
                                                                                 }
-                                                                                placeholder={
-                                                                                    Resources
-                                                                                        .retainagePercent[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                                onBlur={e => {
-                                                                                    handleChange(
-                                                                                        e
-                                                                                    );
-                                                                                    handleBlur(
-                                                                                        e
-                                                                                    );
-                                                                                }}
-                                                                                onChange={e =>
-                                                                                    this.handleChange(
-                                                                                        e,
-                                                                                        "retainagePercent"
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            {touched.retainagePercent ? (
-                                                                                <em className="pError">
-                                                                                    {
-                                                                                        errors.retainagePercent
-                                                                                    }
-                                                                                </em>
-                                                                            ) : null}
-                                                                        </div>
+                                                                            </em>
+                                                                        ) : null}
                                                                     </div>
+                                                                </div>
 
-                                                                    <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">
-                                                                            {
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">
+                                                                        {
+                                                                            Resources
+                                                                                .tax[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </label>
+                                                                    <div
+                                                                        className={
+                                                                            "ui input inputDev" +
+                                                                            (errors.tax &&
+                                                                                touched.tax
+                                                                                ? " has-error"
+                                                                                : "ui input inputDev")
+                                                                        }>
+                                                                        <input
+                                                                            type="text"
+                                                                            className="form-control"
+                                                                            id="tax"
+                                                                            name="tax"
+                                                                            readOnly
+                                                                            value={
+                                                                                this
+                                                                                    .state
+                                                                                    .document
+                                                                                    .tax
+                                                                            }
+                                                                            placeholder={
                                                                                 Resources
                                                                                     .tax[
                                                                                 currentLanguage
                                                                                 ]
                                                                             }
-                                                                        </label>
-                                                                        <div
-                                                                            className={
-                                                                                "ui input inputDev" +
-                                                                                (errors.tax &&
-                                                                                    touched.tax
-                                                                                    ? " has-error"
-                                                                                    : "ui input inputDev")
-                                                                            }>
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                id="tax"
-                                                                                name="tax"
-                                                                                readOnly
-                                                                                value={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .tax
+                                                                            onBlur={e => {
+                                                                                handleChange(
+                                                                                    e
+                                                                                );
+                                                                                handleBlur(
+                                                                                    e
+                                                                                );
+                                                                            }}
+                                                                            onChange={e =>
+                                                                                this.handleChange(
+                                                                                    e,
+                                                                                    "tax"
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                        {touched.tax ? (
+                                                                            <em className="pError">
+                                                                                {
+                                                                                    errors.tax
                                                                                 }
-                                                                                placeholder={
-                                                                                    Resources
-                                                                                        .tax[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                                onBlur={e => {
-                                                                                    handleChange(
-                                                                                        e
-                                                                                    );
-                                                                                    handleBlur(
-                                                                                        e
-                                                                                    );
-                                                                                }}
-                                                                                onChange={e =>
-                                                                                    this.handleChange(
-                                                                                        e,
-                                                                                        "tax"
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            {touched.tax ? (
-                                                                                <em className="pError">
-                                                                                    {
-                                                                                        errors.tax
-                                                                                    }
-                                                                                </em>
-                                                                            ) : null}
-                                                                        </div>
+                                                                            </em>
+                                                                        ) : null}
                                                                     </div>
+                                                                </div>
 
-                                                                    <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">
-                                                                            {
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">
+                                                                        {
+                                                                            Resources
+                                                                                .vat[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </label>
+                                                                    <div
+                                                                        className={
+                                                                            "ui input inputDev" +
+                                                                            (errors.vat &&
+                                                                                touched.vat
+                                                                                ? " has-error"
+                                                                                : "ui input inputDev")
+                                                                        }>
+                                                                        <input
+                                                                            type="text"
+                                                                            className="form-control"
+                                                                            id="vat"
+                                                                            name="vat"
+                                                                            readOnly
+                                                                            value={
+                                                                                this
+                                                                                    .state
+                                                                                    .document
+                                                                                    .vat
+                                                                            }
+                                                                            placeholder={
                                                                                 Resources
                                                                                     .vat[
                                                                                 currentLanguage
                                                                                 ]
                                                                             }
-                                                                        </label>
-                                                                        <div
-                                                                            className={
-                                                                                "ui input inputDev" +
-                                                                                (errors.vat &&
-                                                                                    touched.vat
-                                                                                    ? " has-error"
-                                                                                    : "ui input inputDev")
-                                                                            }>
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                id="vat"
-                                                                                name="vat"
-                                                                                readOnly
-                                                                                value={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .vat
+                                                                            onBlur={e => {
+                                                                                handleChange(
+                                                                                    e
+                                                                                );
+                                                                                handleBlur(
+                                                                                    e
+                                                                                );
+                                                                            }}
+                                                                            onChange={e =>
+                                                                                this.handleChange(
+                                                                                    e,
+                                                                                    "vat"
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                        {touched.vat ? (
+                                                                            <em className="pError">
+                                                                                {
+                                                                                    errors.vat
                                                                                 }
-                                                                                placeholder={
-                                                                                    Resources
-                                                                                        .vat[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                                onBlur={e => {
-                                                                                    handleChange(
-                                                                                        e
-                                                                                    );
-                                                                                    handleBlur(
-                                                                                        e
-                                                                                    );
-                                                                                }}
-                                                                                onChange={e =>
-                                                                                    this.handleChange(
-                                                                                        e,
-                                                                                        "vat"
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            {touched.vat ? (
-                                                                                <em className="pError">
-                                                                                    {
-                                                                                        errors.vat
-                                                                                    }
-                                                                                </em>
-                                                                            ) : null}
-                                                                        </div>
+                                                                            </em>
+                                                                        ) : null}
                                                                     </div>
+                                                                </div>
 
-                                                                    <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">
-                                                                            {
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">
+                                                                        {
+                                                                            Resources
+                                                                                .insurance[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </label>
+                                                                    <div
+                                                                        className={
+                                                                            "ui input inputDev" +
+                                                                            (errors.insurance &&
+                                                                                touched.insurance
+                                                                                ? " has-error"
+                                                                                : "ui input inputDev")
+                                                                        }>
+                                                                        <input
+                                                                            type="text"
+                                                                            className="form-control"
+                                                                            id="insurance"
+                                                                            name="insurance"
+                                                                            value={
+                                                                                this
+                                                                                    .state
+                                                                                    .document
+                                                                                    .insurance
+                                                                            }
+                                                                            placeholder={
                                                                                 Resources
                                                                                     .insurance[
                                                                                 currentLanguage
                                                                                 ]
                                                                             }
-                                                                        </label>
-                                                                        <div
-                                                                            className={
-                                                                                "ui input inputDev" +
-                                                                                (errors.insurance &&
-                                                                                    touched.insurance
-                                                                                    ? " has-error"
-                                                                                    : "ui input inputDev")
-                                                                            }>
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                id="insurance"
-                                                                                name="insurance"
-                                                                                value={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .insurance
+                                                                            onBlur={e => {
+                                                                                handleChange(
+                                                                                    e
+                                                                                );
+                                                                                handleBlur(
+                                                                                    e
+                                                                                );
+                                                                            }}
+                                                                            onChange={e =>
+                                                                                this.handleChange(
+                                                                                    e,
+                                                                                    "insurance"
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                        {touched.insurance ? (
+                                                                            <em className="pError">
+                                                                                {
+                                                                                    errors.insurance
                                                                                 }
-                                                                                placeholder={
-                                                                                    Resources
-                                                                                        .insurance[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                                onBlur={e => {
-                                                                                    handleChange(
-                                                                                        e
-                                                                                    );
-                                                                                    handleBlur(
-                                                                                        e
-                                                                                    );
-                                                                                }}
-                                                                                onChange={e =>
-                                                                                    this.handleChange(
-                                                                                        e,
-                                                                                        "insurance"
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            {touched.insurance ? (
-                                                                                <em className="pError">
-                                                                                    {
-                                                                                        errors.insurance
-                                                                                    }
-                                                                                </em>
-                                                                            ) : null}
-                                                                        </div>
+                                                                            </em>
+                                                                        ) : null}
                                                                     </div>
+                                                                </div>
 
-                                                                    <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">
-                                                                            {
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">
+                                                                        {
+                                                                            Resources
+                                                                                .actualPayment[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </label>
+                                                                    <div
+                                                                        className={
+                                                                            "ui input inputDev" +
+                                                                            (errors.actualPayment &&
+                                                                                touched.actualPayment
+                                                                                ? " has-error"
+                                                                                : "ui input inputDev")
+                                                                        }>
+                                                                        <input
+                                                                            type="text"
+                                                                            className="form-control"
+                                                                            id="actualPayment"
+                                                                            name="actualPayment"
+                                                                            value={
+                                                                                this
+                                                                                    .state
+                                                                                    .document
+                                                                                    .actualPayment
+                                                                            }
+                                                                            placeholder={
                                                                                 Resources
                                                                                     .actualPayment[
                                                                                 currentLanguage
                                                                                 ]
                                                                             }
-                                                                        </label>
-                                                                        <div
-                                                                            className={
-                                                                                "ui input inputDev" +
-                                                                                (errors.actualPayment &&
-                                                                                    touched.actualPayment
-                                                                                    ? " has-error"
-                                                                                    : "ui input inputDev")
-                                                                            }>
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                id="actualPayment"
-                                                                                name="actualPayment"
-                                                                                value={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .actualPayment
+                                                                            onBlur={e => {
+                                                                                handleChange(
+                                                                                    e
+                                                                                );
+                                                                                handleBlur(
+                                                                                    e
+                                                                                );
+                                                                            }}
+                                                                            onChange={e =>
+                                                                                this.handleChange(
+                                                                                    e,
+                                                                                    "actualPayment"
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                        {touched.actualPayment ? (
+                                                                            <em className="pError">
+                                                                                {
+                                                                                    errors.actualPayment
                                                                                 }
-                                                                                placeholder={
-                                                                                    Resources
-                                                                                        .actualPayment[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                                onBlur={e => {
-                                                                                    handleChange(
-                                                                                        e
-                                                                                    );
-                                                                                    handleBlur(
-                                                                                        e
-                                                                                    );
-                                                                                }}
-                                                                                onChange={e =>
-                                                                                    this.handleChange(
-                                                                                        e,
-                                                                                        "actualPayment"
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                            {touched.actualPayment ? (
-                                                                                <em className="pError">
-                                                                                    {
-                                                                                        errors.actualPayment
-                                                                                    }
-                                                                                </em>
-                                                                            ) : null}
-                                                                        </div>
+                                                                            </em>
+                                                                        ) : null}
                                                                     </div>
-                                                                    <div className="linebylineInput valid-input">
-                                                                        <label className="control-label">
-                                                                            {
+                                                                </div>
+                                                                <div className="linebylineInput valid-input">
+                                                                    <label className="control-label">
+                                                                        {
+                                                                            Resources
+                                                                                .remainingPayment[
+                                                                            currentLanguage
+                                                                            ]
+                                                                        }
+                                                                    </label>
+                                                                    <div className="ui input inputDev">
+                                                                        <input
+                                                                            type="text"
+                                                                            className="form-control"
+                                                                            name="remainingPayment"
+                                                                            value={
+                                                                                this
+                                                                                    .state
+                                                                                    .document
+                                                                                    .remainingPayment
+                                                                            }
+                                                                            placeholder={
                                                                                 Resources
                                                                                     .remainingPayment[
                                                                                 currentLanguage
                                                                                 ]
                                                                             }
-                                                                        </label>
-                                                                        <div className="ui input inputDev">
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                name="remainingPayment"
-                                                                                value={
-                                                                                    this
-                                                                                        .state
-                                                                                        .document
-                                                                                        .remainingPayment
-                                                                                }
-                                                                                placeholder={
-                                                                                    Resources
-                                                                                        .remainingPayment[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                                onChange={e =>
-                                                                                    this.handleChange(
-                                                                                        e,
-                                                                                        "remainingPayment"
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                        </div>
+                                                                            onChange={e =>
+                                                                                this.handleChange(
+                                                                                    e,
+                                                                                    "remainingPayment"
+                                                                                )
+                                                                            }
+                                                                        />
                                                                     </div>
                                                                 </div>
-                                                                <div className="slider-Btns slider-Btns--menu">
-                                                                    {this.state
-                                                                        .isLoading ===
-                                                                        false ? (
-                                                                            this.showBtnsSaving()
-                                                                        ) : (
-                                                                            <button
-                                                                                className="primaryBtn-1 btn  disabled"
-                                                                                disabled="disabled">
-                                                                                <div className="spinner">
-                                                                                    <div className="bounce1" />
-                                                                                    <div className="bounce2" />
-                                                                                    <div className="bounce3" />
-                                                                                </div>
-                                                                            </button>
-                                                                        )}
+                                                            </div>
+                                                            <div className="slider-Btns slider-Btns--menu">
+                                                                {this.state
+                                                                    .isLoading ===
+                                                                    false ? (
+                                                                        this.showBtnsSaving()
+                                                                    ) : (
+                                                                        <button
+                                                                            className="primaryBtn-1 btn  disabled"
+                                                                            disabled="disabled">
+                                                                            <div className="spinner">
+                                                                                <div className="bounce1" />
+                                                                                <div className="bounce2" />
+                                                                                <div className="bounce3" />
+                                                                            </div>
+                                                                        </button>
+                                                                    )}
 
-                                                                    {this.props
-                                                                        .changeStatus ===
-                                                                        true ? (
-                                                                            this.state
-                                                                                .userType !=
-                                                                                "user" ? (
-                                                                                    <div
-                                                                                        className="default__dropdown"
-                                                                                        style={{
-                                                                                            minWidth:
-                                                                                                "225px"
-                                                                                        }}>
-                                                                                        <Dropdown
-                                                                                            data={
-                                                                                                this
-                                                                                                    .state
-                                                                                                    .fillDropDown
-                                                                                            }
-                                                                                            selectedValue={
-                                                                                                this
-                                                                                                    .state
-                                                                                                    .selectedDropDown
-                                                                                            }
-                                                                                            handleChange={event => {
-                                                                                                this.handleDropAction(
-                                                                                                    event
-                                                                                                );
-                                                                                            }}
-                                                                                            onChange={
-                                                                                                setFieldValue
-                                                                                            }
-                                                                                            name="actions"
-                                                                                            index="actions"
-                                                                                        />
-                                                                                    </div>
-                                                                                ) : null
-                                                                        ) : null}
-                                                                </div>
-                                                            </Form>
-                                                        )}
+                                                                {this.props.changeStatus === true ? (this.state.userType != "user" ? (
+                                                                    <div className="default__dropdown" style={{ minWidth: "225px" }}>
+                                                                        <Dropdown data={this.state.fillDropDown}
+                                                                            selectedValue={this.state.selectedDropDown}
+                                                                            handleChange={event => { this.handleDropAction(event); }}
+                                                                            onChange={setFieldValue}
+                                                                            name="actions"
+                                                                            index="actions"
+                                                                        />
+                                                                    </div>
+                                                                ) : null
+                                                                ) : null}
+                                                            </div>
+                                                        </Form>
+                                                    )}
                                                 </Formik>
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
@@ -3679,22 +2986,13 @@ class requestPaymentsAddEdit extends Component {
                                             <div className="doc-pre-cycle">
                                                 <header>
                                                     <h2 className="zero">
-                                                        {
-                                                            Resources[
-                                                            "actualPayment"
-                                                            ][currentLanguage]
-                                                        }
+                                                        {Resources["actualPayment"][currentLanguage]}
                                                     </h2>
                                                 </header>
                                                 <div className="inpuBtn proForm">
                                                     <div className="linebylineInput valid-input ">
                                                         <label className="control-label">
-                                                            {
-                                                                Resources
-                                                                    .actualPayment[
-                                                                currentLanguage
-                                                                ]
-                                                            }
+                                                            {Resources.actualPayment[currentLanguage]}
                                                         </label>
                                                         <div className="ui input inputDev">
                                                             <input
@@ -3765,50 +3063,24 @@ class requestPaymentsAddEdit extends Component {
                                                     </button>
                                                 ) : (
                                                         <div className="slider-Btns ">
-                                                            <button
-                                                                className="primaryBtn-1 btn meduimBtn"
-                                                                onClick={
-                                                                    this
-                                                                        .updatePayemtWithVariationOrderByAdmin
-                                                                }>
-                                                                {
-                                                                    Resources[
-                                                                    "recalculateWithVariation"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
-                                                            </button>
+                                                            {this.state.isViewMode !== true ? <button className="primaryBtn-1 btn meduimBtn" onClick={this.updatePayemtWithVariationOrderByAdmin}>
+                                                                {Resources["recalculateWithVariation"][currentLanguage]}
+                                                            </button> : null}
                                                         </div>
                                                     )}
                                             </div>
-                                        ) : (
-                                                ""
-                                            )}
+                                        ) : ("")}
                                         <div className="doc-pre-cycle">
                                             {this.state.editRows.length > 0 ? (
                                                 <div className="doc-pre-cycle">
                                                     <div className="slider-Btns editableRows">
                                                         <span>
                                                             No.Update Rows.
-                                                            {
-                                                                this.state
-                                                                    .editRows
-                                                                    .length
-                                                            }
+                                                            {this.state.editRows.length}
                                                         </span>
-                                                        <button
-                                                            className="primaryBtn-1 btn meduimBtn"
-                                                            onClick={
-                                                                this
-                                                                    .editRowsClick
-                                                            }>
+                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>
                                                             {
-                                                                Resources[
-                                                                "edit"
-                                                                ][
-                                                                currentLanguage
-                                                                ]
+                                                                Resources["edit"][currentLanguage]
                                                             }
                                                         </button>
                                                     </div>
@@ -3817,19 +3089,10 @@ class requestPaymentsAddEdit extends Component {
                                             <div className="submittalFilter">
                                                 <div className="subFilter">
                                                     <h3 className="zero">
-                                                        {" "}
-                                                        {
-                                                            Resources[
-                                                            "AddedItems"
-                                                            ][currentLanguage]
-                                                        }
+                                                        {Resources["AddedItems"][currentLanguage]}
                                                     </h3>
                                                     <span>
-                                                        {
-                                                            this.state
-                                                                .paymentsItems
-                                                                .length
-                                                        }
+                                                        {this.state.paymentsItems.length}
                                                     </span>
                                                 </div>
                                                 <div className="filterBTNS">
@@ -3915,11 +3178,7 @@ class requestPaymentsAddEdit extends Component {
                                         <div className="doc-pre-cycle">
                                             <header>
                                                 <h2 className="zero">
-                                                    {
-                                                        Resources[
-                                                        "interimPaymentCertificate"
-                                                        ][currentLanguage]
-                                                    }
+                                                    {Resources["interimPaymentCertificate"][currentLanguage]}
                                                 </h2>
                                             </header>
                                             <table
@@ -3996,198 +3255,82 @@ class requestPaymentsAddEdit extends Component {
                                     <div className="subiTabsContent feilds__top">
                                         <header>
                                             <h2 className="zero">
-                                                {
-                                                    Resources["deductions"][
-                                                    currentLanguage
-                                                    ]
-                                                }
+                                                {Resources["deductions"][currentLanguage]}
                                             </h2>
                                         </header>
                                         <div className="document-fields">
-                                            <Formik
-                                                initialValues={{
-                                                    ...this.state
-                                                        .documentDeduction
-                                                }}
-                                                validationSchema={
-                                                    validationDeductionSchema
-                                                }
+                                            <Formik initialValues={{ ...this.state.documentDeduction }}
+                                                validationSchema={validationDeductionSchema}
                                                 enableReinitialize={true}
-                                                onSubmit={values => {
-                                                    this.addDeduction();
-                                                }}>
-                                                {({
-                                                    errors,
-                                                    touched,
-                                                    handleBlur,
-                                                    handleChange,
-                                                    handleSubmit,
-                                                    setFieldValue,
-                                                    setFieldTouched
-                                                }) => (
-                                                        <Form
-                                                            id="deductionForm"
-                                                            className="customProform"
-                                                            noValidate="novalidate"
-                                                            onSubmit={handleSubmit}>
-                                                            <div className="proForm datepickerContainer">
-                                                                <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .description[
-                                                                            currentLanguage
-                                                                            ]
+                                                onSubmit={values => { this.addDeduction(); }}>
+                                                {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                                    <Form id="deductionForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                                                        <div className="proForm datepickerContainer">
+                                                            <div className="linebylineInput valid-input">
+                                                                <label className="control-label">
+                                                                    {Resources.description[currentLanguage]}
+                                                                </label>
+                                                                <div className="ui input inputDev">
+                                                                    <input type="text" className="form-control" id="title" name="title"
+                                                                        value={this.state.documentDeduction.title}
+                                                                        placeholder={Resources.description[currentLanguage]}
+                                                                        onBlur={e => {
+                                                                            handleChange(e);
+                                                                            handleBlur(e);
+                                                                        }}
+                                                                        onChange={e =>
+                                                                            this.handleChangeItem(e, "title")
                                                                         }
-                                                                    </label>
-                                                                    <div className="ui input inputDev">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="title"
-                                                                            name="title"
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .documentDeduction
-                                                                                    .title
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .description[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChangeItem(
-                                                                                    e,
-                                                                                    "title"
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                        {touched.title ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.title
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
-                                                                    </div>
-                                                                </div>
-                                                                <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .deductions[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
-                                                                    </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.deductionValue &&
-                                                                                touched.deductionValue
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="deductionValue"
-                                                                            name="deductionValue"
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .documentDeduction
-                                                                                    .deductionValue
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .deductions[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChangeItem(
-                                                                                    e,
-                                                                                    "deductionValue"
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                        {touched.deductionValue ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.deductionValue
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
-                                                                    </div>
+                                                                    />
+                                                                    {touched.title ? (<em className="pError"> {errors.title} </em>) : null}
                                                                 </div>
                                                             </div>
-                                                            <div className="slider-Btns">
-                                                                {this.state
-                                                                    .isLoading ===
-                                                                    false ? (
-                                                                        this.state
-                                                                            .userType !=
-                                                                            "user" ? (
-                                                                                <button className="primaryBtn-1 btn meduimBtn">
-                                                                                    {
-                                                                                        Resources[
-                                                                                        "save"
-                                                                                        ][
-                                                                                        currentLanguage
-                                                                                        ]
-                                                                                    }
-                                                                                </button>
-                                                                            ) : null
-                                                                    ) : (
-                                                                        <button
-                                                                            className="primaryBtn-1 btn  disabled"
-                                                                            disabled="disabled">
-                                                                            <div className="spinner">
-                                                                                <div className="bounce1" />
-                                                                                <div className="bounce2" />
-                                                                                <div className="bounce3" />
-                                                                            </div>
-                                                                        </button>
-                                                                    )}
+                                                            <div className="linebylineInput valid-input">
+                                                                <label className="control-label">
+                                                                    {Resources.deductions[currentLanguage]}
+                                                                </label>
+                                                                <div className={"ui input inputDev" + (errors.deductionValue && touched.deductionValue ? " has-error" : "ui input inputDev")}>
+                                                                    <input type="text" className="form-control" id="deductionValue" name="deductionValue"
+                                                                        value={this.state.documentDeduction.deductionValue}
+                                                                        placeholder={Resources.deductions[currentLanguage]}
+                                                                        onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                        onChange={e => this.handleChangeItem(e, "deductionValue")} />
+                                                                    {touched.deductionValue ? (<em className="pError"> {errors.deductionValue} </em>) : null}
+                                                                </div>
                                                             </div>
-                                                        </Form>
-                                                    )}
+                                                        </div>
+                                                        <div className="slider-Btns">
+                                                            {this.state.isLoading === false ? (this.state.userType != "user" ? (
+
+                                                                (this.state.isViewMode !== true || this.state.addDeducation ?
+                                                                    <button className="primaryBtn-1 btn meduimBtn">
+                                                                        {Resources["save"][currentLanguage]}
+                                                                    </button> : null)
+
+                                                            ) : null
+                                                            ) : (
+                                                                    <button
+                                                                        className="primaryBtn-1 btn  disabled"
+                                                                        disabled="disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button>
+                                                                )}
+                                                        </div>
+                                                    </Form>
+                                                )}
                                             </Formik>
                                         </div>
 
                                         <div className="doc-pre-cycle">
                                             <ReactTable
-                                                data={
-                                                    this.state
-                                                        .deductionObservableArray
-                                                }
+                                                data={ this.state.deductionObservableArray }
                                                 columns={columns}
                                                 defaultPageSize={5}
-                                                noDataText={
-                                                    Resources["noData"][
-                                                    currentLanguage
-                                                    ]
-                                                }
+                                                noDataText={ Resources["noData"][ currentLanguage ] }
                                                 className="-striped -highlight"
                                             />
                                             <div className="slider-Btns">
