@@ -145,14 +145,37 @@ class AutoDeskViewer extends Component {
         }, duration);
     }
 
-    showAllToggle = () => {
+    showAllToggle = (e) => {
 
-        this.setState({
-            showCheckBox: !this.state.showCheckBox,
-            showAll: !this.state.showAll,
-            isViewEdit: !this.state.isViewEdit,
-            viewEditMarkUps: !this.state.viewEditMarkUps,
-        });
+        if (e.target.checked === true) {
+            let markupCore = this.state.markupCore;
+            if (markupCore) {
+                markupCore.leaveEditMode();
+                markupCore.hide();
+            }
+            this.setState({
+                showCheckBox: false,
+                showAll: false,
+                isViewEdit: false,
+                viewEditMarkUps: false,
+                markupCore
+            });
+        } else {
+            this.setState({
+                showCheckBox: true,
+                showAll: true,
+                isViewEdit: false,
+                viewEditMarkUps: false
+            });
+        }
+
+
+        // this.setState({
+        //     showCheckBox: !this.state.showCheckBox,
+        //     showAll: !this.state.showAll,
+        //     isViewEdit: !this.state.isViewEdit,
+        //     viewEditMarkUps: !this.state.viewEditMarkUps,
+        // });
 
         // if (this.state.showAll == true) {
         //     this.setState({ showAll: false, viewEditMarkUps: true });
@@ -450,14 +473,16 @@ class AutoDeskViewer extends Component {
                                     index="mode"
                                 />
                             </div>
-                            <div id="markupBox" className={"ui checkbox checkBoxGray300 " + (this.state.showAll == true ? "checked" : "")} onClick={this.showAllToggle}>
-                                <input name="CheckBox" type="checkbox" id="allPermissionInput"
-                                    checked={this.state.showAll == true ? "checked" : ""} />
-                                <label>Show</label>
-                            </div>
+
                             <div className="autoDisk__dropdown--comp">
                                 <Dropdown title="markups" data={this.state.markupsList} selectedValue={this.state.selectedMarkup}
                                     handleChange={event => this.changeMarkup(event.value)} index="markups" />
+                            </div>
+
+                            <div style={{ marginLeft: '10px' }} className={"ui checkbox checkBoxGray300 " + (this.state.showAll == true ? "checked" : "")} onClick={this.showAllToggle}>
+                                <input name="CheckBox" type="checkbox" id="allPermissionInput"
+                                    checked={this.state.showAll == true ? "checked" : ""} />
+                                <label>Show</label>
                             </div>
                         </div>
                         {this.state.isViewEdit == true ? (
