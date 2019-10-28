@@ -929,7 +929,7 @@ class QsAddEdit extends Component {
                       <Fragment>
                         <div className="document-fields">
                           <AddItemDescription docLink="/Downloads/Excel/QS.xlsx" showImportExcel={true} docType="qs"
-                            isViewMode={this.state.isViewMode} mainColumn="qsId" addItemApi="AddContractsQsItems"
+                            isViewMode={this.state.isViewMode} mainColumn="qsId" docId={this.state.docId} isUnitPrice={false} addItemApi="AddContractsQsItems"
                             projectId={this.state.projectId} showItemType={true} />
                         </div>
 
