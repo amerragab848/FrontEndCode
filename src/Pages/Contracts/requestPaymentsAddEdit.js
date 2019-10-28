@@ -962,6 +962,9 @@ class requestPaymentsAddEdit extends Component {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }
         }).catch(res => {
+            this.setState({
+                isLoading: false
+            });
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
@@ -1694,6 +1697,7 @@ class requestPaymentsAddEdit extends Component {
 
             exportFile = (
                 <Export isExportRequestPayment={true} type={1}
+                    key={"Export-1"}
                     rows={this.state.isLoading === false ? this.state.paymentsItems : []}
                     columns={ExportColumns}
                     fileName={"Request Payments Items"} />
@@ -1703,6 +1707,7 @@ class requestPaymentsAddEdit extends Component {
 
             exportFile = (
                 <Export isExportRequestPayment={true}
+                    key={"Export-2"}
                     rows={this.state.isLoading === false ? this.state.paymentsItems : []}
                     columns={VOItemsColumns}
                     fileName={"Request Payments Items"}
@@ -1947,7 +1952,10 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
+
+
     render() {
+
         let columns = [];
 
         if (this.state.userType !== "user") {
@@ -1995,6 +2003,16 @@ class requestPaymentsAddEdit extends Component {
                 }
             );
         }
+
+        const btnExport = this.state.isLoading === false ?
+            (
+                <Export
+                    key={"Export-3"}
+                    rows={this.state.isLoading === false ? this.state.deductionObservableArray : []}
+                    columns={columns}
+                    fileName={Resources["informationDeductions"][currentLanguage]}
+                />
+            ) : null;
 
         let columnsTrees = [
             {
@@ -2332,7 +2350,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
                                                                         <input name="subject" className="form-control fsadfsadsa" id="subject"
                                                                             placeholder={Resources.subject[currentLanguage]}
-                                                                            autoComplete="off" value={this.state.document.subject}
+                                                                            autoComplete="off" value={this.state.document.subject || ''}
                                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                                             onChange={e => this.handleChange(e, "subject")} />
                                                                         {touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
@@ -2425,7 +2443,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     </label>
                                                                     <div className="ui input inputDev">
                                                                         <input type="text" className="form-control" id="arrange"
-                                                                            readOnly value={this.state.document.arrange}
+                                                                            readOnly value={this.state.document.arrange || 1}
                                                                             name="arrange" placeholder={Resources.arrange[currentLanguage]}
                                                                             onBlur={e => {
                                                                                 handleChange(e);
@@ -2510,52 +2528,14 @@ class requestPaymentsAddEdit extends Component {
                                                                             ]
                                                                         }
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.advancePaymentPercent &&
-                                                                                touched.advancePaymentPercent
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .advancePaymentPercent
-                                                                            }
+                                                                    <div className={"ui input inputDev" + (errors.advancePaymentPercent && touched.advancePaymentPercent ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control"
+                                                                            value={this.state.document.advancePaymentPercent || ''}
                                                                             name="advancePaymentPercent"
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .advancePaymentPercent[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "advancePaymentPercent"
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                        {touched.advancePaymentPercent ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.advancePaymentPercent
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                            placeholder={Resources.advancePaymentPercent[currentLanguage]}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                            onChange={e => this.handleChange(e, "advancePaymentPercent")} />
+                                                                        {touched.advancePaymentPercent ? (<em className="pError"> {errors.advancePaymentPercent} </em>) : null}
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
@@ -2581,18 +2561,8 @@ class requestPaymentsAddEdit extends Component {
                                                                             id="retainagePercent"
                                                                             name="retainagePercent"
                                                                             readOnly
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .retainagePercent
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .retainagePercent[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
+                                                                            value={this.state.document.retainagePercent || ''}
+                                                                            placeholder={Resources.retainagePercent[currentLanguage]}
                                                                             onBlur={e => {
                                                                                 handleChange(
                                                                                     e
@@ -2635,46 +2605,13 @@ class requestPaymentsAddEdit extends Component {
                                                                                 ? " has-error"
                                                                                 : "ui input inputDev")
                                                                         }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="tax"
-                                                                            name="tax"
-                                                                            readOnly
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .tax
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .tax[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "tax"
-                                                                                )
-                                                                            }
+                                                                        <input type="text" className="form-control" id="tax" name="tax"
+                                                                            readOnly value={this.state.document.tax || ''}
+                                                                            placeholder={Resources.tax[currentLanguage]}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                            onChange={e => this.handleChange(e, "tax")}
                                                                         />
-                                                                        {touched.tax ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.tax
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                        {touched.tax ? (<em className="pError"> {errors.tax} </em>) : null}
                                                                     </div>
                                                                 </div>
 
@@ -2695,46 +2632,13 @@ class requestPaymentsAddEdit extends Component {
                                                                                 ? " has-error"
                                                                                 : "ui input inputDev")
                                                                         }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="vat"
-                                                                            name="vat"
+                                                                        <input type="text" className="form-control" id="vat" name="vat"
                                                                             readOnly
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .vat
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .vat[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "vat"
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                        {touched.vat ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.vat
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                            value={this.state.document.vat || ''}
+                                                                            placeholder={Resources.vat[currentLanguage]}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                            onChange={e => this.handleChange(e, "vat")} />
+                                                                        {touched.vat ? (<em className="pError"> {errors.vat} </em>) : null}
                                                                     </div>
                                                                 </div>
 
@@ -2755,31 +2659,10 @@ class requestPaymentsAddEdit extends Component {
                                                                                 ? " has-error"
                                                                                 : "ui input inputDev")
                                                                         }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="insurance"
-                                                                            name="insurance"
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .insurance
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .insurance[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
+                                                                        <input type="text" className="form-control" id="insurance" name="insurance"
+                                                                            value={this.state.document.insurance || ''}
+                                                                            placeholder={Resources.insurance[currentLanguage]}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
                                                                             onChange={e =>
                                                                                 this.handleChange(
                                                                                     e,
@@ -3102,66 +2985,24 @@ class requestPaymentsAddEdit extends Component {
                                                             marginBottom: "0"
                                                         }}>
                                                         <div className="default__dropdown">
-                                                            <Dropdown
-                                                                data={
-                                                                    this.state
-                                                                        .fillDropDownExport
-                                                                }
-                                                                selectedValue={
-                                                                    this.state
-                                                                        .selectedDropDownExport
-                                                                }
-                                                                handleChange={event =>
-                                                                    this.handleDropActionForExportFile(
-                                                                        event
-                                                                    )
-                                                                }
+                                                            <Dropdown data={this.state.fillDropDownExport}
+                                                                selectedValue={this.state.selectedDropDownExport}
+                                                                handleChange={event => this.handleDropActionForExportFile(event)}
                                                                 index="contractId"
                                                                 name="contractId"
                                                                 styles={actionPanel}
                                                             />
-                                                            <div
-                                                                style={{
-                                                                    display:
-                                                                        "none"
-                                                                }}>
-                                                                {
-                                                                    this.state
-                                                                        .exportFile
-                                                                }
+                                                            <div style={{ display: "none" }}>
+                                                                {this.state.exportFile}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="rowsPaginations">
-                                                    <button
-                                                        className={
-                                                            this.state
-                                                                .pageNumber == 0
-                                                                ? "rowunActive"
-                                                                : ""
-                                                        }
-                                                        onClick={() =>
-                                                            this.GetPrevoiusData()
-                                                        }>
+                                                    <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                                         <i className="angle left icon" />
                                                     </button>
-                                                    <button
-                                                        className={
-                                                            this.state
-                                                                .totalRows !==
-                                                                this.state
-                                                                    .pageSize *
-                                                                this.state
-                                                                    .pageNumber +
-                                                                this.state
-                                                                    .pageSize
-                                                                ? "rowunActive"
-                                                                : ""
-                                                        }
-                                                        onClick={() =>
-                                                            this.GetNextData()
-                                                        }>
+                                                    <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
                                                         <i className="angle right icon" />
                                                     </button>
                                                 </div>
@@ -3319,18 +3160,18 @@ class requestPaymentsAddEdit extends Component {
                                                                         </div>
                                                                     </button>
                                                                 )}
+                                                            {btnExport}
                                                         </div>
                                                     </Form>
                                                 )}
                                             </Formik>
                                         </div>
-
                                         <div className="doc-pre-cycle">
                                             <ReactTable
-                                                data={ this.state.deductionObservableArray }
+                                                data={this.state.deductionObservableArray}
                                                 columns={columns}
                                                 defaultPageSize={5}
-                                                noDataText={ Resources["noData"][ currentLanguage ] }
+                                                noDataText={Resources["noData"][currentLanguage]}
                                                 className="-striped -highlight"
                                             />
                                             <div className="slider-Btns">
@@ -3789,7 +3630,7 @@ class requestPaymentsAddEdit extends Component {
                                 </label>
                                 <div className="ui input inputDev">
                                     <input type="text" className="form-control" name="advancedPayment"
-                                        value={this.state.advancedPayment}
+                                        value={this.state.advancedPayment || ''}
                                         placeholder={Resources.advancedPayment[currentLanguage]}
                                         onChange={event => this.setState({ advancedPayment: event.target.value })}
                                     />
