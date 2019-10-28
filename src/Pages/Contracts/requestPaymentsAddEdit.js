@@ -111,11 +111,32 @@ let itemsColumns = [];
 let VOItemsColumns = [];
 const isCompany = Config.getPayload().uty == "company" ? true : false;
 var steps_defination = [];
+
+const columnOfInterimPayment = [{
+    name: Resources["workDescription"][currentLanguage],
+    key: 'description'
+}, {
+    name: Resources["previous"][currentLanguage],
+    key: 'prevoiuse'
+}, {
+    name: Resources["current"][currentLanguage],
+    key: 'currentValue'
+}, {
+    name: Resources["total"][currentLanguage],
+    key: 'total'
+}, {
+    name: Resources["comments"][currentLanguage],
+    key: 'comment'
+}]
+
 class requestPaymentsAddEdit extends Component {
     constructor(props) {
         super(props);
+
         const query = new URLSearchParams(this.props.location.search);
+
         let index = 0;
+
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
@@ -221,15 +242,19 @@ class requestPaymentsAddEdit extends Component {
             id: 1,
             itemId: 0,
             quantityComplete: 0,
-            currentDocument: ""
+            currentDocument: "",
+            columnsApprovedInvoices: []
         };
 
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(this.state.perviousRoute);
         }
+
         this.editRowsClick = this.editRowsClick.bind(this);
+
         this.GetCellActions = this.GetCellActions.bind(this);
+
         steps_defination = [
             {
                 name: "paymentRequisitions",
@@ -690,10 +715,7 @@ class requestPaymentsAddEdit extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (
-            this.props.hasWorkflow !== prevProps.hasWorkflow ||
-            this.props.changeStatus !== prevProps.changeStatus
-        ) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -1026,7 +1048,9 @@ class requestPaymentsAddEdit extends Component {
 
     FillSummariesTab = () => {
         let contractId = this.state.document.contractId;
+
         let interimInvoicedTable = [...this.state.interimInvoicedTable];
+
         if (interimInvoicedTable.length == 0) {
             this.setState({
                 isLoading: true
@@ -1060,16 +1084,25 @@ class requestPaymentsAddEdit extends Component {
 
                     let approvedInvoicesParent = [];
 
+                    let columnsApprovedInvoices = [{
+                        name: Resources["JobBuilding"][currentLanguage],
+                        key: result.building
+                    }]
+
                     result.map(parent => {
                         let sumRowTotal = 0;
                         let sumtotal = 0;
 
                         res.map(child => {
-
                             var total = child[parent.details];
                             sumRowTotal += parseFloat(child.rowTotal);
                             sumtotal = total + sumtotal;
                             parent.total = sumtotal;
+
+                            columnsApprovedInvoices.push({
+                                name: Resources["total"][currentLanguage],
+                                key: rowTotal
+                            })
                         });
 
                         rowTotal = sumRowTotal;
@@ -1084,6 +1117,12 @@ class requestPaymentsAddEdit extends Component {
                         obj.rowTotal = rowTotal;
 
                         approvedInvoicesChilds.push(obj);
+
+                        columnsApprovedInvoices.push({
+                            name: parent.details,
+                            key: parent.details
+                        })
+
                         if (parent.total === null) {
                             parent.total = 0;
                         }
@@ -1091,11 +1130,17 @@ class requestPaymentsAddEdit extends Component {
                         approvedInvoicesParent.push(parent);
                     });
 
+                    columnsApprovedInvoices.push({
+                        name: Resources["total"][currentLanguage],
+                        key: rowTotal
+                    })
+
                     this.setState({
                         approvedInvoicesChilds: res,
                         approvedInvoicesParent: approvedInvoicesParent,
                         isLoading: false,
-                        rowTotal: rowTotal
+                        rowTotal: rowTotal,
+                        columnsApprovedInvoices
                     });
                 });
             });
@@ -1952,8 +1997,6 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
-
-
     render() {
 
         let columns = [];
@@ -1978,13 +2021,17 @@ class requestPaymentsAddEdit extends Component {
                     Header: Resources["description"][currentLanguage],
                     accessor: "title",
                     sortabel: true,
-                    width: 200
+                    width: 200,
+                    name: Resources["description"][currentLanguage],
+                    key: 'title'
                 },
                 {
                     Header: Resources["deductions"][currentLanguage],
                     accessor: "deductionValue",
                     width: 200,
-                    sortabel: true
+                    sortabel: true,
+                    name: Resources["deductions"][currentLanguage],
+                    key: 'deductionValue'
                 }
             );
         } else {
@@ -1993,25 +2040,40 @@ class requestPaymentsAddEdit extends Component {
                     Header: Resources["description"][currentLanguage],
                     accessor: "title",
                     sortabel: true,
-                    width: 200
+                    width: 200,
+                    name: Resources["description"][currentLanguage],
+                    key: 'title'
                 },
                 {
                     Header: Resources["deductions"][currentLanguage],
                     accessor: "deductionValue",
                     width: 200,
-                    sortabel: true
+                    sortabel: true,
+                    name: Resources["deductions"][currentLanguage],
+                    key: 'deductionValue'
                 }
             );
         }
 
-        const btnExport = this.state.isLoading === false ?
+        //ExportDeducation
+        const btnExportDeducation = this.state.isLoading === false ?
             (
-                <Export
-                    key={"Export-3"}
-                    rows={this.state.isLoading === false ? this.state.deductionObservableArray : []}
-                    columns={columns}
-                    fileName={Resources["informationDeductions"][currentLanguage]}
-                />
+                <Export key={"Export-3"} rows={this.state.isLoading === false ? this.state.deductionObservableArray : []}
+                    columns={columns.filter(x => x.id != "checkbox")} fileName={Resources["informationDeductions"][currentLanguage]} />
+            ) : null;
+
+        //ExportInterimPayment 
+        const btnExportInterimPayment = this.state.isLoading === false ?
+            (
+                <Export key={"Export-4"} rows={this.state.isLoading === false ? this.state.interimInvoicedTable : []} columns={columnOfInterimPayment}
+                    fileName={Resources["interimPaymentCertificate"][currentLanguage]} />
+            ) : null;
+
+        //ExportApprovedInvoices
+        const btnExportApprovedInvoices = this.state.isLoading === false ?
+            (
+                <Export key={"Export-5"} rows={this.state.isLoading === false ? this.state.approvedInvoicesChilds : []}
+                    columns={this.state.columnsApprovedInvoices} fileName={Resources["summaryOfApprovedInvoices"][currentLanguage]} />
             ) : null;
 
         let columnsTrees = [
@@ -2250,68 +2312,66 @@ class requestPaymentsAddEdit extends Component {
             </div>
         );
 
-        let approvedSummaries =
-            this.state.isLoading === false ? (
-                <Fragment>
-                    <header>
-                        <h2 className="zero">
-                            {Resources["summaryOfApprovedInvoices"][currentLanguage]}
-                        </h2>
-                    </header>
-                    <table
-                        className="attachmentTable "
-                        key="summaryOfApprovedInvoices">
-                        <thead>
-                            <tr>
-                                <td width="15%">
-                                    {Resources["JobBuilding"][currentLanguage]}
+        let approvedSummaries = this.state.isLoading === false ? (
+            <Fragment>
+                <header>
+                    <h2 className="zero">
+                        {Resources["summaryOfApprovedInvoices"][currentLanguage]}
+                    </h2>
+                </header>
+                {btnExportApprovedInvoices}
+                <table className="attachmentTable " key="summaryOfApprovedInvoices">
+                    <thead>
+                        <tr>
+                            <td width="15%">
+                                {Resources["JobBuilding"][currentLanguage]}
+                            </td>
+                            {this.state.approvedInvoicesParent.map(i => (
+                                <td>
+                                    {i.details.slice(0, i.details.lastIndexOf("-"))}
                                 </td>
-                                {this.state.approvedInvoicesParent.map(i => (
-                                    <td>
-                                        {i.details.slice(0, i.details.lastIndexOf("-"))}
-                                    </td>
-                                ))}
-                                <td width="10%">
-                                    {Resources["total"][currentLanguage]}
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.approvedInvoicesChilds.map(i => (
-                                <tr>
-                                    <td>
-                                        {i.building.slice(0, i.building.lastIndexOf("-"))}
-                                    </td>
-
-                                    {this.state.approvedInvoicesParent.map(
-                                        data => (
-                                            <td>
-                                                {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </td>
-                                        )
-                                    )}
-                                    <td>
-                                        {parseFloat(i.rowTotal).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ,")}
-                                    </td>
-                                </tr>
                             ))}
-                        </tbody>
-                        <tfoot>
-                            <tr style={{ backgroundColor: "whitesmoke", color: "black" }}>
-                                <td width="15%">
-                                    {Resources["total"][currentLanguage]}
+                            <td width="10%">
+                                {Resources["total"][currentLanguage]}
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.approvedInvoicesChilds.map(i => (
+                            <tr>
+                                <td>
+                                    {i.building.slice(0, i.building.lastIndexOf("-"))}
                                 </td>
-                                {this.state.approvedInvoicesParent.map(i => (
-                                    <td>
-                                        {parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                    </td>
-                                ))}
-                                <td>{this.state.rowTotal} </td>
+
+                                {this.state.approvedInvoicesParent.map(
+                                    data => (
+                                        <td>
+                                            {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </td>
+                                    )
+                                )}
+                                <td>
+                                    {parseFloat(i.rowTotal).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ,")}
+                                </td>
                             </tr>
-                        </tfoot>
-                    </table>
-                </Fragment>
-            ) : (<LoadingSection />);
+                        ))}
+                    </tbody>
+                    <tfoot>
+                        <tr style={{ backgroundColor: "whitesmoke", color: "black" }}>
+                            <td width="15%">
+                                {Resources["total"][currentLanguage]}
+                            </td>
+                            {this.state.approvedInvoicesParent.map(i => (
+                                <td>
+                                    {parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </td>
+                            ))}
+                            <td>{this.state.rowTotal} </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </Fragment>
+        ) : (<LoadingSection />);
 
         let ExportColumns = itemsColumns.filter(i => i.key !== "BtnActions");
 
@@ -2689,53 +2749,13 @@ class requestPaymentsAddEdit extends Component {
                                                                             ]
                                                                         }
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.actualPayment &&
-                                                                                touched.actualPayment
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="actualPayment"
-                                                                            name="actualPayment"
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .actualPayment
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .actualPayment[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "actualPayment"
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                        {touched.actualPayment ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.actualPayment
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                    <div className={"ui input inputDev" + (errors.actualPayment && touched.actualPayment ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control" id="actualPayment" name="actualPayment"
+                                                                            value={this.state.document.actualPayment || ''}
+                                                                            placeholder={Resources.actualPayment[currentLanguage]}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                            onChange={e => this.handleChange(e, "actualPayment")} />
+                                                                        {touched.actualPayment ? (<em className="pError"> {errors.actualPayment} </em>) : null}
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
@@ -2748,48 +2768,25 @@ class requestPaymentsAddEdit extends Component {
                                                                         }
                                                                     </label>
                                                                     <div className="ui input inputDev">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            name="remainingPayment"
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .remainingPayment
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .remainingPayment[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "remainingPayment"
-                                                                                )
-                                                                            }
-                                                                        />
+                                                                        <input type="text" className="form-control" name="remainingPayment"
+                                                                            value={this.state.document.remainingPayment || ''}
+                                                                            placeholder={Resources.remainingPayment[currentLanguage]}
+                                                                            onChange={e => this.handleChange(e, "remainingPayment")} />
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div className="slider-Btns slider-Btns--menu">
-                                                                {this.state
-                                                                    .isLoading ===
-                                                                    false ? (
-                                                                        this.showBtnsSaving()
-                                                                    ) : (
-                                                                        <button
-                                                                            className="primaryBtn-1 btn  disabled"
-                                                                            disabled="disabled">
-                                                                            <div className="spinner">
-                                                                                <div className="bounce1" />
-                                                                                <div className="bounce2" />
-                                                                                <div className="bounce3" />
-                                                                            </div>
-                                                                        </button>
-                                                                    )}
+                                                                {this.state.isLoading === false ? (this.showBtnsSaving()) : (
+                                                                    <button
+                                                                        className="primaryBtn-1 btn  disabled"
+                                                                        disabled="disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button>
+                                                                )}
 
                                                                 {this.props.changeStatus === true ? (this.state.userType != "user" ? (
                                                                     <div className="default__dropdown" style={{ minWidth: "225px" }}>
@@ -2840,22 +2837,11 @@ class requestPaymentsAddEdit extends Component {
                                                             />
                                                         ) : null}
                                                     {this.viewAttachments()}
-                                                    {this.props.changeStatus ===
-                                                        true ? (
-                                                            <ViewWorkFlow
-                                                                docType={
-                                                                    this.state
-                                                                        .docTypeId
-                                                                }
-                                                                docId={
-                                                                    this.state.docId
-                                                                }
-                                                                projectId={
-                                                                    this.state
-                                                                        .projectId
-                                                                }
-                                                            />
-                                                        ) : null}
+                                                    {this.props.changeStatus === true ? (
+                                                        <ViewWorkFlow docType={this.state.docTypeId}
+                                                            docId={this.state.docId}
+                                                            projectId={this.state.projectId} />
+                                                    ) : null}
                                                 </div>
                                             </div>
                                         </div>
@@ -3022,64 +3008,33 @@ class requestPaymentsAddEdit extends Component {
                                                     {Resources["interimPaymentCertificate"][currentLanguage]}
                                                 </h2>
                                             </header>
-                                            <table
-                                                className="attachmentTable"
-                                                key="interimPaymentCertificate">
+                                            {btnExportInterimPayment}
+                                            <table className="attachmentTable" key="interimPaymentCertificate">
                                                 <thead>
                                                     <tr>
                                                         <th colSpan="6">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    "workDescription"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources["workDescription"][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th>
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    "previous"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources["previous"][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th>
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    "current"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources["current"][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th>
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    "total"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources["total"][currentLanguage]}
                                                             </div>
                                                         </th>
                                                         <th>
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    "comments"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources["comments"][currentLanguage]}
                                                             </div>
                                                         </th>
                                                     </tr>
@@ -3115,14 +3070,8 @@ class requestPaymentsAddEdit extends Component {
                                                                     <input type="text" className="form-control" id="title" name="title"
                                                                         value={this.state.documentDeduction.title}
                                                                         placeholder={Resources.description[currentLanguage]}
-                                                                        onBlur={e => {
-                                                                            handleChange(e);
-                                                                            handleBlur(e);
-                                                                        }}
-                                                                        onChange={e =>
-                                                                            this.handleChangeItem(e, "title")
-                                                                        }
-                                                                    />
+                                                                        onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                        onChange={e => this.handleChangeItem(e, "title")} />
                                                                     {touched.title ? (<em className="pError"> {errors.title} </em>) : null}
                                                                 </div>
                                                             </div>
@@ -3142,7 +3091,6 @@ class requestPaymentsAddEdit extends Component {
                                                         </div>
                                                         <div className="slider-Btns">
                                                             {this.state.isLoading === false ? (this.state.userType != "user" ? (
-
                                                                 (this.state.isViewMode !== true || this.state.addDeducation ?
                                                                     <button className="primaryBtn-1 btn meduimBtn">
                                                                         {Resources["save"][currentLanguage]}
@@ -3160,7 +3108,7 @@ class requestPaymentsAddEdit extends Component {
                                                                         </div>
                                                                     </button>
                                                                 )}
-                                                            {btnExport}
+                                                            {btnExportDeducation}
                                                         </div>
                                                     </Form>
                                                 )}
@@ -3194,15 +3142,9 @@ class requestPaymentsAddEdit extends Component {
                                 </Fragment>
                             ) : null}
                         </div>
-                        <Steps
-                            steps_defination={steps_defination}
-                            exist_link="/requestPayments/"
-                            docId={this.state.docId}
-                            changeCurrentStep={stepNo =>
-                                this.changeCurrentStep(stepNo)
-                            }
-                            stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true}
-                        />
+                        <Steps steps_defination={steps_defination} exist_link="/requestPayments/" docId={this.state.docId}
+                            changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
+                            stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true} />
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
@@ -3224,23 +3166,13 @@ class requestPaymentsAddEdit extends Component {
                     </div>
                 </div>
 
-                <div
-                    className="largePopup largeModal "
-                    style={{
-                        display: this.state.showBoqModal ? "block" : "none"
-                    }}>
-                    <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.boqTypeModal = ref)}
-                        title={Resources.boqType[currentLanguage]}>
+                <div className="largePopup largeModal " style={{ display: this.state.showBoqModal ? "block" : "none" }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.boqTypeModal = ref)} title={Resources.boqType[currentLanguage]}>
                         {BoqTypeContent}
                     </SkyLight>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showCommentModal ? "block" : "none" }}>
-                    <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.addCommentModal = ref)}
-                        title={Resources.comments[currentLanguage]}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.addCommentModal = ref)} title={Resources.comments[currentLanguage]}>
                         <div className="proForm datepickerContainer">
                             <div className="linebylineInput valid-input mix_dropdown">
                                 <div className="letterFullWidth">
@@ -3248,12 +3180,7 @@ class requestPaymentsAddEdit extends Component {
                                         {Resources.comment[currentLanguage]}
                                     </label>
                                     <div className="inputDev ui input">
-                                        <TextEditor
-                                            value={this.state.comment}
-                                            onChange={this.onChangeMessage.bind(
-                                                this
-                                            )}
-                                        />
+                                        <TextEditor value={this.state.comment} onChange={this.onChangeMessage.bind(this)} />
                                     </div>
                                 </div>
                             </div>
@@ -3265,34 +3192,16 @@ class requestPaymentsAddEdit extends Component {
                         </button>
                     </SkyLight>
                 </div>
-                <div
-                    className="largePopup largeModal "
-                    style={{
-                        display: this.state.showCostCodingTree
-                            ? "block"
-                            : "none"
-                    }}>
-                    <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.costCodingTree = ref)}
-                        title={Resources.comments[currentLanguage]}>
+                <div className="largePopup largeModal " style={{ display: this.state.showCostCodingTree ? "block" : "none" }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.costCodingTree = ref)} title={Resources.comments[currentLanguage]}>
                         <div className="dropWrapper proForm">
                             <div className="fullWidthWrapper linebylineInput">
                                 <label className="control-label">
                                     {Resources.costCodingTree[currentLanguage]}
                                 </label>
                                 <div className="shareLinks">
-                                    <Dropdown
-                                        data={this.state.fillDropDownTress}
-                                        selectedValue={
-                                            this.state.selectedDropDownTrees
-                                        }
-                                        handleChange={event =>
-                                            this.handleDropTrees(event)
-                                        }
-                                        name="costCodingTree"
-                                        index="costCodingTree"
-                                    />
+                                    <Dropdown data={this.state.fillDropDownTress} selectedValue={this.state.selectedDropDownTrees}
+                                        handleChange={event => this.handleDropTrees(event)} name="costCodingTree" index="costCodingTree" />
                                     <div
                                         style={{ marginLeft: "8px" }}
                                         onClick={e => this.addCostTree()}>
@@ -3309,15 +3218,7 @@ class requestPaymentsAddEdit extends Component {
                             </div>
                         </div>
                         <div className="fullWidthWrapper">
-                            <ReactTable
-                                data={this.state.trees}
-                                columns={columnsTrees}
-                                defaultPageSize={5}
-                                noDataText={
-                                    Resources["noData"][currentLanguage]
-                                }
-                                className="-striped -highlight"
-                            />
+                            <ReactTable data={this.state.trees} columns={columnsTrees} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
                         </div>
                         {this.state.isLoading === false ? (
                             <div className="fullWidthWrapper">
@@ -3330,9 +3231,7 @@ class requestPaymentsAddEdit extends Component {
                             </div>
                         ) : (
                                 <div className="fullWidthWrapper">
-                                    <button
-                                        className="primaryBtn-1 btn  disabled"
-                                        disabled="disabled">
+                                    <button className="primaryBtn-1 btn  disabled" disabled="disabled">
                                         <div className="spinner">
                                             <div className="bounce1" />
                                             <div className="bounce2" />
@@ -3343,17 +3242,9 @@ class requestPaymentsAddEdit extends Component {
                             )}
                     </SkyLight>
                 </div>
-                <div
-                    className="largePopup largeModal "
-                    style={{
-                        display: this.state.viewPopUpRows ? "block" : "none"
-                    }}>
-                    <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.addCommentModal = ref)}>
-                        <Formik
-                            initialValues={{ ...this.state.document }}
-                            validationSchema={validationItemsSchema}
+                <div className="largePopup largeModal " style={{ display: this.state.viewPopUpRows ? "block" : "none" }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.addCommentModal = ref)}>
+                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationItemsSchema}
                             enableReinitialize={true}
                             onSubmit={values => {
                                 this.editPaymentRequistionItems();
@@ -3600,22 +3491,14 @@ class requestPaymentsAddEdit extends Component {
                 </div>
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={
-                            Resources["smartDeleteMessage"][currentLanguage]
-                                .content
-                        }
+                        title={Resources["smartDeleteMessage"][currentLanguage].content}
                         buttonName="delete"
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}
-                        clickHandlerContinue={this.clickHandlerContinueMain.bind(
-                            this
-                        )}
-                    />
+                        clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />
                 ) : null}
-                <div
-                    className="largePopup largeModal "
-                    style={{ display: this.state.showViewHistoryModal ? "block" : "none" }}>
+                <div className="largePopup largeModal " style={{ display: this.state.showViewHistoryModal ? "block" : "none" }}>
                     <SkyLight hideOnOverlayClicked ref={ref => (this.ViewHistoryModal = ref)} title={Resources.viewHistory[currentLanguage]}>
                         {viewHistory}
                     </SkyLight>
