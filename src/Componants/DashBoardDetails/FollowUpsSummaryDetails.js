@@ -15,14 +15,14 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
- 
+
 let subjectLink = ({ value, row }) => {
   let doc_view = "";
   let subject = "";
   if (row) {
 
     let obj = {
-      docId: row.id,
+      docId: row.docId,
       projectId: row.projectId,
       projectName: row.projectName,
       arrange: row.arrange,
@@ -248,12 +248,12 @@ class FollowUpsSummaryDetails extends Component {
         isLoading: false
       });
     });
-  } 
-  
+  }
+
   onRowClick = (obj) => {
     if (this.state.RouteEdit !== '') {
       let objRout = {
-        docId: obj.id,
+        docId: obj.docId,
         projectId: obj.projectId,
         projectName: obj.projectName,
         arrange: 0,
