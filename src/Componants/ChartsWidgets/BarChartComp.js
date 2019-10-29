@@ -70,7 +70,7 @@ class BarChartComp extends Component {
                 render={
                     ({ width }) =>
                         <Bar
-                            isHorizontal={false}
+                           e isHorizontal={false}
                             margin={marginObject}
                             colorSchema={colorSchema}
                             width={width}
