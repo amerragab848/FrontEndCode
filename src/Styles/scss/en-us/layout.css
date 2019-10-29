@@ -21705,7 +21705,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
   
 .editView__tabs .editView__tabs--title::after {
     content: '';
-    background: #4382f9;
+    background: #858d9e;
     position: absolute;
     right: 50%;
     left: 50%;
@@ -21734,7 +21734,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 }
 
 .editView__tabs .editView__tabs--title.active p {
-    color: #4382f9; 
+    color: #252833; 
 }
 
 .docstepper-levels .StepperNum .StepNumber:last-of-type + .Step-Line {
@@ -21802,10 +21802,6 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 
 .subHeader h2 {
     font-size: 14px !important;
-}
-  
-.editView__tabs .editView__tabs--title.active p {
-    color: #4382f9; 
 }
 
 .docstepper-levels .StepperNum .StepNumber:last-of-type + .Step-Line {
