@@ -461,10 +461,10 @@ class bogAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        DataService.GetDataList(
+        DataService.GetDataListCached(
             "GetProjectProjectsCompaniesForList?projectId=" + projectId,
             "companyName",
-            "companyId"
+            "companyId", 'companies', this.state.projectId, "projectId"
         ).then(res => {
             if (isEdit) {
                 let companyId = this.state.document.company;

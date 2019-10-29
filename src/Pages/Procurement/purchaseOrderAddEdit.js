@@ -809,10 +809,10 @@ class PurchaseOrderAddEdit extends Component {
 
     FillDropDowns = isEdit => {
         dataservice
-            .GetDataList(
+            .GetDataListCached(
                 "GetProjectProjectsCompaniesForList?projectId=" + projectId,
                 "companyName",
-                "companyId"
+                "companyId", 'companies', this.state.projectId, "projectId"
             )
             .then(result => {
                 this.setState({

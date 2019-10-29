@@ -297,7 +297,7 @@ class RfiAddEdit extends Component {
             });
         });
         //location
-        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "title", 'defaultLists', "location", "listType").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
             if (isEdit) {
 
                 let locationId = this.props.document.location;

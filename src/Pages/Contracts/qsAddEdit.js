@@ -267,7 +267,7 @@ class QsAddEdit extends Component {
 
   fillDropDowns(isEdit) {
     //from Companies
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+    dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
       if (isEdit) {
 
@@ -286,7 +286,7 @@ class QsAddEdit extends Component {
     });
 
     //discplines
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
 
       if (isEdit) {
 

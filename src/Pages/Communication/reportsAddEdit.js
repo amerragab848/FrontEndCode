@@ -211,7 +211,7 @@ class reportsAddEdit extends Component {
     };
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
@@ -236,7 +236,7 @@ class reportsAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetAccountsDefaultList?listType=dailyreporttype&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultList?listType=dailyreporttype&pageNumber=0&pageSize=10000", 'title', 'id','defaultLists', "discipline", "listType").then(result => {
             this.setState({
                 reportType: [...result],
                 isLoading: false

@@ -428,7 +428,7 @@ class ContractInfoAddEdit extends Component {
 
   fillDropDowns(isEdit) {
 
-    DataService.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(res => {
+    DataService.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(res => {
 
       if (isEdit) {
 
