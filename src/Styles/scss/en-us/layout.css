@@ -18525,6 +18525,7 @@ button.companies_icon {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .Project__num p {

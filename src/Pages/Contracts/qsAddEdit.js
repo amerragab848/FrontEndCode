@@ -1005,10 +1005,9 @@ class QsAddEdit extends Component {
                 steps_defination={steps_defination}
                 exist_link="/qs/"
                 docId={this.state.docId}
-                changeCurrentStep={stepNo =>
-                  this.changeCurrentStep(stepNo)
-                }
-                stepNo={this.state.CurrStep} changeStatus={docId === 0 ? false : true}
+                changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
+                stepNo={this.state.CurrentStep}
+                changeStatus={docId === 0 ? false : true}
               />
             </div>
           </div>
