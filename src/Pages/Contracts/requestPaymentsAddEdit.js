@@ -116,14 +116,23 @@ const columnOfInterimPayment = [{
     name: Resources["workDescription"][currentLanguage],
     key: 'description'
 }, {
-    name: Resources["previous"][currentLanguage],
+    name: Resources["previousConsultatnt"][currentLanguage],
     key: 'prevoiuse'
 }, {
-    name: Resources["current"][currentLanguage],
+    name: Resources["currentConsultatnt"][currentLanguage],
     key: 'currentValue'
 }, {
-    name: Resources["total"][currentLanguage],
+    name: Resources["totalConsultatnt"][currentLanguage],
     key: 'total'
+}, {
+    name: Resources["previousContractor"][currentLanguage],
+    key: 'contractorPrevoiuse'
+}, {
+    name: Resources["currentContractor"][currentLanguage],
+    key: 'contractorCurrentValue'
+}, {
+    name: Resources["totalContractor"][currentLanguage],
+    key: 'contractorTotal'
 }, {
     name: Resources["comments"][currentLanguage],
     key: 'comment'
@@ -2191,7 +2200,7 @@ class requestPaymentsAddEdit extends Component {
             this.state.interimInvoicedTable.map(i => (
                 <tr key={i.id}>
                     {i.comment == "True" ? (
-                        <td colSpan="9">
+                        <td colSpan="3">
                             <div className="contentCell tableCell-2">
                                 <a>
                                     {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
@@ -2200,29 +2209,44 @@ class requestPaymentsAddEdit extends Component {
                         </td>
                     ) : (
                             <Fragment>
-                                <td colSpan="6">
+                                <td colSpan="3">
                                     <div className="contentCell tableCell-2">
                                         <a data-toggle="tooltip" title={i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}>
                                             {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
                                         </a>
                                     </div>
                                 </td>
-                                <td>
+                                <td colSpan="1">
                                     <div className="contentCell">
                                         {i.prevoiuse != null ? parseFloat(i.prevoiuse).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                                     </div>
                                 </td>
-                                <td>
+                                <td colSpan="1">
                                     <div className="contentCell">
                                         {i.currentValue != null ? parseFloat(i.currentValue.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                                     </div>
                                 </td>
-                                <td>
+                                <td colSpan="1">
                                     <div className="contentCell">
                                         {i.total != null ? parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                                     </div>
                                 </td>
-                                <td>
+                                <td colSpan="1">
+                                    <div className="contentCell">
+                                        {i.contractorPrevoiuse != null ? parseFloat(i.contractorPrevoiuse).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>
+                                </td>
+                                <td colSpan="1">
+                                    <div className="contentCell">
+                                        {i.contractorCurrentValue != null ? parseFloat(i.contractorCurrentValue.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>
+                                </td>
+                                <td colSpan="1">
+                                    <div className="contentCell">
+                                        {i.contractorTotal != null ? parseFloat(i.contractorTotal.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>
+                                </td>
+                                <td colSpan="3">
                                     <div className="contentCell">
                                         {i.comment}
                                     </div>
@@ -3009,34 +3033,63 @@ class requestPaymentsAddEdit extends Component {
                                                 </h2>
                                             </header>
                                             {btnExportInterimPayment}
-                                            <table className="attachmentTable" key="interimPaymentCertificate">
+                                            <table className="attachmentTable attachmentTableAuto specialTable" key="interimPaymentCertificate">
                                                 <thead>
                                                     <tr>
-                                                        <th colSpan="6">
+                                                        <th colSpan="3">
                                                             <div className="headCell">
                                                                 {Resources["workDescription"][currentLanguage]}
                                                             </div>
                                                         </th>
-                                                        <th>
+                                                        <th colSpan="3">
                                                             <div className="headCell">
-                                                                {Resources["previous"][currentLanguage]}
+                                                                {Resources["consultatnt"][currentLanguage]}
                                                             </div>
                                                         </th>
-                                                        <th>
+                                                        <th colSpan="3">
                                                             <div className="headCell">
-                                                                {Resources["current"][currentLanguage]}
+                                                                {Resources["contractor"][currentLanguage]}
                                                             </div>
                                                         </th>
-                                                        <th>
-                                                            <div className="headCell">
-                                                                {Resources["total"][currentLanguage]}
-                                                            </div>
-                                                        </th>
-                                                        <th>
+                                                        <th colSpan="3">
                                                             <div className="headCell">
                                                                 {Resources["comments"][currentLanguage]}
                                                             </div>
                                                         </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th colSpan="3"></th>
+                                                        <th colSpan="1">
+                                                            <div className="headCell">
+                                                                {Resources["previous"][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th colSpan="1">
+                                                            <div className="headCell">
+                                                                {Resources["current"][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th colSpan="1">
+                                                            <div className="headCell">
+                                                                {Resources["total"][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th colSpan="1">
+                                                            <div className="headCell">
+                                                                {Resources["previous"][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th colSpan="1">
+                                                            <div className="headCell">
+                                                                {Resources["current"][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th colSpan="1">
+                                                            <div className="headCell">
+                                                                {Resources["total"][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th colSpan="3"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>{interimTable}</tbody>
