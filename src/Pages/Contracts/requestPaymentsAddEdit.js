@@ -1095,7 +1095,7 @@ class requestPaymentsAddEdit extends Component {
 
                     let columnsApprovedInvoices = [{
                         name: Resources["JobBuilding"][currentLanguage],
-                        key: result.building
+                        key: result.building || ''
                     }]
 
                     result.map(parent => {
