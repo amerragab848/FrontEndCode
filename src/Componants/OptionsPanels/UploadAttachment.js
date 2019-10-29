@@ -6,7 +6,7 @@ import DropboxChooser from "react-dropbox-chooser";
 import GooglePicker from "react-google-picker";
 import Dropzone from "react-dropzone";
 import Drive from '../../Styles/images/gdrive.png';
-import dropbox from '../../Styles/images/dropbox.png'; 
+import dropbox from '../../Styles/images/dropbox.png';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
@@ -178,7 +178,7 @@ class UploadAttachment extends Component {
         return (
             <Fragment>
                 <DropboxChooser
-                    appKey={Config.getPublicConfiguartion().dropBoxappKey}
+                    appKey={Config.getPublicConfiguartion().dropBoxappKey || ''}
                     accessToken={Config.getPublicConfiguartion().dropBoxToken}
                     success={files => this.onSuccess(files)}
                     cancel={() => this.onCancel()}
@@ -198,7 +198,7 @@ class UploadAttachment extends Component {
     renderGoogleDrive = () => {
         return (
             <GooglePicker
-                clientId={Config.getPublicConfiguartion().googleDriveClientId}
+                clientId={Config.getPublicConfiguartion().googleDriveClientId || ''}
                 developerKey={Config.getPublicConfiguartion().googleDriveKey}
                 scope={["https://www.googleapis.com/auth/drive.readonly"]}
                 onChange={data => console.log("on change:", data)}

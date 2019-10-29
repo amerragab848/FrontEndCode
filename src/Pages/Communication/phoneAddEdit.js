@@ -188,7 +188,7 @@ class phoneAddEdit extends Component {
         this.setState({
             docId: 0
         });
-    }
+    } 
 
     fillDropDowns(isEdit) {
         DataService.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(res => {
@@ -221,7 +221,7 @@ class phoneAddEdit extends Component {
             this.checkDocumentIsView();
 
         } else {
-
+ 
             this.fillDropDowns(false);
 
             let phone = {

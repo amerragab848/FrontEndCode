@@ -2200,7 +2200,7 @@ class SubmittalAddEdit extends Component {
           </div>
         </div>
         <div>
-
+ 
           {this.state.showDeleteModal == true ? (
             <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}

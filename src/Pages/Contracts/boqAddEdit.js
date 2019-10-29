@@ -2066,6 +2066,7 @@ class bogAddEdit extends Component {
                 <div className="document-fields">
                     {this.state.isLoading ? <LoadingSection /> : null}
                     <AddItemDescription
+                        docId={this.state.docId}
                         docLink="/Downloads/Excel/BOQ.xlsx"
                         showImportExcel={false}
                         docType="boq"

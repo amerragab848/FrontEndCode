@@ -111,11 +111,41 @@ let itemsColumns = [];
 let VOItemsColumns = [];
 const isCompany = Config.getPayload().uty == "company" ? true : false;
 var steps_defination = [];
+
+const columnOfInterimPayment = [{
+    name: Resources["workDescription"][currentLanguage],
+    key: 'description'
+}, {
+    name: Resources["previousConsultatnt"][currentLanguage],
+    key: 'prevoiuse'
+}, {
+    name: Resources["currentConsultatnt"][currentLanguage],
+    key: 'currentValue'
+}, {
+    name: Resources["totalConsultatnt"][currentLanguage],
+    key: 'total'
+}, {
+    name: Resources["previousContractor"][currentLanguage],
+    key: 'contractorPrevoiuse'
+}, {
+    name: Resources["currentContractor"][currentLanguage],
+    key: 'contractorCurrentValue'
+}, {
+    name: Resources["totalContractor"][currentLanguage],
+    key: 'contractorTotal'
+}, {
+    name: Resources["comments"][currentLanguage],
+    key: 'comment'
+}]
+
 class requestPaymentsAddEdit extends Component {
     constructor(props) {
         super(props);
+
         const query = new URLSearchParams(this.props.location.search);
+
         let index = 0;
+
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
@@ -221,15 +251,19 @@ class requestPaymentsAddEdit extends Component {
             id: 1,
             itemId: 0,
             quantityComplete: 0,
-            currentDocument: ""
+            currentDocument: "",
+            columnsApprovedInvoices: []
         };
 
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(this.state.perviousRoute);
         }
+
         this.editRowsClick = this.editRowsClick.bind(this);
+
         this.GetCellActions = this.GetCellActions.bind(this);
+
         steps_defination = [
             {
                 name: "paymentRequisitions",
@@ -690,10 +724,7 @@ class requestPaymentsAddEdit extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (
-            this.props.hasWorkflow !== prevProps.hasWorkflow ||
-            this.props.changeStatus !== prevProps.changeStatus
-        ) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -962,6 +993,9 @@ class requestPaymentsAddEdit extends Component {
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }
         }).catch(res => {
+            this.setState({
+                isLoading: false
+            });
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
@@ -1023,7 +1057,9 @@ class requestPaymentsAddEdit extends Component {
 
     FillSummariesTab = () => {
         let contractId = this.state.document.contractId;
+
         let interimInvoicedTable = [...this.state.interimInvoicedTable];
+
         if (interimInvoicedTable.length == 0) {
             this.setState({
                 isLoading: true
@@ -1057,16 +1093,25 @@ class requestPaymentsAddEdit extends Component {
 
                     let approvedInvoicesParent = [];
 
+                    let columnsApprovedInvoices = [{
+                        name: Resources["JobBuilding"][currentLanguage],
+                        key: result.building || ''
+                    }]
+
                     result.map(parent => {
                         let sumRowTotal = 0;
                         let sumtotal = 0;
 
                         res.map(child => {
-
                             var total = child[parent.details];
                             sumRowTotal += parseFloat(child.rowTotal);
                             sumtotal = total + sumtotal;
                             parent.total = sumtotal;
+
+                            columnsApprovedInvoices.push({
+                                name: Resources["total"][currentLanguage],
+                                key: rowTotal
+                            })
                         });
 
                         rowTotal = sumRowTotal;
@@ -1081,6 +1126,12 @@ class requestPaymentsAddEdit extends Component {
                         obj.rowTotal = rowTotal;
 
                         approvedInvoicesChilds.push(obj);
+
+                        columnsApprovedInvoices.push({
+                            name: parent.details,
+                            key: parent.details
+                        })
+
                         if (parent.total === null) {
                             parent.total = 0;
                         }
@@ -1088,11 +1139,17 @@ class requestPaymentsAddEdit extends Component {
                         approvedInvoicesParent.push(parent);
                     });
 
+                    columnsApprovedInvoices.push({
+                        name: Resources["total"][currentLanguage],
+                        key: rowTotal
+                    })
+
                     this.setState({
                         approvedInvoicesChilds: res,
                         approvedInvoicesParent: approvedInvoicesParent,
                         isLoading: false,
-                        rowTotal: rowTotal
+                        rowTotal: rowTotal,
+                        columnsApprovedInvoices
                     });
                 });
             });
@@ -1694,6 +1751,7 @@ class requestPaymentsAddEdit extends Component {
 
             exportFile = (
                 <Export isExportRequestPayment={true} type={1}
+                    key={"Export-1"}
                     rows={this.state.isLoading === false ? this.state.paymentsItems : []}
                     columns={ExportColumns}
                     fileName={"Request Payments Items"} />
@@ -1703,6 +1761,7 @@ class requestPaymentsAddEdit extends Component {
 
             exportFile = (
                 <Export isExportRequestPayment={true}
+                    key={"Export-2"}
                     rows={this.state.isLoading === false ? this.state.paymentsItems : []}
                     columns={VOItemsColumns}
                     fileName={"Request Payments Items"}
@@ -1948,6 +2007,7 @@ class requestPaymentsAddEdit extends Component {
     }
 
     render() {
+
         let columns = [];
 
         if (this.state.userType !== "user") {
@@ -1970,13 +2030,17 @@ class requestPaymentsAddEdit extends Component {
                     Header: Resources["description"][currentLanguage],
                     accessor: "title",
                     sortabel: true,
-                    width: 200
+                    width: 200,
+                    name: Resources["description"][currentLanguage],
+                    key: 'title'
                 },
                 {
                     Header: Resources["deductions"][currentLanguage],
                     accessor: "deductionValue",
                     width: 200,
-                    sortabel: true
+                    sortabel: true,
+                    name: Resources["deductions"][currentLanguage],
+                    key: 'deductionValue'
                 }
             );
         } else {
@@ -1985,16 +2049,41 @@ class requestPaymentsAddEdit extends Component {
                     Header: Resources["description"][currentLanguage],
                     accessor: "title",
                     sortabel: true,
-                    width: 200
+                    width: 200,
+                    name: Resources["description"][currentLanguage],
+                    key: 'title'
                 },
                 {
                     Header: Resources["deductions"][currentLanguage],
                     accessor: "deductionValue",
                     width: 200,
-                    sortabel: true
+                    sortabel: true,
+                    name: Resources["deductions"][currentLanguage],
+                    key: 'deductionValue'
                 }
             );
         }
+
+        //ExportDeducation
+        const btnExportDeducation = this.state.isLoading === false ?
+            (
+                <Export key={"Export-3"} rows={this.state.isLoading === false ? this.state.deductionObservableArray : []}
+                    columns={columns.filter(x => x.id != "checkbox")} fileName={Resources["informationDeductions"][currentLanguage]} />
+            ) : null;
+
+        //ExportInterimPayment 
+        const btnExportInterimPayment = this.state.isLoading === false ?
+            (
+                <Export key={"Export-4"} rows={this.state.isLoading === false ? this.state.interimInvoicedTable : []} columns={columnOfInterimPayment}
+                    fileName={Resources["interimPaymentCertificate"][currentLanguage]} />
+            ) : null;
+
+        //ExportApprovedInvoices
+        const btnExportApprovedInvoices = this.state.isLoading === false ?
+            (
+                <Export key={"Export-5"} rows={this.state.isLoading === false ? this.state.approvedInvoicesChilds : []}
+                    columns={this.state.columnsApprovedInvoices} fileName={Resources["summaryOfApprovedInvoices"][currentLanguage]} />
+            ) : null;
 
         let columnsTrees = [
             {
@@ -2111,7 +2200,7 @@ class requestPaymentsAddEdit extends Component {
             this.state.interimInvoicedTable.map(i => (
                 <tr key={i.id}>
                     {i.comment == "True" ? (
-                        <td colSpan="9">
+                        <td colSpan="3">
                             <div className="contentCell tableCell-2">
                                 <a>
                                     {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
@@ -2120,29 +2209,44 @@ class requestPaymentsAddEdit extends Component {
                         </td>
                     ) : (
                             <Fragment>
-                                <td colSpan="6">
+                                <td colSpan="3">
                                     <div className="contentCell tableCell-2">
                                         <a data-toggle="tooltip" title={i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}>
                                             {i.description != null ? i.description.slice(0, i.description.lastIndexOf("-") == -1 ? i.description.length : i.description.lastIndexOf("-")) : ""}
                                         </a>
                                     </div>
                                 </td>
-                                <td>
+                                <td colSpan="1">
                                     <div className="contentCell">
                                         {i.prevoiuse != null ? parseFloat(i.prevoiuse).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                                     </div>
                                 </td>
-                                <td>
+                                <td colSpan="1">
                                     <div className="contentCell">
                                         {i.currentValue != null ? parseFloat(i.currentValue.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                                     </div>
                                 </td>
-                                <td>
+                                <td colSpan="1">
                                     <div className="contentCell">
                                         {i.total != null ? parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                                     </div>
                                 </td>
-                                <td>
+                                <td colSpan="1">
+                                    <div className="contentCell">
+                                        {i.contractorPrevoiuse != null ? parseFloat(i.contractorPrevoiuse).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>
+                                </td>
+                                <td colSpan="1">
+                                    <div className="contentCell">
+                                        {i.contractorCurrentValue != null ? parseFloat(i.contractorCurrentValue.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>
+                                </td>
+                                <td colSpan="1">
+                                    <div className="contentCell">
+                                        {i.contractorTotal != null ? parseFloat(i.contractorTotal.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                    </div>
+                                </td>
+                                <td colSpan="3">
                                     <div className="contentCell">
                                         {i.comment}
                                     </div>
@@ -2232,68 +2336,66 @@ class requestPaymentsAddEdit extends Component {
             </div>
         );
 
-        let approvedSummaries =
-            this.state.isLoading === false ? (
-                <Fragment>
-                    <header>
-                        <h2 className="zero">
-                            {Resources["summaryOfApprovedInvoices"][currentLanguage]}
-                        </h2>
-                    </header>
-                    <table
-                        className="attachmentTable "
-                        key="summaryOfApprovedInvoices">
-                        <thead>
-                            <tr>
-                                <td width="15%">
-                                    {Resources["JobBuilding"][currentLanguage]}
+        let approvedSummaries = this.state.isLoading === false ? (
+            <Fragment>
+                <header>
+                    <h2 className="zero">
+                        {Resources["summaryOfApprovedInvoices"][currentLanguage]}
+                    </h2>
+                </header>
+                {btnExportApprovedInvoices}
+                <table className="attachmentTable " key="summaryOfApprovedInvoices">
+                    <thead>
+                        <tr>
+                            <td width="15%">
+                                {Resources["JobBuilding"][currentLanguage]}
+                            </td>
+                            {this.state.approvedInvoicesParent.map(i => (
+                                <td>
+                                    {i.details.slice(0, i.details.lastIndexOf("-"))}
                                 </td>
-                                {this.state.approvedInvoicesParent.map(i => (
-                                    <td>
-                                        {i.details.slice(0, i.details.lastIndexOf("-"))}
-                                    </td>
-                                ))}
-                                <td width="10%">
-                                    {Resources["total"][currentLanguage]}
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.approvedInvoicesChilds.map(i => (
-                                <tr>
-                                    <td>
-                                        {i.building.slice(0, i.building.lastIndexOf("-"))}
-                                    </td>
-
-                                    {this.state.approvedInvoicesParent.map(
-                                        data => (
-                                            <td>
-                                                {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </td>
-                                        )
-                                    )}
-                                    <td>
-                                        {parseFloat(i.rowTotal).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ,")}
-                                    </td>
-                                </tr>
                             ))}
-                        </tbody>
-                        <tfoot>
-                            <tr style={{ backgroundColor: "whitesmoke", color: "black" }}>
-                                <td width="15%">
-                                    {Resources["total"][currentLanguage]}
+                            <td width="10%">
+                                {Resources["total"][currentLanguage]}
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.approvedInvoicesChilds.map(i => (
+                            <tr>
+                                <td>
+                                    {i.building.slice(0, i.building.lastIndexOf("-"))}
                                 </td>
-                                {this.state.approvedInvoicesParent.map(i => (
-                                    <td>
-                                        {parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                    </td>
-                                ))}
-                                <td>{this.state.rowTotal} </td>
+
+                                {this.state.approvedInvoicesParent.map(
+                                    data => (
+                                        <td>
+                                            {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </td>
+                                    )
+                                )}
+                                <td>
+                                    {parseFloat(i.rowTotal).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ,")}
+                                </td>
                             </tr>
-                        </tfoot>
-                    </table>
-                </Fragment>
-            ) : (<LoadingSection />);
+                        ))}
+                    </tbody>
+                    <tfoot>
+                        <tr style={{ backgroundColor: "whitesmoke", color: "black" }}>
+                            <td width="15%">
+                                {Resources["total"][currentLanguage]}
+                            </td>
+                            {this.state.approvedInvoicesParent.map(i => (
+                                <td>
+                                    {parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </td>
+                            ))}
+                            <td>{this.state.rowTotal} </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </Fragment>
+        ) : (<LoadingSection />);
 
         let ExportColumns = itemsColumns.filter(i => i.key !== "BtnActions");
 
@@ -2332,7 +2434,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
                                                                         <input name="subject" className="form-control fsadfsadsa" id="subject"
                                                                             placeholder={Resources.subject[currentLanguage]}
-                                                                            autoComplete="off" value={this.state.document.subject}
+                                                                            autoComplete="off" value={this.state.document.subject || ''}
                                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                                             onChange={e => this.handleChange(e, "subject")} />
                                                                         {touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
@@ -2425,7 +2527,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     </label>
                                                                     <div className="ui input inputDev">
                                                                         <input type="text" className="form-control" id="arrange"
-                                                                            readOnly value={this.state.document.arrange}
+                                                                            readOnly value={this.state.document.arrange || 1}
                                                                             name="arrange" placeholder={Resources.arrange[currentLanguage]}
                                                                             onBlur={e => {
                                                                                 handleChange(e);
@@ -2510,52 +2612,14 @@ class requestPaymentsAddEdit extends Component {
                                                                             ]
                                                                         }
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.advancePaymentPercent &&
-                                                                                touched.advancePaymentPercent
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .advancePaymentPercent
-                                                                            }
+                                                                    <div className={"ui input inputDev" + (errors.advancePaymentPercent && touched.advancePaymentPercent ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control"
+                                                                            value={this.state.document.advancePaymentPercent || ''}
                                                                             name="advancePaymentPercent"
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .advancePaymentPercent[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "advancePaymentPercent"
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                        {touched.advancePaymentPercent ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.advancePaymentPercent
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                            placeholder={Resources.advancePaymentPercent[currentLanguage]}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                            onChange={e => this.handleChange(e, "advancePaymentPercent")} />
+                                                                        {touched.advancePaymentPercent ? (<em className="pError"> {errors.advancePaymentPercent} </em>) : null}
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
@@ -2581,18 +2645,8 @@ class requestPaymentsAddEdit extends Component {
                                                                             id="retainagePercent"
                                                                             name="retainagePercent"
                                                                             readOnly
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .retainagePercent
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .retainagePercent[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
+                                                                            value={this.state.document.retainagePercent || ''}
+                                                                            placeholder={Resources.retainagePercent[currentLanguage]}
                                                                             onBlur={e => {
                                                                                 handleChange(
                                                                                     e
@@ -2635,46 +2689,13 @@ class requestPaymentsAddEdit extends Component {
                                                                                 ? " has-error"
                                                                                 : "ui input inputDev")
                                                                         }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="tax"
-                                                                            name="tax"
-                                                                            readOnly
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .tax
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .tax[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "tax"
-                                                                                )
-                                                                            }
+                                                                        <input type="text" className="form-control" id="tax" name="tax"
+                                                                            readOnly value={this.state.document.tax || ''}
+                                                                            placeholder={Resources.tax[currentLanguage]}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                            onChange={e => this.handleChange(e, "tax")}
                                                                         />
-                                                                        {touched.tax ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.tax
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                        {touched.tax ? (<em className="pError"> {errors.tax} </em>) : null}
                                                                     </div>
                                                                 </div>
 
@@ -2695,46 +2716,13 @@ class requestPaymentsAddEdit extends Component {
                                                                                 ? " has-error"
                                                                                 : "ui input inputDev")
                                                                         }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="vat"
-                                                                            name="vat"
+                                                                        <input type="text" className="form-control" id="vat" name="vat"
                                                                             readOnly
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .vat
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .vat[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "vat"
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                        {touched.vat ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.vat
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                            value={this.state.document.vat || ''}
+                                                                            placeholder={Resources.vat[currentLanguage]}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                            onChange={e => this.handleChange(e, "vat")} />
+                                                                        {touched.vat ? (<em className="pError"> {errors.vat} </em>) : null}
                                                                     </div>
                                                                 </div>
 
@@ -2755,31 +2743,10 @@ class requestPaymentsAddEdit extends Component {
                                                                                 ? " has-error"
                                                                                 : "ui input inputDev")
                                                                         }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="insurance"
-                                                                            name="insurance"
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .insurance
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .insurance[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
+                                                                        <input type="text" className="form-control" id="insurance" name="insurance"
+                                                                            value={this.state.document.insurance || ''}
+                                                                            placeholder={Resources.insurance[currentLanguage]}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
                                                                             onChange={e =>
                                                                                 this.handleChange(
                                                                                     e,
@@ -2806,53 +2773,13 @@ class requestPaymentsAddEdit extends Component {
                                                                             ]
                                                                         }
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.actualPayment &&
-                                                                                touched.actualPayment
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="actualPayment"
-                                                                            name="actualPayment"
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .actualPayment
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .actualPayment[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "actualPayment"
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                        {touched.actualPayment ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.actualPayment
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                    <div className={"ui input inputDev" + (errors.actualPayment && touched.actualPayment ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control" id="actualPayment" name="actualPayment"
+                                                                            value={this.state.document.actualPayment || ''}
+                                                                            placeholder={Resources.actualPayment[currentLanguage]}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                            onChange={e => this.handleChange(e, "actualPayment")} />
+                                                                        {touched.actualPayment ? (<em className="pError"> {errors.actualPayment} </em>) : null}
                                                                     </div>
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
@@ -2865,48 +2792,25 @@ class requestPaymentsAddEdit extends Component {
                                                                         }
                                                                     </label>
                                                                     <div className="ui input inputDev">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            name="remainingPayment"
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .document
-                                                                                    .remainingPayment
-                                                                            }
-                                                                            placeholder={
-                                                                                Resources
-                                                                                    .remainingPayment[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "remainingPayment"
-                                                                                )
-                                                                            }
-                                                                        />
+                                                                        <input type="text" className="form-control" name="remainingPayment"
+                                                                            value={this.state.document.remainingPayment || ''}
+                                                                            placeholder={Resources.remainingPayment[currentLanguage]}
+                                                                            onChange={e => this.handleChange(e, "remainingPayment")} />
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div className="slider-Btns slider-Btns--menu">
-                                                                {this.state
-                                                                    .isLoading ===
-                                                                    false ? (
-                                                                        this.showBtnsSaving()
-                                                                    ) : (
-                                                                        <button
-                                                                            className="primaryBtn-1 btn  disabled"
-                                                                            disabled="disabled">
-                                                                            <div className="spinner">
-                                                                                <div className="bounce1" />
-                                                                                <div className="bounce2" />
-                                                                                <div className="bounce3" />
-                                                                            </div>
-                                                                        </button>
-                                                                    )}
+                                                                {this.state.isLoading === false ? (this.showBtnsSaving()) : (
+                                                                    <button
+                                                                        className="primaryBtn-1 btn  disabled"
+                                                                        disabled="disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button>
+                                                                )}
 
                                                                 {this.props.changeStatus === true ? (this.state.userType != "user" ? (
                                                                     <div className="default__dropdown" style={{ minWidth: "225px" }}>
@@ -2957,22 +2861,11 @@ class requestPaymentsAddEdit extends Component {
                                                             />
                                                         ) : null}
                                                     {this.viewAttachments()}
-                                                    {this.props.changeStatus ===
-                                                        true ? (
-                                                            <ViewWorkFlow
-                                                                docType={
-                                                                    this.state
-                                                                        .docTypeId
-                                                                }
-                                                                docId={
-                                                                    this.state.docId
-                                                                }
-                                                                projectId={
-                                                                    this.state
-                                                                        .projectId
-                                                                }
-                                                            />
-                                                        ) : null}
+                                                    {this.props.changeStatus === true ? (
+                                                        <ViewWorkFlow docType={this.state.docTypeId}
+                                                            docId={this.state.docId}
+                                                            projectId={this.state.projectId} />
+                                                    ) : null}
                                                 </div>
                                             </div>
                                         </div>
@@ -3102,66 +2995,24 @@ class requestPaymentsAddEdit extends Component {
                                                             marginBottom: "0"
                                                         }}>
                                                         <div className="default__dropdown">
-                                                            <Dropdown
-                                                                data={
-                                                                    this.state
-                                                                        .fillDropDownExport
-                                                                }
-                                                                selectedValue={
-                                                                    this.state
-                                                                        .selectedDropDownExport
-                                                                }
-                                                                handleChange={event =>
-                                                                    this.handleDropActionForExportFile(
-                                                                        event
-                                                                    )
-                                                                }
+                                                            <Dropdown data={this.state.fillDropDownExport}
+                                                                selectedValue={this.state.selectedDropDownExport}
+                                                                handleChange={event => this.handleDropActionForExportFile(event)}
                                                                 index="contractId"
                                                                 name="contractId"
                                                                 styles={actionPanel}
                                                             />
-                                                            <div
-                                                                style={{
-                                                                    display:
-                                                                        "none"
-                                                                }}>
-                                                                {
-                                                                    this.state
-                                                                        .exportFile
-                                                                }
+                                                            <div style={{ display: "none" }}>
+                                                                {this.state.exportFile}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="rowsPaginations">
-                                                    <button
-                                                        className={
-                                                            this.state
-                                                                .pageNumber == 0
-                                                                ? "rowunActive"
-                                                                : ""
-                                                        }
-                                                        onClick={() =>
-                                                            this.GetPrevoiusData()
-                                                        }>
+                                                    <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                                         <i className="angle left icon" />
                                                     </button>
-                                                    <button
-                                                        className={
-                                                            this.state
-                                                                .totalRows !==
-                                                                this.state
-                                                                    .pageSize *
-                                                                this.state
-                                                                    .pageNumber +
-                                                                this.state
-                                                                    .pageSize
-                                                                ? "rowunActive"
-                                                                : ""
-                                                        }
-                                                        onClick={() =>
-                                                            this.GetNextData()
-                                                        }>
+                                                    <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
                                                         <i className="angle right icon" />
                                                     </button>
                                                 </div>
@@ -3181,66 +3032,64 @@ class requestPaymentsAddEdit extends Component {
                                                     {Resources["interimPaymentCertificate"][currentLanguage]}
                                                 </h2>
                                             </header>
-                                            <table
-                                                className="attachmentTable"
-                                                key="interimPaymentCertificate">
+                                            {btnExportInterimPayment}
+                                            <table className="attachmentTable attachmentTableAuto specialTable" key="interimPaymentCertificate">
                                                 <thead>
                                                     <tr>
-                                                        <th colSpan="6">
+                                                        <th colSpan="3">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    "workDescription"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources["workDescription"][currentLanguage]}
                                                             </div>
                                                         </th>
-                                                        <th>
+                                                        <th colSpan="3">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    "previous"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources["consultatnt"][currentLanguage]}
                                                             </div>
                                                         </th>
-                                                        <th>
+                                                        <th colSpan="3">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    "current"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources["contractor"][currentLanguage]}
                                                             </div>
                                                         </th>
-                                                        <th>
+                                                        <th colSpan="3">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    "total"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources["comments"][currentLanguage]}
                                                             </div>
                                                         </th>
-                                                        <th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th colSpan="3"></th>
+                                                        <th colSpan="1">
                                                             <div className="headCell">
-                                                                {
-                                                                    Resources[
-                                                                    "comments"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
+                                                                {Resources["previous"][currentLanguage]}
                                                             </div>
                                                         </th>
+                                                        <th colSpan="1">
+                                                            <div className="headCell">
+                                                                {Resources["current"][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th colSpan="1">
+                                                            <div className="headCell">
+                                                                {Resources["total"][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th colSpan="1">
+                                                            <div className="headCell">
+                                                                {Resources["previous"][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th colSpan="1">
+                                                            <div className="headCell">
+                                                                {Resources["current"][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th colSpan="1">
+                                                            <div className="headCell">
+                                                                {Resources["total"][currentLanguage]}
+                                                            </div>
+                                                        </th>
+                                                        <th colSpan="3"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>{interimTable}</tbody>
@@ -3274,14 +3123,8 @@ class requestPaymentsAddEdit extends Component {
                                                                     <input type="text" className="form-control" id="title" name="title"
                                                                         value={this.state.documentDeduction.title}
                                                                         placeholder={Resources.description[currentLanguage]}
-                                                                        onBlur={e => {
-                                                                            handleChange(e);
-                                                                            handleBlur(e);
-                                                                        }}
-                                                                        onChange={e =>
-                                                                            this.handleChangeItem(e, "title")
-                                                                        }
-                                                                    />
+                                                                        onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                        onChange={e => this.handleChangeItem(e, "title")} />
                                                                     {touched.title ? (<em className="pError"> {errors.title} </em>) : null}
                                                                 </div>
                                                             </div>
@@ -3301,7 +3144,6 @@ class requestPaymentsAddEdit extends Component {
                                                         </div>
                                                         <div className="slider-Btns">
                                                             {this.state.isLoading === false ? (this.state.userType != "user" ? (
-
                                                                 (this.state.isViewMode !== true || this.state.addDeducation ?
                                                                     <button className="primaryBtn-1 btn meduimBtn">
                                                                         {Resources["save"][currentLanguage]}
@@ -3319,18 +3161,18 @@ class requestPaymentsAddEdit extends Component {
                                                                         </div>
                                                                     </button>
                                                                 )}
+                                                            {btnExportDeducation}
                                                         </div>
                                                     </Form>
                                                 )}
                                             </Formik>
                                         </div>
-
                                         <div className="doc-pre-cycle">
                                             <ReactTable
-                                                data={ this.state.deductionObservableArray }
+                                                data={this.state.deductionObservableArray}
                                                 columns={columns}
                                                 defaultPageSize={5}
-                                                noDataText={ Resources["noData"][ currentLanguage ] }
+                                                noDataText={Resources["noData"][currentLanguage]}
                                                 className="-striped -highlight"
                                             />
                                             <div className="slider-Btns">
@@ -3353,15 +3195,9 @@ class requestPaymentsAddEdit extends Component {
                                 </Fragment>
                             ) : null}
                         </div>
-                        <Steps
-                            steps_defination={steps_defination}
-                            exist_link="/requestPayments/"
-                            docId={this.state.docId}
-                            changeCurrentStep={stepNo =>
-                                this.changeCurrentStep(stepNo)
-                            }
-                            stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true}
-                        />
+                        <Steps steps_defination={steps_defination} exist_link="/requestPayments/" docId={this.state.docId}
+                            changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
+                            stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true} />
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
@@ -3383,23 +3219,13 @@ class requestPaymentsAddEdit extends Component {
                     </div>
                 </div>
 
-                <div
-                    className="largePopup largeModal "
-                    style={{
-                        display: this.state.showBoqModal ? "block" : "none"
-                    }}>
-                    <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.boqTypeModal = ref)}
-                        title={Resources.boqType[currentLanguage]}>
+                <div className="largePopup largeModal " style={{ display: this.state.showBoqModal ? "block" : "none" }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.boqTypeModal = ref)} title={Resources.boqType[currentLanguage]}>
                         {BoqTypeContent}
                     </SkyLight>
                 </div>
                 <div className="largePopup largeModal " style={{ display: this.state.showCommentModal ? "block" : "none" }}>
-                    <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.addCommentModal = ref)}
-                        title={Resources.comments[currentLanguage]}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.addCommentModal = ref)} title={Resources.comments[currentLanguage]}>
                         <div className="proForm datepickerContainer">
                             <div className="linebylineInput valid-input mix_dropdown">
                                 <div className="letterFullWidth">
@@ -3407,12 +3233,7 @@ class requestPaymentsAddEdit extends Component {
                                         {Resources.comment[currentLanguage]}
                                     </label>
                                     <div className="inputDev ui input">
-                                        <TextEditor
-                                            value={this.state.comment}
-                                            onChange={this.onChangeMessage.bind(
-                                                this
-                                            )}
-                                        />
+                                        <TextEditor value={this.state.comment} onChange={this.onChangeMessage.bind(this)} />
                                     </div>
                                 </div>
                             </div>
@@ -3424,34 +3245,16 @@ class requestPaymentsAddEdit extends Component {
                         </button>
                     </SkyLight>
                 </div>
-                <div
-                    className="largePopup largeModal "
-                    style={{
-                        display: this.state.showCostCodingTree
-                            ? "block"
-                            : "none"
-                    }}>
-                    <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.costCodingTree = ref)}
-                        title={Resources.comments[currentLanguage]}>
+                <div className="largePopup largeModal " style={{ display: this.state.showCostCodingTree ? "block" : "none" }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.costCodingTree = ref)} title={Resources.comments[currentLanguage]}>
                         <div className="dropWrapper proForm">
                             <div className="fullWidthWrapper linebylineInput">
                                 <label className="control-label">
                                     {Resources.costCodingTree[currentLanguage]}
                                 </label>
                                 <div className="shareLinks">
-                                    <Dropdown
-                                        data={this.state.fillDropDownTress}
-                                        selectedValue={
-                                            this.state.selectedDropDownTrees
-                                        }
-                                        handleChange={event =>
-                                            this.handleDropTrees(event)
-                                        }
-                                        name="costCodingTree"
-                                        index="costCodingTree"
-                                    />
+                                    <Dropdown data={this.state.fillDropDownTress} selectedValue={this.state.selectedDropDownTrees}
+                                        handleChange={event => this.handleDropTrees(event)} name="costCodingTree" index="costCodingTree" />
                                     <div
                                         style={{ marginLeft: "8px" }}
                                         onClick={e => this.addCostTree()}>
@@ -3468,15 +3271,7 @@ class requestPaymentsAddEdit extends Component {
                             </div>
                         </div>
                         <div className="fullWidthWrapper">
-                            <ReactTable
-                                data={this.state.trees}
-                                columns={columnsTrees}
-                                defaultPageSize={5}
-                                noDataText={
-                                    Resources["noData"][currentLanguage]
-                                }
-                                className="-striped -highlight"
-                            />
+                            <ReactTable data={this.state.trees} columns={columnsTrees} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]} className="-striped -highlight" />
                         </div>
                         {this.state.isLoading === false ? (
                             <div className="fullWidthWrapper">
@@ -3489,9 +3284,7 @@ class requestPaymentsAddEdit extends Component {
                             </div>
                         ) : (
                                 <div className="fullWidthWrapper">
-                                    <button
-                                        className="primaryBtn-1 btn  disabled"
-                                        disabled="disabled">
+                                    <button className="primaryBtn-1 btn  disabled" disabled="disabled">
                                         <div className="spinner">
                                             <div className="bounce1" />
                                             <div className="bounce2" />
@@ -3502,17 +3295,9 @@ class requestPaymentsAddEdit extends Component {
                             )}
                     </SkyLight>
                 </div>
-                <div
-                    className="largePopup largeModal "
-                    style={{
-                        display: this.state.viewPopUpRows ? "block" : "none"
-                    }}>
-                    <SkyLight
-                        hideOnOverlayClicked
-                        ref={ref => (this.addCommentModal = ref)}>
-                        <Formik
-                            initialValues={{ ...this.state.document }}
-                            validationSchema={validationItemsSchema}
+                <div className="largePopup largeModal " style={{ display: this.state.viewPopUpRows ? "block" : "none" }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.addCommentModal = ref)}>
+                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationItemsSchema}
                             enableReinitialize={true}
                             onSubmit={values => {
                                 this.editPaymentRequistionItems();
@@ -3759,22 +3544,14 @@ class requestPaymentsAddEdit extends Component {
                 </div>
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
-                        title={
-                            Resources["smartDeleteMessage"][currentLanguage]
-                                .content
-                        }
+                        title={Resources["smartDeleteMessage"][currentLanguage].content}
                         buttonName="delete"
                         closed={this.onCloseModal}
                         showDeleteModal={this.state.showDeleteModal}
                         clickHandlerCancel={this.clickHandlerCancelMain}
-                        clickHandlerContinue={this.clickHandlerContinueMain.bind(
-                            this
-                        )}
-                    />
+                        clickHandlerContinue={this.clickHandlerContinueMain.bind(this)} />
                 ) : null}
-                <div
-                    className="largePopup largeModal "
-                    style={{ display: this.state.showViewHistoryModal ? "block" : "none" }}>
+                <div className="largePopup largeModal " style={{ display: this.state.showViewHistoryModal ? "block" : "none" }}>
                     <SkyLight hideOnOverlayClicked ref={ref => (this.ViewHistoryModal = ref)} title={Resources.viewHistory[currentLanguage]}>
                         {viewHistory}
                     </SkyLight>
@@ -3789,7 +3566,7 @@ class requestPaymentsAddEdit extends Component {
                                 </label>
                                 <div className="ui input inputDev">
                                     <input type="text" className="form-control" name="advancedPayment"
-                                        value={this.state.advancedPayment}
+                                        value={this.state.advancedPayment || ''}
                                         placeholder={Resources.advancedPayment[currentLanguage]}
                                         onChange={event => this.setState({ advancedPayment: event.target.value })}
                                     />
