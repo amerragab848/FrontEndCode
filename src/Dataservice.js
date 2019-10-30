@@ -18,12 +18,10 @@ export default class Dataservice {
         }).catch(ex => Data);
     };
 
-    static async GetDataListCached(url, label, value, tableName, params, mainColumn) {
-        console.log("test "+ url, label, value, tableName, params, mainColumn);
+    static async GetDataListCached(url, label, value, tableName, params, mainColumn) { 
         let rows = await IndexedDb.GetCachedData(params, tableName, mainColumn);
         let Data = []; 
-        if (rows.length == 0) {
-            console.log('do calling....');
+        if (rows.length == 0) { 
             rows = await this.callAPIGetDataList(url, label, value, params);
             IndexedDb.setData(mainColumn, value, label, tableName, rows,params);
 
