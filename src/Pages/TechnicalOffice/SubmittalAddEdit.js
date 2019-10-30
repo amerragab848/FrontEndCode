@@ -1543,25 +1543,25 @@ class SubmittalAddEdit extends Component {
       {
         Header: Resources["description"][currentLanguage],
         accessor: "description",
-        width: 200,
+        width: 350,
         sortabel: true
       },
       {
         Header: Resources["reviewResult"][currentLanguage],
         accessor: "reviewResultName",
-        width: 200,
+        width: 150,
         sortabel: true
       },
       {
         Header: Resources["refDoc"][currentLanguage],
         accessor: "refDoc",
-        width: 200,
+        width: 150,
         sortabel: true
       },
       {
         Header: Resources["submitalDate"][currentLanguage],
         accessor: "submitalDate",
-        width: 200,
+        width: 150,
         sortabel: true,
         Cell: row => (
           <span>

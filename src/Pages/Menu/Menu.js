@@ -53,7 +53,7 @@ class Menu extends Component {
       if (result) {
         config.contactName = result.contactName;
         localStorage.setItem('contactName', result.contactName)
-
+        config.setSignature(result.signaturePath);
         this.setState({
           contactName: result.contactName,
           profilePath: config.getPublicConfiguartion().downloads + "/" + result.profilePath,

@@ -90,7 +90,7 @@ class ViewAttachmments extends Component {
             docTypeId: this.props.docTypeId,
             docId: this.props.docId,
             name: localStorage.getItem("contactName") !== null ? localStorage.getItem("contactName") : "Procoor User",
-            photo: Config.getPublicConfiguartion().static + "/public/img/signature.png",
+            photo: Config.getPublicConfiguartion().downloads+ "/" + Config.getSignature(),
             file: item.parentAttachFile,
             fileName: item.parentAttachFile.split("/")[4],
             fileId: item.id,
