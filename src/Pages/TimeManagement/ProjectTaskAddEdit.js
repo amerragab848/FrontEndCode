@@ -284,7 +284,7 @@ class ProjectTaskAddEdit extends Component {
     });
 
     //from Companies
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+    dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
       if (isEdit) {
 
         let companyId = this.props.document.fromCompanyId;
@@ -312,7 +312,7 @@ class ProjectTaskAddEdit extends Component {
     });
 
     //Priority
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=priority", "title", "id", 'defaultLists', "priority", "listType").then(result => {
 
       if (isEdit) {
 

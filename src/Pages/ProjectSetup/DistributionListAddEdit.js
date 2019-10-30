@@ -174,7 +174,7 @@ class TaskGroupsAddEdit extends Component {
     }
 
     FillCompanyDrop = () => {
-        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId + '', 'companyName', 'companyId').then(
+        dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId=' + projectId + '', 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(
             res => {
                 this.setState({ CompanyData: res });
             }

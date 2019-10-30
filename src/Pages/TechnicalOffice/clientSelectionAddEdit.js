@@ -259,7 +259,7 @@ class clientSelectionAddEdit extends Component {
 
     fillDropDowns(isEdit) {
 
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
@@ -284,7 +284,7 @@ class clientSelectionAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
             if (isEdit) {
                 let approvalStatusId = this.state.document.approvalStatusId;
                 let approvalStatus = {};
@@ -301,7 +301,7 @@ class clientSelectionAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", 'title', 'title').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", 'title', 'title', 'defaultLists', "area", "listType").then(result => {
 
             this.setState({
                 areas: [...result]
@@ -323,7 +323,7 @@ class clientSelectionAddEdit extends Component {
             }
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", 'title', 'title').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", 'title', 'title', 'defaultLists', "location", "listType").then(result => {
 
 
             if (isEdit) {
@@ -342,7 +342,7 @@ class clientSelectionAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=buildingno", 'title', 'title').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=buildingno", 'title', 'id', 'defaultLists', "buildingno", "listType").then(result => {
 
             if (isEdit) {
                 let buildingno = this.props.document.building;
@@ -362,7 +362,7 @@ class clientSelectionAddEdit extends Component {
 
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=clinetselectionstype", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=clinetselectionstype", 'title', 'id', 'defaultLists', "clinetselectionstype", "listType").then(result => {
 
             this.setState({
                 clientSelections: [...result]

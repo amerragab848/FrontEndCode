@@ -19,7 +19,7 @@ export default class Dataservice {
     };
 
     static async GetDataListCached(url, label, value, tableName, params, mainColumn) {
-
+        console.log("test "+ url, label, value, tableName, params, mainColumn);
         let rows = await IndexedDb.GetCachedData(params, tableName, mainColumn);
         let Data = []; 
         if (rows.length == 0) {
