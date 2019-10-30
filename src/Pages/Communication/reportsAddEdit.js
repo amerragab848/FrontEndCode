@@ -292,16 +292,31 @@ class reportsAddEdit extends Component {
                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', value.value, 'toCompanyName', 'toCompanyId', 'selectedToCompany', 'toContacts');
                 this.updateSelectedValue(value, 'toCompanyName', 'toCompanyId', 'selectedToCompany')
                 break;
-            case 'fromContact':
-                this.setState({ isLoading: true })
-                this.updateSelectedValue(value, 'fromContactName', 'fromContactId', 'selectedFromContact')
-                Api.get('GetNextArrangeMainDoc?projectId=' + this.state.projectId + '&docType=' + this.state.docTypeId + '&companyId=' + this.state.selectedFromCompany.value + '&contactId=' + this.state.selectedFromContact.value).then(res => {
-                    this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false })
-                })
-                break;
-            case 'toContact':
-                this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
-                break;
+                case 'fromContact':
+                        this.setState({ isLoading: false })
+        
+                        this.updateSelectedValue(value, 'fromContactName', 'fromContactId', 'selectedFromContact')
+        
+                        break;
+                    case 'toContact':
+                        let original_document = { ...this.state.document };
+                        let updated_document = {};
+        
+                        this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
+        
+                        let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.selectedFromCompany.value + "&fromContactId=" + this.state.selectedFromContact.value + "&toCompanyId=" + this.state.selectedToCompany.value + "&toContactId=" + this.state.selectedToContact.value;
+        
+                        dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                            updated_document.arrange = res.arrange;
+                            updated_document.refDoc = res.refCode;
+        
+                            updated_document = Object.assign(original_document, updated_document);
+        
+                            this.setState({
+                                document: updated_document
+                            });
+                        })
+                        break;
             default:
                 this.setState({ document: { ...this.state.document, [key]: value } })
         }
@@ -482,6 +497,7 @@ class reportsAddEdit extends Component {
                                                             <div className={"ui input inputDev "} >
                                                                 <input type="text" className="form-control" id="arrange" readOnly
                                                                     defaultValue={this.state.document.arrange}
+                                                                    value = {this.state.document.arrange}
                                                                     name="arrange"
                                                                     placeholder={Resources.arrange[currentLanguage]}
                                                                     onBlur={(e) => {
