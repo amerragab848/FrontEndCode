@@ -473,7 +473,7 @@ class SubmittalAddEdit extends Component {
   fillCycleDropDown(isEdit) {
 
     //approvalStatus
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id",'defaultLists', "approvalstatus", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id", 'defaultLists', "approvalstatus", "listType").then(result => {
 
       if (isEdit) {
 
@@ -534,7 +534,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //discplines
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id",'defaultLists', "discipline", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
 
       if (isEdit) {
 
@@ -561,7 +561,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //location
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id",'defaultLists', "location", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
 
       if (isEdit) {
 
@@ -587,7 +587,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //area
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id",'defaultLists', "area", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
 
       if (isEdit) {
 
@@ -614,7 +614,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //reasonForIssue
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reasonForIssue", "title", "id",'defaultLists', "reasonForIssue", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reasonForIssue", "title", "id", 'defaultLists', "reasonForIssue", "listType").then(result => {
 
       if (isEdit) {
 
@@ -640,7 +640,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //reviewResult
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reviewresult", "title", "id",'defaultLists', "reviewResult", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reviewresult", "title", "id", 'defaultLists', "reviewResult", "listType").then(result => {
 
       this.setState({
         reviewResult: [...result]
@@ -648,7 +648,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //specsSection
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specssection", "title", "id",'defaultLists', "specssection", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specssection", "title", "id", 'defaultLists', "specssection", "listType").then(result => {
 
       if (isEdit) {
 
@@ -1410,6 +1410,7 @@ class SubmittalAddEdit extends Component {
     submittalCycle.fromCompanyId = "";
     submittalCycle.submittalId = docId;
     submittalCycle.arrange = arrangeCycle ? arrangeCycle + 1 : maxArrange + 1;
+    submittalCycle.id = 0;
 
     this.setState({
       selectedCycleAprrovalStatus: { label: Resources.selectResult[currentLanguage], value: "0" },
@@ -2190,17 +2191,14 @@ class SubmittalAddEdit extends Component {
                 </div>
               </div>
             ) : null}
-            <Steps
-              steps_defination={steps_defination}
-              exist_link="/submittal/"
-              docId={this.state.docId}
+            <Steps steps_defination={steps_defination} exist_link="/submittal/" docId={this.state.docId}
               changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
               stepNo={this.state.currentStep}
               changeStatus={docId === 0 ? false : true} />
           </div>
         </div>
         <div>
- 
+
           {this.state.showDeleteModal == true ? (
             <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}
