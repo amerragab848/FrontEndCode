@@ -248,11 +248,7 @@ class MeetingMinutesAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        DataService.GetDataList(
-            "GetProjectProjectsCompaniesForList?projectId=" + projectId,
-            "companyName",
-            "companyId"
-        ).then(res => {
+        DataService.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(res => {
             if (isEdit) {
                 let companyId = this.state.document.fromCompanyId;
                 if (companyId) {
@@ -380,12 +376,7 @@ class MeetingMinutesAddEdit extends Component {
             this.setState({ document });
         }
         this.setState({ isLoading: false });
-        DataService.GetDataList(
-            "GetProjectProjectsCompaniesForList?projectId=" +
-            this.state.projectId,
-            "companyName",
-            "companyId"
-        ).then(res => {
+        DataService.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(res => {
             this.setState({ Companies: res, isLoading: false });
         });
     }

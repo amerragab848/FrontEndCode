@@ -61,7 +61,8 @@ class addItemDescription extends Component {
             selectedBOQSubType: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
             selectedBOQSubTypeChild: { label: Resources.boqSubType[currentLanguage], value: "0" },
             addItemApi: this.props.addItemApi,
-            getItemsApi: this.props.getItemsApi
+            getItemsApi: this.props.getItemsApi,
+            itemTypeTitle: ""
         };
     }
 
@@ -196,7 +197,8 @@ class addItemDescription extends Component {
 
         this.setState({
             itemDescription: updated_document,
-            [selectedValue]: event
+            [selectedValue]: event,
+            itemTypeTitle: event.label === "Material" ? event.label : ""
         });
         if (field === "itemType") {
             let poolItemTypes = this.state.poolItemTypes;
@@ -271,7 +273,7 @@ class addItemDescription extends Component {
                                                 ) : null}
                                             </div>
                                         </div>
-                                        <div className="linebylineInput valid-input">
+                                        {this.props.isUnitPrice === undefined ? <div className="linebylineInput valid-input">
                                             <label className="control-label">
                                                 {Resources.unitPrice[currentLanguage]}
                                             </label>
@@ -284,7 +286,7 @@ class addItemDescription extends Component {
                                                 />
                                                 {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
                                             </div>
-                                        </div>
+                                        </div> : null}
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">
                                                 {Resources["itemCode"][currentLanguage]}
@@ -298,7 +300,7 @@ class addItemDescription extends Component {
                                                 {errors.itemCode ? (<em className="pError">{errors.itemCode}</em>) : null}
                                             </div>
                                         </div>
-                                        <div className="linebylineInput valid-input">
+                                        {this.state.itemTypeTitle === "Material" ? <div className="linebylineInput valid-input">
                                             <label className="control-label">
                                                 {Resources["resourceCode"][currentLanguage]}
                                             </label>
@@ -310,7 +312,7 @@ class addItemDescription extends Component {
                                                     value={this.state.itemDescription.resourceCode}
                                                     onChange={e => this.handleChangeItem(e, "resourceCode")} />
                                             </div>
-                                        </div>
+                                        </div> : null}
                                         <div className="linebylineInput valid-input">
                                             <Dropdown title="unit" data={this.state.Units} selectedValue={this.state.selectedUnit}
                                                 handleChange={event => this.handleChangeItemDropDown(event, "unit", "selectedUnit", false, "", "", "")} index="unit" />

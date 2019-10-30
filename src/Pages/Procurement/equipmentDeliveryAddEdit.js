@@ -54,13 +54,9 @@ const validationSchema = Yup.object().shape({
 })
 
 const documentItemValidationSchema = Yup.object().shape({
-
-    quantity: Yup.number().required(Resources['quantity'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
-
+    quantity: Yup.number().required(Resources['quantity'][currentLanguage]).typeError(Resources['onlyNumbers'][currentLanguage]),
     arrangeItem: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
-
-    resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
+    resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage])
 })
 
 let ApproveOrRejectData = [
@@ -295,7 +291,7 @@ class equipmentDeliveryAddEdit extends Component {
             });
         })
 
-        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let id = this.props.document.orderFromCompanyId;
                 let selectedValue = {};

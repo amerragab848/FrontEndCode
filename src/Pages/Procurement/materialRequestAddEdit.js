@@ -672,11 +672,11 @@ class materialRequestAddEdit extends Component {
     fillDropDowns(isEdit) {
         this.setState({ isLoading: true });
         dataservice
-            .GetDataList(
+            .GetDataListCached(
                 "GetProjectProjectsCompaniesForList?projectId=" +
                 this.state.projectId,
                 "companyName",
-                "companyId"
+                "companyId", 'companies', this.state.projectId, "projectId"
             )
             .then(result => {
                 if (isEdit) {

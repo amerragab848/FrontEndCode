@@ -252,7 +252,7 @@ class TransmittalAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         //from Companies
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
 
@@ -282,7 +282,7 @@ class TransmittalAddEdit extends Component {
         })
 
         //discplines
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "title").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.discipline;
                 if (disciplineId) {
@@ -294,7 +294,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //area
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "title").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let areaId = this.props.document.area;
                 if (areaId) {
@@ -306,7 +306,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //location
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", "title", "title").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let locationId = this.props.document.location;
                 if (locationId) {
@@ -318,7 +318,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //priorty
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority", "title", "id").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let priorityId = this.props.document.priorityId;
                 if (priorityId) {
@@ -332,7 +332,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //submittedFor
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=transmittalsubmittedfor", "title", "id").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
 
                 let submittedForId = this.props.document.submittedForId;
@@ -350,7 +350,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //sendingMethod
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=sendingmethods", "title", "id").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
 
                 let sendingmethod = this.props.document.sendingMethodId;

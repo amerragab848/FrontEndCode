@@ -215,8 +215,82 @@ class ClaimsAddEdit extends Component {
         });
     }
 
+    // fillDropDowns(isEdit) {
+    //     dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+
+    //         if (isEdit) {
+    //             let companyId = this.props.document.fromCompanyId;
+    //             if (companyId) {
+    //                 this.setState({
+    //                     selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
+    //                 });
+    //                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
+    //             }
+
+    //             let toCompanyId = this.props.document.toCompanyId;
+    //             if (toCompanyId) {
+    //                 this.setState({
+    //                     selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
+    //                 });
+
+    //                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
+    //             }
+    //         }
+    //         this.setState({
+    //             companies: [...result]
+    //         });
+    //     });
+
+    //     dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
+    //         if (isEdit) {
+    //             let disciplineId = this.props.document.disciplineId;
+    //             let discpline = {};
+    //             if (disciplineId) {
+    //                 discpline = _.find(result, function (i) { return i.value == disciplineId; });
+
+    //                 this.setState({
+    //                     selectedDiscpline: discpline
+    //                 });
+    //             }
+    //         }
+    //         this.setState({
+    //             discplines: [...result]
+    //         });
+    //     });
+
+    //     //contractList
+    //     dataservice.GetDataList("GetContractByProjectId?projectId=" + projectId, "subject", "id").then(result => {
+
+    //         if (isEdit) {
+
+    //             let contractId = this.props.document.contractId;
+
+    //             if (contractId) {
+
+    //                 let contracts = result.find(i => i.value === contractId);
+
+    //                 if (contracts) {
+    //                     this.setState({
+    //                         selectedContract: { ...contracts }
+    //                     });
+    //                 }
+    //             }
+    //         }
+
+    //         this.setState({
+    //             contracts: [...result]
+    //         });
+    //     });
+
+    // }
+
+
+
+
+
+
     fillDropDowns(isEdit) {
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
@@ -241,7 +315,29 @@ class ClaimsAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
+        // dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
+        //     if (isEdit) {
+        //         let disciplineId = this.props.document.disciplineId;
+        //         let discpline = {};
+        //         if (disciplineId) {
+        //             discpline = _.find(result, function (i) { return i.value == disciplineId; });
+
+        //             this.setState({
+        //                 selectedDiscpline: discpline
+        //             });
+        //         }
+        //     }
+        //     this.setState({
+        //         discplines: [...result]
+        //     });
+        // });
+
+
+
+
+
+
+          dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
@@ -257,6 +353,10 @@ class ClaimsAddEdit extends Component {
                 discplines: [...result]
             });
         });
+
+
+
+
 
         //contractList
         dataservice.GetDataList("GetContractByProjectId?projectId=" + projectId, "subject", "id").then(result => {
@@ -283,6 +383,8 @@ class ClaimsAddEdit extends Component {
         });
 
     }
+
+
 
     onChangeMessage = (value) => {
 

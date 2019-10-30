@@ -11,14 +11,14 @@ class Export extends Component {
             rows: this.props.rows,
             columns: this.props.columns,
             fileName: this.props.fileName,
-            isExport: false, 
-            isExportRequestPayment:this.props.isExportRequestPayment
+            isExport: false,
+            isExportRequestPayment: this.props.isExportRequestPayment
         }
     }
 
     tableToExcel(title) {
-        if (this.state.isExport||this.state.isExportRequestPayment) {
-        
+        if (this.state.isExport || this.state.isExportRequestPayment) {
+
             var uri = 'data:application/vnd.ms-excel;base64,'
                 , template = '<html xmlns: o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">'
                     + '<head> '
@@ -34,9 +34,9 @@ class Export extends Component {
                 , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
 
             var items = '';
-            if (this.props.rows.length) { 
+            if (this.props.rows.length) {
                 items = document.getElementById('items').innerHTML;
-                
+
             }
             var ctx = {
                 name: this.state.fileName,
@@ -44,7 +44,7 @@ class Export extends Component {
             }
 
             var blob = new Blob([format(template, ctx)]);
-            this.setState({    isExpor: false , isExportRequestPayment:false }) 
+            this.setState({ isExpor: false, isExportRequestPayment: false })
             if (this.ifIE()) {
                 if (window.navigator.msSaveBlob) {
                     var blob = new Blob([format(template, ctx)], {
@@ -55,15 +55,11 @@ class Export extends Component {
             }
             else
                 return window.location.href = uri + base64(format(template, ctx))
-                
         }
-        
     }
 
-
-    componentDidMount()
-    {
-        if(this.state.isExportRequestPayment){
+    componentDidMount() {
+        if (this.state.isExportRequestPayment) {
             this.tableToExcel(this.state.fileName);
         }
     }
@@ -73,21 +69,21 @@ class Export extends Component {
             this.setState({ isExport: true });
             this.tableToExcel(this.props.fileName);
         }
-        if(this.state.isExportRequestPayment != nextProps.isExportRequestPayment){
+        if (this.state.isExportRequestPayment != nextProps.isExportRequestPayment) {
             this.setState({ isExportRequestPayment: true });
-            setTimeout(()=>{
-            this.tableToExcel(this.state.fileName);
-            },300)
-        } 
+            setTimeout(() => {
+                this.tableToExcel(this.state.fileName);
+            }, 300)
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.isExport !== this.state.isExport) {  
+        if (prevState.isExport !== this.state.isExport) {
             this.tableToExcel(this.props.fileName);
-        } 
-        if (prevState.isExportRequestPayment !== this.state.isExportRequestPayment) {  
+        }
+        if (prevState.isExportRequestPayment !== this.state.isExportRequestPayment) {
             this.tableToExcel(this.props.fileName);
-        } 
+        }
     }
 
     // componentWillUpdate(nextProps, nextState){
@@ -110,26 +106,22 @@ class Export extends Component {
             (this.props.rows.map(row => {
                 return (
                     <tr>
-                        {fieldsItems.map(field => {
-                            return (<td>{row[field.key]}</td>)
+                        {fieldsItems.map((field, index) => {
+                            return (<td key={index}>{row[field.key]}</td>)
                         })}
                     </tr>
                 )
-            })
-            )
-            : null
+            })) : null
 
         let fieldsName = this.props.columns
 
         if (fieldsName.length > 0) {
             return (
-                <table id="items" style={{ border: 'double' }}>
+                <table id="items" style={{ border: 'double' }} key={this.props.key}>
                     <thead valign="top">
                         <tr style={{ border: '4px' }}>
-                            {fieldsName.map(column => {
-                                return (
-                                    <th style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {column.name}</th>
-                                )
+                            {fieldsName.map((column, index) => {
+                                return (<th key={index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {column.name}</th>)
                             })}
                         </tr>
                     </thead>
@@ -145,10 +137,10 @@ class Export extends Component {
     }
 
 
-    render() { 
+    render() {
         return (
-            <Fragment> 
-                <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={e => { this.setState({ isExport: true }); this.tableToExcel(this.props.fileName) }}>{this.state.isExportRequestPayment ? (this.props.type === 1 ?  Resources["export"][currentLanguage] : "Export As Vo") : Resources["export"][currentLanguage]}</button>
+            <Fragment>
+                <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={e => { this.setState({ isExport: true }); this.tableToExcel(this.props.fileName) }}>{this.state.isExportRequestPayment ? (this.props.type === 1 ? Resources["export"][currentLanguage] : "Export As Vo") : Resources["export"][currentLanguage]}</button>
                 <div style={{ display: 'none' }}>
                     {this.state.isExport === true || this.state.isExportRequestPayment ?
                         this.drawItems()

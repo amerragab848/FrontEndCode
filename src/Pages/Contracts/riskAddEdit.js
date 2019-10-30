@@ -229,7 +229,7 @@ class riskAddEdit extends Component {
 
         this.checkDocumentIsView();
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=currency", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=currency", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
             this.setState({ currency: result })
         });
     };
@@ -389,7 +389,7 @@ class riskAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         //from Companies
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
                 let ownerCompanyId = this.props.document.ownerCompanyId;
@@ -409,7 +409,7 @@ class riskAddEdit extends Component {
         });
 
         //riskType
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=riskTypes", "title", "id").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=riskTypes", "title", "id", 'defaultLists', "approvalstatus", "listType").then(result => {
             if (isEdit) {
                 let riskType = this.state.document.riskType;
                 if (riskType) {

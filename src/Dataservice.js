@@ -1,8 +1,7 @@
 import Api from "./api.js";
-import lf from 'lovefield';
 import IndexedDb from "./IndexedDb";
-let db = null; 
-const cachedData = lf.schema.create('cachedAPI', 1);
+//let db = null; 
+//const cachedData = lf.schema.create('cachedAPI', 1);
 
 export default class Dataservice {
 
@@ -19,37 +18,31 @@ export default class Dataservice {
         }).catch(ex => Data);
     };
 
-    static async GetDataListCached(url, label, value, tableName, condition) {
+    static async GetDataListCached(url, label, value, tableName, params, mainColumn) {
+        console.log("test "+ url, label, value, tableName, params, mainColumn);
+        let rows = await IndexedDb.GetCachedData(params, tableName, mainColumn);
+        let Data = []; 
+        if (rows.length == 0) {
+            console.log('do calling....');
+            rows = await this.callAPIGetDataList(url, label, value, params);
+            IndexedDb.setData(mainColumn, value, label, tableName, rows,params);
 
-        if (tableName) {
-
-            db = await cachedData.connect();
-            db.getSchema().table(tableName);
-
-            let rows = await db.select().from(tableName).exec();
-            if (rows.length === 0) {
-                return this.callAPIGetDataList(url, label, value);
-            } else {
-                return rows;
-            }
-        }
-        else {
-            return this.callAPIGetDataList(url, label, value);
-        }
-    };
-
-    callAPIGetDataList = (url, label, value) => {
-        let Data = []
-        return Api.get(url).then(result => {
-            (result).forEach(item => {
+            rows.forEach(item => {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
+                obj[mainColumn]= item[mainColumn];
                 Data.push(obj);
-
-                IndexedDb.seedTypes(result);
             });
-            return Data;
+            rows = Data;
+        }
+        return rows;
+    };
+
+    static async callAPIGetDataList(url) {
+        let Data = []
+        return Api.get(url).then(result => {
+            return result;
         }).catch(ex => Data);
     }
 

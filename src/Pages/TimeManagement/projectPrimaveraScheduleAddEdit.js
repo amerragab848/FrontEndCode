@@ -193,7 +193,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                     }
                 )
         }
-        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId= ' + projectId + '', 'companyName', 'companyId').then(
+        dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId= ' + projectId + '', 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(
             data => {
                 this.setState({
                     ActionByCompanyData: data,

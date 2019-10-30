@@ -18525,6 +18525,7 @@ button.companies_icon {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .Project__num p {
@@ -21906,4 +21907,21 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     padding-left: 8px;
     padding-right: 8px;
     margin-left: 4px !important;
+}
+
+.attachmentTable.specialTable thead tr th,
+.attachmentTable.specialTable tbody tr td {
+    border: 1px solid #e9ecf0 !important;
+    text-align: center !important;
+    width: 200px;
+}
+.attachmentTable.specialTable tbody .contentCell,
+.attachmentTable.specialTable thead .headCell {
+    max-width: 100% !important;
+}
+.attachmentTable.specialTable tbody .contentCell p {
+    max-width: 200px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

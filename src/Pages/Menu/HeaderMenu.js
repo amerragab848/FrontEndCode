@@ -14,6 +14,8 @@ import { bindActionCreators } from "redux";
 import * as dashboardComponantActions from "../../store/actions/communication";
 import moment from "moment";
 import { toast } from "react-toastify";
+
+import IndexedDb from "../../IndexedDb";
 // import { settings } from "cluster";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -195,17 +197,7 @@ class HeaderMenu extends Component {
   }
 
   handleClearCach() {
-
-    var res = [];
-
-    for (var i = 0; i < localStorage.length; i++) {
-      var key = localStorage.key(i);
-
-      if (key.indexOf("DFL_") > -1) {
-        res.push(key);
-        localStorage.removeItem(key);
-      }
-    }
+    IndexedDb.deleteCacheData();
 
     toast.success(Resources["operationSuccess"][currentLanguage]);
 

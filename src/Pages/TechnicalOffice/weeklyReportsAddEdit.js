@@ -238,7 +238,7 @@ class weeklyReportsAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let id = this.props.document.companyId;
                 let companyIdEngineer = this.props.document.companyIdEngineer;

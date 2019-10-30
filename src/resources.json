@@ -8262,5 +8262,33 @@
     "refrenceDocument": {
         "en": "Refrence Document",
         "ar": "Refrence Document"
+    },
+    "contractor": {
+        "en": "Contractor",
+        "ar": "Contractor"
+    },
+    "previousConsultatnt": {
+        "en": "Previous Consultatnt",
+        "ar": "السابقة"
+    },
+    "previousContractor": {
+        "en": "Previous Contractor",
+        "ar": "السابقة"
+    },
+    "currentConsultatnt": {
+        "en": "Current Consultatnt",
+        "ar": "الحالية"
+    },
+    "currentContractor": {
+        "en": "Current Contractor",
+        "ar": "الحالية"
+    },
+    "totalConsultatnt": {
+        "en": "Total Consultatnt",
+        "ar": "الأجمالى"
+    },
+    "totalContractor": {
+        "en": "Total Contractor",
+        "ar": "الأجمالى"
     }
 }

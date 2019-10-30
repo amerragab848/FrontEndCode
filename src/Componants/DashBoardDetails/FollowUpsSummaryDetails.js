@@ -20,8 +20,22 @@ let subjectLink = ({ value, row }) => {
   let doc_view = "";
   let subject = "";
   if (row) {
-    doc_view = "/" + row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
+
+    let obj = {
+      docId: row.docId,
+      projectId: row.projectId,
+      projectName: row.projectName,
+      arrange: row.arrange,
+      docApprovalId: row.accountDocWorkFlowId,
+      isApproveMode: true,
+      perviousRoute: window.location.pathname + window.location.search
+    };
+
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
     subject = row.subject;
+
     return <a href={doc_view}> {subject} </a>;
   }
   return null;
@@ -234,12 +248,12 @@ class FollowUpsSummaryDetails extends Component {
         isLoading: false
       });
     });
-  } 
-  
+  }
+
   onRowClick = (obj) => {
     if (this.state.RouteEdit !== '') {
       let objRout = {
-        docId: obj.id,
+        docId: obj.docId,
         projectId: obj.projectId,
         projectName: obj.projectName,
         arrange: 0,
