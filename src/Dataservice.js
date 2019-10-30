@@ -81,6 +81,14 @@ export default class Dataservice {
         }).catch(ex => Data);
     };
 
+    static GetRefCodeArrangeMainDoc = (url) => {
+        let Data = 0
+        return Api.get(url).then(result => {
+
+            return result;
+        }).catch(ex => Data);
+    };
+    
     static GetDataGrid = (url) => {
 
         return Api.get(url).then(result => {
