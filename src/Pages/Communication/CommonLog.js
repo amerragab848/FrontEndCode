@@ -20,7 +20,7 @@ let documentObj = {};
  
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : Resources.noDate[currentLanguage];
-};
+}; 
 
 class CommonLog extends Component {
 

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
@@ -162,7 +162,7 @@ class LettersAddEdit extends Component {
         });
         console.log(updated_document)
     }
- 
+
     componentDidMount() {
 
         if (this.state.docId > 0) {
@@ -224,7 +224,7 @@ class LettersAddEdit extends Component {
             //         //976 976 close modal
             //         //alert('recieve....'); 
             //         //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
- 
+
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
@@ -295,7 +295,7 @@ class LettersAddEdit extends Component {
                 });
             });
         }
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId").then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
@@ -326,25 +326,24 @@ class LettersAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id")//,'defaultLists', "discipline")
-            .then(result => {
-                if (isEdit) {
-                    let disciplineId = this.props.document.disciplineId;
-                    let discpline = {};
-                    if (disciplineId) {
-                        discpline = result.filter(function (i) {
-                            return i.value == disciplineId;
-                        });
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
+            if (isEdit) {
+                let disciplineId = this.props.document.disciplineId;
+                let discpline = {};
+                if (disciplineId) {
+                    discpline = result.filter(function (i) {
+                        return i.value == disciplineId;
+                    });
 
-                        this.setState({
-                            selectedDiscpline: discpline
-                        });
-                    }
+                    this.setState({
+                        selectedDiscpline: discpline
+                    });
                 }
-                this.setState({
-                    discplines: [...result]
-                });
+            }
+            this.setState({
+                discplines: [...result]
             });
+        });
 
         dataservice.GetDataList("GetLettersListByProjectId?projectId=" + this.state.projectId, "subject", "id")
             .then(result => {
@@ -517,7 +516,7 @@ class LettersAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
- 
+
 
     render() {
         return (
@@ -756,21 +755,27 @@ class LettersAddEdit extends Component {
                                                                 />
                                                             </div>
                                                         </div>
-                                                        <div className="dropWrapper proForm">
-                                                            <Dropdown title="workFlow"
-                                                                data={this.state.WorkFlowData}
-                                                                handleChange={this.workFlowhandelChangeLetter}
-                                                                selectedValue={this.state.selectedWorkFlow}
-                                                                index='ddlworkFlowId' />
-
-                                                            <Dropdown title="contact"
-                                                                data={this.state.WorkFlowContactData}
-                                                                name="ddlApproveTo"
-                                                                selectedValue={this.state.selectedApproveId}
-                                                                index='ddlApproveTo'
-                                                                handleChange={this.toAccounthandelChangeLetter}
-                                                                className={this.state.toCompanyClass} />
-                                                        </div>
+                                                        {this.props.changeStatus === false ?
+                                                            <Fragment>
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown title="workFlow"
+                                                                        data={this.state.WorkFlowData}
+                                                                        handleChange={this.workFlowhandelChangeLetter}
+                                                                        selectedValue={this.state.selectedWorkFlow}
+                                                                        index='ddlworkFlowId' />
+                                                                </div>
+                                                                <div className="linebylineInput valid-input">
+                                                                    <Dropdown title="contact"
+                                                                        data={this.state.WorkFlowContactData}
+                                                                        name="ddlApproveTo"
+                                                                        selectedValue={this.state.selectedApproveId}
+                                                                        index='ddlApproveTo'
+                                                                        handleChange={this.toAccounthandelChangeLetter}
+                                                                        className={this.state.toCompanyClass} />
+                                                                </div>
+                                                            </Fragment>
+                                                            : null
+                                                        }
                                                     </div>
                                                     <div className="slider-Btns">
                                                         {this.state.isLoading ?

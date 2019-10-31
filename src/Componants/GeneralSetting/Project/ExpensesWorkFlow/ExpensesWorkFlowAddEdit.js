@@ -976,9 +976,9 @@ class ExpensesWorkFlowAddEdit extends Component {
 
 
 
-                                                        <div className={'ui input inputDev linebylineInput  ' + (errors.ArrangeExpensesWorkFlow && touched.ArrangeExpensesWorkFlow ? 'has-error' : null) + ' '}>
+                                                        <div className='linebylineInput'>
                                                             <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
-                                                            <div className="inputDev ui input">
+                                                            <div className={"inputDev ui input" +  (errors.ArrangeExpensesWorkFlow && touched.ArrangeExpensesWorkFlow ? 'has-error' : '') + ''}>
                                                                 <input readOnly autoComplete="off" className="form-control" name="ArrangeExpensesWorkFlow"
                                                                     value={this.state.IsEditMode ? this.state.ExpensesWorkFlowDataForEdit.arrange : values.ArrangeExpensesWorkFlow}
                                                                     onBlur={(e) => { handleBlur(e) }}

@@ -176,7 +176,7 @@ class DistributionList extends Component {
                             <img className="deleteImg" src={Recycle} alt="Del" />
                         </a>
                     )
-                }, width: 30
+                }, width: 50
             }, {
                 Header: 'companyId',
                 accessor: 'companyId',

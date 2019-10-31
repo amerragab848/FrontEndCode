@@ -1309,7 +1309,7 @@ class DashboardProject extends Component {
                     </TabList>
                     {/* View renderCategoryWidget */}
                     <TabPanel>
-                        <div className="mainContainer projectDashboard">
+                        <div className="mainContainer dashboardCon projectDashboard">
                             {this.state.viewWidget
                                 ? this.renderCategoryWidget()
                                 : null}
@@ -1317,13 +1317,13 @@ class DashboardProject extends Component {
                     </TabPanel>
                     {/* view renderDiscussions */}
                     <TabPanel>
-                        <div className="mainContainer">
+                        <div className="mainContainer dashboardCon">
                             {this.renderDiscussions()}
                         </div>
                     </TabPanel>
                     {/* view renderOrganizationChart */}
                     <TabPanel>
-                        <div className="mainContainer projectDashboard">
+                        <div className="mainContainer dashboardCon projectDashboard">
                             {this.renderOrganizationChart()}
                         </div>
                     </TabPanel>

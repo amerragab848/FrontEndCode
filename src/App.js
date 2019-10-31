@@ -4,6 +4,7 @@ import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css"; 
 import "./Styles/css/semantic.min.css";
 
+import 'react-table/react-table.css'
 import Menu from "./Pages/Menu/Menu";
 import Login from "./Componants/Layouts/Login";
 import Route from "./router";
@@ -53,7 +54,7 @@ class App extends Component {
 
     IndexedDb.initialize();
     IndexedDb.initializeCounterDB();
-    //IndexedDb.initializeCachedAPI();
+    IndexedDb.initializeCachedAPI();
   };
 
   state = {
@@ -65,7 +66,7 @@ class App extends Component {
 
     await IndexedDb.seed();
     await IndexedDb.seedWidgetCounter();
-   // await IndexedDb.initializeCachedAPI();
+    //await IndexedDb.initializeCachedAPI();
 
     let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 

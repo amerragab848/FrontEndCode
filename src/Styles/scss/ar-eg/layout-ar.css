@@ -7271,6 +7271,8 @@ h1, h2, h3, h4, h5 {
     overflow: hidden;
     width: 128px;
     position: relative;
+    margin-top: 28px;
+    margin-bottom: 37px;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL li {
@@ -16604,7 +16606,7 @@ table edition
     padding-top: 35px;
 }
 
-.a7medImg {
+.thumbUploadedImg {
     overflow: hidden;
     max-width: 250px;
     max-height: 250px;
@@ -16612,7 +16614,7 @@ table edition
     margin-bottom: 40px;
 }
 
-.a7medImg img {
+.thumbUploadedImg img {
     max-width: 100%;
     max-height: 100%;
 }
@@ -16644,7 +16646,7 @@ table edition
     margin: auto;
 }
 
-.sayedWrapper {
+.overTimeWrapper {
     position: relative;
 }
 
