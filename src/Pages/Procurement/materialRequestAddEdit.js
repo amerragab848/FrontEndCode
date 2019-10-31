@@ -712,10 +712,10 @@ class materialRequestAddEdit extends Component {
             });
         this.setState({ isLoading: true });
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=discipline",
                 "title",
-                "id"
+                "id", 'defaultLists', "discipline", "listType"
             )
             .then(result => {
                 if (isEdit) {
@@ -736,10 +736,10 @@ class materialRequestAddEdit extends Component {
             });
         this.setState({ isLoading: true });
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=buildingno&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=buildingno",
                 "title",
-                "id"
+                "id", 'defaultLists', "buildingno", "listType"
             )
             .then(result => {
                 if (isEdit) {
@@ -760,10 +760,10 @@ class materialRequestAddEdit extends Component {
             });
         this.setState({ isLoading: true });
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=apartmentno&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=apartmentno",
                 "title",
-                "id"
+                "id", 'defaultLists', "apartmentno", "listType"
             )
             .then(result => {
                 if (isEdit) {
@@ -784,10 +784,10 @@ class materialRequestAddEdit extends Component {
             });
         this.setState({ isLoading: true });
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=location",
                 "title",
-                "id"
+                "id", 'defaultLists', "location", "listType"
             )
             .then(result => {
                 if (isEdit) {
@@ -808,10 +808,10 @@ class materialRequestAddEdit extends Component {
             });
         this.setState({ isLoading: true });
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=area",
                 "title",
-                "id"
+                "id", 'defaultLists', "area", "listType"
             )
             .then(result => {
                 if (isEdit) {
@@ -829,10 +829,10 @@ class materialRequestAddEdit extends Component {
             });
         this.setState({ isLoading: true });
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=specsSection",
                 "title",
-                "id"
+                "id", 'defaultLists', "specsSection", "listType"
             )
             .then(result => {
                 if (result)
@@ -843,10 +843,10 @@ class materialRequestAddEdit extends Component {
             });
         this.setState({ isLoading: true });
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=materialtitle&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=materialtitle",
                 "title",
-                "id"
+                "id", 'defaultLists', "materialtitle", "listType"
             )
             .then(result => {
                 if (result)

@@ -236,7 +236,7 @@ class reportsAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataListCached("GetAccountsDefaultList?listType=dailyreporttype&pageNumber=0&pageSize=10000", 'title', 'id','defaultLists', "discipline", "listType").then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=dailyreporttype", 'title', 'id','defaultLists', "dailyreporttype", "listType").then(result => {
             this.setState({
                 reportType: [...result],
                 isLoading: false

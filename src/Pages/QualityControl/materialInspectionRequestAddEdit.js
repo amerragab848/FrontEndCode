@@ -505,7 +505,7 @@ class materialInspectionRequestAddEdit extends Component {
                     this.setState({ contractText: contract.label });
             }
         });
-        dataservice.GetDataList("GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=specsSection", 'title', 'id', 'defaultLists', "specsSection", "listType").then(result => {
             if (isEdit == false)
                 this.setState({ specsSections: [...result] });
             else {
