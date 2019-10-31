@@ -25,6 +25,8 @@ import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
+import find from"lodash/find";
+
 var steps_defination = [];
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -46,28 +48,28 @@ let columns = [
     {
         Header: 'arrange',
         accessor: 'arrange',
-        width: '30px'
+        width: 60
     }, {
         Header: Resources['subject'][currentLanguage],
         accessor: 'subject',
-        width: '150px',
+        width: 350
     }, {
         Header: Resources['statusName'][currentLanguage],
         accessor: 'statusName',
-        width: '40px',
+        width: 120
     }, {
         Header: Resources['CompanyName'][currentLanguage],
         accessor: 'flowCompanyName',
-        width: '80px',
+        width: 180
     }, {
         Header: Resources['ContactName'][currentLanguage],
         accessor: 'flowContactName',
-        width: '80px',
+        width: 180
     }, {
         Header: Resources['docDate'][currentLanguage],
         accessor: 'docDate',
         format: 'date',
-        width: '80px',
+        width: 150,
         Cell: row => (
             <span>
                 <span>{moment(row.value).format("DD/MM/YYYY")}</span>
@@ -76,26 +78,25 @@ let columns = [
     }, {
         Header: Resources['approvalStatus'][currentLanguage],
         accessor: 'approvalStatusName',
-        width: '60px',
+        width: 120
     }, {
         Header: Resources['progressPercent'][currentLanguage],
         accessor: 'progressPercent',
-        width: '60px',
+        width: 120
     }, {
         Header: Resources['comment'][currentLanguage],
         accessor: 'cycleComment',
-        width: '80px',
+        width: 120
     }
 ]
 
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
-let isApproveMode = 0;
+let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
-let arrange = 0;
-const _ = require('lodash')
+let arrange = 0; 
 class inspectionRequestAddEdit extends Component {
 
     constructor(props) {
@@ -330,7 +331,7 @@ class inspectionRequestAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -380,7 +381,7 @@ class inspectionRequestAddEdit extends Component {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
                 if (disciplineId) {
-                    discpline = _.find(result, function (i) { return i.value == disciplineId; });
+                    discpline = find(result, function (i) { return i.value == disciplineId; });
 
                     this.setState({
                         selectedDiscpline: discpline
@@ -397,7 +398,7 @@ class inspectionRequestAddEdit extends Component {
                 let approvalStatusId = this.state.documentCycle.approvalStatusId;
                 let approvalStatus = {};
                 if (approvalStatusId) {
-                    approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
+                    approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
 
                     this.setState({
                         selectedApprovalStatusId: approvalStatus
@@ -414,7 +415,7 @@ class inspectionRequestAddEdit extends Component {
                 let areaId = this.props.document.areaId;
                 let area = {};
                 if (areaId) {
-                    area = _.find(result, function (i) { return i.value == areaId; });
+                    area = find(result, function (i) { return i.value == areaId; });
 
                     this.setState({
                         selecetedArea: area
@@ -431,7 +432,7 @@ class inspectionRequestAddEdit extends Component {
                 let buildingno = this.props.document.buildingNoId;
                 let building = {};
                 if (buildingno) {
-                    building = _.find(result, function (i) { return i.value == buildingno; });
+                    building = find(result, function (i) { return i.value == buildingno; });
                     this.setState({
                         selectedbuildingno: building
                     });
@@ -447,7 +448,7 @@ class inspectionRequestAddEdit extends Component {
                 let reasonForIssueId = this.props.document.reasonForIssueId;
                 let reasonForIssue = {};
                 if (reasonForIssueId) {
-                    reasonForIssue = _.find(result, function (i) { return i.value == reasonForIssueId; });
+                    reasonForIssue = find(result, function (i) { return i.value == reasonForIssueId; });
                     this.setState({
                         selectedReasonForIssue: reasonForIssue
                     });
@@ -463,7 +464,7 @@ class inspectionRequestAddEdit extends Component {
                 let apartmentNoId = this.props.document.apartmentNoId;
                 let apartmentNo = {};
                 if (apartmentNoId) {
-                    apartmentNo = _.find(result, function (i) { return i.value == apartmentNoId; });
+                    apartmentNo = find(result, function (i) { return i.value == apartmentNoId; });
                     this.setState({
                         selectedApartmentNoId: apartmentNo
                     });

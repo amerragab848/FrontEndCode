@@ -22,6 +22,8 @@ import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
+import find from"lodash/find";
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
@@ -37,7 +39,6 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require("lodash");
 
 class ProposalAddEdit extends Component {
 
@@ -209,7 +210,7 @@ class ProposalAddEdit extends Component {
     dataservice.GetDataList(action, "contactName", "id").then(result => {
       if (this.props.changeStatus === true) {
         let toSubField = this.state.document[subField];
-        let targetFieldSelected = _.find(result, function (i) {
+        let targetFieldSelected = find(result, function (i) {
           return i.value == toSubField;
         }); 
         this.setState({
