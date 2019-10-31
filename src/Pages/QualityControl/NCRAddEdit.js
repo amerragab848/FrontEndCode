@@ -356,7 +356,7 @@ class NCRAddEdit extends Component {
             }
             this.setState({
                 companies: [...result],
-                Loading:false
+                //Loading:false
             });
         });
 
@@ -568,7 +568,7 @@ class NCRAddEdit extends Component {
             this.setState({ activityIRList: [...result],Loading:false });
         });
         dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
-           if(docId){
+           if(docId > 0){
                let conId=this.props.document.contractId;
                let con={};
                if(conId){
