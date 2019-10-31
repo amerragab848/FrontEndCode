@@ -315,22 +315,7 @@ class ClaimsAddEdit extends Component {
             });
         });
 
-        // dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
-        //     if (isEdit) {
-        //         let disciplineId = this.props.document.disciplineId;
-        //         let discpline = {};
-        //         if (disciplineId) {
-        //             discpline = _.find(result, function (i) { return i.value == disciplineId; });
-
-        //             this.setState({
-        //                 selectedDiscpline: discpline
-        //             });
-        //         }
-        //     }
-        //     this.setState({
-        //         discplines: [...result]
-        //     });
-        // });
+      
 
 
 

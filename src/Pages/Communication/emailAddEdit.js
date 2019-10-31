@@ -203,30 +203,7 @@ class emailAddEdit extends Component {
         });
     }
 
-    // fillDropDowns(isEdit) {
-    //     dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
-    //         if (isEdit) {
-    //             let companyId = this.props.document.fromCompanyId;
-    //             if (companyId) {
-    //                 this.setState({
-    //                     selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
-    //                 });
-    //                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
-    //             }
-    //             let toCompanyId = this.props.document.toCompanyId;
-    //             if (toCompanyId) {
-    //                 this.setState({
-    //                     selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
-    //                 });
-
-    //                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
-    //             }
-    //         }
-    //         this.setState({
-    //             companies: [...result]
-    //         });
-    //     });
-    // }
+   
 
 
 
