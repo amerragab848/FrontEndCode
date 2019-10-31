@@ -169,14 +169,29 @@ class phoneAddEdit extends Component {
                 this.updateSelectedValue(value, 'toCompanyName', 'toCompanyId', 'selectedToCompany')
                 break;
             case 'fromContact':
-                this.setState({ isLoading: true })
+                this.setState({ isLoading: false })
+
                 this.updateSelectedValue(value, 'fromContactName', 'fromContactId', 'selectedFromContact')
-                Api.get('GetNextArrangeMainDoc?projectId=' + this.state.projectId + '&docType=' + this.state.docTypeId + '&companyId=' + this.state.selectedFromCompany.value + '&contactId=' + this.state.selectedFromContact.value).then(res => {
-                    this.setState({ phone: { ...this.state.phone, arrange: res }, isLoading: false })
-                })
+
                 break;
             case 'toContact':
+                let original_document = { ...this.state.phone };
+                let updated_document = {};
+
                 this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
+
+                let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.selectedFromCompany.value + "&fromContactId=" + this.state.selectedFromContact.value + "&toCompanyId=" + this.state.selectedToCompany.value + "&toContactId=" + this.state.selectedToContact.value;
+
+                DataService.GetRefCodeArrangeMainDoc(url).then(res => {
+                    updated_document.arrange = res.arrange;
+                    updated_document.refDoc = res.refCode;
+
+                    updated_document = Object.assign(original_document, updated_document);
+
+                    this.setState({
+                        phone: updated_document
+                    });
+                })
                 break;
             default:
                 this.setState({ phone: { ...this.state.phone, [key]: value } })
@@ -415,7 +430,7 @@ class phoneAddEdit extends Component {
                                                     <label className="control-label">{Resources['arrange'][currentLanguage]} </label>
                                                     <div className={'ui input inputDev '}>
                                                         <input name='arrange' className="form-control" id="arrange" placeholder={Resources['arrange'][currentLanguage]} autoComplete='off'
-                                                            readOnly defaultValue={this.state.phone.arrange} onChange={e => this.handleChange('arrange', e.target.value)} />
+                                                            readOnly defaultValue={this.state.phone.arrange} value = {this.state.phone.arrange} onChange={e => this.handleChange('arrange', e.target.value)} />
                                                     </div>
                                                 </div>
                                                 <div className="linebylineInput valid-input linebylineInput__name">

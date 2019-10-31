@@ -369,7 +369,7 @@ class GlobalSearch extends Component {
 
                 <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
 
-                    <div className="filter__input-wrapper" onMouseLeave={this.resetDate}>
+                    <div className="filter__input-wrapper" >
                         <div id="signupForm1" className="proForm" >
                             <div className="letterFullWidth multiDrop">
                                 <div className="form-group linebylineInput  multiChoice" style={{ maxWidth: '660px', marginBottom: '16px' }}>
@@ -393,7 +393,7 @@ class GlobalSearch extends Component {
                                 <label className="control-label" >
                                     {Resources.docDate[currentLanguage]}
                                 </label>
-                                <div className="ui input inputDev" style={{ position: "relative", display: "inline-block" }}  >
+                                <div  className="ui input inputDev"  style={{ position: "relative", display: "inline-block" }} onMouseLeave={this.resetDate} >
                                     <input type="text" autoComplete="off" placeholder={Resources.docDate[currentLanguage]} value={this.state.filterDate}
                                         onClick={() => this.changeDate()} />
                                     {this.state.showDate ?

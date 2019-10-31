@@ -243,7 +243,7 @@ export default class IndexedDb {
         };
     }
 
-    static async getATypes() {
+    static async getTypes() {
         let types = await db.select().from(tables.widgetType).exec();
 
         for (let index = 0; index < types.length; index++) {

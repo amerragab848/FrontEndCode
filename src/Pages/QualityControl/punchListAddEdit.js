@@ -32,7 +32,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
-let isApproveMode = 0;
+let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
