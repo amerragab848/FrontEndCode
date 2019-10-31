@@ -1,36 +1,36 @@
+import CryptoJS from "crypto-js";
+import { Form, Formik } from "formik";
+import moment from "moment";
 import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
-import { Formik, Form } from "formik";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import SkyLight from "react-skylight";
+import ReactTable from "react-table";
+import "react-table/react-table.css";
+import { toast } from "react-toastify";
+import { bindActionCreators } from "redux";
 import * as Yup from "yup";
-import dataservice from "../../Dataservice";
+import Api from "../../api";
+import DatePicker from "../../Componants/OptionsPanels/DatePicker";
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
+import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import Resources from "../../resources.json";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as communicationActions from "../../store/actions/communication";
-import Config from "../../Services/Config.js";
-import CryptoJS from "crypto-js";
-import moment from "moment";
-import SkyLight from "react-skylight";
-import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
-import DatePicker from "../../Componants/OptionsPanels/DatePicker";
-import { toast } from "react-toastify";
-import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-import Api from "../../api";
-import ReactTable from "react-table";
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-import "react-table/react-table.css";
-import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Steps from "../../Componants/publicComponants/Steps";
-import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
-import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import dataservice from "../../Dataservice";
+import Resources from "../../resources.json";
+import Config from "../../Services/Config.js";
+import * as communicationActions from "../../store/actions/communication";
+import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 
+ 
 let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
 const actionPanel = {
     control: (styles, { isFocused }) => ({
@@ -122,7 +122,6 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
-const _ = require("lodash");
 var steps_defination = [];
 steps_defination = [
     { name: "siteRequest", callBackFn: null },
@@ -672,12 +671,7 @@ class materialRequestAddEdit extends Component {
     fillDropDowns(isEdit) {
         this.setState({ isLoading: true });
         dataservice
-            .GetDataListCached(
-                "GetProjectProjectsCompaniesForList?projectId=" +
-                this.state.projectId,
-                "companyName",
-                "companyId", 'companies', this.state.projectId, "projectId"
-            )
+            .GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId")
             .then(result => {
                 if (isEdit) {
                     let companyId = this.props.document.companyId;
@@ -697,12 +691,7 @@ class materialRequestAddEdit extends Component {
             });
         this.setState({ isLoading: true });
         dataservice
-            .GetDataList(
-                "GetContractsBoqShowInSiteRequest?projectId=" +
-                this.state.projectId,
-                "subject",
-                "id"
-            )
+            .GetDataList("GetContractsBoqShowInSiteRequest?projectId=" + this.state.projectId, "subject", "id")
             .then(result => {
                 if (isEdit) {
                     let boqId = this.props.document.boqId;
