@@ -22,6 +22,7 @@ import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 
+import find from "lodash/find";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
@@ -38,6 +39,16 @@ let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
+let prevLetterId = 0;
+
+let toCompanyId = 0;
+let fromCompanyId = 0;
+let toContactId = 0;
+let fromContactId = 0;
+let replyFromCompId = 0;
+let replyFromContId = 0;
+let replyToCompId = 0;
+let replyToContId = 0;
 
 class LettersAddEdit extends Component {
     constructor(props) {
@@ -59,6 +70,11 @@ class LettersAddEdit extends Component {
                     docApprovalId = obj.docApprovalId;
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
+                    prevLetterId = obj.prevLetterId;
+                    fromCompanyId = obj.replyFromCompId;
+                    fromContactId = obj.replyFromContId;
+                    toCompanyId = obj.replyToCompId;
+                    toContactId = obj.replyToContactId;
                 } catch {
                     this.props.history.goBack();
                 }
@@ -67,6 +83,10 @@ class LettersAddEdit extends Component {
         }
 
         this.state = {
+            tCompanyId: toCompanyId,
+            frmCompanyId: fromCompanyId,
+            tContactId: toContactId,
+            frmContactId: fromContactId,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -117,7 +137,6 @@ class LettersAddEdit extends Component {
                 value: "0"
             },
             message: "",
-
             selectedWorkFlow: { label: "select WorkFlow", value: 0 },
             selectedApproveId: { label: "select To Contact", value: 0 },
             submitLoading: false,
@@ -174,11 +193,11 @@ class LettersAddEdit extends Component {
                 id: 0,
                 projectId: this.props.projectId,
                 arrange: "",
-                fromCompanyId: "",
-                fromContactId: "",
-                toCompanyId: "",
-                toContactId: "",
-                replayId: "",
+                fromCompanyId: replyFromCompId || "",
+                fromContactId: replyFromContId || "",
+                toCompanyId: replyToCompId || "",
+                toContactId: replyToContId || "",
+                replayId: prevLetterId != null ? prevLetterId : "",
                 docDate: moment().format("YYYY-MM-DD"),
                 status: true,
                 disciplineId: "",
@@ -187,15 +206,20 @@ class LettersAddEdit extends Component {
                 message: "",
                 workFlowId: "",
                 toAccountId: ""
-            };
-            this.setState({ document: letter });
 
-            this.fillDropDowns(false);
+            };
+
+            this.fillDropDowns(false, () => {
+                this.setState({ document: letter });
+            });
+
             this.props.actions.documentForAdding();
         }
 
         this.checkDocumentIsView();
+
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
                 links[i].classList.add("even");
@@ -264,15 +288,9 @@ class LettersAddEdit extends Component {
         }
     }
 
-    fillSubDropDownInEdit(
-        url,
-        param,
-        value,
-        subField,
-        subSelectedValue,
-        subDatasource
-    ) {
+    fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource, toProps) {
         let action = url + "?" + param + "=" + value;
+
         dataservice.GetDataList(action, "contactName", "id").then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
@@ -283,20 +301,42 @@ class LettersAddEdit extends Component {
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
                 });
+            } else {
+                if (prevLetterId) {
+
+                    let state = { ...this.state };
+                    console.log(state[toProps], toProps,result);
+                    let toSubField = state[toProps];
+                    let targetFieldSelected = find(result, function (item) { return item.value == state[toProps]; });
+
+                    console.log(state[toProps], toProps, targetFieldSelected);
+                    let original_document = { ...this.state.document };
+                    let updated_document = {};
+                    updated_document[subField] = state[toProps];
+                    updated_document = Object.assign(original_document, updated_document);
+
+                    this.setState({
+                        document: updated_document,
+                        [subSelectedValue]: targetFieldSelected,
+                        [subDatasource]: result
+                    });
+                }
             }
         });
     }
 
-    fillDropDowns(isEdit) {
-        if (isEdit === false) {
+    fillDropDowns(isEdit, cb) {
+        if (!isEdit) {
             dataservice.GetDataList("ProjectWorkFlowGetList?projectId=" + this.state.projectId, "subject", "id").then(result => {
                 this.setState({
                     WorkFlowData: [...result]
                 });
             });
         }
+
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
+
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
                     this.setState({
@@ -320,7 +360,30 @@ class LettersAddEdit extends Component {
                     this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts"
                     );
                 }
+            } else {
+                if (fromCompanyId && toCompanyId) {
+                    let fromCompany = find(result, function (item) { return item.value == fromCompanyId });
+                    let toCompany = find(result, function (item) { return item.value == toCompanyId });
+
+                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", fromCompanyId, "fromContactId", "selectedFromContact", "fromContacts", "frmContactId");
+
+                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts", "tContactId");
+                
+                    this.setState({
+                        selectedFromCompany: {
+                            label: fromCompany.label,
+                            value: fromCompanyId
+                        },
+                        selectedToCompany: {
+                            label: toCompany.label,
+                            value: toCompanyId
+                        }
+                    }, () => {
+                        cb();
+                    });
+                }
             }
+
             this.setState({
                 companies: [...result]
             });
@@ -351,11 +414,22 @@ class LettersAddEdit extends Component {
                     let replyId = this.props.document.replyId;
                     let replyLetter = {};
                     if (replyId) {
-                        replyLetter = result.filter(function (i) {
-                            return i.value == replyId;
-                        });
+                        replyLetter = find(result, function (item) { return item.value == replyId });
                         this.setState({
                             selectedReplyLetter: replyLetter
+                        });
+                    }
+                } else {
+                    let replyId = prevLetterId ? prevLetterId : null;
+                    let replyLetter = {};
+
+                    if (replyId) {
+                        replyLetter = find(result, function (item) { return item.value == replyId });
+                        this.setState({
+                            selectedReplyLetter: {
+                                label: replyLetter.label,
+                                value: replyId
+                            }
                         });
                     }
                 }
@@ -425,12 +499,12 @@ class LettersAddEdit extends Component {
         });
 
         if (field == "toContactId") {
-            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
 
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                 updated_document.arrange = res.arrange;
                 updated_document.refDoc = res.refCode;
-                
+
                 updated_document = Object.assign(
                     original_document,
                     updated_document
@@ -469,6 +543,37 @@ class LettersAddEdit extends Component {
             });
     }
 
+    async replyNewLetter() {
+
+        if (Config.IsAllow(48)) {
+
+            let addView = "LettersAddEdit";
+
+            let obj = {
+                docId: 0,
+                prevLetterId: this.state.docId,
+                replyFromCompId: this.state.document.fromCompanyId,
+                replyFromContId: this.state.document.fromContactId,
+                replyToCompId: this.state.document.toCompanyId,
+                replyToContactId: this.state.document.toContactId,
+                projectId: this.props.document.projectId,
+                projectName: this.state.document.projectName,
+                arrange: 0,
+                docApprovalId: 0,
+                isApproveMode: false,
+                perviousRoute: window.location.pathname + window.location.search
+            };
+
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+            var url = addView + "?id=" + encodedPaylod;
+            var win = window.open(url, '_blank');
+
+            win.focus();
+        }
+    }
     saveLetter(event) {
         this.setState({
             isLoading: true
@@ -739,13 +844,20 @@ class LettersAddEdit extends Component {
                                                                     this.handleChangeDropDown(event, "disciplineId", false, "", "", "", "selectedDiscpline")
                                                                 } index="letter-discipline" />
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput valid-input" style={{ position: 'relative' }}>
                                                             <Dropdown title="replyletter"
                                                                 data={this.state.letters}
                                                                 selectedValue={this.state.selectedReplyLetter}
                                                                 handleChange={event =>
                                                                     this.handleChangeDropDown(event, "replyId", false, "", "", "", "selectedReplyLetter")
                                                                 } index="letter-replyId" />
+                                                            {this.props.changeStatus === true ?
+                                                                <i onClick={() => this.replyNewLetter()}
+                                                                    style={{ position: 'absolute', right: '0', cursor: 'pointer', top: '27px', fontSize: '15px', color: '#5E6475' }}
+                                                                    class="fa fa-reply" aria-hidden="true">
+                                                                </i>
+                                                                : null
+                                                            }
                                                         </div>
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">
@@ -854,7 +966,7 @@ class LettersAddEdit extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         );
     }
 }
