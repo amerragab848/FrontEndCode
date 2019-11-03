@@ -932,15 +932,12 @@ class materialInspectionRequestAddEdit extends Component {
     render() {
 
         return (
-            <div className="mainContainer">
-
+            <div className="mainContainer"> 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
                         docTitle={Resources.materialInspectionRequest[currentLanguage]}
-                        moduleTitle={Resources['qualityControl'][currentLanguage]} />
-
-                    <div className="doc-container">
-
+                        moduleTitle={Resources['qualityControl'][currentLanguage]} /> 
+                    <div className="doc-container"> 
                         <div className="step-content">
                             {this.state.CurrentStep == 0 ?
                                 <Fragment>

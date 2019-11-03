@@ -16,8 +16,7 @@ import CryptoJS from 'crypto-js';
 import moment from "moment";
 import * as communicationActions from '../../store/actions/communication';
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import { toast } from "react-toastify";
-import Api from '../../api'
+import { toast } from "react-toastify";  
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
@@ -27,8 +26,7 @@ import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    // refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]), 
     fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
     toContact: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
     reportType: Yup.string().required(Resources['reportTypeRequired'][currentLanguage])
@@ -308,7 +306,9 @@ class reportsAddEdit extends Component {
         
                         dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                             updated_document.arrange = res.arrange;
-                            updated_document.refDoc = res.refCode;
+                            if (Config.getPublicConfiguartion().refAutomatic === true) {
+                                updated_document.refDoc = res.refCode;
+                            } 
         
                             updated_document = Object.assign(original_document, updated_document);
         

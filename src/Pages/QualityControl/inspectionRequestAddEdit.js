@@ -25,7 +25,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
-import find from"lodash/find";
+import find from "lodash/find";
 
 var steps_defination = [];
 
@@ -96,7 +96,7 @@ let projectName = 0;
 let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
-let arrange = 0; 
+let arrange = 0;
 class inspectionRequestAddEdit extends Component {
 
     constructor(props) {
@@ -172,9 +172,7 @@ class inspectionRequestAddEdit extends Component {
 
         if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push(
-                this.state.perviousRoute
-            );
+            this.props.history.push(this.state.perviousRoute);
         }
         this.newCycle = this.newCycle.bind(this);
         this.editCycle = this.editCycle.bind(this);
@@ -664,7 +662,7 @@ class inspectionRequestAddEdit extends Component {
         saveDocument.disciplineId = this.state.document.disciplineId;
         saveDocument.flowCompanyId = this.state.document.bicCompanyId;
         saveDocument.flowContactId = this.state.document.bicContactId;
-        saveDocument.status = saveDocument.status == null ? true : false;
+        saveDocument.cycleStatus = saveDocument.status == null ? true : saveDocument.status;
         saveDocument.subject = values.subject;
 
         let api = saveDocument.typeAddOrEdit === "Edit" ? 'EditInspectionRequestCycle' : 'AddInspectionRequestCycleOnly';
@@ -696,8 +694,12 @@ class inspectionRequestAddEdit extends Component {
                     let index = IRCycles.findIndex(x => x.id === saveDocument.id);
 
                     IRCycles.splice(index, 1);
-
-                    IRCycles.push(result);
+                    if (this.props.changeStatus === false ) {
+                        IRCycles = [];
+                        IRCycles.push(result);
+                    } else {
+                        IRCycles.push(result);
+                    }
                 } else {
                     IRCycles.push(result);
                 }
@@ -770,10 +772,7 @@ class inspectionRequestAddEdit extends Component {
     AddNewCycle() {
         return (
             <Fragment>
-                <Formik
-                    initialValues={{ ...this.state.documentCycle }}
-                    validationSchema={documentCycleValidationSchema}
-                    enableReinitialize={true}
+                <Formik initialValues={{ ...this.state.documentCycle }} validationSchema={documentCycleValidationSchema} enableReinitialize={true}
                     onSubmit={(values) => {
                         this.saveInspectionRequestCycle(values)
                     }}>
@@ -899,7 +898,7 @@ class inspectionRequestAddEdit extends Component {
                         docTitle={Resources.inspectionRequest[currentLanguage]} moduleTitle={Resources['qualityControl'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            {this.state.CurrentStep == 0 ?
+                            {this.state.CurrentStep === 0 ?
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
                                         <div className="subiTabsContent">
@@ -919,7 +918,6 @@ class inspectionRequestAddEdit extends Component {
                                                         else if (this.props.changeStatus === false && this.state.docId > 0)
                                                             this.changeCurrentStep(1);
                                                     }}>
-
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                         <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                             <div className="proForm first-proform">

@@ -328,7 +328,6 @@ class punchListAddEdit extends Component {
             )
             this.GetMaxArrageItem()
 
-
         } else {
             let cmi = Config.getPayload().cmi
             let cni = Config.getPayload().cni
@@ -1116,8 +1115,6 @@ class punchListAddEdit extends Component {
 
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit}>
-
-
                             <div className="documents-stepper noTabs__document">
                                 <div className="doc-container">
                                     <div className="step-content">

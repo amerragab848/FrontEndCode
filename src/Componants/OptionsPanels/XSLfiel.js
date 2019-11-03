@@ -46,6 +46,7 @@ class XSLfile extends Component {
         }, 500)
         this.setState({ acceptedFiles })
     }
+
     upload = () => {
         if (this.state.acceptedFiles.length > 0) {
             let formData = new FormData();
@@ -104,8 +105,7 @@ class XSLfile extends Component {
         return (
             <div className="doc-pre-cycle">
                 <header><h2 className="zero">{this.state.header ? Resources[this.state.header][currentLanguage] : ''}</h2></header>
-                <div style={{ position: 'relative' }}>
-                   
+                <div style={{ position: 'relative' }}> 
                         <React.Fragment>
                             {this.props.CantDownload ? null :
                                 <div className="fileDownUp">
@@ -121,11 +121,7 @@ class XSLfile extends Component {
                                 onDropRejected={this.onDropRejected} >
                                 {({ getRootProps, getInputProps, isDragActive }) => {
                                     return (
-                                        <div
-                                            {...getRootProps()}
-                                            className={classNames('dropzone', { 'dropzone--isActive': isDragActive })}
-                                        >
-
+                                        <div {...getRootProps()} className={classNames('dropzone', { 'dropzone--isActive': isDragActive })}>
                                             <input {...getInputProps()} />
                                             {
                                                 <div className={"uploadForm" + " " + this.state._className}>

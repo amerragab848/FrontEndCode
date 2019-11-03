@@ -183,6 +183,7 @@ class requestPaymentsAddEdit extends Component {
                 { label: "Edit Advanced Payment Amount", value: "5" },
                 { label: "Calculate Interim Invoice", value: "6" },
                 { label: "Add Deductions", value: "7" },
+                { label: "Update Advance Payment Amount", value: "8" }
             ],
             selectedDropDownTrees: { label: Resources.codingTree[currentLanguage], value: "0" },
             selectedPercentageStatus: { label: Resources.percentageStatus[currentLanguage], value: "0" },
@@ -1646,7 +1647,13 @@ class requestPaymentsAddEdit extends Component {
                 this.setState({
                     addDeducation: true
                 });
-
+                break;
+            case "8":
+                dataservice.GetDataGrid("UpdateAdvancedPaymentAmount?requestPaymentId=" + this.state.docId).then(result => {
+                    toast.success(Resources["operationSuccess"][currentLanguage]);
+                }).catch(res => {
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
+                });
                 break;
         }
 
@@ -3195,9 +3202,14 @@ class requestPaymentsAddEdit extends Component {
                                 </Fragment>
                             ) : null}
                         </div>
-                        <Steps steps_defination={steps_defination} exist_link="/requestPayments/" docId={this.state.docId}
+                        <Steps
+                            steps_defination={steps_defination}
+                            exist_link="/requestPayments/"
+                            docId={this.state.docId}
                             changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
-                            stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true} />
+                            stepNo={this.state.currentStep}
+                            changeStatus={docId === 0 ? false : true} />
+                            
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
