@@ -312,7 +312,7 @@ class drawingListAddEdit extends Component {
     }
 
     FillDrowDowns = () => {
-        dataservice.GetDataList('GetAccountsDefaultList?listType=project_type&pageNumber=0&pageSize=10000', 'title', 'id').then(
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=project_type', 'title', 'id', 'defaultLists', "project_type", "listType").then(
             result => {
                 this.setState({
                     ProjectDropData: result,

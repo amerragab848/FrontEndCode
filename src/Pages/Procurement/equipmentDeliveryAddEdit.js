@@ -259,7 +259,7 @@ class equipmentDeliveryAddEdit extends Component {
             this.setState({ contractPoData: [...result] })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=equipmentcode&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataList('GetAccountsDefaultListForList?listType=equipmentcode', 'title', 'id','defaultLists', "equipmentcode", "listType").then(result => {
             if (isEdit) {
                 let id = this.props.document.equipmentCodeId;
                 let selectedValue = {};

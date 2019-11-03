@@ -862,10 +862,11 @@ class PurchaseOrderAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=estimationitemtype",
                 "title",
-                "action"
+                "action",
+                 'defaultLists', "estimationitemtype", "listType"
             )
             .then(result => {
                 this.setState({
@@ -874,10 +875,10 @@ class PurchaseOrderAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=specssection&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=specssection",
                 "title",
-                "id"
+                "id",'defaultLists', "specssection", "listType"
             )
             .then(result => {
                 this.setState({
@@ -886,10 +887,10 @@ class PurchaseOrderAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=equipmentType",
                 "title",
-                "id"
+                "id",'defaultLists', "equipmentType", "listType"
             )
             .then(result => {
                 this.setState({
@@ -898,10 +899,10 @@ class PurchaseOrderAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=unit&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=unit",
                 "title",
-                "id"
+                "id",'defaultLists', "unit", "listType"
             )
             .then(result => {
                 this.setState({
