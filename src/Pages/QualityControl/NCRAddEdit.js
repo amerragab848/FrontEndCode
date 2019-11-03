@@ -288,21 +288,13 @@ class NCRAddEdit extends Component {
         }
     }
 
-   
-
-
-
-
-
-
-
-
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+               
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -313,7 +305,7 @@ class NCRAddEdit extends Component {
 
 
     FillDropDowns=()=> {
-        console.log("document "+JSON.stringify(this.props.document));
+       
 
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
@@ -568,7 +560,8 @@ class NCRAddEdit extends Component {
             this.setState({ activityIRList: [...result],Loading:false });
         });
         dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
-           if(docId > 0){
+           if(docId){
+               
                let conId=this.props.document.contractId;
                let con={};
                if(conId){
@@ -579,23 +572,25 @@ class NCRAddEdit extends Component {
                        });
                    }
                }
-           }
+           }else{
             this.setState({
-              contractsPos: [...result],
-              Loading:false
-            });
+                contractsPos: [...result],
+                Loading:false
+              });
+           }
+           
         });
 
 
 
 
-        if (this.state.IsEditMode === false) {
-            dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-                this.setState({
-                    contractsPos: [...result]
-                });
-            });
-        }
+        // if (this.state.IsEditMode === false) {
+        //     dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+        //         this.setState({
+        //             contractsPos: [...result]
+        //         });
+        //     });
+        // }
 
 
 
