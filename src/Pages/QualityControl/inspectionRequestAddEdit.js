@@ -172,9 +172,7 @@ class inspectionRequestAddEdit extends Component {
 
         if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push(
-                this.state.perviousRoute
-            );
+            this.props.history.push(this.state.perviousRoute);
         }
         this.newCycle = this.newCycle.bind(this);
         this.editCycle = this.editCycle.bind(this);
@@ -774,10 +772,7 @@ class inspectionRequestAddEdit extends Component {
     AddNewCycle() {
         return (
             <Fragment>
-                <Formik
-                    initialValues={{ ...this.state.documentCycle }}
-                    validationSchema={documentCycleValidationSchema}
-                    enableReinitialize={true}
+                <Formik initialValues={{ ...this.state.documentCycle }} validationSchema={documentCycleValidationSchema} enableReinitialize={true}
                     onSubmit={(values) => {
                         this.saveInspectionRequestCycle(values)
                     }}>
@@ -903,7 +898,7 @@ class inspectionRequestAddEdit extends Component {
                         docTitle={Resources.inspectionRequest[currentLanguage]} moduleTitle={Resources['qualityControl'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            {this.state.CurrentStep == 0 ?
+                            {this.state.CurrentStep === 0 ?
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
                                         <div className="subiTabsContent">
@@ -923,7 +918,6 @@ class inspectionRequestAddEdit extends Component {
                                                         else if (this.props.changeStatus === false && this.state.docId > 0)
                                                             this.changeCurrentStep(1);
                                                     }}>
-
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                         <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                             <div className="proForm first-proform">
