@@ -214,44 +214,7 @@ class InternalMemoAddEdit extends Component {
                 });
             }
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-    }
-
-    // fillDropDowns(isEdit) {
-    //     //from Companies
-    //     dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
-
-    //         if (isEdit) {
-
-    //             let companyId = this.props.document.fromCompanyId;
-
-    //             if (companyId) {
-    //                 this.setState({
-    //                     selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
-    //                 });
-    //                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
-    //             }
-
-    //             let toCompanyId = this.props.document.toCompanyId;
-
-    //             if (toCompanyId) {
-
-    //                 this.setState({
-    //                     selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
-    //                 });
-
-    //                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
-    //             }
-    //         }
-    //         this.setState({
-    //             companies: [...result]
-    //         });
-    //     }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-    // }
-
-
-
-
-
+    } 
 
     fillDropDowns(isEdit) {
         //from Companies
@@ -284,13 +247,7 @@ class InternalMemoAddEdit extends Component {
             });
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
-
-
-
-
-
-
-
+ 
     onChangeMessage = (value, field) => {
 
         if (value != null) {
@@ -355,7 +312,9 @@ class InternalMemoAddEdit extends Component {
             let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
              dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                 updated_document.arrange = res.arrange;
-                updated_document.refDoc = res.refCode;
+                if (Config.getPublicConfiguartion().refAutomatic === true) {
+                    updated_document.refDoc = res.refCode;
+                }
 
                 updated_document = Object.assign(original_document, updated_document);
 
@@ -438,8 +397,7 @@ class InternalMemoAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
-
-
+ 
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({

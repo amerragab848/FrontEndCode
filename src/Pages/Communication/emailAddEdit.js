@@ -201,35 +201,7 @@ class emailAddEdit extends Component {
                 });
             }
         });
-    }
-
-    // fillDropDowns(isEdit) {
-    //     dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
-    //         if (isEdit) {
-    //             let companyId = this.props.document.fromCompanyId;
-    //             if (companyId) {
-    //                 this.setState({
-    //                     selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
-    //                 });
-    //                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
-    //             }
-    //             let toCompanyId = this.props.document.toCompanyId;
-    //             if (toCompanyId) {
-    //                 this.setState({
-    //                     selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
-    //                 });
-
-    //                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
-    //             }
-    //         }
-    //         this.setState({
-    //             companies: [...result]
-    //         });
-    //     });
-    // }
-
-
-
+    } 
 
     fillDropDowns(isEdit) {
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
@@ -254,10 +226,7 @@ class emailAddEdit extends Component {
                 companies: [...result]
             });
         });
-    }
-
-
-
+    } 
     onChangeMessage = (value) => {
         if (value != null) {
             this.setState({ message: value });
@@ -303,7 +272,9 @@ class emailAddEdit extends Component {
             let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                 updated_document.arrange = res.arrange;
-                updated_document.refDoc = res.refCode;
+                if (Config.getPublicConfiguartion().refAutomatic === true) {
+                    updated_document.refDoc = res.refCode;
+                }
 
                 updated_document = Object.assign(original_document, updated_document);
                 this.setState({

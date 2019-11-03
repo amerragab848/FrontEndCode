@@ -397,7 +397,7 @@ class invoicesForPoAddEdit extends Component {
                 });
             })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=transactiontype&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=transactiontype', 'title', 'id', 'defaultLists', "transactiontype", "listType").then(result => {
             if (isEdit) {
                 let id = this.props.document.transactionType;
                 let selectedValue = {};

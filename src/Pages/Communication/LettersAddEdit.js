@@ -505,6 +505,10 @@ class LettersAddEdit extends Component {
                 updated_document.arrange = res.arrange;
                 updated_document.refDoc = res.refCode;
 
+                if (Config.getPublicConfiguartion().refAutomatic === true) {
+                    updated_document.refDoc = res.refCode;
+                }
+                
                 updated_document = Object.assign(
                     original_document,
                     updated_document

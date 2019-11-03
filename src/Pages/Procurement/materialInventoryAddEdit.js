@@ -502,7 +502,7 @@ class MaterialInventoryAddEdit extends Component {
 
     fillDropDowns(isEdit) {
 
-        dataservice.GetDataList("GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=discipline", 'title', 'id', 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
@@ -519,7 +519,7 @@ class MaterialInventoryAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetAccountsDefaultList?listType=specssection&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=specssection", 'title', 'id', 'defaultLists', "specssection", "listType").then(result => {
             if (isEdit) {
                 let specsSectionId = this.props.document.specsSectionId;
                 let specsSection = {};

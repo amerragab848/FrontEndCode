@@ -480,10 +480,10 @@ class bogAddEdit extends Component {
             this.setState({ Companies: [...res], isLoading: false });
         });
 
-        DataService.GetDataList(
-            "GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000",
+        DataService.GetDataListCached(
+            "GetAccountsDefaultListForList?listType=discipline",
             "title",
-            "id"
+            "id", 'defaultLists', "discipline", "listType"
         ).then(res => {
             if (isEdit) {
                 let disciplineId = this.state.document.discipline;
@@ -499,10 +499,10 @@ class bogAddEdit extends Component {
 
             this.setState({ Disciplines: [...res], isLoading: false });
         });
-        DataService.GetDataList(
-            "GetAccountsDefaultList?listType=currency&pageNumber=0&pageSize=10000",
+        DataService.GetDataListCached(
+            "GetAccountsDefaultListForList?listType=currency",
             "title",
-            "id"
+            "id", 'defaultLists', "currency", "listType"
         ).then(res => {
             this.setState({ currency: [...res], isLoading: false });
         });
@@ -2718,14 +2718,15 @@ class bogAddEdit extends Component {
                         afterUpload={() => this.getTabelData()}
                     />
                 </Fragment>
-                {this.state.isCompany ? (
-                    <Fragment>
-                        <XSLfile key="boqStructure" docId={this.state.docId} docType="boq2" link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQStructure.xlsx"}
-                            header="addManyItems"
-                            disabled={this.props.changeStatus ? this.props.document.contractId > 0 ? true : false : false}
-                            afterUpload={() => this.getTabelData()} />
-                    </Fragment>
-                ) : null}
+
+                <Fragment>
+                    <XSLfile key="boqStructure" docId={this.state.docId} docType="boq2"
+                        link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQStructure.xlsx"}
+                        header="addManyItems"
+                        disabled={this.props.changeStatus ? this.props.document.contractId > 0 ? true : false : false}
+                        afterUpload={() => this.getTabelData()} />
+                </Fragment>
+
                 <div className="doc-pre-cycle letterFullWidth">
                     <header>
                         <h2 className="zero">
