@@ -3195,9 +3195,14 @@ class requestPaymentsAddEdit extends Component {
                                 </Fragment>
                             ) : null}
                         </div>
-                        <Steps steps_defination={steps_defination} exist_link="/requestPayments/" docId={this.state.docId}
+                        <Steps
+                            steps_defination={steps_defination}
+                            exist_link="/requestPayments/"
+                            docId={this.state.docId}
                             changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
-                            stepNo={this.state.CurrentStep} changeStatus={docId === 0 ? false : true} />
+                            stepNo={this.state.currentStep}
+                            changeStatus={docId === 0 ? false : true} />
+                            
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
