@@ -25,7 +25,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
-import find from"lodash/find";
+import find from "lodash/find";
 
 var steps_defination = [];
 
@@ -96,7 +96,7 @@ let projectName = 0;
 let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
-let arrange = 0; 
+let arrange = 0;
 class inspectionRequestAddEdit extends Component {
 
     constructor(props) {
@@ -662,7 +662,7 @@ class inspectionRequestAddEdit extends Component {
         saveDocument.disciplineId = this.state.document.disciplineId;
         saveDocument.flowCompanyId = this.state.document.bicCompanyId;
         saveDocument.flowContactId = this.state.document.bicContactId;
-        saveDocument.status = saveDocument.status == null ? true : false;
+        saveDocument.cycleStatus = saveDocument.status == null ? true : saveDocument.status;
         saveDocument.subject = values.subject;
 
         let api = saveDocument.typeAddOrEdit === "Edit" ? 'EditInspectionRequestCycle' : 'AddInspectionRequestCycleOnly';
@@ -694,8 +694,12 @@ class inspectionRequestAddEdit extends Component {
                     let index = IRCycles.findIndex(x => x.id === saveDocument.id);
 
                     IRCycles.splice(index, 1);
-
-                    IRCycles.push(result);
+                    if (this.props.changeStatus === false ) {
+                        IRCycles = [];
+                        IRCycles.push(result);
+                    } else {
+                        IRCycles.push(result);
+                    }
                 } else {
                     IRCycles.push(result);
                 }

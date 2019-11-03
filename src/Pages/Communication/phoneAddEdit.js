@@ -184,8 +184,9 @@ class phoneAddEdit extends Component {
 
                 DataService.GetRefCodeArrangeMainDoc(url).then(res => {
                     updated_document.arrange = res.arrange;
-                    updated_document.refDoc = res.refCode;
-
+                    if (Config.getPublicConfiguartion().refAutomatic === true) {
+                        updated_document.refDoc = res.refCode;
+                    }
                     updated_document = Object.assign(original_document, updated_document);
 
                     this.setState({
