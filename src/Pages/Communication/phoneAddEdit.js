@@ -40,6 +40,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 let perviousRoute = 0;
+
 class phoneAddEdit extends Component {
     constructor(props) {
 
@@ -90,13 +91,47 @@ class phoneAddEdit extends Component {
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 965 },
             { name: 'createTransmittal', code: 3051 }, { name: 'sendToWorkFlow', code: 715 },
             { name: 'viewAttachments', code: 3320 }, { name: 'deleteAttachments', code: 834 }],
-            phone: {}
+            phone: { id: 0 }
         }
 
         if (!Config.IsAllow(89) && !Config.IsAllow(90) && !Config.IsAllow(92)) {
             toast.warning(Resources['missingPermissions'][currentLanguage])
             this.props.history.push(this.state.perviousRoute);
         }
+    }
+
+    componentDidMount() {
+        if (this.state.docId > 0) {
+
+            this.props.actions.documentForEdit('GetPhoneById?id=' + this.state.docId, this.state.docTypeId, "phoneTitle")
+
+            this.checkDocumentIsView();
+
+        } else {
+
+            this.fillDropDowns(false);
+
+            let phone = {
+                projectId: projectId,
+                subject: '',
+                arrange: 0,
+                status: true,
+                docDate: moment(),
+                refDoc: '',
+                fromCompanyId: '',
+                fromContactId: '',
+                toCompanyId: '',
+                toContactId: '',
+                details: '',
+                enteredBy: '',
+                callTime: '',
+                toPhone: ''
+            };
+            this.setState({ phone });
+            this.props.actions.documentForAdding()
+        }
+
+        this.checkDocumentIsView();
     }
 
     checkDocumentIsView() {
@@ -204,7 +239,7 @@ class phoneAddEdit extends Component {
         this.setState({
             docId: 0
         });
-    } 
+    }
 
     fillDropDowns(isEdit) {
         DataService.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(res => {
@@ -229,38 +264,6 @@ class phoneAddEdit extends Component {
         })
     }
 
-    componentWillMount() {
-        if (this.state.docId > 0) {
-
-            this.props.actions.documentForEdit('GetPhoneById?id=' + this.state.docId, this.state.docTypeId, "phoneTitle")
-
-            this.checkDocumentIsView();
-
-        } else {
- 
-            this.fillDropDowns(false);
-
-            let phone = {
-                projectId: projectId,
-                subject: '',
-                arrange: 0,
-                status: true,
-                docDate: moment(),
-                refDoc: '',
-                fromCompanyId: '',
-                fromContactId: '',
-                toCompanyId: '',
-                toContactId: '',
-                details: '',
-                enteredBy: '',
-                callTime: '',
-                toPhone: ''
-            };
-            this.setState({ phone });
-            this.props.actions.documentForAdding()
-        }
-    }
-
     showBtnsSaving() {
         let btn = null;
         if (this.state.docId === 0) {
@@ -271,7 +274,11 @@ class phoneAddEdit extends Component {
         return btn;
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+            this.fillDropDowns(this.props.phone.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
 
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
@@ -279,24 +286,18 @@ class phoneAddEdit extends Component {
 
     }
 
-    componentWillReceiveProps(props, state) {
+    static getDerivedStateFromProps(nextProps, state) {
 
-        if (props.document && props.document.id > 0) {
+        if (nextProps.document.id != state.phone.id && nextProps.changeStatus === true) {
 
-            let document = props.document;
+            let phone = nextProps.document;
+            phone.docDate = phone.docDate != null ? moment(phone.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
 
-            document.docDate = document.docDate != null ? moment(document.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-
-            this.setState({
-                phone: { ...document },
+            return {
+                phone,
                 isLoading: false
-            }, function () {
-                this.checkDocumentIsView();
-            });
-
-            this.fillDropDowns(true);
+            }
         }
-
     }
 
     editPhone = () => {
@@ -352,7 +353,6 @@ class phoneAddEdit extends Component {
     }
 
     render() {
-
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
@@ -431,7 +431,7 @@ class phoneAddEdit extends Component {
                                                     <label className="control-label">{Resources['arrange'][currentLanguage]} </label>
                                                     <div className={'ui input inputDev '}>
                                                         <input name='arrange' className="form-control" id="arrange" placeholder={Resources['arrange'][currentLanguage]} autoComplete='off'
-                                                            readOnly defaultValue={this.state.phone.arrange} value = {this.state.phone.arrange} onChange={e => this.handleChange('arrange', e.target.value)} />
+                                                            readOnly defaultValue={this.state.phone.arrange} value={this.state.phone.arrange} onChange={e => this.handleChange('arrange', e.target.value)} />
                                                     </div>
                                                 </div>
                                                 <div className="linebylineInput valid-input linebylineInput__name">
@@ -566,14 +566,13 @@ class phoneAddEdit extends Component {
                     </div>
                 </div>
             </div>
-
         )
     }
-
 }
 function mapStateToProps(state, ownProps) {
     return {
         document: state.communication.document,
+        phone: state.communication.phone,
         isLoading: state.communication.isLoading,
         changeStatus: state.communication.changeStatus,
         file: state.communication.file,

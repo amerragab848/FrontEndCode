@@ -34,7 +34,8 @@ export default {
 			documentData: [],
 			isReject: null,
 			isLoadingFilesUpload: false,
-			totalCost: 0
+			totalCost: 0,
+			phone:{}
 		},
 		expensesWorkFlow: {
 			expensesWorkFlowData: {},

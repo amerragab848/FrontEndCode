@@ -169,7 +169,6 @@ class LettersAddEdit extends Component {
     }
 
     toAccounthandelChangeLetter = (item) => {
-
         let original_document = { ...this.state.document };
         let updated_document = {};
         updated_document.toAccountId = item.value;
@@ -183,7 +182,6 @@ class LettersAddEdit extends Component {
     }
 
     componentDidMount() {
-
         if (this.state.docId > 0) {
             let url = "GetLettersById?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, "lettertitle");
@@ -252,6 +250,7 @@ class LettersAddEdit extends Component {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+        
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
@@ -305,7 +304,7 @@ class LettersAddEdit extends Component {
                 if (prevLetterId) {
 
                     let state = { ...this.state };
-                    console.log(state[toProps], toProps,result);
+                    console.log(state[toProps], toProps, result);
                     let toSubField = state[toProps];
                     let targetFieldSelected = find(result, function (item) { return item.value == state[toProps]; });
 
@@ -368,7 +367,7 @@ class LettersAddEdit extends Component {
                     this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", fromCompanyId, "fromContactId", "selectedFromContact", "fromContacts", "frmContactId");
 
                     this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts", "tContactId");
-                
+
                     this.setState({
                         selectedFromCompany: {
                             label: fromCompany.label,
@@ -508,7 +507,7 @@ class LettersAddEdit extends Component {
                 if (Config.getPublicConfiguartion().refAutomatic === true) {
                     updated_document.refDoc = res.refCode;
                 }
-                
+
                 updated_document = Object.assign(
                     original_document,
                     updated_document
@@ -578,6 +577,7 @@ class LettersAddEdit extends Component {
             win.focus();
         }
     }
+
     saveLetter(event) {
         this.setState({
             isLoading: true
@@ -627,7 +627,6 @@ class LettersAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
-
 
     render() {
         return (

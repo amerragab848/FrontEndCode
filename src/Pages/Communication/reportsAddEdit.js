@@ -16,7 +16,7 @@ import CryptoJS from 'crypto-js';
 import moment from "moment";
 import * as communicationActions from '../../store/actions/communication';
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import { toast } from "react-toastify";  
+import { toast } from "react-toastify";
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
@@ -26,7 +26,7 @@ import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]), 
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
     toContact: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
     reportType: Yup.string().required(Resources['reportTypeRequired'][currentLanguage])
@@ -105,30 +105,60 @@ class reportsAddEdit extends Component {
     }
 
     componentDidMount() {
+        if (this.state.docId > 0) {
+            let url = "GetCommunicationReportForEdit?id=" + this.state.docId
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'Reports').then(() => {
+                this.setState({ isLoading: false })
+            })
+        } else {
+            this.props.actions.documentForAdding()
+            let report = {
+                projectId: this.state.projectId,
+                fromCompanyId: '',
+                fromContactId: '',
+                toCompanyId: '',
+                toContactId: '',
+                subject: '',
+                message: '',
+                docDate: moment(),
+                arrange: '',
+                status: 'true',
+                refDoc: '',
+                reportTypeId: ''
+            };
+            this.setState({ document: report });
+            this.fillDropDowns(false);
+        }
         this.checkDocumentIsView();
     };
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
         // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
 
     }
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document && nextProps.document.id > 0) {
-            this.setState({
-                document: { ...nextProps.document },
+
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+
+            let docDate = state.document.docDate != null ? moment(state.document.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+
+            return {
+                document: { ...nextProps.document, docDate: docDate },
                 hasWorkflow: nextProps.hasWorkflow,
                 selectedReportType: { label: nextProps.document.reportTypeName, value: nextProps.document.reportTypeId },
                 message: nextProps.document.message
-            }, function () {
-                let docDate = this.state.document.docDate != null ? moment(this.state.document.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-                this.setState({ document: { ...this.state.document, docDate: docDate } })
-            });
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
+            };
         }
+
+        return null;
 
     };
 
@@ -164,33 +194,6 @@ class reportsAddEdit extends Component {
         this.props.actions.clearCashDocument();
         this.props.actions.documentForAdding()
     }
-
-    componentWillMount() {
-        if (this.state.docId > 0) {
-            let url = "GetCommunicationReportForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'Reports').then(() => {
-                this.setState({ isLoading: false })
-            })
-        } else {
-            this.props.actions.documentForAdding()
-            let report = {
-                projectId: this.state.projectId,
-                fromCompanyId: '',
-                fromContactId: '',
-                toCompanyId: '',
-                toContactId: '',
-                subject: '',
-                message: '',
-                docDate: moment(),
-                arrange: '',
-                status: 'true',
-                refDoc: '',
-                reportTypeId: ''
-            };
-            this.setState({ document: report });
-            this.fillDropDowns(false);
-        }
-    };
 
     onChangeMessage = (value) => {
         if (value != null) {
@@ -234,7 +237,7 @@ class reportsAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=dailyreporttype", 'title', 'id','defaultLists', "dailyreporttype", "listType").then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=dailyreporttype", 'title', 'id', 'defaultLists', "dailyreporttype", "listType").then(result => {
             this.setState({
                 reportType: [...result],
                 isLoading: false
@@ -290,33 +293,33 @@ class reportsAddEdit extends Component {
                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', value.value, 'toCompanyName', 'toCompanyId', 'selectedToCompany', 'toContacts');
                 this.updateSelectedValue(value, 'toCompanyName', 'toCompanyId', 'selectedToCompany')
                 break;
-                case 'fromContact':
-                        this.setState({ isLoading: false })
-        
-                        this.updateSelectedValue(value, 'fromContactName', 'fromContactId', 'selectedFromContact')
-        
-                        break;
-                    case 'toContact':
-                        let original_document = { ...this.state.document };
-                        let updated_document = {};
-        
-                        this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
-        
-                        let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.selectedFromCompany.value + "&fromContactId=" + this.state.selectedFromContact.value + "&toCompanyId=" + this.state.selectedToCompany.value + "&toContactId=" + this.state.selectedToContact.value;
-        
-                        dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
-                            updated_document.arrange = res.arrange;
-                            if (Config.getPublicConfiguartion().refAutomatic === true) {
-                                updated_document.refDoc = res.refCode;
-                            } 
-        
-                            updated_document = Object.assign(original_document, updated_document);
-        
-                            this.setState({
-                                document: updated_document
-                            });
-                        })
-                        break;
+            case 'fromContact':
+                this.setState({ isLoading: false })
+
+                this.updateSelectedValue(value, 'fromContactName', 'fromContactId', 'selectedFromContact')
+
+                break;
+            case 'toContact':
+                let original_document = { ...this.state.document };
+                let updated_document = {};
+
+                this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
+
+                let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.selectedFromCompany.value + "&fromContactId=" + this.state.selectedFromContact.value + "&toCompanyId=" + this.state.selectedToCompany.value + "&toContactId=" + this.state.selectedToContact.value;
+
+                dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                    updated_document.arrange = res.arrange;
+                    if (Config.getPublicConfiguartion().refAutomatic === true) {
+                        updated_document.refDoc = res.refCode;
+                    }
+
+                    updated_document = Object.assign(original_document, updated_document);
+
+                    this.setState({
+                        document: updated_document
+                    });
+                })
+                break;
             default:
                 this.setState({ document: { ...this.state.document, [key]: value } })
         }
@@ -497,7 +500,7 @@ class reportsAddEdit extends Component {
                                                             <div className={"ui input inputDev "} >
                                                                 <input type="text" className="form-control" id="arrange" readOnly
                                                                     defaultValue={this.state.document.arrange}
-                                                                    value = {this.state.document.arrange}
+                                                                    value={this.state.document.arrange}
                                                                     name="arrange"
                                                                     placeholder={Resources.arrange[currentLanguage]}
                                                                     onBlur={(e) => {
@@ -665,7 +668,6 @@ class reportsAddEdit extends Component {
                     </div>
                 </div>
             </div>
-
         );
     }
 }
