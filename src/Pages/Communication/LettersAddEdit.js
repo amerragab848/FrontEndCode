@@ -71,10 +71,10 @@ class LettersAddEdit extends Component {
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                     prevLetterId = obj.prevLetterId;
-                    fromCompanyId = obj.replyFromCompId;
-                    fromContactId = obj.replyFromContId;
-                    toCompanyId = obj.replyToCompId;
-                    toContactId = obj.replyToContactId;
+                    fromCompanyId = obj.replyToCompId;
+                    fromContactId = obj.replyToContactId;
+                    toCompanyId = obj.replyFromCompId;
+                    toContactId = obj.replyFromContId;
                 } catch {
                     this.props.history.goBack();
                 }
