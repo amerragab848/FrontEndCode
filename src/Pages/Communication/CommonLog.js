@@ -254,10 +254,7 @@ class CommonLog extends Component {
   }
 
   filterMethodMain = (event, query, apiFilter) => {
-
-    if (this.state.docType === "WorkFlow") {
-      delete query.isCustom
-    }
+ 
     var stringifiedQuery = JSON.stringify(query);
     if (stringifiedQuery == '{"isCustom":true}') {
       stringifiedQuery = undefined

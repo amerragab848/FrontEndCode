@@ -71,10 +71,10 @@ class LettersAddEdit extends Component {
                     arrange = obj.arrange;
                     perviousRoute = obj.perviousRoute;
                     prevLetterId = obj.prevLetterId;
-                    fromCompanyId = obj.replyFromCompId;
-                    fromContactId = obj.replyFromContId;
-                    toCompanyId = obj.replyToCompId;
-                    toContactId = obj.replyToContactId;
+                    fromCompanyId = obj.replyToCompId;
+                    fromContactId = obj.replyToContactId;
+                    toCompanyId = obj.replyFromCompId;
+                    toContactId = obj.replyFromContId;
                 } catch {
                     this.props.history.goBack();
                 }
@@ -502,8 +502,7 @@ class LettersAddEdit extends Component {
             let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
 
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
-                updated_document.arrange = res.arrange;
-                updated_document.refDoc = res.refCode;
+                updated_document.arrange = res.arrange; 
 
                 if (Config.getPublicConfiguartion().refAutomatic === true) {
                     updated_document.refDoc = res.refCode;
