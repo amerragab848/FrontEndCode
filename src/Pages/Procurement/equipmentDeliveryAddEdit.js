@@ -41,7 +41,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 
 let selectedRows = [];
 
@@ -252,7 +252,7 @@ class equipmentDeliveryAddEdit extends Component {
                 let id = this.props.document.orderId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value === id });
+                    selectedValue = find(result, function (i) { return i.value === id });
                     this.setState({ selectedContractId: selectedValue })
                 }
             }
@@ -264,7 +264,7 @@ class equipmentDeliveryAddEdit extends Component {
                 let id = this.props.document.equipmentCodeId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    selectedValue = find(result, function (i) { return i.value == id });
                     this.setState({ selectedEquipmentId: selectedValue })
                 }
             }
@@ -278,7 +278,7 @@ class equipmentDeliveryAddEdit extends Component {
 
                 if (id) {
                     id.map(w => {
-                        let element = _.find(result, function (i) { return i.value === w });
+                        let element = find(result, function (i) { return i.value === w });
                         selectedValue.push(element)
                     })
                     this.setState({
@@ -296,7 +296,7 @@ class equipmentDeliveryAddEdit extends Component {
                 let id = this.props.document.orderFromCompanyId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    selectedValue = find(result, function (i) { return i.value == id });
 
                     this.setState({
                         selectedCompany: selectedValue

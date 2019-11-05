@@ -10,7 +10,7 @@ import GridSetup from "../../Communication/GridSetup"
 import dataservice from "../../../Dataservice";
 import CryptoJS from 'crypto-js';
 import SkyLight from 'react-skylight';
-const _ = require('lodash')
+//const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 class WFDistributionAccountReport extends Component {
 

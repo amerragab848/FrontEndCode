@@ -36,7 +36,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
-const _ = require("lodash");
+const find = require("lodash/find");
 
 var steps_defination = [];
 steps_defination = [
@@ -373,7 +373,7 @@ class materialReturnedAddEdit extends Component {
         dataservice.GetDataList(action, "contactName", "id").then(result => {
             if (isEdit) {
                 let toSubField = this.state.document.orderFromContactId;
-                let targetFieldSelected = _.find(result, function (i) {
+                let targetFieldSelected = find(result, function (i) {
                     return i.value == toSubField;
                 });
                 this.setState({
@@ -397,7 +397,7 @@ class materialReturnedAddEdit extends Component {
                     let id = this.props.document.orderFromCompanyId;
                     let selectedValue = {};
                     if (id) {
-                        selectedValue = _.find(result, function (i) {
+                        selectedValue = find(result, function (i) {
                             return i.value === id;
                         });
                         this.setState({ selectedFromCompany: selectedValue });
@@ -418,7 +418,7 @@ class materialReturnedAddEdit extends Component {
                     let id = this.props.document.specsSectionId;
                     let selectedValue = {};
                     if (id) {
-                        selectedValue = _.find(result, function (i) {
+                        selectedValue = find(result, function (i) {
                             return i.value == id;
                         });
                         this.setState({ selectedSpecsSection: selectedValue });
@@ -439,7 +439,7 @@ class materialReturnedAddEdit extends Component {
                     let id = this.props.document.materialReleaseId;
                     let selectedValue = {};
                     if (id) {
-                        selectedValue = _.find(result, function (i) {
+                        selectedValue = find(result, function (i) {
                             return i.value == id;
                         });
 
@@ -464,7 +464,7 @@ class materialReturnedAddEdit extends Component {
                     let id = this.props.document.boqId;
                     let selectedValue = {};
                     if (id) {
-                        selectedValue = _.find(result, function (i) {
+                        selectedValue = find(result, function (i) {
                             return i.value == id;
                         });
 
@@ -869,13 +869,13 @@ class materialReturnedAddEdit extends Component {
                             "GetLogsMaterialReleaseTicketsForEdit?id=" + id
                         )
                         .then(result => {
-                            let SelectedAreaForEdit = _.find(
+                            let SelectedAreaForEdit = find(
                                 this.state.AreaData,
                                 function (i) {
                                     return i.value == result.areaId;
                                 }
                             );
-                            let SelectedLocationForEdit = _.find(
+                            let SelectedLocationForEdit = find(
                                 this.state.LocationData,
                                 function (i) {
                                     return i.value == result.locationId;

@@ -13,7 +13,8 @@ import GridSetup from "../../Communication/GridSetup"
 import BarChartComp from '../TechnicalOffice/BarChartComp'
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-const _ = require('lodash')
+const sumBy = require('lodash/sumBy')
+const groupBy = require('lodash/groupBy')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
@@ -114,10 +115,10 @@ class expensesDetailsOnProjectsReport extends Component {
             let rows = res == null ? [] : res;
             this.setState({showChart:true});
 
-            let seriesData = _(res).groupBy('projectName').map((objs, key) => {
+            let seriesData = groupBy(res).groupBy('projectName').map((objs, key) => {
                                 return {
                                     'name': key,
-                                    'value': _.sumBy(objs, 'expenseValue')
+                                    'value': sumBy(objs, 'expenseValue')
                                 }}).value();
   
             this.setState({ rows, isLoading: false,showChart:true,series:seriesData })

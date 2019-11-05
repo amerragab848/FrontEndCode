@@ -11,7 +11,7 @@ import DatePicker from '../OptionsPanels/DatePicker';
 import Dropdown from '../OptionsPanels/DropdownMelcous';
 import dataservice from "../../Dataservice";
 
-const _ = require('lodash');
+//const _ = require('lodash');
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({

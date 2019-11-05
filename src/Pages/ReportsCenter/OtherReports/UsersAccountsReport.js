@@ -7,7 +7,7 @@ import Config from '../../../Services/Config';
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
 import PieChartComp from '../PieChartComp'
-const _ = require('lodash')
+const sum = require('lodash/sum')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class UsersAccountsReport extends Component {
@@ -94,9 +94,9 @@ class UsersAccountsReport extends Component {
                     totalsAct.push(i.totalActiveAccounts)
                     totalsInAc.push(i.totalInActiveAccounts)
                 })
-                let TotalAccounts = _.sum(totals)
-                let ActiveAccounts = _.sum(totalsAct)
-                let InActiveAccounts = _.sum(totalsInAc)
+                let TotalAccounts = sum(totals)
+                let ActiveAccounts = sum(totalsAct)
+                let InActiveAccounts = sum(totalsInAc)
 
                 //Pie Charts
                 let series = [{

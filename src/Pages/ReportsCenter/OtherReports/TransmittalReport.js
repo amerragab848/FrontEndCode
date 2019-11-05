@@ -9,7 +9,7 @@ import GridSetup from "../../Communication/GridSetup"
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import CryptoJS from 'crypto-js';
 import moment from "moment";
-const _ = require('lodash')
+//const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const dateFormate = ({ value }) => {

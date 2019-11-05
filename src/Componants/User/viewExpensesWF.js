@@ -6,7 +6,8 @@ import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/avatar/xavatarBig.svg"
 import CommentImg from "../../Styles/images/flowComment.png"
 import LoadingSection from "../publicComponants/LoadingSection"; 
-const _ = require('lodash'); 
+const groupBy = require('lodash/groupBy'); 
+const map = require('lodash/map'); 
 class viewExpensesWF extends Component {
     constructor(props) {
         super(props);
@@ -57,9 +58,9 @@ class viewExpensesWF extends Component {
 
     renderLevels(items) {
 
-        let grouped = _.groupBy(items, 'arrangeLevel');
+        let grouped = groupBy(items, 'arrangeLevel');
 
-        let mapLevels = _.map(grouped, (i, index) => {
+        let mapLevels = map(grouped, (i, index) => {
             return (
                 <div className="StepperNum1 StepperNum workFlowStep" key={index}>
                     <div>

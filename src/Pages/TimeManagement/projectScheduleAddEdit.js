@@ -37,7 +37,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
@@ -421,7 +421,7 @@ class projectScheduleAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.documentItem[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value === toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value === toSubField; });
 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
@@ -437,7 +437,7 @@ class projectScheduleAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.documentItemEdit[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value === toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value === toSubField; });
 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
@@ -661,7 +661,7 @@ class projectScheduleAddEdit extends Component {
                 if (res) {
                     //fill selectedValue contact & company
                     let bicCompanyId = res.bicCompanyId;
-                    let bicCompany = _.find(this.state.companies, function (i) { return i.value === bicCompanyId; });
+                    let bicCompany = find(this.state.companies, function (i) { return i.value === bicCompanyId; });
 
                     this.fillSubDropDownInEditPopup('GetContactsByCompanyId', 'companyId', bicCompanyId, 'bicContactId', 'selectedToContactEdit', 'ToContacts');
 

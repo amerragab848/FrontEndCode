@@ -29,7 +29,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 
 var steps_defination = [];
 
-const _ = require("lodash");
+//const _ = require("lodash");
 
 let selectedRows = [];
 

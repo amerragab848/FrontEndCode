@@ -49,7 +49,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 class clientSelectionAddEdit extends Component {
 
     constructor(props) {
@@ -247,7 +247,7 @@ class clientSelectionAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
@@ -289,7 +289,7 @@ class clientSelectionAddEdit extends Component {
                 let approvalStatusId = this.state.document.approvalStatusId;
                 let approvalStatus = {};
                 if (approvalStatusId) {
-                    approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
+                    approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
 
                     this.setState({
                         selectedApprovalStatusId: approvalStatus
@@ -311,7 +311,7 @@ class clientSelectionAddEdit extends Component {
                 let areaId = this.props.document.area;
                 let area = {};
                 if (areaId) {
-                    area = _.find(result, function (i) { return i.value == areaId; });
+                    area = find(result, function (i) { return i.value == areaId; });
 
                     // area.lable = areaId;
                     // area.value = areaId;
@@ -330,7 +330,7 @@ class clientSelectionAddEdit extends Component {
                 let location = this.props.document.location;
                 let locationObj = {};
                 if (location) {
-                    locationObj = _.find(result, function (i) { return i.value == location; });
+                    locationObj = find(result, function (i) { return i.value == location; });
 
                     this.setState({
                         selectedLocation: locationObj
@@ -348,7 +348,7 @@ class clientSelectionAddEdit extends Component {
                 let buildingno = this.props.document.building;
                 let building = {};
                 if (buildingno) {
-                    building = _.find(result, function (i) { return i.value == buildingno; });
+                    building =find(result, function (i) { return i.value == buildingno; });
 
 
                     this.setState({
@@ -372,7 +372,7 @@ class clientSelectionAddEdit extends Component {
                 let clientSelectionType = this.props.document.clientSelectionType;
                 let clientSelection = {};
                 if (clientSelectionType) {
-                    clientSelection = _.find(result, function (i) { return i.value == clientSelectionType; });
+                    clientSelection = find(result, function (i) { return i.value == clientSelectionType; });
                     this.setState({
                         selectedClientSelection: clientSelection
                     });

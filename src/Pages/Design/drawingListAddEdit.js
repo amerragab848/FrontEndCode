@@ -36,7 +36,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
@@ -320,7 +320,7 @@ class drawingListAddEdit extends Component {
                 })
                 if (docId !== 0) {
                     let elementID = this.state.document.projectTypeId;
-                    let selectProject = _.find(result, function (i) { return i.value == elementID });
+                    let selectProject = find(result, function (i) { return i.value == elementID });
                     this.setState({
                         selectProject,
                         isLoading: false

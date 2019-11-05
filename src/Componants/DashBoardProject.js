@@ -9,7 +9,7 @@ import Config from "../Services/Config";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const _ = require('lodash');
+//const _ = require('lodash');
  
 class DashBoardProject extends Component {
   constructor(props) {

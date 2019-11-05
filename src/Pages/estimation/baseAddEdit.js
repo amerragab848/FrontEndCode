@@ -39,7 +39,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash');
+//const _ = require('lodash');
 
 class BaseAddEdit extends Component {
 

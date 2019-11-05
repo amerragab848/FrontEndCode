@@ -30,7 +30,8 @@ steps_defination = [
     { name: "items", callBackFn: null }
 ];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-const _ = require('lodash');
+const find = require('lodash/find');
+
 let selectedRows = [];
 
 const validationSchema = Yup.object().shape({
@@ -168,7 +169,7 @@ class ExpensesUserAddEdit extends Component {
                 let id = this.state.itemEdit.projectId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    selectedValue = find(result, function (i) { return i.value == id });
                     this.setState({ selectedProject: selectedValue });
                     this.subscribeProject(id, true);
                 }
@@ -183,7 +184,7 @@ class ExpensesUserAddEdit extends Component {
                 let id = this.state.itemEdit.expenseTypeId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id })
+                    selectedValue = find(result, function (i) { return i.value == id })
                     this.setState({ selectedExpensesType: selectedValue });
                 }
             }
@@ -201,7 +202,7 @@ class ExpensesUserAddEdit extends Component {
                 let id = this.state.itemEdit.peetyCashId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id })
+                    selectedValue = find(result, function (i) { return i.value == id })
                     this.setState({ selectedPettyCash: selectedValue });
                 }
             }
@@ -217,7 +218,7 @@ class ExpensesUserAddEdit extends Component {
                 let id = this.state.itemEdit.boqId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id })
+                    selectedValue = find(result, function (i) { return i.value == id })
                     this.setState({ selectedBoq: selectedValue });
                     this.subscribeBoq(id, true)
                 }
@@ -240,7 +241,7 @@ class ExpensesUserAddEdit extends Component {
                 let id = this.state.itemEdit.boqItemId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id })
+                    selectedValue = find(result, function (i) { return i.value == id })
                     this.setState({ selectedBoqItem: selectedValue });
                 }
             }

@@ -95,7 +95,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 
 let selectedRows = [];
 
@@ -334,7 +334,7 @@ class invoicesForPoAddEdit extends Component {
         dataservice.GetDataList(action, DropLable, DropValue).then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; }); 
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; }); 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -351,7 +351,7 @@ class invoicesForPoAddEdit extends Component {
                 let id = this.props.document.boqId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id })
+                    selectedValue = find(result, function (i) { return i.value == id })
                     this.setState({
                         selectedBOQCostCoding: selectedValue
                     });
@@ -368,7 +368,7 @@ class invoicesForPoAddEdit extends Component {
                 let id = this.props.document.companyId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    selectedValue = find(result, function (i) { return i.value == id });
 
                     this.setState({
                         selectedCompany: selectedValue
@@ -386,7 +386,7 @@ class invoicesForPoAddEdit extends Component {
                     let id = this.props.document.purchaseOrderId;
                     let selectedValue = {};
                     if (id) {
-                        selectedValue = _.find(result, function (i) { return i.value == id });
+                        selectedValue = find(result, function (i) { return i.value == id });
                         this.setState({
                             selectedPurchaseOrders: selectedValue
                         });
@@ -402,7 +402,7 @@ class invoicesForPoAddEdit extends Component {
                 let id = this.props.document.transactionType;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id; });
+                    selectedValue = find(result, function (i) { return i.value == id; });
                     this.setState({
                         selectedTransactionType: selectedValue
                     });

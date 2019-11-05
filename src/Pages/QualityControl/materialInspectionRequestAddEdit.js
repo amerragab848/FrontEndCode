@@ -101,7 +101,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 class materialInspectionRequestAddEdit extends Component {
 
     constructor(props) {
@@ -351,7 +351,7 @@ class materialInspectionRequestAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -401,7 +401,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
                 if (disciplineId) {
-                    discpline = _.find(result, function (i) { return i.value == disciplineId; });
+                    discpline = find(result, function (i) { return i.value == disciplineId; });
 
                     this.setState({
                         selectedDiscpline: discpline
@@ -418,7 +418,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let approvalStatusId = this.state.documentCycle.approvalStatusId;
                 let approvalStatus = {};
                 if (approvalStatusId) {
-                    approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
+                    approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
 
                     this.setState({
                         selectedApprovalStatusId: approvalStatus
@@ -435,7 +435,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let areaId = this.props.document.areaId;
                 let area = {};
                 if (areaId) {
-                    area = _.find(result, function (i) { return i.value == areaId; });
+                    area = find(result, function (i) { return i.value == areaId; });
 
                     this.setState({
                         selecetedArea: area
@@ -452,7 +452,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let buildingno = this.props.document.buildingNoId;
                 let building = {};
                 if (buildingno) {
-                    building = _.find(result, function (i) { return i.value == buildingno; });
+                    building = find(result, function (i) { return i.value == buildingno; });
                     this.setState({
                         selectedbuildingno: building
                     });
@@ -468,7 +468,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let reasonForIssueId = this.props.document.reasonForIssueId;
                 let reasonForIssue = {};
                 if (reasonForIssueId) {
-                    reasonForIssue = _.find(result, function (i) { return i.value == reasonForIssueId; });
+                    reasonForIssue = find(result, function (i) { return i.value == reasonForIssueId; });
                     this.setState({
                         selectedReasonForIssue: reasonForIssue
                     });
@@ -484,7 +484,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let apartmentNoId = this.props.document.apartmentNoId;
                 let apartmentNo = {};
                 if (apartmentNoId) {
-                    apartmentNo = _.find(result, function (i) { return i.value == apartmentNoId; });
+                    apartmentNo = find(result, function (i) { return i.value == apartmentNoId; });
                     this.setState({
                         selectedApartmentNoId: apartmentNo
                     });

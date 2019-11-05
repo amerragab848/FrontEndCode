@@ -33,7 +33,7 @@ let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
 
-const _ = require('lodash');
+//const _ = require('lodash');
 
 class ProjectIssuesAddEdit extends Component {
 

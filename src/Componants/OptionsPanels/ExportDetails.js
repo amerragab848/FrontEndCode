@@ -12,7 +12,7 @@ import Config from "../../Services/Config";
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Dataservice from '../../Dataservice.js';
-const _ = require('lodash')
+const find = require('lodash/find')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const filedsIgnor = ['status', 'docDate'];
@@ -324,7 +324,7 @@ class ExportDetails extends Component {
         let rows = fields.fields.map((field, index) => {
             let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
 
-            let notExist = _.find(filedsIgnor, function (x) { return x == field.name })
+            let notExist = find(filedsIgnor, function (x) { return x == field.name })
             return (
 
                 !notExist ?

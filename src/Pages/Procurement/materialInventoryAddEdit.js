@@ -43,7 +43,7 @@ let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
 
-const _ = require('lodash');
+const find = require('lodash/find');
 
 const marginObject = {
     left: 40,
@@ -507,7 +507,7 @@ class MaterialInventoryAddEdit extends Component {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
                 if (disciplineId) {
-                    discpline = _.find(result, function (i) { return i.value == disciplineId; });
+                    discpline = find(result, function (i) { return i.value == disciplineId; });
 
                     this.setState({
                         selectedDiscpline: discpline
@@ -524,7 +524,7 @@ class MaterialInventoryAddEdit extends Component {
                 let specsSectionId = this.props.document.specsSectionId;
                 let specsSection = {};
                 if (specsSectionId) {
-                    specsSection = _.find(result, function (i) { return i.value == specsSectionId; });
+                    specsSection = find(result, function (i) { return i.value == specsSectionId; });
 
                     this.setState({
                         selectedSpecifications: specsSection

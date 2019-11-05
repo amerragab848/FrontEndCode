@@ -32,7 +32,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
-const _ = require("lodash");
+const find = require("lodash/find");
 
 var steps_defination = [];
 steps_defination = [
@@ -237,7 +237,7 @@ class dailyReportsAddEdit extends Component {
                 let id = this.props.document.companyId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value === id });
+                    selectedValue = find(result, function (i) { return i.value === id });
                     this.setState({ selectedCompany: selectedValue })
                 }
             }

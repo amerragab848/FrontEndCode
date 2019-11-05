@@ -106,7 +106,7 @@ let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
 let type = 1;
-const _ = require("lodash");
+const find = require("lodash/find");
 let itemsColumns = [];
 let VOItemsColumns = [];
 const isCompany = Config.getPayload().uty == "company" ? true : false;
@@ -926,7 +926,7 @@ class requestPaymentsAddEdit extends Component {
                     });
                 });
 
-            let contract = _.find(this.state.contractsPool, function (x) {
+            let contract = find(this.state.contractsPool, function (x) {
                 return x.id == event.value;
             });
 
@@ -1426,7 +1426,7 @@ class requestPaymentsAddEdit extends Component {
 
                     let editRows = [...this.state.editRows];
 
-                    let sameRow = _.find(editRows, function (x) {
+                    let sameRow = find(editRows, function (x) {
                         return x.id === updateRow.id;
                     });
 

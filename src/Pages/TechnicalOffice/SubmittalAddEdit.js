@@ -27,7 +27,8 @@ import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 
-const _ = require("lodash");
+const find = require("lodash/find");
+const maxBy = require("lodash/maxBy");
 
 let selectedRows = [];
 
@@ -417,7 +418,7 @@ class SubmittalAddEdit extends Component {
         if (subField != "flowContactId") {
           let toSubField = this.state.document[subField];
 
-          let targetFieldSelected = _.find(result, function (i) {
+          let targetFieldSelected = find(result, function (i) {
             return i.value == toSubField;
           });
 
@@ -428,7 +429,7 @@ class SubmittalAddEdit extends Component {
         } else {
           let toSubField = this.state.documentCycle[subField];
 
-          let targetFieldSelected = _.find(result, function (i) {
+          let targetFieldSelected = find(result, function (i) {
             return i.value == toSubField;
           });
 
@@ -1137,7 +1138,7 @@ class SubmittalAddEdit extends Component {
 
   getLogsSubmittalItems = () => {
     dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
-      let maxArrange = _.maxBy(data, "arrange");
+      let maxArrange = maxBy(data, "arrange");
       let submittalItem = {};
       submittalItem.description = "";
       submittalItem.reviewResult = "";
@@ -1286,7 +1287,7 @@ class SubmittalAddEdit extends Component {
 
   _executeBeforeModalClose = () => {
 
-    let maxArrange = _.maxBy(this.state.itemData, "arrange");
+    let maxArrange = maxBy(this.state.itemData, "arrange");
 
     let submittalItem = {};
 
@@ -1357,7 +1358,7 @@ class SubmittalAddEdit extends Component {
 
       originalData.push(data);
 
-      let maxArrange = _.maxBy(this.state.itemData, "arrange");
+      let maxArrange = maxBy(this.state.itemData, "arrange");
 
       let submittalItem = {};
       submittalItem.description = "";
@@ -1395,7 +1396,7 @@ class SubmittalAddEdit extends Component {
 
   addCycle() {
 
-    let maxArrange = (_.maxBy(this.state.submittalItemData, "arrange"))["arrange"] || 1;
+    let maxArrange = (maxBy(this.state.submittalItemData, "arrange"))["arrange"] || 1;
 
     let arrangeCycle = this.state.documentCycle.arrange;
 
@@ -1470,7 +1471,7 @@ class SubmittalAddEdit extends Component {
 
   getMaxArrange = () => {
     if (docId !== 0) {
-      let maxArrange = _.maxBy(this.state.itemData, "arrange");
+      let maxArrange = maxBy(this.state.itemData, "arrange");
 
       let submittalItem = {};
       submittalItem.description = "";

@@ -13,7 +13,7 @@ import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config.js";
 import { toast } from "react-toastify";
-import _ from "lodash";
+import find from "lodash/find";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -222,7 +222,7 @@ class addItemDescription extends Component {
 
         if (field === "itemType") {
             let poolItemTypes = this.state.poolItemTypes;
-            let item = _.find(poolItemTypes, function (x) {
+            let item = find(poolItemTypes, function (x) {
                 return x.id == event.value;
             });
             if (item) {
