@@ -35,7 +35,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 
 let StatusDataDrop = [{ label: 'Opended', value: true }, { label: 'Closed', value: false }]
 
@@ -415,7 +415,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
                         <div className="fillter-status fillter-item-c">
                             <div className="customD_Menu">
                                 <Select options={this.state.ActionByCompanyData}
-                                    defaultValue={_.find(this.state.ActionByCompanyData, function (i) { return i.value == row.value })}
+                                    defaultValue={find(this.state.ActionByCompanyData, function (i) { return i.value == row.value })}
                                     onChange={e => this.HandlerChangeTableDrop(row.original, e, "ABCompany")}
                                 />
                             </div>

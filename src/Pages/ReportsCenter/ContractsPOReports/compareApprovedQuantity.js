@@ -12,7 +12,7 @@ import dataService from '../../../Dataservice'
 import GridSetup from "../../Communication/GridSetup"
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-const _ = require('lodash')
+//const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string()

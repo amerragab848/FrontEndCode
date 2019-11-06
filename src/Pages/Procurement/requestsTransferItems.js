@@ -12,7 +12,7 @@ import * as communicationActions from '../../store/actions/communication';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from "moment";
-const _ = require('lodash')
+//const _ = require('lodash')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const dateFormate = ({ value }) => {

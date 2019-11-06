@@ -20,7 +20,7 @@ import Dropdown from '../../Componants/OptionsPanels/DropdownMelcous'
 import Dataservice from '../../Dataservice';
 import { withRouter } from "react-router-dom";
 
-const _ = require('lodash')
+const find = require('lodash/find')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const validationSchema = object().shape({
     englishTitle: string().required(Resources['titleEnValid'][currentLanguage]),
@@ -201,7 +201,7 @@ class EpsPermission extends Component {
             toast.success(Resources["missingPermissions"][currentLanguage]);
         }
         else {
-            let eps = _.find(this.state.projectsList, (item) => item.epsId == event.value)
+            let eps =find(this.state.projectsList, (item) => item.epsId == event.value)
             let obj = {
                 epsName: eps.projectName,
                 epsId: eps.epsId

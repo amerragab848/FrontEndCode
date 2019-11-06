@@ -68,7 +68,7 @@ let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
 
-const _ = require("lodash");
+const find = require("lodash/find");
 
 class ProjectTaskAddEdit extends Component {
   constructor(props) {
@@ -256,7 +256,7 @@ class ProjectTaskAddEdit extends Component {
 
         let toSubField = this.state.document[subField];
 
-        let targetFieldSelected = _.find(result, function (i) {
+        let targetFieldSelected = find(result, function (i) {
           return i.value == toSubField;
         });
 

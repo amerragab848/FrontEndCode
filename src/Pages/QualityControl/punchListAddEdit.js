@@ -36,7 +36,7 @@ let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 
 const validationSchemaForAddEditSnagList = Yup.object().shape({
 
@@ -413,7 +413,7 @@ class punchListAddEdit extends Component {
     //                             console.log("company.SelectedValueContact "+JSON.stringify(company.SelectedValueContact));
     //                             console.log("company.DropDataContactName "+JSON.stringify(company.DropDataContactName));
     //                             let elementID = this.state.document[company.Name];
-    //                             let SelectedValue = _.find(result, function (i) { return i.value == elementID });
+    //                             let SelectedValue = find(result, function (i) { return i.value == elementID });
     //                             this.setState({
     //                                 [company.SelectedValueCompany]: SelectedValue,
     //                             })
@@ -421,7 +421,7 @@ class punchListAddEdit extends Component {
     //                                 dataservice.GetDataList('GetContactsByCompanyId?companyId=' + elementID + '', 'contactName', 'id').then(
     //                                     res => {
     //                                         let ContactId = this.state.document[company.ContactName];
-    //                                         let SelectedValueContact = _.find(res, function (i) { return i.value == ContactId; });
+    //                                         let SelectedValueContact = find(res, function (i) { return i.value == ContactId; });
     //                                         this.setState({
     //                                             [company.DropDataContactName]: res,
     //                                             [company.SelectedValueContact]: SelectedValueContact,
@@ -434,7 +434,7 @@ class punchListAddEdit extends Component {
     //                     }
     //                     else {
     //                         let elementID = this.state.document[element.Name];
-    //                         let SelectedValue = _.find(result, function (i) { return i.value == elementID; });
+    //                         let SelectedValue = find(result, function (i) { return i.value == elementID; });
     //                         this.setState({
     //                             [element.selectedValue]: SelectedValue,
     //                             Loading: false
@@ -455,7 +455,7 @@ class punchListAddEdit extends Component {
             if (this.props.changeStatus === true) {
            
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                
                
                 this.setState({
@@ -514,7 +514,7 @@ class punchListAddEdit extends Component {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
                 if (disciplineId) {
-                    discpline = _.find(result, function (i) { return i.value == disciplineId; });
+                    discpline = find(result, function (i) { return i.value == disciplineId; });
 
                     this.setState({
                         selectedDiscpline: discpline
@@ -534,7 +534,7 @@ class punchListAddEdit extends Component {
                 let areaId = this.props.document.areaId;
                 let area = {};
                 if (areaId) {
-                    area = _.find(result, function (i) { return i.value == areaId; });
+                    area = find(result, function (i) { return i.value == areaId; });
                     if(area){
                         this.setState({
                             selecetedArea: {label:area.label,value:areaId},
@@ -554,7 +554,7 @@ class punchListAddEdit extends Component {
                 let location = this.props.document.location;
                 let locationObj = {};
                 if (location) {
-                    locationObj = _.find(result, function (i) { return i.value == location; });
+                    locationObj = find(result, function (i) { return i.value == location; });
 
                     this.setState({
                         selectedLocation: locationObj
@@ -573,7 +573,7 @@ class punchListAddEdit extends Component {
                 let conId=this.props.document.contractId;
                 let con={};
                 if(conId){
-                    con=_.find(result,function(i){return i.value==conId});
+                    con=find(result,function(i){return i.value==conId});
                     if(con){
                         this.setState({
                           selectedContract:{label:con.label,value:conId}
@@ -878,13 +878,13 @@ class punchListAddEdit extends Component {
         Api.get('GetLogsPunchListDetailsForEdit?id=' + obj.id + '').then(
             res => {
                 this.setState({ showPopUp: true, StatusItemForEdit: res.status })
-                let SelectedCompany = _.find(this.state.companies, function (i) { return i.value == res.bicCompanyId });
-                let SelectedAreaItem = _.find(this.state.areas, function (i) { return i.value == res.areaId });
-                let selectedLocationItem = _.find(this.state.locations, function (i) { return i.value == res.locationId });
+                let SelectedCompany = find(this.state.companies, function (i) { return i.value == res.bicCompanyId });
+                let SelectedAreaItem = find(this.state.areas, function (i) { return i.value == res.areaId });
+                let selectedLocationItem = find(this.state.locations, function (i) { return i.value == res.locationId });
 
                 dataservice.GetDataList('GetContactsByCompanyId?companyId=' + res.bicCompanyId + '', 'contactName', 'id').then(
                     result => {
-                        let selectedActionByContactItem = _.find(result, function (i) { return i.value == res.bicContactId });
+                        let selectedActionByContactItem = find(result, function (i) { return i.value == res.bicContactId });
                         this.setState({
                             ToContactsItem: result,
                             EditItems: res,

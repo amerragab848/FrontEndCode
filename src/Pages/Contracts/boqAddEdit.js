@@ -4,7 +4,8 @@ import Api from "../../api";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import moment from "moment";
 import Resources from "../../resources.json";
-import _ from "lodash";
+//import _ from "lodash";
+import find from "lodash/find";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { withRouter } from "react-router-dom";
@@ -469,7 +470,7 @@ class bogAddEdit extends Component {
             if (isEdit) {
                 let companyId = this.state.document.company;
                 if (companyId) {
-                    let comapny = _.find(res, function (x) {
+                    let comapny = find(res, function (x) {
                         return x.value == companyId;
                     });
                     this.setState({
@@ -488,7 +489,7 @@ class bogAddEdit extends Component {
             if (isEdit) {
                 let disciplineId = this.state.document.discipline;
                 if (disciplineId) {
-                    let discipline = _.find(res, function (x) {
+                    let discipline = find(res, function (x) {
                         return x.value == disciplineId;
                     });
                     this.setState({

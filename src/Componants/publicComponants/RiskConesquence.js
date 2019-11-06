@@ -7,7 +7,7 @@ import moment from "moment";
 import LoadingSection from './LoadingSection'
 import ConfirmationModal from "./ConfirmationModal";
 import { SkyLightStateless } from 'react-skylight';
-const _ = require('lodash');
+const orderBy = require('lodash/orderBy');
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class RiskConesquence extends Component {
@@ -30,7 +30,7 @@ class RiskConesquence extends Component {
             dataservice.GetDataGrid("GetAllConesquencesByRiskId?riskId=" + this.state.riskId).then(result => {
 
                 let selected = this.state.selected;
-                result = _.orderBy(result, ['conesquenceId'], ['asc']); // Use Lodash to sort array by 'name'
+                result = orderBy(result, ['conesquenceId'], ['asc']); // Use Lodash to sort array by 'name'
 
                 result.forEach(item => {
                     selected[item.id] = item.isChecked;

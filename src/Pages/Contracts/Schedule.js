@@ -12,7 +12,7 @@ import ConfirmationModal from '../../Componants/publicComponants/ConfirmationMod
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import Export from "../../Componants/OptionsPanels/Export";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const _ = require('lodash')
+//const _ = require('lodash')
 const TabTwoSchema = Yup.object().shape({
     ProjectSchedule: Yup.string().required(Resources['selectProjectSchedule'][currentLanguage])
 });

@@ -49,7 +49,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 class VariationRequestAdd extends Component {
 
     constructor(props) {
@@ -339,7 +339,7 @@ class VariationRequestAdd extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
@@ -379,7 +379,7 @@ class VariationRequestAdd extends Component {
             if (isEdit) {
                 if (this.state.document.contractId) {
                     let contractId = this.state.document.contractId;
-                    let contractSubject = _.find(ContractData, function (i) { return i.value === contractId });
+                    let contractSubject = find(ContractData, function (i) { return i.value === contractId });
                     this.setState({
                         selectedContractSubject: contractSubject
                     })

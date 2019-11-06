@@ -13,7 +13,7 @@ import Plus from "../../Styles/images/epsActions/plus.png";
 import Delete from "../../Styles/images/epsActions/delete.png";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import _ from "lodash";
+//import _ from "lodash";
 import Api from '../../api'
 import { toast } from "react-toastify";
 import SkyLight from "react-skylight";

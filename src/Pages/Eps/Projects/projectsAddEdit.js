@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
 
 let docId = 0;
 let epsId = 0;
-const _ = require('lodash')
+//const _ = require('lodash')
 class projectsAddEdit extends Component {
     constructor(props) {
         super(props);

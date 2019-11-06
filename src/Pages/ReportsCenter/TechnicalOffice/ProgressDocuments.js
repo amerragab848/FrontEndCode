@@ -9,7 +9,7 @@ import moment from "moment";
 import dataService from '../../../Dataservice'
 import Export from "../../../Componants/OptionsPanels/Export";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
-const _ = require('lodash')
+//const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 class ProgressDocuments extends Component {
     constructor(props) {

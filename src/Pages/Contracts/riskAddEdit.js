@@ -67,7 +67,8 @@ let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
 
-const _ = require('lodash');
+const find = require('lodash/find');
+const orderBy =require('lodash/orderBy');
 
 class riskAddEdit extends Component {
 
@@ -378,7 +379,7 @@ class riskAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -392,12 +393,14 @@ class riskAddEdit extends Component {
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
+                console.log("selected "+JSON.stringify(this.state.selectedToContact));
                 let ownerCompanyId = this.props.document.ownerCompanyId;
 
                 if (ownerCompanyId) {
-
+                    let selectedCompany=find(result,function(i){return i.value==ownerCompanyId;})
                     this.setState({
-                        selectedToCompany: { label: this.props.document.ownerCompanyName, value: ownerCompanyId }
+                        //selectedToCompany: { label: this.props.document.ownerCompanyName, value: ownerCompanyId }
+                        selectedToCompany: { label:selectedCompany.label , value: ownerCompanyId }
                     });
 
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', ownerCompanyId, 'ownerContactId', 'selectedToContact', 'ToContacts');
@@ -436,7 +439,7 @@ class riskAddEdit extends Component {
         dataservice.GetDataGrid("GetaccountsDefaultListForList?listType=likelihoods").then(result => {
             let data = [];
             if (result) {
-                let items = _.orderBy(result, ['action'], ['desc']);
+                let items = orderBy(result, ['action'], ['desc']);
 
                 items.map(i => {
                     data.push({
@@ -1224,8 +1227,8 @@ class riskAddEdit extends Component {
         let ProposedMit = this.state.totalProposedMit;
         let totalResidualRisk = totalRankingPost + ProposedMit;
 
-        data = _.orderBy(data, ['id'], ['asc']);
-        dataPost = _.orderBy(dataPost, ['id'], ['asc']);
+        data = orderBy(data, ['id'], ['asc']);
+        dataPost = orderBy(dataPost, ['id'], ['asc']);
 
         this.setState({
             totalResidualRisk: totalResidualRisk,
@@ -1393,7 +1396,7 @@ class riskAddEdit extends Component {
             let totalPostRiskEmv = totalRanking;
 
             let newData = [...arr, currentObj];
-            newData = _.orderBy(newData, ['id'], ['asc']);
+            newData = orderBy(newData, ['id'], ['asc']);
             this.setState({
                 consequenceData: newData,
                 updateConsequence: false,
@@ -1416,7 +1419,7 @@ class riskAddEdit extends Component {
             let totalPretRiskEmv = totalRanking;
 
             let newData = [...arr, currentObj];
-            newData = _.orderBy(newData, ['id'], ['asc']);
+            newData = orderBy(newData, ['id'], ['asc']);
 
 
             let totalProposedMit = this.state.totalProposedMit;

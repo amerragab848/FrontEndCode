@@ -10,7 +10,7 @@ import Resources from "../../../resources.json";
 import dataservice from "../../../Dataservice";
 import DropDown from '../../OptionsPanels/DropdownMelcous'
 import moment from 'moment';
-import _ from "lodash";
+import find from "lodash/find";
 import Recycle from '../../../Styles/images/attacheRecycle.png'
 import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -114,7 +114,7 @@ class GeneralConfiguration extends Component {
     componentWillMount = () => {
         dataservice.GetDataGrid('GetConfigurations').then(
             res => {
-                let SelectedTimesheet = _.find(TimesheetPolicyDropData, function (i) { return i.value === res.timesheetPolicy });
+                let SelectedTimesheet = find(TimesheetPolicyDropData, function (i) { return i.value === res.timesheetPolicy });
                 this.setState({
                     DefaultConfigurations: res,
                     showDefaultInterim: res["showDefaultInterim"],
@@ -125,7 +125,7 @@ class GeneralConfiguration extends Component {
 
         dataservice.GetDataGrid('GetworkFlowSettings').then(
             res => {
-                let SelectedDay = _.find(ListOfDays, function (i) { return i.value === 7 });
+                let SelectedDay = find(ListOfDays, function (i) { return i.value === 7 });
                 this.setState({
                     WFSettingsData: res,
                     SelectedDay: SelectedDay

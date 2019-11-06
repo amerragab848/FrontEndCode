@@ -18,7 +18,8 @@ import {
 
 import * as communicationActions from '../../store/actions/communication';
 
-const _ = require('lodash')
+const groupBy = require('lodash/groupBy')
+const map = require('lodash/map')
 
 class ViewWorkFlow extends Component {
 
@@ -76,9 +77,9 @@ class ViewWorkFlow extends Component {
 
     renderLevels(items) {
 
-        let grouped = _.groupBy(items, 'arrange');
+        let grouped = groupBy(items, 'arrange');
 
-        let mapLevels = _.map(grouped, (i, index) => {
+        let mapLevels = map(grouped, (i, index) => {
             return (
                 <div className="StepperNum1 StepperNum workFlowStep" key={index}>
                     <div>

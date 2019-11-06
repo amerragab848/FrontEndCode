@@ -4,7 +4,7 @@ import DatePicker from '../../OptionsPanels/DatePicker';
 import moment from 'moment';
 import Resources from '../../../resources.json';
 import config from "../../../Services/Config";
-import _ from "lodash";
+import find from "lodash/find";
 import dataservice from "../../../Dataservice";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -120,7 +120,7 @@ class EditAccount extends Component {
                         let alternativAccount = {};
 
                         if (alternativAccountId) {
-                            alternativAccount = _.find(result, function (i) { return i.value === alternativAccountId });
+                            alternativAccount = find(result, function (i) { return i.value === alternativAccountId });
                             if (alternativAccount) {
                                 this.setState({ selectedAlternative: alternativAccount });
                             }
@@ -136,7 +136,7 @@ class EditAccount extends Component {
 
                         let group = {};
                         if (groupId) {
-                            group = _.find(result, function (i) { return i.value === groupId; });
+                            group = find(result, function (i) { return i.value === groupId; });
                             this.setState({ selectedGroup: group });
                         }
                         this.setState({ groupData: result });

@@ -28,7 +28,7 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import Steps from "../../Componants/publicComponants/Steps";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const _ = require('lodash')
+//const _ = require('lodash')
 let MaxArrange = 1
 
 const ValidtionSchemaForDis_List = Yup.object().shape({

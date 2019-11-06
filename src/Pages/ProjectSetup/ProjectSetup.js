@@ -24,7 +24,7 @@ import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProject = localStorage.getItem('lastSelectedProject')
-const _ = require('lodash')
+const find = require('lodash/find')
 let PathName = '';
 let ProjectEps = ''
 const ValidtionSchema = Yup.object().shape({
@@ -245,7 +245,7 @@ class ProjectSetup extends Component {
         else {
             Api.get(this.state.ApiGetById + obj.id).then(
                 res => {
-                    let selectDrop = _.find(this.state.DropData, function (i) { return i.value === res.parentId });
+                    let selectDrop = find(this.state.DropData, function (i) { return i.value === res.parentId });
                     {
                         this.state.title === 'Area' ?
                             this.setState({

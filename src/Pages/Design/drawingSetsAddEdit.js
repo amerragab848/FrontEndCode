@@ -27,7 +27,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 var steps_defination = [];
-const _ = require("lodash");
+const find = require("lodash/find");
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -260,7 +260,7 @@ class DrawingSetsAddEdit extends Component {
         if (subField != "flowContactId") {
           let toSubField = this.state.document[subField];
 
-          let targetFieldSelected = _.find(result, function (i) {
+          let targetFieldSelected = find(result, function (i) {
             return i.value == toSubField;
           });
 
@@ -271,7 +271,7 @@ class DrawingSetsAddEdit extends Component {
         } else {
           let toSubField = this.state.documentCycle[subField];
 
-          let targetFieldSelected = _.find(result, function (i) {
+          let targetFieldSelected = find(result, function (i) {
             return i.value == toSubField;
           });
 
