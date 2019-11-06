@@ -35,7 +35,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
-const _ = require("lodash");
+const find = require("lodash/find");
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
@@ -238,7 +238,7 @@ class weeklyReportsAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let id = this.props.document.companyId;
                 let companyIdEngineer = this.props.document.companyIdEngineer;
@@ -246,17 +246,17 @@ class weeklyReportsAddEdit extends Component {
                 let selectedValue = {};
 
                 if (companyIdEngineer) {
-                    selectedValue = _.find(result, function (i) { return i.value === companyIdEngineer });
+                    selectedValue = find(result, function (i) { return i.value === companyIdEngineer });
                     this.setState({ selectedSiteCompany: selectedValue })
                     this.fillSubDropDown(companyIdEngineer, isEdit, 'companyIdEngineer')
                 }
                 if (companyIdManager) {
-                    selectedValue = _.find(result, function (i) { return i.value === companyIdManager });
+                    selectedValue = find(result, function (i) { return i.value === companyIdManager });
                     this.setState({ selectedProjectManager: selectedValue })
                     this.fillSubDropDown(companyIdManager, isEdit, 'companyIdManager')
                 }
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value === id });
+                    selectedValue = find(result, function (i) { return i.value === id });
                     this.setState({ selectedConsultatnt: selectedValue })
                 }
             }
@@ -272,7 +272,7 @@ class weeklyReportsAddEdit extends Component {
             if (companyIdName === 'companyIdManager') {
                 if (isEdit) {
                     let selectedSiteEngineer = this.state.document.contactIdManager;
-                    let targetFieldSelected = _.find(result, function (i) { return i.value == selectedSiteEngineer });
+                    let targetFieldSelected = find(result, function (i) { return i.value == selectedSiteEngineer });
                     this.setState({ selectedProjectContact: targetFieldSelected });
                 }
                 this.setState({ contactProjectData: result });
@@ -281,7 +281,7 @@ class weeklyReportsAddEdit extends Component {
             else if (companyIdName === 'companyIdEngineer') {
                 if (isEdit) {
                     let selectedSiteEngineer = this.state.document.contactIdEngineer;
-                    let targetFieldSelected = _.find(result, function (i) { return i.value == selectedSiteEngineer });
+                    let targetFieldSelected = find(result, function (i) { return i.value == selectedSiteEngineer });
                     this.setState({ selectedSiteEngineer: targetFieldSelected });
                 }
                 this.setState({ contactSiteData: result });

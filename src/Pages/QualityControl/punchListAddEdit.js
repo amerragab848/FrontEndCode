@@ -32,11 +32,11 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
-let isApproveMode = 0;
+let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 
 const validationSchemaForAddEditSnagList = Yup.object().shape({
 
@@ -234,6 +234,7 @@ class punchListAddEdit extends Component {
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
 
             selectedActionByCompanyId: { label: Resources.actionByCompany[currentLanguage], value: "0" },
+            selectedActionByContactId: { label: Resources.actionByContact[currentLanguage], value: "0" },
             selectedContract: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
             selecetedArea: { label: Resources.selectArea[currentLanguage], value: "0" },
             contractsPos: [],
@@ -243,6 +244,7 @@ class punchListAddEdit extends Component {
 
             //Adding Items States
             ToContactsItem: [],
+            bicContacts:[],
             StatusItem: 'true',
             MaxArrangeItem: 1,
             OpenedDateItem: moment(),
@@ -326,7 +328,6 @@ class punchListAddEdit extends Component {
             )
             this.GetMaxArrageItem()
 
-
         } else {
             let cmi = Config.getPayload().cmi
             let cni = Config.getPayload().cni
@@ -379,65 +380,225 @@ class punchListAddEdit extends Component {
         this.setState({ CurrentStep: stepNo });
     };
 
-    FillDropDowns = () => {
 
-        let DropDownsData = [
-            { Api: 'GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', DropDataName: 'discplines', Label: 'title', Value: 'id', Name: 'disciplineId', selectedValue: 'selectedDiscpline' },
-            { Api: 'GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000', DropDataName: 'areas', Label: 'title', Value: 'id', Name: 'areaId', selectedValue: 'selecetedArea' },
-            { Api: 'GetProjectProjectsCompaniesForList?projectId=' + projectId + '', DropDataName: 'companies', Label: 'companyName', Value: 'companyId', Name: 'toCompanyId', selectedValue: 'selectedFromCompany' },
-            { Api: 'GetPoContractForList?projectId=' + projectId + '', DropDataName: 'contractsPos', Label: 'subject', Value: 'id', Name: 'contractId', selectedValue: 'selectedContract' },
-            { Api: 'GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000', DropDataName: 'locations', Label: 'title', Value: 'id', Name: 'locationId', selectedValue: 'selectedlocation' },
-        ]
+    // FillDropDowns = () => {
 
-        let CompaniesDropDownsData = [
-            { Name: 'bicCompanyId', SelectedValueCompany: 'selectedActionByCompanyId', ContactName: 'bicContactId', DropDataContactName: 'ToContacts', SelectedValueContact: 'selectedToContact' },
-            { Name: 'toCompanyId', SelectedValueCompany: 'selectedToCompany', ContactName: '', DropDataContactName: '', SelectedValueContact: '' },
-            { Name: 'fromCompanyId', SelectedValueCompany: 'selectedFromCompany', ContactName: '', DropDataContactName: '', SelectedValueContact: '' },
-        ]
+    //     let DropDownsData = [
+    //         { Api: 'GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', DropDataName: 'discplines', Label: 'title', Value: 'id', Name: 'disciplineId', selectedValue: 'selectedDiscpline' },
+    //         { Api: 'GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000', DropDataName: 'areas', Label: 'title', Value: 'id', Name: 'areaId', selectedValue: 'selecetedArea' },
+    //         { Api: 'GetProjectProjectsCompaniesForList?projectId=' + projectId + '', DropDataName: 'companies', Label: 'companyName', Value: 'companyId', Name: 'toCompanyId', selectedValue: 'selectedFromCompany' },
+    //         { Api: 'GetPoContractForList?projectId=' + projectId + '', DropDataName: 'contractsPos', Label: 'subject', Value: 'id', Name: 'contractId', selectedValue: 'selectedContract' },
+    //         { Api: 'GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000', DropDataName: 'locations', Label: 'title', Value: 'id', Name: 'locationId', selectedValue: 'selectedlocation' },
+    //     ]
 
-        DropDownsData.map(element => {
-            return dataservice.GetDataList(element.Api, element.Label, element.Value).then(
-                result => {
+    //     let CompaniesDropDownsData = [
+    //         { Name: 'bicCompanyId', SelectedValueCompany: 'selectedActionByCompanyId', ContactName: 'bicContactId', DropDataContactName: 'ToContacts', SelectedValueContact: 'selectedToContact' },
+    //         { Name: 'toCompanyId', SelectedValueCompany: 'selectedToCompany', ContactName: '', DropDataContactName: '', SelectedValueContact: '' },
+    //         { Name: 'fromCompanyId', SelectedValueCompany: 'selectedFromCompany', ContactName: '', DropDataContactName: '', SelectedValueContact: '' },
+    //     ]
+
+    //     DropDownsData.map(element => {
+    //         return dataservice.GetDataList(element.Api, element.Label, element.Value).then(
+    //             result => {
+    //                 this.setState({
+    //                     [element.DropDataName]: result,
+    //                     Loading: false
+    //                 })
+
+    //                 if (this.state.IsEditMode && docId > 0) {
+    //                     if (element.DropDataName === 'companies') {
+    //                         CompaniesDropDownsData.map(company => {
+    //                             //console.log("company "+JSON.stringify(company));
+    //                             console.log("company.ContactId "+JSON.stringify(company.ContactName));
+    //                             console.log("company.SelectedValueContact "+JSON.stringify(company.SelectedValueContact));
+    //                             console.log("company.DropDataContactName "+JSON.stringify(company.DropDataContactName));
+    //                             let elementID = this.state.document[company.Name];
+    //                             let SelectedValue = find(result, function (i) { return i.value == elementID });
+    //                             this.setState({
+    //                                 [company.SelectedValueCompany]: SelectedValue,
+    //                             })
+    //                             if (company.ContactName !== '') {
+    //                                 dataservice.GetDataList('GetContactsByCompanyId?companyId=' + elementID + '', 'contactName', 'id').then(
+    //                                     res => {
+    //                                         let ContactId = this.state.document[company.ContactName];
+    //                                         let SelectedValueContact = find(res, function (i) { return i.value == ContactId; });
+    //                                         this.setState({
+    //                                             [company.DropDataContactName]: res,
+    //                                             [company.SelectedValueContact]: SelectedValueContact,
+    //                                             Loading: false
+    //                                         })
+    //                                     }
+    //                                 )
+    //                             }
+    //                         })
+    //                     }
+    //                     else {
+    //                         let elementID = this.state.document[element.Name];
+    //                         let SelectedValue = find(result, function (i) { return i.value == elementID; });
+    //                         this.setState({
+    //                             [element.selectedValue]: SelectedValue,
+    //                             Loading: false
+    //                         });
+    //                     }
+    //                 }
+    //             }
+    //         )
+    //     })
+    // }
+
+
+
+    fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
+        let action = url + "?" + param + "=" + value;
+       
+        dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+            if (this.props.changeStatus === true) {
+           
+                let toSubField = this.state.document[subField];
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
+               
+               
+                this.setState({
+                    [subDatasource]: result,
+                    [subSelectedValue]: targetFieldSelected
+                   
+                });
+               
+            }
+        });
+    }
+
+
+    FillDropDowns=()=> {
+        
+
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
+
+            if (this.state.IsEditMode) {
+                let companyId = this.props.document.fromCompanyId;
+                if (companyId) {
                     this.setState({
-                        [element.DropDataName]: result,
-                        Loading: false
-                    })
+                        selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId },
+                        //Loading: false
+                    });
+                   // this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
+                }
 
-                    if (this.state.IsEditMode && docId > 0) {
-                        if (element.DropDataName === 'companies') {
-                            CompaniesDropDownsData.map(company => {
-                                let elementID = this.state.document[company.Name];
-                                let SelectedValue = _.find(result, function (i) { return i.value == elementID });
-                                this.setState({
-                                    [company.SelectedValueCompany]: SelectedValue,
-                                })
-                                if (company.ContactName !== '') {
-                                    dataservice.GetDataList('GetContactsByCompanyId?companyId=' + elementID + '', 'contactName', 'id').then(
-                                        res => {
-                                            let ContactId = this.state.document[company.ContactName];
-                                            let SelectedValueContact = _.find(res, function (i) { return i.value == ContactId; });
-                                            this.setState({
-                                                [company.DropDataContactName]: res,
-                                                [company.SelectedValueContact]: SelectedValueContact,
-                                                Loading: false
-                                            })
-                                        }
-                                    )
-                                }
-                            })
-                        }
-                        else {
-                            let elementID = this.state.document[element.Name];
-                            let SelectedValue = _.find(result, function (i) { return i.value == elementID; });
-                            this.setState({
-                                [element.selectedValue]: SelectedValue,
-                                Loading: false
-                            });
-                        }
+                let toCompanyId = this.props.document.toCompanyId;
+                if (toCompanyId) {
+                    this.setState({
+                        selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
+                    });
+
+                    //this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
+                }
+
+                let bicCompanyId = this.props.document.bicCompanyId;
+                if (bicCompanyId) {
+                    this.setState({
+                        selectedActionByCompanyId: { label: this.props.document.bicCompanyName, value: bicCompanyId }
+                    });
+
+                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', bicCompanyId, 'bicContactId', 'selectedToContact', 'ToContacts');
+                    //this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', bicCompanyId, 'ActionByContactItem', 'selectedActionByContactItem', 'ToContactsItem');
+                }
+            }
+            this.setState({
+                companies: [...result]
+            });
+        });
+
+
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", 'title', 'id', 'defaultLists', "discipline", "listType").then(result => {
+            if (this.state.IsEditMode) {
+                let disciplineId = this.props.document.disciplineId;
+                let discpline = {};
+                if (disciplineId) {
+                    discpline = find(result, function (i) { return i.value == disciplineId; });
+
+                    this.setState({
+                        selectedDiscpline: discpline
+                    });
+                }
+            }
+            this.setState({
+                discplines: [...result],
+                Loading: false
+            });
+        });
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", 'title', 'id', 'defaultLists', "area", "listType").then(result => {
+
+           
+
+            if (this.state.IsEditMode) {
+                let areaId = this.props.document.areaId;
+                let area = {};
+                if (areaId) {
+                    area = find(result, function (i) { return i.value == areaId; });
+                    if(area){
+                        this.setState({
+                            selecetedArea: {label:area.label,value:areaId},
+                            Loading: false
+                        });
+                    }
+                  
+                }
+            }
+            this.setState({
+                areas: [...result]
+            });
+        });
+
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", 'title', 'id', 'defaultLists', "location", "listType").then(result => {
+            if (this.state.IsEditMode) {
+                let location = this.props.document.location;
+                let locationObj = {};
+                if (location) {
+                    locationObj = find(result, function (i) { return i.value == location; });
+
+                    this.setState({
+                        selectedLocation: locationObj
+                    });
+                }
+            }
+            this.setState({
+                locations: [...result],
+                Loading: false
+            });
+        });
+
+        dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
+            if(docId){
+                
+                let conId=this.props.document.contractId;
+                let con={};
+                if(conId){
+                    con=find(result,function(i){return i.value==conId});
+                    if(con){
+                        this.setState({
+                          selectedContract:{label:con.label,value:conId}
+                        });
                     }
                 }
-            )
-        })
+            }else{
+             this.setState({
+                 contractsPos: [...result],
+                 Loading:false
+               });
+            }
+            
+         });
+
+        // if (this.state.IsEditMode === false) {
+        //     dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+        //         this.setState({
+        //             contractsPos: [...result]
+        //         });
+        //     });
+        // }
+
+
+
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
@@ -612,7 +773,7 @@ class punchListAddEdit extends Component {
                     }).catch(ex => {
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     });
-                //  
+                  
             }
 
             else {
@@ -691,7 +852,8 @@ class punchListAddEdit extends Component {
             docCloseDate: DocCloseDate, areaId: this.state.SelectedAreaItem.value,
             locationId: this.state.selectedLocationItem.value, description: values.description,
             bicCompanyId: this.state.selectedActionByCompanyIdItem.value,
-            bicContactId: this.state.selectedActionByContactItem.value,
+           
+           bicContactId: this.state.selectedActionByContactItem.value,
         }
 
         Api.post('EditLogsPunchListDetails', AddItemObj).then(
@@ -716,13 +878,13 @@ class punchListAddEdit extends Component {
         Api.get('GetLogsPunchListDetailsForEdit?id=' + obj.id + '').then(
             res => {
                 this.setState({ showPopUp: true, StatusItemForEdit: res.status })
-                let SelectedCompany = _.find(this.state.companies, function (i) { return i.value == res.bicCompanyId });
-                let SelectedAreaItem = _.find(this.state.areas, function (i) { return i.value == res.areaId });
-                let selectedLocationItem = _.find(this.state.locations, function (i) { return i.value == res.locationId });
+                let SelectedCompany = find(this.state.companies, function (i) { return i.value == res.bicCompanyId });
+                let SelectedAreaItem = find(this.state.areas, function (i) { return i.value == res.areaId });
+                let selectedLocationItem = find(this.state.locations, function (i) { return i.value == res.locationId });
 
                 dataservice.GetDataList('GetContactsByCompanyId?companyId=' + res.bicCompanyId + '', 'contactName', 'id').then(
                     result => {
-                        let selectedActionByContactItem = _.find(result, function (i) { return i.value == res.bicContactId });
+                        let selectedActionByContactItem = find(result, function (i) { return i.value == res.bicContactId });
                         this.setState({
                             ToContactsItem: result,
                             EditItems: res,
@@ -953,8 +1115,6 @@ class punchListAddEdit extends Component {
 
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit}>
-
-
                             <div className="documents-stepper noTabs__document">
                                 <div className="doc-container">
                                     <div className="step-content">
@@ -1337,3 +1497,119 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(withRouter(punchListAddEdit))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

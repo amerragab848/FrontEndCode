@@ -35,7 +35,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 let perviousRoute = '';
-const _ = require('lodash')
+const find = require('lodash/find')
 
 let selectedRows = [];
 var steps_defination = [];
@@ -261,7 +261,7 @@ class materialReleaseAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (isEdit) {
                 let toSubField = this.state.document.orderFromContactId;
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     selectedFromContact: targetFieldSelected,
                 })
@@ -272,12 +272,12 @@ class materialReleaseAddEdit extends Component {
 
     fillDropDowns(isEdit) {
 
-        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let id = this.props.document.orderFromCompanyId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value === id });
+                    selectedValue = find(result, function (i) { return i.value === id });
                     this.setState({ selectedFromCompany: selectedValue })
                     this.fillSubDropDown(id, isEdit)
                 }
@@ -285,12 +285,12 @@ class materialReleaseAddEdit extends Component {
             this.setState({ FromCompaniesData: [...result] })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=specsSection', 'title', 'id', 'defaultLists', "specssection", "listType").then(result => {
             if (isEdit) {
                 let id = this.props.document.specsSectionId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    selectedValue = find(result, function (i) { return i.value == id });
                     this.setState({ selectedSpecsSection: selectedValue })
                 }
             }
@@ -302,7 +302,7 @@ class materialReleaseAddEdit extends Component {
                 let id = this.props.document.siteRequestId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    selectedValue = find(result, function (i) { return i.value == id });
                     this.setState({ selectedMaterialRelease: selectedValue })
                 }
             }
@@ -314,27 +314,27 @@ class materialReleaseAddEdit extends Component {
                 let id = this.props.document.boqId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    selectedValue = find(result, function (i) { return i.value == id });
                     this.setState({ selectedCostCoding: selectedValue })
                 }
             }
             this.setState({ CostCodingData: [...result] })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=area', 'title', 'id', 'defaultLists', "area", "listType").then(result => {
             this.setState({ AreaData: result })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=location', 'title', 'id', 'defaultLists', "location", "listType").then(result => {
             this.setState({ LocationData: result })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=materialtitle&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=materialtitle', 'title', 'id', 'defaultLists', "materialtitle", "listType").then(result => {
             if (isEdit) {
                 let id = this.props.document.materialReleaseId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    selectedValue = find(result, function (i) { return i.value == id });
                     this.setState({ SelectedMaterialReleaseType: selectedValue })
                 }
             }
@@ -605,8 +605,8 @@ class materialReleaseAddEdit extends Component {
                 if (id) {
                     dataservice.GetDataGrid("GetLogsMaterialReleaseTicketsForEdit?id=" + id).then(
                         result => {
-                            let SelectedAreaForEdit = _.find(this.state.AreaData, function (i) { return i.value == result.areaId });
-                            let SelectedLocationForEdit = _.find(this.state.LocationData, function (i) { return i.value == result.locationId });
+                            let SelectedAreaForEdit = find(this.state.AreaData, function (i) { return i.value == result.areaId });
+                            let SelectedLocationForEdit = find(this.state.LocationData, function (i) { return i.value == result.locationId });
                             this.setState({
                                 objItemForEdit: result, ShowPopup: true,
                                 SelectedAreaForEdit,

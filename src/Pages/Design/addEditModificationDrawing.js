@@ -56,7 +56,7 @@ let perviousRoute = '';
 let arrange = 0;
 let isModification = true;
 
-const _ = require('lodash')
+const find = require('lodash/find')
 class addEditModificationDrawing extends Component {
 
     constructor(props) {
@@ -335,7 +335,7 @@ class addEditModificationDrawing extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
@@ -350,7 +350,7 @@ class addEditModificationDrawing extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.drawingCycle[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
@@ -361,13 +361,13 @@ class addEditModificationDrawing extends Component {
     }
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
                 let companyId = this.props.document.bicCompanyId;
                 if (companyId) {
 
-                    let company = _.find(result, function (i) { return i.value == companyId; });
+                    let company = find(result, function (i) { return i.value == companyId; });
                     this.setState({ selectedFromCompany: company });
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'bicContactId', 'selectedFromContact', 'fromContacts');
                 }
@@ -386,12 +386,12 @@ class addEditModificationDrawing extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
             if (isEdit) {
                 let approvalStatusId = this.state.drawingCycle.approvalStatusId;
                 let approvalStatus = {};
                 if (approvalStatusId) {
-                    approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
+                    approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
                     this.setState({
                         selectedApprovalStatusId: approvalStatus
                     });
@@ -402,12 +402,12 @@ class addEditModificationDrawing extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", 'title', 'id', 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
                 if (disciplineId) {
-                    discpline = _.find(result, function (i) { return i.value == disciplineId; });
+                    discpline = find(result, function (i) { return i.value == disciplineId; });
 
                     this.setState({
                         selectedDiscpline: discpline
@@ -419,12 +419,12 @@ class addEditModificationDrawing extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=reasonforissue", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reasonforissue", 'title', 'id', 'defaultLists', "reasonforissue", "listType").then(result => {
             if (isEdit) {
                 let reasonForIssueId = this.props.document.reasonForIssueId;
                 let reasonForIssue = {};
                 if (reasonForIssueId) {
-                    reasonForIssue = _.find(result, function (i) { return i.value == reasonForIssueId; });
+                    reasonForIssue = find(result, function (i) { return i.value == reasonForIssueId; });
                     this.setState({
                         selectedReasonForIssue: reasonForIssue
                     });
@@ -435,12 +435,12 @@ class addEditModificationDrawing extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=specssection", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specssection", 'title', 'id', 'defaultLists', "specssection", "listType").then(result => {
             if (isEdit) {
                 let specsSectionId = this.props.document.specsSectionId;
                 let specsSection = {};
                 if (specsSectionId) {
-                    specsSection = _.find(result, function (i) { return i.value == specsSectionId; });
+                    specsSection = find(result, function (i) { return i.value == specsSectionId; });
                     this.setState({
                         selectedspecsSection: specsSection
                     });

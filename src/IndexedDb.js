@@ -55,31 +55,27 @@ export default class IndexedDb {
             addColumn('permission', lf.Type.INTEGER).
             addColumn('checked', lf.Type.BOOLEAN).
             addColumn('type', lf.Type.STRING).
-            addPrimaryKey(['id']); 
+            addPrimaryKey(['id']);
 
     }
 
-    static initializeCachedAPI() { 
-
+    static initializeCachedAPI() {
         cachedData.createTable('defaultLists').
             addColumn('value', lf.Type.INTEGER).
             addColumn('label', lf.Type.STRING).
             addColumn('listType', lf.Type.STRING).
             addPrimaryKey(['value']);
 
-        cachedData.createTable('projects').
-            addColumn('value', lf.Type.INTEGER).
-            addColumn('label', lf.Type.STRING).
-            addPrimaryKey(['value']);
-
         cachedData.createTable('companies').
             addColumn('value', lf.Type.INTEGER).
             addColumn('label', lf.Type.STRING).
             addColumn('projectId', lf.Type.INTEGER).
-            addForeignKey('fk_CompanyId', {
-                local: 'projectId',
-                ref: 'projects.value'
-            }).
+            addNullable(['projectId']).
+            addPrimaryKey(['value']);
+
+        cachedData.createTable('projects').
+            addColumn('value', lf.Type.INTEGER).
+            addColumn('label', lf.Type.STRING).
             addPrimaryKey(['value']);
 
     }
@@ -105,11 +101,19 @@ export default class IndexedDb {
     }
 
     static async seed() {
+        dbDashBoard = await schemaBuilderDashBoardProjects.connect();
         db = await schemaBuilder.connect();
+        api = await cachedData.connect();
 
         tables.widgetType = db.getSchema().table('WidgetType');
         tables.widgetCategory = db.getSchema().table('WidgetCategory');
         tables.widget = db.getSchema().table('Widget');
+        tableProjects.widgetCategory = dbDashBoard.getSchema().table('WidgetCategory');
+        tableProjects.widget = dbDashBoard.getSchema().table('Widget');
+
+        tables.defaultLists = api.getSchema().table('defaultLists');
+        tables.companies = api.getSchema().table('companies');
+        tables.projects = api.getSchema().table('projects');
 
         let rows = await db.select().from(tables.widgetType).exec();
 
@@ -161,50 +165,48 @@ export default class IndexedDb {
             await db.insertOrReplace().into(tables.widget).values(widgetRows).exec();
         };
     }
- 
-    static async seedProjects(projects) {
-        api = await cachedData.connect();
 
-        tables.projects = api.getSchema().table('projects');  
-
-        let projectsRows = [];
-
-        projects.forEach((project) => {
-            let widRow = tables.projects.createRow({
-                'value': project.id,
-                'label': project.projectName
-            });
-            projectsRows.push(widRow);
-        });
-
-        await api.insertOrReplace().into(tables.projects).values(projectsRows).exec();
-
-    }
-
-    static async seedTypes(data) {
-        api = await cachedData.connect();
-        tables.defaultLists = api.getSchema().table('defaultLists'); 
+    static async setData(mainColumn, value, label, tableName, data, params) {
         let rows = [];
         data.forEach((item) => {
-            let widRow = tables.defaultLists.createRow({
-                'value': item.id,
-                'label': item.title,
-                'listType': item.listType
+            let widRow = tables[tableName].createRow({
+                'value': item[value],
+                'label': item[label],
+                [mainColumn]: params
             });
             rows.push(widRow);
         });
 
-        await api.insertOrReplace().into(tables.defaultLists).values(rows).exec();
+        await api.insertOrReplace().into(tables[tableName]).values(rows).exec();
 
     }
 
+    static deleteCacheData() {  
+        var req = indexedDB.deleteDatabase('cachedAPI');
+        req.onsuccess = function () {
+            console.log("Deleted database successfully");
+        };
+        req.onerror = function () {
+            console.log("Couldn't delete database");
+        };
+        req.onblocked = function () {
+            console.log("Couldn't delete database due to the operation being blocked");
+        }; 
+ 
+    }
+
+    static async GetCachedData(params, tableName, mainColumn) {
+        if (tables[tableName] === null) {
+            return [];
+        }
+        let rows = await api.select().from(tables[tableName])
+            .where(tables[tableName][mainColumn].eq(params))
+            .exec();
+
+        return rows;
+    }
+
     static async seedWidgetCounter() {
-
-        dbDashBoard = await schemaBuilderDashBoardProjects.connect();
-
-        tableProjects.widgetCategory = dbDashBoard.getSchema().table('WidgetCategory');
-        tableProjects.widget = dbDashBoard.getSchema().table('Widget');
-
         let rows = await dbDashBoard.select().from(tableProjects.widgetCategory).exec();
 
         if (rows.length === 0) {

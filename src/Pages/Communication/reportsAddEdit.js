@@ -16,8 +16,7 @@ import CryptoJS from 'crypto-js';
 import moment from "moment";
 import * as communicationActions from '../../store/actions/communication';
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import { toast } from "react-toastify";
-import Api from '../../api'
+import { toast } from "react-toastify";  
 import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
@@ -27,8 +26,7 @@ import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    // refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
+    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]), 
     fromContact: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
     toContact: Yup.string().required(Resources['toContactRequired'][currentLanguage]),
     reportType: Yup.string().required(Resources['reportTypeRequired'][currentLanguage])
@@ -211,7 +209,7 @@ class reportsAddEdit extends Component {
     };
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
@@ -236,7 +234,7 @@ class reportsAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetAccountsDefaultList?listType=dailyreporttype&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=dailyreporttype", 'title', 'id','defaultLists', "dailyreporttype", "listType").then(result => {
             this.setState({
                 reportType: [...result],
                 isLoading: false
@@ -292,16 +290,33 @@ class reportsAddEdit extends Component {
                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', value.value, 'toCompanyName', 'toCompanyId', 'selectedToCompany', 'toContacts');
                 this.updateSelectedValue(value, 'toCompanyName', 'toCompanyId', 'selectedToCompany')
                 break;
-            case 'fromContact':
-                this.setState({ isLoading: true })
-                this.updateSelectedValue(value, 'fromContactName', 'fromContactId', 'selectedFromContact')
-                Api.get('GetNextArrangeMainDoc?projectId=' + this.state.projectId + '&docType=' + this.state.docTypeId + '&companyId=' + this.state.selectedFromCompany.value + '&contactId=' + this.state.selectedFromContact.value).then(res => {
-                    this.setState({ document: { ...this.state.document, arrange: res }, isLoading: false })
-                })
-                break;
-            case 'toContact':
-                this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
-                break;
+                case 'fromContact':
+                        this.setState({ isLoading: false })
+        
+                        this.updateSelectedValue(value, 'fromContactName', 'fromContactId', 'selectedFromContact')
+        
+                        break;
+                    case 'toContact':
+                        let original_document = { ...this.state.document };
+                        let updated_document = {};
+        
+                        this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
+        
+                        let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.selectedFromCompany.value + "&fromContactId=" + this.state.selectedFromContact.value + "&toCompanyId=" + this.state.selectedToCompany.value + "&toContactId=" + this.state.selectedToContact.value;
+        
+                        dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                            updated_document.arrange = res.arrange;
+                            if (Config.getPublicConfiguartion().refAutomatic === true) {
+                                updated_document.refDoc = res.refCode;
+                            } 
+        
+                            updated_document = Object.assign(original_document, updated_document);
+        
+                            this.setState({
+                                document: updated_document
+                            });
+                        })
+                        break;
             default:
                 this.setState({ document: { ...this.state.document, [key]: value } })
         }
@@ -482,6 +497,7 @@ class reportsAddEdit extends Component {
                                                             <div className={"ui input inputDev "} >
                                                                 <input type="text" className="form-control" id="arrange" readOnly
                                                                     defaultValue={this.state.document.arrange}
+                                                                    value = {this.state.document.arrange}
                                                                     name="arrange"
                                                                     placeholder={Resources.arrange[currentLanguage]}
                                                                     onBlur={(e) => {

@@ -9,7 +9,7 @@ import moment from "moment";
 import dataService from '../../../Dataservice'
 import BarChartComp from './BarChartComp'
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
-const _ = require('lodash')
+//const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class TechnicalOfficeReport extends Component {

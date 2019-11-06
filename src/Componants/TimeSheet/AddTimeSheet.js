@@ -6,7 +6,7 @@ import NotifiMsg from '../publicComponants/NotifiMsg'
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Resources from '../../resources.json';
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import _ from "lodash";
+import sum from "lodash/sum";
 import { Formik, Form, withFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -292,7 +292,7 @@ class AddTimeSheet extends Component {
         })
         ) : null
             : null
-        total = _.sum(count);
+        total = sum(count);
 
         return (
             <div className="timeSheetInput">

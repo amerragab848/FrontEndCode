@@ -5,7 +5,10 @@ import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const _ = require('lodash')
+const filter = require('lodash/filter')
+const maxBy = require('lodash/maxBy')
+const uniqBy = require('lodash/uniqBy')
+const orderBy = require('lodash/orderBy')
 
 export function documentForEdit(urlAction, docTypeId, docName) {
     return (dispatch, getState) => {
@@ -29,7 +32,7 @@ export function documentForEdit(urlAction, docTypeId, docName) {
         });
     }
 }
-
+ 
 export function clearCashDocument() {
     return (dispatch, getState) => {
         dispatch({
@@ -116,6 +119,7 @@ export function deleteFile(urlDelete, file) {
 
 export function uploadFile(BlobUpload, formData, header) {
     return (dispatch, getState) => {
+
         return Api.postFile(BlobUpload, formData, header).then(resp => {
             dispatch({
                 type: types.File_Upload,
@@ -126,6 +130,14 @@ export function uploadFile(BlobUpload, formData, header) {
                 type: types.File_Upload,
                 file: {}
             });
+        });
+    }
+}
+
+export function setLoadingFiles() {
+    return (dispatch, getState) => {
+        dispatch({
+            type: types.SET_LOADING 
         });
     }
 }
@@ -154,6 +166,8 @@ export function addItemDescription(item) {
         });
     }
 }
+
+
 
 export function deleteItemDescription(item) {
     return (dispatch, getState) => {
@@ -431,23 +445,13 @@ export function GetTopicsTable(urlAction) {
     }
 }
 
-export const ViewDocsAttachment = (docs) => {
-    return (dispatch, getState) => {
-        return (
-            dispatch({
-                type: types.ViewDocsAttachment,
-                attachDocuments: docs || []
-            })
-        )
-    }
-}
 
 function BuildWorkFlowCycleStracture(result) {
     let levels = [];
     let cycles = [];
 
-    let workFlowCycles = _.uniqBy(result, 'subject');
-    const poolLevels = _.orderBy(result, ['arrange'], 'asc');
+    let workFlowCycles = uniqBy(result, 'subject');
+    const poolLevels = orderBy(result, ['arrange'], 'asc');
     let returnObj = {};
 
     let hasWorkFlow = poolLevels.filter((t) => t.statusVal == null).length > 0 ? true : false;
@@ -463,13 +467,13 @@ function BuildWorkFlowCycleStracture(result) {
         obj.accountDocWorkFlowId = item.accountDocWorkFlowId;
 
         //all levels in same subject
-        levels = _.filter(poolLevels, function (i) {
+        levels = filter(poolLevels, function (i) {
             return i.accountDocWorkFlowId === item.accountDocWorkFlowId;
         });
 
         obj.levels = levels;
 
-        let maxArrange = _.maxBy(levels, 'arrange');
+        let maxArrange = maxBy(levels, 'arrange');
 
         obj.currentLevel = maxArrange.arrange;
         cycles.push(obj);
@@ -490,6 +494,17 @@ export function setDocId(docId) {
 }
 
 //#region Add Docs Attachment Actions
+
+export const ViewDocsAttachment = (docs) => {
+    return (dispatch, getState) => {
+        return (
+            dispatch({
+                type: types.ViewDocsAttachment,
+                data: docs || []
+            })
+        )
+    }
+}
 
 export function getCommunicationDocsAttach(projectId, docType, docId) {
     return (dispatch) => {
@@ -572,6 +587,15 @@ export function addCommunicationDocsAttach(data, projectId, docType, docId) {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
 
+    }
+}
+
+
+export function setLoading() {
+    return (dispatch) => {
+        dispatch({
+            type: types.SET_LOADING
+        });
     }
 }
 

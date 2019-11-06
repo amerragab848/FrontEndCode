@@ -24,11 +24,10 @@ class UploadAttachment extends Component {
             docId: this.props.docId,
             link: this.props.link,
             parentId: "",
-            _className: ""
+            _className: "",
+            onDragUpload: ''
         };
     }
-
-    onCancel(files) { }
 
     onSuccess(files) {
         let selectedFiles = [];
@@ -46,6 +45,8 @@ class UploadAttachment extends Component {
     }
 
     onDrop = (acceptedFiles, rejectedFiles) => {
+        this.props.actions.setLoadingFiles();
+
         this.setState({ _className: " dragHover dropHover fullProgressBar" });
     };
 
@@ -56,9 +57,9 @@ class UploadAttachment extends Component {
     };
 
     onDropAcceptedHandler = acceptedFiles => {
-        setTimeout(() => {
-            this.setState({ _className: "hundredPercent" });
-        }, 500);
+
+        this.setState({ _className: "hundredPercent" });
+
 
         acceptedFiles.forEach(element => {
             let formData = new FormData();
@@ -70,18 +71,32 @@ class UploadAttachment extends Component {
             };
             this.props.actions.uploadFile("BlobUpload", formData, header);
         });
-        setTimeout(() => {
-            this.setState({ _className: "zeropercent" });
-        }, 1000);
+        // setTimeout(() => {
+
+        // }, 1000);
+        this.setState({ _className: "zeropercent" });
     };
+
+    static getDerivedStateFromProps(props, state) {
+        if (!props.isLoadingFilesUpload) {
+
+            return {
+                _className: ""
+            }
+        }
+    }
+
+    dragOverDiv = () => {
+        this.props.actions.setLoadingFiles();
+        this.setState({ _className: "dragHover" });
+    }
 
     renderAddAttachments = () => {
         return (
             <Dropzone onDrop={e => this.onDrop(e)} onDragLeave={e => this.setState({ _className: " " })}
-                onDragOver={e => this.setState({ _className: "dragHover" })}
+                onDragOver={this.dragOverDiv}
                 onDropAccepted={e => this.onDropAcceptedHandler(e)}
-                onDropRejected={this.onDropRejected}
-            >
+                onDropRejected={this.onDropRejected} >
                 {({ getRootProps, getInputProps, isDragActive }) => {
                     return (
                         <Fragment>
@@ -103,7 +118,7 @@ class UploadAttachment extends Component {
                                             </div>
                                         </div>
                                         <div className="progressBar">
-                                            <div className="smallProgress" />
+                                            <div className={("smallProgress" + this.state.onDragUpload)} />
                                         </div>
                                     </div>
                                 }
@@ -111,14 +126,14 @@ class UploadAttachment extends Component {
                         </Fragment>
                     );
                 }}
-            </Dropzone>
+            </Dropzone >
         );
     };
 
     renderEditAttachments = () => {
         return (
             <Dropzone onDrop={e => this.onDrop(e)} onDragLeave={e => this.setState({ _className: " " })}
-                onDragOver={e => this.setState({ _className: "dragHover" })}
+                onDragOver={this.dragOverDiv}
                 onDropAccepted={e => this.onDropAcceptedHandler(e)}
                 onDropRejected={this.onDropRejected}>
                 {({ getRootProps, getInputProps, isDragActive }) => {
@@ -163,16 +178,15 @@ class UploadAttachment extends Component {
         return (
             <Fragment>
                 <DropboxChooser
-                    appKey={"einhoekbvh9jws7"}
+                    appKey={Config.getPublicConfiguartion().dropBoxappKey || ''}
+                    accessToken={Config.getPublicConfiguartion().dropBoxToken}
                     success={files => this.onSuccess(files)}
                     cancel={() => this.onCancel()}
                     multiselect={true}
-                    accessToken={"l7phamm2skocwwy"}
                     extensions={[".pdf", ".doc", ".docx", ".png", ".dwg", ".rvt"]}>
                     <div className="drive__button--tooltip">
                         <div className="drive__button Dbox">
                             <img src={dropbox} alt="drobBox" />
-
                         </div>
                         <div className="drive__toolTip">Dropbox</div>
                     </div>
@@ -184,8 +198,8 @@ class UploadAttachment extends Component {
     renderGoogleDrive = () => {
         return (
             <GooglePicker
-                clientId={"850532811390-1tqkrqcgjghv9tis79l92avsv03on7nf.apps.googleusercontent.com"}
-                developerKey={"uof5qzvtwpq1dao"}
+                clientId={Config.getPublicConfiguartion().googleDriveClientId || ''}
+                developerKey={Config.getPublicConfiguartion().googleDriveKey}
                 scope={["https://www.googleapis.com/auth/drive.readonly"]}
                 onChange={data => console.log("on change:", data)}
                 onAuthFailed={data => console.log("on auth failed:", data)}
@@ -205,7 +219,7 @@ class UploadAttachment extends Component {
                     const picker = new window.google.picker.PickerBuilder()
                         .addView(docsView)
                         .setOAuthToken(oauthToken)
-                        .setDeveloperKey("AIzaSyDS-GpZszvOVwnS_E8I7CVZX7gNaVwvBHg")
+                        .setDeveloperKey(Config.getPublicConfiguartion().googleDriveKey)
                         .setCallback(() => {
                         });
 
@@ -254,7 +268,9 @@ function mapStateToProps(state) {
     return {
         file: state.communication.file,
         files: state.communication.files,
-        isLoadingFiles: state.communication.isLoadingFiles
+        isLoadingFiles: state.communication.isLoadingFiles,
+        isLoadingFilesUpload: state.communication.isLoadingFilesUpload
+
     };
 }
 

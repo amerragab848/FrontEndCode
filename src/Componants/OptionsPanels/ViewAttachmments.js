@@ -21,7 +21,7 @@ import { bindActionCreators } from "redux";
 import moment from "moment";
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config";
-import _ from "lodash";
+// import _ from "lodash";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let activeURL = "";
@@ -50,13 +50,7 @@ class ViewAttachmments extends Component {
 
     versionHandler = (parentId, extension) => {
         if (extension == "pdf") {
-            let urlVersion =
-                "GetChildFiles?docTypeId=" +
-                this.state.docTypeId +
-                "&docId=" +
-                this.state.docId +
-                "&parentId=" +
-                parentId;
+            let urlVersion = "GetChildFiles?docTypeId=" + this.state.docTypeId + "&docId=" + this.state.docId + "&parentId=" + parentId;
             Api.get(urlVersion).then(result => {
                 if (result) {
                     this.setState({ viewVersion: true, Versionfiles: result });
@@ -90,7 +84,7 @@ class ViewAttachmments extends Component {
             docTypeId: this.props.docTypeId,
             docId: this.props.docId,
             name: localStorage.getItem("contactName") !== null ? localStorage.getItem("contactName") : "Procoor User",
-            photo: Config.getPublicConfiguartion().static + "/public/img/signature.png",
+            photo: Config.getPublicConfiguartion().downloads + "/" + Config.getSignature(),
             file: item.parentAttachFile,
             fileName: item.parentAttachFile.split("/")[4],
             fileId: item.id,
@@ -122,17 +116,9 @@ class ViewAttachmments extends Component {
 
     viewAutoDeskModal = (obj, e) => {
 
-        var encrypte = encodeURIComponent(obj.attachFile);
-        // if (obj.isCloud === true) {
-        //     let checkDropbox = obj.attachFile.includes('www.dropbox.com');
-        //     if (checkDropbox) {
-        //         let urlFile = obj.attachFile;
-        //         urlFile = urlFile.replace("www.dropbox.com", "dl.dropbox.com");
-        //         urlFile = urlFile.substr(0, urlFile.length - 5);
-        //         alert(urlFile)
-        //         encrypte = encodeURIComponent(urlFile);
-        //     }
-        // }
+        let attachFile = obj.attachFile.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
+        var encrypte = encodeURIComponent(attachFile);
+
         let obj1 = {
             fileName: obj.fileName,
             encrypte: encrypte,
@@ -171,7 +157,7 @@ class ViewAttachmments extends Component {
                 this.setState({
                     activeURL: fileURL,
                     view: true
-                }); 
+                });
                 this.simpleDialog.show();
             }
         }).catch(error => {
@@ -345,18 +331,9 @@ class ViewAttachmments extends Component {
                     }
 
                     if (item.fileName) {
-                        item.fileNameDisplay = item.fileName.replace(
-                            /%23/g,
-                            "#"
-                        );
-                        item.fileNameDisplay = item.fileNameDisplay.replace(
-                            /%20/g,
-                            " "
-                        );
-                        item.fileNameDisplay = item.fileNameDisplay.replace(
-                            /%2C/g,
-                            ","
-                        );
+                        item.fileNameDisplay = item.fileName.replace(/%23/g, "#");
+                        item.fileNameDisplay = item.fileNameDisplay.replace(/%20/g, " ");
+                        item.fileNameDisplay = item.fileNameDisplay.replace(/%2C/g, ",");
 
                         if (!this.has_ar(item.fileNameDisplay)) {
                             item.fileNameDisplay = decodeURI(
@@ -372,11 +349,7 @@ class ViewAttachmments extends Component {
                             <td>
                                 <div className="contentCell tableCell-1">
                                     <span>
-                                        <img
-                                            src={extension}
-                                            alt={extension}
-                                            width="100%"
-                                            height="100%"
+                                        <img src={extension} alt={extension} width="100%" height="100%"
                                             onClick={() =>
                                                 this.previewPDF(item, ext)
                                             }
@@ -424,7 +397,7 @@ class ViewAttachmments extends Component {
                                         </a>
                                     ) : null}
 
-                                    <a href={item["attachFile"]} download={item.fileNameDisplay} className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
+                                    <a href={item["attachFile"]} download={item.fileNameDisplay} target="_" className="pdfPopup various zero attachPdf" data-toggle="tooltip" title={Resources["download"][currentLanguage]}>
 
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
                                             <g fill="none" fillRule="evenodd" transform="translate(1)">
@@ -554,7 +527,7 @@ class ViewAttachmments extends Component {
                     <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialogImage = ref)}>
                         <div className="dropWrapper">
                             <div className="fullWidthWrapper">
-                                <img src={this.state.imagePath} alt="doc img" style={{ maxWidth: '100 %' }} />
+                                <img src={this.state.imagePath.replace('www.dropbox.com', 'dl.dropboxusercontent.com')} alt="doc img" style={{ maxWidth: '100 %' }} />
                             </div>
                         </div>
                     </SkyLight>

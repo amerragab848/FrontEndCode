@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
 
 let docId = 0;
 let epsId = 0;
-const _ = require('lodash')
+//const _ = require('lodash')
 class projectsAddEdit extends Component {
     constructor(props) {
         super(props);
@@ -201,7 +201,7 @@ class projectsAddEdit extends Component {
             });
         });
         this.setState({ isLoading: true })
-        dataservice.GetDataList("GetAccountsDefaultList?listType=country&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=country", 'title', 'id', 'defaultLists', "country", "listType").then(result => {
             if (isEdit) {
                 let selectedCountry = result.find(element => element.value == this.props.document.countryId)
                 this.setState({ selectedCountry })
@@ -213,7 +213,7 @@ class projectsAddEdit extends Component {
             });
         });
         this.setState({ isLoading: true })
-        dataservice.GetDataList("GetAccountsDefaultList?listType=project_type&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=project_type", 'title', 'id', 'defaultLists', "project_type", "listType").then(result => {
             if (isEdit) {
                 let selectedProjectType = result.find(element => element.value == this.props.document.projectTypeId)
                 this.setState({ selectedProjectType })
@@ -224,14 +224,14 @@ class projectsAddEdit extends Component {
             });
         });
         this.setState({ isLoading: true })
-        dataservice.GetDataList("GetAccountsDefaultList?listType=currency&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=currency", 'title', 'id', 'defaultLists', "currency", "listType").then(result => {
             this.setState({
                 currency: [...result],
                 isLoading: false
             });
         });
         this.setState({ isLoading: true })
-        dataservice.GetDataList("GetAccountsDefaultList?listType=companyrole&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=companyrole", 'title', 'id', 'defaultLists', "companyrole", "listType").then(result => {
             if (isEdit) {
                 let selectedYourCompanyRole = result.find(element => element.value == this.props.document.roleId)
                 this.setState({ selectedYourCompanyRole })

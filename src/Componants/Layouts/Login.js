@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import Logo from "../../Styles/images/logo.svg";
 import Config from "../../Services/Config";
 import Resources from "../../resources.json";
-const _ = require("lodash");
+const isEmpty = require("lodash/isEmpty");
 let currentLanguage =    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const validationSchema = Yup.object().shape({
     userName: Yup.string().required(
@@ -164,7 +164,7 @@ class Login extends Component {
     };
     getCookie = () => {
         let cookieName = Cookies.loadAll();
-        if (!_.isEmpty(cookieName)) {
+        if (!isEmpty(cookieName)) {
             return Cookies.load("randomNumber");
         }
         return "";

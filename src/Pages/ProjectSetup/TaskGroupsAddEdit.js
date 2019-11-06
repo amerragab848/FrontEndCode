@@ -27,7 +27,7 @@ import Recycle from '../../Styles/images/attacheRecycle.png'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import Steps from "../../Componants/publicComponants/Steps";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-const _ = require('lodash')
+//const _ = require('lodash')
 let MaxArrange = 1
 
 const ValidtionSchemaForTaskGroups = Yup.object().shape({
@@ -171,7 +171,7 @@ class TaskGroupsAddEdit extends Component {
     }
 
     FillCompanyDrop = () => {
-        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId + '', 'companyName', 'companyId').then(
+        dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId=' + projectId + '', 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(
             res => {
                 this.setState({
                     CompanyData: res,

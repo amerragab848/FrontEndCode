@@ -4,22 +4,19 @@ import * as types from '../../store/actions/types';
 import initialState from '../initialState';
 import { parse } from 'url';
 
+
 export default function (state = initialState.app.communication, action) {
 
-    switch (action.type) {
+    let totalCost = 0;
 
-        case types.ViewDocsAttachment:
-            state.attachDocuments = action.attachDocuments
-            return {
-                ...state
-            }
+    switch (action.type) {
 
         case types.Export_Document:
             let _items = state.items.length > 0 ? state.items : action.items.length > 0 ? action.items : []
             return {
                 ...state, items: _items
             }
-
+ 
         case types.Document_for_Edit:
             return {
                 ...state,
@@ -30,7 +27,7 @@ export default function (state = initialState.app.communication, action) {
                 showLeftMenu: true,
                 showSelectProject: false,
                 showLeftReportMenu: false,
-                docsAttachData: [],
+                //docsAttachData: [],
                 documentTitle: action.docName
             };
 
@@ -70,15 +67,24 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state,
                 files: [...state.files, action.file],
-                isLoadingFiles: true
+                isLoadingFilesUpload: false
             };
 
         case types.add_item:
             let docId = state.docId == 0 ? action.docId : state.docId;
+            const originalItemData = [...state.items, ...action.item];
+
+            totalCost = 0;
+
+            originalItemData.forEach(item => {
+                return totalCost += item.total;
+            })
             return {
                 ...state,
                 docId,
-                items: [...state.items, ...action.item]
+                items: originalItemData,
+                totalCost,
+                isLoading: false
             };
 
         case types.reset_items:
@@ -88,26 +94,49 @@ export default function (state = initialState.app.communication, action) {
             };
 
         case types.edit_item:
-            let updateRow = action.item;
-            let items = []
-            state.items.forEach(item => {
-                if (item.id == updateRow.id)
-                    item = updateRow
-                items.push(item)
+            //let updateRow = action.item;
+            //let items = [];
+            totalCost = 0;
+
+            let originalItemDataForEdit = state.items.filter(x => x.id !== action.item[0].id);
+
+            originalItemDataForEdit.push(action.item[0]);
+
+            originalItemDataForEdit.forEach(item => {
+                // if (item.id == updateRow.id)
+                //     item = updateRow
+                // items.push(item)
+
+                totalCost += item.total;
             })
+
             return {
                 ...state,
-                items
+                items: originalItemDataForEdit,
+                totalCost,
+                isLoading: false
             };
 
         case types.delete_item:
             let originalData = state.items;
+
+            totalCost = 0;
+
             action.data.forEach(item => {
-                let getIndex = originalData.findIndex(x => x.id === item.id);
-
+                let getIndex = originalData.findIndex(x => x.id === item);
                 originalData.splice(getIndex, 1);
-
             });
+
+            originalData.forEach(item => {
+                totalCost += item.total;
+            });
+
+            return {
+                ...state,
+                items: originalData,
+                totalCost,
+                isLoading: false
+            };
 
         case types.delete_items:
             return {
@@ -310,6 +339,12 @@ export default function (state = initialState.app.communication, action) {
         case types.GET_DOCS_ATTACH:
             return { ...state, docsAttachData: action.data }
 
+        case types.ViewDocsAttachment:
+            state.docsAttachData = action.data
+            return {
+                ...state
+            }
+
         case types.GET_RELATED_LINK:
             return { ...state, relatedLinkData: action.data || [] }
 
@@ -332,6 +367,9 @@ export default function (state = initialState.app.communication, action) {
             return { ...state, docsAttachData: action.resp || [], documentData: [] }
         case types.SET_ISREJECT:
             return { ...state, isReject: action.data }
+
+        case types.SET_LOADING:
+            return { ...state, isLoading: true, isLoadingFilesUpload: true }
 
         default:
             return {

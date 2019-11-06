@@ -21,7 +21,8 @@ import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const _ = require("lodash")
+const find = require("lodash/find")
+const filter = require("lodash/filter")
 
 let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
 const actionPanel = {
@@ -109,12 +110,12 @@ class OptionContainer extends React.Component {
     }
 
     IsAllow = (permission) => {
-        let obj = _.find(this.props.permission, function (o) { return o.name == permission; });
+        let obj = find(this.props.permission, function (o) { return o.name == permission; });
         return Config.IsAllow(obj.code);
     }
 
     componentDidMount = () => {
-        let allowPanel = _.filter(this.state.data, (item) => {
+        let allowPanel = filter(this.state.data, (item) => {
             if (item.value != '0') {
                 if (item.title != 'export' && item.title != 'copyTo') {
                     return this.IsAllow(item.title)

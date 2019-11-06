@@ -18,7 +18,8 @@ import {
 
 import * as communicationActions from '../../store/actions/communication';
 
-const _ = require('lodash')
+const groupBy = require('lodash/groupBy')
+const map = require('lodash/map')
 
 class ViewWorkFlow extends Component {
 
@@ -76,9 +77,9 @@ class ViewWorkFlow extends Component {
 
     renderLevels(items) {
 
-        let grouped = _.groupBy(items, 'arrange');
+        let grouped = groupBy(items, 'arrange');
 
-        let mapLevels = _.map(grouped, (i, index) => {
+        let mapLevels = map(grouped, (i, index) => {
             return (
                 <div className="StepperNum1 StepperNum workFlowStep" key={index}>
                     <div>
@@ -117,7 +118,7 @@ class ViewWorkFlow extends Component {
                                                 </span> : null}
                                             <div className="box-statue">
                                                 <h5>{level.status}</h5>
-                                                <p>{Moment(level.creationDate).format('DD-MM-YYYY')}</p>
+                                                {level.statusVal != null ? <p>{Moment(level.date).format('DD-MM-YYYY')}</p> : <p>No Date</p>}
                                             </div>
                                         </div>
 

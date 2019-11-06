@@ -7358,7 +7358,7 @@
               "value": false
             },
             {
-              "code": 940,
+              "code": 940, 
               "title": {
                 "en": "Add Attachments",
                 "ar": "اضافة مرفقات"
@@ -7723,7 +7723,7 @@
           ]
         },
         {
-          "title": {
+          "title": { 
             "en": "RFIs",
             "ar": "طلبات معلومات"
           },

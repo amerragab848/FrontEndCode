@@ -39,7 +39,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash');
+//const _ = require('lodash');
 
 class BaseAddEdit extends Component {
 
@@ -218,7 +218,7 @@ class BaseAddEdit extends Component {
         }
 
         //specsSection
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=specsSection", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specsSection", 'title', 'id', 'defaultLists', "specsSection", "listType").then(result => {
             if (isEdit) {
                 this.setState({
                     selectedspecsSection: { label: this.props.document.specsSectionName, value: this.props.document.specsSectionId }
@@ -230,7 +230,7 @@ class BaseAddEdit extends Component {
         });
 
         //estimationitemtype
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=estimationitemtype", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=estimationitemtype", 'title', 'id', 'defaultLists', "estimationitemtype", "listType").then(result => {
 
             if (isEdit) {
                 this.setState({

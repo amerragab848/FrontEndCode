@@ -33,7 +33,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 let perviousRoute = "";
-const _ = require("lodash");
+const find = require("lodash/find");
 var steps_defination = [];
 steps_defination = [
     { name: "procurement", callBackFn: null },
@@ -282,18 +282,18 @@ class procurementAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         dataservice
-            .GetDataList(
+            .GetDataListCached(
                 "GetProjectProjectsCompaniesForList?projectId= " +
                 this.state.projectId,
                 "companyName",
-                "companyId"
+                "companyId", 'companies', this.state.projectId, "projectId"
             )
             .then(result => {
                 if (isEdit) {
                     let id = this.props.document.companyId;
                     let selectedValue = {};
                     if (id) {
-                        selectedValue = _.find(result, function (i) {
+                        selectedValue = find(result, function (i) {
                             return i.value === id;
                         });
                         this.setState({ selectedFromCompany: selectedValue });
@@ -303,17 +303,17 @@ class procurementAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=discipline",
                 "title",
-                "id"
+                "id", 'defaultLists', "discipline", "listType"
             )
             .then(result => {
                 if (isEdit) {
                     let id = this.props.document.disciplineId;
                     let selectedValue = {};
                     if (id) {
-                        selectedValue = _.find(result, function (i) {
+                        selectedValue = find(result, function (i) {
                             return i.value == id;
                         });
                         this.setState({ selectedDisciplineId: selectedValue });
@@ -323,20 +323,20 @@ class procurementAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
+            .GetDataListCached(
                 "GetaccountsDefaultListWithAction?listType=estimationitemtype",
                 "title",
-                "id"
+                "id", 'defaultLists', "estimationitemtype", "listType"
             )
             .then(res => {
                 this.setState({ itemTypes: [...res] });
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=equipmenttype&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=equipmenttype",
                 "title",
-                "id"
+                "id", 'defaultLists', "equipmenttype", "listType"
             )
             .then(result => {
                 this.setState({
@@ -345,17 +345,17 @@ class procurementAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=specsSection",
                 "title",
-                "id"
+                "id", 'defaultLists', "specsSection", "listType"
             )
             .then(result => {
                 if (isEdit) {
                     let id = this.props.document.specsSectionId;
                     let selectedValue = {};
                     if (id) {
-                        selectedValue = _.find(result, function (i) {
+                        selectedValue = find(result, function (i) {
                             return i.value == id;
                         });
                         this.setState({ selectedSpecsSection: selectedValue });

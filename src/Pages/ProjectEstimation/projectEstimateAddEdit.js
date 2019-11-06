@@ -37,7 +37,8 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute='';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
+const sum = require('lodash/sum')
 
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
@@ -391,7 +392,7 @@ class projectEstimateAddEdit extends Component {
                     resTaxes.map(s => {
                         toatalValues.push(s.value)
                     })
-                    let sumValues = _.sum(toatalValues)
+                    let sumValues = sum(toatalValues)
                     this.setState({
                         EstimationTaxesData: resTaxes,
                         TotalFactors: sumValues
@@ -429,7 +430,7 @@ class projectEstimateAddEdit extends Component {
                     resTaxes.map(s => {
                         toatalValues.push(s.value)
                     })
-                    let sumValues = _.sum(toatalValues)
+                    let sumValues = sum(toatalValues)
                     this.setState({
                         EstimationTaxesData: resTaxes,
                         TotalFactors: sumValues
@@ -452,13 +453,13 @@ class projectEstimateAddEdit extends Component {
                 })
                 if (docId !== 0) {
                     let elementID = this.state.document.bicCompanyId;
-                    let SelectedValue = _.find(res, function (i) { return i.value == elementID });
+                    let SelectedValue = find(res, function (i) { return i.value == elementID });
                     this.setState({
                         selectedFromCompany: SelectedValue,
                     })
                     dataservice.GetDataList('GetContactsByCompanyId?companyId=' + this.state.document.bicCompanyId + '', 'contactName', 'id').then(result => {
                         let elementIDContact = this.state.document.bicContactId;
-                        let SelectedValueContact = _.find(result, function (i) { return i.value == elementIDContact });
+                        let SelectedValueContact = find(result, function (i) { return i.value == elementIDContact });
                         this.setState({
                             fromContacts: result,
                             selectedFromContact: SelectedValueContact
@@ -477,7 +478,7 @@ class projectEstimateAddEdit extends Component {
                 })
                 if (docId !== 0) {
                     let elementID = this.state.document.boqId;
-                    let SelectedBOQDrop = _.find(resultBoq, function (i) { return i.value == elementID; });
+                    let SelectedBOQDrop = find(resultBoq, function (i) { return i.value == elementID; });
                     this.setState({
                         SelectedBOQDrop,
                         isLoading: false
@@ -647,7 +648,7 @@ class projectEstimateAddEdit extends Component {
                 EstimationTaxesData.map(s => {
                     toatalValues.push(parseInt(s.value))
                 })
-                let sumValues = _.sum(toatalValues)
+                let sumValues = sum(toatalValues)
                 this.setState({
                     EstimationTaxesData,
                     TotalFactors: sumValues
@@ -667,7 +668,7 @@ class projectEstimateAddEdit extends Component {
                 EstimationTaxesData.map(s => {
                     toatalValues.push(parseInt(s.value))
                 })
-                let sumValues = _.sum(toatalValues)
+                let sumValues = sum(toatalValues)
                 this.setState({
                     EstimationTaxesData,
                     TotalFactors: sumValues

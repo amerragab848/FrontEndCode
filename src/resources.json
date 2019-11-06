@@ -8238,5 +8238,57 @@
     "editPayment": {
         "en": "Edit Advanced Payment Amount",
         "ar": "تعديل قيمة الدفعة المقدمة"
+    },
+    "abbrevation": {
+        "en": "Abbrevation",
+        "ar": "الأختصار"
+    },
+    "abbrevationEn": {
+        "en": "Abbrevation En",
+        "ar": "الأختصار"
+    },
+    "abbrevationAr": {
+        "en": "Abbrevation Ar",
+        "ar": "الأختصار"
+    },
+    "showInWorkOrder": {
+        "en": "Show In WorkOrder",
+        "ar": "Show In WorkOrder"
+    },
+    "automatic": {
+        "en": "Automatic",
+        "ar": "اوتوماتيك"
+    },
+    "refrenceDocument": {
+        "en": "Refrence Document",
+        "ar": "Refrence Document"
+    },
+    "contractor": {
+        "en": "Contractor",
+        "ar": "Contractor"
+    },
+    "previousConsultatnt": {
+        "en": "Previous Consultatnt",
+        "ar": "السابقة"
+    },
+    "previousContractor": {
+        "en": "Previous Contractor",
+        "ar": "السابقة"
+    },
+    "currentConsultatnt": {
+        "en": "Current Consultatnt",
+        "ar": "الحالية"
+    },
+    "currentContractor": {
+        "en": "Current Contractor",
+        "ar": "الحالية"
+    },
+    "totalConsultatnt": {
+        "en": "Total Consultatnt",
+        "ar": "الأجمالى"
+    },
+    "totalContractor": {
+        "en": "Total Contractor",
+        "ar": "الأجمالى"
     }
 }

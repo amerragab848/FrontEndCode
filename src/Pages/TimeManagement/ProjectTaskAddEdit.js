@@ -68,7 +68,7 @@ let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
 
-const _ = require("lodash");
+const find = require("lodash/find");
 
 class ProjectTaskAddEdit extends Component {
   constructor(props) {
@@ -256,7 +256,7 @@ class ProjectTaskAddEdit extends Component {
 
         let toSubField = this.state.document[subField];
 
-        let targetFieldSelected = _.find(result, function (i) {
+        let targetFieldSelected = find(result, function (i) {
           return i.value == toSubField;
         });
 
@@ -284,7 +284,7 @@ class ProjectTaskAddEdit extends Component {
     });
 
     //from Companies
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+    dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
       if (isEdit) {
 
         let companyId = this.props.document.fromCompanyId;
@@ -312,7 +312,7 @@ class ProjectTaskAddEdit extends Component {
     });
 
     //Priority
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=priority", "title", "id", 'defaultLists', "priority", "listType").then(result => {
 
       if (isEdit) {
 

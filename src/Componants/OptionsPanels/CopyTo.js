@@ -17,6 +17,7 @@ class CopyTo extends Component {
         docType: this.props.docTypeId,
       },
       isLoading: false,
+      selectedValue: { label: Resources['projectSelection'][currentLanguage], value: "0" },
       Projects: []
     };
   }
@@ -37,8 +38,11 @@ class CopyTo extends Component {
         data.push(obj);
       });
 
+      let selectedProject = data.find(x => x.value === parseInt(this.props.projectId));
+
       this.setState({
-        Projects: data
+        Projects: data,
+        selectedValue: this.props.projectId != null ? { label: selectedProject.label, value: selectedProject.value } : { label: Resources['projectSelection'][currentLanguage], value: "0" }
       });
     });
   };
@@ -50,12 +54,15 @@ class CopyTo extends Component {
     objCopy.projectId = value["value"];
 
     this.setState(state => {
-      return { objCopyTo: objCopy };
+      return {
+        objCopyTo: objCopy,
+        selectedValue: { label: value.label, value: value.value }
+      };
     });
   }
 
   saveCopyTo() {
-    if (this.state.objCopyTo.projectId != undefined) {
+    if (this.state.selectedValue.value != "0") {
       this.props.actions.copyTo("CopyDocument", this.state.objCopyTo);
     }
   }
@@ -63,7 +70,7 @@ class CopyTo extends Component {
   render() {
     return (
       <div className="proForm">
-        <Dropdown title="Projects" data={this.state.Projects} handleChange={value => this.selectValue(value)} placeholder="Projects" />
+        <Dropdown title="Projects" data={this.state.Projects} selectedValue={this.state.selectedValue} handleChange={value => this.selectValue(value)} placeholder="Projects" />
         <div className="fullWidthWrapper">
           {this.state.isLoading === false ? (
             <button className="primaryBtn-1 btn" onClick={() => this.saveCopyTo()}>

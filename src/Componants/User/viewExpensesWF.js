@@ -5,10 +5,9 @@ import dataService from "../../Dataservice";
 import Signature from '../../Styles/images/mySignature.png';
 import Avatar from "../../Styles/images/avatar/xavatarBig.svg"
 import CommentImg from "../../Styles/images/flowComment.png"
-import LoadingSection from "../publicComponants/LoadingSection";
-import Resources from "../../resources.json";
-const _ = require('lodash');
-let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+import LoadingSection from "../publicComponants/LoadingSection"; 
+const groupBy = require('lodash/groupBy'); 
+const map = require('lodash/map'); 
 class viewExpensesWF extends Component {
     constructor(props) {
         super(props);
@@ -59,9 +58,9 @@ class viewExpensesWF extends Component {
 
     renderLevels(items) {
 
-        let grouped = _.groupBy(items, 'arrangeLevel');
+        let grouped = groupBy(items, 'arrangeLevel');
 
-        let mapLevels = _.map(grouped, (i, index) => {
+        let mapLevels = map(grouped, (i, index) => {
             return (
                 <div className="StepperNum1 StepperNum workFlowStep" key={index}>
                     <div>
@@ -87,7 +86,7 @@ class viewExpensesWF extends Component {
                                             </div>
                                         </div>
 
-                                        {level.status != null ?
+                                        {level.status !== null ?
                                             <div className="card-signature">
                                                 <img src={level.signature != null ? level.signature : Signature} alt="..." />
                                             </div>

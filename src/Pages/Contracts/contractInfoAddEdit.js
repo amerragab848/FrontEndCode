@@ -6,7 +6,8 @@ import moment from "moment";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Resources from "../../resources.json";
-import _ from "lodash";
+//import _ from "lodash";
+import find from "lodash/find";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { withRouter } from "react-router-dom";
@@ -428,7 +429,7 @@ class ContractInfoAddEdit extends Component {
 
   fillDropDowns(isEdit) {
 
-    DataService.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(res => {
+    DataService.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(res => {
 
       if (isEdit) {
 
@@ -436,11 +437,11 @@ class ContractInfoAddEdit extends Component {
 
         let toCompanyId = this.state.document.toCompanyId;
 
-        let comapny = _.find(res, function (x) {
+        let comapny = find(res, function (x) {
           return x.value == getCompanyId;
         });
 
-        let getToCompanyId = _.find(res, function (x) {
+        let getToCompanyId = find(res, function (x) {
           return x.value == toCompanyId;
         });
 
@@ -470,7 +471,7 @@ class ContractInfoAddEdit extends Component {
 
       let toContactId = this.state.document.toContactId;
 
-      let getToContactId = _.find(result, function (x) {
+      let getToContactId = find(result, function (x) {
         return x.value == toContactId;
       });
 
@@ -750,7 +751,7 @@ class ContractInfoAddEdit extends Component {
     this.setState({ isLoading: true })
     Api.post('EditChangeOrderItem', item).then(result => {
       let voItems = this.state.voItems;
-      var match = _.find(voItems, function (item) { return item.id == this.state.selectedVO.id });
+      var match = find(voItems, function (item) { return item.id == this.state.selectedVO.id });
       if (match) {
         match.quantity = values.quantity;
         match.unitPrice = values.unitPrice;

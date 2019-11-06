@@ -25,6 +25,8 @@ import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
+import find from "lodash/find";
+
 var steps_defination = [];
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -46,28 +48,28 @@ let columns = [
     {
         Header: 'arrange',
         accessor: 'arrange',
-        width: '30px'
+        width: 60
     }, {
         Header: Resources['subject'][currentLanguage],
         accessor: 'subject',
-        width: '150px',
+        width: 350
     }, {
         Header: Resources['statusName'][currentLanguage],
         accessor: 'statusName',
-        width: '40px',
+        width: 120
     }, {
         Header: Resources['CompanyName'][currentLanguage],
         accessor: 'flowCompanyName',
-        width: '80px',
+        width: 180
     }, {
         Header: Resources['ContactName'][currentLanguage],
         accessor: 'flowContactName',
-        width: '80px',
+        width: 180
     }, {
         Header: Resources['docDate'][currentLanguage],
         accessor: 'docDate',
         format: 'date',
-        width: '80px',
+        width: 150,
         Cell: row => (
             <span>
                 <span>{moment(row.value).format("DD/MM/YYYY")}</span>
@@ -76,26 +78,25 @@ let columns = [
     }, {
         Header: Resources['approvalStatus'][currentLanguage],
         accessor: 'approvalStatusName',
-        width: '60px',
+        width: 120
     }, {
         Header: Resources['progressPercent'][currentLanguage],
         accessor: 'progressPercent',
-        width: '60px',
+        width: 120
     }, {
         Header: Resources['comment'][currentLanguage],
         accessor: 'cycleComment',
-        width: '80px',
+        width: 120
     }
 ]
 
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
-let isApproveMode = 0;
+let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
 class inspectionRequestAddEdit extends Component {
 
     constructor(props) {
@@ -171,9 +172,7 @@ class inspectionRequestAddEdit extends Component {
 
         if (!Config.IsAllow(366) && !Config.IsAllow(367) && !Config.IsAllow(369)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push(
-                this.state.perviousRoute
-            );
+            this.props.history.push(this.state.perviousRoute);
         }
         this.newCycle = this.newCycle.bind(this);
         this.editCycle = this.editCycle.bind(this);
@@ -203,7 +202,7 @@ class inspectionRequestAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
+        if (nextProps.document.id !== this.props.document.id) {
             let serverInspectionRequest = { ...nextProps.document };
             serverInspectionRequest.docDate = serverInspectionRequest.docDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.docDate).format('YYYY-MM-DD')
             serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD')
@@ -330,7 +329,7 @@ class inspectionRequestAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -341,7 +340,7 @@ class inspectionRequestAddEdit extends Component {
 
     fillDropDowns(isEdit) {
 
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
@@ -375,12 +374,12 @@ class inspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", 'title', 'id', 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
                 if (disciplineId) {
-                    discpline = _.find(result, function (i) { return i.value == disciplineId; });
+                    discpline = find(result, function (i) { return i.value == disciplineId; });
 
                     this.setState({
                         selectedDiscpline: discpline
@@ -397,7 +396,7 @@ class inspectionRequestAddEdit extends Component {
             if (isEdit) {
                 let approvalStatusId = this.state.documentCycle.approvalStatusId;
                 if (approvalStatusId) {
-                    approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
+                    approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
 
                     this.setState({
                         selectedApprovalStatusId: approvalStatus
@@ -405,7 +404,7 @@ class inspectionRequestAddEdit extends Component {
                 }
             }
             else {
-                approvalStatus = _.find(result, function (i) {
+                approvalStatus = find(result, function (i) {
                     return i.label === 'Pending'
                 });
                 this.setState({
@@ -417,12 +416,12 @@ class inspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", 'title', 'id', 'defaultLists', "area", "listType").then(result => {
             if (isEdit) {
                 let areaId = this.props.document.areaId;
                 let area = {};
                 if (areaId) {
-                    area = _.find(result, function (i) { return i.value == areaId; });
+                    area = find(result, function (i) { return i.value == areaId; });
 
                     this.setState({
                         selecetedArea: area
@@ -434,12 +433,12 @@ class inspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=buildingno", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=buildingno", 'title', 'id', 'defaultLists', "buildingno", "listType").then(result => {
             if (isEdit) {
                 let buildingno = this.props.document.buildingNoId;
                 let building = {};
                 if (buildingno) {
-                    building = _.find(result, function (i) { return i.value == buildingno; });
+                    building = find(result, function (i) { return i.value == buildingno; });
                     this.setState({
                         selectedbuildingno: building
                     });
@@ -450,12 +449,12 @@ class inspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=reasonforissue", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reasonforissue", 'title', 'id', 'defaultLists', "reasonforissue", "listType").then(result => {
             if (isEdit) {
                 let reasonForIssueId = this.props.document.reasonForIssueId;
                 let reasonForIssue = {};
                 if (reasonForIssueId) {
-                    reasonForIssue = _.find(result, function (i) { return i.value == reasonForIssueId; });
+                    reasonForIssue = find(result, function (i) { return i.value == reasonForIssueId; });
                     this.setState({
                         selectedReasonForIssue: reasonForIssue
                     });
@@ -466,12 +465,12 @@ class inspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=apartmentNumber", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=apartmentNumber", 'title', 'id', 'defaultLists', "apartmentNumber", "listType").then(result => {
             if (isEdit) {
                 let apartmentNoId = this.props.document.apartmentNoId;
                 let apartmentNo = {};
                 if (apartmentNoId) {
-                    apartmentNo = _.find(result, function (i) { return i.value == apartmentNoId; });
+                    apartmentNo = find(result, function (i) { return i.value == apartmentNoId; });
                     this.setState({
                         selectedApartmentNoId: apartmentNo
                     });
@@ -620,7 +619,7 @@ class inspectionRequestAddEdit extends Component {
                     status: 'false',
                     approvalStatusId: null,
                     cycleComment: '',
-                    arrange: 0
+                    arrange: 1
                 };
                 this.setState({
                     docId: result.id,
@@ -671,7 +670,7 @@ class inspectionRequestAddEdit extends Component {
         saveDocument.disciplineId = this.state.document.disciplineId;
         saveDocument.flowCompanyId = this.state.document.bicCompanyId;
         saveDocument.flowContactId = this.state.document.bicContactId;
-        saveDocument.status = saveDocument.status == null ? true : false;
+        saveDocument.cycleStatus = saveDocument.status == null ? true : saveDocument.status;
         saveDocument.subject = values.subject;
 
         let api = saveDocument.typeAddOrEdit === "Edit" ? 'EditInspectionRequestCycle' : 'AddInspectionRequestCycleOnly';
@@ -703,8 +702,12 @@ class inspectionRequestAddEdit extends Component {
                     let index = IRCycles.findIndex(x => x.id === saveDocument.id);
 
                     IRCycles.splice(index, 1);
-
-                    IRCycles.push(result);
+                    if (this.props.changeStatus === false) {
+                        IRCycles = [];
+                        IRCycles.push(result);
+                    } else {
+                        IRCycles.push(result);
+                    }
                 } else {
                     IRCycles.push(result);
                 }
@@ -777,10 +780,7 @@ class inspectionRequestAddEdit extends Component {
     AddNewCycle() {
         return (
             <Fragment>
-                <Formik
-                    initialValues={{ ...this.state.documentCycle }}
-                    validationSchema={documentCycleValidationSchema}
-                    enableReinitialize={true}
+                <Formik initialValues={{ ...this.state.documentCycle }} validationSchema={documentCycleValidationSchema} enableReinitialize={true}
                     onSubmit={(values) => {
                         this.saveInspectionRequestCycle(values)
                     }}>
@@ -801,7 +801,7 @@ class inspectionRequestAddEdit extends Component {
                                                 className="form-control fsadfsadsa"
                                                 placeholder={Resources.subject[currentLanguage]}
                                                 autoComplete='off'
-                                                defaultValue={this.state.documentCycle.subject + (this.props.changeStatus ? "" : "   cycle of (" + this.state.document.arrange + ')')}
+                                                defaultValue={this.state.documentCycle.subject + (this.props.changeStatus ? "" : "   cycle of (" + this.state.documentCycle.arrange + ')')}
                                                 onBlur={(e) => {
                                                     handleBlur(e)
                                                     handleChange(e)
@@ -906,7 +906,7 @@ class inspectionRequestAddEdit extends Component {
                         docTitle={Resources.inspectionRequest[currentLanguage]} moduleTitle={Resources['qualityControl'][currentLanguage]} />
                     <div className="doc-container">
                         <div className="step-content">
-                            {this.state.CurrentStep == 0 ?
+                            {this.state.CurrentStep === 0 ?
                                 <Fragment>
                                     <div id="step1" className="step-content-body">
                                         <div className="subiTabsContent">
@@ -926,7 +926,6 @@ class inspectionRequestAddEdit extends Component {
                                                         else if (this.props.changeStatus === false && this.state.docId > 0)
                                                             this.changeCurrentStep(1);
                                                     }}>
-
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                         <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                             <div className="proForm first-proform">

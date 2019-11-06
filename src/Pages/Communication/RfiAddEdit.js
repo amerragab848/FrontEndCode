@@ -34,7 +34,7 @@ const validationSchema = Yup.object().shape({
 let docId = 0;
 let projectId = 0;
 let projectName = 0;
-let isApproveMode = 0;
+let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
@@ -156,12 +156,12 @@ class RfiAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(49))) {
+            if (!(Config.IsAllow(76))) {
                 this.setState({ isViewMode: true });
             }
-            if (this.state.isApproveMode != true && Config.IsAllow(49)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(49)) {
-                    if (this.props.document.status == true && Config.IsAllow(49)) {
+            if (this.state.isApproveMode != true && Config.IsAllow(76)) { 
+                if (this.props.hasWorkflow == false && Config.IsAllow(76)) {
+                    if (this.props.document.status == true && Config.IsAllow(76)) {
                         this.setState({ isViewMode: false });
                     } else {
                         this.setState({ isViewMode: true });
@@ -238,7 +238,7 @@ class RfiAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         //from Companies
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
@@ -260,10 +260,9 @@ class RfiAddEdit extends Component {
             this.setState({
                 companies: [...result]
             });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-
+        });
         //discplines
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.disciplineId;
                 if (disciplineId) {
@@ -278,9 +277,10 @@ class RfiAddEdit extends Component {
             this.setState({
                 discplines: [...result]
             });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
-        //area
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "title").then(result => {
+        });
+        //area       
+         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
+ 
             if (isEdit) {
                 let areaId = this.props.document.area;
                 if (areaId) {
@@ -295,9 +295,9 @@ class RfiAddEdit extends Component {
             this.setState({
                 areas: [...result]
             });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+        });
         //location
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", "title", "title").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
             if (isEdit) {
 
                 let locationId = this.props.document.location;
@@ -314,7 +314,7 @@ class RfiAddEdit extends Component {
             this.setState({
                 locations: [...result]
             });
-        }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
+        });
     }
 
     onChangeMessageRfi = (value) => {
@@ -392,11 +392,15 @@ class RfiAddEdit extends Component {
             [selectedValue]: event
         });
 
-        if (field == "fromContactId") {
-            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-            // this.props.actions.GetNextArrange(url);
-            dataservice.GetNextArrangeMainDocument(url).then(res => {
-                updated_document.arrange = res;
+        if (field == "toContactId") {
+            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+            
+            dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                updated_document.arrange = res.arrange;
+                if (Config.getPublicConfiguartion().refAutomatic === true) {
+                    updated_document.refDoc = res.refCode;
+                }
+
                 updated_document = Object.assign(original_document, updated_document);
 
                 this.setState({
@@ -597,8 +601,9 @@ class RfiAddEdit extends Component {
                                                                 <div className="super_name">
                                                                     <Dropdown data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
-                                                                        handleChange={event => { this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact') }}
-                                                                        onChange={setFieldValue}
+                                                                        handleChange={event => {
+                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                                                        }}                                                                        onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromCompanyId}
                                                                         touched={touched.fromCompanyId}
@@ -608,8 +613,8 @@ class RfiAddEdit extends Component {
                                                                 <div className="super_company">
                                                                     <Dropdown isMulti={false} data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
-                                                                        onChange={setFieldValue}
+                                                                        handleChange={event =>
+                                                                            this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
                                                                         touched={touched.fromContactId}
@@ -624,7 +629,7 @@ class RfiAddEdit extends Component {
                                                                 <div className="super_name">
                                                                     <Dropdown isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}
@@ -635,8 +640,9 @@ class RfiAddEdit extends Component {
                                                                 <div className="super_company">
                                                                     <Dropdown isMulti={false} data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
-                                                                        onChange={setFieldValue}
+                                                                        handleChange={event =>
+                                                                            this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
+                                                                        }                                                                        onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}
                                                                         touched={touched.toContactId}

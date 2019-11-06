@@ -41,7 +41,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 
 let selectedRows = [];
 
@@ -54,13 +54,9 @@ const validationSchema = Yup.object().shape({
 })
 
 const documentItemValidationSchema = Yup.object().shape({
-
-    quantity: Yup.number().required(Resources['quantity'][currentLanguage])
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
-
+    quantity: Yup.number().required(Resources['quantity'][currentLanguage]).typeError(Resources['onlyNumbers'][currentLanguage]),
     arrangeItem: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
-
-    resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage]),
+    resourceCode: Yup.string().required(Resources['resourceCodeRequired'][currentLanguage])
 })
 
 let ApproveOrRejectData = [
@@ -256,19 +252,19 @@ class equipmentDeliveryAddEdit extends Component {
                 let id = this.props.document.orderId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value === id });
+                    selectedValue = find(result, function (i) { return i.value === id });
                     this.setState({ selectedContractId: selectedValue })
                 }
             }
             this.setState({ contractPoData: [...result] })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=equipmentcode&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataList('GetAccountsDefaultListForList?listType=equipmentcode', 'title', 'id','defaultLists', "equipmentcode", "listType").then(result => {
             if (isEdit) {
                 let id = this.props.document.equipmentCodeId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    selectedValue = find(result, function (i) { return i.value == id });
                     this.setState({ selectedEquipmentId: selectedValue })
                 }
             }
@@ -282,7 +278,7 @@ class equipmentDeliveryAddEdit extends Component {
 
                 if (id) {
                     id.map(w => {
-                        let element = _.find(result, function (i) { return i.value === w });
+                        let element = find(result, function (i) { return i.value === w });
                         selectedValue.push(element)
                     })
                     this.setState({
@@ -295,12 +291,12 @@ class equipmentDeliveryAddEdit extends Component {
             });
         })
 
-        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let id = this.props.document.orderFromCompanyId;
                 let selectedValue = {};
                 if (id) {
-                    selectedValue = _.find(result, function (i) { return i.value == id });
+                    selectedValue = find(result, function (i) { return i.value == id });
 
                     this.setState({
                         selectedCompany: selectedValue

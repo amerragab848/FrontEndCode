@@ -107,7 +107,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 class pcoAddEdit extends Component {
 
     constructor(props) {
@@ -321,7 +321,7 @@ class pcoAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
                 let companyId = this.props.document.companyId;
@@ -336,12 +336,12 @@ class pcoAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
             if (isEdit) {
                 let approvalStatusId = this.state.document.approvalStatusId;
                 let approvalStatus = {};
                 if (approvalStatusId) {
-                    approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
+                    approvalStatus =find(result, function (i) { return i.value == approvalStatusId; });
 
                     this.setState({
                         selectedApprovalStatusId: approvalStatus
@@ -353,13 +353,13 @@ class pcoAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=unit", 'title', 'title').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=unit", 'title', 'title', 'defaultLists', "discipline", "listType").then(result => {
             this.setState({
                 units: [...result]
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=equipmenttype", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=equipmenttype", 'title', 'id', 'defaultLists', "discipline", "listType").then(result => {
             this.setState({
                 equipmentTypes: [...result]
             });
@@ -376,7 +376,7 @@ class pcoAddEdit extends Component {
                 let selectedCVRId = this.state.document.cvrId;
                 let cvr = {};
                 if (selectedCVRId) {
-                    selectedCVRId = _.find(result, function (i) { return i.value == selectedCVRId; });
+                    selectedCVRId = find(result, function (i) { return i.value == selectedCVRId; });
 
                     this.setState({
                         selectedCVR: cvr
@@ -392,7 +392,7 @@ class pcoAddEdit extends Component {
             if (isEdit) {
                 if (this.state.document.contractId) {
                     let contractId = this.state.document.contractId;
-                    let contractSubject = _.find(ContractData, function (i) { return i.value === contractId });
+                    let contractSubject = find(ContractData, function (i) { return i.value === contractId });
                     this.setState({
                         selectContract: contractSubject
                     })

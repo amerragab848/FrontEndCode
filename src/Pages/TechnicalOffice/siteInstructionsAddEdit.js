@@ -46,7 +46,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 class siteInstructionsAddEdit extends Component {
 
     constructor(props) {
@@ -134,7 +134,7 @@ class siteInstructionsAddEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
+        if (nextProps.document.id !== this.props.document.id) {
             let doc = nextProps.document
             doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
             doc.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(doc.requiredDate).format('YYYY-MM-DD')
@@ -235,14 +235,14 @@ class siteInstructionsAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({ [subSelectedValue]: targetFieldSelected, [subDatasource]: result });
             }
         });
     }
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
@@ -270,7 +270,7 @@ class siteInstructionsAddEdit extends Component {
                 let inspectionRequestId = this.props.document.inspectionRequestId;
                 let inspectionRequest = {};
                 if (inspectionRequestId) {
-                    inspectionRequest = _.find(result, function (i) { return i.value == inspectionRequestId; });
+                    inspectionRequest = find(result, function (i) { return i.value == inspectionRequestId; });
                     this.setState({ selecetedinspectionRequest: inspectionRequest });
                 }
             }
@@ -689,7 +689,12 @@ class siteInstructionsAddEdit extends Component {
                                         </div>
                                         <div className="doc-pre-cycle letterFullWidth">
                                             <div>
-                                                {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={863} EditAttachments={3269} ShowDropBox={3601} ShowGoogleDrive={3602} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
+                                                {this.state.docId > 0 && this.state.isViewMode === false ? (
+                                                <UploadAttachment changeStatus={this.props.changeStatus} 
+                                                AddAttachments={863} EditAttachments={3269} ShowDropBox={3601}
+                                                 ShowGoogleDrive={3602} docTypeId={this.state.docTypeId} 
+                                                 docId={this.state.docId} 
+                                                 projectId={this.state.projectId} />) : null}
                                                 {this.viewAttachments()}
                                                 <Fragment>
                                                     <div className="document-fields tableBTnabs">

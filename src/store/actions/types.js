@@ -71,5 +71,9 @@ export const FillGridLeftMenu = 'FillGridLeftMenu';
 //Steps
 export const Set_Step = 'Set_Step';
 
+export const SET_LOADING = 'SET_LOADING';
+
+
+
 
 

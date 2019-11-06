@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
     }).required(Resources['ComapnyNameRequired'][currentLanguage]),
     ContactNameEn: Yup.string().max(450, Resources['maxLength'][currentLanguage]).required(Resources['contactNameRequired'][currentLanguage]),
     ContactNameAr: Yup.string().max(450, Resources['maxLength'][currentLanguage]).required(Resources['contactNameRequired'][currentLanguage]),
-    Mobile: Yup.number().max(50, Resources['maxLength'][currentLanguage]).required(Resources['mobileRequired'][currentLanguage]),
+    Mobile: Yup.string().max(50, Resources['maxLength'][currentLanguage]).required(Resources['mobileRequired'][currentLanguage]),
     positionEn: Yup.string().max(50, Resources['maxLength'][currentLanguage]),
     positionAr: Yup.string().max(50, Resources['maxLength'][currentLanguage]),
     addressAr: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
@@ -162,8 +162,9 @@ class AddEditCompany extends Component {
             tele: values.Telephone,
             mobile: values.mobile,
             projectId: this.state.projectId,
-            logoFileData: this.state.imageIamge
-
+            logoFileData: this.state.imageIamge,
+            abbreviationEn: values.abbrevationEn,
+            abbreviationAr: values.abbrevationAr
         }
 
         if (this.state.companyID == 0) {
@@ -215,8 +216,11 @@ class AddEditCompany extends Component {
                                                 addressEn: '',
                                                 addressAr: '',
                                                 Telephone: '',
+                                                abbrevationEn: '',
+                                                abbrevationAr: '',
                                                 discipline: this.state.selectedDiscipline,
                                                 title: this.state.selectedTitle,
+                                                showInWorkOrder: true,
                                                 companyRole: this.state.selectedCompanyRole
                                             }}
                                             enableReinitialize={true}
@@ -379,6 +383,18 @@ class AddEditCompany extends Component {
                                                                     <div className={"ui input inputDev fillter-item-c " + (errors.Mobile && touched.Mobile ? ("has-error") : !errors.Mobile && touched.Mobile ? ("has-success") : "")}>
                                                                         <input autoComplete="off" type='text' className="form-control" name="Mobile" onBlur={handleBlur} onChange={handleChange} placeholder={Resources['Mobile'][currentLanguage]} />
                                                                         {errors.Mobile && touched.Mobile ? (<em className="pError">{errors.Mobile}</em>) : null}
+                                                                    </div>
+                                                                </div>
+                                                                <div className="linebylineInput valid-input passWrapperInput">
+                                                                    <label className="control-label"> {Resources['abbrevationEn'][currentLanguage]} </label>
+                                                                    <div className="ui input inputDev fillter-item-c ">
+                                                                        <input autoComplete="off" type='text' className="form-control" name="abbrevationEn" onBlur={handleBlur} onChange={handleChange} placeholder={Resources['abbrevationEn'][currentLanguage]} />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="linebylineInput valid-input passWrapperInput">
+                                                                    <label className="control-label"> {Resources['abbrevationAr'][currentLanguage]} </label>
+                                                                    <div className="ui input inputDev fillter-item-c ">
+                                                                        <input autoComplete="off" type='text' className="form-control" name="abbrevationAr" onBlur={handleBlur} onChange={handleChange} placeholder={Resources['abbrevationAr'][currentLanguage]} />
                                                                     </div>
                                                                 </div>
                                                             </div>

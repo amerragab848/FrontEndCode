@@ -27,7 +27,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 var steps_defination = [];
-const _ = require("lodash");
+const find = require("lodash/find");
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -260,7 +260,7 @@ class DrawingSetsAddEdit extends Component {
         if (subField != "flowContactId") {
           let toSubField = this.state.document[subField];
 
-          let targetFieldSelected = _.find(result, function (i) {
+          let targetFieldSelected = find(result, function (i) {
             return i.value == toSubField;
           });
 
@@ -271,7 +271,7 @@ class DrawingSetsAddEdit extends Component {
         } else {
           let toSubField = this.state.documentCycle[subField];
 
-          let targetFieldSelected = _.find(result, function (i) {
+          let targetFieldSelected = find(result, function (i) {
             return i.value == toSubField;
           });
 
@@ -287,7 +287,7 @@ class DrawingSetsAddEdit extends Component {
   fillDropDowns(isEdit) {
 
     //from Companies
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+    dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
       if (isEdit) {
         let companyId = this.props.document.bicCompanyId;
         if (companyId) {
@@ -308,7 +308,7 @@ class DrawingSetsAddEdit extends Component {
     });
 
     //area
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
 
       if (isEdit) {
 
@@ -329,7 +329,7 @@ class DrawingSetsAddEdit extends Component {
     });
 
     //specsSection
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=specssection", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specssection", "title", "id", 'defaultLists', "specssection", "listType").then(result => {
 
       if (isEdit) {
         let specsSectionId = this.props.document.specsSectionId;
@@ -348,7 +348,7 @@ class DrawingSetsAddEdit extends Component {
     });
 
     //discplines
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
 
       if (isEdit) {
 
@@ -369,7 +369,7 @@ class DrawingSetsAddEdit extends Component {
     });
 
     //reasonForIssue
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=reasonForIssue", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reasonForIssue", "title", "id", 'defaultLists', "reasonForIssue", "listType").then(result => {
 
       if (isEdit) {
 

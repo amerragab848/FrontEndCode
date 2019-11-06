@@ -9,82 +9,32 @@ import config from "../../../Services/Config";
 import Resources from "../../../resources.json";
 import dataservice from "../../../Dataservice";
 import DropDown from '../../OptionsPanels/DropdownMelcous'
-import DatePicker from '../../OptionsPanels/DatePicker'
 import moment from 'moment';
-import { connect } from "react-redux";
-import * as ProjectActions from "../../../store/actions/ProjectActions";
-import { bindActionCreators } from "redux";
-import _ from "lodash";
+import find from "lodash/find";
 import Recycle from '../../../Styles/images/attacheRecycle.png'
 import { toast } from "react-toastify";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 
 const ValidtionSchema = Yup.object().shape({
-    hours: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage]),
-
-    timesheetApprovalDays: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-
-    expensesApprovalDays: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-
-    timesheetRequestDays: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-
-    expensesRequestDays: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-
-    hodeputyPmIncentiveFractionurs: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-
-    quantityRedAlertPercent: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-
-    quantityYellowAlertPercent: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-
-    quantityGreenAlertPercent: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-
-    expensesRedAlerts: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-    expensesRedAlerts: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-    expensesGreenAlerts: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-
-    paymentGreenAlerts: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-    paymentRedAlerts: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-    paymentYellowAlerts: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-
-    invoicesGreenAlerts: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-    invoicesRedAlerts: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
-    invoicesYellowAlerts: Yup.number()
-        .typeError(Resources['onlyNumbers'][currentLanguage])
-        .integer('Please provide integer'),
+    hours: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
+    timesheetApprovalDays: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    expensesApprovalDays: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    timesheetRequestDays: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    expensesRequestDays: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    hodeputyPmIncentiveFractionurs: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    quantityRedAlertPercent: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    quantityYellowAlertPercent: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    quantityGreenAlertPercent: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    expensesRedAlerts: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    expensesRedAlerts: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    expensesGreenAlerts: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    paymentGreenAlerts: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    paymentRedAlerts: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    paymentYellowAlerts: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    invoicesGreenAlerts: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    invoicesRedAlerts: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
+    invoicesYellowAlerts: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]).integer('Please provide integer'),
 })
 
 const TimesheetPolicyDropData = [
@@ -156,17 +106,18 @@ class GeneralConfiguration extends Component {
             CheckOutMin: '',
             showDeleteModal: false,
             IsVacation: false,
-            isLoading: false
+            isLoading: false,
+            showDefaultInterim: "true"
         }
-
     }
 
     componentWillMount = () => {
         dataservice.GetDataGrid('GetConfigurations').then(
             res => {
-                let SelectedTimesheet = _.find(TimesheetPolicyDropData, function (i) { return i.value === res.timesheetPolicy });
+                let SelectedTimesheet = find(TimesheetPolicyDropData, function (i) { return i.value === res.timesheetPolicy });
                 this.setState({
                     DefaultConfigurations: res,
+                    showDefaultInterim: res["showDefaultInterim"],
                     SelectedTimesheet: SelectedTimesheet
                 })
             }
@@ -174,15 +125,13 @@ class GeneralConfiguration extends Component {
 
         dataservice.GetDataGrid('GetworkFlowSettings').then(
             res => {
-                let SelectedDay = _.find(ListOfDays, function (i) { return i.value === 7 });
+                let SelectedDay = find(ListOfDays, function (i) { return i.value === 7 });
                 this.setState({
                     WFSettingsData: res,
                     SelectedDay: SelectedDay
                 })
             }
         )
-
-
     }
 
     handleChangeTimesheetPolicy = (val, name) => {
@@ -220,23 +169,20 @@ class GeneralConfiguration extends Component {
         let Data = this.state.WFSettingsData;
         Data.splice(this.state.indexId, 1);
         this.setState({ WFSettingsData: Data });
-        Api.post('DeleteWFSettings?id=' + this.state.rowId + '').then(
-            res => {
-                this.setState({
-                    showDeleteModal: false,
-                    isLoading: false,
+        Api.post('DeleteWFSettings?id=' + this.state.rowId + '').then(res => {
+            this.setState({
+                showDeleteModal: false,
+                isLoading: false,
 
-                })
-                toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
-            }
-        ).catch(ex => {
+            })
+            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+        }).catch(ex => {
             this.setState({
                 showDeleteModal: false,
                 isLoading: false,
             });
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
         });
-
     }
 
     handleChange(e, field) {
@@ -248,9 +194,9 @@ class GeneralConfiguration extends Component {
             })
         }
         else {
-            let updated_document = this.state.DefaultConfigurations 
-            let value = updated_document[field] === true ? false : true 
-            updated_document[field] = value; 
+            let updated_document = this.state.DefaultConfigurations
+            let value = updated_document[field] === true ? false : true
+            updated_document[field] = value;
             this.setState({
                 DefaultConfigurations: updated_document
             })
@@ -288,13 +234,14 @@ class GeneralConfiguration extends Component {
             this.setState({
                 isLoading: false
             })
-
         }
-
     }
 
     AddConfigurations = (values) => {
         let objAdd = this.state.DefaultConfigurations
+
+        objAdd.showDefaultInterim = this.state.showDefaultInterim;
+
         dataservice.addObject('EditConfigurationById', objAdd).then(
             res => {
                 this.props.history.push({
@@ -326,6 +273,12 @@ class GeneralConfiguration extends Component {
         }
     }
 
+    handleChecked(e) {
+        this.setState({
+            showDefaultInterim: e.target.value
+        })
+    }
+
     render() {
 
         let WFSettingsData = this.state.WFSettingsData
@@ -335,9 +288,7 @@ class GeneralConfiguration extends Component {
                     <tr key={item.id}>
                         <td className="removeTr">
                             <div className="contentCell tableCell-1">
-                                <span className="pdfImage"
-                                    onClick={() => this.DeleteWF(item.id, index)}
-                                >
+                                <span className="pdfImage" onClick={() => this.DeleteWF(item.id, index)} >
                                     <img src={Recycle} alt="pdf" />
                                 </span>
                             </div>
@@ -345,7 +296,6 @@ class GeneralConfiguration extends Component {
                         <td>{item.dayName}</td>
                         <td>{item.check_in}</td>
                         <td>{item.check_out}</td>
-
                     </tr>
                 )
             })
@@ -353,7 +303,6 @@ class GeneralConfiguration extends Component {
         let RenderWorkFlowSettings = () => {
             return (
                 <Fragment>
-
                     <header className="main__header">
                         <div className="main__header--div">
                             <h2 className="zero">{Resources['workFlowSettings'][currentLanguage]}</h2>
@@ -373,35 +322,27 @@ class GeneralConfiguration extends Component {
                                 <label>Is Vacation</label>
                             </div>
                         </div>
-
                         {this.state.IsVacation ? null :
                             <Fragment>
                                 <div className="linebylineInput valid-input fullInputWidth">
-                                        <label className="control-label">{Resources.checkIn[currentLanguage]}</label>
-                                        <div className="inputDev ui input" >
-                                            <input className="form-control fsadfsadsa" id="time" name="bday" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" type="time" value={this.state.CheckInMin}
-                                                onChange={(e) => this.handleChangeCheck(e, 'checkIn')} />
-                                        </div>
-
+                                    <label className="control-label">{Resources.checkIn[currentLanguage]}</label>
+                                    <div className="inputDev ui input" >
+                                        <input className="form-control fsadfsadsa" id="time" name="bday" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" type="time" value={this.state.CheckInMin}
+                                            onChange={(e) => this.handleChangeCheck(e, 'checkIn')} />
                                     </div>
-
-                                    <div className="linebylineInput valid-input fullInputWidth">
-                                        <label className="control-label">{Resources.checkOut[currentLanguage]}</label>
-                                        <div className="inputDev ui input" >
-                                            <input className="form-control fsadfsadsa" id="time" name="bday" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" type="time" value={this.state.CheckOutMin}
-                                                onChange={(e) => this.handleChangeCheck(e, 'checkOut')} />
-                                        </div>
-        
+                                </div>
+                                <div className="linebylineInput valid-input fullInputWidth">
+                                    <label className="control-label">{Resources.checkOut[currentLanguage]}</label>
+                                    <div className="inputDev ui input" >
+                                        <input className="form-control fsadfsadsa" id="time" name="bday" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" type="time" value={this.state.CheckOutMin}
+                                            onChange={(e) => this.handleChangeCheck(e, 'checkOut')} />
+                                    </div>
                                 </div>
                             </Fragment>}
-
                         <div className="slider-Btns letterFullWidth">
                             <button className="primaryBtn-1 btn meduimBtn" type='button' onClick={this.AddWorkFlowSettings}>ADD</button>
                         </div>
                     </div>
-
-
-
                     <table className="ui table">
                         <thead>
                             <tr>
@@ -412,12 +353,9 @@ class GeneralConfiguration extends Component {
                             </tr>
                         </thead>
                         <tbody>
-
                             {RenderWorkFlowSettingsTable}
-
                         </tbody>
                     </table>
-
                 </Fragment>
             )
         }
@@ -453,7 +391,6 @@ class GeneralConfiguration extends Component {
                         <div className="subiTabsContent">
                             <div className="document-fields">
                                 <Formik
-
                                     initialValues={{ ...this.state.DefaultConfigurations }}
                                     validationSchema={ValidtionSchema}
                                     onSubmit={(values) => {
@@ -483,8 +420,6 @@ class GeneralConfiguration extends Component {
                                                             </div>
                                                         </div>)
                                                 })}
-
-
                                                 <div className="linebylineInput valid-input">
                                                     <DropDown title='timesheetPolicy'
                                                         data={this.state.TimesheetPolicyDropData}
@@ -565,7 +500,6 @@ class GeneralConfiguration extends Component {
                                                     )
                                                 })}
                                             </div>
-
                                             <div className="fullWidthWrapper textLeft proForm datepickerContainer">
                                                 {InvoicesInputs.map(s => {
                                                     return (
@@ -588,8 +522,18 @@ class GeneralConfiguration extends Component {
                                                         </div>
                                                     )
                                                 })}
+                                                <div className="linebylineInput linebylineInput__checkbox">
+                                                    <label data-toggle="tooltip" title={Resources['refrenceDocument'][currentLanguage]} className="control-label"> {Resources['refrenceDocument'][currentLanguage]} </label>
+                                                    <div className="ui checkbox radio radioBoxBlue">
+                                                        <input type="radio" name="showDefaultInterim" checked={this.state.showDefaultInterim === "true"} value={"true"} onChange={(e) => { this.handleChecked(e) }} />
+                                                        <label>{Resources['automatic'][currentLanguage]}</label>
+                                                    </div>
+                                                    <div className="ui checkbox radio radioBoxBlue checked">
+                                                        <input type="radio" name="showDefaultInterim" checked={this.state.showDefaultInterim === "false"} value={"false"} onChange={(e) => { this.handleChecked(e) }} />
+                                                        <label> {Resources['normal'][currentLanguage]}</label>
+                                                    </div>
+                                                </div>
                                             </div>
-
                                             <div className="linebylineInput fullWidthWrapper daysCheckbox">
                                                 <label> HR Vacation Days</label>
                                                 <div className="three__daysCheck--flex">
@@ -693,5 +637,5 @@ class GeneralConfiguration extends Component {
     }
 }
 
-export default withRouter (GeneralConfiguration)
+export default withRouter(GeneralConfiguration)
 

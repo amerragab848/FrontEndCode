@@ -4,7 +4,7 @@ import Api from '../../api'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import moment from 'moment'
 import Resources from '../../resources.json';
-import _ from "lodash";
+import filter from "lodash/filter";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
@@ -205,7 +205,7 @@ class SubContract extends Component {
         if(!this.props.items){
             Api.get('ShowContractItemsByContractId?contractId='+this.props.docId+'&pageNumber=0&pageSize=2000').then((res) => {
                 if (res) {
-                    let itemsColumns = _.filter(this.itemsColumns, (col) => col.key != 'defaultQuantity')
+                    let itemsColumns = filter(this.itemsColumns, (col) => col.key != 'defaultQuantity')
                     this.setState({ rows: res, itemsColumns, isLoading: false })
                 }
             }); 
@@ -327,7 +327,7 @@ class SubContract extends Component {
 
         this.setState({ isLoading: true });
       
-        let itemsColumns = value == 'quantity' ? _.filter(this.itemsColumns, (col) => col.key != 'defaultQuantity') : _.filter(this.itemsColumns, (col) => col.key != 'quantity')
+        let itemsColumns = value == 'quantity' ? filter(this.itemsColumns, (col) => col.key != 'defaultQuantity') : filter(this.itemsColumns, (col) => col.key != 'quantity')
         setTimeout(() => {
             this.setState({ itemsColumns, isLoading: false })
         }, 200)

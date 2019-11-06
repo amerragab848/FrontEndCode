@@ -52,7 +52,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 class clientModificationAddEdit extends Component {
 
     constructor(props) {
@@ -232,7 +232,7 @@ class clientModificationAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
@@ -243,7 +243,7 @@ class clientModificationAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
@@ -268,12 +268,12 @@ class clientModificationAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
             if (isEdit) {
                 let approvalStatusId = this.state.document.approvalStatusId;
                 let approvalStatus = {};
                 if (approvalStatusId) {
-                    approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
+                    approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
 
                     this.setState({
                         selectedApprovalStatusId: approvalStatus
@@ -285,7 +285,7 @@ class clientModificationAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", 'title', 'title').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", 'title', 'title', 'defaultLists', "area", "listType").then(result => {
 
             this.setState({
                 areas: [...result]
@@ -295,7 +295,7 @@ class clientModificationAddEdit extends Component {
                 let areaId = this.props.document.area;
                 let area = {};
                 if (areaId) {
-                    area = _.find(result, function (i) { return i.value == areaId; });
+                    area = find(result, function (i) { return i.value == areaId; });
 
                     this.setState({
                         selecetedArea: area
@@ -304,12 +304,12 @@ class clientModificationAddEdit extends Component {
             }
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", 'title', 'title').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", 'title', 'title', 'defaultLists', "location", "listType").then(result => {
             if (isEdit) {
                 let location = this.props.document.location;
                 let locationObj = {};
                 if (location) {
-                    locationObj = _.find(result, function (i) { return i.value == location; });
+                    locationObj = find(result, function (i) { return i.value == location; });
 
                     this.setState({
                         selectedLocation: locationObj
@@ -321,13 +321,13 @@ class clientModificationAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=buildingno", 'title', 'title').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=buildingno", 'title', 'title', 'defaultLists', "buildingno", "listType").then(result => {
 
             if (isEdit) {
                 let buildingno = this.props.document.building;
                 let building = {};
                 if (buildingno) {
-                    building = _.find(result, function (i) { return i.value == buildingno; });
+                    building = find(result, function (i) { return i.value == buildingno; });
 
 
                     this.setState({
@@ -340,7 +340,7 @@ class clientModificationAddEdit extends Component {
             });
 
         });
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=clinetselectionstype", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=clinetselectionstype", 'title', 'id', 'defaultLists', "clinetselectionstype", "listType").then(result => {
 
             this.setState({
                 clientSelections: [...result]
@@ -350,7 +350,7 @@ class clientModificationAddEdit extends Component {
                 let clientSelectionType = this.props.document.clientSelectionType;
                 let clientSelection = {};
                 if (clientSelectionType) {
-                    clientSelection = _.find(result, function (i) { return i.value == clientSelectionType; });
+                    clientSelection = find(result, function (i) { return i.value == clientSelectionType; });
                     this.setState({
                         selectedClientSelection: clientSelection
                     });

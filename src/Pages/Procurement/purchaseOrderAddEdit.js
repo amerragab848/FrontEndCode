@@ -46,7 +46,7 @@ let perviousRoute = "";
 let arrange = 0;
 let specsId = "";
 let boqId = "";
-const _ = require("lodash");
+const find = require("lodash/find");
 
 const ValidtionSchemaForTermsPurchaseOrder = Yup.object().shape({
     details: Yup.string()
@@ -809,10 +809,10 @@ class PurchaseOrderAddEdit extends Component {
 
     FillDropDowns = isEdit => {
         dataservice
-            .GetDataList(
+            .GetDataListCached(
                 "GetProjectProjectsCompaniesForList?projectId=" + projectId,
                 "companyName",
-                "companyId"
+                "companyId", 'companies', this.state.projectId, "projectId"
             )
             .then(result => {
                 this.setState({
@@ -825,11 +825,11 @@ class PurchaseOrderAddEdit extends Component {
 
                     let toCompanyId = this.state.document.toCompanyId;
 
-                    let selectedFromCompany = _.find(result, function (i) {
+                    let selectedFromCompany = find(result, function (i) {
                         return i.value == fromCompanyId;
                     });
 
-                    let selectedToCompany = _.find(result, function (i) {
+                    let selectedToCompany = find(result, function (i) {
                         return i.value == toCompanyId;
                     });
 
@@ -862,10 +862,11 @@ class PurchaseOrderAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=estimationitemtype&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=estimationitemtype",
                 "title",
-                "action"
+                "action",
+                 'defaultLists', "estimationitemtype", "listType"
             )
             .then(result => {
                 this.setState({
@@ -874,10 +875,10 @@ class PurchaseOrderAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=specssection&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=specssection",
                 "title",
-                "id"
+                "id",'defaultLists', "specssection", "listType"
             )
             .then(result => {
                 this.setState({
@@ -886,10 +887,10 @@ class PurchaseOrderAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=equipmentType",
                 "title",
-                "id"
+                "id",'defaultLists', "equipmentType", "listType"
             )
             .then(result => {
                 this.setState({
@@ -898,10 +899,10 @@ class PurchaseOrderAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=unit&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=unit",
                 "title",
-                "id"
+                "id",'defaultLists', "unit", "listType"
             )
             .then(result => {
                 this.setState({
@@ -936,7 +937,7 @@ class PurchaseOrderAddEdit extends Component {
         dataservice.GetDataList(action, "contactName", "id").then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) {
+                let targetFieldSelected = find(result, function (i) {
                     return i.value == toSubField;
                 });
 

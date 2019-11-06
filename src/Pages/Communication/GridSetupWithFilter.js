@@ -279,7 +279,6 @@ class GridSetupWithFilter extends Component {
     this.setState({ expandedRows: expandedRows, Loading: false });
   };
 
-
   onRowClick = (index, value, column) => {
     if (value) {
       if (this.props.onRowClick !== undefined) {
@@ -330,7 +329,13 @@ class GridSetupWithFilter extends Component {
       let filters = Object.keys(_filters).reduce((n, k) => (n[k] = _filters[k].toLowerCase(), n), {});
       if (Object.keys(filters).length > 1) {
 
-        let Data = this.state.rows;
+        let Data = this.state.rows.map(item => ({
+          title: item.title.toLowerCase(),
+          action: item.action,
+          editable: item.editable,
+          id: item.id,
+          refCode: item.refCode
+        }));
 
         Data.forEach(row => {
           matched = 0;
@@ -371,7 +376,15 @@ class GridSetupWithFilter extends Component {
           Loading: false
         });
       } else {
-        rows.forEach(row => {
+        let Data = rows.map(item => ({
+          title: item.title.toLowerCase(),
+          action: item.action,
+          editable: item.editable,
+          id: item.id,
+          refCode: item.refCode
+        }));
+
+        Data.forEach(row => {
           matched = 0;
           Object.keys(filters).forEach(key => {
             let isValue = row[`${key}`];

@@ -27,7 +27,9 @@ import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Steps from "../../Componants/publicComponants/Steps";
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
+import find from'lodash/find';
+import filter from'lodash/filter';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let docId = 0;
@@ -37,7 +39,8 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+// const find = require('lodash/find')
+// const filter = require('lodash/filter')
 
 var steps_defination = [];
 
@@ -409,7 +412,7 @@ class projectWorkFlowAddEdit extends Component {
             }
         )
 
-        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId=' + projectId + '', 'companyName', 'companyId').then(
+        dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId=' + projectId + '', 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(
             res => {
                 this.setState({
                     CompanyData: res,
@@ -539,7 +542,7 @@ class projectWorkFlowAddEdit extends Component {
             })
             if (isEdit === true) {
                 let RejectionOptionsId = this.state.document.rejectionOptions;
-                let selectedRejectionOptions = _.find(res, function (i) { return i.value == RejectionOptionsId });
+                let selectedRejectionOptions = find(res, function (i) { return i.value == RejectionOptionsId });
 
                 this.setState({
                     selectedRejectionOptions: selectedRejectionOptions,
@@ -556,7 +559,7 @@ class projectWorkFlowAddEdit extends Component {
 
             if (isEdit === true) {
                 let NextWorkFlowId = this.state.document.nextWorkFlowId;
-                let selectedNextWorkFlow = _.find(result, function (i) { return i.value == NextWorkFlowId });
+                let selectedNextWorkFlow = find(result, function (i) { return i.value == NextWorkFlowId });
                 this.setState({
                     selectedNextWorkFlow: selectedNextWorkFlow
                 })
@@ -788,7 +791,7 @@ class projectWorkFlowAddEdit extends Component {
 
                 this.setState({ showPopUp: true, IsEditWorkFlowItem: true })
                 let Companies = this.state.CompanyData
-                let SelectedCompany = _.find(Companies, function (i) { return i.value == res.companyId });
+                let SelectedCompany = find(Companies, function (i) { return i.value == res.companyId });
 
                 dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + res.companyId + '', 'contactName', 'id').then(
                     res => {
@@ -889,7 +892,7 @@ class projectWorkFlowAddEdit extends Component {
         let OldData = Data.filter(s => s.workFlowItemId !== id)
 
         let SelectedValue = this.state.MultiApproval.val.value
-        _.filter(SelectedRow, function (i) {
+        filter(SelectedRow, function (i) {
             let x = {};
             x.arrange = i.arrange
             x.workFlowItemId = i.workFlowItemId

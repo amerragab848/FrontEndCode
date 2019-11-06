@@ -20,7 +20,6 @@ export default {
 			viewModel: false,
 			documentCycle: {},
 			items: [],
-			attachDocuments: [],
 			fields: [],
 			columns: [],
 			fieldsItems: [],
@@ -29,10 +28,13 @@ export default {
 			moduleName: "",
 			showSelectProject: true,
 			showLeftReportMenu: false,
+			//attachDocuments: [],
 			docsAttachData: [],
 			relatedLinkData: [],
 			documentData: [],
-			isReject : null
+			isReject: null,
+			isLoadingFilesUpload: false,
+			totalCost: 0
 		},
 		expensesWorkFlow: {
 			expensesWorkFlowData: {},

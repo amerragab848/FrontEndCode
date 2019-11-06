@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import config from "../../../../Services/Config";
 import permissions from '../../../../permissions.json'
 import HeaderDocument from '../../../OptionsPanels/HeaderDocument'
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class PermissionsGroupsPermissions extends Component {
@@ -35,7 +35,7 @@ class PermissionsGroupsPermissions extends Component {
     componentDidMount() {
         this.setState({ isLoading: true })
         Api.get('AccountsPermissionsGroupsGetById?id=' + this.state.groupId).then(res => {
-            if (!_.isEmpty(res))
+            if (!isEmpty(res))
                 this.setState({ groupName: res[0].groupName, isLoading: false })
         }).catch(() => {
             this.setstate({ isLoading: false })
@@ -111,7 +111,7 @@ class PermissionsGroupsPermissions extends Component {
 
         Api.post('GetGroupsPermissionsV5', doc).then(res => {
 
-            if (!_.isEmpty(res)) {
+            if (!isEmpty(res)) {
                 console.log(res)
                 res.forEach(item => {
                     this.setState({ [item.permissionId]: item.permissionValue })
@@ -130,7 +130,7 @@ class PermissionsGroupsPermissions extends Component {
     drawItems() {
 
         let results = this.state[this.state.selectedDocument.value] ? this.state[this.state.selectedDocument.value] : [];
-        if (!_.isEmpty(results)) {
+        if (!isEmpty(results)) {
             return (results.map(item => {
                 return (
                     <div className="project__Permissions--type " key={item.code}>

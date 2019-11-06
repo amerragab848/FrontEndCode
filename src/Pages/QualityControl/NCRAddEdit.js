@@ -36,7 +36,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 
 const validationSchema = Yup.object().shape({
 
@@ -288,77 +288,318 @@ class NCRAddEdit extends Component {
         }
     }
 
-    FillDropDowns = () => {
-        let DropDownsData = [
-            { Api: 'GetAccountsDefaultList?listType=approvalstatus&pageNumber=0&pageSize=10000', DropDataName: 'approvalstatusList', Label: 'title', Value: 'id', Name: 'approvalStatusId', selectedValue: 'selectedApprovalStatusId' },
-            { Api: 'GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', DropDataName: 'discplines', Label: 'title', Value: 'id', Name: 'disciplineId', selectedValue: 'selectedDiscpline' },
-            { Api: 'GetAccountsDefaultList?listType=specssection&pageNumber=0&pageSize=10000', DropDataName: 'specificationSectionList', Label: 'title', Value: 'id', Name: 'specsSectionId', selectedValue: 'selectedSpecsSectionId' },
-            { Api: 'GetAccountsDefaultList?listType=reviewresult&pageNumber=0&pageSize=10000', DropDataName: 'reviewResultList', Label: 'title', Value: 'id', Name: 'reviewResultId', selectedValue: 'selectedReviewResult' },
-            { Api: 'GetInspectionRequest?projectId=' + projectId + '', DropDataName: 'activityIRList', Label: 'subject', Value: 'id', Name: 'inspectionRequestId', selectedValue: 'selectedInspectionRequestId' },
-            { Api: 'GetAccountsDefaultList?listType=reasonforissue&pageNumber=0&pageSize=10000', DropDataName: 'reasonForIssues', Label: 'title', Value: 'id', Name: 'reasonForIssueId', selectedValue: 'selectedReasonForIssue' },
-            { Api: 'GetAccountsDefaultList?listType=drawingfilenumber&pageNumber=0&pageSize=10000', DropDataName: 'fileNumberList', Label: 'title', Value: 'id', Name: 'fileNumberId', selectedValue: 'selectedFileNumberId' },
-            { Api: 'GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000', DropDataName: 'areas', Label: 'title', Value: 'id', Name: 'areaId', selectedValue: 'selecetedArea' },
-            { Api: 'GetAccountsDefaultList?listType=buildingno&pageNumber=0&pageSize=10000', DropDataName: 'buildings', Label: 'title', Value: 'id', Name: 'buildingNumberId', selectedValue: 'selectedbuildingno' },
-            { Api: 'GetAccountsDefaultList?listType=apartmentno&pageNumber=0&pageSize=10000', DropDataName: 'apartmentNumbers', Label: 'title', Value: 'id', Name: 'apartmentNumberId', selectedValue: 'selectedApartmentNoId' },
-            { Api: 'GetProjectProjectsCompaniesForList?projectId=' + projectId + '', DropDataName: 'companies', Label: 'companyName', Value: 'companyId', Name: 'toCompanyId', selectedValue: 'selectedFromCompany' },
-            { Api: 'GetPoContractForList?projectId=' + projectId + '', DropDataName: 'contractsPos', Label: 'subject', Value: 'id', Name: 'contractId', selectedValue: 'selectedContract' },
-        ]
-        let CompaniesDropDownsData = [
-            { Name: 'fromCompanyId', SelectedValueCompany: 'selectedFromCompany', ContactName: 'fromContactId', DropDataContactName: 'fromContacts', SelectedValueContact: 'selectedFromContact' },
-            { Name: 'toCompanyId', SelectedValueCompany: 'selectedToCompany', ContactName: 'toContactId', DropDataContactName: 'toContacts', SelectedValueContact: 'selectedToContact' },
-            { Name: 'bicCompanyId', SelectedValueCompany: 'selectedActionByCompanyId', ContactName: 'bicContactId', DropDataContactName: 'bicContacts', SelectedValueContact: 'selectedActionByContactId' },
-        ]
-        DropDownsData.map(element => {
-            return dataservice.GetDataList(element.Api, element.Label, element.Value).then(
-                result => {
-                    this.setState({
-                        [element.DropDataName]: result,
-                    })
-
-                    if (docId > 0) {
-
-                        if (element.DropDataName === 'companies') {
-                            CompaniesDropDownsData.map(company => {
-                                let elementID = this.state.document[company.Name];
-                                let SelectedValue = _.find(result, function (i) { return i.value == elementID; });
-                                this.setState({
-                                    [company.SelectedValueCompany]: SelectedValue,
-                                })
-
-                                dataservice.GetDataList('GetContactsByCompanyId?companyId=' + elementID + '', 'contactName', 'id').then(
-                                    res => {
-                                        let ContactId = this.state.document[company.ContactName];
-                                        let SelectedValueContact = _.find(res, function (i) { return i.value == ContactId; });
-                                        this.setState({
-                                            [company.DropDataContactName]: res,
-                                            [company.SelectedValueContact]: SelectedValueContact,
-                                            Loading: false
-                                        })
-                                    }
-                                )
-                            })
-                        }
-
-                        else {
-                            let elementID = this.state.document[element.Name];
-                            let SelectedValue = _.find(result, function (i) { return i.value == elementID; });
-                            this.setState({
-                                [element.selectedValue]: SelectedValue,
-
-                            });
-                        }
-
-                    }
-                    else {
-                        this.setState({
-                            Loading: false
-                        })
-
-                    }
-                }
-            )
-        })
+    fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
+        let action = url + "?" + param + "=" + value
+        dataservice.GetDataList(action, 'contactName', 'id').then(result => {
+            if (this.props.changeStatus === true) {
+                let toSubField = this.state.document[subField];
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
+               
+                this.setState({
+                    [subSelectedValue]: targetFieldSelected,
+                    [subDatasource]: result
+                });
+            }
+        });
     }
+
+
+    FillDropDowns=()=> {
+       
+
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
+
+            if (docId >0) {
+               
+                let companyId = this.props.document.fromCompanyId; 
+                
+                let  fromCompanyName= find(result, function (i) { return i.value == companyId; });
+                
+                if (companyId) {
+                    this.setState({
+                        // selectedFromCompany: { label: this.props.document.fromCompany, value: companyId } 
+                        selectedFromCompany: { label:fromCompanyName.label , value: companyId } 
+
+                    });
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
+                }
+
+                let toCompanyId = this.props.document.toCompanyId;
+                if (toCompanyId) {
+                    this.setState({
+                         selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId } 
+                    });
+
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
+                }
+
+                let bicCompanyId = this.props.document.bicCompanyId;
+                let bicCompany={};
+                if (bicCompanyId) {
+                    bicCompany=find(result,function(i){return i.value==bicCompanyId});
+                    this.setState({
+                        selectedActionByCompanyId: { label: bicCompany.label, value: bicCompanyId }
+                    });
+
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', bicCompanyId, 'bicContactId', 'selectedActionByContactId', 'bicContacts');
+                }
+               
+            
+            }
+            this.setState({
+                companies: [...result],
+                //Loading:false
+            });
+        });
+
+
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", 'title', 'id', 'defaultLists', "discipline", "listType").then(result => {
+            if (docId > 0) {
+                let disciplineId = this.props.document.disciplineId;
+                let discpline = {};
+                if (disciplineId) {
+                    discpline = find(result, function (i) { return i.value == disciplineId; });
+                     if(discpline){
+                        this.setState({
+                            selectedDiscpline: discpline
+                        });
+                     }
+                  
+                }
+            }
+            this.setState({
+                discplines: [...result],
+                //Loading: false
+            });
+        });
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", 'title', 'id', 'defaultLists', "area", "listType").then(result => {
+
+           
+
+            if (docId > 0) {
+                let areaId = this.props.document.areaId;
+               
+                let area = {};
+                if (areaId) {
+                    area = find(result, function (i) { return i.value == areaId; });
+                  if(area){
+                    this.setState({
+                        selecetedArea: {label:area.label,value:areaId},
+                        //Loading: false
+                    });
+                  }
+                    
+                }
+            }
+            this.setState({
+                areas: [...result],
+                Loading:false
+            });
+        });
+        dataservice.GetDataListCached("GetAccountsDefaultListforList?listType=apartmentno","title", "id", 'defaultLists', "apartmentno", "listType").then(result => {
+            if (docId > 0) {
+                let apartmentNoId = this.props.document.apartmentNumberId;
+                console.log("apartId "+apartmentNoId);
+                let apart={};
+                if (apartmentNoId) {
+                    apart=find(result,function(i){return i.value==apartmentNoId});
+                    console.log("apart "+apart);
+                    if(apart){
+                        this.setState({
+                            selectedApartmentNoId: {
+                                label: apart.label,
+                                value: apartmentNoId
+                            }
+                        });
+                    }
+                   
+                }
+            }
+            this.setState({
+                apartmentNumbers: [...result],
+                isLoading: false
+            });
+        });
+
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
+            if (docId > 0) {
+                let approvalStatusId = this.state.document.approvalStatusId;
+                let approvalStatus = {};
+                if (approvalStatusId) {
+                    approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
+                   if(approvalStatus){
+                    this.setState({
+                        selectedApprovalStatusId: approvalStatus
+                    });
+                   }
+                    
+                }
+            }
+            this.setState({
+                approvalstatusList: [...result],
+                Loading:false
+            });
+        });
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specsSection", 'title', 'id', 'defaultLists', "specsSection", "listType").then(result => {
+            if (docId > 0) {
+                let specId=this.props.document.specsSectionId;
+                let spec={};
+                if(specId)
+                {
+                   
+                    spec=find(result,function(i){return i.value==specId});
+                    if(spec){
+                        this.setState({
+                            selectedSpecsSectionId: { label: spec.label, value: this.props.document.specsSectionId }
+                        });
+                    }
+                   
+                }
+               
+            }
+            this.setState({
+                specificationSectionList: [...result],
+                Loading:false
+            });
+        });
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reviewresult", "title", "id",'defaultLists', "reviewResult", "listType").then(result => {
+           if(docId > 0){
+           let revId=this.props.document.reviewResultId;
+           let review={};
+           if(revId){
+            review=find(result,function(i){return i.value==revId});
+            if(review){
+                this.setState({
+                    selectedReviewResult:{label:review.label,value:revId}
+                });
+            }
+           
+           }
+           }
+          
+            this.setState({
+                reviewResultList: [...result],
+              Loading:false
+            });
+        });
+
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reasonforissue", 'title', 'id', 'defaultLists', "reasonforissue", "listType").then(result => {
+            if (docId > 0) {
+                let reasonForIssueId = this.props.document.reasonForIssueId;
+                let reasonForIssue = {};
+                if (reasonForIssueId) {
+                    reasonForIssue = find(result, function (i) { return i.value == reasonForIssueId; });
+                   if(reasonForIssue){
+                    this.setState({
+                        selectedReasonForIssue: reasonForIssue
+                    });
+                   }
+                   
+                }
+            }
+            this.setState({
+                reasonForIssues: [...result],
+                Loading:false
+            });
+        });
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=drawingfilenumber", 'title', 'id', 'defaultLists', "drawingfilenumber", "listType").then(result => {
+          if(docId){
+              let fileId=this.props.document.fileNumberId;
+             
+              let file={};
+              if(fileId){
+                  file =find(result,function(i){return i.value==fileId});
+                 
+                  if(file){
+                    this.setState({
+                        selectedFileNumberId:{label:file.label,value:fileId}
+                      });
+                  }
+                 
+              }
+          }
+
+
+            this.setState({
+                fileNumberList: [...result]
+            });
+
+            
+        });
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=buildingno", 'title', 'id', 'defaultLists', "buildingno", "listType").then(result => {
+            if (docId>0) {
+                let buildingno = this.props.document.buildingNumberId;
+               
+                let building = {};
+                if (buildingno) {
+                    building = find(result, function (i) { return i.value == buildingno; });
+                   
+                    if(building){
+                        this.setState({
+                            selectedbuildingno: {label:building.label,value:buildingno}
+                        });
+                    }
+                   
+                }
+            }
+            this.setState({
+                buildings: [...result],
+                Loading:false
+            });
+        });
+        dataservice.GetDataList("GetInspectionRequest?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+
+            if (docId > 0) {
+                let inspectionRequestId = this.props.document.inspectionRequestId;
+                let inspectionRequest = {};
+                if (inspectionRequestId) {
+                    inspectionRequest = find(result, function (i) { return i.value == inspectionRequestId; });
+                    this.setState({ selecetedinspectionRequest: inspectionRequest });
+                }
+            }
+            this.setState({ activityIRList: [...result],Loading:false });
+        });
+        dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
+           if(docId){
+               
+               let conId=this.props.document.contractId;
+               let con={};
+               if(conId){
+                   con=find(result,function(i){return i.value==conId});
+                   if(con){
+                       this.setState({
+                         selectedContract:{label:con.label,value:conId}
+                       });
+                   }
+               }
+           }else{
+            this.setState({
+                contractsPos: [...result],
+                Loading:false
+              });
+           }
+           
+        });
+
+
+
+
+        // if (this.state.IsEditMode === false) {
+        //     dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+        //         this.setState({
+        //             contractsPos: [...result]
+        //         });
+        //     });
+        // }
+
+
+
+    }
+
+
+
+
+
 
     onChangeMessage = (value) => {
         if (value != null) {
@@ -1126,3 +1367,80 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(withRouter(NCRAddEdit))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

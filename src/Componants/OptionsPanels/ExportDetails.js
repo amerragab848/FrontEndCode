@@ -12,7 +12,7 @@ import Config from "../../Services/Config";
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Dataservice from '../../Dataservice.js';
-const _ = require('lodash')
+const find = require('lodash/find')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const filedsIgnor = ['status', 'docDate'];
@@ -30,70 +30,34 @@ class ExportDetails extends Component {
         };
 
         this.ExportDocument = this.ExportDocument.bind(this);
-        this.exportPDFFile = this.exportPDFFile.bind(this);
+        // this.exportPDFFile = this.exportPDFFile.bind(this);
     }
 
     ExportDocument(Fields, items, name) {
         if (this.state.isExcel == "false") {
 
-            // this.setState({
-            //     isLoading: true
-            // }); 
-            const input = document.getElementById('printPdf');
-            // input.style.height = 'auto'
-            // input.style.visibility = 'visible'
+            this.setState({
+                isLoading: true
+            }); 
+            var route = 'ExportDocumentServerSide';
+            var title =this.props.documentName.replace(/ /g,'_');
+             
+            Dataservice.GetNextArrangeMainDocument(route + `?documentName=${title}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`)
+                .then(result => {
+                    if (result != null) {
+                        result = Config.getPublicConfiguartion().downloads + result;
 
-            html2canvas(input).then((canvas) => {
-                var imgData = canvas.toDataURL('image/png');
-                var pageHeight = new Date().valueOf() % 2 ? 295 : 285;
-                var imgWidth = 210;
-                var imgHeight = canvas.height * imgWidth / canvas.width;
-                var heightLeft = imgHeight;
-                var doc = new jsPDF('landscape', 'mm', 'letter');
-                var position = 0;
-
-                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    doc.addPage();
-                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                doc.setProperties({
-                    // title: 'Title',
-                    // subject: 'This is the subject',
-                    author: 'Procoor',
-                    keywords: 'Procoor V5',
-                    creator: 'Procoor Team Development'
+                        var a = document.createElement('A');
+                        a.href = result;
+                        a.download = result.substr(result.lastIndexOf('/') + 1);
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        this.setState({
+                            isLoading: false
+                        });
+                    }
                 });
-
-                doc.save(Resources[this.props.documentTitle][currentLanguage] + '.pdf');
-                //input.style.visibility = 'hidden';
-                //input.style.height = '0';
-                // this.setState({
-                //     isLoading: false
-                // }); 
-            })
-
-            // var route = 'ExportDocumentServerSide'; 
-            // Dataservice.GetNextArrangeMainDocument(route + `?documentName=${this.props.documentName}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`)
-            //     .then(result => { 
-            //         if (result != null) {
-            //             result = Config.getPublicConfiguartion().downloads + result;
-
-            //             var a = document.createElement('A');
-            //             a.href = result;
-            //             a.download = result.substr(result.lastIndexOf('/') + 1);
-            //             document.body.appendChild(a);
-            //             a.click();
-            //             document.body.removeChild(a);
-            //             this.setState({
-            //                 isLoading: false
-            //             });
-            //         }
-            //     });
         }
         else {
             var uri = 'data:application/vnd.ms-excel;base64,'
@@ -121,7 +85,7 @@ class ExportDetails extends Component {
 
             if (!'attachmentTable'.nodeType) attachmentTable = document.getElementById('attachmentTable').innerHTML
             if (this.props.workFlowCycles.length) workflowCycles = document.getElementById('workflowCycles').innerHTML
-            if (this.props.attachDocuments.length) docAttachments = document.getElementById('attachDocuments').innerHTML
+            if (this.props.docsAttachData.length) docAttachments = document.getElementById('attachDocuments').innerHTML
 
             var ctx = {
                 name: 'procoor Export',
@@ -151,7 +115,7 @@ class ExportDetails extends Component {
     }
     componentDidMount() {
         // this.ExportDocument('salaryTable', 'testTable', 'procoor ');
-        console.log(this.props.workFlowCycles);
+        // console.log(this.props.workFlowCycles);
     }
 
     // static getDerivedStateFromProps(nextProps, state) {
@@ -217,7 +181,6 @@ class ExportDetails extends Component {
             </table>
         )
     }
-
 
     drawItems() {
         let fieldsItems = DED[this.props.docTypeId].columnsItems
@@ -329,7 +292,7 @@ class ExportDetails extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.props.attachDocuments.map(file => {
+                    {this.props.docsAttachData.map(file => {
                         return (<tr>
                             <td>
                                 <div className="contentCell tableCell-2">
@@ -361,7 +324,7 @@ class ExportDetails extends Component {
         let rows = fields.fields.map((field, index) => {
             let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
 
-            let notExist = _.find(filedsIgnor, function (x) { return x == field.name })
+            let notExist = find(filedsIgnor, function (x) { return x == field.name })
             return (
 
                 !notExist ?
@@ -498,7 +461,7 @@ class ExportDetails extends Component {
 
     drawattachDocuments_pdf() {
         return (
-            this.props.attachDocuments.length > 0 ?
+            this.props.docsAttachData.length > 0 ?
                 <Fragment>
                     <p id="pdfLength">Attached documents</p>
 
@@ -523,7 +486,7 @@ class ExportDetails extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.attachDocuments.map(file => {
+                            {this.props.docsAttachData.map(file => {
                                 return (<tr>
                                     <td>
                                         <div className="contentCell tableCell-2">
@@ -663,13 +626,14 @@ class ExportDetails extends Component {
             </div >
         )
     }
+
     render() {
         // let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY')
         // let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : []
         // let cycle = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles : {}
-        
+
         return (
-            <div id={'docExport'} className="mainContainer" >
+            <div id={'docExport'}   >
                 {this.state.isLoading === true ? null :
                     <div className="dropWrapper">
                         <div className="proForm customProform">
@@ -708,12 +672,14 @@ class ExportDetails extends Component {
 
                 <div style={{ display: 'none' }}>
                     {this.drawFields()}
-                    {this.props.items.length > 0 ? this.drawItems() : null}
-                    {this.props.files.length > 0 ? this.drawAttachments() : null}
-                    {this.props.workFlowCycles.length > 0 ? this.drawWorkFlow() : null}
-                    {this.props.attachDocuments.length > 0 ? this.drawattachDocuments() : null}
+
+                    {this.drawItems()}
+                    {this.drawAttachments()}
+                    {this.drawWorkFlow()}
+                    {this.drawattachDocuments()}
                 </div>
-                {this.exportPDFFile()}
+                {this.state.isLoading === true ? this.exportPDFFile()
+                    : null}
             </div>
         )
     }
@@ -728,10 +694,9 @@ function mapStateToProps(state, ownProps) {
         items: state.communication.items,
         fields: state.communication.fields,
         fieldsItems: state.communication.fieldsItems,
-        attachDocuments: state.communication.attachDocuments,
+        docsAttachData: state.communication.docsAttachData,
         docTypeId: state.communication.docTypeId,
-        documentTitle: state.communication.documentTitle,
-        // projectId: state.communication.projectId
+        documentTitle: state.communication.documentTitle
     }
 }
 

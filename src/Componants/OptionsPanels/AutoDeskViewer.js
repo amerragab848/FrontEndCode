@@ -6,7 +6,7 @@ import CryptoJS from "crypto-js";
 import { withRouter } from "react-router-dom";
 import Config from "../../Services/Config.js";
 
-const Autodesk = window.Autodesk;
+let Autodesk = null;
 
 const listOfOptions = [
     { label: "View WithOut Markups", value: 1 },
@@ -35,11 +35,15 @@ let oDocument = null,
 let oViews3D = null,
     oViews2D = null;
 let urn = null;
+
 class AutoDeskViewer extends Component {
     constructor(props) {
         super(props);
+
         const query = new URLSearchParams(this.props.location.search);
+
         let index = 0;
+
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
@@ -60,6 +64,7 @@ class AutoDeskViewer extends Component {
             }
             index++;
         }
+
         this.state = {
             docId: docId,
             projectId: projectId,
@@ -69,7 +74,7 @@ class AutoDeskViewer extends Component {
             attachFile: encrypte,
             view: null,
             loaded: false,
-            showCheckBox: false,
+            showCheckBox: true,
             selectedMode: { label: "Select Mode", value: 0 },
             isViewEdit: false,
             viewLoading: true,
@@ -104,9 +109,64 @@ class AutoDeskViewer extends Component {
         }
     }
 
-    componentWillMount() { }
+    fetchStyle(url) {
+        return new Promise((resolve, reject) => {
+            let link = document.createElement("link");
+            link.type = "text/css";
+            link.rel = "stylesheet";
+            link.onload = function() {
+                resolve();
+                console.log("style has loaded");
+            };
+            link.onerror = function() {
+                resolve();
+                console.log("[Error] style not loaded");
+            };
+            link.href = url;
 
-    componentDidMount() {
+            let headScript = document.querySelector("script");
+            headScript.parentNode.insertBefore(link, headScript);
+        });
+    }
+
+    fetchScript(url) {
+        return new Promise((resolve, reject) => {
+            let script = document.createElement("script");
+            script.type = "text/javascript";
+            script.onload = function() {
+                resolve();
+                console.log("script has loaded");
+            };
+            script.onerror = function() {
+                resolve();
+                console.log("[Error] script not loaded");
+            };
+            script.src = url;
+
+            let headScript = document.querySelector("script");
+            headScript.parentNode.insertBefore(script, headScript);
+        });
+    }
+
+    async componentDidMount() {
+        await this.fetchStyle(
+            "https://developer.api.autodesk.com/modelderivative/v2/viewers/6"
+        );
+
+        await this.fetchStyle(
+            "https://developer.api.autodesk.com/derivativeservice/v2/viewers/style.min.css?v=v6.2"
+        );
+
+        await this.fetchScript(
+            "https://developer.api.autodesk.com/modelderivative/v2/viewers/6"
+        );
+
+        await this.fetchScript(
+            "https://developer.api.autodesk.com/derivativeservice/v2/viewers/viewer3D.js?v=v6.2"
+        );
+
+        Autodesk = window.Autodesk;
+
         var PercentageID = document.getElementById("precent");
 
         this.animateValue(PercentageID, 0, 98);
@@ -122,11 +182,11 @@ class AutoDeskViewer extends Component {
 
         Api.get(
             "GetAllMarkUps?docId=" +
-            this.state.docId +
-            "&docType=" +
-            this.state.docType +
-            "&docFileId=" +
-            this.state.docFileId
+                this.state.docId +
+                "&docType=" +
+                this.state.docType +
+                "&docFileId=" +
+                this.state.docFileId
         ).then(markups => {
             this.setState({ markups });
             let markupsList = [];
@@ -135,6 +195,10 @@ class AutoDeskViewer extends Component {
             });
             this.setState({ markupsList });
         });
+
+        this.setState({
+            selectedMode: { label: "View Markups", value: 2 }
+        });
     }
 
     animateValue(id, start, end) {
@@ -142,7 +206,7 @@ class AutoDeskViewer extends Component {
             obj = id,
             duration = this.state.loadingPer === true ? 0 : 1000;
 
-        var timer = setInterval(function () {
+        var timer = setInterval(function() {
             current = current + 1;
             obj.innerHTML = current + "%";
             if (current === end) {
@@ -151,15 +215,44 @@ class AutoDeskViewer extends Component {
         }, duration);
     }
 
-    showAllToggle = () => {
-        if (this.state.showAll == true) {
-            this.setState({ showAll: false, viewEditMarkUps: true });
+    showAllToggle = e => {
+        if (e.target.checked === true) {
+            let markupCore = this.state.markupCore;
+            if (markupCore) {
+                markupCore.leaveEditMode();
+                markupCore.hide();
+            }
+            this.setState({
+                showCheckBox: false,
+                showAll: false,
+                isViewEdit: false,
+                viewEditMarkUps: false,
+                markupCore
+            });
         } else {
-            this.setState({ viewEditMarkUps: false, showAll: true });
-            this.state.markups.forEach(item => {
-                this.restoreState(item.svg, item.viewerState);
+            this.setState({
+                showCheckBox: true,
+                showAll: true,
+                isViewEdit: false,
+                viewEditMarkUps: false
             });
         }
+
+        // this.setState({
+        //     showCheckBox: !this.state.showCheckBox,
+        //     showAll: !this.state.showAll,
+        //     isViewEdit: !this.state.isViewEdit,
+        //     viewEditMarkUps: !this.state.viewEditMarkUps,
+        // });
+
+        // if (this.state.showAll == true) {
+        //     this.setState({ showAll: false, viewEditMarkUps: true });
+        // } else {
+        //     this.setState({ viewEditMarkUps: false, showAll: true });
+        //     this.state.markups.forEach(item => {
+        //         this.restoreState(item.svg, item.viewerState);
+        //     });
+        // }
     };
 
     restoreState = (svg, name) => {
@@ -268,7 +361,7 @@ class AutoDeskViewer extends Component {
                     var svfUrl = doc.getViewablePath(initGeom);
                     var modelOptions = {
                         sharedPropertyDbPath: doc.getPropertyDbPath()
-                    }; 
+                    };
                     viewer.start(
                         svfUrl,
                         modelOptions,
@@ -281,7 +374,7 @@ class AutoDeskViewer extends Component {
                     );
                     this.setState({ viewer, loaded: true });
                 },
-                function (errorCode, errorMessage) {
+                function(errorCode, errorMessage) {
                     console.log(
                         "....Loading fail model autoDesk",
                         errorCode,
@@ -298,7 +391,8 @@ class AutoDeskViewer extends Component {
         xmlHttp = new XMLHttpRequest();
         xmlHttp.open(
             "GET",
-            Config.getPublicConfiguartion().static + "/api/Procoor/getAccessToken",
+            Config.getPublicConfiguartion().static +
+                "/api/Procoor/getAccessToken",
             false /*forge viewer requires SYNC*/
         );
         xmlHttp.send(null);
@@ -472,44 +566,40 @@ class AutoDeskViewer extends Component {
                                     index="mode"
                                 />
                             </div>
-                            {this.state.showCheckBox == true ? (
-                                <div
-                                    id="markupBox"
-                                    className={
-                                        "ui checkbox checkBoxGray300 " +
-                                        (this.state.showAll == true
-                                            ? "checked"
-                                            : "")
+
+                            <div className="autoDisk__dropdown--comp">
+                                <Dropdown
+                                    title="markups"
+                                    data={this.state.markupsList}
+                                    selectedValue={this.state.selectedMarkup}
+                                    handleChange={event =>
+                                        this.changeMarkup(event.value)
                                     }
-                                    onClick={this.showAllToggle}>
-                                    <input
-                                        name="CheckBox"
-                                        type="checkbox"
-                                        id="allPermissionInput"
-                                        checked={
-                                            this.state.showAll == true
-                                                ? "checked"
-                                                : ""
-                                        }
-                                    />
-                                    <label>Show</label>
-                                </div>
-                            ) : null}
-                            {this.state.viewEditMarkUps == true ? (
-                                <div className="autoDisk__dropdown--comp">
-                                    <Dropdown
-                                        title="markups"
-                                        data={this.state.markupsList}
-                                        selectedValue={
-                                            this.state.selectedMarkup
-                                        }
-                                        handleChange={event =>
-                                            this.changeMarkup(event.value)
-                                        }
-                                        index="markups"
-                                    />
-                                </div>
-                            ) : null}
+                                    index="markups"
+                                />
+                            </div>
+
+                            <div
+                                style={{ marginLeft: "10px" }}
+                                className={
+                                    "ui checkbox checkBoxGray300 " +
+                                    (this.state.showAll == true
+                                        ? "checked"
+                                        : "")
+                                }
+                                onClick={this.showAllToggle}>
+                                <input
+                                    name="CheckBox"
+                                    type="checkbox"
+                                    id="allPermissionInput"
+                                    checked={
+                                        this.state.showAll == true
+                                            ? "checked"
+                                            : ""
+                                    }
+                                />
+                                <label>Show</label>
+                            </div>
                         </div>
                         {this.state.isViewEdit == true ? (
                             <div

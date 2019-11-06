@@ -29,7 +29,7 @@ import Steps from "../../Componants/publicComponants/Steps";
 
 var steps_defination = [];
 
-const _ = require("lodash");
+//const _ = require("lodash");
 
 let selectedRows = [];
 
@@ -267,7 +267,7 @@ class QsAddEdit extends Component {
 
   fillDropDowns(isEdit) {
     //from Companies
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+    dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
       if (isEdit) {
 
@@ -286,7 +286,7 @@ class QsAddEdit extends Component {
     });
 
     //discplines
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
 
       if (isEdit) {
 
@@ -929,7 +929,7 @@ class QsAddEdit extends Component {
                       <Fragment>
                         <div className="document-fields">
                           <AddItemDescription docLink="/Downloads/Excel/QS.xlsx" showImportExcel={true} docType="qs"
-                            isViewMode={this.state.isViewMode} mainColumn="qsId" addItemApi="AddContractsQsItems"
+                            isViewMode={this.state.isViewMode} mainColumn="qsId" docId={this.state.docId} isUnitPrice={false} addItemApi="AddContractsQsItems"
                             projectId={this.state.projectId} showItemType={true} />
                         </div>
 
@@ -1005,10 +1005,9 @@ class QsAddEdit extends Component {
                 steps_defination={steps_defination}
                 exist_link="/qs/"
                 docId={this.state.docId}
-                changeCurrentStep={stepNo =>
-                  this.changeCurrentStep(stepNo)
-                }
-                stepNo={this.state.CurrStep} changeStatus={docId === 0 ? false : true}
+                changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
+                stepNo={this.state.CurrentStep}
+                changeStatus={docId === 0 ? false : true}
               />
             </div>
           </div>
