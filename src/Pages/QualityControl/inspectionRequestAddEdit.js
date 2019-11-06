@@ -39,7 +39,7 @@ const validationSchema = Yup.object().shape({
 
 const documentCycleValidationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).nullable(true),
-    approvalStatusId: Yup.string().required(Resources['approvalStatusSelection'][currentLanguage]).nullable(true),
+    // approvalStatusId: Yup.string().required(Resources['approvalStatusSelection'][currentLanguage]).nullable(true),
 })
 
 let columns = [
@@ -393,9 +393,9 @@ class inspectionRequestAddEdit extends Component {
         });
 
         dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id').then(result => {
+            let approvalStatus = {};
             if (isEdit) {
                 let approvalStatusId = this.state.documentCycle.approvalStatusId;
-                let approvalStatus = {};
                 if (approvalStatusId) {
                     approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
 
@@ -403,6 +403,14 @@ class inspectionRequestAddEdit extends Component {
                         selectedApprovalStatusId: approvalStatus
                     });
                 }
+            }
+            else {
+                approvalStatus = _.find(result, function (i) {
+                    return i.label === 'Pending'
+                });
+                this.setState({
+                    selectedApprovalStatusId: approvalStatus
+                });
             }
             this.setState({
                 approvalstatusList: [...result]
@@ -823,8 +831,8 @@ class inspectionRequestAddEdit extends Component {
                                             handleChange={(e) => this.handleChangeCycleDropDown(e, "approvalStatusId", 'selectedApprovalStatusId')}
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
-                                            error={errors.approvalStatusId}
-                                            touched={touched.approvalStatusId}
+                                            // error={errors.approvalStatusId}
+                                            // touched={touched.approvalStatusId}
                                             isClear={false}
                                             index="IR-approvalStatusId"
                                             name="approvalStatusId"
