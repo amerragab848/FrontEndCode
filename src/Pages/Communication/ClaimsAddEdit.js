@@ -14,7 +14,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
+import moment from "moment";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
@@ -106,6 +106,39 @@ class ClaimsAddEdit extends Component {
     }
 
     componentDidMount() {
+
+        if (this.state.docId > 0) {
+            let url = "GetClaimsById?id=" + this.state.docId
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'claims');
+
+        } else {
+            let claimsDocument = {
+                subject: '',
+                id: 0,
+                projectId: this.state.projectId,
+                arrange: '',
+                fromCompanyId: '',
+                fromContactId: '',
+                toCompanyId: '',
+                toContactId: '',
+                docDate: moment(),
+                status: true,
+                disciplineId: '',
+                refDoc: '',
+                sharedSettings: '',
+                message: '',
+                contractId: ''
+            };
+
+            this.fillDropDowns(false, () => {
+                this.setState({ document: claimsDocument });
+            });
+
+            this.props.actions.documentForAdding();
+        }
+
+        this.checkDocumentIsView();
+
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
@@ -115,20 +148,17 @@ class ClaimsAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
-        this.checkDocumentIsView();
     };
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
-            this.setState({
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+            return {
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: nextProps.document.message
-            });
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
+            };
         }
-
+        return null
     };
 
     componentWillUnmount() {
@@ -138,8 +168,12 @@ class ClaimsAddEdit extends Component {
         });
     }
 
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
@@ -171,35 +205,6 @@ class ClaimsAddEdit extends Component {
         }
     }
 
-    componentWillMount() {
-        if (this.state.docId > 0) {
-            let url = "GetClaimsById?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'claims');
-
-        } else {
-            let letter = {
-                subject: '',
-                id: 0,
-                projectId: this.state.projectId,
-                arrange: '',
-                fromCompanyId: '',
-                fromContactId: '',
-                toCompanyId: '',
-                toContactId: '',
-                docDate: moment(),
-                status: true,
-                disciplineId: '',
-                refDoc: '',
-                sharedSettings: '',
-                message: '',
-                contractId: ''
-            };
-            this.setState({ document: letter });
-            this.fillDropDowns(false);
-            this.props.actions.documentForAdding();
-        }
-    };
-
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
@@ -214,7 +219,7 @@ class ClaimsAddEdit extends Component {
             }
         });
     }
-  
+
     fillDropDowns(isEdit) {
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
@@ -241,14 +246,7 @@ class ClaimsAddEdit extends Component {
             });
         });
 
-      
-
-
-
-
-
-
-          dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
@@ -264,10 +262,6 @@ class ClaimsAddEdit extends Component {
                 discplines: [...result]
             });
         });
-
-
-
-
 
         //contractList
         dataservice.GetDataList("GetContractByProjectId?projectId=" + projectId, "subject", "id").then(result => {
@@ -292,9 +286,8 @@ class ClaimsAddEdit extends Component {
                 contracts: [...result]
             });
         });
-
     }
- 
+
     onChangeMessage = (value) => {
 
         if (value != null) {
@@ -314,7 +307,7 @@ class ClaimsAddEdit extends Component {
     };
 
     handleChange(e, field) {
-        console.log(field, e);
+
         let original_document = { ...this.state.document };
 
         let updated_document = {};
@@ -356,7 +349,7 @@ class ClaimsAddEdit extends Component {
         });
 
         if (field == "toContactId") {
-            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                 updated_document.arrange = res.arrange;
                 if (Config.getPublicConfiguartion().refAutomatic === true) {
@@ -385,7 +378,13 @@ class ClaimsAddEdit extends Component {
             isLoading: true
         });
 
-        dataservice.addObject('EditClaimById', this.state.document).then(result => {
+        let saveDocument = { ...this.state.document };
+
+        saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
+
+        saveDocument.projectId = this.state.projectId;
+
+        dataservice.addObject('EditClaimById', saveDocument).then(result => {
             this.setState({
                 isLoading: true
             });
@@ -403,6 +402,8 @@ class ClaimsAddEdit extends Component {
         let saveDocument = { ...this.state.document };
 
         saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
+
+        saveDocument.projectId = this.state.projectId;
 
         dataservice.addObject('AddClaims', saveDocument).then(result => {
             this.setState({
@@ -586,7 +587,7 @@ class ClaimsAddEdit extends Component {
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
                                                                         handleChange={
-                                                                            event =>this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")
+                                                                            event => this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")
                                                                         }
 
                                                                         onChange={setFieldValue}
@@ -627,7 +628,7 @@ class ClaimsAddEdit extends Component {
                                                                         isMulti={false}
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
-                                                                        handleChange={event =>this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")}  
+                                                                        handleChange={event => this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}

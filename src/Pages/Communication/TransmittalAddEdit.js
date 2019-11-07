@@ -184,8 +184,8 @@ class TransmittalAddEdit extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id) {
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
 
             let serverInspectionRequest = { ...nextProps.document };
 
@@ -195,20 +195,22 @@ class TransmittalAddEdit extends Component {
             serverInspectionRequest.building = serverInspectionRequest.building ? serverInspectionRequest.building : '';
             serverInspectionRequest.apartment = serverInspectionRequest.apartment ? serverInspectionRequest.apartment : '';
 
-            this.setState({
+            return {
                 document: serverInspectionRequest,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: serverInspectionRequest.description
-            });
-
-            this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
-            this.checkDocumentIsView();
+            };
         }
-
+        return null;
     };
 
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -541,7 +543,6 @@ class TransmittalAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
                                             onSubmit={(values) => {
-
                                                 if (this.props.showModal) {
                                                     return;
                                                 }
@@ -749,10 +750,7 @@ class TransmittalAddEdit extends Component {
                                                                 </div>
                                                                 {this.state.document.sharedSettings === '' ||
                                                                     this.state.document.sharedSettings === null ||
-                                                                    this.state.document.sharedSettings === undefined ?
-                                                                    null
-                                                                    :
-                                                                    <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>}
+                                                                    this.state.document.sharedSettings === undefined ? null : <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>}
                                                             </div>
                                                         </div>
                                                         <div className="letterFullWidth">
@@ -771,6 +769,19 @@ class TransmittalAddEdit extends Component {
                                                         this.props.changeStatus === true ?
                                                             <div className="approveDocument">
                                                                 <div className="approveDocumentBTNS">
+                                                                    {this.state.isLoading ? (
+                                                                        <button className="primaryBtn-1 btn disabled">
+                                                                            <div className="spinner">
+                                                                                <div className="bounce1" />
+                                                                                <div className="bounce2" />
+                                                                                <div className="bounce3" />
+                                                                            </div>
+                                                                        </button>
+                                                                    ) : (
+                                                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
+                                                                                {Resources.save[currentLanguage]}
+                                                                            </button>
+                                                                        )}
                                                                     <DocumentActions
                                                                         isApproveMode={this.state.isApproveMode}
                                                                         docTypeId={this.state.docTypeId}
@@ -791,7 +802,6 @@ class TransmittalAddEdit extends Component {
                                             )}
                                         </Formik>
                                     </div>
-
                                     <div className="doc-pre-cycle tableBTnabs">
                                         {this.state.docId > 0 ? <AddDocAttachment isViewMode={this.state.isViewMode} projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                     </div>

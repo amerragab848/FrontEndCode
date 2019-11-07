@@ -297,7 +297,7 @@
   "Email": {
     "documentTitle": "communicationEmails",
     "docTyp": 77,
-    "documentAddEditLink": "emailAddEdit/",
+    "documentAddEditLink": "emailAddEdit",
     "documentAddEditPopUp": "",
     "documentAddPermission": 391,
     "documentEditPermission": 392,
