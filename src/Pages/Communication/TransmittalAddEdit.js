@@ -252,7 +252,7 @@ class TransmittalAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         //from Companies
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
 
@@ -282,7 +282,7 @@ class TransmittalAddEdit extends Component {
         })
 
         //discplines
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "title").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.discipline;
                 if (disciplineId) {
@@ -294,7 +294,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //area
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "title").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let areaId = this.props.document.area;
                 if (areaId) {
@@ -306,7 +306,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //location
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", "title", "title").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let locationId = this.props.document.location;
                 if (locationId) {
@@ -318,7 +318,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //priorty
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=priority", "title", "id").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let priorityId = this.props.document.priorityId;
                 if (priorityId) {
@@ -332,7 +332,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //submittedFor
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=transmittalsubmittedfor", "title", "id").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
 
                 let submittedForId = this.props.document.submittedForId;
@@ -350,7 +350,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //sendingMethod
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=sendingmethods", "title", "id").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
 
                 let sendingmethod = this.props.document.sendingMethodId;
@@ -423,11 +423,13 @@ class TransmittalAddEdit extends Component {
             [selectedValue]: event
         });
 
-        if (field == "fromContactId") {
-            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
+        if (field == "toContactId") {
+            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
             // this.props.actions.GetNextArrange(url);
-            dataservice.GetNextArrangeMainDocument(url).then(res => {
-                updated_document.arrange = res;
+            dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                updated_document.arrange = res.arrange;
+                updated_document.refDoc = res.refCode;
+
                 updated_document = Object.assign(original_document, updated_document);
 
                 this.setState({
@@ -616,7 +618,9 @@ class TransmittalAddEdit extends Component {
                                                                 <div className="super_name">
                                                                     <Dropdown data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
-                                                                        handleChange={event => { this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact') }}
+                                                                        handleChange={event => 
+                                                                            { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                                                        }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromCompanyId}
@@ -627,7 +631,7 @@ class TransmittalAddEdit extends Component {
                                                                 <div className="super_company">
                                                                     <Dropdown isMulti={false} data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
@@ -643,7 +647,7 @@ class TransmittalAddEdit extends Component {
                                                                 <div className="super_name">
                                                                     <Dropdown isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}
@@ -654,7 +658,9 @@ class TransmittalAddEdit extends Component {
                                                                 <div className="super_company">
                                                                     <Dropdown isMulti={false} data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+                                                                        handleChange={event => 
+                                                                            this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
+                                                                        }
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}

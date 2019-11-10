@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
+import React, { Component } from "react"; 
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
@@ -15,14 +14,15 @@ import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
-import moment from "moment";
-import SkyLight from "react-skylight";
+import moment from "moment"; 
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+
+import find from"lodash/find";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -39,7 +39,6 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require("lodash");
 
 class ProposalAddEdit extends Component {
 
@@ -211,10 +210,9 @@ class ProposalAddEdit extends Component {
     dataservice.GetDataList(action, "contactName", "id").then(result => {
       if (this.props.changeStatus === true) {
         let toSubField = this.state.document[subField];
-        let targetFieldSelected = _.find(result, function (i) {
+        let targetFieldSelected = find(result, function (i) {
           return i.value == toSubField;
-        });
-        console.log(targetFieldSelected);
+        }); 
         this.setState({
           [subSelectedValue]: targetFieldSelected,
           [subDatasource]: result
@@ -224,7 +222,7 @@ class ProposalAddEdit extends Component {
   }
 
   fillDropDowns(isEdit) {
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId").then(result => {
+    dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
       if (isEdit) {
         let companyId = this.props.document.fromCompanyId;

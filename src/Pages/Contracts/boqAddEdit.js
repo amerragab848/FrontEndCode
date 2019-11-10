@@ -461,10 +461,10 @@ class bogAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        DataService.GetDataList(
+        DataService.GetDataListCached(
             "GetProjectProjectsCompaniesForList?projectId=" + projectId,
             "companyName",
-            "companyId"
+            "companyId", 'companies', this.state.projectId, "projectId"
         ).then(res => {
             if (isEdit) {
                 let companyId = this.state.document.company;
@@ -480,10 +480,10 @@ class bogAddEdit extends Component {
             this.setState({ Companies: [...res], isLoading: false });
         });
 
-        DataService.GetDataList(
-            "GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000",
+        DataService.GetDataListCached(
+            "GetAccountsDefaultListForList?listType=discipline",
             "title",
-            "id"
+            "id", 'defaultLists', "discipline", "listType"
         ).then(res => {
             if (isEdit) {
                 let disciplineId = this.state.document.discipline;
@@ -499,10 +499,10 @@ class bogAddEdit extends Component {
 
             this.setState({ Disciplines: [...res], isLoading: false });
         });
-        DataService.GetDataList(
-            "GetAccountsDefaultList?listType=currency&pageNumber=0&pageSize=10000",
+        DataService.GetDataListCached(
+            "GetAccountsDefaultListForList?listType=currency",
             "title",
-            "id"
+            "id", 'defaultLists', "currency", "listType"
         ).then(res => {
             this.setState({ currency: [...res], isLoading: false });
         });

@@ -216,9 +216,16 @@ class InternalMemoAddEdit extends Component {
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
 
+   
+
+
+
+
+
+
     fillDropDowns(isEdit) {
         //from Companies
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
 
@@ -247,6 +254,12 @@ class InternalMemoAddEdit extends Component {
             });
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
+
+
+
+
+
+
 
     onChangeMessage = (value, field) => {
 
@@ -308,11 +321,12 @@ class InternalMemoAddEdit extends Component {
             [selectedValue]: event
         });
 
-        if (field == "fromContactId") {
-            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-            // this.props.actions.GetNextArrange(url);
-            dataservice.GetNextArrangeMainDocument(url).then(res => {
-                updated_document.arrange = res;
+        if (field == "toContactId") {
+            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                updated_document.arrange = res.arrange;
+                updated_document.refDoc = res.refCode;
+
                 updated_document = Object.assign(original_document, updated_document);
 
                 this.setState({
@@ -495,7 +509,12 @@ class InternalMemoAddEdit extends Component {
                                                                 <div className="super_name">
                                                                     <Dropdown data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
-                                                                        handleChange={event => { this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact') }}
+                                                                        handleChange={
+                                                                            event => { 
+                                                                                this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+
+                                                                            }
+                                                                        }
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromCompanyId}
@@ -506,7 +525,8 @@ class InternalMemoAddEdit extends Component {
                                                                 <div className="super_company">
                                                                     <Dropdown isMulti={false} data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                        handleChange={
+                                                                            event => this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
@@ -522,7 +542,7 @@ class InternalMemoAddEdit extends Component {
                                                                 <div className="super_name">
                                                                     <Dropdown isMulti={false} data={this.state.companies}
                                                                         selectedValue={this.state.selectedToCompany}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
+                                                                        handleChange={event => this.handleChangeDropDown(event, "toCompanyId", true, "ToContacts", "GetContactsByCompanyId", "companyId", "selectedToCompany", "selectedToContact")}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}
@@ -533,7 +553,9 @@ class InternalMemoAddEdit extends Component {
                                                                 <div className="super_company">
                                                                     <Dropdown isMulti={false} data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+                                                                        handleChange={event =>
+                                                                            this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
+                                                                        }
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}

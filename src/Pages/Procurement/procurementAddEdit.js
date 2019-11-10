@@ -282,11 +282,11 @@ class procurementAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         dataservice
-            .GetDataList(
+            .GetDataListCached(
                 "GetProjectProjectsCompaniesForList?projectId= " +
                 this.state.projectId,
                 "companyName",
-                "companyId"
+                "companyId", 'companies', this.state.projectId, "projectId"
             )
             .then(result => {
                 if (isEdit) {
@@ -303,10 +303,10 @@ class procurementAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=discipline",
                 "title",
-                "id"
+                "id", 'defaultLists', "discipline", "listType"
             )
             .then(result => {
                 if (isEdit) {
@@ -323,20 +323,20 @@ class procurementAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
+            .GetDataListCached(
                 "GetaccountsDefaultListWithAction?listType=estimationitemtype",
                 "title",
-                "id"
+                "id", 'defaultLists', "estimationitemtype", "listType"
             )
             .then(res => {
                 this.setState({ itemTypes: [...res] });
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=equipmenttype&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=equipmenttype",
                 "title",
-                "id"
+                "id", 'defaultLists', "equipmenttype", "listType"
             )
             .then(result => {
                 this.setState({
@@ -345,10 +345,10 @@ class procurementAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=specsSection",
                 "title",
-                "id"
+                "id", 'defaultLists', "specsSection", "listType"
             )
             .then(result => {
                 if (isEdit) {

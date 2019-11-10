@@ -449,7 +449,7 @@ class projectScheduleAddEdit extends Component {
     }
 
     FillDrowDowns = (isEdit) => {
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;

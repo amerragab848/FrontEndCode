@@ -362,7 +362,7 @@ class materialInspectionRequestAddEdit extends Component {
 
     fillDropDowns(isEdit) {
 
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
@@ -396,7 +396,7 @@ class materialInspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", 'title', 'id', 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
@@ -413,7 +413,7 @@ class materialInspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
             if (isEdit) {
                 let approvalStatusId = this.state.documentCycle.approvalStatusId;
                 let approvalStatus = {};
@@ -430,7 +430,7 @@ class materialInspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", 'title', 'id', 'defaultLists', "area", "listType").then(result => {
             if (isEdit) {
                 let areaId = this.props.document.areaId;
                 let area = {};
@@ -447,7 +447,7 @@ class materialInspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=buildingno", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=buildingno", 'title', 'id', 'defaultLists', "buildingno", "listType").then(result => {
             if (isEdit) {
                 let buildingno = this.props.document.buildingNoId;
                 let building = {};
@@ -463,7 +463,7 @@ class materialInspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=reasonforissue", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reasonforissue", 'title', 'id', 'defaultLists', "reasonforissue", "listType").then(result => {
             if (isEdit) {
                 let reasonForIssueId = this.props.document.reasonForIssueId;
                 let reasonForIssue = {};
@@ -479,7 +479,7 @@ class materialInspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=apartmentNumber", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=apartmentNumber", 'title', 'id', 'defaultLists', "apartmentNumber", "listType").then(result => {
             if (isEdit) {
                 let apartmentNoId = this.props.document.apartmentNoId;
                 let apartmentNo = {};
@@ -505,7 +505,7 @@ class materialInspectionRequestAddEdit extends Component {
                     this.setState({ contractText: contract.label });
             }
         });
-        dataservice.GetDataList("GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000", 'title', 'id').then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListForList?listType=specsSection", 'title', 'id', 'defaultLists', "specsSection", "listType").then(result => {
             if (isEdit == false)
                 this.setState({ specsSections: [...result] });
             else {

@@ -2,7 +2,7 @@ import CryptoJS from "crypto-js";
 
 let userPermissions = window.localStorage.getItem("permissions") ? JSON.parse(CryptoJS.enc.Base64.parse(window.localStorage.getItem("permissions")).toString(CryptoJS.enc.Utf8)) : [];
 let IP_CONFIG = null;
-
+let signautre = null;
 export default class Config {
 
     static getPublicConfiguartion() {
@@ -12,6 +12,12 @@ export default class Config {
 
     static SetConfigObject(info) {
         IP_CONFIG = info;
+    }
+    static setSignature(sign) {
+        signautre = sign;
+    }
+    static getSignature() {
+       return  signautre ;
     }
 
     static getPermissions() {

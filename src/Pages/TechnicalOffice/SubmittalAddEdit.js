@@ -443,10 +443,37 @@ class SubmittalAddEdit extends Component {
 
   }
 
+  // fillCycleDropDown(isEdit) {
+
+  //   //approvalStatus
+  //   dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id").then(result => {
+
+  //     if (isEdit) {
+
+  //       let approval = this.state.documentCycle.approvalStatusId;
+
+  //       if (approval) {
+
+  //         let approvalName = result.find(i => i.value === parseInt(approval));
+
+  //         if (approvalName) {
+  //           this.setState({
+  //             selectedApprovalStatus: { label: approvalName.label, value: approval }
+  //           });
+  //         }
+  //       }
+  //     }
+  //     this.setState({
+  //       approvales: [...result]
+  //     });
+  //   });
+
+  // }
+
   fillCycleDropDown(isEdit) {
 
     //approvalStatus
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id",'defaultLists', "approvalstatus", "listType").then(result => {
 
       if (isEdit) {
 
@@ -472,7 +499,7 @@ class SubmittalAddEdit extends Component {
 
   fillDropDowns(isEdit) {
     //from Companies
-    dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(result => {
+    dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
       let obj = this.state.SubmittalTypes.find(o => o.label === this.props.document.submittalType);
 
@@ -507,7 +534,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //discplines
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id",'defaultLists', "discipline", "listType").then(result => {
 
       if (isEdit) {
 
@@ -534,7 +561,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //location
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=location", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id",'defaultLists', "location", "listType").then(result => {
 
       if (isEdit) {
 
@@ -560,7 +587,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //area
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=area", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id",'defaultLists', "area", "listType").then(result => {
 
       if (isEdit) {
 
@@ -587,7 +614,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //reasonForIssue
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=reasonForIssue", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reasonForIssue", "title", "id",'defaultLists', "reasonForIssue", "listType").then(result => {
 
       if (isEdit) {
 
@@ -613,7 +640,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //reviewResult
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=reviewresult", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reviewresult", "title", "id",'defaultLists', "reviewResult", "listType").then(result => {
 
       this.setState({
         reviewResult: [...result]
@@ -621,7 +648,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //specsSection
-    dataservice.GetDataList("GetaccountsDefaultListForList?listType=specssection", "title", "id").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specssection", "title", "id",'defaultLists', "specssection", "listType").then(result => {
 
       if (isEdit) {
 
@@ -1543,25 +1570,25 @@ class SubmittalAddEdit extends Component {
       {
         Header: Resources["description"][currentLanguage],
         accessor: "description",
-        width: 200,
+        width: 350,
         sortabel: true
       },
       {
         Header: Resources["reviewResult"][currentLanguage],
         accessor: "reviewResultName",
-        width: 200,
+        width: 150,
         sortabel: true
       },
       {
         Header: Resources["refDoc"][currentLanguage],
         accessor: "refDoc",
-        width: 200,
+        width: 150,
         sortabel: true
       },
       {
         Header: Resources["submitalDate"][currentLanguage],
         accessor: "submitalDate",
-        width: 200,
+        width: 150,
         sortabel: true,
         Cell: row => (
           <span>

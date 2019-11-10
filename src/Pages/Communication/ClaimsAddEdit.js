@@ -215,8 +215,82 @@ class ClaimsAddEdit extends Component {
         });
     }
 
+    // fillDropDowns(isEdit) {
+    //     dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+
+    //         if (isEdit) {
+    //             let companyId = this.props.document.fromCompanyId;
+    //             if (companyId) {
+    //                 this.setState({
+    //                     selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
+    //                 });
+    //                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
+    //             }
+
+    //             let toCompanyId = this.props.document.toCompanyId;
+    //             if (toCompanyId) {
+    //                 this.setState({
+    //                     selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
+    //                 });
+
+    //                 this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
+    //             }
+    //         }
+    //         this.setState({
+    //             companies: [...result]
+    //         });
+    //     });
+
+    //     dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
+    //         if (isEdit) {
+    //             let disciplineId = this.props.document.disciplineId;
+    //             let discpline = {};
+    //             if (disciplineId) {
+    //                 discpline = _.find(result, function (i) { return i.value == disciplineId; });
+
+    //                 this.setState({
+    //                     selectedDiscpline: discpline
+    //                 });
+    //             }
+    //         }
+    //         this.setState({
+    //             discplines: [...result]
+    //         });
+    //     });
+
+    //     //contractList
+    //     dataservice.GetDataList("GetContractByProjectId?projectId=" + projectId, "subject", "id").then(result => {
+
+    //         if (isEdit) {
+
+    //             let contractId = this.props.document.contractId;
+
+    //             if (contractId) {
+
+    //                 let contracts = result.find(i => i.value === contractId);
+
+    //                 if (contracts) {
+    //                     this.setState({
+    //                         selectedContract: { ...contracts }
+    //                     });
+    //                 }
+    //             }
+    //         }
+
+    //         this.setState({
+    //             contracts: [...result]
+    //         });
+    //     });
+
+    // }
+
+
+
+
+
+
     fillDropDowns(isEdit) {
-        dataservice.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
                 let companyId = this.props.document.fromCompanyId;
@@ -241,7 +315,14 @@ class ClaimsAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataList("GetaccountsDefaultListForList?listType=discipline", 'title', 'id').then(result => {
+      
+
+
+
+
+
+
+          dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
@@ -257,6 +338,10 @@ class ClaimsAddEdit extends Component {
                 discplines: [...result]
             });
         });
+
+
+
+
 
         //contractList
         dataservice.GetDataList("GetContractByProjectId?projectId=" + projectId, "subject", "id").then(result => {
@@ -283,6 +368,8 @@ class ClaimsAddEdit extends Component {
         });
 
     }
+
+
 
     onChangeMessage = (value) => {
 
@@ -344,10 +431,12 @@ class ClaimsAddEdit extends Component {
             [selectedValue]: event
         });
 
-        if (field == "fromContactId") {
-            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-            dataservice.GetNextArrangeMainDocument(url).then(res => {
-                updated_document.arrange = res;
+        if (field == "toContactId") {
+            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+            dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                updated_document.arrange = res.arrange;
+                updated_document.refDoc = res.refCode;
+
                 updated_document = Object.assign(original_document, updated_document);
 
                 this.setState({
@@ -553,7 +642,7 @@ class ClaimsAddEdit extends Component {
                                                                         isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
-                                                                            this.handleChangeDropDown(event, 'fromCompanyId', true, 'fromContacts', 'GetContactsByCompanyId', 'companyId', 'selectedFromCompany', 'selectedFromContact')
+                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
                                                                         }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
@@ -570,7 +659,10 @@ class ClaimsAddEdit extends Component {
                                                                         isMulti={false}
                                                                         data={this.state.fromContacts}
                                                                         selectedValue={this.state.selectedFromContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'fromContactId', false, '', '', '', 'selectedFromContact')}
+                                                                        handleChange={
+                                                                            event =>this.handleChangeDropDown(event, "fromContactId", false, "", "", "", "selectedFromContact")
+                                                                        }
+
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
@@ -609,7 +701,7 @@ class ClaimsAddEdit extends Component {
                                                                         isMulti={false}
                                                                         data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
-                                                                        handleChange={event => this.handleChangeDropDown(event, 'toContactId', false, '', '', '', 'selectedToContact')}
+                                                                        handleChange={event =>this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")}  
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}

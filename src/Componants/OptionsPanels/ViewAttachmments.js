@@ -21,7 +21,7 @@ import { bindActionCreators } from "redux";
 import moment from "moment";
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config";
-import _ from "lodash";
+// import _ from "lodash";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let activeURL = "";
@@ -50,13 +50,7 @@ class ViewAttachmments extends Component {
 
     versionHandler = (parentId, extension) => {
         if (extension == "pdf") {
-            let urlVersion =
-                "GetChildFiles?docTypeId=" +
-                this.state.docTypeId +
-                "&docId=" +
-                this.state.docId +
-                "&parentId=" +
-                parentId;
+            let urlVersion = "GetChildFiles?docTypeId=" + this.state.docTypeId + "&docId=" + this.state.docId + "&parentId=" + parentId;
             Api.get(urlVersion).then(result => {
                 if (result) {
                     this.setState({ viewVersion: true, Versionfiles: result });
@@ -90,7 +84,7 @@ class ViewAttachmments extends Component {
             docTypeId: this.props.docTypeId,
             docId: this.props.docId,
             name: localStorage.getItem("contactName") !== null ? localStorage.getItem("contactName") : "Procoor User",
-            photo: Config.getPublicConfiguartion().static + "/public/img/signature.png",
+            photo: Config.getPublicConfiguartion().downloads + "/" + Config.getSignature(),
             file: item.parentAttachFile,
             fileName: item.parentAttachFile.split("/")[4],
             fileId: item.id,
@@ -124,16 +118,6 @@ class ViewAttachmments extends Component {
 
         let attachFile = obj.attachFile.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
         var encrypte = encodeURIComponent(attachFile);
-        // if (obj.isCloud === true) {
-        //     let checkDropbox = obj.attachFile.includes('www.dropbox.com');
-        //     if (checkDropbox) {
-        //         let urlFile = obj.attachFile;
-        //         urlFile = urlFile.replace("www.dropbox.com", "dl.dropbox.com");
-        //         urlFile = urlFile.substr(0, urlFile.length - 5);
-        //         alert(urlFile)
-        //         encrypte = encodeURIComponent(urlFile);
-        //     }
-        // }
 
         let obj1 = {
             fileName: obj.fileName,
@@ -347,18 +331,9 @@ class ViewAttachmments extends Component {
                     }
 
                     if (item.fileName) {
-                        item.fileNameDisplay = item.fileName.replace(
-                            /%23/g,
-                            "#"
-                        );
-                        item.fileNameDisplay = item.fileNameDisplay.replace(
-                            /%20/g,
-                            " "
-                        );
-                        item.fileNameDisplay = item.fileNameDisplay.replace(
-                            /%2C/g,
-                            ","
-                        );
+                        item.fileNameDisplay = item.fileName.replace(/%23/g, "#");
+                        item.fileNameDisplay = item.fileNameDisplay.replace(/%20/g, " ");
+                        item.fileNameDisplay = item.fileNameDisplay.replace(/%2C/g, ",");
 
                         if (!this.has_ar(item.fileNameDisplay)) {
                             item.fileNameDisplay = decodeURI(
@@ -374,11 +349,7 @@ class ViewAttachmments extends Component {
                             <td>
                                 <div className="contentCell tableCell-1">
                                     <span>
-                                        <img
-                                            src={extension}
-                                            alt={extension}
-                                            width="100%"
-                                            height="100%"
+                                        <img src={extension} alt={extension} width="100%" height="100%"
                                             onClick={() =>
                                                 this.previewPDF(item, ext)
                                             }

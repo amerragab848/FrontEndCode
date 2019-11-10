@@ -272,7 +272,7 @@ class materialReleaseAddEdit extends Component {
 
     fillDropDowns(isEdit) {
 
-        dataservice.GetDataList('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId').then(result => {
+        dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
             if (isEdit) {
                 let id = this.props.document.orderFromCompanyId;
                 let selectedValue = {};
@@ -285,7 +285,7 @@ class materialReleaseAddEdit extends Component {
             this.setState({ FromCompaniesData: [...result] })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=specsSection', 'title', 'id', 'defaultLists', "specssection", "listType").then(result => {
             if (isEdit) {
                 let id = this.props.document.specsSectionId;
                 let selectedValue = {};
@@ -321,15 +321,15 @@ class materialReleaseAddEdit extends Component {
             this.setState({ CostCodingData: [...result] })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=area', 'title', 'id', 'defaultLists', "area", "listType").then(result => {
             this.setState({ AreaData: result })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=location', 'title', 'id', 'defaultLists', "location", "listType").then(result => {
             this.setState({ LocationData: result })
         })
 
-        dataservice.GetDataList('GetAccountsDefaultList?listType=materialtitle&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
+        dataservice.GetDataListCached('GetAccountsDefaultListForList?listType=materialtitle', 'title', 'id', 'defaultLists', "materialtitle", "listType").then(result => {
             if (isEdit) {
                 let id = this.props.document.materialReleaseId;
                 let selectedValue = {};

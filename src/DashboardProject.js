@@ -9,7 +9,7 @@ import { bindActionCreators } from "redux";
 import Details from "./Componants/widgetsDashBoardDetails";
 import * as dashboardComponantActions from "./store/actions/communication";
 import IndexedDb from "./IndexedDb";
-import orderBy from "lodash/orderBy";
+import orderBy from "lodash/orderBy"; 
 import map from "lodash/map";
 import groupBy from "lodash/groupBy";
 import SkyLight from "react-skylight";

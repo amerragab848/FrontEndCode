@@ -21,6 +21,7 @@ import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
+ 
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -424,11 +425,13 @@ class LettersAddEdit extends Component {
             [selectedValue]: event
         });
 
-        if (field == "fromContactId") {
-            let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
+        if (field == "toContactId") {
+            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
 
-            dataservice.GetNextArrangeMainDocument(url).then(res => {
-                updated_document.arrange = res;
+            dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                updated_document.arrange = res.arrange;
+                updated_document.refDoc = res.refCode;
+                
                 updated_document = Object.assign(
                     original_document,
                     updated_document

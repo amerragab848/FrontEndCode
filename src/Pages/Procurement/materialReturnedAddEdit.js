@@ -386,11 +386,11 @@ class materialReturnedAddEdit extends Component {
 
     fillDropDowns(isEdit) {
         dataservice
-            .GetDataList(
+            .GetDataListCached(
                 "GetProjectProjectsCompaniesForList?projectId= " +
                 this.state.projectId,
                 "companyName",
-                "companyId"
+                "companyId", 'companies', this.state.projectId, "projectId"
             )
             .then(result => {
                 if (isEdit) {
@@ -408,10 +408,10 @@ class materialReturnedAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=specsSection&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=specsSection",
                 "title",
-                "id"
+                "id", 'defaultLists', "specsSection", "listType"
             )
             .then(result => {
                 if (isEdit) {
@@ -479,20 +479,20 @@ class materialReturnedAddEdit extends Component {
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=area",
                 "title",
-                "id"
+                "id", 'defaultLists', "area", "listType"
             )
             .then(result => {
                 this.setState({ AreaData: result });
             });
 
         dataservice
-            .GetDataList(
-                "GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000",
+            .GetDataListCached(
+                "GetAccountsDefaultListForList?listType=location",
                 "title",
-                "id"
+                "id", 'defaultLists', "location", "listType"
             )
             .then(result => {
                 this.setState({ LocationData: result });
