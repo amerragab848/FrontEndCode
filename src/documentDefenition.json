@@ -5350,7 +5350,7 @@
     "documentApi": {
       "get": "GetContractsByProjectId",
       "getCustom": "GetContractsByProjectIdCustom",
-      "delete": "DeleteMultipleContractsById"
+      "delete": "DeletMultipleContractsById"
     },
     "documentColumns": [
       {
