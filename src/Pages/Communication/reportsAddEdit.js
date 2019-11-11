@@ -109,8 +109,7 @@ class reportsAddEdit extends Component {
             let url = "GetCommunicationReportForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'Reports').then(() => {
                 this.setState({ isLoading: false })
-                this.fillDropDowns(true);
-
+                //this.fillDropDowns(true); 
             })
         } else {
             this.props.actions.documentForAdding()
@@ -144,7 +143,6 @@ class reportsAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
-
     }
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -163,18 +161,6 @@ class reportsAddEdit extends Component {
         return null;
 
     };
-
-    componentDidUpdate(prevProps) {
-        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
-
-            this.fillDropDowns(this.props.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
-        }
-
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-            this.checkDocumentIsView();
-        }
-    }
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
@@ -201,6 +187,9 @@ class reportsAddEdit extends Component {
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.props.actions.documentForAdding()
+        this.setState({
+            docId: 0
+        });
     }
 
     onChangeMessage = (value) => {

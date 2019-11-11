@@ -21,6 +21,7 @@ import TextEditor from '../../Componants/OptionsPanels/TextEditor'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import find from "lodash/find";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -38,8 +39,6 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-
-const _ = require('lodash');
 
 class InternalMemoAddEdit extends Component {
 
@@ -209,7 +208,7 @@ class InternalMemoAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -418,9 +417,7 @@ class InternalMemoAddEdit extends Component {
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
-                                        <Formik initialValues={{ ...this.state.document }}
-                                            validationSchema={validationSchema}
-                                            enableReinitialize={true}
+                                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema} enableReinitialize={true}
                                             onSubmit={(values) => {
                                                 if (this.props.showModal) { return; }
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
@@ -439,7 +436,7 @@ class InternalMemoAddEdit extends Component {
                                                             <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                                                 <input name='subject' className="form-control fsadfsadsa" id="subject"
                                                                     placeholder={Resources.subject[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.subject}
+                                                                    autoComplete='off' value={this.state.document.subject || ''}
                                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                                     onChange={(e) => this.handleChange(e, 'subject')} />
                                                                 {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
@@ -472,7 +469,7 @@ class InternalMemoAddEdit extends Component {
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? (" has-error") : " ")}>
                                                                 <input type="text" className="form-control" id="arrange" readOnly
-                                                                    value={this.state.document.arrange}
+                                                                    value={this.state.document.arrange || ''}
                                                                     name="arrange"
                                                                     placeholder={Resources.arrange[currentLanguage]}
                                                                     onBlur={(e) => { handleChange(e); handleBlur(e) }}
@@ -483,7 +480,7 @@ class InternalMemoAddEdit extends Component {
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                             <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
                                                                 <input type="text" className="form-control" id="refDoc"
-                                                                    value={this.state.document.refDoc}
+                                                                    value={this.state.document.refDoc || ''}
                                                                     name="refDoc"
                                                                     placeholder={Resources.refDoc[currentLanguage]}
                                                                     onBlur={(e) => { handleChange(e); handleBlur(e) }}
@@ -552,7 +549,7 @@ class InternalMemoAddEdit extends Component {
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
-                                                                    value={this.state.message}
+                                                                    value={this.state.message || ''}
                                                                     onChange={event => this.onChangeMessage(event, "message")} />
                                                             </div>
                                                         </div>
@@ -560,7 +557,7 @@ class InternalMemoAddEdit extends Component {
                                                             <label className="control-label">{Resources.answer[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
-                                                                    value={this.state.answer}
+                                                                    value={this.state.answer || ''}
                                                                     onChange={event => this.onChangeMessage(event, "answer")} />
                                                             </div>
                                                         </div>
@@ -576,7 +573,6 @@ class InternalMemoAddEdit extends Component {
                                                             </button> :
                                                             this.showBtnsSaving()}
                                                     </div>
-
                                                     {this.props.changeStatus === true ?
                                                         <div className="approveDocument">
                                                             <div className="approveDocumentBTNS">
@@ -589,15 +585,8 @@ class InternalMemoAddEdit extends Component {
                                                                         </div>
                                                                     </button>
                                                                 ) : (
-                                                                        <button
-                                                                            className={
-                                                                                this.state.isViewMode === true
-                                                                                    ? "primaryBtn-1 btn middle__btn disNone"
-                                                                                    : "primaryBtn-1 btn middle__btn"
-                                                                            }>
-                                                                            {
-                                                                                Resources.save[currentLanguage]
-                                                                            }
+                                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
+                                                                            {Resources.save[currentLanguage]}
                                                                         </button>
                                                                     )}
                                                                 <DocumentActions

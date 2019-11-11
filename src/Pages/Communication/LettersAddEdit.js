@@ -18,11 +18,11 @@ import moment from "moment";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
-import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
-import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
-
+import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import find from "lodash/find";
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
@@ -177,8 +177,7 @@ class LettersAddEdit extends Component {
         this.setState({
             document: updated_document,
             selectedApproveId: item
-        });
-        console.log(updated_document)
+        }); 
     }
 
     componentDidMount() {
@@ -250,7 +249,7 @@ class LettersAddEdit extends Component {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
-        
+
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
@@ -501,7 +500,7 @@ class LettersAddEdit extends Component {
             let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
 
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
-                updated_document.arrange = res.arrange; 
+                updated_document.arrange = res.arrange;
 
                 if (Config.getPublicConfiguartion().refAutomatic === true) {
                     updated_document.refDoc = res.refCode;
@@ -990,7 +989,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(LettersAddEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LettersAddEdit));
