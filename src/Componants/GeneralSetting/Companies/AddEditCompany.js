@@ -187,7 +187,7 @@ class AddEditCompany extends Component {
 
     render() {
         return (
-            <div className="mainContainer main__fulldash">
+            <div className="mainContainer">
                 <div className="documents-stepper cutome__inputs noTabs__document">
                     <div className="submittalHead">
                         <HeaderDocument
