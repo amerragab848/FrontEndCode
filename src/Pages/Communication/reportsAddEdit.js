@@ -165,7 +165,13 @@ class reportsAddEdit extends Component {
     };
 
     componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
