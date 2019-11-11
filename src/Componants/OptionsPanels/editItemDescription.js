@@ -165,6 +165,7 @@ class addItemDescription extends Component {
                 arr.push(result);
                 this.props.actions.editItemDescriptions(arr);
                 this.setState({
+                    id: 0,
                     itemDescription: {
                         id: 0,
                         description: "",
@@ -184,7 +185,7 @@ class addItemDescription extends Component {
                     },
                     isLoading: false
                 });
-                
+
                 toast.success(
                     Resources["operationSuccess"][currentLanguage]
                 );
@@ -253,6 +254,10 @@ class addItemDescription extends Component {
                 [selectedValue]: { label: label, value: value }
             });
         });
+    }
+
+    componentWillUnmount() {
+        this.setState({ id: 0 })
     }
 
     render() {
