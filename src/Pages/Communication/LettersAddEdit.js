@@ -28,7 +28,7 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
     fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]),
+    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
     sharedSettings: Yup.string().url('Please Enter Url.'),
 });
 
@@ -177,7 +177,7 @@ class LettersAddEdit extends Component {
         this.setState({
             document: updated_document,
             selectedApproveId: item
-        }); 
+        });
     }
 
     componentDidMount() {
@@ -644,7 +644,7 @@ class LettersAddEdit extends Component {
                             Resources["communication"][currentLanguage]
                         }
                     />
-                    <div className="doc-container"> 
+                    <div className="doc-container">
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
@@ -656,7 +656,6 @@ class LettersAddEdit extends Component {
                                                 if (this.props.showModal) {
                                                     return;
                                                 }
-
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editLetter();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -672,14 +671,14 @@ class LettersAddEdit extends Component {
                                                             <label className="control-label">
                                                                 {Resources.subject[currentLanguage]}
                                                             </label>
-                                                            <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                                            <div className={"inputDev ui input" + (errors.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                                                 <input name="subject" id="subject" className="form-control fsadfsadsa"
                                                                     placeholder={Resources.subject[currentLanguage]}
                                                                     autoComplete="off"
                                                                     value={this.state.document.subject}
                                                                     onBlur={e => { handleBlur(e); handleChange(e); }}
                                                                     onChange={e => this.handleChange(e, "subject")} />
-                                                                {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                                {errors.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                                             </div>
                                                         </div>
 
@@ -741,13 +740,13 @@ class LettersAddEdit extends Component {
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">    {Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
-                                                                <div className={"inputDev ui input" + (errors.sharedSettings && touched.sharedSettings ? (" has-error") : !errors.sharedSettings && touched.sharedSettings ? (" has-success") : " ")} >
+                                                                <div className={"inputDev ui input" + (errors.sharedSettings ? (" has-error") : !errors.sharedSettings && touched.sharedSettings ? (" has-success") : " ")} >
                                                                     <input type="text" className="form-control" id="sharedSettings"
                                                                         onChange={e => this.handleChange(e, "sharedSettings")}
                                                                         value={this.state.document.sharedSettings}
                                                                         name="sharedSettings" placeholder={Resources.sharedSettings[currentLanguage]}
                                                                     />
-                                                                    {touched.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
+                                                                    {errors.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
                                                                 </div>
                                                                 {this.state.document.sharedSettings === '' ||
                                                                     this.state.document.sharedSettings === null ||
@@ -792,7 +791,7 @@ class LettersAddEdit extends Component {
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
-                                                                        touched={touched.fromContactId}
+                                                                        touched={true}
                                                                         isClear={false}
                                                                         index="letter-fromContactId"
                                                                         name="fromContactId"
@@ -830,9 +829,15 @@ class LettersAddEdit extends Component {
                                                                         handleChange={event =>
                                                                             this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
                                                                         }
-                                                                        onChange={setFieldValue} onBlur={setFieldTouched}
-                                                                        error={errors.toContactId} touched={touched.toContactId}
-                                                                        index="letter-toContactId" name="toContactId" id="toContactId" classDrop="contactName1" styles={ContactDropdown} />
+                                                                        onChange={setFieldValue}
+                                                                        onBlur={setFieldTouched}
+                                                                        error={errors.toContactId}
+                                                                        touched={true}
+                                                                        index="letter-toContactId"
+                                                                        name="toContactId"
+                                                                        id="toContactId"
+                                                                        classDrop="contactName1"
+                                                                        styles={ContactDropdown} />
                                                                 </div>
                                                             </div>
                                                         </div>
