@@ -29,6 +29,7 @@ class addItemDescription extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: 0,
             isLoading: false,
             itemsList: [],
             itemDescription: {
@@ -62,47 +63,45 @@ class addItemDescription extends Component {
         };
     }
 
-    fillDropDown(parentId, data, selectedValue, label, value) {
-        dataservice.GetDataList(`GetAllBoqChild?parentId=${parentId}`, "title", "id").then(result => {
-            this.setState({
-                [data]: result,
-                [selectedValue]: { label: label, value: value }
-            });
-        });
-    }
+    static getDerivedStateFromProps(nextProps, prevState) {
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.docId) {
-            this.fillTable();
-
-
+        if (nextProps.docId !== prevState.id && nextProps.changeStatus === true) {
             if (nextProps.onRowClick) {
 
-                if (nextProps.item.boqTypeId !== null) {
-                    this.fillDropDown(nextProps.item.boqTypeId, "BoqTypeChilds", "selectedBoqSubType", nextProps.item.boqSubType, nextProps.item.subBoqTypeId);
+                return {
+                    id: nextProps.docId,
+                    itemDescription: nextProps.item,
+                    selectedUnit: { label: nextProps.item.unit, value: nextProps.item.unit }
                 }
-                else if (nextProps.item.subBoqTypeId !== null) {
-                    this.fillDropDown(nextProps.item.subBoqTypeId, "BoqSubTypes", "selectedBoqSubTypeChild", nextProps.item.boqTypeChild, nextProps.item.boqChildTypeId);
+            }
+            return null
+        }
+        return null
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.itemDescription.id !== this.props.item.id && this.props.changeStatus === true) {
+            if (this.props.onRowClick) {
+
+                if (this.props.item.boqTypeId !== null || this.props.item.boqTypeId !== undefined) {
+                    this.fillDropDownData(this.props.item.boqTypeId, "BoqTypeChilds", "selectedBoqSubType", this.props.item.boqSubType, this.props.item.subBoqTypeId);
+                }
+                else if (this.props.item.subBoqTypeId !== null || this.props.item.subBoqTypeId !== undefined) {
+                    this.fillDropDownData(this.props.item.subBoqTypeId, "BoqSubTypes", "selectedBoqSubTypeChild", this.props.item.boqTypeChild, this.props.item.boqChildTypeId);
                 }
 
-                this.setState({
-                    itemDescription: nextProps.item,
-                    selectedBoqType: { label: nextProps.item.boqType, value: nextProps.item.boqTypeId },
-                    //selectedBoqSubType: { label: nextProps.item.boqSubType, value: nextProps.item.subBoqTypeId },
-                    //selectedBoqSubTypeChild: { label: nextProps.item.boqTypeChild, value: nextProps.item.boqChildTypeId },
-                    selectedUnit: { label: nextProps.item.unit, value: nextProps.item.unit }
-                })
+                return {
+                    selectedBoqType: { label: this.props.item.boqType, value: this.props.item.boqTypeId },
+                    selectedBoqSubType: { label: this.props.item.boqSubType, value: this.props.item.subBoqTypeId },
+                    selectedBoqSubTypeChild: { label: this.props.item.boqTypeChild, value: this.props.item.boqChildTypeId }
+                }
             }
         }
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.isViewMode !== prevProps.isViewMode) {
-        }
-    }
+    componentDidMount() {
+        //this.fillTable();
 
-    componentWillMount() {
-        this.fillTable();
         DataService.GetDataList("GetDefaultListForUnit?listType=unit", "listType", "listType").then(res => {
             this.setState({ Units: [...res] });
         });
@@ -131,6 +130,11 @@ class addItemDescription extends Component {
             DataService.GetDataList("GetAccountsDefaultList?listType=equipmentType&pageNumber=0&pageSize=10000", "title", "id").then(res => {
                 this.setState({ equipmentTypes: [...res] });
             });
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.isViewMode !== prevProps.isViewMode) {
         }
     }
 
@@ -180,12 +184,12 @@ class addItemDescription extends Component {
                     },
                     isLoading: false
                 });
-
-                this.props.disablePopUp(false);
-
+                
                 toast.success(
                     Resources["operationSuccess"][currentLanguage]
                 );
+
+                this.props.disablePopUp(false);
             }
         }).catch(res => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -242,6 +246,15 @@ class addItemDescription extends Component {
         }
     }
 
+    fillDropDownData(parentId, data, selectedValue, label, value) {
+        dataservice.GetDataList(`GetAllBoqChild?parentId=${parentId}`, "title", "id").then(result => {
+            this.setState({
+                [data]: result,
+                [selectedValue]: { label: label, value: value }
+            });
+        });
+    }
+
     render() {
         return (
             <div className="step-content">
@@ -253,7 +266,7 @@ class addItemDescription extends Component {
                         link={Config.getPublicConfiguartion().downloads + this.props.docLink}
                         header="addManyItems"
                         disabled={this.props.changeStatus ? this.props.docId > 0 ? true : false : false}
-                        afterUpload={() => this.fillTable()}
+                    //afterUpload={() => this.fillTable()}
                     />
                 ) : null}
                 <div className={"subiTabsContent feilds__top " + (this.props.isViewMode ? "readOnly_inputs" : " ")}>
@@ -284,7 +297,7 @@ class addItemDescription extends Component {
                                                     placeholder={Resources["description"][currentLanguage]}
                                                     autoComplete="off"
                                                     onBlur={handleBlur}
-                                                    value={this.state.itemDescription.description}
+                                                    value={this.state.itemDescription.description || ''}
                                                     onChange={e => this.handleChangeItem(e, "description")} />
                                                 {errors.description ? (<em className="pError"> {errors.description} </em>) : null}
                                             </div>
@@ -297,7 +310,7 @@ class addItemDescription extends Component {
                                             </label>
                                             <div className="ui input inputDev">
                                                 <input type="text" className="form-control" id="quantity"
-                                                    value={this.state.itemDescription.quantity}
+                                                    value={this.state.itemDescription.quantity || ''}
                                                     name="quantity" onBlur={handleBlur}
                                                     placeholder={Resources.quantity[currentLanguage]}
                                                     onChange={e => this.handleChangeItem(e, "quantity")} />
@@ -310,7 +323,7 @@ class addItemDescription extends Component {
                                             </label>
                                             <div className="ui input inputDev">
                                                 <input type="text" className="form-control" id="unitPrice"
-                                                    value={this.state.itemDescription.unitPrice}
+                                                    value={this.state.itemDescription.unitPrice || ''}
                                                     name="unitPrice" onBlur={handleBlur}
                                                     placeholder={Resources.unitPrice[currentLanguage]}
                                                     onChange={e => this.handleChangeItem(e, "unitPrice")}
@@ -326,7 +339,7 @@ class addItemDescription extends Component {
                                                 <input name="itemCode" className="form-control" id="itemCode"
                                                     placeholder={Resources["itemCode"][currentLanguage]}
                                                     autoComplete="off" onBlur={handleBlur}
-                                                    value={this.state.itemDescription.itemCode}
+                                                    value={this.state.itemDescription.itemCode || ''}
                                                     onChange={e => this.handleChangeItem(e, "itemCode")}
                                                 />
                                                 {errors.itemCode ? (<em className="pError"> {errors.itemCode} </em>) : null}
@@ -340,7 +353,7 @@ class addItemDescription extends Component {
                                                 <input name="resourceCode" className="form-control" id="resourceCode"
                                                     placeholder={Resources["resourceCode"][currentLanguage]}
                                                     autoComplete="off" onBlur={handleBlur}
-                                                    value={this.state.itemDescription.resourceCode}
+                                                    value={this.state.itemDescription.resourceCode || ''}
                                                     onChange={e => this.handleChangeItem(e, "resourceCode")}
                                                 />
                                             </div>
@@ -359,7 +372,7 @@ class addItemDescription extends Component {
                                                 <input name="days" className="form-control" id="days"
                                                     placeholder={Resources["days"][currentLanguage]}
                                                     autoComplete="off" onBlur={handleBlur}
-                                                    value={this.state.itemDescription.days}
+                                                    value={this.state.itemDescription.days || ''}
                                                     onChange={e => this.handleChangeItem(e, "days")} />
                                                 {errors.days ? (<em className="pError"> {errors.days} </em>) : null}
                                             </div>
@@ -412,8 +425,7 @@ class addItemDescription extends Component {
 
                                         <div className="slider-Btns fullWidthWrapper textLeft ">
                                             {this.state.isLoading === false ? (
-                                                <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? " disNone" : "")} type="submit"
-                                                    disabled={this.props.isViewMode}>
+                                                <button className={"primaryBtn-1 btn " + (this.props.isViewMode === true ? " disNone" : "")} type="submit" disabled={this.props.isViewMode}>
                                                     {Resources["save"][currentLanguage]}
                                                 </button>
                                             ) : (
@@ -426,7 +438,7 @@ class addItemDescription extends Component {
                                                             <div className="bounce3" />
                                                         </div>
                                                     </button>
-                                                )}{" "}
+                                                )}
                                         </div>
                                     </div>
                                 </div>

@@ -572,6 +572,12 @@ class bogAddEdit extends Component {
             });
     }
 
+    disablePopUp = () => {
+        this.setState({
+            showPopUp: false
+        });
+    }
+
     componentWillMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true, LoadingPage: true });
@@ -2096,7 +2102,9 @@ class bogAddEdit extends Component {
                         projectId={this.state.projectId}
                         showItemType={true}
                         item={this.state.selectedRow}
+                        onRowClick={this.state.showPopUp}
                         onSave={e => this._executeBeforeModalClose()}
+                        disablePopUp={this.disablePopUp}
                     />
                 </div>
             </Fragment>

@@ -227,7 +227,7 @@ class LettersAddEdit extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, state) {
-        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+        if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
 
             return {
                 document: nextProps.document,
@@ -644,8 +644,7 @@ class LettersAddEdit extends Component {
                             Resources["communication"][currentLanguage]
                         }
                     />
-                    <div className="doc-container">
-
+                    <div className="doc-container"> 
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
