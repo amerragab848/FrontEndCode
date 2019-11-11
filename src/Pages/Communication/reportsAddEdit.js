@@ -109,6 +109,8 @@ class reportsAddEdit extends Component {
             let url = "GetCommunicationReportForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'Reports').then(() => {
                 this.setState({ isLoading: false })
+                this.fillDropDowns(true);
+
             })
         } else {
             this.props.actions.documentForAdding()
@@ -300,14 +302,15 @@ class reportsAddEdit extends Component {
 
                 break;
             case 'toContact':
-                let original_document = { ...this.state.document };
-                let updated_document = {};
+
 
                 this.updateSelectedValue(value, 'toContactName', 'toContactId', 'selectedToContact')
 
                 let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.selectedFromCompany.value + "&fromContactId=" + this.state.selectedFromContact.value + "&toCompanyId=" + this.state.selectedToCompany.value + "&toContactId=" + this.state.selectedToContact.value;
 
                 dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+                    let original_document = { ...this.state.document };
+                    let updated_document = {};
                     updated_document.arrange = res.arrange;
                     if (Config.getPublicConfiguartion().refAutomatic === true) {
                         updated_document.refDoc = res.refCode;

@@ -212,8 +212,10 @@ class GeneralConfiguration extends Component {
         if (ConDay.length === 0) {
             let objWF = {
                 check_in: moment(), check_out: moment(),
-                dayId: this.state.SelectedDay.value, checkInMinutes: 0,
-                isVacation: this.state.IsVacation, checkOutMinutes: 0
+                dayId: this.state.SelectedDay.value,
+                checkInMinutes: this.state.checkInMinutes || 0,
+                isVacation: this.state.IsVacation,
+                checkOutMinutes: this.state.checkOutMinutes || 0
             }
             dataservice.addObject('AddWFSettings', objWF).then(
                 res => {
@@ -222,7 +224,9 @@ class GeneralConfiguration extends Component {
                     OldData.unshift(NewData)
                     this.setState({
                         WFSettingsData: OldData,
-                        isLoading: false
+                        isLoading: false,
+                        CheckInMin: '',
+                        CheckOutMin: ''
                     })
                     toast.success(Resources["operationSuccess"][currentLanguage]);
                 }).catch(ex => {
@@ -260,17 +264,16 @@ class GeneralConfiguration extends Component {
         })
     }
 
+    //convert format time to minutes of number
+    convertTimeToMinutes = time => {
+        var a = time.split(':');
+        return (+a[0]) * 60 + (+a[1]);
+    }
+
     handleChangeCheck = (e, name) => {
-        if (name === 'checkIn') {
-            this.setState({
-                CheckInMin: e.target.value
-            })
-        }
-        if (name === 'CheckOutMin') {
-            this.setState({
-                ChecInMin: e.target.value
-            })
-        }
+        this.setState({
+            [name]: this.convertTimeToMinutes(e.target.value)
+        })
     }
 
     handleChecked(e) {
@@ -327,15 +330,17 @@ class GeneralConfiguration extends Component {
                                 <div className="linebylineInput valid-input fullInputWidth">
                                     <label className="control-label">{Resources.checkIn[currentLanguage]}</label>
                                     <div className="inputDev ui input" >
-                                        <input className="form-control fsadfsadsa" id="time" name="bday" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" type="time" value={this.state.CheckInMin}
-                                            onChange={(e) => this.handleChangeCheck(e, 'checkIn')} />
+                                        <input className="form-control fsadfsadsa" id="checkIn" name="checkIn"
+                                            pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" type="time"
+                                            defaultValue={this.state.CheckInMin}
+                                            onBlur={(e) => this.handleChangeCheck(e, 'checkInMinutes')} />
                                     </div>
                                 </div>
                                 <div className="linebylineInput valid-input fullInputWidth">
                                     <label className="control-label">{Resources.checkOut[currentLanguage]}</label>
                                     <div className="inputDev ui input" >
-                                        <input className="form-control fsadfsadsa" id="time" name="bday" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" type="time" value={this.state.CheckOutMin}
-                                            onChange={(e) => this.handleChangeCheck(e, 'checkOut')} />
+                                        <input className="form-control fsadfsadsa" id="checkOut" name="checkOut" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" type="time" defaultValue={this.state.CheckOutMin}
+                                            onBlur={(e) => this.handleChangeCheck(e, 'checkOutMinutes')} />
                                     </div>
                                 </div>
                             </Fragment>}
