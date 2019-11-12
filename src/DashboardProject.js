@@ -208,6 +208,13 @@ class DashboardProject extends Component {
     renderCategoryWidget() {
         return (
             <Fragment>
+                  <div className="dashboard__name">
+                    <button
+                        className="primaryBtn-2 btn mediumBtn"
+                        onClick={this.viewDashBoardHandler.bind(this)}>
+                        Customize
+                    </button>
+                </div>
                 {this.renderCategory()}
             </Fragment>
         );
