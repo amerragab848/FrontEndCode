@@ -4,7 +4,6 @@ import Api from "../../api";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import moment from "moment";
 import Resources from "../../resources.json";
-//import _ from "lodash";
 import find from "lodash/find";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -169,7 +168,7 @@ class bogAddEdit extends Component {
             },
             {
                 key: "boqTypeChild",
-                name: Resources["boqTypeChild"][currentLanguage],
+                name: Resources["boqSubType"][currentLanguage],
                 width: 120,
                 draggable: true,
                 sortable: true,
@@ -180,7 +179,7 @@ class bogAddEdit extends Component {
             },
             {
                 key: "boqSubType",
-                name: Resources["boqSubType"][currentLanguage],
+                name: Resources["boqTypeChild"][currentLanguage],
                 width: 100,
                 draggable: true,
                 sortable: true,
@@ -1173,6 +1172,7 @@ class bogAddEdit extends Component {
         const ItemsGrid =
             this.state.isLoading === false ? (
                 <GridSetupWithFilter
+                    groupBy={[{ key: 'boqType', name: 'boqType' },{ key: 'boqSubType', name: 'boqSubType' } ]}
                     rows={this.state._items}
                     showCheckbox={true}
                     pageSize={this.state.pageSize}
