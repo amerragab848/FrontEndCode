@@ -16,7 +16,7 @@ import dataservice from "../../../Dataservice";
 import Recycle from '../../../Styles/images/attacheRecycle.png'
 import HeaderDocument from "../../../Componants/OptionsPanels/HeaderDocument";
 
-const _ = require('lodash')
+//const _ = require('lodash')
 let currentLanguage =
     localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const validationSchema = Yup.object().shape({

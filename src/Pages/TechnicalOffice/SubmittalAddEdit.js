@@ -27,7 +27,8 @@ import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown';
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
 
-const _ = require("lodash");
+const find = require("lodash/find");
+const maxBy = require("lodash/maxBy");
 
 let selectedRows = [];
 
@@ -355,6 +356,8 @@ class SubmittalAddEdit extends Component {
             cycle.docDate = result.docDate != null ? moment(result.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
             cycle.approvedDate = result.approvedDate != null ? moment(result.approvedDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
 
+            this.fillCycleDropDown(true);
+
             this.setState({
               documentCycle: cycle,
               addCycleSubmital: cycle,
@@ -366,16 +369,9 @@ class SubmittalAddEdit extends Component {
               addCycleSubmital: submittalDocumentCycles
             });
           }
+
         });
-
-        this.fillCycleDropDown(true);
-
-        this.fillDropDowns(this.props.document.id > 0 ? true : false);
-
-        this.checkDocumentIsView();
       }
-      this.fillCycleDropDown(true);
-
       this.fillDropDowns(this.props.document.id > 0 ? true : false);
 
       this.checkDocumentIsView();
@@ -417,7 +413,7 @@ class SubmittalAddEdit extends Component {
         if (subField != "flowContactId") {
           let toSubField = this.state.document[subField];
 
-          let targetFieldSelected = _.find(result, function (i) {
+          let targetFieldSelected = find(result, function (i) {
             return i.value == toSubField;
           });
 
@@ -428,7 +424,7 @@ class SubmittalAddEdit extends Component {
         } else {
           let toSubField = this.state.documentCycle[subField];
 
-          let targetFieldSelected = _.find(result, function (i) {
+          let targetFieldSelected = find(result, function (i) {
             return i.value == toSubField;
           });
 
@@ -439,41 +435,13 @@ class SubmittalAddEdit extends Component {
         }
       }
     });
-
-
+ 
   }
-
-  // fillCycleDropDown(isEdit) {
-
-  //   //approvalStatus
-  //   dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id").then(result => {
-
-  //     if (isEdit) {
-
-  //       let approval = this.state.documentCycle.approvalStatusId;
-
-  //       if (approval) {
-
-  //         let approvalName = result.find(i => i.value === parseInt(approval));
-
-  //         if (approvalName) {
-  //           this.setState({
-  //             selectedApprovalStatus: { label: approvalName.label, value: approval }
-  //           });
-  //         }
-  //       }
-  //     }
-  //     this.setState({
-  //       approvales: [...result]
-  //     });
-  //   });
-
-  // }
 
   fillCycleDropDown(isEdit) {
 
     //approvalStatus
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id",'defaultLists', "approvalstatus", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id", 'defaultLists', "approvalstatus", "listType").then(result => {
 
       if (isEdit) {
 
@@ -494,7 +462,24 @@ class SubmittalAddEdit extends Component {
         approvales: [...result]
       });
     });
+    dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
+      if (isEdit) {
+        let flowCompanyId = this.state.documentCycle.flowCompanyId;
+      
+        if (flowCompanyId) {
+
+          this.setState({
+            selectedFromCompanyCycles: { label: this.state.documentCycle.flowCompanyName, value: flowCompanyId }
+          });
+
+          this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", flowCompanyId, "flowContactId", "selectedFromContactCycles", "fromContactsCycles");
+        }
+      }
+      this.setState({
+        companies: [...result]
+      });
+    });
   }
 
   fillDropDowns(isEdit) {
@@ -507,8 +492,6 @@ class SubmittalAddEdit extends Component {
 
         let companyId = this.props.document.bicCompanyId;
 
-        let flowCompanyId = this.state.documentCycle.flowCompanyId;
-
         if (companyId) {
 
           this.setState({
@@ -516,16 +499,7 @@ class SubmittalAddEdit extends Component {
           });
 
           this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "bicContactId", "selectedFromContact", "fromContacts");
-        }
-
-        if (flowCompanyId) {
-
-          this.setState({
-            selectedFromCompanyCycles: { label: this.state.documentCycle.flowCompanyName, value: flowCompanyId }
-          });
-
-          this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", flowCompanyId, "flowContactId", "selectedFromContactCycles", "fromContactsCycles");
-        }
+        } 
       }
       this.setState({
         selectedSubmittalType: this.props.document.submittalType != null && this.props.document.submittalType ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
@@ -534,7 +508,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //discplines
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id",'defaultLists', "discipline", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
 
       if (isEdit) {
 
@@ -561,7 +535,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //location
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id",'defaultLists', "location", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
 
       if (isEdit) {
 
@@ -587,7 +561,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //area
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id",'defaultLists', "area", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
 
       if (isEdit) {
 
@@ -614,7 +588,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //reasonForIssue
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reasonForIssue", "title", "id",'defaultLists', "reasonForIssue", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reasonForIssue", "title", "id", 'defaultLists', "reasonForIssue", "listType").then(result => {
 
       if (isEdit) {
 
@@ -640,7 +614,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //reviewResult
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reviewresult", "title", "id",'defaultLists', "reviewResult", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reviewresult", "title", "id", 'defaultLists', "reviewResult", "listType").then(result => {
 
       this.setState({
         reviewResult: [...result]
@@ -648,7 +622,7 @@ class SubmittalAddEdit extends Component {
     });
 
     //specsSection
-    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specssection", "title", "id",'defaultLists', "specssection", "listType").then(result => {
+    dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specssection", "title", "id", 'defaultLists', "specssection", "listType").then(result => {
 
       if (isEdit) {
 
@@ -1137,7 +1111,7 @@ class SubmittalAddEdit extends Component {
 
   getLogsSubmittalItems = () => {
     dataservice.GetDataGrid("GetLogsSubmittalItemsBySubmittalId?submittalId=" + this.state.docId).then(data => {
-      let maxArrange = _.maxBy(data, "arrange");
+      let maxArrange = maxBy(data, "arrange");
       let submittalItem = {};
       submittalItem.description = "";
       submittalItem.reviewResult = "";
@@ -1286,7 +1260,7 @@ class SubmittalAddEdit extends Component {
 
   _executeBeforeModalClose = () => {
 
-    let maxArrange = _.maxBy(this.state.itemData, "arrange");
+    let maxArrange = maxBy(this.state.itemData, "arrange");
 
     let submittalItem = {};
 
@@ -1357,7 +1331,7 @@ class SubmittalAddEdit extends Component {
 
       originalData.push(data);
 
-      let maxArrange = _.maxBy(this.state.itemData, "arrange");
+      let maxArrange = maxBy(this.state.itemData, "arrange");
 
       let submittalItem = {};
       submittalItem.description = "";
@@ -1395,7 +1369,7 @@ class SubmittalAddEdit extends Component {
 
   addCycle() {
 
-    let maxArrange = (_.maxBy(this.state.submittalItemData, "arrange"))["arrange"] || 1;
+    let maxArrange = (maxBy(this.state.submittalItemData, "arrange"))["arrange"] || 1;
 
     let arrangeCycle = this.state.documentCycle.arrange;
 
@@ -1410,6 +1384,7 @@ class SubmittalAddEdit extends Component {
     submittalCycle.fromCompanyId = "";
     submittalCycle.submittalId = docId;
     submittalCycle.arrange = arrangeCycle ? arrangeCycle + 1 : maxArrange + 1;
+    submittalCycle.id = 0;
 
     this.setState({
       selectedCycleAprrovalStatus: { label: Resources.selectResult[currentLanguage], value: "0" },
@@ -1469,7 +1444,7 @@ class SubmittalAddEdit extends Component {
 
   getMaxArrange = () => {
     if (docId !== 0) {
-      let maxArrange = _.maxBy(this.state.itemData, "arrange");
+      let maxArrange = maxBy(this.state.itemData, "arrange");
 
       let submittalItem = {};
       submittalItem.description = "";
@@ -2190,17 +2165,14 @@ class SubmittalAddEdit extends Component {
                 </div>
               </div>
             ) : null}
-            <Steps
-              steps_defination={steps_defination}
-              exist_link="/submittal/"
-              docId={this.state.docId}
+            <Steps steps_defination={steps_defination} exist_link="/submittal/" docId={this.state.docId}
               changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
               stepNo={this.state.currentStep}
               changeStatus={docId === 0 ? false : true} />
           </div>
         </div>
         <div>
- 
+
           {this.state.showDeleteModal == true ? (
             <ConfirmationModal title={Resources["smartDeleteMessage"][currentLanguage].content} buttonName="delete" closed={this.onCloseModal}
               showDeleteModal={this.state.showDeleteModal} clickHandlerCancel={this.clickHandlerCancelMain}

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Api from '../../api'
 import moment from 'moment'
 import Resources from '../../resources.json';
-import _ from "lodash";
+//import _ from "lodash";
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import 'react-table/react-table.css'

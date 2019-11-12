@@ -5,7 +5,10 @@ import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const _ = require('lodash')
+const filter = require('lodash/filter')
+const maxBy = require('lodash/maxBy')
+const uniqBy = require('lodash/uniqBy')
+const orderBy = require('lodash/orderBy')
 
 export function documentForEdit(urlAction, docTypeId, docName) {
     return (dispatch, getState) => {
@@ -447,8 +450,8 @@ function BuildWorkFlowCycleStracture(result) {
     let levels = [];
     let cycles = [];
 
-    let workFlowCycles = _.uniqBy(result, 'subject');
-    const poolLevels = _.orderBy(result, ['arrange'], 'asc');
+    let workFlowCycles = uniqBy(result, 'subject');
+    const poolLevels = orderBy(result, ['arrange'], 'asc');
     let returnObj = {};
 
     let hasWorkFlow = poolLevels.filter((t) => t.statusVal == null).length > 0 ? true : false;
@@ -464,13 +467,13 @@ function BuildWorkFlowCycleStracture(result) {
         obj.accountDocWorkFlowId = item.accountDocWorkFlowId;
 
         //all levels in same subject
-        levels = _.filter(poolLevels, function (i) {
+        levels = filter(poolLevels, function (i) {
             return i.accountDocWorkFlowId === item.accountDocWorkFlowId;
         });
 
         obj.levels = levels;
 
-        let maxArrange = _.maxBy(levels, 'arrange');
+        let maxArrange = maxBy(levels, 'arrange');
 
         obj.currentLevel = maxArrange.arrange;
         cycles.push(obj);

@@ -46,7 +46,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 class siteInstructionsAddEdit extends Component {
 
     constructor(props) {
@@ -235,7 +235,7 @@ class siteInstructionsAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({ [subSelectedValue]: targetFieldSelected, [subDatasource]: result });
             }
         });
@@ -270,7 +270,7 @@ class siteInstructionsAddEdit extends Component {
                 let inspectionRequestId = this.props.document.inspectionRequestId;
                 let inspectionRequest = {};
                 if (inspectionRequestId) {
-                    inspectionRequest = _.find(result, function (i) { return i.value == inspectionRequestId; });
+                    inspectionRequest = find(result, function (i) { return i.value == inspectionRequestId; });
                     this.setState({ selecetedinspectionRequest: inspectionRequest });
                 }
             }

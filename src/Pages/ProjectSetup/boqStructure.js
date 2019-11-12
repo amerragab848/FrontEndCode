@@ -16,7 +16,7 @@ import { SkyLightStateless } from 'react-skylight';
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import _ from "lodash";
+//import _ from "lodash";
 import { toast } from "react-toastify";
 var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");

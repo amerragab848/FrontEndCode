@@ -46,7 +46,7 @@ let perviousRoute = "";
 let arrange = 0;
 let specsId = "";
 let boqId = "";
-const _ = require("lodash");
+const find = require("lodash/find");
 
 const ValidtionSchemaForTermsPurchaseOrder = Yup.object().shape({
     details: Yup.string()
@@ -825,11 +825,11 @@ class PurchaseOrderAddEdit extends Component {
 
                     let toCompanyId = this.state.document.toCompanyId;
 
-                    let selectedFromCompany = _.find(result, function (i) {
+                    let selectedFromCompany = find(result, function (i) {
                         return i.value == fromCompanyId;
                     });
 
-                    let selectedToCompany = _.find(result, function (i) {
+                    let selectedToCompany = find(result, function (i) {
                         return i.value == toCompanyId;
                     });
 
@@ -937,7 +937,7 @@ class PurchaseOrderAddEdit extends Component {
         dataservice.GetDataList(action, "contactName", "id").then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) {
+                let targetFieldSelected = find(result, function (i) {
                     return i.value == toSubField;
                 });
 

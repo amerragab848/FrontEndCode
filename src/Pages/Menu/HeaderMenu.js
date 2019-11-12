@@ -1131,6 +1131,12 @@ class HeaderMenu extends Component {
     }
   }
 
+  
+  componentWillUnmount() {
+    this.props.actions.clearCashDocument(); 
+   
+}
+
   render() {
     let totalNotification = this.state.notifications.length + this.state.taskes.length;
 

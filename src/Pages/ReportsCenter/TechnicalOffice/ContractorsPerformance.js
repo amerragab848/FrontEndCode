@@ -7,7 +7,7 @@ import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import moment from "moment";
 import BarChartComp from './BarChartComp'
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
-const _ = require('lodash')
+//const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 class ContractorsPerformance extends Component {
 

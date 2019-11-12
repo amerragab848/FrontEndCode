@@ -42,7 +42,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = "";
 let arrange = 0;
-const _ = require("lodash");
+const find = require("lodash/find");
 
 let selectedRows = [];
 
@@ -329,7 +329,7 @@ class materialDeliveryAddEdit extends Component {
                     let id = this.props.document.contractId;
                     let selectedValue = {};
                     if (id) {
-                        selectedValue = _.find(result, function (i) {
+                        selectedValue = find(result, function (i) {
                             return i.value === id;
                         });
                         this.setState({ selectedContractId: selectedValue });

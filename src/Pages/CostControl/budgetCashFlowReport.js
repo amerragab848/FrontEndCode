@@ -18,7 +18,7 @@ import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
-const _ = require('lodash')
+const sum = require('lodash/sum')
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
@@ -157,10 +157,10 @@ class BudgetCashFlowReport extends Component {
                 totalsActualTotalIn.push(i.totalIn)
                 totalsActualTotalOut.push(i.totalOut)
             })
-            let EstimatedIn = _.sum(totalsEstimatedIn)
-            let EstimatedOut = _.sum(totalsEstimatedOut)
-            let ActualTotalIn = _.sum(totalsActualTotalIn)
-            let ActualTotalOut = _.sum(totalsActualTotalOut)
+            let EstimatedIn = sum(totalsEstimatedIn)
+            let EstimatedOut = sum(totalsEstimatedOut)
+            let ActualTotalIn = sum(totalsActualTotalIn)
+            let ActualTotalOut = sum(totalsActualTotalOut)
 
             this.setState({
                 EstimatedIn,

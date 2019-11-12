@@ -10,7 +10,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../../Dataservice";
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-const _ = require('lodash')
+//const _ = require('lodash')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 

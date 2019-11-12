@@ -11,7 +11,7 @@ import moment from "moment";
 import dataService from '../../../Dataservice'
 import GridSetup from "../../Communication/GridSetup"
 import HeaderDocument from '../../../Componants/OptionsPanels/HeaderDocument'
-const _ = require('lodash')
+//const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";

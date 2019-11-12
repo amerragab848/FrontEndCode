@@ -40,7 +40,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require("lodash");
+const find = require("lodash/find");
 
 class RequestProposalAddEdit extends Component {
 
@@ -193,7 +193,7 @@ class RequestProposalAddEdit extends Component {
     dataservice.GetDataList(action, "contactName", "id").then(result => {
       if (this.props.changeStatus === true) {
         let toSubField = this.state.document[subField];
-        let targetFieldSelected = _.find(result, function (i) {
+        let targetFieldSelected = find(result, function (i) {
           return i.value == toSubField;
         });
         this.setState({ [subSelectedValue]: targetFieldSelected, [subDatasource]: result });

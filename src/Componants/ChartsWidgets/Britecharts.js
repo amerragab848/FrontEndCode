@@ -4,7 +4,7 @@ import { Line, Tooltip, withResponsiveness, ResponsiveContainer } from 'britecha
 import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css';
 const ResponsiveLineChart = withResponsiveness(Line);
 
-const _ = require('lodash')
+const filter = require('lodash/filter')
 
 const marginObject = {
     left: 100,
@@ -54,7 +54,7 @@ class Britecharts extends Component {
         Api.get(this.props.api).then(res => {
             if (res.length > 0) {
                 this.props.topicName.forEach((topic, index) => {
-                    let topics = _.filter(res, function (x) {
+                    let topics = filter(res, function (x) {
                         if (x.topicName == topic) {
                             return { date: x.date, value: x.value }
                         }

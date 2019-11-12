@@ -17,10 +17,10 @@ import { toast } from "react-toastify";
 import Config from "../../Services/Config.js";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
- 
+
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : Resources.noDate[currentLanguage];
-}; 
+};
 
 class CommonLog extends Component {
 
@@ -215,7 +215,7 @@ class CommonLog extends Component {
         });
       });
     }
-  } 
+  }
 
   GetNextData() {
 
@@ -254,7 +254,7 @@ class CommonLog extends Component {
   }
 
   filterMethodMain = (event, query, apiFilter) => {
-
+ 
     var stringifiedQuery = JSON.stringify(query);
     if (stringifiedQuery == '{"isCustom":true}') {
       stringifiedQuery = undefined
@@ -264,22 +264,26 @@ class CommonLog extends Component {
       query: stringifiedQuery
     });
 
-    Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
-      this.setState({
-        rows: result.data != undefined ? [...result.data] : result,
-        totalRows: result.data != undefined ? result.total : 0,
-        isLoading: false
+    if(stringifiedQuery !== "{}" ){
+      Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
+        this.setState({
+          rows: result.data != undefined ? [...result.data] : result,
+          totalRows: result.data != undefined ? result.total : 0,
+          isLoading: false
+        });
+  
+        this.setState({
+          isLoading: false
+        });
+      }).catch(ex => {
+        this.setState({
+          rows: [],
+          isLoading: false
+        });
       });
-
-      this.setState({
-        isLoading: false
-      });
-    }).catch(ex => {
-      this.setState({
-        rows: [],
-        isLoading: false
-      });
-    });
+    }else{
+      this.GetRecordOfLog(this.state.isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, this.state.projectId);
+    }  
   };
 
   onCloseModal = () => {

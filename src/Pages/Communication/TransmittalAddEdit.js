@@ -184,8 +184,8 @@ class TransmittalAddEdit extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id) {
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
 
             let serverInspectionRequest = { ...nextProps.document };
 
@@ -195,20 +195,22 @@ class TransmittalAddEdit extends Component {
             serverInspectionRequest.building = serverInspectionRequest.building ? serverInspectionRequest.building : '';
             serverInspectionRequest.apartment = serverInspectionRequest.apartment ? serverInspectionRequest.apartment : '';
 
-            this.setState({
+            return {
                 document: serverInspectionRequest,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: serverInspectionRequest.description
-            });
-
-            this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
-            this.checkDocumentIsView();
+            };
         }
-
+        return null;
     };
 
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
     }
@@ -294,7 +296,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //area
-        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
             if (isEdit) {
                 let areaId = this.props.document.area;
                 if (areaId) {
@@ -306,7 +308,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //location
-        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
             if (isEdit) {
                 let locationId = this.props.document.location;
                 if (locationId) {
@@ -318,12 +320,14 @@ class TransmittalAddEdit extends Component {
         });
 
         //priorty
-        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=priority", "title", "id", 'defaultLists', "priority", "listType").then(result => {
             if (isEdit) {
                 let priorityId = this.props.document.priorityId;
                 if (priorityId) {
                     let priorityName = result.find(i => i.value === parseInt(priorityId));
-                    this.setState({ selectedPriorityId: { label: priorityName.label, value: priorityId } });
+                    if (priorityName) {
+                        this.setState({ selectedPriorityId: { label: priorityName.label, value: priorityId } });
+                    }
                 }
             }
             this.setState({
@@ -332,7 +336,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //submittedFor
-        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=transmittalsubmittedfor", "title", "id", "defaultLists", 'transmittalsubmittedfor', "listType").then(result => {
             if (isEdit) {
 
                 let submittedForId = this.props.document.submittedForId;
@@ -350,7 +354,7 @@ class TransmittalAddEdit extends Component {
         });
 
         //sendingMethod
-        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=sendingmethods", "title", "id", 'defaultLists', "sendingmethods", "listType").then(result => {
             if (isEdit) {
 
                 let sendingmethod = this.props.document.sendingMethodId;
@@ -424,11 +428,13 @@ class TransmittalAddEdit extends Component {
         });
 
         if (field == "toContactId") {
-            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
-            // this.props.actions.GetNextArrange(url);
+            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                 updated_document.arrange = res.arrange;
-                updated_document.refDoc = res.refCode;
+                if (Config.getPublicConfiguartion().refAutomatic === true) {
+                    updated_document.refDoc = res.refCode;
+                }
 
                 updated_document = Object.assign(original_document, updated_document);
 
@@ -537,7 +543,6 @@ class TransmittalAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
                                             onSubmit={(values) => {
-
                                                 if (this.props.showModal) {
                                                     return;
                                                 }
@@ -593,7 +598,7 @@ class TransmittalAddEdit extends Component {
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? (" has-error") : " ")}>
                                                                 <input type="text" className="form-control" id="arrange" readOnly
-                                                                    value={this.state.document.arrange}
+                                                                    value={this.state.document.arrange || ''}
                                                                     name="arrange"
                                                                     placeholder={Resources.arrange[currentLanguage]}
                                                                     onBlur={(e) => { handleChange(e); handleBlur(e) }}
@@ -604,7 +609,7 @@ class TransmittalAddEdit extends Component {
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                             <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
                                                                 <input type="text" className="form-control" id="refDoc"
-                                                                    value={this.state.document.refDoc}
+                                                                    value={this.state.document.refDoc || ''}
                                                                     name="refDoc"
                                                                     placeholder={Resources.refDoc[currentLanguage]}
                                                                     onBlur={(e) => { handleChange(e); handleBlur(e) }}
@@ -618,8 +623,8 @@ class TransmittalAddEdit extends Component {
                                                                 <div className="super_name">
                                                                     <Dropdown data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
-                                                                        handleChange={event => 
-                                                                            { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
+                                                                        handleChange={event => {
+                                                                            this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
                                                                         }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
@@ -658,7 +663,7 @@ class TransmittalAddEdit extends Component {
                                                                 <div className="super_company">
                                                                     <Dropdown isMulti={false} data={this.state.ToContacts}
                                                                         selectedValue={this.state.selectedToContact}
-                                                                        handleChange={event => 
+                                                                        handleChange={event =>
                                                                             this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
                                                                         }
                                                                         onChange={setFieldValue}
@@ -717,7 +722,7 @@ class TransmittalAddEdit extends Component {
                                                             <div className={"inputDev ui input" + (errors.Building && touched.Building ? (" has-error") : !errors.Building && touched.Building ? (" has-success") : " ")} >
                                                                 <input name='Building' className="form-control fsadfsadsa" id="Building"
                                                                     placeholder={Resources.Building[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.building ? this.state.document.building : ''}
+                                                                    autoComplete='off' value={this.state.document.building || ''}
                                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                                     onChange={(e) => this.handleChange(e, 'building')} />
                                                                 {errors.Building && touched.Building ? (<em className="pError">{errors.Building}</em>) : null}
@@ -728,7 +733,7 @@ class TransmittalAddEdit extends Component {
                                                             <div className={"inputDev ui input" + (errors.apartmentNumber && touched.apartmentNumber ? (" has-error") : !errors.apartmentNumber && touched.apartmentNumber ? (" has-success") : " ")} >
                                                                 <input name='apartmentNumber' className="form-control fsadfsadsa" id="apartmentNumber"
                                                                     placeholder={Resources.apartmentNumber[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.apartment}
+                                                                    autoComplete='off' value={this.state.document.apartment || ''}
                                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                                     onChange={(e) => this.handleChange(e, 'apartment')} />
                                                                 {errors.apartmentNumber && touched.apartmentNumber ? (<em className="pError">{errors.apartmentNumber}</em>) : null}
@@ -740,22 +745,19 @@ class TransmittalAddEdit extends Component {
                                                                 <div className="inputDev ui input">
                                                                     <input type="text" className="form-control" id="sharedSettings"
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
-                                                                        value={this.state.document.sharedSettings} name="sharedSettings"
+                                                                        value={this.state.document.sharedSettings || ''} name="sharedSettings"
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
                                                                 </div>
                                                                 {this.state.document.sharedSettings === '' ||
                                                                     this.state.document.sharedSettings === null ||
-                                                                    this.state.document.sharedSettings === undefined ?
-                                                                    null
-                                                                    :
-                                                                    <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>}
+                                                                    this.state.document.sharedSettings === undefined ? null : <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>}
                                                             </div>
                                                         </div>
                                                         <div className="letterFullWidth">
                                                             <label className="control-label">{Resources.description[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
-                                                                    value={this.state.message}
+                                                                    value={this.state.message || ''}
                                                                     onChange={this.onChangeMessage} />
                                                             </div>
                                                         </div>
@@ -767,6 +769,19 @@ class TransmittalAddEdit extends Component {
                                                         this.props.changeStatus === true ?
                                                             <div className="approveDocument">
                                                                 <div className="approveDocumentBTNS">
+                                                                    {this.state.isLoading ? (
+                                                                        <button className="primaryBtn-1 btn disabled">
+                                                                            <div className="spinner">
+                                                                                <div className="bounce1" />
+                                                                                <div className="bounce2" />
+                                                                                <div className="bounce3" />
+                                                                            </div>
+                                                                        </button>
+                                                                    ) : (
+                                                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
+                                                                                {Resources.save[currentLanguage]}
+                                                                            </button>
+                                                                        )}
                                                                     <DocumentActions
                                                                         isApproveMode={this.state.isApproveMode}
                                                                         docTypeId={this.state.docTypeId}
@@ -787,7 +802,6 @@ class TransmittalAddEdit extends Component {
                                             )}
                                         </Formik>
                                     </div>
-
                                     <div className="doc-pre-cycle tableBTnabs">
                                         {this.state.docId > 0 ? <AddDocAttachment isViewMode={this.state.isViewMode} projectId={projectId} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                     </div>

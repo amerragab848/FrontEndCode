@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker";
 import companyId from '../../../IP_Configrations.json'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-const _ = require('lodash')
+const find = require('lodash/find')
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 };
@@ -259,7 +259,7 @@ class Accounts extends Component {
         this.state.rowSelectedId.map(i => {
             id = i
         })
-        let userName = _.find(rowsData, { 'id': id })
+        let userName = find(rowsData, { 'id': id })
         Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName, null, 'Delete').then(
             res => {
                 if (res.status === 200) {
@@ -334,7 +334,7 @@ class Accounts extends Component {
         let id = this.state.rowSelectedId;
         this.setState({ showDeleteModal: true })
         let rowsData = this.state.rows;
-        let userName = _.find(rowsData, { 'id': id })
+        let userName = find(rowsData, { 'id': id })
 
         Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName + '&emailOrPassword=' + this.state.NewPassword + '&companyId=' + companyId.accountCompanyId + '&changePassword=true', null, 'PUT').then(data => {
             if (data.status == 200) {

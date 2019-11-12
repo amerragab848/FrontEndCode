@@ -111,67 +111,7 @@ class InternalMemoAddEdit extends Component {
     }
 
     componentDidMount() {
-        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-        for (var i = 0; i < links.length; i++) {
-            if ((i + 1) % 2 == 0) {
-                links[i].classList.add('even');
-            }
-            else {
-                links[i].classList.add('odd');
-            }
-        }
-        this.checkDocumentIsView();
-    };
 
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id !== this.props.document.id) {
-            let serverInspectionRequest = { ...nextProps.document };
-
-            serverInspectionRequest.docDate = serverInspectionRequest.docDate != null ? moment(serverInspectionRequest.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate != null ? moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-
-            this.setState({
-                document: serverInspectionRequest,
-                hasWorkflow: nextProps.hasWorkflow,
-                message: serverInspectionRequest.message,
-                answer: serverInspectionRequest.answer
-            });
-
-            this.fillDropDowns(serverInspectionRequest.id > 0 ? true : false);
-            this.checkDocumentIsView();
-        }
-
-    };
-
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-            this.checkDocumentIsView();
-        }
-    }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(99))) {
-                this.setState({ isViewMode: true });
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(99)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(99)) {
-                    if (this.props.document.status != false && Config.IsAllow(99)) {
-                        this.setState({ isViewMode: false });
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            }
-        }
-        else {
-            this.setState({ isViewMode: false });
-        }
-    }
-
-    componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetCommunicationInternalMemoForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'communicationInternalMemo').catch(ex => toast.error(Resources["failError"][currentLanguage]));
@@ -200,6 +140,68 @@ class InternalMemoAddEdit extends Component {
             this.props.actions.documentForAdding();
         }
         this.props.actions.documentForAdding();
+
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+        for (var i = 0; i < links.length; i++) {
+            if ((i + 1) % 2 == 0) {
+                links[i].classList.add('even');
+            }
+            else {
+                links[i].classList.add('odd');
+            }
+        }
+        this.checkDocumentIsView();
+    };
+
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+            let serverInspectionRequest = { ...nextProps.document };
+
+            serverInspectionRequest.docDate = serverInspectionRequest.docDate != null ? moment(serverInspectionRequest.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate != null ? moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+
+            return {
+                document: serverInspectionRequest,
+                hasWorkflow: nextProps.hasWorkflow,
+                message: serverInspectionRequest.message,
+                answer: serverInspectionRequest.answer
+            };
+        }
+
+        return null;
+    };
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+            this.checkDocumentIsView();
+        }
+    }
+
+    checkDocumentIsView() {
+        if (this.props.changeStatus === true) {
+            if (!(Config.IsAllow(99))) {
+                this.setState({ isViewMode: true });
+            }
+            if (this.state.isApproveMode != true && Config.IsAllow(99)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(99)) {
+                    if (this.props.document.status != false && Config.IsAllow(99)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            }
+        }
+        else {
+            this.setState({ isViewMode: false });
+        }
     }
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
@@ -215,13 +217,6 @@ class InternalMemoAddEdit extends Component {
             }
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
-
-   
-
-
-
-
-
 
     fillDropDowns(isEdit) {
         //from Companies
@@ -254,12 +249,6 @@ class InternalMemoAddEdit extends Component {
             });
         }).catch(ex => toast.error(Resources["failError"][currentLanguage]));
     }
-
-
-
-
-
-
 
     onChangeMessage = (value, field) => {
 
@@ -322,10 +311,12 @@ class InternalMemoAddEdit extends Component {
         });
 
         if (field == "toContactId") {
-            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
-             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
+            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+            dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                 updated_document.arrange = res.arrange;
-                updated_document.refDoc = res.refCode;
+                if (Config.getPublicConfiguartion().refAutomatic === true) {
+                    updated_document.refDoc = res.refCode;
+                }
 
                 updated_document = Object.assign(original_document, updated_document);
 
@@ -373,6 +364,7 @@ class InternalMemoAddEdit extends Component {
         let saveDocument = this.state.document;
 
         saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
         saveDocument.requiredDate = moment(saveDocument.requiredDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
         dataservice.addObject('AddCommunicationInternalMemo', saveDocument).then(result => {
@@ -409,7 +401,6 @@ class InternalMemoAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
 
-
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.setState({
@@ -423,7 +414,6 @@ class InternalMemoAddEdit extends Component {
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.communicationInternalMemo[currentLanguage]} moduleTitle={Resources['communication'][currentLanguage]} />
                     <div className="doc-container">
-                       
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
@@ -473,13 +463,11 @@ class InternalMemoAddEdit extends Component {
                                                                 startDate={this.state.document.docDate}
                                                                 handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                         </div>
-
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='requiredDate'
                                                                 startDate={this.state.document.requiredDate}
                                                                 handleChange={e => this.handleChangeDate(e, 'requiredDate')} />
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? (" has-error") : " ")}>
@@ -509,12 +497,7 @@ class InternalMemoAddEdit extends Component {
                                                                 <div className="super_name">
                                                                     <Dropdown data={this.state.companies} isMulti={false}
                                                                         selectedValue={this.state.selectedFromCompany}
-                                                                        handleChange={
-                                                                            event => { 
-                                                                                this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
-
-                                                                            }
-                                                                        }
+                                                                        handleChange={event => { this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact"); }}
                                                                         onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromCompanyId}
@@ -594,7 +577,6 @@ class InternalMemoAddEdit extends Component {
                                                             this.showBtnsSaving()}
                                                     </div>
 
-
                                                     {this.props.changeStatus === true ?
                                                         <div className="approveDocument">
                                                             <div className="approveDocumentBTNS">
@@ -664,7 +646,6 @@ function mapStateToProps(state, ownProps) {
         files: state.communication.files,
         hasWorkflow: state.communication.hasWorkflow,
         showModal: state.communication.showModal
-
     }
 }
 

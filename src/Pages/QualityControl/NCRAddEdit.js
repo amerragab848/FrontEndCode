@@ -36,7 +36,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 
 const validationSchema = Yup.object().shape({
 
@@ -288,21 +288,13 @@ class NCRAddEdit extends Component {
         }
     }
 
-   
-
-
-
-
-
-
-
-
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
+               
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -313,7 +305,7 @@ class NCRAddEdit extends Component {
 
 
     FillDropDowns=()=> {
-        console.log("document "+JSON.stringify(this.props.document));
+       
 
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
@@ -321,7 +313,7 @@ class NCRAddEdit extends Component {
                
                 let companyId = this.props.document.fromCompanyId; 
                 
-                let  fromCompanyName= _.find(result, function (i) { return i.value == companyId; });
+                let  fromCompanyName= find(result, function (i) { return i.value == companyId; });
                 
                 if (companyId) {
                     this.setState({
@@ -344,7 +336,7 @@ class NCRAddEdit extends Component {
                 let bicCompanyId = this.props.document.bicCompanyId;
                 let bicCompany={};
                 if (bicCompanyId) {
-                    bicCompany=_.find(result,function(i){return i.value==bicCompanyId});
+                    bicCompany=find(result,function(i){return i.value==bicCompanyId});
                     this.setState({
                         selectedActionByCompanyId: { label: bicCompany.label, value: bicCompanyId }
                     });
@@ -356,7 +348,7 @@ class NCRAddEdit extends Component {
             }
             this.setState({
                 companies: [...result],
-                Loading:false
+                //Loading:false
             });
         });
 
@@ -366,7 +358,7 @@ class NCRAddEdit extends Component {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
                 if (disciplineId) {
-                    discpline = _.find(result, function (i) { return i.value == disciplineId; });
+                    discpline = find(result, function (i) { return i.value == disciplineId; });
                      if(discpline){
                         this.setState({
                             selectedDiscpline: discpline
@@ -389,7 +381,7 @@ class NCRAddEdit extends Component {
                
                 let area = {};
                 if (areaId) {
-                    area = _.find(result, function (i) { return i.value == areaId; });
+                    area = find(result, function (i) { return i.value == areaId; });
                   if(area){
                     this.setState({
                         selecetedArea: {label:area.label,value:areaId},
@@ -410,7 +402,7 @@ class NCRAddEdit extends Component {
                 console.log("apartId "+apartmentNoId);
                 let apart={};
                 if (apartmentNoId) {
-                    apart=_.find(result,function(i){return i.value==apartmentNoId});
+                    apart=find(result,function(i){return i.value==apartmentNoId});
                     console.log("apart "+apart);
                     if(apart){
                         this.setState({
@@ -434,7 +426,7 @@ class NCRAddEdit extends Component {
                 let approvalStatusId = this.state.document.approvalStatusId;
                 let approvalStatus = {};
                 if (approvalStatusId) {
-                    approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
+                    approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
                    if(approvalStatus){
                     this.setState({
                         selectedApprovalStatusId: approvalStatus
@@ -455,7 +447,7 @@ class NCRAddEdit extends Component {
                 if(specId)
                 {
                    
-                    spec=_.find(result,function(i){return i.value==specId});
+                    spec=find(result,function(i){return i.value==specId});
                     if(spec){
                         this.setState({
                             selectedSpecsSectionId: { label: spec.label, value: this.props.document.specsSectionId }
@@ -475,7 +467,7 @@ class NCRAddEdit extends Component {
            let revId=this.props.document.reviewResultId;
            let review={};
            if(revId){
-            review=_.find(result,function(i){return i.value==revId});
+            review=find(result,function(i){return i.value==revId});
             if(review){
                 this.setState({
                     selectedReviewResult:{label:review.label,value:revId}
@@ -496,7 +488,7 @@ class NCRAddEdit extends Component {
                 let reasonForIssueId = this.props.document.reasonForIssueId;
                 let reasonForIssue = {};
                 if (reasonForIssueId) {
-                    reasonForIssue = _.find(result, function (i) { return i.value == reasonForIssueId; });
+                    reasonForIssue = find(result, function (i) { return i.value == reasonForIssueId; });
                    if(reasonForIssue){
                     this.setState({
                         selectedReasonForIssue: reasonForIssue
@@ -516,7 +508,7 @@ class NCRAddEdit extends Component {
              
               let file={};
               if(fileId){
-                  file =_.find(result,function(i){return i.value==fileId});
+                  file =find(result,function(i){return i.value==fileId});
                  
                   if(file){
                     this.setState({
@@ -540,7 +532,7 @@ class NCRAddEdit extends Component {
                
                 let building = {};
                 if (buildingno) {
-                    building = _.find(result, function (i) { return i.value == buildingno; });
+                    building = find(result, function (i) { return i.value == buildingno; });
                    
                     if(building){
                         this.setState({
@@ -561,7 +553,7 @@ class NCRAddEdit extends Component {
                 let inspectionRequestId = this.props.document.inspectionRequestId;
                 let inspectionRequest = {};
                 if (inspectionRequestId) {
-                    inspectionRequest = _.find(result, function (i) { return i.value == inspectionRequestId; });
+                    inspectionRequest = find(result, function (i) { return i.value == inspectionRequestId; });
                     this.setState({ selecetedinspectionRequest: inspectionRequest });
                 }
             }
@@ -569,33 +561,36 @@ class NCRAddEdit extends Component {
         });
         dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
            if(docId){
+               
                let conId=this.props.document.contractId;
                let con={};
                if(conId){
-                   con=_.find(result,function(i){return i.value==conId});
+                   con=find(result,function(i){return i.value==conId});
                    if(con){
                        this.setState({
                          selectedContract:{label:con.label,value:conId}
                        });
                    }
                }
-           }
+           }else{
             this.setState({
-              contractsPos: [...result],
-              Loading:false
-            });
+                contractsPos: [...result],
+                Loading:false
+              });
+           }
+           
         });
 
 
 
 
-        if (this.state.IsEditMode === false) {
-            dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-                this.setState({
-                    contractsPos: [...result]
-                });
-            });
-        }
+        // if (this.state.IsEditMode === false) {
+        //     dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
+        //         this.setState({
+        //             contractsPos: [...result]
+        //         });
+        //     });
+        // }
 
 
 

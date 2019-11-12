@@ -14,7 +14,8 @@ import { SkyLightStateless } from 'react-skylight';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import DropdownMelcous from '../../../OptionsPanels/DropdownMelcous';
-import _ from "lodash";
+import find from "lodash/find";
+import filter from "lodash/filter";
 import Select, { components } from 'react-select';
 import { toast } from "react-toastify";
 import * as AdminstrationActions from '../../../../store/actions/Adminstration'
@@ -327,7 +328,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                 if (idEdit !== 0) {
                     dataservice.GetRowById('GetExpensesWorkFlowForEdit?id=' + idEdit + '').then(
                         res => {
-                            let selectDrop = _.find(DataDrop, function (i) { return i.value == res.projectId });
+                            let selectDrop = find(DataDrop, function (i) { return i.value == res.projectId });
                             this.setState({
                                 ExpensesWorkFlowDataForEdit: res,
                                 DocumentDate: res.docDate = res.docDate === null ? moment().format('YYYY-MM-DD') : moment(res.docDate).format('YYYY-MM-DD'),
@@ -557,7 +558,7 @@ class ExpensesWorkFlowAddEdit extends Component {
                     this.setState({ showPopUp: true, IsEditExpensesWorkFlowItem: true })
                     let Companies = this.state.CompanyData
 
-                    let SelectedCompany = _.find(Companies, function (i) { return i.value == res.companyId });
+                    let SelectedCompany = find(Companies, function (i) { return i.value == res.companyId });
 
                     dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + res.companyId + '', 'contactName', 'id').then(
                         res => {
@@ -586,7 +587,7 @@ class ExpensesWorkFlowAddEdit extends Component {
         let OldData = Data.filter(s => s.workFlowItemId !== id)
 
         let SelectedValue = this.state.MultiApproval.val === undefined ? null : this.state.MultiApproval.val.value
-        _.filter(SelectedRow, function (i) {
+        filter(SelectedRow, function (i) {
             let x = {};
             x.arrange = i.arrange
             x.workFlowItemId = i.workFlowItemId

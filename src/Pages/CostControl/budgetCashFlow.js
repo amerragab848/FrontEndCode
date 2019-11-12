@@ -16,7 +16,7 @@ import { bindActionCreators } from 'redux';
 import moment from "moment";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 let docId = 0;
-const _ = require('lodash')
+const find = require('lodash')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const dateFormate = ({ value }) => {
@@ -223,7 +223,7 @@ class budgetCashFlow extends Component {
         this.state.rowSelectedId.map(i => {
             id = i
         })
-        let userName = _.find(rowsData, { 'id': id })
+        let userName = find(rowsData, { 'id': id })
         Api.authorizationApi('ProcoorAuthorization?username=' + userName.userName, null, 'DElETE').then(
             Api.post('accountDeleteById?id=' + id)
                 .then(result => {

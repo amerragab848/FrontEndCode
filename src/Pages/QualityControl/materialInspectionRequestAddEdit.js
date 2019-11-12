@@ -101,7 +101,7 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
+const find = require('lodash/find')
 class materialInspectionRequestAddEdit extends Component {
 
     constructor(props) {
@@ -215,61 +215,7 @@ class materialInspectionRequestAddEdit extends Component {
             else {
                 links[i].classList.add('odd');
             }
-        }
-        //this.checkDocumentIsView();
-    };
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id !== this.props.document.id) {
-            let serverInspectionRequest = { ...nextProps.document };
-            serverInspectionRequest.docDate = serverInspectionRequest.docDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.docDate).format('YYYY-MM-DD')
-            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD')
-            serverInspectionRequest.resultDate = serverInspectionRequest.resultDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.resultDate).format('YYYY-MM-DD')
-
-            this.setState({
-                document: { ...serverInspectionRequest },
-                hasWorkflow: nextProps.hasWorkflow,
-                answer: nextProps.document.answer,
-                rfi: nextProps.document.rfi
-            });
-
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
-        }
-    };
-
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-            this.checkDocumentIsView();
-        }
-    }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(367)) {
-                this.setState({ isViewMode: true });
-            }
-
-            if (this.state.isApproveMode != true && Config.IsAllow(367)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
-                    if (this.props.document.status !== false && Config.IsAllow(367)) {
-                        this.setState({ isViewMode: false });
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            }
-        }
-        else {
-            this.setState({ isViewMode: false });
-        }
-        console.log('checkDocumentIsView...', this.props, this.state);
-    }
-
-    componentWillMount() {
+        } 
         if (this.state.docId > 0) {
             let url = "GetMaterialInspectionRequestForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialInspectionRequest');
@@ -331,6 +277,56 @@ class materialInspectionRequestAddEdit extends Component {
         }
     };
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.document.id !== this.props.document.id) {
+            let serverInspectionRequest = { ...nextProps.document };
+            serverInspectionRequest.docDate = serverInspectionRequest.docDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.docDate).format('YYYY-MM-DD')
+            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD')
+            serverInspectionRequest.resultDate = serverInspectionRequest.resultDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.resultDate).format('YYYY-MM-DD')
+
+            this.setState({
+                document: { ...serverInspectionRequest },
+                hasWorkflow: nextProps.hasWorkflow,
+                answer: nextProps.document.answer,
+                rfi: nextProps.document.rfi
+            });
+
+            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+    };
+
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+            this.checkDocumentIsView();
+        }
+    }
+
+    checkDocumentIsView() {
+        if (this.props.changeStatus === true) {
+            if (!Config.IsAllow(367)) {
+                this.setState({ isViewMode: true });
+            }
+
+            if (this.state.isApproveMode != true && Config.IsAllow(367)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
+                    if (this.props.document.status !== false && Config.IsAllow(367)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            }
+        }
+        else {
+            this.setState({ isViewMode: false });
+        }
+        console.log('checkDocumentIsView...', this.props, this.state);
+    }
+
     GetNExtArrange() {
         let original_document = { ...this.state.document };
         let updated_document = {};
@@ -351,7 +347,7 @@ class materialInspectionRequestAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -401,7 +397,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
                 if (disciplineId) {
-                    discpline = _.find(result, function (i) { return i.value == disciplineId; });
+                    discpline = find(result, function (i) { return i.value == disciplineId; });
 
                     this.setState({
                         selectedDiscpline: discpline
@@ -418,7 +414,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let approvalStatusId = this.state.documentCycle.approvalStatusId;
                 let approvalStatus = {};
                 if (approvalStatusId) {
-                    approvalStatus = _.find(result, function (i) { return i.value == approvalStatusId; });
+                    approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
 
                     this.setState({
                         selectedApprovalStatusId: approvalStatus
@@ -435,7 +431,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let areaId = this.props.document.areaId;
                 let area = {};
                 if (areaId) {
-                    area = _.find(result, function (i) { return i.value == areaId; });
+                    area = find(result, function (i) { return i.value == areaId; });
 
                     this.setState({
                         selecetedArea: area
@@ -452,7 +448,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let buildingno = this.props.document.buildingNoId;
                 let building = {};
                 if (buildingno) {
-                    building = _.find(result, function (i) { return i.value == buildingno; });
+                    building = find(result, function (i) { return i.value == buildingno; });
                     this.setState({
                         selectedbuildingno: building
                     });
@@ -468,7 +464,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let reasonForIssueId = this.props.document.reasonForIssueId;
                 let reasonForIssue = {};
                 if (reasonForIssueId) {
-                    reasonForIssue = _.find(result, function (i) { return i.value == reasonForIssueId; });
+                    reasonForIssue = find(result, function (i) { return i.value == reasonForIssueId; });
                     this.setState({
                         selectedReasonForIssue: reasonForIssue
                     });
@@ -484,7 +480,7 @@ class materialInspectionRequestAddEdit extends Component {
                 let apartmentNoId = this.props.document.apartmentNoId;
                 let apartmentNo = {};
                 if (apartmentNoId) {
-                    apartmentNo = _.find(result, function (i) { return i.value == apartmentNoId; });
+                    apartmentNo = find(result, function (i) { return i.value == apartmentNoId; });
                     this.setState({
                         selectedApartmentNoId: apartmentNo
                     });
@@ -933,14 +929,11 @@ class materialInspectionRequestAddEdit extends Component {
 
         return (
             <div className="mainContainer">
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
                         docTitle={Resources.materialInspectionRequest[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
-
                     <div className="doc-container">
-
                         <div className="step-content">
                             {this.state.CurrentStep == 0 ?
                                 <Fragment>
@@ -1360,7 +1353,7 @@ class materialInspectionRequestAddEdit extends Component {
                             }
                             <div className="doc-pre-cycle letterFullWidth">
                                 <div>
-                                    {this.state.docId > 0 && this.state.isViewMode === false  ?
+                                    {this.state.docId > 0 && this.state.isViewMode === false ?
                                         <UploadAttachment changeStatus={this.props.changeStatus}
                                             AddAttachments={940}
                                             EditAttachments={3271}
