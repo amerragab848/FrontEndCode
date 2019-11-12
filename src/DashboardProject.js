@@ -9,7 +9,7 @@ import { bindActionCreators } from "redux";
 import Details from "./Componants/widgetsDashBoardDetails";
 import * as dashboardComponantActions from "./store/actions/communication";
 import IndexedDb from "./IndexedDb";
-import orderBy from "lodash/orderBy"; 
+import orderBy from "lodash/orderBy";
 import map from "lodash/map";
 import groupBy from "lodash/groupBy";
 import SkyLight from "react-skylight";
@@ -208,7 +208,10 @@ class DashboardProject extends Component {
     renderCategoryWidget() {
         return (
             <Fragment>
-                  <div className="dashboard__name">
+                <div className="dashboard__name">
+                    <h3 className="welcome-title">
+                        {window.localStorage.getItem("lastSelectedprojectName")}
+                    </h3>
                     <button
                         className="primaryBtn-2 btn mediumBtn"
                         onClick={this.viewDashBoardHandler.bind(this)}>
@@ -247,7 +250,7 @@ class DashboardProject extends Component {
     renderWidget(widget, index) {
 
         if (this.state.tabIndex === 0) {
- 
+
             let drawWidget = Details.widgets.find(x => x.title === widget.title);
 
             let projectId = this.props.projectId == 0 ? localStorage.getItem("lastSelectedProject") : this.props.projectId;
