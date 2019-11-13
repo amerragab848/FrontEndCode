@@ -6,12 +6,11 @@ import Calendar from "react-calendar";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 import moment from "moment";
+import { number } from "prop-types";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
-
-// const _ = require('lodash');
 
 let arrColumn = ["arrange", "quantity", "itemCode"];
 
@@ -328,65 +327,18 @@ class GridSetupWithFilter extends Component {
 
       let matched = 0;
 
-      let filters = Object.keys(_filters).reduce((n, k) => (n[k] = _filters[k].toLowerCase(), n), {});
+      let filters = Object.keys(_filters).reduce((n, k) => (n[k] = _filters[k], n), {});
       if (Object.keys(filters).length > 1) {
 
-        let Data = this.state.rows.map(item => ({
-          title: item.title.toLowerCase(),
-          action: item.action,
-          editable: item.editable,
-          id: item.id,
-          refCode: item.refCode
-        }));
+        // let Data = this.state.rows.map(item => ({
+        //   title: item.title.toLowerCase(),
+        //   action: item.action,
+        //   editable: item.editable,
+        //   id: item.id,
+        //   refCode: item.refCode
+        // }));
 
-        Data.forEach(row => {
-          matched = 0;
-          Object.keys(filters).forEach(key => {
-            let isValue = row[`${key}`];
-
-            if (isValue != "" && isValue != null) {
-              if (`${filters[key]}`.includes("|")) {
-                let searchDate = `${filters[key]}`.split("|");
-                let date = moment(row[`${key}`]).format("DD/MM/YYYY");
-                let startDate = searchDate[0];
-                let finishDate = searchDate[1];
-
-                if (date >= startDate && date <= finishDate) {
-                  matched++;
-                } else {
-                  matched = 0;
-                }
-              } else if (!/\D/.test(filters[key])) {
-                if (row[`${key}`] === filters[key]) {
-                  matched++;
-                } else {
-                  matched = 0;
-                }
-              } else if (row[`${key}`].includes(`${filters[key]}`)) {
-                matched++;
-              }
-              else {
-                matched = 0;
-              }
-            }
-          });
-          if (matched > 0) rowsList.push(row);
-        });
-
-        this.setState({
-          rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
-          Loading: false
-        });
-      } else {
-        let Data = rows.map(item => ({
-          title: item.title.toLowerCase(),
-          action: item.action,
-          editable: item.editable,
-          id: item.id,
-          refCode: item.refCode
-        }));
-
-        Data.forEach(row => {
+        rows.forEach(row => {
           matched = 0;
           Object.keys(filters).forEach(key => {
             let isValue = row[`${key}`];
@@ -406,10 +358,78 @@ class GridSetupWithFilter extends Component {
               } else if (!/\D/.test(filters[key])) {
                 if (row[`${key}`] === Number(filters[key])) {
                   matched++;
+                } else if (typeof filters[key] === "number") {
+                  matched = 0;
+                }
+                else if (row[`${key}`].includes(`${filters[key]}`)) {
+                  matched++;
+                } else if (row[`${key}`] === `${filters[key]}`) {
+                  matched++;
                 } else {
                   matched = 0;
                 }
+              } else if (typeof filters[key] === "number") {
+                matched = 0;
               } else if (row[`${key}`].includes(`${filters[key]}`)) {
+                matched++;
+              } else if (row[`${key}`] === `${filters[key]}`) {
+                matched++;
+              }
+              else {
+                matched = 0;
+              }
+            }
+          });
+          if (matched > 0) rowsList.push(row);
+        });
+
+        this.setState({
+          rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
+          Loading: false
+        });
+      } else {
+        // let Data = rows.map(item => ({
+        //   title: item.title,
+        //   action: item.action,
+        //   editable: item.editable,
+        //   id: item.id,
+        //   refCode: item.refCode
+        // }));
+
+        rows.forEach(row => {
+          matched = 0;
+          Object.keys(filters).forEach(key => {
+            let isValue = row[`${key}`];
+
+            if (isValue != "" && isValue != null) {
+              if (`${filters[key]}`.includes("|")) {
+                let searchDate = `${filters[key]}`.split("|");
+                let date = moment(row[`${key}`]).format("DD/MM/YYYY");
+                let startDate = searchDate[0];
+                let finishDate = searchDate[1];
+
+                if (date >= startDate && date <= finishDate) {
+                  matched++;
+                } else {
+                  matched = 0;
+                }
+              } else if (!/\D/.test(filters[key])) {
+                if (row[`${key}`] === Number(filters[key])) {
+                  matched++;
+                } else if (typeof filters[key] === "number") {
+                  matched = 0;
+                } else if (row[`${key}`].includes(`${filters[key]}`)) {
+                  matched++;
+                } else if (row[`${key}`] === `${filters[key]}`) {
+                  matched++;
+                } else {
+                  matched = 0;
+                }
+              } else if (typeof filters[key] === "number") {
+                matched = 0;
+              } else if (row[`${key}`].includes(`${filters[key]}`)) {
+                matched++;
+              } else if (row[`${key}`] === `${filters[key]}`) {
                 matched++;
               }
               else {
@@ -461,7 +481,11 @@ class GridSetupWithFilter extends Component {
         newFilters[filter.column.key] = typeof (event) === "object" ? "" : event;
       }
       else if (type === "number") {
-        newFilters[filter.column.key] = parseFloat(event.target.value);
+        if (event.target.value != "") {
+          newFilters[filter.column.key] = parseFloat(event.target.value);
+        } else {
+          delete newFilters[filter.column.key];
+        }
       } else if (event.target.value != "") {
         newFilters[filter.column.key] = event.target.value;
       } else {
@@ -595,7 +619,7 @@ class GridSetupWithFilter extends Component {
     const { rows, groupBy } = this.state;
 
     const groupedRows = Data.Selectors.getRows({ rows, groupBy });
- 
+
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     let CustomToolbar = ({ groupBy, onColumnGroupAdded, onColumnGroupDeleted }) => {
