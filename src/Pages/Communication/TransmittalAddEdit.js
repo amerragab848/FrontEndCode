@@ -201,6 +201,7 @@ class TransmittalAddEdit extends Component {
                 message: serverInspectionRequest.description
             };
         }
+        
         return null;
     };
 
@@ -514,6 +515,7 @@ class TransmittalAddEdit extends Component {
             this.state.docId > 0 ? (Config.IsAllow(3327) === true ? <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={824} /> : null) : null
         )
     }
+
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
@@ -539,14 +541,11 @@ class TransmittalAddEdit extends Component {
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
-                                        <Formik initialValues={{ ...this.state.document }}
-                                            validationSchema={validationSchema}
-                                            enableReinitialize={true}
+                                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema} enableReinitialize={true}
                                             onSubmit={(values) => {
                                                 if (this.props.showModal) {
                                                     return;
                                                 }
-
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
                                                     this.editTransmittal();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
@@ -809,15 +808,12 @@ class TransmittalAddEdit extends Component {
                                         <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={823} EditAttachments={3233} ShowDropBox={3627} ShowGoogleDrive={3628} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
-                                            {this.props.changeStatus === true ?
-                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null}
+                                            {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

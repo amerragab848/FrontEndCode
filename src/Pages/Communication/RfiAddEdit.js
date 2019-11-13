@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import find from "lodash/find";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -38,8 +39,6 @@ let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-
-const _ = require('lodash');
 
 class RfiAddEdit extends Component {
 
@@ -232,7 +231,7 @@ class RfiAddEdit extends Component {
 
                 let toSubField = this.state.document[subField];
 
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
@@ -706,13 +705,10 @@ class RfiAddEdit extends Component {
                                                                         value={this.state.document.sharedSettings || ''} name="sharedSettings"
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
                                                                 </div>
-                                                                {this.state.document.sharedSettings === '' ||
-                                                                    this.state.document.sharedSettings === null ||
-                                                                    this.state.document.sharedSettings === undefined ?
-                                                                    null
-                                                                    :
+                                                                {this.state.document.sharedSettings === '' || this.state.document.sharedSettings === null || this.state.document.sharedSettings === undefined ? null :
                                                                     <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
-                                                                }</div>
+                                                                }
+                                                            </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>

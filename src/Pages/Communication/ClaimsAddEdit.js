@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import find from "lodash/find";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -37,7 +38,6 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash');
 
 class ClaimsAddEdit extends Component {
 
@@ -210,8 +210,8 @@ class ClaimsAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
-                console.log(targetFieldSelected);
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
+
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -251,7 +251,7 @@ class ClaimsAddEdit extends Component {
                 let disciplineId = this.props.document.disciplineId;
                 let discpline = {};
                 if (disciplineId) {
-                    discpline = _.find(result, function (i) { return i.value == disciplineId; });
+                    discpline = find(result, function (i) { return i.value == disciplineId; });
 
                     this.setState({
                         selectedDiscpline: discpline
@@ -373,7 +373,7 @@ class ClaimsAddEdit extends Component {
         }
     }
 
-    editLetter(event) {
+    editClaims(event) {
         this.setState({
             isLoading: true
         });
@@ -398,7 +398,7 @@ class ClaimsAddEdit extends Component {
         });
     }
 
-    saveLetter(event) {
+    saveClaims(event) {
         let saveDocument = { ...this.state.document };
 
         saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
@@ -440,13 +440,11 @@ class ClaimsAddEdit extends Component {
         )
     }
 
-
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
 
     render() {
-
         return (
             <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
@@ -468,17 +466,14 @@ class ClaimsAddEdit extends Component {
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
-                                        <Formik
-                                            initialValues={{ ...this.state.document }}
-                                            validationSchema={validationSchema}
-                                            enableReinitialize={true}
+                                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema} enableReinitialize={true}
                                             onSubmit={(values) => {
                                                 if (this.props.showModal) { return; }
 
                                                 if (this.props.changeStatus === true && this.state.docId > 0) {
-                                                    this.editLetter();
+                                                    this.editClaims();
                                                 } else if (this.props.changeStatus === false && this.state.docId === 0) {
-                                                    this.saveLetter();
+                                                    this.saveClaims();
                                                 } else {
                                                     this.saveAndExit();
                                                 }
@@ -492,7 +487,7 @@ class ClaimsAddEdit extends Component {
                                                                 <input name='subject' className="form-control fsadfsadsa" id="subject"
                                                                     placeholder={Resources.subject[currentLanguage]}
                                                                     autoComplete='off'
-                                                                    value={this.state.document.subject}
+                                                                    value={this.state.document.subject || ''}
                                                                     onBlur={(e) => {
                                                                         handleBlur(e)
                                                                         handleChange(e)
@@ -523,7 +518,7 @@ class ClaimsAddEdit extends Component {
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className="ui input inputDev">
                                                                 <input type="text" className="form-control" id="arrange" readOnly
-                                                                    value={this.state.document.arrange}
+                                                                    value={this.state.document.arrange || ''}
                                                                     name="arrange"
                                                                     placeholder={Resources.arrange[currentLanguage]}
                                                                     onBlur={(e) => {
@@ -537,7 +532,7 @@ class ClaimsAddEdit extends Component {
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                             <div className={"ui input inputDev"} >
                                                                 <input type="text" className="form-control" id="refDoc"
-                                                                    value={this.state.document.refDoc}
+                                                                    value={this.state.document.refDoc || ''}
                                                                     name="refDoc"
                                                                     placeholder={Resources.refDoc[currentLanguage]}
                                                                     onBlur={(e) => {
@@ -553,7 +548,7 @@ class ClaimsAddEdit extends Component {
                                                                 <div className="inputDev ui input">
                                                                     <input type="text" className="form-control" id="sharedSettings"
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
-                                                                        value={this.state.document.sharedSettings}
+                                                                        value={this.state.document.sharedSettings || ''}
                                                                         name="sharedSettings"
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
                                                                 </div>
@@ -662,7 +657,7 @@ class ClaimsAddEdit extends Component {
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
-                                                                    value={this.state.message}
+                                                                    value={this.state.message || ''}
                                                                     onChange={this.onChangeMessage} />
                                                             </div>
                                                         </div>
@@ -674,7 +669,7 @@ class ClaimsAddEdit extends Component {
                                                         this.props.changeStatus === true ?
                                                             <div className="approveDocument">
                                                                 <div className="approveDocumentBTNS">
-                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)}>{Resources.save[currentLanguage]}</button>
+                                                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} >{Resources.save[currentLanguage]}</button>
                                                                     <DocumentActions
                                                                         isApproveMode={this.state.isApproveMode}
                                                                         docTypeId={this.state.docTypeId}
@@ -698,16 +693,9 @@ class ClaimsAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 ?
-                                                <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                            {this.state.docId > 0 ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                             {this.viewAttachments()}
-
-                                            {this.props.changeStatus === true ?
-                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null
-                                            }
+                                            {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>
                                     </div>
                                 </div>

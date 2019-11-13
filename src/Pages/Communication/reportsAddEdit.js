@@ -39,7 +39,6 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-const _ = require('lodash')
 class reportsAddEdit extends Component {
 
     constructor(props) {
@@ -109,8 +108,7 @@ class reportsAddEdit extends Component {
             let url = "GetCommunicationReportForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'Reports').then(() => {
                 this.setState({ isLoading: false })
-                this.fillDropDowns(true);
-
+                //this.fillDropDowns(true); 
             })
         } else {
             this.props.actions.documentForAdding()
@@ -144,7 +142,6 @@ class reportsAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
-
     }
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -163,12 +160,6 @@ class reportsAddEdit extends Component {
         return null;
 
     };
-
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-            this.checkDocumentIsView();
-        }
-    }
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
@@ -195,6 +186,9 @@ class reportsAddEdit extends Component {
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.props.actions.documentForAdding()
+        this.setState({
+            docId: 0
+        });
     }
 
     onChangeMessage = (value) => {
@@ -449,7 +443,7 @@ class reportsAddEdit extends Component {
                                                                 <input name='subject' className="form-control fsadfsadsa" id="subject"
                                                                     placeholder={Resources.subject[currentLanguage]}
                                                                     autoComplete='off'
-                                                                    defaultValue={this.state.document.subject}
+                                                                    defaultValue={this.state.document.subject || ''}
                                                                     onBlur={(e) => {
                                                                         handleBlur(e)
                                                                         handleChange(e)
@@ -502,7 +496,7 @@ class reportsAddEdit extends Component {
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className={"ui input inputDev "} >
                                                                 <input type="text" className="form-control" id="arrange" readOnly
-                                                                    defaultValue={this.state.document.arrange}
+                                                                    defaultValue={this.state.document.arrange || ''}
                                                                     value={this.state.document.arrange}
                                                                     name="arrange"
                                                                     placeholder={Resources.arrange[currentLanguage]}
@@ -518,7 +512,7 @@ class reportsAddEdit extends Component {
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                             <div className="inputDev ui input " >
                                                                 <input type="text" className="form-control" id="refDoc"
-                                                                    defaultValue={this.state.document.refDoc}
+                                                                    defaultValue={this.state.document.refDoc || ''}
                                                                     name="refDoc"
                                                                     placeholder={Resources.refDoc[currentLanguage]}
                                                                     onBlur={(e) => {
@@ -586,7 +580,7 @@ class reportsAddEdit extends Component {
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
-                                                                    value={this.state.message}
+                                                                    value={this.state.message || ''}
                                                                     onChange={this.onChangeMessage} />
                                                             </div>
                                                         </div>
@@ -618,21 +612,8 @@ class reportsAddEdit extends Component {
                                                                             </div>
                                                                         </button>
                                                                     ) : (
-                                                                        <button
-                                                                            className={
-                                                                                this
-                                                                                    .state
-                                                                                    .isViewMode ===
-                                                                                    true
-                                                                                    ? "primaryBtn-1 btn middle__btn disNone"
-                                                                                    : "primaryBtn-1 btn middle__btn"
-                                                                            }>
-                                                                            {
-                                                                                Resources
-                                                                                    .save[
-                                                                                currentLanguage
-                                                                                ]
-                                                                            }
+                                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
+                                                                            {Resources.save[currentLanguage]}
                                                                         </button>
                                                                     )}
                                                                 <DocumentActions
@@ -660,9 +641,7 @@ class reportsAddEdit extends Component {
                                         <div>
                                             {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={821} EditAttachments={3232} ShowDropBox={3625} ShowGoogleDrive={3626} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
-                                            {this.props.changeStatus === true ?
-                                                <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
-                                                : null}
+                                            {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>
                                     </div>
                                 </div>

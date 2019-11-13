@@ -10,17 +10,20 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
-const _ = require('lodash');
+
+// const _ = require('lodash');
+
 let arrColumn = ["arrange", "quantity", "itemCode"];
 
 class GridSetupWithFilter extends Component {
+
   constructor(props) {
     super(props);
 
     this.state = {
       columns: this.props.columns,
       rows: this.props.rows,
-      groupBy: [],
+      groupBy: this.props.groupBy != null ? this.props.groupBy : [],
       selectedIndexes: [],
       selectedRows: [],
       selectedRow: [],
@@ -137,8 +140,7 @@ class GridSetupWithFilter extends Component {
 
     const activeColumn = this.state.columns.find(c => c.key === columnKey);
 
-    const isNotInGroups =
-      columnGroups.find(c => activeColumn.key === c.key) == null;
+    const isNotInGroups = columnGroups.find(c => activeColumn.key === c.key) == null;
 
     if (isNotInGroups) {
       columnGroups.push({ key: activeColumn.key, name: activeColumn.name });
@@ -593,13 +595,17 @@ class GridSetupWithFilter extends Component {
     const { rows, groupBy } = this.state;
 
     const groupedRows = Data.Selectors.getRows({ rows, groupBy });
-
+ 
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
     let CustomToolbar = ({ groupBy, onColumnGroupAdded, onColumnGroupDeleted }) => {
       return (
         <Toolbar>
-          <GroupedColumnsPanel groupBy={groupBy} onColumnGroupAdded={onColumnGroupAdded} onColumnGroupDeleted={onColumnGroupDeleted} noColumnsSelectedMessage={drag} />
+          <GroupedColumnsPanel
+            groupBy={groupBy}
+            onColumnGroupAdded={onColumnGroupAdded}
+            onColumnGroupDeleted={onColumnGroupDeleted}
+            noColumnsSelectedMessage={drag} />
           {this.state.selectedRows.length > 0 &&
             this.props.showToolBar != false ? (
               <div className="gridSystemSelected active">
@@ -854,7 +860,9 @@ class GridSetupWithFilter extends Component {
                     }
                     enableDragAndDrop={true}
                     toolbar={
-                      <CustomToolbar groupBy={this.state.groupBy} onColumnGroupAdded={columnKey => this.setState({ groupBy: this.groupColumn(columnKey) })}
+                      <CustomToolbar
+                        groupBy={this.state.groupBy}
+                        onColumnGroupAdded={columnKey => this.setState({ groupBy: this.groupColumn(columnKey) })}
                         onColumnGroupDeleted={columnKey =>
                           this.setState({ groupBy: this.ungroupColumn(columnKey) })
                         } />
@@ -880,6 +888,7 @@ class GridSetupWithFilter extends Component {
             </div>
           </div>
         </div>
+
         <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
           <div className="grid__column--container">
             <button className="closeColumn" onClick={this.closeModalColumn}>X</button>
@@ -895,6 +904,7 @@ class GridSetupWithFilter extends Component {
             </div>
           </div>
         </div>
+
       </Fragment >
     );
   }
