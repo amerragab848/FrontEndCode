@@ -1,5 +1,5 @@
 var routes = [
-    { 
+    {
         route: "/",
         moduleId: "login",
         title: "Login",
@@ -240,14 +240,14 @@ var routes = [
     },
     {
         route: "timeSheetUserDetails",
-        moduleId: "reports/timeSheetUserDetails",
+        moduleId: "TimeSheet/TimeSheetUserDetails",
         title: "timeSheetUserDetails",
         nav: true,
         settings: { HumanResources: true, permission: 3718, order: 12 }
     },
     {
         route: "userExpensesRpt",
-        moduleId: "reports/userExpensesRpt",
+        moduleId: "TimeSheet/ReportUserExpenses",
         title: "userExpensesRpt",
         nav: true,
         settings: { HumanResources: true, permission: 3748, order: 13 }
@@ -275,7 +275,7 @@ var routes = [
     },
     {
         route: "taskDetail",
-        moduleId: "reports/taskDetail",
+        moduleId: "TimeSheet/EPSTimeSheetReport",
         title: "epsTimeSheet",
         nav: true,
         settings: { HumanResources: true, permission: 3717, order: 11 }
@@ -2252,14 +2252,14 @@ var routes = [
     },
     {
         route: "taskStatus",
-        moduleId: "reports/taskStatus",
+        moduleId: "TaskReports/TasksStatus",
         title: "taskStatus",
         nav: true,
         settings: { Tasks: true, permission: 3698, order: 1 }
     },
     {
         route: "taskTimeSheet",
-        moduleId: "reports/taskTimeSheet",
+        moduleId: "TaskReports/TaskTimeSheet",
         title: "taskTimeSheet",
         nav: true,
         settings: { Tasks: true, permission: 3699, order: 2 }
@@ -2413,21 +2413,21 @@ var routes = [
     },
     {
         route: "taskEstimatedHoursVariance",
-        moduleId: "reportCenter/taskEstimatedHoursVariance",
+        moduleId: "TaskReports/TaskEstimatedHoursVariance",
         title: "taskEstimatedHoursVariance",
         nav: true,
         settings: { Tasks: true, permission: 3700, order: 3 }
     },
     {
         route: "taskEstimatedHours",
-        moduleId: "reportCenter/taskEstimatedHours",
+        moduleId: "TaskReports/TaskEstimatedHours",
         title: "taskEstimatedHours",
         nav: true,
         settings: { Tasks: true, permission: 3701, order: 4 }
     },
     {
         route: "projectsWorkingHours",
-        moduleId: "reportCenter/projectsWorkingHours",
+        moduleId: "TaskReports/WorkingHours",
         title: "workHours",
         nav: true,
         settings: { Tasks: true, permission: 3702, order: 5 }
@@ -2514,28 +2514,28 @@ var routes = [
     },
     {
         route: "taskWorkLoad",
-        moduleId: "reportCenter/taskWorkLoad",
+        moduleId: "TaskReports/TaskWorkLoad",
         title: "taskWorkLoad",
         nav: true,
         settings: { Tasks: true, permission: 3703, order: 6 }
     },
     {
         route: "userTimeSheet",
-        moduleId: "reportCenter/userTimeSheet",
+        moduleId: "TaskReports/UserTimeSheet",
         title: "userTimeSheet",
         nav: true,
         settings: { Tasks: true, permission: 3704, order: 7 }
     },
     {
         route: "taskListReport",
-        moduleId: "reportCenter/taskListReport",
+        moduleId: "TaskReports/TasksList",
         title: "taskList",
         nav: true,
         settings: { Tasks: true, permission: 3705, order: 8 }
     },
     {
         route: "closedTaskReport",
-        moduleId: "reportCenter/closedTaskReport",
+        moduleId: "TaskReports/ClosedTasks",
         title: "closedTasks",
         nav: true,
         settings: { Tasks: true, permission: 3706, order: 9 }

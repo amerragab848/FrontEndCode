@@ -17244,7 +17244,8 @@ button.companies_icon {
     }
 }
 
-.readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput, .readOnly_inputs .linebylineInput, .readOnly_inputs .linebylineInput__checkbox {
+.readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput, .readOnly_inputs .linebylineInput,
+ .readOnly_inputs .linebylineInput__checkbox, .readOnly_inputs .fillter-item-c {
     -webkit-pointer-events: none;
     -moz-pointer-events: none;
     -ms-pointer-events: none;
@@ -21925,3 +21926,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.reports__content .panel , .reports__content .donut__legend {
+    margin: 0;
+  }

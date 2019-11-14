@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from "react"; 
+import React, { Component, Fragment } from "react";
 import {
   Bar,
-  GroupedBar, 
-  ResponsiveContainer, 
+  GroupedBar,
+  ResponsiveContainer,
   StackedBar
 } from "britecharts-react";
 
@@ -16,7 +16,7 @@ const marginObject = {
 const colorSchema = ["#39bd3d", "#dfe2e6"];
 
 const colorSchemaGroup = ["#90ED7D", "#f45b4f", "#95ceff", "#90000f"];
- 
+
 class BarChartComp extends Component {
   constructor(props) {
     super(props);
@@ -40,13 +40,13 @@ class BarChartComp extends Component {
     };
   }
 
-  componentWillReceiveProps(props) { 
- 
+  componentWillReceiveProps(props) {
+
     if (props.multiSeries === "no") {
       if (props.isStack === true) {
         this.setState({
           isLoading: false,
-          stackedBarData: props.series != undefined ? props.series :[]
+          stackedBarData: props.series != undefined ? props.series : []
         });
       } else {
         let barData = [];
@@ -70,7 +70,7 @@ class BarChartComp extends Component {
       <div className="col-md-12">
         <div className="panel barChart__container">
           <div className="panel-body">
-            {this.state.isLoading == false ? (
+            {this.state.groupedBarData.length > 0 ? (
               <ResponsiveContainer
                 render={({ width }) => (
                   <div className="group__charts">
@@ -99,7 +99,7 @@ class BarChartComp extends Component {
           <div className="panel-body">
             <ResponsiveContainer
               render={({ width }) => (
-                <div> 
+                <div>
                   <StackedBar
                     width={width}
                     data={
@@ -150,10 +150,10 @@ class BarChartComp extends Component {
         {this.props.multiSeries !== "no"
           ? this.renderGroupedBar()
           : this.state.isLoading == false
-          ? this.props.isStack
-            ? this.renderStackedBar()
-            : this.renderBar()
-          : null}
+            ? this.props.isStack
+              ? this.renderStackedBar()
+              : this.renderBar()
+            : null}
       </Fragment>
     );
   }
