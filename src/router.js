@@ -267,8 +267,7 @@ let originalRoutes = [
     , <Route key='r-19' path="/DocApprovalDetails" component={DocApprovalDetails} />
     , <Route key='r-20' path="/PendingExpensesDetails" component={PendingExpensesDetails} />
     , <Route key='r-21' path="/PrivacySetting" component={PrivacySetting} />
-    , <Route key='r-22' path="/Companies/" component={Companies} />
-    , <Route key='r-23' path="/Contacts/:companyID" component={Contacts} />
+    , <Route key='r-22' path="/Companies/" component={Companies} /> 
     , <Route key='r-24' path="/AddEditCompany/:companyID" component={AddEditCompany} />
     , <Route key='r-25' path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
     , <Route key='r-26' path="/expensesUserAddEdit" component={ExpensesUserAddEdit} />

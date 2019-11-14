@@ -315,7 +315,7 @@ const dateFormate = ({ value }) => {
                         </div>
                     </div>
 
-                    <div className="sayedWrapper">
+                    <div className="overTimeWrapper">
                         {this.state.Loading ? <LoadingSection /> : null}
                         {this.state.isLoading == false
 

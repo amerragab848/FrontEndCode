@@ -2354,17 +2354,23 @@ class requestPaymentsAddEdit extends Component {
                 <table className="attachmentTable " key="summaryOfApprovedInvoices">
                     <thead>
                         <tr>
-                            <td width="15%">
-                                {Resources["JobBuilding"][currentLanguage]}
-                            </td>
+                            <th width="15%">
+                                <div className="headCell">
+                                    {Resources["JobBuilding"][currentLanguage]}
+                                </div>
+                            </th>
                             {this.state.approvedInvoicesParent.map(i => (
-                                <td>
-                                    {i.details.slice(0, i.details.lastIndexOf("-"))}
-                                </td>
+                                <th>
+                                    <div className="headCell">
+                                        {i.details.slice(0, i.details.lastIndexOf("-"))}
+                                    </div>
+                                </th>
                             ))}
-                            <td width="10%">
-                                {Resources["total"][currentLanguage]}
-                            </td>
+                            <th width="10%">
+                                <div className="headCell">
+                                    {Resources["total"][currentLanguage]}
+                                </div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>

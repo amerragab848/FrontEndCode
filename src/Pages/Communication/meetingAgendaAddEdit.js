@@ -4,7 +4,8 @@ import Api from "../../api";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import moment from "moment";
 import Resources from "../../resources.json";
-import _ from "lodash";
+import find from "lodash/find";
+import filter from "lodash/filter";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { withRouter } from "react-router-dom";
@@ -596,7 +597,7 @@ class meetingAgendaAddEdit extends Component {
             if (edit) {
                 let id = this.state.topic.id;
 
-                let topics = _.filter(this.state.topics, function (x) {
+                let topics = filter(this.state.topics, function (x) {
                     return x.id !== id;
                 });
 
@@ -671,7 +672,7 @@ class meetingAgendaAddEdit extends Component {
             let id = this.state.attendeesId;
 
             if (this.state.showPopUp) {
-                let attendess = _.filter(this.state.attendees, function (x) {
+                let attendess = filter(this.state.attendees, function (x) {
                     return x.id != id;
                 });
 
@@ -865,7 +866,7 @@ class meetingAgendaAddEdit extends Component {
         } else if (column.key != 0) {
             this.setState({ showPopUp: true, btnText: "save" });
             if (this.state.CurrStep == 2) {
-                let actionByCompany = _.find(this.state.Companies, function (
+                let actionByCompany = find(this.state.Companies, function (
                     company
                 ) {
                     return company.value == value.byWhomCompanyId;
@@ -876,7 +877,7 @@ class meetingAgendaAddEdit extends Component {
                     "contactName",
                     "id"
                 ).then(res => {
-                    let actionByContact = _.find(res, function (x) {
+                    let actionByContact = find(res, function (x) {
                         return x.value == value.byWhomContactId;
                     });
                     this.setState({

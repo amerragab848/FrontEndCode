@@ -142,38 +142,38 @@ class Index extends Component {
                 ]
             }
         ];
-    
+
         this.ExportColumns = [
             {
                 key: "address",
-                name: Resources["title"][currentLanguage] 
+                name: Resources["title"][currentLanguage]
             },
             {
                 key: "contactName",
-                name: Resources["ContactName"][currentLanguage] 
+                name: Resources["ContactName"][currentLanguage]
             },
             {
                 key: "position",
-                name: Resources["position"][currentLanguage] 
+                name: Resources["position"][currentLanguage]
             },
             {
                 key: "mobile",
-                name: Resources["Mobile"][currentLanguage] 
+                name: Resources["Mobile"][currentLanguage]
             },
             {
                 key: "email",
-                name: Resources["email"][currentLanguage] 
+                name: Resources["email"][currentLanguage]
             },
             {
                 key: "enteredBy",
-                name: Resources["enteredBy"][currentLanguage] 
+                name: Resources["enteredBy"][currentLanguage]
             },
             {
                 key: "lastModified",
-                name: Resources["lastModified"][currentLanguage] 
+                name: Resources["lastModified"][currentLanguage]
             }
         ];
-        
+
         this.state = {
             Isallow: Config.IsAllow(14),
             isLoading: true,
@@ -312,47 +312,29 @@ class Index extends Component {
 
     render() {
         const companiesList =
-            <Formik
-                initialValues={{
-                    CompanyName: ''
-                }}
-                validationSchema={validationSchema}
+            <Formik initialValues={{ CompanyName: '' }} validationSchema={validationSchema}
                 onSubmit={values => {
                     this.changeCompany();
                 }}>
-                {({
-                    errors,
-                    touched,
-                    handleSubmit,
-                    setFieldValue,
-                    setFieldTouched
-                }) => (
-                        <Form
-                            id="letterForm"
-                            className="customProform"
-                            noValidate="novalidate"
-                            onSubmit={handleSubmit}>
-                            <div className="dropWrapper">
-                                <Dropdown
-                                    data={this.props.Adminstration.companyList}
-                                    handleChange={(e) => this.setState({ transferCompany: e.value })}
-                                    onChange={setFieldValue}
-                                    onBlur={setFieldTouched}
-                                    error={errors.CompanyName}
-                                    touched={touched.CompanyName}
-                                    title="CompanyName"
-                                    name="CompanyName"
-                                />
-                                <div className="fullWidthWrapper">
-                                    <button
-                                        className="primaryBtn-1 btn mediumBtn"
-                                        type="submit"
-                                    >  {Resources['save'][currentLanguage]}
-                                    </button>
-                                </div>
+                {({ errors, touched, handleSubmit, setFieldValue, setFieldTouched }) => (
+                    <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                        <div className="dropWrapper">
+                            <Dropdown data={this.props.Adminstration.companyList}
+                                handleChange={(e) => this.setState({ transferCompany: e.value })}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.CompanyName}
+                                touched={touched.CompanyName}
+                                title="CompanyName"
+                                name="CompanyName"
+                            />
+                            <div className="fullWidthWrapper">
+                                <button className="primaryBtn-1 btn mediumBtn" type="submit" >  {Resources['save'][currentLanguage]}
+                                </button>
                             </div>
-                        </Form>
-                    )}
+                        </div>
+                    </Form>
+                )}
             </Formik>
 
         const dataGrid = this.props.Adminstration.getingData === false ? (
@@ -367,21 +349,9 @@ class Index extends Component {
                 key="items"
             />) : <LoadingSection />;
 
-        //      <GridSetup
-        //         rows={}
-        //         columns={}
-        //         onRowClick={this.onRowClick}
-        //     />
-        // ) : <LoadingSection />;
-
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.rows} columns={this.ExportColumns} fileName={this.state.pageTitle} />
-            : null;
-
-
+        const btnExport = this.state.isLoading === false ? <Export rows={this.state.rows} columns={this.ExportColumns} fileName={this.state.pageTitle} /> : null;
 
         return (
-
             <div className="mainContainer">
                 {this.props.Adminstration.popUp ? this.state.currentComponent : null}
                 <div className="submittalFilter">
@@ -394,7 +364,6 @@ class Index extends Component {
                         <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord}>{Resources['add'][currentLanguage]}</button>
                     </div>
                 </div>
-
                 <div>
                     <div className="grid-container">
                         {this.props.Adminstration.getingData === false ? dataGrid : <LoadingSection />}
@@ -421,8 +390,7 @@ class Index extends Component {
                         isVisible={this.state.showTransferpopUp}
                         onCloseClicked={() => {
                             this.setState({ showTransferpopUp: false, selectedContact: 0, transferCompany: 0 })
-                        }}
-                    >
+                        }} >
                         {companiesList}
                     </SkyLightStateless>
                 </div>

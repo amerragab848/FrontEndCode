@@ -131,7 +131,7 @@ export default class uploadSignture extends React.Component {
                             <button className="primaryBtn-1 btn smallBtn" onClick={this.uploadSign}>{resources['uploadSignature'][currentLanguage]}</button>
                         </div>
 
-                        <div className="a7medImg">
+                        <div className="thumbUploadedImg">
                             {this.state.signIamge ? <img alt='' src={this.state.signIamge} /> : null}
                         </div>
                     </div>
@@ -175,7 +175,7 @@ export default class uploadSignture extends React.Component {
                         <div className="removeBtn">
                             <button className="primaryBtn-1 btn smallBtn" onClick={this.uploadPP}>{resources['uploadPhoto'][currentLanguage]}</button>
                         </div>
-                        <div className="a7medImg">
+                        <div className="thumbUploadedImg">
                             {this.state.profileIamge ? <img src={this.state.profileIamge} /> : null}
                         </div>
                     </div>

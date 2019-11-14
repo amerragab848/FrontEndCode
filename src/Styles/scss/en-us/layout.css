@@ -1285,6 +1285,10 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     padding: 0;
 }
 
+ul {
+    margin: 0
+}
+
 body {
     position: relative;
     margin: 0;
@@ -4179,7 +4183,6 @@ h1, h2, h3, h4, h5 {
     margin: 0 6px;
 }
 
-/**/
 .modalContainerSS {
     padding: 20px 100px;
     display: flex;
@@ -4191,56 +4194,11 @@ h1, h2, h3, h4, h5 {
     font-size: 18px;
 }
 
-.modalBtnZ {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.ui.dimmer {
-    background-color: rgba(0, 0, 0, 0.6);
-    overflow: auto;
-    padding: 0;
-}
-
 .ui.modal {
     position: relative;
     padding: 23px 32px;
 }
 
-.ui.modal > .header {
-    border-bottom: 0;
-    padding: 0;
-    color: #252833;
-    font-family: font-b;
-}
-
-.ui.modal > .header:not(.ui) {
-    letter-spacing: -0.2px;
-    font-size: 24px;
-    padding-bottom: 40px;
-    line-height: 1.4;
-}
-
-.ui.modal > .content {
-    padding: 0;
-    background: inherit;
-    line-height: 1.71;
-    letter-spacing: -0.2px;
-    color: #3E4352;
-    font-size: 14px;
-}
-
-.ui.modal > .actions {
-    background: inherit;
-    border: none;
-    padding: 0;
-}
-
-.modalBtn {
-    cursor: pointer;
-}
-
-/*Small Modal*/
 .ui.modal.smallModal {
     max-width: 430px;
 }
@@ -4249,7 +4207,6 @@ h1, h2, h3, h4, h5 {
     padding-right: 28px;
 }
 
-/*Medium Modal*/
 .ui.modal.mediumModal {
     max-width: 600px;
 }
@@ -4262,7 +4219,6 @@ h1, h2, h3, h4, h5 {
     padding-right: 28px;
 }
 
-/*Large Modal*/
 .ui.modal.largeModal {
     max-width: 600px;
     min-height: 460px;
@@ -4303,7 +4259,6 @@ h1, h2, h3, h4, h5 {
     width: 100%;
 }
 
-/*input Modal*/
 .ui.modal.smallInputModal {
     max-width: 408px;
     width: 100%;
@@ -4321,6 +4276,45 @@ h1, h2, h3, h4, h5 {
 .ui.modal.smallInputModal .content .proForm .ui.input.inputDev input {
     width: 340px;
 }
+
+
+.modalBtnZ {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.ui.dimmer {
+    background-color: rgba(0, 0, 0, 0.6);
+    overflow: auto;
+    padding: 0;
+}
+
+.ui.modal > .header {
+    border-bottom: 0;
+    padding: 0;
+    color: #252833;
+    font-family: font-b;
+}
+
+.ui.modal > .content {
+    padding: 0;
+    background: inherit;
+    line-height: 1.71;
+    letter-spacing: -0.2px;
+    color: #3E4352;
+    font-size: 14px;
+}
+
+.ui.modal > .actions {
+    background: inherit;
+    border: none;
+    padding: 0;
+}
+
+.modalBtn {
+    cursor: pointer;
+}
+
 
 .ui.modal.smallInputModal .content .form-group {
     display: block;
@@ -4351,7 +4345,6 @@ h1, h2, h3, h4, h5 {
     margin: 0 2px;
 }
 
-/*big input*/
 .ui.modal.bigInputModal {
     max-width: 800px;
     width: 100%;
@@ -4395,7 +4388,6 @@ h1, h2, h3, h4, h5 {
     margin: 0 2px;
 }
 
-/*big input*/
 .ui.modal.stepperModal {
     max-width: 600px;
     width: 100%;
@@ -4433,9 +4425,7 @@ h1, h2, h3, h4, h5 {
 .ui.modal.stepperModal .actions button {
     margin: 0 2px;
 }
-
 /*
-.ui.modal>.close*/
 .ui.modal.subjectModal {
     max-width: 800px;
     width: 100%;
@@ -4487,7 +4477,6 @@ h1, h2, h3, h4, h5 {
     margin: 0 2px;
 }
 
-/**/
 .ui.modal.xLargeModal {
     width: 60%;
     min-width: 600px;
@@ -4522,7 +4511,6 @@ h1, h2, h3, h4, h5 {
     padding-right: 28px;
 }
 
-/*Doc Approval*/
 .ui.modal.submiModalBig.docApproval {
     position: relative;
     max-width: 100%;
@@ -4539,8 +4527,6 @@ h1, h2, h3, h4, h5 {
 
 .ui.modal.submiModalBig.docApproval .docApprovalContainer {
     position: inherit;
-
-    /**/
 }
 
 .ui.modal.submiModalBig.docApproval .docApprovalContainer .Rectangle-2 {
@@ -4738,23 +4724,20 @@ h1, h2, h3, h4, h5 {
 .ui.modal.submiModalBig.docApproval .docApprovalContainer .step-content-foot {
     -webkit-touch-callout: none;
 
-    /* iOS Safari */
+
     -webkit-user-select: none;
 
-    /* Safari */
     -khtml-user-select: none;
 
-    /* Konqueror HTML */
+
     -moz-user-select: none;
 
-    /* Firefox */
+
     -ms-user-select: none;
 
-    /* Internet Explorer/Edge */
     user-select: none;
 
-    /* Non-prefixed version, currently
-                          supported by Chrome and Opera */
+  
     margin: 0 auto;
 }
 
@@ -4808,6 +4791,13 @@ h1, h2, h3, h4, h5 {
 
 .ui.modal.submiModalBig.docApproval .docApprovalContainer .workflow-sliderSteps .slider-Btns {
     flex: .4;
+} */
+
+.ui.modal > .header:not(.ui) {
+    letter-spacing: -0.2px;
+    font-size: 24px;
+    padding-bottom: 40px;
+    line-height: 1.4;
 }
 
 /*Start Table Grid*/
@@ -7846,6 +7836,8 @@ h1, h2, h3, h4, h5 {
     overflow: hidden;
     width: 128px;
     position: relative;
+    margin-top: 28px;
+    margin-bottom: 37px;
 }
 
 .SummeriesContainer .SummeriesContainerContent .summerisItem .content .satusBarUL li {
@@ -15901,10 +15893,6 @@ em {
     width: 0;
 }
 
-.ui.modal {
-    display: block !important;
-}
-
 .workFlowStep .StepNumber {
     margin-left: 0;
 }
@@ -16344,7 +16332,7 @@ em {
     padding-top: 35px;
 }
 
-.a7medImg {
+.thumbUploadedImg {
     overflow: hidden;
     max-width: 250px;
     max-height: 250px;
@@ -16352,7 +16340,7 @@ em {
     margin-bottom: 40px;
 }
 
-.a7medImg img {
+.thumbUploadedImg img {
     max-width: 100%;
     max-height: 100%;
 }
@@ -16384,7 +16372,7 @@ em {
     margin: auto;
 }
 
-.sayedWrapper {
+.overTimeWrapper {
     position: relative;
 }
 
@@ -20278,6 +20266,11 @@ div#markup-panel {
     align-items: center;
 }
 
+.Risk__input .labelWithArrowBorder {
+    position: absolute !important;
+    right: 20px; 
+}
+
 .loadingShow {
     position: fixed;
     top: 72px;
@@ -21707,7 +21700,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
   
 .editView__tabs .editView__tabs--title::after {
     content: '';
-    background: #4382f9;
+    background: #858d9e;
     position: absolute;
     right: 50%;
     left: 50%;
@@ -21736,7 +21729,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 }
 
 .editView__tabs .editView__tabs--title.active p {
-    color: #4382f9; 
+    color: #252833; 
 }
 
 .docstepper-levels .StepperNum .StepNumber:last-of-type + .Step-Line {
@@ -21804,10 +21797,6 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 
 .subHeader h2 {
     font-size: 14px !important;
-}
-  
-.editView__tabs .editView__tabs--title.active p {
-    color: #4382f9; 
 }
 
 .docstepper-levels .StepperNum .StepNumber:last-of-type + .Step-Line {

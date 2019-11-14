@@ -21,6 +21,7 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import find from "lodash/find";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -36,8 +37,7 @@ let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
-let arrange = 0;
-const _ = require('lodash')
+let arrange = 0; 
 
 class emailAddEdit extends Component {
 
@@ -160,6 +160,7 @@ class emailAddEdit extends Component {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
+        
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
@@ -194,7 +195,7 @@ class emailAddEdit extends Component {
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result

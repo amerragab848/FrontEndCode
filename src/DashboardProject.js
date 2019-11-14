@@ -9,7 +9,7 @@ import { bindActionCreators } from "redux";
 import Details from "./Componants/widgetsDashBoardDetails";
 import * as dashboardComponantActions from "./store/actions/communication";
 import IndexedDb from "./IndexedDb";
-import orderBy from "lodash/orderBy"; 
+import orderBy from "lodash/orderBy";
 import map from "lodash/map";
 import groupBy from "lodash/groupBy";
 import SkyLight from "react-skylight";
@@ -208,6 +208,16 @@ class DashboardProject extends Component {
     renderCategoryWidget() {
         return (
             <Fragment>
+                <div className="dashboard__name">
+                    <h3 className="welcome-title">
+                        {window.localStorage.getItem("lastSelectedprojectName")}
+                    </h3>
+                    <button
+                        className="primaryBtn-2 btn mediumBtn"
+                        onClick={this.viewDashBoardHandler.bind(this)}>
+                        Customize
+                    </button>
+                </div>
                 {this.renderCategory()}
             </Fragment>
         );
@@ -240,7 +250,7 @@ class DashboardProject extends Component {
     renderWidget(widget, index) {
 
         if (this.state.tabIndex === 0) {
- 
+
             let drawWidget = Details.widgets.find(x => x.title === widget.title);
 
             let projectId = this.props.projectId == 0 ? localStorage.getItem("lastSelectedProject") : this.props.projectId;
@@ -1309,7 +1319,7 @@ class DashboardProject extends Component {
                     </TabList>
                     {/* View renderCategoryWidget */}
                     <TabPanel>
-                        <div className="mainContainer projectDashboard">
+                        <div className="mainContainer dashboardCon projectDashboard">
                             {this.state.viewWidget
                                 ? this.renderCategoryWidget()
                                 : null}
@@ -1317,13 +1327,13 @@ class DashboardProject extends Component {
                     </TabPanel>
                     {/* view renderDiscussions */}
                     <TabPanel>
-                        <div className="mainContainer">
+                        <div className="mainContainer dashboardCon">
                             {this.renderDiscussions()}
                         </div>
                     </TabPanel>
                     {/* view renderOrganizationChart */}
                     <TabPanel>
-                        <div className="mainContainer projectDashboard">
+                        <div className="mainContainer dashboardCon projectDashboard">
                             {this.renderOrganizationChart()}
                         </div>
                     </TabPanel>

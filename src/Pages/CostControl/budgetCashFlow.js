@@ -295,7 +295,6 @@ class budgetCashFlow extends Component {
                 }
             });
         }
-
     };
 
     DeleteItem = (selectedRows) => {

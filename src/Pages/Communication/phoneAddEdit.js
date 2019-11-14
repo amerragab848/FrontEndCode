@@ -4,7 +4,6 @@ import Api from '../../api'
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import moment from 'moment'
 import Resources from '../../resources.json';
-import _ from "lodash";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
