@@ -14,7 +14,7 @@ const marginObject = {
     bottom: 50,
 };
 
-const colorSchema = ["#39bd3d", "#dfe2e6"]
+const colorSchema = ["#39bd3d", "#dfe2e6", "#ab50df"]
 
 class BarChartCompJS extends Component {
     constructor(props) {
@@ -23,12 +23,12 @@ class BarChartCompJS extends Component {
             barData: [],
             isLoadingGrouped: true,
             isLoadingBar: true,
-            groupedBarData: [],
+            groupedBarData: []
         }
     }
 
+
     componentDidMount = () => {
-        let barData = [];
         if (this.props.multiSeries === 'no') {
             this.setState({
                 isLoadingBar: true
@@ -39,112 +39,119 @@ class BarChartCompJS extends Component {
             });
         }
 
-        Api.get(this.props.api).then(results => {
-            if (this.props.multiSeries === 'no') {
-
-                if (results) {
-                    results.map((item) => {
-                        barData.push({ 'value': item[this.props.y], 'name': item[this.props.catagName] })
-                        return null;
-                    });
-                }
-
-
-                let BarData = { data: barData }
-                let contDiv = '.js-bar-chart-container-tooltip-container.' + this.props.ukey;
-                let barChart = britecharts.bar(),
-                    chartBarTooltip = miniTooltip(),
-                    barContainer = d3.select(contDiv),
-                    containerBarWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false;
-
-                if (containerBarWidth) {
-                    d3.select('.js-download-button').on('click', function () {
-                        barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
-                    });
-                }
-                barChart
-                    .width(containerBarWidth)
-                    .margin(marginObject)
-                    .colorSchema(colorSchema)
-                    .isAnimated(true)
-                    .height(400)
-                    .hasPercentage(true)
-                    .on('customMouseOver', function () {
-                        chartBarTooltip.show();
-                    })
-                    .on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
-                        chartBarTooltip.update(dataPoint, topicColorMap, x, y);
-                    })
-                    .on('customMouseOut', function (e) {
-                        chartBarTooltip.hide();
-                    });
-
-                barContainer.datum(BarData.data).call(barChart);
-                barContainer = d3.select('.js-bar-chart-container-tooltip-container.' + this.props.ukey + ' .metadata-group');
-                barContainer.datum([]).call(chartBarTooltip);
-                this.setState({
-                    isLoadingBar: false
-                });
-
+        if (this.props.reports == undefined) {
+            Api.get(this.props.api).then(results => {
+                if (results)
+                    this.GenerateDataFromProps(results);
             }
-            else {
-                let groupedBarData = []
-                this.props.barContent.map((bar) => {
-                    if (results) {
-                        results.map((obj) => {
-                            groupedBarData.push({ stack: bar.value, total: obj[bar.value], name: obj[this.props.catagName] })
-                            return null;
-                        })
-                    }
-                    return null;
-                })
-
-                let groupedData = { data: groupedBarData }
-
-                var groupedBarChart = britecharts.groupedBar(),
-                    chartTooltip = britecharts.tooltip(),
-                    container = d3.select('.js-grouped-bar-chart-tooltip-container.' + this.props.ukey),
-                    containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
-                    tooltipContainer;
-
-                groupedBarChart.width(containerWidth)
-                    .tooltipThreshold(600)
-                    .colorSchema(colorSchema)
-                    .height(400)
-                    .isAnimated(true)
-                    .groupLabel('stack')
-                    .nameLabel('name')
-                    .valueLabel('total')
-                    .grid('horizontal')
-                    .on('customMouseOver', function () {
-                        chartTooltip.show();
-                    })
-                    .on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
-                        chartTooltip.update(dataPoint, topicColorMap, x, y);
-                    })
-                    .on('customMouseOut', function () {
-                        chartTooltip.hide();
-                    });
-
-                container.datum(groupedData.data).call(groupedBarChart);
-
-                chartTooltip
-                    .topicLabel('values')
-                    .dateLabel('key')
-                    .nameLabel('stack')
-                    .title('Procoor tooltip');
-
-                tooltipContainer = d3.select('.js-grouped-bar-chart-tooltip-container.' + this.props.ukey + '  .metadata-group');
-                tooltipContainer.datum([]).call(chartTooltip);
-
-                this.setState({
-                    isLoadingGrouped: false
-                });
-            }
-
-        });
+            );
+        }
+        else
+            this.GenerateDataFromProps(this.props.rows)
 
     }
+
+    GenerateDataFromProps = (results) => {
+        let barData = [];
+        if (this.props.multiSeries === 'no') {
+
+            if (results) {
+                results.map((item) => {
+                    barData.push({ 'value': item[this.props.y], 'name': item[this.props.catagName] })
+                    return null;
+                });
+            }
+
+
+            let BarData = { data: barData }
+            let contDiv = '.js-bar-chart-container-tooltip-container.' + this.props.ukey;
+            let barChart = britecharts.bar(),
+                chartBarTooltip = miniTooltip(),
+                barContainer = d3.select(contDiv),
+                containerBarWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false;
+
+            if (containerBarWidth) {
+                d3.select('.js-download-button').on('click', function () {
+                    barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
+                });
+            }
+            barChart
+                .width(containerBarWidth)
+                .margin(marginObject)
+                .colorSchema(colorSchema)
+                .isAnimated(true)
+                .height(400)
+                .hasPercentage(true)
+                .on('customMouseOver', function () {
+                    chartBarTooltip.show();
+                })
+                .on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
+                    chartBarTooltip.update(dataPoint, topicColorMap, x, y);
+                })
+                .on('customMouseOut', function (e) {
+                    chartBarTooltip.hide();
+                });
+
+            barContainer.datum(BarData.data).call(barChart);
+            barContainer = d3.select('.js-bar-chart-container-tooltip-container.' + this.props.ukey + ' .metadata-group');
+            barContainer.datum([]).call(chartBarTooltip);
+            this.setState({
+                isLoadingBar: false
+            });
+
+        }
+        else {
+            let groupedBarData = []
+            this.props.barContent.map((bar) => {
+                if (results) {
+                    results.map((obj) => {
+                        groupedBarData.push({ stack: bar.value, total: obj[bar.value], name: obj[this.props.catagName] })
+                        return null;
+                    })
+                }
+                return null;
+            })
+            let groupedData = { data: groupedBarData }
+            var groupedBarChart = britecharts.groupedBar(),
+                chartTooltip = britecharts.tooltip(),
+                container = d3.select('.js-grouped-bar-chart-tooltip-container'),
+                containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
+                tooltipContainer;
+
+            groupedBarChart
+                .width(containerWidth)
+                .groupLabel('stack')
+                .height(400)
+                .colorSchema(colorSchema)
+                .nameLabel('name')
+                .valueLabel('total')
+                .grid('horizontal')
+                .on('customMouseOver', function () {
+                    chartTooltip.show();
+                })
+                .on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
+                    chartTooltip.update(dataPoint, topicColorMap, x, y);
+                })
+                .on('customMouseOut', function () {
+                    chartTooltip.hide();
+                });
+
+            container.datum(groupedData.data).call(groupedBarChart);
+
+            chartTooltip
+                .topicLabel('values')
+                .dateLabel('key')
+                .nameLabel('stack')
+                .title('Procoor tooltip');
+
+            tooltipContainer = d3.select('.js-grouped-bar-chart-tooltip-container .metadata-group');
+            tooltipContainer.datum([]).call(chartTooltip);
+            this.setState({
+                isLoadingGrouped: false
+            });
+        }
+    }
+
 
     render() {
         return (

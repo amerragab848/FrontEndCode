@@ -1,10 +1,5 @@
-import React, { Component } from "react"; 
+import React, { Component } from "react";
 import { Donut, Legend, ResponsiveContainer, withResponsiveness } from "britecharts-react";
-import Api from "../../api";
-import language from "../../resources.json";
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
- 
 
 const colorSchema = [
   "#07bc0c",
@@ -83,9 +78,11 @@ class PieChartComp extends Component {
                     <span className="percentage">
                       {this.state.data.percentage + "%"}
                     </span>
-                    <span className="totalAmount">
-                      {this.state.data.quantity + "LE"}
-                    </span>
+                    {this.props.hideQuntity ? null :
+                      <span className="totalAmount">
+                        {this.state.data.quantity + "LE"}
+                      </span>
+                    }
                   </p>
                 ) : null}
               </div>
