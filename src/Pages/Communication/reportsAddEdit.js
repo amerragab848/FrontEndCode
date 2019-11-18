@@ -508,7 +508,7 @@ class reportsAddEdit extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput fullInputWidth">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                             <div className="inputDev ui input " >
                                                                 <input type="text" className="form-control" id="refDoc"

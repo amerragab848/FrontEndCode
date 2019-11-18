@@ -604,7 +604,7 @@ class TransmittalAddEdit extends Component {
                                                                     onChange={(e) => this.handleChange(e, 'arrange')} />
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput fullInputWidth">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                             <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
                                                                 <input type="text" className="form-control" id="refDoc"
@@ -738,7 +738,7 @@ class TransmittalAddEdit extends Component {
                                                                 {errors.apartmentNumber && touched.apartmentNumber ? (<em className="pError">{errors.apartmentNumber}</em>) : null}
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput fullInputWidth">
                                                             <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
                                                                 <div className="inputDev ui input">

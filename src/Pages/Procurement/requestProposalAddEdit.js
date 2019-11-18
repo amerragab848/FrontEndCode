@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
@@ -16,12 +15,10 @@ import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
 import moment from "moment";
-import SkyLight from "react-skylight";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
@@ -51,9 +48,7 @@ class RequestProposalAddEdit extends Component {
     for (let param of query.entries()) {
       if (index == 0) {
         try {
-          let obj = JSON.parse(
-            CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8)
-          );
+          let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
 
           docId = obj.docId;
           projectId = obj.projectId;
@@ -415,7 +410,7 @@ class RequestProposalAddEdit extends Component {
                                 : null
                             }
 
-                            <div className="linebylineInput valid-input">
+                            <div className="linebylineInput fullInputWidth">
                               <label className="control-label">
                                 {Resources.refDoc[currentLanguage]}
                               </label>

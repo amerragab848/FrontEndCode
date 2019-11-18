@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import ReactTable from "react-table";
-import "react-table/react-table.css";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
+import "react-table/react-table.css"; 
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../Dataservice";
@@ -14,8 +13,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
-import SkyLight from 'react-skylight';
+import moment from "moment"; 
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker';
 import { toast } from "react-toastify";
@@ -371,7 +369,6 @@ class MaterialInventoryAddEdit extends Component {
             }
         }
         this.checkDocumentIsView();
-
     };
 
     componentWillReceiveProps(nextProps) {
@@ -386,7 +383,6 @@ class MaterialInventoryAddEdit extends Component {
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
-
     };
 
     componentWillUnmount() {
@@ -951,7 +947,7 @@ class MaterialInventoryAddEdit extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput fullInputWidth">
                                                             <label className="control-label">{Resources.resourceCode[currentLanguage]}</label>
                                                             <div className="shareLinks">
                                                                 <div className={"inputDev ui input" + (errors.resourceCode && touched.resourceCode ? (" has-error") : !errors.resourceCode && touched.resourceCode ? (" has-success") : " ")} >

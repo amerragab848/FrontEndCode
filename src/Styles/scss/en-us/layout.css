@@ -21919,3 +21919,9 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 .reports__content .panel , .reports__content .donut__legend {
     margin: 0;
   }
+
+  @media screen and (min-width :1024px) {
+  .reportChart__charts .col-md-12.col-lg-6{
+    width: 100% !important
+  }
+}

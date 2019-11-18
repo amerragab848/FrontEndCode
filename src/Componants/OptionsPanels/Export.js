@@ -103,11 +103,11 @@ class Export extends Component {
         let fieldsItems = this.props.columns;
 
         let rows = this.props.rows.length > 0 ?
-            (this.props.rows.map(row => {
+            (this.props.rows.map((row, index) => {
                 return (
-                    <tr>
+                    <tr key={index}>
                         {fieldsItems.map((field, index) => {
-                            return (<td key={index}>{row[field.key]}</td>)
+                            return (<td key={index + "td"}>{row[field.key]}</td>)
                         })}
                     </tr>
                 )

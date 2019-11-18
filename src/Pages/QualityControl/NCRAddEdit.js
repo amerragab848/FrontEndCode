@@ -22,8 +22,7 @@ import { SkyLightStateless } from 'react-skylight';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-
+import LoadingSection from "../../Componants/publicComponants/LoadingSection"; 
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
@@ -1014,17 +1013,13 @@ class NCRAddEdit extends Component {
                                                             <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
                                                             <label>{Resources.closed[currentLanguage]}</label>
                                                         </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div className="proForm datepickerContainer">
-
+                                                    </div> 
+                                                </div> 
+                                                <div className="proForm datepickerContainer"> 
                                                     <div className="linebylineInput valid-input alternativeDate">
                                                         <DatePicker title='docDate' startDate={this.state.document.docDate}
                                                             handleChange={e => this.handleChangeDate(e, 'docDate')} />
-                                                    </div>
-
+                                                    </div> 
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                         <div className="ui input inputDev"  >
@@ -1037,9 +1032,8 @@ class NCRAddEdit extends Component {
                                                                 }}
                                                                 onChange={(e) => this.handleChange(e, 'arrange')} />
                                                         </div>
-                                                    </div>
-
-                                                    <div className="linebylineInput valid-input">
+                                                    </div> 
+                                                    <div className="linebylineInput fullInputWidth">
                                                         <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                         <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
                                                             <input type="text" className="form-control" id="refDoc"
@@ -1052,7 +1046,6 @@ class NCRAddEdit extends Component {
                                                                 }}
                                                                 onChange={(e) => this.handleChange(e, 'refDoc')} />
                                                             {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
-
                                                         </div>
                                                     </div>
 
