@@ -2301,14 +2301,14 @@ var routes = [
     },
     {
         route: "usersWithOutTimeSheet",
-        moduleId: "reportCenter/usersWithOutTimeSheet",
+        moduleId: "TimeSheet/UsersWithOutTimeSheet",
         title: "usersWithoutTimeSheet",
         nav: true,
         settings: { HumanResources: true, permission: 3712, order: 6 }
     },
     {
         route: "expensesRpt",
-        moduleId: "reportCenter/expensesRpt",
+        moduleId: "TimeSheet/ExpensesReport",
         title: "expensesReport",
         nav: true,
         settings: { HumanResources: true, permission: 3716, order: 10 }
@@ -2378,7 +2378,7 @@ var routes = [
     },
     {
         route: "companyTimeSheet",
-        moduleId: "reportCenter/companyTimeSheet",
+        moduleId: "TimeSheet/CompanyTimeSheetReport",
         title: "companyTimeSheet",
         nav: true,
         settings: { HumanResources: true, permission: 3711, order: 5 }

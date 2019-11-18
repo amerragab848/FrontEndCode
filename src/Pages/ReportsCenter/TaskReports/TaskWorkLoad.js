@@ -8,16 +8,10 @@ import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
 import dataservice from "../../../Dataservice";
-import BarChartComp from '../../../Componants/ChartsWidgets/BarChartCompJS';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
 import moment from "moment";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const validationSchema = Yup.object().shape({
-    CompanyName: Yup.string().required(Resources['companyRequired'][currentLanguage]).nullable(true)
-})
 class TaskWorkLoad extends Component {
 
     constructor(props) {

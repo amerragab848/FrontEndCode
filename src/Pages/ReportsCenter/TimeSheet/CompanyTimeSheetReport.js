@@ -5,17 +5,21 @@ import { toast } from "react-toastify";
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import dataservice from "../../../Dataservice";
-import BarChartComp from '../../../Componants/ChartsWidgets/BarChartCompJS';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
+import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export";
+import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
+import BarChartComp from '../../../Componants/ChartsWidgets/BarChartCompJS'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
     CompanyName: Yup.string().required(Resources['companyRequired'][currentLanguage]).nullable(true)
 })
-class WorkingHours extends Component {
+class companyTimeSheet extends Component {
 
     constructor(props) {
         super(props)
@@ -27,19 +31,67 @@ class WorkingHours extends Component {
             showChart: false,
             finishDate: moment(),
             startDate: moment(),
+            showChart: false
         }
 
-        if (!Config.IsAllow(3702)) {
+        if (!Config.IsAllow(3711)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
             });
 
         }
+        this.columns = [{
+            key: "projectName",
+            name: Resources["projectName"][currentLanguage],
+            width: 150,
+            draggable: true,
+            sortable: true,
+            resizable: true,
+            filterable: true,
+            sortDescendingFirst: true
+        }, {
+            key: "code",
+            name: Resources["projectCode"][currentLanguage],
+            width: 150,
+            draggable: true,
+            sortable: true,
+            resizable: true,
+            filterable: true,
+            sortDescendingFirst: true
+        }, {
+            key: "estimateHours",
+            name: Resources["estimatedHours"][currentLanguage],
+            width: 150,
+            draggable: true,
+            sortable: true,
+            resizable: true,
+            filterable: true,
+            sortDescendingFirst: true
+        }, {
+            key: "actualHours",
+            name: Resources["actualHours"][currentLanguage],
+            width: 150,
+            draggable: true,
+            sortable: true,
+            resizable: true,
+            filterable: true,
+            sortDescendingFirst: true
+        }, {
+            key: "variance",
+            name: Resources["variance"][currentLanguage],
+            width: 150,
+            draggable: true,
+            sortable: true,
+            resizable: true,
+            filterable: true,
+            sortDescendingFirst: true
+        }
+        ];
     }
 
     componentDidMount() {
-        dataservice.GetDataList('GetCompanyList', 'companyName', 'id').then(result => {
+        dataservice.GetDataList('GetCompanies?accountOwnerId=2', 'companyName', 'id').then(result => {
             this.setState({
                 dropDownList: result
             });
@@ -56,7 +108,7 @@ class WorkingHours extends Component {
             finishDate: moment(this.state.finishDate)
         }
 
-        Api.post('GetAllWorkingHours', obj).then((res) => {
+        Api.post('GetCompanyTimeSheet', obj).then((res) => {
             if (res.length > 0) {
                 this.setState({
                     rows: res, isLoading: false, showChart: true
@@ -64,7 +116,7 @@ class WorkingHours extends Component {
             }
             else
                 this.setState({
-                    rows: [], isLoading: false, showChart: false
+                    rows: [], isLoading: false
                 });
 
         }).catch(() => {
@@ -77,44 +129,46 @@ class WorkingHours extends Component {
         this.setState({ [name]: value })
     }
 
-    comapareDate = (startDate, finishDate, name, value) => {
-        var a = moment(startDate);
-        var b = moment(finishDate);
-        var res = b.diff(a, 'years', true);
-        if (res >= 0 && res <= 1) {
-            this.setState({ [name]: value })
-        }
-        else {
-            toast.warn("Date Range Must Be less than one year");
-
-        }
-    }
 
     render() {
 
         let Chart = this.state.showChart ?
             <BarChartComp
-                multiSeries='no'
-                key="estimate_01"
-                api={null}
-                y='expensesSum'
-                catagName='month'
-                title={''}
                 reports={true}
                 rows={this.state.rows}
-            /> : null
+                barContent={[
+                    { name: Resources['actualTotal'][currentLanguage], value: 'actualHours' },
+                    { name: "Budget Expenses", value: 'estimateHours' },
+                    { name: Resources['variance'][currentLanguage], value: 'variance' },
 
+                ]}
+                catagName="code"
+                multiSeries="yes"
+                ukey="companyTimeSheet"
+                title={Resources['companyTimeSheet'][currentLanguage]}
+                y="total"
+                yTitle={Resources['total'][currentLanguage]} /> : null
+
+        const dataGrid = this.state.isLoading === false ? (
+            <GridSetup rows={this.state.rows} showCheckbox={false}
+                selectedCopmleteRow={true}
+                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+
+        const btnExport = this.state.isLoading === false ?
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['companyTimeSheet'][currentLanguage]} />
+            : null
         return (
             <div className="reports__content">
                 <header>
-                    <h2 className="zero">{Resources.workHours[currentLanguage]}</h2>
+                    <h2 className="zero">{Resources.companyTimeSheet[currentLanguage]}</h2>
+                    {btnExport}
                 </header>
                 <div className=''>
                     <Formik
                         initialValues={{ CompanyName: this.state.selectedCompany.value }}
                         validationSchema={validationSchema}
                         enableReinitialize={true}
-                        onSubmit={(values) => {
+                        onSubmit={() => {
                             this.getGridRows()
                         }}>
                         {({ errors, touched, handleSubmit, setFieldValue, setFieldTouched }) => (
@@ -127,19 +181,17 @@ class WorkingHours extends Component {
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
                                         error={errors.CompanyName}
-                                        touched={touched.CompanyName}
-                                        isClear={false}
-                                        isMulti={false} />
+                                        touched={touched.CompanyName} />
                                 </div>
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='startDate'
                                         startDate={this.state.startDate}
-                                        handleChange={e => this.comapareDate(e, this.state.finishDate, 'startDate', e)} />
+                                        handleChange={e => this.setDate('startDate', e)} />
                                 </div>
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='finishDate'
                                         startDate={this.state.finishDate}
-                                        setDate={e => this.comapareDate(this.state.startDate, e, 'finishDate', e)} />
+                                        setDate={e => this.setDate('finishDate', e)} />
                                 </div>
                                 <button className="primaryBtn-1 btn smallBtn"  >{Resources['search'][currentLanguage]}</button>
                             </Form>
@@ -149,8 +201,11 @@ class WorkingHours extends Component {
                 <div className="row">
                     {Chart}
                 </div>
+                <div className="doc-pre-cycle letterFullWidth">
+                    {dataGrid}
+                </div>
             </div>
         )
     }
 
-} export default WorkingHours;
+} export default companyTimeSheet;

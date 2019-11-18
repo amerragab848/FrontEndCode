@@ -10,7 +10,6 @@ import GridSetup from "../../Communication/GridSetup"
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import moment from "moment";
-import PieChart from '../PieChartComp'
 
 //const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -24,7 +23,6 @@ class TaskTimeSheet extends Component {
             dropDownList: [],
             selectedProject: { label: Resources.selectProjects[currentLanguage], value: "0" },
             rows: [],
-            series: [],
             startDate: moment(),
             finishDate: moment(),
         }
@@ -106,10 +104,8 @@ class TaskTimeSheet extends Component {
                     data.push({ y: item.actualTotal, name: item.subject });
 
                 })
-                let series = [{ data }]
-
                 this.setState({
-                    rows: res, isLoading: false, series,
+                    rows: res, isLoading: false
                 });
             }).catch(() => {
                 this.setState({ isLoading: false })

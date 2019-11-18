@@ -28,11 +28,12 @@ class DatePicker extends Component {
         return (
             <div className="customDatepicker fillter-status fillter-item-c " style={{ display: 'flex', flexFlow: 'column', alignItems: 'flex-start', }}>
                 <label className="control-label">{this.props.title ? Resources[this.props.title][currentLanguage] : ""}</label>
-                <div className="inputDev ui input input-group date NormalInputDate" style={{maxWidth: '192px'}}>
+                <div className="inputDev ui input input-group date NormalInputDate" style={{ maxWidth: '192px' }}>
                     <ModernDatepicker
                         date={this.state.Date}
                         format={'YYYY-MM-DD'}
                         showBorder
+                        maxDate={this.props.maxDate}
                         onChange={this.props.handleChange}
                         placeholder={'Select a date'}
                     />
