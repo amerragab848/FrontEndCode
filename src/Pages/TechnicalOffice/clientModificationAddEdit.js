@@ -510,7 +510,7 @@ class clientModificationAddEdit extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} 
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
                         docTitle={Resources.clientModificationLog[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 
@@ -832,40 +832,41 @@ class clientModificationAddEdit extends Component {
                                 </div>
                             </div>
                         </div>
-                        {
-                            this.props.changeStatus === true ?
-                                <div className="approveDocument">
-                                    <div className="approveDocumentBTNS">
-                                        {this.state.isLoading ?
-                                            <button className="primaryBtn-1 btn disabled">
-                                                <div className="spinner">
-                                                    <div className="bounce1" />
-                                                    <div className="bounce2" />
-                                                    <div className="bounce3" />
-                                                </div>
-                                            </button> :
-                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)} type="submit">{Resources.save[currentLanguage]}</button>
-                                        }
-                                        <DocumentActions
-                                            isApproveMode={this.state.isApproveMode}
-                                            docTypeId={this.state.docTypeId}
-                                            docId={this.state.docId}
-                                            projectId={this.state.projectId}
-                                            previousRoute={this.state.previousRoute}
-                                            docApprovalId={this.state.docApprovalId}
-                                            currentArrange={this.state.arrange}
-                                            showModal={this.props.showModal}
-                                            showOptionPanel={this.showOptionPanel}
-                                            permission={this.state.permission}
-                                            documentName={Resources.clientModificationLog[currentLanguage]}
-                                        />
-                                    </div>
-                                </div>
-                                : null
-                        }
+
                     </div>
 
                 </div>
+                {
+                    this.props.changeStatus === true ?
+                        <div className="approveDocument">
+                            <div className="approveDocumentBTNS">
+                                {this.state.isLoading ?
+                                    <button className="primaryBtn-1 btn disabled">
+                                        <div className="spinner">
+                                            <div className="bounce1" />
+                                            <div className="bounce2" />
+                                            <div className="bounce3" />
+                                        </div>
+                                    </button> :
+                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editLetter(e)} type="submit">{Resources.save[currentLanguage]}</button>
+                                }
+                                <DocumentActions
+                                    isApproveMode={this.state.isApproveMode}
+                                    docTypeId={this.state.docTypeId}
+                                    docId={this.state.docId}
+                                    projectId={this.state.projectId}
+                                    previousRoute={this.state.previousRoute}
+                                    docApprovalId={this.state.docApprovalId}
+                                    currentArrange={this.state.arrange}
+                                    showModal={this.props.showModal}
+                                    showOptionPanel={this.showOptionPanel}
+                                    permission={this.state.permission}
+                                    documentName={Resources.clientModificationLog[currentLanguage]}
+                                />
+                            </div>
+                        </div>
+                        : null
+                }
             </div>
 
         );

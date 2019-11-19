@@ -215,7 +215,7 @@ class materialInspectionRequestAddEdit extends Component {
             else {
                 links[i].classList.add('odd');
             }
-        } 
+        }
         if (this.state.docId > 0) {
             let url = "GetMaterialInspectionRequestForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialInspectionRequest');
@@ -1283,23 +1283,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                                 </div>
                                                                             </div> : null}
                                                                     </div>
-                                                                    <div className="approveDocument">
-                                                                        <div className="approveDocumentBTNS">
-                                                                            <DocumentActions
-                                                                                isApproveMode={this.state.isApproveMode}
-                                                                                docTypeId={this.state.docTypeId}
-                                                                                docId={this.state.docId}
-                                                                                projectId={this.state.projectId}
-                                                                                previousRoute={this.state.previousRoute}
-                                                                                docApprovalId={this.state.docApprovalId}
-                                                                                currentArrange={this.state.arrange}
-                                                                                showModal={this.props.showModal}
-                                                                                showOptionPanel={this.showOptionPanel}
-                                                                                permission={this.state.permission}
-                                                                                documentName={Resources.materialInspectionRequest[currentLanguage]}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
+
                                                                 </Fragment>
                                                                 :
                                                                 <div className="slider-Btns">
@@ -1388,6 +1372,24 @@ class materialInspectionRequestAddEdit extends Component {
                         />
                     </div>
                 </div>
+                {this.props.changeStatus ?
+                    <div className="approveDocument">
+                        <div className="approveDocumentBTNS">
+                            <DocumentActions
+                                isApproveMode={this.state.isApproveMode}
+                                docTypeId={this.state.docTypeId}
+                                docId={this.state.docId}
+                                projectId={this.state.projectId}
+                                previousRoute={this.state.previousRoute}
+                                docApprovalId={this.state.docApprovalId}
+                                currentArrange={this.state.arrange}
+                                showModal={this.props.showModal}
+                                showOptionPanel={this.showOptionPanel}
+                                permission={this.state.permission}
+                                documentName={Resources.materialInspectionRequest[currentLanguage]}
+                            />
+                        </div>
+                    </div> : null}
             </div>
         );
     }

@@ -1276,23 +1276,24 @@ class inspectionRequestAddEdit extends Component {
                             changeStatus={docId === 0 ? false : true} />
                     </div>
                 </div>
-                <div className="approveDocument">
-                    <div className="approveDocumentBTNS">
-                        <DocumentActions
-                            isApproveMode={this.state.isApproveMode}
-                            docTypeId={this.state.docTypeId}
-                            docId={this.state.docId}
-                            projectId={this.state.projectId}
-                            previousRoute={this.state.previousRoute}
-                            docApprovalId={this.state.docApprovalId}
-                            currentArrange={this.state.arrange}
-                            showModal={this.props.showModal}
-                            showOptionPanel={this.showOptionPanel}
-                            permission={this.state.permission}
-                            documentName={Resources.inspectionRequest[currentLanguage]}
-                        />
-                    </div>
-                </div>
+                {this.props.changeStatus ?
+                    <div className="approveDocument">
+                        <div className="approveDocumentBTNS">
+                            <DocumentActions
+                                isApproveMode={this.state.isApproveMode}
+                                docTypeId={this.state.docTypeId}
+                                docId={this.state.docId}
+                                projectId={this.state.projectId}
+                                previousRoute={this.state.previousRoute}
+                                docApprovalId={this.state.docApprovalId}
+                                currentArrange={this.state.arrange}
+                                showModal={this.props.showModal}
+                                showOptionPanel={this.showOptionPanel}
+                                permission={this.state.permission}
+                                documentName={Resources.inspectionRequest[currentLanguage]}
+                            />
+                        </div>
+                    </div> : null}
             </div>
         );
     }
