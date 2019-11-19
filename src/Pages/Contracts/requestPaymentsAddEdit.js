@@ -1382,68 +1382,70 @@ class requestPaymentsAddEdit extends Component {
     }
 
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+        this.setState({
+            isLoading: true
+        });
+
         let rows = [...this.state.paymentsItems];
         let updateRow = rows[fromRow];
 
-        this.setState(
-            state => {
-                const paymentsItems = state.paymentsItems.slice();
-                for (let i = fromRow; i <= toRow; i++) {
-                    rows[i] = { ...rows[i], ...updated };
-                }
-                return { paymentsItems };
-            },
-            function () {
-                if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
-                    if (updateRow.revisedQuantity == 0 && (updateRow.siteQuantityComplete > 0 || updateRow.sitePercentComplete > 0)) {
-                        updateRow.revisedQuantity = 1;
-                    }
-
-                    let newValue = parseFloat(updated[Object.keys(updated)[0]]);
-
-                    updateRow[Object.keys(updated)[0]] = parseFloat(
-                        updated[Object.keys(updated)[0]]
-                    );
-
-                    switch (Object.keys(updated)[0]) {
-                        case "quantityComplete":
-                            updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                            break;
-                        case "percentComplete":
-                            updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                            break;
-                        case "sitePercentComplete":
-                            updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                            break;
-                        case "siteQuantityComplete":
-                            updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
-
-                            if (this.props.changeStatus == false) {
-                                updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                            }
-                            break;
-                    }
-
-                    let editRows = [...this.state.editRows];
-
-                    let sameRow = find(editRows, function (x) {
-                        return x.id === updateRow.id;
-                    });
-
-                    if (sameRow) {
-                        editRows = editRows.filter(function (i) {
-                            return i.id != updateRow.id;
-                        });
-                    }
-
-                    editRows.push(updateRow);
-
-                    this.setState({
-                        editRows: editRows
-                        // isLoading: false
-                    });
-                }
+        this.setState(state => {
+            const paymentsItems = state.paymentsItems.slice();
+            for (let i = fromRow; i <= toRow; i++) {
+                rows[i] = { ...rows[i], ...updated };
             }
+            return { paymentsItems };
+        }, function () {
+            if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
+                if (updateRow.revisedQuantity == 0 && (updateRow.siteQuantityComplete > 0 || updateRow.sitePercentComplete > 0)) {
+                    updateRow.revisedQuantity = 1;
+                }
+
+                let newValue = parseFloat(updated[Object.keys(updated)[0]]);
+
+                updateRow[Object.keys(updated)[0]] = parseFloat(
+                    updated[Object.keys(updated)[0]]
+                );
+
+                switch (Object.keys(updated)[0]) {
+                    case "quantityComplete":
+                        updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                        break;
+                    case "percentComplete":
+                        updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                        break;
+                    case "sitePercentComplete":
+                        updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                        break;
+                    case "siteQuantityComplete":
+                        updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
+
+                        if (this.props.changeStatus == false) {
+                            updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                        }
+                        break;
+                }
+
+                let editRows = [...this.state.editRows];
+
+                let sameRow = find(editRows, function (x) {
+                    return x.id === updateRow.id;
+                });
+
+                if (sameRow) {
+                    editRows = editRows.filter(function (i) {
+                        return i.id != updateRow.id;
+                    });
+                }
+
+                editRows.push(updateRow);
+
+                this.setState({
+                    editRows: editRows,
+                    isLoading: false
+                });
+            }
+        }
         );
     };
 
