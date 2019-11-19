@@ -2459,7 +2459,7 @@ var routes = [
     },
     {
         route: "supervisorsWithUnapprovedTimeSheets",
-        moduleId: "reportCenter/supervisorsWithUnapprovedTimeSheets",
+        moduleId: "TimeSheet/supervisorsWithUnapprovedTimeSheets",
         title: "supervisorsWithUnapprovedTimeSheets",
         nav: true,
         settings: { HumanResources: true, permission: 3713, order: 7 }

@@ -14,10 +14,7 @@ import moment from "moment";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-const validationSchema = Yup.object().shape({
-    defaultHour: Yup.string().required(Resources['defaultHours'][currentLanguage]).nullable(true)
-})
-class OverTimeReport extends Component {
+class SupervisorsWithUnapprovedTimeSheets extends Component {
 
     constructor(props) {
         super(props)
@@ -29,7 +26,7 @@ class OverTimeReport extends Component {
             defaultHour: ''
         }
 
-        if (!Config.IsAllow(3710)) {
+        if (!Config.IsAllow(3713)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/");
         }
@@ -63,8 +60,17 @@ class OverTimeReport extends Component {
             filterable: true,
             sortDescendingFirst: true
         }, {
-            key: "totalOvertime",
-            name: Resources["actualHours"][currentLanguage],
+            key: "supervisorName",
+            name: Resources["Supervisor"][currentLanguage],
+            width: 200,
+            draggable: true,
+            sortable: true,
+            resizable: true,
+            filterable: true,
+            sortDescendingFirst: true
+        }, {
+            key: "timeSheetCount",
+            name: Resources["timeSheetCount"][currentLanguage],
             width: 100,
             draggable: true,
             sortable: true,
@@ -79,12 +85,11 @@ class OverTimeReport extends Component {
         this.setState({ isLoading: true });
 
         let obj = {
-            defaultHour: this.state.defaultHour,
             startDate: moment(this.state.startDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
             finishDate: moment(this.state.finishDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS")
         }
 
-        dataservice.addObject('GetUsersOverTime', obj).then((res) => {
+        dataservice.addObject('GetSupervisorsWithUnapprovedTimeSheets', obj).then((res) => {
             if (res.length > 0) {
                 this.setState({
                     rows: res, isLoading: false
@@ -103,9 +108,6 @@ class OverTimeReport extends Component {
         this.setState({ [name]: value })
     }
 
-    handleChange = (event) => {
-        this.setState({ defaultHour: event.target.value })
-    }
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
@@ -115,35 +117,22 @@ class OverTimeReport extends Component {
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []}
-                columns={this.columns} fileName={Resources['overTimeSheet'][currentLanguage]} />
+                columns={this.columns} fileName={Resources['supervisorsWithUnapprovedTimeSheets'][currentLanguage]} />
             : null
 
         return (
             <div className="reports__content">
                 <header>
-                    <h2 className="zero">{Resources.overTimeSheet[currentLanguage]}</h2>
+                    <h2 className="zero">{Resources.supervisorsWithUnapprovedTimeSheets[currentLanguage]}</h2>
                     {btnExport}
                 </header>
                 <div>
-                    <Formik initialValues={{ defaultHour: '' }}
-                        validationSchema={validationSchema}
-                        enableReinitialize={true}
+                    <Formik enableReinitialize={true}
                         onSubmit={(values) => {
                             this.getGridRows()
                         }}>
                         {({ errors, touched, handleSubmit, handleChange, handleBlur }) => (
                             <Form id="InspectionRequestForm" className="proForm reports__proForm" noValidate="novalidate" onSubmit={handleSubmit}>
-                                <div className="linebylineInput valid-input">
-                                    <label className="control-label">
-                                        {Resources.defaultHours[currentLanguage]}
-                                    </label>
-                                    <div className={"ui input inputDev fillter-item-c " + (errors.defaultHour && touched.defaultHour ? "has-error" : !errors.defaultHour && touched.defaultHour ? "has-success" : "")} >
-                                        <input type="text" className="form-control" value={this.state.defaultHour || ''} name="defaultHour" placeholder={Resources.defaultHours[currentLanguage]}
-                                            onBlur={e => { handleChange(e); handleBlur(e); }}
-                                            onChange={e => this.handleChange(e)} />
-                                        {errors.defaultHour && touched.defaultHour ? (<em className="pError">{errors.defaultHour}</em>) : null}
-                                    </div>
-                                </div>
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='startDate'
                                         startDate={this.state.startDate}
@@ -167,4 +156,4 @@ class OverTimeReport extends Component {
     }
 }
 
-export default OverTimeReport;
+export default SupervisorsWithUnapprovedTimeSheets;
