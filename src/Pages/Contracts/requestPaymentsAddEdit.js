@@ -1466,7 +1466,9 @@ class requestPaymentsAddEdit extends Component {
         dataservice.addObject(api, editItems).then(() => {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.setState({ isLoading: false });
+            this.setState({
+                isLoading: false, currentStep: 2
+            });
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
             this.setState({ isLoading: false });
@@ -2542,10 +2544,7 @@ class requestPaymentsAddEdit extends Component {
                                                                         <input type="text" className="form-control" id="arrange"
                                                                             readOnly value={this.state.document.arrange || 1}
                                                                             name="arrange" placeholder={Resources.arrange[currentLanguage]}
-                                                                            onBlur={e => {
-                                                                                handleChange(e);
-                                                                                handleBlur(e);
-                                                                            }}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
                                                                             onChange={e => this.handleChange(e, "arrange")} />
                                                                     </div>
                                                                 </div>
@@ -2559,71 +2558,33 @@ class requestPaymentsAddEdit extends Component {
                                                                                 }
                                                                             </label>
                                                                             <div className="ui input inputDev">
-                                                                                <input
-                                                                                    type="text"
-                                                                                    className="form-control"
-                                                                                    id="contractSubject"
-                                                                                    readOnly
-                                                                                    value={
-                                                                                        this
-                                                                                            .state
-                                                                                            .document
-                                                                                            .contractName
-                                                                                    }
-                                                                                    name="contractSubject"
-                                                                                />
+                                                                                <input type="text" className="form-control" id="contractSubject" readOnly
+                                                                                    value={this.state.document.contractName}
+                                                                                    name="contractSubject" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 ) : (
                                                                         <div className="linebylineInput valid-input">
-                                                                            <Dropdown
-                                                                                title="contractName"
-                                                                                data={
-                                                                                    this
-                                                                                        .state
-                                                                                        .contractsPos
-                                                                                }
-                                                                                selectedValue={
-                                                                                    this
-                                                                                        .state
-                                                                                        .selectContract
-                                                                                }
+                                                                            <Dropdown title="contractName"
+                                                                                data={this.state.contractsPos}
+                                                                                selectedValue={this.state.selectContract}
                                                                                 handleChange={event =>
-                                                                                    this.handleChangeDropDownContract(
-                                                                                        event,
-                                                                                        "contractId",
-                                                                                        "selectContract"
-                                                                                    )
+                                                                                    this.handleChangeDropDownContract(event, "contractId", "selectContract")
                                                                                 }
                                                                                 index="contractId"
-                                                                                onChange={
-                                                                                    setFieldValue
-                                                                                }
-                                                                                onBlur={
-                                                                                    setFieldTouched
-                                                                                }
-                                                                                error={
-                                                                                    errors.contractId
-                                                                                }
-                                                                                touched={
-                                                                                    touched.contractId
-                                                                                }
-                                                                                isClear={
-                                                                                    false
-                                                                                }
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.contractId}
+                                                                                touched={touched.contractId}
+                                                                                isClear={false}
                                                                                 name="contractId"
                                                                             />
                                                                         </div>
                                                                     )}
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .advancePaymentPercent[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.advancePaymentPercent[currentLanguage]}
                                                                     </label>
                                                                     <div className={"ui input inputDev" + (errors.advancePaymentPercent && touched.advancePaymentPercent ? " has-error" : "ui input inputDev")}>
                                                                         <input type="text" className="form-control"
@@ -2901,58 +2862,27 @@ class requestPaymentsAddEdit extends Component {
                                                             {Resources.actualPayment[currentLanguage]}
                                                         </label>
                                                         <div className="ui input inputDev">
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                name="actualPayment"
-                                                                value={
-                                                                    this.state
-                                                                        .actualPayments
-                                                                }
-                                                                placeholder={
-                                                                    Resources
-                                                                        .actualPayment[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
-                                                                onChange={event =>
-                                                                    this.setState(
-                                                                        {
-                                                                            actualPayments:
-                                                                                event
-                                                                                    .target
-                                                                                    .value
-                                                                        }
-                                                                    )
-                                                                }
-                                                            />
+                                                            <input type="text" className="form-control" name="actualPayment"
+                                                                value={this.state.actualPayments}
+                                                                placeholder={Resources.actualPayment[currentLanguage]}
+                                                                onChange={event => this.setState({ actualPayments: event.target.value })} />
                                                         </div>
                                                     </div>
 
-                                                    {this.state
-                                                        .viewUpdatePayment ? (
-                                                            <button
-                                                                className="primaryBtn-1 btn  disabled"
-                                                                disabled="disabled">
-                                                                <div className="spinner">
-                                                                    <div className="bounce1" />
-                                                                    <div className="bounce2" />
-                                                                    <div className="bounce3" />
-                                                                </div>
-                                                            </button>
-                                                        ) : (
-                                                            <button
-                                                                className="primaryBtn-1 btn meduimBtn"
-                                                                onClick={
-                                                                    this
-                                                                        .updateActualPayments
-                                                                }>
-                                                                {
-                                                                    Resources[
-                                                                    "update"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
+                                                    {this.state.viewUpdatePayment ? (
+                                                        <button
+                                                            className="primaryBtn-1 btn  disabled"
+                                                            disabled="disabled">
+                                                            <div className="spinner">
+                                                                <div className="bounce1" />
+                                                                <div className="bounce2" />
+                                                                <div className="bounce3" />
+                                                            </div>
+                                                        </button>
+                                                    ) : (
+                                                            <button className="primaryBtn-1 btn meduimBtn"
+                                                                onClick={this.updateActualPayments}>
+                                                                {Resources["update"][currentLanguage]
                                                                 }
                                                             </button>
                                                         )}
@@ -2977,21 +2907,6 @@ class requestPaymentsAddEdit extends Component {
                                             </div>
                                         ) : ("")}
                                         <div className="doc-pre-cycle">
-                                            {this.state.editRows.length > 0 ? (
-                                                <div className="doc-pre-cycle">
-                                                    <div className="slider-Btns editableRows">
-                                                        <span>
-                                                            No.Update Rows.
-                                                            {this.state.editRows.length}
-                                                        </span>
-                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>
-                                                            {
-                                                                Resources["edit"][currentLanguage]
-                                                            }
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ) : null}
                                             <div className="submittalFilter">
                                                 <div className="subFilter">
                                                     <h3 className="zero">
@@ -3002,11 +2917,7 @@ class requestPaymentsAddEdit extends Component {
                                                     </span>
                                                 </div>
                                                 <div className="filterBTNS">
-                                                    <div
-                                                        className="default__dropdown--custom"
-                                                        style={{
-                                                            marginBottom: "0"
-                                                        }}>
+                                                    <div className="default__dropdown--custom" style={{ marginBottom: "0" }}>
                                                         <div className="default__dropdown">
                                                             <Dropdown data={this.state.fillDropDownExport}
                                                                 selectedValue={this.state.selectedDropDownExport}
@@ -3031,6 +2942,22 @@ class requestPaymentsAddEdit extends Component {
                                                 </div>
                                             </div>
                                             {ItemsGrid}
+
+                                            {this.state.editRows.length > 0 ? (
+                                                <div className="doc-pre-cycle">
+                                                    <div className="slider-Btns editableRows">
+                                                        <span>
+                                                            No.Update Rows.
+                                                            {this.state.editRows.length}
+                                                        </span>
+                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>
+                                                            {
+                                                                Resources["edit"][currentLanguage]
+                                                            }
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ) : null}
                                         </div>
                                     </div>
                                 </Fragment>
@@ -3112,6 +3039,7 @@ class requestPaymentsAddEdit extends Component {
                                     </div>
                                 </Fragment>
                             ) : null}
+
                             {this.state.currentStep == 2 ? (
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
@@ -3207,6 +3135,7 @@ class requestPaymentsAddEdit extends Component {
                                     </div>
                                 </Fragment>
                             ) : null}
+
                         </div>
                         <Steps
                             steps_defination={steps_defination}
@@ -3215,7 +3144,7 @@ class requestPaymentsAddEdit extends Component {
                             changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
                             stepNo={this.state.currentStep}
                             changeStatus={docId === 0 ? false : true} />
-                            
+
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
