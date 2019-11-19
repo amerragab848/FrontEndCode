@@ -1659,7 +1659,7 @@ class SubmittalAddEdit extends Component {
                                   {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
                                 </div>
                               </div>
-                              <div className="linebylineInput valid-input">
+                              <div className="linebylineInput fullInputWidth">
                                 <label className="control-label">
                                   {Resources.refDoc[currentLanguage]}
                                 </label>
@@ -1787,7 +1787,7 @@ class SubmittalAddEdit extends Component {
                                 <Dropdown title="submittalType" data={this.state.SubmittalTypes} selectedValue={this.state.selectedSubmittalType}
                                   handleChange={event => this.handleChangeDropDown(event, "submittalType", false, "", "", "", "selectedSubmittalType")} />
                               </div>
-                              <div className="linebylineInput valid-input">
+                              <div className="linebylineInput fullInputWidth">
                                 <label className="control-label">
                                   {Resources.sharedSettings[currentLanguage]}
                                 </label>

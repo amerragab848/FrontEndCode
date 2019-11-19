@@ -3,8 +3,7 @@ import React, { Component, Fragment } from "react";
 import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import ReactTable from "react-table";
-// import "react-table/react-table.css";
+import ReactTable from "react-table"; 
 import dataservice from "../../Dataservice";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
@@ -962,7 +961,7 @@ class addEditModificationDrawing extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="linebylineInput valid-input">
+                                    <div className="linebylineInput fullInputWidth">
                                         <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.refNo && touched.refNo ? (" has-error") : !errors.refNo && touched.refNo ? (" has-success") : " ")} >
                                             <input name='refNo' className="form-control fsadfsadsa"
