@@ -136,7 +136,7 @@ class CollectedInvoices extends Component {
             const total = sumBy(result, function (item) {
                 return item.total
             });
- 
+
             this.setState({
                 rows: result || [],
                 isLoading: false,
@@ -225,7 +225,7 @@ class CollectedInvoices extends Component {
                                             </Form>
                                         )}
                                     </Formik>
-                                    <div style={{display: 'flex', flexDirection: 'column'}} className={"grid-container " + (this.state.rows.length === 0 ? "griddata__load" : " ")}>
+                                    <div style={{ display: 'flex', flexDirection: 'column' }} className={"grid-container " + (this.state.rows.length === 0 ? "griddata__load" : " ")}>
                                         {this.state.rows.length > 0 ?
                                             <>
                                                 <div className="reportChart__charts">

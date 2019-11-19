@@ -2392,7 +2392,7 @@ var routes = [
     },
     {
         route: "overTimeRpt",
-        moduleId: "reportCenter/overTimeRpt",
+        moduleId: "TimeSheet/overTimeRpt",
         title: "overTimeRpt",
         nav: true,
         settings: { HumanResources: true, permission: 3708, order: 2 }
@@ -2479,7 +2479,7 @@ var routes = [
     },
     {
         route: "overTime",
-        moduleId: "reportCenter/overTime",
+        moduleId: "TimeSheet/OverTimeReport",
         title: "overTimeSheet",
         nav: true,
         settings: { HumanResources: true, permission: 3710, order: 4 }
@@ -2507,7 +2507,7 @@ var routes = [
     },
     {
         route: "projectTypesTimeSheet",
-        moduleId: "reportCenter/projectTypesTimeSheet",
+        moduleId: "TimeSheet/ProjectTypesTimeSheet",
         title: "projectTypesTimeSheet",
         nav: true,
         settings: { HumanResources: true, permission: 3707, order: 1 }
