@@ -4,7 +4,8 @@ import Api from "../../api";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import moment from "moment";
 import Resources from "../../resources.json";
-import _ from "lodash";
+import find from "lodash/find";
+import filter from "lodash/filter";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { withRouter } from "react-router-dom";
@@ -29,28 +30,17 @@ import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const meetingAgendaValidation = Yup.object().shape({
-    meetingAgenda: Yup.string().required(
-        Resources["subjectRequired"][currentLanguage]
-    )
+    meetingAgenda: Yup.string().required(Resources["subjectRequired"][currentLanguage])
 });
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(
-        Resources["subjectRequired"][currentLanguage]
-    ),
-    calledByContact: Yup.string().required(
-        Resources["calledByContactRequired"][currentLanguage]
-    ),
-    facilitatorContact: Yup.string().required(
-        Resources["facilitatorContactReuired"][currentLanguage]
-    ),
-    noteTakerContact: Yup.string().required(
-        Resources["noteTakerContactRequired"][currentLanguage]
-    )
+    subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
+    calledByContact: Yup.string().required(Resources["calledByContactRequired"][currentLanguage]),
+    facilitatorContact: Yup.string().required(Resources["facilitatorContactReuired"][currentLanguage]),
+    noteTakerContact: Yup.string().required(Resources["noteTakerContactRequired"][currentLanguage])
 });
 
 const attendeesValidationSchema = Yup.object().shape({
@@ -102,11 +92,7 @@ class meetingAgendaAddEdit extends Component {
         for (let param of query.entries()) {
             if (index === 0) {
                 try {
-                    let obj = JSON.parse(
-                        CryptoJS.enc.Base64.parse(param[1]).toString(
-                            CryptoJS.enc.Utf8
-                        )
-                    );
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
@@ -289,11 +275,7 @@ class meetingAgendaAddEdit extends Component {
             ],
             document: {}
         };
-        if (
-            !Config.IsAllow(452) &&
-            !Config.IsAllow(453) &&
-            !Config.IsAllow(455)
-        ) {
+        if (!Config.IsAllow(452) && !Config.IsAllow(453) && !Config.IsAllow(455)) {
             toast.warning(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(this.state.perviousRoute);
         }
@@ -324,11 +306,7 @@ class meetingAgendaAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        DataService.GetDataList(
-            "GetProjectProjectsCompaniesForList?projectId=" + projectId,
-            "companyName",
-            "companyId"
-        ).then(res => {
+        DataService.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId").then(res => {
             if (isEdit) {
                 let calledByCompanyId = this.state.document.calledByCompanyId;
 
@@ -339,19 +317,11 @@ class meetingAgendaAddEdit extends Component {
                             value: calledByCompanyId
                         }
                     });
-                    this.fillSubDropDownInEdit(
-                        "GetContactsByCompanyId",
-                        "companyId",
-                        calledByCompanyId,
-                        "calledByContactId",
-                        "calledByContactName",
-                        "selectedCalledByContact",
-                        "calledContacts"
-                    );
+
+                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", calledByCompanyId, "calledByContactId", "calledByContactName", "selectedCalledByContact", "calledContacts");
                 }
 
-                let facilitatorCompanyId = this.state.document
-                    .facilitatorCompanyId;
+                let facilitatorCompanyId = this.state.document.facilitatorCompanyId;
 
                 if (facilitatorCompanyId) {
                     this.setState({
@@ -360,15 +330,8 @@ class meetingAgendaAddEdit extends Component {
                             value: facilitatorCompanyId
                         }
                     });
-                    this.fillSubDropDownInEdit(
-                        "GetContactsByCompanyId",
-                        "companyId",
-                        facilitatorCompanyId,
-                        "facilitatorContactId",
-                        "facilitatorContactName",
-                        "selectedFacilitatorContact",
-                        "facilitatorContacts"
-                    );
+
+                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", facilitatorCompanyId, "facilitatorContactId", "facilitatorContactName", "selectedFacilitatorContact", "facilitatorContacts");
                 }
 
                 let noteTakerCompanyId = this.state.document.noteTakerCompanyId;
@@ -380,15 +343,7 @@ class meetingAgendaAddEdit extends Component {
                             value: noteTakerCompanyId
                         }
                     });
-                    this.fillSubDropDownInEdit(
-                        "GetContactsByCompanyId",
-                        "companyId",
-                        noteTakerCompanyId,
-                        "noteTakerContactId",
-                        "noteTakerContactName",
-                        "selectedNoteTakerContact",
-                        "noteTakerContacts"
-                    );
+                    this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", noteTakerCompanyId, "noteTakerContactId", "noteTakerContactName", "selectedNoteTakerContact", "noteTakerContacts");
                 }
             }
             this.setState({ CompanyData: [...res], isLoading: false });
@@ -398,44 +353,23 @@ class meetingAgendaAddEdit extends Component {
     componentDidMount() {
         if (this.state.docId > 0) {
             this.setState({ isLoading: true });
-            this.props.actions
-                .documentForEdit(
-                    "GetCommunicationMeetingAgendaForEdit?id=" +
-                    this.state.docId,
-                    this.state.docTypeId,
-                    "meetingAganda"
-                )
-                .then(() => {
-                    this.setState({
-                        agendaId: this.state.docId,
-                        isLoading: false,
-                        showForm: true
-                    });
-                    this.checkDocumentIsView();
-                    this.getTabelData();
+            this.props.actions.documentForEdit("GetCommunicationMeetingAgendaForEdit?id=" + this.state.docId, this.state.docTypeId, "meetingAganda").then(() => {
+                this.setState({
+                    agendaId: this.state.docId,
+                    isLoading: false,
+                    showForm: true
                 });
+                this.checkDocumentIsView();
+                this.getTabelData();
+            });
         } else {
             this.props.actions.documentForAdding();
-            DataService.GetDataList(
-                "GetCommunicationMeetingMinutesForAgenda?projectId=" +
-                this.state.projectId,
-                "subject",
-                "id"
-            ).then(res => {
+            DataService.GetDataList("GetCommunicationMeetingMinutesForAgenda?projectId=" + this.state.projectId, "subject", "id").then(res => {
                 this.setState({ meetingAgenda: res });
             });
             let cmi = Config.getPayload().cmi;
             let cni = Config.getPayload().cni;
-            Api.get(
-                "GetNextArrangeMainDoc?projectId=" +
-                this.state.projectId +
-                "&docType=" +
-                this.state.docTypeId +
-                "&companyId=" +
-                cmi +
-                "&contactId=" +
-                cni
-            ).then(res => {
+            Api.get("GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + cmi + "&contactId=" + cni).then(res => {
                 this.setState({
                     document: { ...this.state.document, arrange: res },
                     isLoading: false
@@ -464,12 +398,8 @@ class meetingAgendaAddEdit extends Component {
             };
             this.setState({ document });
         }
-        DataService.GetDataList(
-            "GetProjectProjectsCompaniesForList?projectId=" +
-            this.state.projectId,
-            "companyName",
-            "companyId"
-        ).then(res => {
+
+        DataService.GetDataList("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId").then(res => {
             this.setState({ Companies: res, isLoading: false });
         });
     }
@@ -538,8 +468,14 @@ class meetingAgendaAddEdit extends Component {
             });
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
         if (prevProps.showModal !== this.props.showModal) {
@@ -547,34 +483,26 @@ class meetingAgendaAddEdit extends Component {
         }
     }
 
-    componentWillReceiveProps(props, state) {
-        if (props.document && props.document.id > 0) {
-            this.setState(
-                {
-                    document: { ...props.document },
-                    step_1_Validation: validationSchema
-                },
-                function () {
-                    let docDate =
-                        this.state.document.docDate != null
-                            ? moment(this.state.document.docDate).format(
-                                "YYYY-MM-DD"
-                            )
-                            : moment().format("YYYY-MM-DD");
-                    this.setState({
-                        document: { ...this.state.document, docDate: docDate }
-                    });
-                }
-            );
-            this.fillDropDowns(true);
-            this.checkDocumentIsView();
-        }
+    static getDerivedStateFromProps(nextProps, state) {
 
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+
+            let docDate = state.document.docDate != null ? moment(state.document.docDate).format("YYYY-MM-DD") : moment().format("YYYY-MM-DD");
+
+            return {
+                document: { ...nextProps.document, docDate: docDate },
+                step_1_Validation: validationSchema
+            };
+        }
+        return null;
     }
 
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
         this.props.actions.documentForAdding();
+        this.setState({
+            docId: 0
+        });
     }
 
     viewAttachments() {
@@ -636,9 +564,11 @@ class meetingAgendaAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
     };
+
     changeCurrentStep = stepNo => {
         this.setState({ CurrStep: stepNo });
     };
+
     addEditTopics = edit => {
         this.setState({ isLoading: true });
 
@@ -667,7 +597,7 @@ class meetingAgendaAddEdit extends Component {
             if (edit) {
                 let id = this.state.topic.id;
 
-                let topics = _.filter(this.state.topics, function (x) {
+                let topics = filter(this.state.topics, function (x) {
                     return x.id !== id;
                 });
 
@@ -736,15 +666,13 @@ class meetingAgendaAddEdit extends Component {
             agendaId: this.state.agendaId
         };
 
-        let url = this.state.showPopUp
-            ? "EditCommunicationMeetingAgendaAttendees"
-            : "AddCommunicationMeetingAgendaAttendees";
+        let url = this.state.showPopUp ? "EditCommunicationMeetingAgendaAttendees" : "AddCommunicationMeetingAgendaAttendees";
 
         Api.post(url, attendees).then(res => {
             let id = this.state.attendeesId;
 
             if (this.state.showPopUp) {
-                let attendess = _.filter(this.state.attendees, function (x) {
+                let attendess = filter(this.state.attendees, function (x) {
                     return x.id != id;
                 });
 
@@ -938,7 +866,7 @@ class meetingAgendaAddEdit extends Component {
         } else if (column.key != 0) {
             this.setState({ showPopUp: true, btnText: "save" });
             if (this.state.CurrStep == 2) {
-                let actionByCompany = _.find(this.state.Companies, function (
+                let actionByCompany = find(this.state.Companies, function (
                     company
                 ) {
                     return company.value == value.byWhomCompanyId;
@@ -949,7 +877,7 @@ class meetingAgendaAddEdit extends Component {
                     "contactName",
                     "id"
                 ).then(res => {
-                    let actionByContact = _.find(res, function (x) {
+                    let actionByContact = find(res, function (x) {
                         return x.value == value.byWhomContactId;
                     });
                     this.setState({
@@ -1028,13 +956,7 @@ class meetingAgendaAddEdit extends Component {
             );
         } else if (this.state.docId > 0) {
             btn = (
-                <button
-                    className={
-                        this.state.isViewMode === true
-                            ? "primaryBtn-1 btn meduimBtn disNone"
-                            : "primaryBtn-1 btn meduimBtn"
-                    }
-                    type="submit">
+                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn meduimBtn disNone" : "primaryBtn-1 btn meduimBtn"} type="submit">
                     {Resources.next[currentLanguage]}
                 </button>
             );
@@ -1437,17 +1359,13 @@ class meetingAgendaAddEdit extends Component {
             <Fragment>
                 <div className="document-fields">
                     {this.state.isLoading ? <LoadingSection /> : null}
-                    <Formik
-                        validationSchema={this.state.step_1_Validation}
+                    <Formik validationSchema={this.state.step_1_Validation}
                         initialValues={{
                             meetingAgenda: "",
                             subject: this.state.document.subject,
-                            calledByContact: this.state.document
-                                .calledByContactName,
-                            facilitatorContact: this.state.document
-                                .facilitatorContactName,
-                            noteTakerContact: this.state.document
-                                .noteTakerContactName
+                            calledByContact: this.state.document.calledByContactName,
+                            facilitatorContact: this.state.document.facilitatorContactName,
+                            noteTakerContact: this.state.document.noteTakerContactName
                         }}
                         enableReinitialize={true}
                         onSubmit={values => {
@@ -1482,513 +1400,451 @@ class meetingAgendaAddEdit extends Component {
                                 });
                             }
                         }}>
-                        {({
-                            errors,
-                            touched,
-                            handleBlur,
-                            handleChange,
-                            handleSubmit,
-                            setFieldTouched,
-                            setFieldValue
-                        }) => (
-                                <Form
-                                    id="MinutesOfMeeting"
-                                    className="proForm datepickerContainer"
-                                    noValidate="novalidate"
-                                    onSubmit={handleSubmit}>
-                                    {this.state.docId == 0 ? (
+                        {({ values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldTouched, setFieldValue }) => (
+                            <Form id="MinutesOfMeeting" className="proForm datepickerContainer" noValidate="novalidate" onSubmit={handleSubmit}>
+                                {this.state.docId === 0 ? (
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">
+                                            {Resources["meetingMinutes"][currentLanguage]}
+                                        </label>
+                                        <DropdownMelcous
+                                            name="meetingAgenda"
+                                            data={this.state.meetingAgenda}
+                                            handleChange={e => {
+                                                this.setState({
+                                                    showForm: true,
+                                                    step_1_Validation: validationSchema,
+                                                    selectedMeetingAgenda: e,
+                                                    document: {
+                                                        ...this.state.document,
+                                                        meetingMinutesId:
+                                                            e.value
+                                                    }
+                                                });
+                                            }}
+                                            placeholder="meetingAgenda"
+                                            selectedValue={
+                                                this.state.selectedMeetingAgenda
+                                            }
+                                            onChange={setFieldValue}
+                                            onBlur={setFieldTouched}
+                                            error={errors.meetingAgenda}
+                                            touched={touched.meetingAgenda}
+                                            index="meetingAgenda"
+                                            id="meetingAgenda"
+                                        />
+                                    </div>
+                                ) : null}
+                                <div className="linebylineInput valid-input alternativeDate">
+                                    <DatePicker
+                                        title="docDate"
+                                        startDate={this.state.document.docDate}
+                                        handleChange={e => this.handleChange("docDate", e)}
+                                    />
+                                </div>
+                                {!this.state.showForm ? (
+                                    <div className="slider-Btns fullWidthWrapper textLeft">
+                                        <button className="primaryBtn-1 btn">
+                                            {Resources["add"][currentLanguage]}
+                                        </button>
+                                    </div>
+                                ) : null}
+                                {this.state.showForm ? (
+                                    <Fragment>
+                                        <div className="proForm first-proform fullWidth_form">
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">
+                                                    {Resources["subject"][currentLanguage]}
+                                                </label>
+                                                <div className={"inputDev ui input " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
+                                                    <input name="subject" value={values.subject} className="form-control" id="subject"
+                                                        placeholder={Resources["subject"][currentLanguage]}
+                                                        autoComplete="off"
+                                                        onBlur={handleBlur}
+                                                        onChange={e => { handleChange(e); this.handleChange("subject", e.target.value); }}
+                                                    />
+                                                    {touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
+                                                </div>
+                                            </div>
+                                            <div className="linebylineInput">
+                                                <label data-toggle="tooltip" title={Resources["status"][currentLanguage]}
+                                                    className="control-label">
+                                                    {
+                                                        Resources["status"][currentLanguage]
+                                                    }
+                                                </label>
+                                                <div className="ui checkbox radio radioBoxBlue">
+                                                    <input
+                                                        type="radio"
+                                                        defaultChecked
+                                                        name="status"
+                                                        defaultChecked={
+                                                            this.state.document
+                                                                .status ===
+                                                                false
+                                                                ? null
+                                                                : "checked"
+                                                        }
+                                                        value="true"
+                                                        onChange={e =>
+                                                            this.handleChange(
+                                                                "status",
+                                                                "true"
+                                                            )
+                                                        }
+                                                    />
+                                                    <label>
+                                                        {
+                                                            Resources[
+                                                            "oppened"
+                                                            ][currentLanguage]
+                                                        }
+                                                    </label>
+                                                </div>
+                                                <div className="ui checkbox radio radioBoxBlue checked">
+                                                    <input
+                                                        type="radio"
+                                                        name="status"
+                                                        defaultChecked={
+                                                            this.state.document
+                                                                .status ===
+                                                                false
+                                                                ? "checked"
+                                                                : null
+                                                        }
+                                                        value="false"
+                                                        onChange={e =>
+                                                            this.handleChange(
+                                                                "status",
+                                                                "false"
+                                                            )
+                                                        }
+                                                    />
+                                                    <label>
+                                                        {" "}
+                                                        {
+                                                            Resources["closed"][
+                                                            currentLanguage
+                                                            ]
+                                                        }
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">
                                                 {
-                                                    Resources["meetingMinutes"][
+                                                    Resources["arrange"][
+                                                    currentLanguage
+                                                    ]
+                                                }{" "}
+                                            </label>
+                                            <div
+                                                className={
+                                                    "ui input inputDev "
+                                                }>
+                                                <input
+                                                    name="arrange"
+                                                    className="form-control"
+                                                    id="arrange"
+                                                    placeholder={
+                                                        Resources["arrange"][
+                                                        currentLanguage
+                                                        ]
+                                                    }
+                                                    autoComplete="off"
+                                                    readOnly
+                                                    defaultValue={
+                                                        this.state.document
+                                                            .arrange
+                                                    }
+                                                    onChange={e =>
+                                                        this.handleChange(
+                                                            "arrange",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input linebylineInput__name">
+                                            <label className="control-label">
+                                                {
+                                                    Resources["handouts"][
                                                     currentLanguage
                                                     ]
                                                 }
                                             </label>
-                                            <DropdownMelcous
-                                                name="meetingAgenda"
-                                                data={this.state.meetingAgenda}
-                                                handleChange={e => {
-                                                    this.setState({
-                                                        showForm: true,
-                                                        step_1_Validation: validationSchema,
-                                                        selectedMeetingAgenda: e,
-                                                        document: {
-                                                            ...this.state.document,
-                                                            meetingMinutesId:
-                                                                e.value
-                                                        }
-                                                    });
-                                                }}
-                                                placeholder="meetingAgenda"
-                                                selectedValue={
-                                                    this.state.selectedMeetingAgenda
-                                                }
-                                                onChange={setFieldValue}
-                                                onBlur={setFieldTouched}
-                                                error={errors.meetingAgenda}
-                                                touched={touched.meetingAgenda}
-                                                index="meetingAgenda"
-                                                id="meetingAgenda"
-                                            />
-                                        </div>
-                                    ) : null}
-                                    <div className="linebylineInput valid-input alternativeDate">
-                                        <DatePicker
-                                            title="docDate"
-                                            startDate={this.state.document.docDate}
-                                            handleChange={e =>
-                                                this.handleChange("docDate", e)
-                                            }
-                                        />
-                                    </div>
-                                    {!this.state.showForm ? (
-                                        <div className="slider-Btns fullWidthWrapper textLeft">
-                                            <button className="primaryBtn-1 btn">
-                                                {Resources["add"][currentLanguage]}
-                                            </button>
-                                        </div>
-                                    ) : null}
-                                    {this.state.showForm ? (
-                                        <Fragment>
-                                            <div className="proForm first-proform fullWidth_form">
-                                                <div className="linebylineInput valid-input">
-                                                    <label className="control-label">
-                                                        {
-                                                            Resources["subject"][
-                                                            currentLanguage
-                                                            ]
-                                                        }{" "}
-                                                    </label>
-                                                    <div
-                                                        className={
-                                                            "inputDev ui input " +
-                                                            (errors.subject &&
-                                                                touched.subject
-                                                                ? "has-error"
-                                                                : !errors.subject &&
-                                                                    touched.subject
-                                                                    ? " has-success"
-                                                                    : " ")
-                                                        }>
-                                                        <input
-                                                            name="subject"
-                                                            defaultValue={
-                                                                this.state.document
-                                                                    .subject
-                                                            }
-                                                            className="form-control"
-                                                            id="subject"
-                                                            placeholder={
-                                                                Resources[
-                                                                "subject"
-                                                                ][currentLanguage]
-                                                            }
-                                                            autoComplete="off"
-                                                            onBlur={handleBlur}
-                                                            onChange={e => {
-                                                                handleChange(e);
-                                                                this.handleChange(
-                                                                    "subject",
-                                                                    e.target.value
-                                                                );
-                                                            }}
-                                                        />
-                                                        {touched.subject ? (
-                                                            <em className="pError">
-                                                                {errors.subject}
-                                                            </em>
-                                                        ) : null}
-                                                    </div>
-                                                </div>
-                                                <div className="linebylineInput">
-                                                    <label
-                                                        data-toggle="tooltip"
-                                                        title={
-                                                            Resources["status"][
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        className="control-label">
-                                                        {" "}
-                                                        {
-                                                            Resources["status"][
-                                                            currentLanguage
-                                                            ]
-                                                        }{" "}
-                                                    </label>
-                                                    <div className="ui checkbox radio radioBoxBlue">
-                                                        <input
-                                                            type="radio"
-                                                            defaultChecked
-                                                            name="status"
-                                                            defaultChecked={
-                                                                this.state.document
-                                                                    .status ===
-                                                                    false
-                                                                    ? null
-                                                                    : "checked"
-                                                            }
-                                                            value="true"
-                                                            onChange={e =>
-                                                                this.handleChange(
-                                                                    "status",
-                                                                    "true"
-                                                                )
-                                                            }
-                                                        />
-                                                        <label>
-                                                            {
-                                                                Resources[
-                                                                "oppened"
-                                                                ][currentLanguage]
-                                                            }
-                                                        </label>
-                                                    </div>
-                                                    <div className="ui checkbox radio radioBoxBlue checked">
-                                                        <input
-                                                            type="radio"
-                                                            name="status"
-                                                            defaultChecked={
-                                                                this.state.document
-                                                                    .status ===
-                                                                    false
-                                                                    ? "checked"
-                                                                    : null
-                                                            }
-                                                            value="false"
-                                                            onChange={e =>
-                                                                this.handleChange(
-                                                                    "status",
-                                                                    "false"
-                                                                )
-                                                            }
-                                                        />
-                                                        <label>
-                                                            {" "}
-                                                            {
-                                                                Resources["closed"][
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="linebylineInput valid-input">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources["arrange"][
-                                                        currentLanguage
-                                                        ]
-                                                    }{" "}
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "ui input inputDev "
-                                                    }>
-                                                    <input
-                                                        name="arrange"
-                                                        className="form-control"
-                                                        id="arrange"
-                                                        placeholder={
-                                                            Resources["arrange"][
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        readOnly
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .arrange
-                                                        }
-                                                        onChange={e =>
-                                                            this.handleChange(
-                                                                "arrange",
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="linebylineInput valid-input linebylineInput__name">
-                                                <label className="control-label">
-                                                    {
+                                            <div
+                                                className={
+                                                    "ui input inputDev "
+                                                }>
+                                                <input
+                                                    name="handouts"
+                                                    className="form-control"
+                                                    id="handouts"
+                                                    placeholder={
                                                         Resources["handouts"][
                                                         currentLanguage
                                                         ]
-                                                    }{" "}
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "ui input inputDev "
-                                                    }>
-                                                    <input
-                                                        name="handouts"
-                                                        className="form-control"
-                                                        id="handouts"
-                                                        placeholder={
-                                                            Resources["handouts"][
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .handouts
-                                                        }
-                                                        onChange={e =>
-                                                            this.handleChange(
-                                                                "handouts",
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                    />
-                                                </div>
+                                                    }
+                                                    autoComplete="off"
+                                                    defaultValue={
+                                                        this.state.document
+                                                            .handouts
+                                                    }
+                                                    onChange={e =>
+                                                        this.handleChange(
+                                                            "handouts",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
                                             </div>
-                                            <div className="linebylineInput valid-input ">
-                                                <label className="control-label">
-                                                    {
+                                        </div>
+                                        <div className="linebylineInput valid-input ">
+                                            <label className="control-label">
+                                                {
+                                                    Resources["reference"][
+                                                    currentLanguage
+                                                    ]
+                                                }{" "}
+                                            </label>
+                                            <div
+                                                className={
+                                                    "ui input inputDev "
+                                                }>
+                                                <input
+                                                    name="refDoc"
+                                                    className="form-control"
+                                                    id="refDoc"
+                                                    placeholder={
                                                         Resources["reference"][
                                                         currentLanguage
                                                         ]
-                                                    }{" "}
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "ui input inputDev "
-                                                    }>
-                                                    <input
-                                                        name="refDoc"
-                                                        className="form-control"
-                                                        id="refDoc"
-                                                        placeholder={
-                                                            Resources["reference"][
-                                                            currentLanguage
-                                                            ]
+                                                    }
+                                                    autoComplete="off"
+                                                    defaultValue={
+                                                        this.state.document
+                                                            .refDoc
+                                                    }
+                                                    onChange={e =>
+                                                        this.handleChange(
+                                                            "refDoc",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input mix_dropdown">
+                                            <label className="control-label">
+                                                {
+                                                    Resources[
+                                                    "calledByCompany"
+                                                    ][currentLanguage]
+                                                }
+                                            </label>
+                                            <div className="supervisor__company">
+                                                <div className="super_name">
+                                                    <DropdownMelcous
+                                                        name="calledCompany"
+                                                        data={
+                                                            this.state.Companies
                                                         }
-                                                        autoComplete="off"
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .refDoc
-                                                        }
-                                                        onChange={e =>
-                                                            this.handleChange(
-                                                                "refDoc",
-                                                                e.target.value
+                                                        handleChange={e =>
+                                                            this.handleChangeDropDowns(
+                                                                e,
+                                                                "calledByCompanyName",
+                                                                "calledByCompanyId",
+                                                                "selectedCalledByCompany",
+                                                                "calledContacts",
+                                                                "selectedCalledByContact",
+                                                                "calledByContactRequired"
                                                             )
                                                         }
+                                                        placeholder="calledByCompany"
+                                                        selectedValue={
+                                                            this.state
+                                                                .selectedCalledByCompany
+                                                        }
+                                                        styles={CompanyDropdown} classDrop="companyName1 "
+                                                    />
+                                                </div>
+                                                <div className="super_company">
+                                                    <DropdownMelcous
+                                                        name="calledByContact"
+                                                        data={
+                                                            this.state
+                                                                .calledContacts
+                                                        }
+                                                        handleChange={e =>
+                                                            this.updateSelectedValue(
+                                                                e,
+                                                                "calledByContactName",
+                                                                "calledByContactId",
+                                                                "selectedCalledByContact"
+                                                            )
+                                                        }
+                                                        placeholder="calledByContact"
+                                                        selectedValue={
+                                                            this.state
+                                                                .selectedCalledByContact
+                                                        }
+                                                        onChange={setFieldValue}
+                                                        onBlur={setFieldTouched}
+                                                        error={
+                                                            errors.calledByContact
+                                                        }
+                                                        touched={
+                                                            touched.calledByContact
+                                                        }
+                                                        classDrop=" contactName1" styles={ContactDropdown}
                                                     />
                                                 </div>
                                             </div>
-                                            <div className="linebylineInput valid-input mix_dropdown">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources[
-                                                        "calledByCompany"
-                                                        ][currentLanguage]
-                                                    }
-                                                </label>
-                                                <div className="supervisor__company">
-                                                    <div className="super_name">
-                                                        <DropdownMelcous
-                                                            name="calledCompany"
-                                                            data={
-                                                                this.state.Companies
-                                                            }
-                                                            handleChange={e =>
-                                                                this.handleChangeDropDowns(
-                                                                    e,
-                                                                    "calledByCompanyName",
-                                                                    "calledByCompanyId",
-                                                                    "selectedCalledByCompany",
-                                                                    "calledContacts",
-                                                                    "selectedCalledByContact",
-                                                                    "calledByContactRequired"
-                                                                )
-                                                            }
-                                                            placeholder="calledByCompany"
-                                                            selectedValue={
-                                                                this.state
-                                                                    .selectedCalledByCompany
-                                                            }
-                                                            styles={CompanyDropdown} classDrop="companyName1 "
-                                                        />
-                                                    </div>
-                                                    <div className="super_company">
-                                                        <DropdownMelcous
-                                                            name="calledByContact"
-                                                            data={
-                                                                this.state
-                                                                    .calledContacts
-                                                            }
-                                                            handleChange={e =>
-                                                                this.updateSelectedValue(
-                                                                    e,
-                                                                    "calledByContactName",
-                                                                    "calledByContactId",
-                                                                    "selectedCalledByContact"
-                                                                )
-                                                            }
-                                                            placeholder="calledByContact"
-                                                            selectedValue={
-                                                                this.state
-                                                                    .selectedCalledByContact
-                                                            }
-                                                            onChange={setFieldValue}
-                                                            onBlur={setFieldTouched}
-                                                            error={
-                                                                errors.calledByContact
-                                                            }
-                                                            touched={
-                                                                touched.calledByContact
-                                                            }
-                                                            classDrop=" contactName1" styles={ContactDropdown}
-                                                        />
-                                                    </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input mix_dropdown">
+                                            <label className="control-label">
+                                                {
+                                                    Resources[
+                                                    "facilitatorContact"
+                                                    ][currentLanguage]
+                                                }
+                                            </label>
+                                            <div className="supervisor__company">
+                                                <div className="super_name">
+                                                    <DropdownMelcous
+                                                        name="facilitatorCompany"
+                                                        data={
+                                                            this.state.Companies
+                                                        }
+                                                        handleChange={e =>
+                                                            this.handleChangeDropDowns(
+                                                                e,
+                                                                "facilitatorCompanyName",
+                                                                "facilitatorCompanyId",
+                                                                "selectedFacilitatorCompany",
+                                                                "facilitatorContacts",
+                                                                "selectedFacilitatorContact",
+                                                                "facilitatorContactReuired"
+                                                            )
+                                                        }
+                                                        placeholder="facilitatorCompany"
+                                                        selectedValue={
+                                                            this.state
+                                                                .selectedFacilitatorCompany
+                                                        }
+                                                        styles={CompanyDropdown} classDrop="companyName1 "
+                                                    />
+                                                </div>
+                                                <div className="super_company">
+                                                    <DropdownMelcous
+                                                        name="facilitatorContact"
+                                                        data={
+                                                            this.state
+                                                                .facilitatorContacts
+                                                        }
+                                                        handleChange={e =>
+                                                            this.updateSelectedValue(
+                                                                e,
+                                                                "facilitatorContactName",
+                                                                "facilitatorContactId",
+                                                                "selectedFacilitatorContact"
+                                                            )
+                                                        }
+                                                        placeholder="facilitatorContact"
+                                                        selectedValue={
+                                                            this.state
+                                                                .selectedFacilitatorContact
+                                                        }
+                                                        onChange={setFieldValue}
+                                                        onBlur={setFieldTouched}
+                                                        error={
+                                                            errors.facilitatorContact
+                                                        }
+                                                        touched={
+                                                            touched.facilitatorContact
+                                                        }
+                                                        classDrop=" contactName1" styles={ContactDropdown}
+                                                    />
                                                 </div>
                                             </div>
-                                            <div className="linebylineInput valid-input mix_dropdown">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources[
-                                                        "facilitatorContact"
-                                                        ][currentLanguage]
-                                                    }
-                                                </label>
-                                                <div className="supervisor__company">
-                                                    <div className="super_name">
-                                                        <DropdownMelcous
-                                                            name="facilitatorCompany"
-                                                            data={
-                                                                this.state.Companies
-                                                            }
-                                                            handleChange={e =>
-                                                                this.handleChangeDropDowns(
-                                                                    e,
-                                                                    "facilitatorCompanyName",
-                                                                    "facilitatorCompanyId",
-                                                                    "selectedFacilitatorCompany",
-                                                                    "facilitatorContacts",
-                                                                    "selectedFacilitatorContact",
-                                                                    "facilitatorContactReuired"
-                                                                )
-                                                            }
-                                                            placeholder="facilitatorCompany"
-                                                            selectedValue={
-                                                                this.state
-                                                                    .selectedFacilitatorCompany
-                                                            }
-                                                            styles={CompanyDropdown} classDrop="companyName1 "
-                                                        />
-                                                    </div>
-                                                    <div className="super_company">
-                                                        <DropdownMelcous
-                                                            name="facilitatorContact"
-                                                            data={
-                                                                this.state
-                                                                    .facilitatorContacts
-                                                            }
-                                                            handleChange={e =>
-                                                                this.updateSelectedValue(
-                                                                    e,
-                                                                    "facilitatorContactName",
-                                                                    "facilitatorContactId",
-                                                                    "selectedFacilitatorContact"
-                                                                )
-                                                            }
-                                                            placeholder="facilitatorContact"
-                                                            selectedValue={
-                                                                this.state
-                                                                    .selectedFacilitatorContact
-                                                            }
-                                                            onChange={setFieldValue}
-                                                            onBlur={setFieldTouched}
-                                                            error={
-                                                                errors.facilitatorContact
-                                                            }
-                                                            touched={
-                                                                touched.facilitatorContact
-                                                            }
-                                                            classDrop=" contactName1" styles={ContactDropdown}
-                                                        />
-                                                    </div>
+                                        </div>
+                                        <div className="linebylineInput valid-input mix_dropdown">
+                                            <label className="control-label">
+                                                {
+                                                    Resources[
+                                                    "noteTakerCompany"
+                                                    ][currentLanguage]
+                                                }
+                                            </label>
+                                            <div className="supervisor__company">
+                                                <div className="super_name">
+                                                    <DropdownMelcous
+                                                        name="noteTakerCompany"
+                                                        data={
+                                                            this.state.Companies
+                                                        }
+                                                        handleChange={e =>
+                                                            this.handleChangeDropDowns(
+                                                                e,
+                                                                "noteTakerCompanyName",
+                                                                "noteTakerCompanyId",
+                                                                "selectedNoteTakerCompany",
+                                                                "noteTakerContacts",
+                                                                "selectedNoteTakerContact",
+                                                                "noteTakerContactRequired"
+                                                            )
+                                                        }
+                                                        placeholder="noteTakerCompany"
+                                                        selectedValue={
+                                                            this.state
+                                                                .selectedNoteTakerCompany
+                                                        }
+                                                        styles={CompanyDropdown} classDrop="companyName1 "
+                                                    />
+                                                </div>
+                                                <div className="super_company">
+                                                    <DropdownMelcous
+                                                        name="noteTakerContact"
+                                                        data={
+                                                            this.state
+                                                                .noteTakerContacts
+                                                        }
+                                                        handleChange={e =>
+                                                            this.updateSelectedValue(
+                                                                e,
+                                                                "noteTakerContactName",
+                                                                "noteTakerContactId",
+                                                                "selectedNoteTakerContact"
+                                                            )
+                                                        }
+                                                        placeholder="noteTakerContact"
+                                                        selectedValue={
+                                                            this.state
+                                                                .selectedNoteTakerContact
+                                                        }
+                                                        onChange={setFieldValue}
+                                                        onBlur={setFieldTouched}
+                                                        error={
+                                                            errors.noteTakerContact
+                                                        }
+                                                        touched={
+                                                            touched.noteTakerContact
+                                                        }
+                                                        classDrop=" contactName1" styles={ContactDropdown}
+                                                    />
                                                 </div>
                                             </div>
-                                            <div className="linebylineInput valid-input mix_dropdown">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources[
-                                                        "noteTakerCompany"
-                                                        ][currentLanguage]
-                                                    }
-                                                </label>
-                                                <div className="supervisor__company">
-                                                    <div className="super_name">
-                                                        <DropdownMelcous
-                                                            name="noteTakerCompany"
-                                                            data={
-                                                                this.state.Companies
-                                                            }
-                                                            handleChange={e =>
-                                                                this.handleChangeDropDowns(
-                                                                    e,
-                                                                    "noteTakerCompanyName",
-                                                                    "noteTakerCompanyId",
-                                                                    "selectedNoteTakerCompany",
-                                                                    "noteTakerContacts",
-                                                                    "selectedNoteTakerContact",
-                                                                    "noteTakerContactRequired"
-                                                                )
-                                                            }
-                                                            placeholder="noteTakerCompany"
-                                                            selectedValue={
-                                                                this.state
-                                                                    .selectedNoteTakerCompany
-                                                            }
-                                                            styles={CompanyDropdown} classDrop="companyName1 "
-                                                        />
-                                                    </div>
-                                                    <div className="super_company">
-                                                        <DropdownMelcous
-                                                            name="noteTakerContact"
-                                                            data={
-                                                                this.state
-                                                                    .noteTakerContacts
-                                                            }
-                                                            handleChange={e =>
-                                                                this.updateSelectedValue(
-                                                                    e,
-                                                                    "noteTakerContactName",
-                                                                    "noteTakerContactId",
-                                                                    "selectedNoteTakerContact"
-                                                                )
-                                                            }
-                                                            placeholder="noteTakerContact"
-                                                            selectedValue={
-                                                                this.state
-                                                                    .selectedNoteTakerContact
-                                                            }
-                                                            onChange={setFieldValue}
-                                                            onBlur={setFieldTouched}
-                                                            error={
-                                                                errors.noteTakerContact
-                                                            }
-                                                            touched={
-                                                                touched.noteTakerContact
-                                                            }
-                                                            classDrop=" contactName1" styles={ContactDropdown}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="slider-Btns">
-                                                {this.showBtnsSaving()}
-                                            </div>
-                                        </Fragment>
-                                    ) : null}
-                                </Form>
-                            )}
+                                        </div>
+                                        <div className="slider-Btns">
+                                            {this.showBtnsSaving()}
+                                        </div>
+                                    </Fragment>
+                                ) : null}
+                            </Form>
+                        )}
                     </Formik>
                 </div>
                 <div className="doc-pre-cycle">
@@ -2078,57 +1934,15 @@ class meetingAgendaAddEdit extends Component {
             <Fragment>
                 <div className="mainContainer">
                     <div
-                        className={
-                            this.state.isViewMode === true
-                                ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
-                                : "documents-stepper noTabs__document one__tab one_step"
-                        }>
-                        <HeaderDocument
-                            projectName={projectName}
-                            isViewMode={this.state.isViewMode}
-                            perviousRoute={this.state.perviousRoute}
-                            docTitle={
-                                Resources.meetingAgendaLog[currentLanguage]
-                            }
-                            moduleTitle={
-                                Resources["communication"][currentLanguage]
-                            }
-                        />
+                        className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
+                        <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.meetingAgendaLog[currentLanguage]} moduleTitle={Resources["communication"][currentLanguage]} />
                         <div className="doc-container">
                             <div className="step-content">
                                 <Fragment>
-                                    {this.state.CurrStep == 0
-                                        ? Step_1
-                                        : this.state.CurrStep == 1
-                                            ? Step_2
-                                            : Step_3}
-                                    <div
-                                        className="largePopup largeModal "
-                                        style={{
-                                            display: this.state.showPopUp
-                                                ? "block"
-                                                : "none"
-                                        }}>
-                                        <SkyLight
-                                            hideOnOverlayClicked
-                                            ref={ref =>
-                                                (this.simpleDialog1 = ref)
-                                            }
-                                            title={
-                                                Resources.editTitle[
-                                                currentLanguage
-                                                ] +
-                                                " - " +
-                                                Resources.meetingAgendaLog[
-                                                currentLanguage
-                                                ]
-                                            }
-                                            beforeClose={
-                                                this._executeBeforeModalClose
-                                            }>
-                                            {this.state.CurrStep == 1
-                                                ? attendeesContent
-                                                : topicContent}
+                                    {this.state.CurrStep === 0 ? Step_1 : this.state.CurrStep === 1 ? Step_2 : Step_3}
+                                    <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? "block" : "none" }}>
+                                        <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog1 = ref)} title={Resources.editTitle[currentLanguage] + " - " + Resources.meetingAgendaLog[currentLanguage]} beforeClose={this._executeBeforeModalClose}>
+                                            {this.state.CurrStep == 1 ? attendeesContent : topicContent}
                                         </SkyLight>
                                     </div>
                                     {this.props.changeStatus === true ? (
@@ -2168,10 +1982,7 @@ class meetingAgendaAddEdit extends Component {
 
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={
-                                Resources["smartDeleteMessage"][currentLanguage]
-                                    .content
-                            }
+                            title={Resources["smartDeleteMessage"][currentLanguage].content}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}
@@ -2205,7 +2016,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(meetingAgendaAddEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(meetingAgendaAddEdit));

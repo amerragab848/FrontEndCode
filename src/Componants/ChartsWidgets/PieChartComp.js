@@ -1,6 +1,6 @@
-import React, { Component } from 'react'; 
+import React, { Component } from 'react';
 
-import { Donut, ResponsiveContainer } from 'britecharts-react' 
+import { Donut, ResponsiveContainer } from 'britecharts-react'
 import '../../../node_modules/britecharts-react/node_modules/britecharts/dist/css/britecharts.css'
 import Api from '../../api';
 
@@ -25,46 +25,59 @@ class PieChartComp extends Component {
             data: {},
             isAnimated: true,
             showLegend: false,
-            highlightedSlice: null
+            highlightedSlice: null,
+            customRows: []
         }
 
     }
+
+
+
+
     componentDidMount() {
+        if (this.props.reports == undefined) {
+            this.setState({ isLoading: true });
+            Api.get(this.props.api).then(results => {
+                if (results)
+                    this.GenerateDataFromProps(results);
+            }).catch((ex) => {
+                this.setState({ isLoading: false });
+            });
+        }
+        else {
+            this.GenerateDataFromProps(this.props.rows)
+        }
+    }
 
+    GenerateDataFromProps = (res) => {
         let dataChart = [];
-
-        this.setState({ isLoading: true }); 
-        Api.get(this.props.api).then(res => {
-            if (res) {
-                let total = 0;
-                res.map((obj, index) => {
-                    dataChart.push({
-                        quantity: obj[this.props.y],
-                        name: obj[this.props.name],
-                        id: index
-                    });
-                    total = total + obj[this.props.y];
-                    return null;
-                })
-                let index = 0;//res.length - 1;
-
-                let data = {
-                    percentage: ((dataChart[index].quantity / total) * 100).toFixed(1),
-                    name: dataChart[index].name,
-                    quantity: dataChart[index].quantity,
-                    id: dataChart[index].id
-                }
-                this.setState({
-                    data: data,
-                    highlightedSlice: dataChart[index].id,
-                    showLegend: true
+        if (res) {
+            let total = 0;
+            res.map((obj, index) => {
+                dataChart.push({
+                    quantity: obj[this.props.y],
+                    name: obj[this.props.name],
+                    id: index
                 });
-            }
-            this.setState({ isLoading: false, dataChart: dataChart });
+                total = total + obj[this.props.y];
+                return null;
+            })
+            let index = 0;//res.length - 1;
 
-        }).catch((ex) => {
-            this.setState({ isLoading: false });
-        });
+            let data = {
+                percentage: ((dataChart[index].quantity / total) * 100).toFixed(1),
+                name: dataChart[index].name,
+                quantity: dataChart[index].quantity,
+                id: dataChart[index].id
+            }
+            this.setState({
+                data: data,
+                highlightedSlice: dataChart[index].id,
+                showLegend: true
+            });
+        }
+        this.setState({ isLoading: false, dataChart: dataChart });
+
     }
 
     logMouseOver = (e) => {
@@ -103,7 +116,7 @@ class PieChartComp extends Component {
                                         <p id="legenbd__teext" style={{ width: width / 2 }}>
                                             <span className="chartName">{this.state.data.name}</span>
                                             <span className="percentage">{this.state.data.percentage + '%'}</span>
-                                            <span className="totalAmount">{this.state.data.quantity.toFixed(1)}</span>
+                                            <span className="totalAmount">{this.state.data.quantity ? this.state.data.quantity.toFixed(1) : 0}</span>
                                         </p>
                                         : null}
                                 </div>

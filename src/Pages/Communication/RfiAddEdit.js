@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import find from "lodash/find";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -38,8 +39,6 @@ let isApproveMode = false;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-
-const _ = require('lodash');
 
 class RfiAddEdit extends Component {
 
@@ -118,65 +117,7 @@ class RfiAddEdit extends Component {
     }
 
     componentDidMount() {
-        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-        for (var i = 0; i < links.length; i++) {
-            if ((i + 1) % 2 == 0) {
-                links[i].classList.add('even');
-            }
-            else {
-                links[i].classList.add('odd');
-            }
-        }
-        this.checkDocumentIsView();
-    };
 
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id) {
-
-            nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-            nextProps.document.requiredDate = nextProps.document.requiredDate != null ? moment(nextProps.document.requiredDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
-
-            this.setState({
-                document: nextProps.document,
-                hasWorkflow: nextProps.hasWorkflow,
-                message: nextProps.document.rfi,
-                replyMessage: nextProps.document.answer,
-            });
-
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
-        }
-    };
-
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-            this.checkDocumentIsView();
-        }
-    }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(76))) {
-                this.setState({ isViewMode: true });
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(76)) { 
-                if (this.props.hasWorkflow == false && Config.IsAllow(76)) {
-                    if (this.props.document.status == true && Config.IsAllow(76)) {
-                        this.setState({ isViewMode: false });
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            }
-        }
-        else {
-            this.setState({ isViewMode: false });
-        }
-    }
-
-    componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetCommunicationRfiForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'communicationRFI');
@@ -213,7 +154,71 @@ class RfiAddEdit extends Component {
             this.setState({ document: rfiDocument });
             this.fillDropDowns(false);
         }
+
         this.props.actions.documentForAdding();
+
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+        for (var i = 0; i < links.length; i++) {
+            if ((i + 1) % 2 == 0) {
+                links[i].classList.add('even');
+            }
+            else {
+                links[i].classList.add('odd');
+            }
+        }
+        this.checkDocumentIsView();
+    };
+
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+
+            nextProps.document.docDate = nextProps.document.docDate != null ? moment(nextProps.document.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+            nextProps.document.requiredDate = nextProps.document.requiredDate != null ? moment(nextProps.document.requiredDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+
+            return {
+                document: nextProps.document,
+                hasWorkflow: nextProps.hasWorkflow,
+                message: nextProps.document.rfi,
+                replyMessage: nextProps.document.answer,
+            };
+        }
+
+        return null
+    };
+
+    componentDidUpdate(prevProps, prevState) {
+
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+            this.checkDocumentIsView();
+        }
+    }
+
+    checkDocumentIsView() {
+        if (this.props.changeStatus === true) {
+            if (!(Config.IsAllow(76))) {
+                this.setState({ isViewMode: true });
+            }
+            if (this.state.isApproveMode != true && Config.IsAllow(76)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(76)) {
+                    if (this.props.document.status == true && Config.IsAllow(76)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            }
+        }
+        else {
+            this.setState({ isViewMode: false });
+        }
     }
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
@@ -226,7 +231,7 @@ class RfiAddEdit extends Component {
 
                 let toSubField = this.state.document[subField];
 
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
 
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
@@ -261,6 +266,7 @@ class RfiAddEdit extends Component {
                 companies: [...result]
             });
         });
+
         //discplines
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
@@ -278,9 +284,10 @@ class RfiAddEdit extends Component {
                 discplines: [...result]
             });
         });
+
         //area       
-         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
- 
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", "title", "id", 'defaultLists', "area", "listType").then(result => {
+
             if (isEdit) {
                 let areaId = this.props.document.area;
                 if (areaId) {
@@ -296,6 +303,7 @@ class RfiAddEdit extends Component {
                 areas: [...result]
             });
         });
+
         //location
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", "title", "id", 'defaultLists', "location", "listType").then(result => {
             if (isEdit) {
@@ -393,8 +401,8 @@ class RfiAddEdit extends Component {
         });
 
         if (field == "toContactId") {
-            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
-            
+            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                 updated_document.arrange = res.arrange;
                 if (Config.getPublicConfiguartion().refAutomatic === true) {
@@ -527,7 +535,7 @@ class RfiAddEdit extends Component {
                                                             <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                                                 <input name='subject' className="form-control fsadfsadsa" id="subject"
                                                                     placeholder={Resources.subject[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.subject}
+                                                                    autoComplete='off' value={this.state.document.subject || ''}
                                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                                     onChange={(e) => this.handleChange(e, 'subject')} />
                                                                 {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
@@ -576,18 +584,18 @@ class RfiAddEdit extends Component {
                                                             <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                             <div className={"ui input inputDev " + (errors.arrange && touched.arrange ? (" has-error") : " ")}>
                                                                 <input type="text" className="form-control" id="arrange" readOnly
-                                                                    value={this.state.document.arrange}
+                                                                    value={this.state.document.arrange || ''}
                                                                     name="arrange"
                                                                     placeholder={Resources.arrange[currentLanguage]}
                                                                     onBlur={(e) => { handleChange(e); handleBlur(e) }}
                                                                     onChange={(e) => this.handleChange(e, 'arrange')} />
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput fullInputWidth">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                             <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
                                                                 <input type="text" className="form-control" id="refDoc"
-                                                                    value={this.state.document.refDoc}
+                                                                    value={this.state.document.refDoc || ''}
                                                                     name="refDoc"
                                                                     placeholder={Resources.refDoc[currentLanguage]}
                                                                     onBlur={(e) => { handleChange(e); handleBlur(e) }}
@@ -603,7 +611,7 @@ class RfiAddEdit extends Component {
                                                                         selectedValue={this.state.selectedFromCompany}
                                                                         handleChange={event => {
                                                                             this.handleChangeDropDown(event, "fromCompanyId", true, "fromContacts", "GetContactsByCompanyId", "companyId", "selectedFromCompany", "selectedFromContact");
-                                                                        }}                                                                        onChange={setFieldValue}
+                                                                        }} onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromCompanyId}
                                                                         touched={touched.fromCompanyId}
@@ -642,7 +650,7 @@ class RfiAddEdit extends Component {
                                                                         selectedValue={this.state.selectedToContact}
                                                                         handleChange={event =>
                                                                             this.handleChangeDropDown(event, "toContactId", false, "", "", "", "selectedToContact")
-                                                                        }                                                                        onChange={setFieldValue}
+                                                                        } onChange={setFieldValue}
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}
                                                                         touched={touched.toContactId}
@@ -666,7 +674,7 @@ class RfiAddEdit extends Component {
                                                             <div className={"inputDev ui input" + (errors.Building && touched.Building ? (" has-error") : !errors.Building && touched.Building ? (" has-success") : " ")} >
                                                                 <input name='Building' className="form-control fsadfsadsa" id="Building"
                                                                     placeholder={Resources.Building[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.building}
+                                                                    autoComplete='off' value={this.state.document.building || ''}
                                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                                     onChange={(e) => this.handleChange(e, 'building')} />
                                                                 {errors.Building && touched.Building ? (<em className="pError">{errors.Building}</em>) : null}
@@ -677,7 +685,7 @@ class RfiAddEdit extends Component {
                                                             <div className={"inputDev ui input" + (errors.apartmentNumber && touched.apartmentNumber ? (" has-error") : !errors.apartmentNumber && touched.apartmentNumber ? (" has-success") : " ")} >
                                                                 <input name='apartmentNumber' className="form-control fsadfsadsa" id="apartmentNumber"
                                                                     placeholder={Resources.apartmentNumber[currentLanguage]}
-                                                                    autoComplete='off' value={this.state.document.apartment}
+                                                                    autoComplete='off' value={this.state.document.apartment || ''}
                                                                     onBlur={(e) => { handleBlur(e); handleChange(e) }}
                                                                     onChange={(e) => this.handleChange(e, 'apartment')} />
                                                                 {errors.apartmentNumber && touched.apartmentNumber ? (<em className="pError">{errors.apartmentNumber}</em>) : null}
@@ -688,28 +696,25 @@ class RfiAddEdit extends Component {
                                                                 selectedValue={this.state.selectedDiscpline}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')} />
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput fullInputWidth">
                                                             <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
                                                                 <div className="inputDev ui input">
                                                                     <input type="text" className="form-control" id="sharedSettings"
                                                                         onChange={(e) => this.handleChange(e, 'sharedSettings')}
-                                                                        value={this.state.document.sharedSettings} name="sharedSettings"
+                                                                        value={this.state.document.sharedSettings || ''} name="sharedSettings"
                                                                         placeholder={Resources.sharedSettings[currentLanguage]} />
                                                                 </div>
-                                                                {this.state.document.sharedSettings === '' ||
-                                                                    this.state.document.sharedSettings === null ||
-                                                                    this.state.document.sharedSettings === undefined ?
-                                                                    null
-                                                                    :
+                                                                {this.state.document.sharedSettings === '' || this.state.document.sharedSettings === null || this.state.document.sharedSettings === undefined ? null :
                                                                     <a target="_blank" href={this.state.document.sharedSettings}><span>{Resources.openFolder[currentLanguage]}</span></a>
-                                                                }</div>
+                                                                }
+                                                            </div>
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
-                                                                    value={this.state.message}
+                                                                    value={this.state.message || ''}
                                                                     onChange={this.onChangeMessageRfi} />
                                                             </div>
                                                         </div>
@@ -717,7 +722,7 @@ class RfiAddEdit extends Component {
                                                             <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
                                                             <div className="inputDev ui input">
                                                                 <TextEditor
-                                                                    value={this.state.replyMessage}
+                                                                    value={this.state.replyMessage || ''}
                                                                     onChange={this.onChangeMessageAnswer} />
                                                             </div>
                                                         </div>

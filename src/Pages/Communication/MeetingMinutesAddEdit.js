@@ -3,8 +3,7 @@ import DropdownMelcous from "../../Componants/OptionsPanels/DropdownMelcous";
 import Api from "../../api";
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import moment from "moment";
-import Resources from "../../resources.json";
-import _ from "lodash";
+import Resources from "../../resources.json"; 
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { withRouter } from "react-router-dom";
@@ -17,8 +16,7 @@ import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Config from "../../Services/Config.js";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import SkyLight from "react-skylight";
+import { bindActionCreators } from "redux"; 
 import * as communicationActions from "../../store/actions/communication";
 import Recycle from "../../Styles/images/attacheRecycle.png";
 import "react-table/react-table.css";
@@ -220,9 +218,11 @@ class MeetingMinutesAddEdit extends Component {
             this.props.history.push(this.state.perviousRoute);
         }
     }
+
     changeCurrentStep = stepNo => {
         this.setState({ CurrStep: stepNo });
     };
+
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!Config.IsAllow(507)) {
@@ -331,6 +331,9 @@ class MeetingMinutesAddEdit extends Component {
 
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
+        this.setState({
+            docId: 0
+        });
     }
 
     componentDidMount() {
@@ -445,40 +448,29 @@ class MeetingMinutesAddEdit extends Component {
             });
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
 
     }
 
-    componentWillReceiveProps(props, state) {
-        if (props.document && props.document.id > 0) {
-            this.setState(
-                {
-                    document: { ...props.document }
-                },
-                function () {
-                    let docDate =
-                        this.state.document.docDate != null
-                            ? moment(this.state.document.docDate).format(
-                                "YYYY-MM-DD"
-                            )
-                            : moment().format("YYYY-MM-DD");
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+            let docDate = state.document.docDate != null ? moment(state.document.docDate).format("YYYY-MM-DD") : moment().format("YYYY-MM-DD");
 
-                    this.setState({
-                        document: { ...this.state.document, docDate: docDate }
-                    });
-                }
-            );
-
-            this.fillDropDowns(true);
-
-            this.checkDocumentIsView();
+            return {
+                document: { ...nextProps.document, docDate: docDate } 
+            };
         }
-
-
+        return null; 
     }
+
     //#region  editting
     editMeeting = () => {
         this.setState({
@@ -500,6 +492,7 @@ class MeetingMinutesAddEdit extends Component {
             toast.success(Resources["operationSuccess"][currentLanguage]);
         });
     };
+
     //#endregion
     viewAttachments() {
         return this.state.docId > 0 ? (
@@ -514,6 +507,7 @@ class MeetingMinutesAddEdit extends Component {
             ) : null
         ) : null;
     }
+
     //#region    adding
     addMeeting = () => {
         this.setState({ isLoading: true });
@@ -627,6 +621,7 @@ class MeetingMinutesAddEdit extends Component {
                 this.setState({ isLoading: false });
             });
     };
+
     addTopics = values => {
         this.setState({ isLoading: true });
 
@@ -833,8 +828,7 @@ class MeetingMinutesAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
 
-    render() {
-
+    render() { 
         let Step_1 = (
             <React.Fragment>
                 <div className="document-fields">

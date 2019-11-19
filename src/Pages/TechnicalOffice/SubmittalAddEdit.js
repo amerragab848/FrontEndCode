@@ -356,6 +356,8 @@ class SubmittalAddEdit extends Component {
             cycle.docDate = result.docDate != null ? moment(result.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
             cycle.approvedDate = result.approvedDate != null ? moment(result.approvedDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
 
+            this.fillCycleDropDown(true);
+
             this.setState({
               documentCycle: cycle,
               addCycleSubmital: cycle,
@@ -367,16 +369,9 @@ class SubmittalAddEdit extends Component {
               addCycleSubmital: submittalDocumentCycles
             });
           }
+
         });
-
-        this.fillCycleDropDown(true);
-
-        this.fillDropDowns(this.props.document.id > 0 ? true : false);
-
-        this.checkDocumentIsView();
       }
-      this.fillCycleDropDown(true);
-
       this.fillDropDowns(this.props.document.id > 0 ? true : false);
 
       this.checkDocumentIsView();
@@ -440,36 +435,8 @@ class SubmittalAddEdit extends Component {
         }
       }
     });
-
-
+ 
   }
-
-  // fillCycleDropDown(isEdit) {
-
-  //   //approvalStatus
-  //   dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", "title", "id").then(result => {
-
-  //     if (isEdit) {
-
-  //       let approval = this.state.documentCycle.approvalStatusId;
-
-  //       if (approval) {
-
-  //         let approvalName = result.find(i => i.value === parseInt(approval));
-
-  //         if (approvalName) {
-  //           this.setState({
-  //             selectedApprovalStatus: { label: approvalName.label, value: approval }
-  //           });
-  //         }
-  //       }
-  //     }
-  //     this.setState({
-  //       approvales: [...result]
-  //     });
-  //   });
-
-  // }
 
   fillCycleDropDown(isEdit) {
 
@@ -495,7 +462,24 @@ class SubmittalAddEdit extends Component {
         approvales: [...result]
       });
     });
+    dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
+      if (isEdit) {
+        let flowCompanyId = this.state.documentCycle.flowCompanyId;
+      
+        if (flowCompanyId) {
+
+          this.setState({
+            selectedFromCompanyCycles: { label: this.state.documentCycle.flowCompanyName, value: flowCompanyId }
+          });
+
+          this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", flowCompanyId, "flowContactId", "selectedFromContactCycles", "fromContactsCycles");
+        }
+      }
+      this.setState({
+        companies: [...result]
+      });
+    });
   }
 
   fillDropDowns(isEdit) {
@@ -508,8 +492,6 @@ class SubmittalAddEdit extends Component {
 
         let companyId = this.props.document.bicCompanyId;
 
-        let flowCompanyId = this.state.documentCycle.flowCompanyId;
-
         if (companyId) {
 
           this.setState({
@@ -517,16 +499,7 @@ class SubmittalAddEdit extends Component {
           });
 
           this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "bicContactId", "selectedFromContact", "fromContacts");
-        }
-
-        if (flowCompanyId) {
-
-          this.setState({
-            selectedFromCompanyCycles: { label: this.state.documentCycle.flowCompanyName, value: flowCompanyId }
-          });
-
-          this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", flowCompanyId, "flowContactId", "selectedFromContactCycles", "fromContactsCycles");
-        }
+        } 
       }
       this.setState({
         selectedSubmittalType: this.props.document.submittalType != null && this.props.document.submittalType ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
@@ -1686,7 +1659,7 @@ class SubmittalAddEdit extends Component {
                                   {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
                                 </div>
                               </div>
-                              <div className="linebylineInput valid-input">
+                              <div className="linebylineInput fullInputWidth">
                                 <label className="control-label">
                                   {Resources.refDoc[currentLanguage]}
                                 </label>
@@ -1814,7 +1787,7 @@ class SubmittalAddEdit extends Component {
                                 <Dropdown title="submittalType" data={this.state.SubmittalTypes} selectedValue={this.state.selectedSubmittalType}
                                   handleChange={event => this.handleChangeDropDown(event, "submittalType", false, "", "", "", "selectedSubmittalType")} />
                               </div>
-                              <div className="linebylineInput valid-input">
+                              <div className="linebylineInput fullInputWidth">
                                 <label className="control-label">
                                   {Resources.sharedSettings[currentLanguage]}
                                 </label>

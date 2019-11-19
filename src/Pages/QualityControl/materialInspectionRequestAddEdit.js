@@ -215,61 +215,7 @@ class materialInspectionRequestAddEdit extends Component {
             else {
                 links[i].classList.add('odd');
             }
-        }
-        //this.checkDocumentIsView();
-    };
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id !== this.props.document.id) {
-            let serverInspectionRequest = { ...nextProps.document };
-            serverInspectionRequest.docDate = serverInspectionRequest.docDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.docDate).format('YYYY-MM-DD')
-            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD')
-            serverInspectionRequest.resultDate = serverInspectionRequest.resultDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.resultDate).format('YYYY-MM-DD')
-
-            this.setState({
-                document: { ...serverInspectionRequest },
-                hasWorkflow: nextProps.hasWorkflow,
-                answer: nextProps.document.answer,
-                rfi: nextProps.document.rfi
-            });
-
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
-        }
-    };
-
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-            this.checkDocumentIsView();
-        }
-    }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(367)) {
-                this.setState({ isViewMode: true });
-            }
-
-            if (this.state.isApproveMode != true && Config.IsAllow(367)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
-                    if (this.props.document.status !== false && Config.IsAllow(367)) {
-                        this.setState({ isViewMode: false });
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            }
-        }
-        else {
-            this.setState({ isViewMode: false });
-        }
-        console.log('checkDocumentIsView...', this.props, this.state);
-    }
-
-    componentWillMount() {
+        } 
         if (this.state.docId > 0) {
             let url = "GetMaterialInspectionRequestForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialInspectionRequest');
@@ -330,6 +276,56 @@ class materialInspectionRequestAddEdit extends Component {
             this.props.actions.documentForAdding();
         }
     };
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.document.id !== this.props.document.id) {
+            let serverInspectionRequest = { ...nextProps.document };
+            serverInspectionRequest.docDate = serverInspectionRequest.docDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.docDate).format('YYYY-MM-DD')
+            serverInspectionRequest.requiredDate = serverInspectionRequest.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.requiredDate).format('YYYY-MM-DD')
+            serverInspectionRequest.resultDate = serverInspectionRequest.resultDate === null ? moment().format('YYYY-MM-DD') : moment(serverInspectionRequest.resultDate).format('YYYY-MM-DD')
+
+            this.setState({
+                document: { ...serverInspectionRequest },
+                hasWorkflow: nextProps.hasWorkflow,
+                answer: nextProps.document.answer,
+                rfi: nextProps.document.rfi
+            });
+
+            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+    };
+
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+            this.checkDocumentIsView();
+        }
+    }
+
+    checkDocumentIsView() {
+        if (this.props.changeStatus === true) {
+            if (!Config.IsAllow(367)) {
+                this.setState({ isViewMode: true });
+            }
+
+            if (this.state.isApproveMode != true && Config.IsAllow(367)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(367)) {
+                    if (this.props.document.status !== false && Config.IsAllow(367)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            }
+        }
+        else {
+            this.setState({ isViewMode: false });
+        }
+        console.log('checkDocumentIsView...', this.props, this.state);
+    }
 
     GetNExtArrange() {
         let original_document = { ...this.state.document };
@@ -932,12 +928,12 @@ class materialInspectionRequestAddEdit extends Component {
     render() {
 
         return (
-            <div className="mainContainer"> 
+            <div className="mainContainer">
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
                         docTitle={Resources.materialInspectionRequest[currentLanguage]}
-                        moduleTitle={Resources['qualityControl'][currentLanguage]} /> 
-                    <div className="doc-container"> 
+                        moduleTitle={Resources['qualityControl'][currentLanguage]} />
+                    <div className="doc-container">
                         <div className="step-content">
                             {this.state.CurrentStep == 0 ?
                                 <Fragment>
@@ -1022,7 +1018,7 @@ class materialInspectionRequestAddEdit extends Component {
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="linebylineInput valid-input">
+                                                                <div className="linebylineInput fullInputWidth">
                                                                     <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                                     <div className="ui input inputDev"  >
                                                                         <input type="text" className="form-control" id="refDoc"
@@ -1379,7 +1375,7 @@ class materialInspectionRequestAddEdit extends Component {
                             }
                             <div className="doc-pre-cycle letterFullWidth">
                                 <div>
-                                    {this.state.docId > 0 && this.state.isViewMode === false  ?
+                                    {this.state.docId > 0 && this.state.isViewMode === false ?
                                         <UploadAttachment changeStatus={this.props.changeStatus}
                                             AddAttachments={940}
                                             EditAttachments={3271}

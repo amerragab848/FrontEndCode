@@ -968,6 +968,35 @@ class LeftMenu extends Component {
                             })}
                           </ul>
                         </li>
+
+                        {/* reportsMenu */}
+                        <li className={this.state.rowIndex === 12 ? "ActiveSubLi" : ""}>
+                          <a className={this.state.rowIndex === 12 ? "title active" : "title"} onClick={() => this.OpenSubMenu(12, Resources["reportsCenter"][currentLanguage])}>
+                            <span className="ULimg">
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlnslink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                                <g fill="none" fillRule="evenodd" transform="translate(3 3)">
+                                  <g fill="#A8B0BF">
+                                    <path id="a" d="M16.511 11.777c.55.232.715.9.5 1.321A8.999 8.999 0 1 1 4.523 1.189c.424-.243 1.108-.132 1.46.475.35.607-.128 1.248-.506 1.475a6.836 6.836 0 1 0 9.528 9.124c.372-.685.956-.72 1.506-.486zM18 9c0 .598-.484 1.082-1.082 1.082H9A1.082 1.082 0 0 1 7.918 9V1.082C7.918.484 8.402 0 9 0a8.997 8.997 0 0 1 9 9zm-4.1-4.89A7.304 7.304 0 0 0 9.89 2.06V8.12h6.058A7.305 7.305 0 0 0 13.9 4.11z"></path>
+                                  </g>
+                                </g>
+                              </svg>
+                            </span>
+
+                            <span className="UlName">{Resources["reportsCenter"][currentLanguage]}</span>
+                          </a>
+                          <ul className={this.state.rowIndex === 12 ? "content subBigMenuUl active" : "content subBigMenuUl"}>
+                            {this.state.reportsMenu.map((r, index) => {
+                              return (
+                                <li key={index} className={(this.state[index + '-' + this.state.rowIndex] === true) ? "active" : " "} onClick={() => this.activeLi(index, this.state.reportsMenu.length, this.state.rowIndex)}>
+                                  <NavLink to={"/" + r.route + "/" + this.props.projectId} activeClassName="active" >
+                                    {Resources[r.title][currentLanguage]}
+                                  </NavLink>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </li>
+
                       </ul>
                     </div>
                   </div>

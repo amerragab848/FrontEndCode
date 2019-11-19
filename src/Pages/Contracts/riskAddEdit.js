@@ -2126,11 +2126,12 @@ class riskAddEdit extends Component {
                                                         </div>
                                                         :
                                                         this.state.CurrentStep === 6 ?
-                                                            <div className="document-fields">
+                                                            <div className="document-fields doc-pre-cycle">
+                                                                <header style={{ paddingBottom: '0' }}>
+                                                                    <h2 className="zero">{Resources['riskAnalysis'][currentLanguage]}</h2>
+                                                                </header>
                                                                 <div className="datepickerContainer proForm">
-                                                                    <header>
-                                                                        <h2 className="zero">{Resources['riskAnalysis'][currentLanguage]}</h2>
-                                                                    </header>
+
                                                                     <div className="Risk__input">
                                                                         <div className="letterFullWidth">
                                                                             <label className="control-label">{'Pre-Mitigation EMV'}</label>
@@ -2172,13 +2173,13 @@ class riskAddEdit extends Component {
                                                                                     placeholder={'Post-Mitigation EMV + Cost Of  Mitigation'} />
                                                                             </div>
                                                                         </div>
-                                                                        <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
-                                                                            <label className="control-label">{'Cost Effectiveness'}</label>
-                                                                        </div>
-                                                                        <div className="ui left pointing label labelWithArrowBorder basic">
-                                                                            <span>{(this.state.totalProposedMit + this.state.totalPostRiskEmv) > this.state.totalPretRiskEmv ? 'Not Cost Effective' : 'Cost Effective'}</span>
-                                                                        </div>
+                                                                        <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px', position: 'relative' }}>
+                                                                            <label style={{margin: '0'}} className="control-label">{'Cost Effectiveness'}</label>
 
+                                                                            <div className="ui left pointing label labelWithArrowBorder basic">
+                                                                                <span>{(this.state.totalProposedMit + this.state.totalPostRiskEmv) > this.state.totalPretRiskEmv ? 'Not Cost Effective' : 'Cost Effective'}</span>
+                                                                            </div>
+                                                                        </div>
                                                                         <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px' }}>
                                                                             <label className="control-label">{'Cost Benefit'}</label>
                                                                             <div className='ui input inputDev '>

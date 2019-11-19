@@ -1382,68 +1382,70 @@ class requestPaymentsAddEdit extends Component {
     }
 
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+        this.setState({
+            isLoading: true
+        });
+
         let rows = [...this.state.paymentsItems];
         let updateRow = rows[fromRow];
 
-        this.setState(
-            state => {
-                const paymentsItems = state.paymentsItems.slice();
-                for (let i = fromRow; i <= toRow; i++) {
-                    rows[i] = { ...rows[i], ...updated };
-                }
-                return { paymentsItems };
-            },
-            function () {
-                if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
-                    if (updateRow.revisedQuantity == 0 && (updateRow.siteQuantityComplete > 0 || updateRow.sitePercentComplete > 0)) {
-                        updateRow.revisedQuantity = 1;
-                    }
-
-                    let newValue = parseFloat(updated[Object.keys(updated)[0]]);
-
-                    updateRow[Object.keys(updated)[0]] = parseFloat(
-                        updated[Object.keys(updated)[0]]
-                    );
-
-                    switch (Object.keys(updated)[0]) {
-                        case "quantityComplete":
-                            updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                            break;
-                        case "percentComplete":
-                            updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                            break;
-                        case "sitePercentComplete":
-                            updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                            break;
-                        case "siteQuantityComplete":
-                            updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
-
-                            if (this.props.changeStatus == false) {
-                                updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                            }
-                            break;
-                    }
-
-                    let editRows = [...this.state.editRows];
-
-                    let sameRow = find(editRows, function (x) {
-                        return x.id === updateRow.id;
-                    });
-
-                    if (sameRow) {
-                        editRows = editRows.filter(function (i) {
-                            return i.id != updateRow.id;
-                        });
-                    }
-
-                    editRows.push(updateRow);
-
-                    this.setState({
-                        editRows: editRows
-                        // isLoading: false
-                    });
-                }
+        this.setState(state => {
+            const paymentsItems = state.paymentsItems.slice();
+            for (let i = fromRow; i <= toRow; i++) {
+                rows[i] = { ...rows[i], ...updated };
             }
+            return { paymentsItems };
+        }, function () {
+            if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
+                if (updateRow.revisedQuantity == 0 && (updateRow.siteQuantityComplete > 0 || updateRow.sitePercentComplete > 0)) {
+                    updateRow.revisedQuantity = 1;
+                }
+
+                let newValue = parseFloat(updated[Object.keys(updated)[0]]);
+
+                updateRow[Object.keys(updated)[0]] = parseFloat(
+                    updated[Object.keys(updated)[0]]
+                );
+
+                switch (Object.keys(updated)[0]) {
+                    case "quantityComplete":
+                        updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                        break;
+                    case "percentComplete":
+                        updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                        break;
+                    case "sitePercentComplete":
+                        updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                        break;
+                    case "siteQuantityComplete":
+                        updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
+
+                        if (this.props.changeStatus == false) {
+                            updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                        }
+                        break;
+                }
+
+                let editRows = [...this.state.editRows];
+
+                let sameRow = find(editRows, function (x) {
+                    return x.id === updateRow.id;
+                });
+
+                if (sameRow) {
+                    editRows = editRows.filter(function (i) {
+                        return i.id != updateRow.id;
+                    });
+                }
+
+                editRows.push(updateRow);
+
+                this.setState({
+                    editRows: editRows,
+                    isLoading: false
+                });
+            }
+        }
         );
     };
 
@@ -1466,7 +1468,9 @@ class requestPaymentsAddEdit extends Component {
         dataservice.addObject(api, editItems).then(() => {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.setState({ isLoading: false });
+            this.setState({
+                isLoading: false, currentStep: 2
+            });
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
             this.setState({ isLoading: false });
@@ -2354,17 +2358,23 @@ class requestPaymentsAddEdit extends Component {
                 <table className="attachmentTable " key="summaryOfApprovedInvoices">
                     <thead>
                         <tr>
-                            <td width="15%">
-                                {Resources["JobBuilding"][currentLanguage]}
-                            </td>
+                            <th width="15%">
+                                <div className="headCell">
+                                    {Resources["JobBuilding"][currentLanguage]}
+                                </div>
+                            </th>
                             {this.state.approvedInvoicesParent.map(i => (
-                                <td>
-                                    {i.details.slice(0, i.details.lastIndexOf("-"))}
-                                </td>
+                                <th>
+                                    <div className="headCell">
+                                        {i.details.slice(0, i.details.lastIndexOf("-"))}
+                                    </div>
+                                </th>
                             ))}
-                            <td width="10%">
-                                {Resources["total"][currentLanguage]}
-                            </td>
+                            <th width="10%">
+                                <div className="headCell">
+                                    {Resources["total"][currentLanguage]}
+                                </div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -2536,10 +2546,7 @@ class requestPaymentsAddEdit extends Component {
                                                                         <input type="text" className="form-control" id="arrange"
                                                                             readOnly value={this.state.document.arrange || 1}
                                                                             name="arrange" placeholder={Resources.arrange[currentLanguage]}
-                                                                            onBlur={e => {
-                                                                                handleChange(e);
-                                                                                handleBlur(e);
-                                                                            }}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
                                                                             onChange={e => this.handleChange(e, "arrange")} />
                                                                     </div>
                                                                 </div>
@@ -2553,71 +2560,33 @@ class requestPaymentsAddEdit extends Component {
                                                                                 }
                                                                             </label>
                                                                             <div className="ui input inputDev">
-                                                                                <input
-                                                                                    type="text"
-                                                                                    className="form-control"
-                                                                                    id="contractSubject"
-                                                                                    readOnly
-                                                                                    value={
-                                                                                        this
-                                                                                            .state
-                                                                                            .document
-                                                                                            .contractName
-                                                                                    }
-                                                                                    name="contractSubject"
-                                                                                />
+                                                                                <input type="text" className="form-control" id="contractSubject" readOnly
+                                                                                    value={this.state.document.contractName}
+                                                                                    name="contractSubject" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 ) : (
                                                                         <div className="linebylineInput valid-input">
-                                                                            <Dropdown
-                                                                                title="contractName"
-                                                                                data={
-                                                                                    this
-                                                                                        .state
-                                                                                        .contractsPos
-                                                                                }
-                                                                                selectedValue={
-                                                                                    this
-                                                                                        .state
-                                                                                        .selectContract
-                                                                                }
+                                                                            <Dropdown title="contractName"
+                                                                                data={this.state.contractsPos}
+                                                                                selectedValue={this.state.selectContract}
                                                                                 handleChange={event =>
-                                                                                    this.handleChangeDropDownContract(
-                                                                                        event,
-                                                                                        "contractId",
-                                                                                        "selectContract"
-                                                                                    )
+                                                                                    this.handleChangeDropDownContract(event, "contractId", "selectContract")
                                                                                 }
                                                                                 index="contractId"
-                                                                                onChange={
-                                                                                    setFieldValue
-                                                                                }
-                                                                                onBlur={
-                                                                                    setFieldTouched
-                                                                                }
-                                                                                error={
-                                                                                    errors.contractId
-                                                                                }
-                                                                                touched={
-                                                                                    touched.contractId
-                                                                                }
-                                                                                isClear={
-                                                                                    false
-                                                                                }
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.contractId}
+                                                                                touched={touched.contractId}
+                                                                                isClear={false}
                                                                                 name="contractId"
                                                                             />
                                                                         </div>
                                                                     )}
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .advancePaymentPercent[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.advancePaymentPercent[currentLanguage]}
                                                                     </label>
                                                                     <div className={"ui input inputDev" + (errors.advancePaymentPercent && touched.advancePaymentPercent ? " has-error" : "ui input inputDev")}>
                                                                         <input type="text" className="form-control"
@@ -2895,58 +2864,27 @@ class requestPaymentsAddEdit extends Component {
                                                             {Resources.actualPayment[currentLanguage]}
                                                         </label>
                                                         <div className="ui input inputDev">
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                name="actualPayment"
-                                                                value={
-                                                                    this.state
-                                                                        .actualPayments
-                                                                }
-                                                                placeholder={
-                                                                    Resources
-                                                                        .actualPayment[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
-                                                                onChange={event =>
-                                                                    this.setState(
-                                                                        {
-                                                                            actualPayments:
-                                                                                event
-                                                                                    .target
-                                                                                    .value
-                                                                        }
-                                                                    )
-                                                                }
-                                                            />
+                                                            <input type="text" className="form-control" name="actualPayment"
+                                                                value={this.state.actualPayments}
+                                                                placeholder={Resources.actualPayment[currentLanguage]}
+                                                                onChange={event => this.setState({ actualPayments: event.target.value })} />
                                                         </div>
                                                     </div>
 
-                                                    {this.state
-                                                        .viewUpdatePayment ? (
-                                                            <button
-                                                                className="primaryBtn-1 btn  disabled"
-                                                                disabled="disabled">
-                                                                <div className="spinner">
-                                                                    <div className="bounce1" />
-                                                                    <div className="bounce2" />
-                                                                    <div className="bounce3" />
-                                                                </div>
-                                                            </button>
-                                                        ) : (
-                                                            <button
-                                                                className="primaryBtn-1 btn meduimBtn"
-                                                                onClick={
-                                                                    this
-                                                                        .updateActualPayments
-                                                                }>
-                                                                {
-                                                                    Resources[
-                                                                    "update"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
+                                                    {this.state.viewUpdatePayment ? (
+                                                        <button
+                                                            className="primaryBtn-1 btn  disabled"
+                                                            disabled="disabled">
+                                                            <div className="spinner">
+                                                                <div className="bounce1" />
+                                                                <div className="bounce2" />
+                                                                <div className="bounce3" />
+                                                            </div>
+                                                        </button>
+                                                    ) : (
+                                                            <button className="primaryBtn-1 btn meduimBtn"
+                                                                onClick={this.updateActualPayments}>
+                                                                {Resources["update"][currentLanguage]
                                                                 }
                                                             </button>
                                                         )}
@@ -2971,21 +2909,6 @@ class requestPaymentsAddEdit extends Component {
                                             </div>
                                         ) : ("")}
                                         <div className="doc-pre-cycle">
-                                            {this.state.editRows.length > 0 ? (
-                                                <div className="doc-pre-cycle">
-                                                    <div className="slider-Btns editableRows">
-                                                        <span>
-                                                            No.Update Rows.
-                                                            {this.state.editRows.length}
-                                                        </span>
-                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>
-                                                            {
-                                                                Resources["edit"][currentLanguage]
-                                                            }
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ) : null}
                                             <div className="submittalFilter">
                                                 <div className="subFilter">
                                                     <h3 className="zero">
@@ -2996,11 +2919,7 @@ class requestPaymentsAddEdit extends Component {
                                                     </span>
                                                 </div>
                                                 <div className="filterBTNS">
-                                                    <div
-                                                        className="default__dropdown--custom"
-                                                        style={{
-                                                            marginBottom: "0"
-                                                        }}>
+                                                    <div className="default__dropdown--custom" style={{ marginBottom: "0" }}>
                                                         <div className="default__dropdown">
                                                             <Dropdown data={this.state.fillDropDownExport}
                                                                 selectedValue={this.state.selectedDropDownExport}
@@ -3025,6 +2944,22 @@ class requestPaymentsAddEdit extends Component {
                                                 </div>
                                             </div>
                                             {ItemsGrid}
+
+                                            {this.state.editRows.length > 0 ? (
+                                                <div className="doc-pre-cycle">
+                                                    <div className="slider-Btns editableRows">
+                                                        <span>
+                                                            No.Update Rows.
+                                                            {this.state.editRows.length}
+                                                        </span>
+                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>
+                                                            {
+                                                                Resources["edit"][currentLanguage]
+                                                            }
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ) : null}
                                         </div>
                                     </div>
                                 </Fragment>
@@ -3106,6 +3041,7 @@ class requestPaymentsAddEdit extends Component {
                                     </div>
                                 </Fragment>
                             ) : null}
+
                             {this.state.currentStep == 2 ? (
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
@@ -3201,6 +3137,7 @@ class requestPaymentsAddEdit extends Component {
                                     </div>
                                 </Fragment>
                             ) : null}
+
                         </div>
                         <Steps
                             steps_defination={steps_defination}
@@ -3209,7 +3146,7 @@ class requestPaymentsAddEdit extends Component {
                             changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
                             stepNo={this.state.currentStep}
                             changeStatus={docId === 0 ? false : true} />
-                            
+
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">

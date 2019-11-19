@@ -5,8 +5,7 @@ import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import moment from "moment";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import Resources from "../../resources.json";
-//import _ from "lodash";
+import Resources from "../../resources.json"; 
 import find from "lodash/find";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -43,9 +42,7 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 
 const voItemSchema = Yup.object().shape({
   quantity: Yup.number().required(Resources['quantityRequired'][currentLanguage]),
-  unitPrice: Yup.number().required(Resources['unitPriceRequired'][currentLanguage]),
-
-
+  unitPrice: Yup.number().required(Resources['unitPriceRequired'][currentLanguage])
 });
 
 const contractInfoSchema = Yup.object().shape({
@@ -1449,7 +1446,7 @@ class ContractInfoAddEdit extends Component {
                             name="arrange" placeholder={Resources.arrange[currentLanguage]} />
                         </div>
                       </div>
-                      <div className="linebylineInput valid-input">
+                      <div className="linebylineInput fullInputWidth">
                         <label className="control-label">
                           {Resources.refDoc[currentLanguage]}
                         </label>

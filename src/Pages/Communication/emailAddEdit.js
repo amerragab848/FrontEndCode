@@ -14,16 +14,17 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment";
-import SkyLight from 'react-skylight';
+import moment from "moment"; 
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import find from "lodash/find";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
@@ -36,8 +37,7 @@ let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
-let arrange = 0;
-const _ = require('lodash')
+let arrange = 0; 
 
 class emailAddEdit extends Component {
 
@@ -98,8 +98,10 @@ class emailAddEdit extends Component {
             );
         }
     }
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+      
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
                 links[i].classList.add('even');
@@ -108,10 +110,10 @@ class emailAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
+
         if (this.state.docId > 0) {
             let url = "GetCommunicationEmailsForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'communicationEmails');
-
         } else {
             let email = {
                 subject: '',
@@ -135,18 +137,14 @@ class emailAddEdit extends Component {
 
     };
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id !== this.props.document.id) {
-            this.setState({
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+            return {
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
                 message: nextProps.document.message
-            });
-
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
+            };
         }
-
     };
 
     componentWillUnmount() {
@@ -156,7 +154,13 @@ class emailAddEdit extends Component {
         });
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+        
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
@@ -185,23 +189,20 @@ class emailAddEdit extends Component {
         }
     }
 
-    componentWillMount() {
-
-    };
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
-                let targetFieldSelected = _.find(result, function (i) { return i.value == toSubField; });
+                let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
                 });
             }
         });
-    } 
+    }
 
     fillDropDowns(isEdit) {
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
@@ -226,7 +227,8 @@ class emailAddEdit extends Component {
                 companies: [...result]
             });
         });
-    } 
+    }
+
     onChangeMessage = (value) => {
         if (value != null) {
             this.setState({ message: value });
@@ -269,7 +271,7 @@ class emailAddEdit extends Component {
             [selectedValue]: event
         });
         if (field == "toContactId") {
-            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId+ "&fromContactId=" + this.state.document.fromContactId+ "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
+            let url = "GetRefCodeArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&fromCompanyId=" + this.state.document.fromCompanyId + "&fromContactId=" + this.state.document.fromContactId + "&toCompanyId=" + this.state.document.toCompanyId + "&toContactId=" + event.value;
             dataservice.GetRefCodeArrangeMainDoc(url).then(res => {
                 updated_document.arrange = res.arrange;
                 if (Config.getPublicConfiguartion().refAutomatic === true) {
@@ -350,8 +352,6 @@ class emailAddEdit extends Component {
     }
 
     render() {
-
-
         return (
             <div className="mainContainer" id={'mainContainer'}>
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>

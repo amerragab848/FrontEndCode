@@ -19,6 +19,8 @@ class LeftReportMenu extends Component {
         let OtherReports = [];
         let technicalOffice = [];
         let contractPoMenu = [];
+        let tasksReports = [];
+        let timeSheet = [];
         let ProjectReports = [];
         let RiskReports = [];
 
@@ -35,6 +37,20 @@ class LeftReportMenu extends Component {
                 } else if (route.settings.technicalOffice === true) {
                     if (Config.IsAllow(route.settings.permission)) {
                         technicalOffice.push({
+                            label: Resources[route.title][currentLanguage],
+                            value: route.moduleId
+                        });
+                    }
+                } else if (route.settings.Tasks === true) {
+                    if (Config.IsAllow(route.settings.permission)) {
+                        tasksReports.push({
+                            label: Resources[route.title][currentLanguage],
+                            value: route.moduleId
+                        });
+                    }
+                } else if (route.settings.HumanResources === true) {
+                    if (Config.IsAllow(route.settings.permission)) {
+                        timeSheet.push({
                             label: Resources[route.title][currentLanguage],
                             value: route.moduleId
                         });
@@ -85,8 +101,8 @@ class LeftReportMenu extends Component {
         this.reportData = [
             { data: ProjectReports },
             { data: contractPoMenu },
-            { data: [] },
-            { data: [] },
+            { data: tasksReports },
+            { data: timeSheet },
             { data: OtherReports },
             { data: inventory },
             { data: technicalOffice },

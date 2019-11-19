@@ -41,7 +41,7 @@ const validationSchema = Yup.object().shape({
 
 const documentCycleValidationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).nullable(true),
-    approvalStatusId: Yup.string().required(Resources['approvalStatusSelection'][currentLanguage]).nullable(true),
+    // approvalStatusId: Yup.string().required(Resources['approvalStatusSelection'][currentLanguage]).nullable(true),
 })
 
 let columns = [
@@ -391,10 +391,10 @@ class inspectionRequestAddEdit extends Component {
             });
         });
 
-        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
+        dataservice.GetDataList("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id').then(result => {
+            let approvalStatus = {};
             if (isEdit) {
                 let approvalStatusId = this.state.documentCycle.approvalStatusId;
-                let approvalStatus = {};
                 if (approvalStatusId) {
                     approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
 
@@ -402,6 +402,14 @@ class inspectionRequestAddEdit extends Component {
                         selectedApprovalStatusId: approvalStatus
                     });
                 }
+            }
+            else {
+                approvalStatus = find(result, function (i) {
+                    return i.label === 'Pending'
+                });
+                this.setState({
+                    selectedApprovalStatusId: approvalStatus
+                });
             }
             this.setState({
                 approvalstatusList: [...result]
@@ -694,7 +702,7 @@ class inspectionRequestAddEdit extends Component {
                     let index = IRCycles.findIndex(x => x.id === saveDocument.id);
 
                     IRCycles.splice(index, 1);
-                    if (this.props.changeStatus === false ) {
+                    if (this.props.changeStatus === false) {
                         IRCycles = [];
                         IRCycles.push(result);
                     } else {
@@ -823,8 +831,8 @@ class inspectionRequestAddEdit extends Component {
                                             handleChange={(e) => this.handleChangeCycleDropDown(e, "approvalStatusId", 'selectedApprovalStatusId')}
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
-                                            error={errors.approvalStatusId}
-                                            touched={touched.approvalStatusId}
+                                            // error={errors.approvalStatusId}
+                                            // touched={touched.approvalStatusId}
                                             isClear={false}
                                             index="IR-approvalStatusId"
                                             name="approvalStatusId"
@@ -976,7 +984,7 @@ class inspectionRequestAddEdit extends Component {
                                                                             onChange={(e) => this.handleChange(e, 'arrange')} />
                                                                     </div>
                                                                 </div>
-                                                                <div className="linebylineInput valid-input">
+                                                                <div className="linebylineInput fullInputWidth">
                                                                     <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                                     <div className="ui input inputDev">
                                                                         <input type="text" className="form-control" id="refDoc"
@@ -1249,23 +1257,6 @@ class inspectionRequestAddEdit extends Component {
                                                                                 </div>
                                                                             </div> : null}
                                                                     </div>
-                                                                    <div className="approveDocument">
-                                                                        <div className="approveDocumentBTNS">
-                                                                            <DocumentActions
-                                                                                isApproveMode={this.state.isApproveMode}
-                                                                                docTypeId={this.state.docTypeId}
-                                                                                docId={this.state.docId}
-                                                                                projectId={this.state.projectId}
-                                                                                previousRoute={this.state.previousRoute}
-                                                                                docApprovalId={this.state.docApprovalId}
-                                                                                currentArrange={this.state.arrange}
-                                                                                showModal={this.props.showModal}
-                                                                                showOptionPanel={this.showOptionPanel}
-                                                                                permission={this.state.permission}
-                                                                                documentName={Resources.inspectionRequest[currentLanguage]}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
                                                                 </Fragment>
                                                                 :
                                                                 <div className="slider-Btns">
@@ -1305,6 +1296,23 @@ class inspectionRequestAddEdit extends Component {
                             changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
                             stepNo={this.state.CurrentStep}
                             changeStatus={docId === 0 ? false : true} />
+                    </div>
+                </div>
+                <div className="approveDocument">
+                    <div className="approveDocumentBTNS">
+                        <DocumentActions
+                            isApproveMode={this.state.isApproveMode}
+                            docTypeId={this.state.docTypeId}
+                            docId={this.state.docId}
+                            projectId={this.state.projectId}
+                            previousRoute={this.state.previousRoute}
+                            docApprovalId={this.state.docApprovalId}
+                            currentArrange={this.state.arrange}
+                            showModal={this.props.showModal}
+                            showOptionPanel={this.showOptionPanel}
+                            permission={this.state.permission}
+                            documentName={Resources.inspectionRequest[currentLanguage]}
+                        />
                     </div>
                 </div>
             </div>

@@ -239,6 +239,17 @@ const PrivacySetting = AsyncComponent(() => import('../src/Componants/User/Priva
 const ProfileSetting = AsyncComponent(() => import('../src/Componants/User/index'));
 const ExpensesUserAddEdit = AsyncComponent(() => import('../src/Componants/User/expensesUserAddEdit'));
 
+
+//Report Center
+
+const EstimationBoqComparison = AsyncComponent(() => import('../src/Pages/ReportsMenu/estimationBoqComparison'));
+const ContractsBoqQuantities = AsyncComponent(() => import('../src/Pages/ReportsMenu/contractsBoqQuantities'));
+const InvoiceQuantity = AsyncComponent(() => import('../src/Pages/ReportsMenu/invoiceQuantity'));
+const ProjectTimeSheet = AsyncComponent(() => import('../src/Pages/ReportsMenu/projectTimeSheet'));
+const BoqContractCost = AsyncComponent(() => import('../src/Pages/ReportsMenu/boqContractCost'));
+const DeliveredQuantitieReport = AsyncComponent(() => import('../src/Pages/ReportsMenu/deliveredQuantitieReport'));
+const CollectedInvoices = AsyncComponent(() => import('../src/Pages/ReportsMenu/collectedInvoices'));
+
 let setupRoutes = ProjectSetupRoutes.map((item, index) => {
     let path = item.moduleId === "ProjectSetup" ? "/" + item.route + "/:projectId" : "/:document/:projectId";
     let compoenet = item.moduleId === "ProjectSetup" ? ProjectSetup : CommonLog;
@@ -268,7 +279,6 @@ let originalRoutes = [
     , <Route key='r-20' path="/PendingExpensesDetails" component={PendingExpensesDetails} />
     , <Route key='r-21' path="/PrivacySetting" component={PrivacySetting} />
     , <Route key='r-22' path="/Companies/" component={Companies} />
-    , <Route key='r-23' path="/Contacts/:companyID" component={Contacts} />
     , <Route key='r-24' path="/AddEditCompany/:companyID" component={AddEditCompany} />
     , <Route key='r-25' path="/TimeSheetWorkFlow" component={TimeSheetWorkFlow} />
     , <Route key='r-26' path="/expensesUserAddEdit" component={ExpensesUserAddEdit} />
@@ -424,6 +434,13 @@ let originalRoutes = [
     , <Route key='r-179' path="/dailyReportsAddEdit" component={DailyReportsAddEdit} />
     , <Route key='r-180' path="/budgetCashFlowReports" component={BudgetCashFlowReports} />
     , <Route key='r-181' path="/emailAddEdit" component={EmailAddEdit} />
+    , <Route key='r-182' path="/estimationBoqComparison" component={EstimationBoqComparison} />
+    , <Route key='r-183' path="/contractsBoqQuantities" component={ContractsBoqQuantities} />
+    , <Route key='r-184' path="/invoiceQuantity" component={InvoiceQuantity} />
+    , <Route key='r-185' path="/projectTimeSheet" component={ProjectTimeSheet} />
+    , <Route key='r-186' path="/boqContractCost" component={BoqContractCost} />
+    , <Route key='r-187' path="/deliveredQuantitieReport" component={DeliveredQuantitieReport} />
+    , <Route key='r-188' path="/collectedInvoices" component={CollectedInvoices} />
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes]

@@ -10,8 +10,6 @@ import Config from '../../../Services/Config'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
 import { toast } from "react-toastify";
 
-const _ = require('lodash')
-
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const filtersColumns = [
