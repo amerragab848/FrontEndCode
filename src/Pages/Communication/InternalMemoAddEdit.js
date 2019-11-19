@@ -417,7 +417,7 @@ class InternalMemoAddEdit extends Component {
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
-                                        <Formik initialValues={{ ...this.state.document }} 
+                                        <Formik initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
                                             onSubmit={(values) => {
