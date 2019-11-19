@@ -2385,28 +2385,28 @@ var routes = [
     },
     {
         route: "timeSheetRpt",
-        moduleId: "reportCenter/timeSheetRpt",
+        moduleId: "TimeSheet/TimeSheetReport",
         title: "timeSheetReport",
         nav: true,
         settings: { HumanResources: true, permission: 3709, order: 3 }
     },
     {
         route: "overTimeRpt",
-        moduleId: "TimeSheet/overTimeRpt",
+        moduleId: "TimeSheet/OverTimeRpt",
         title: "overTimeRpt",
         nav: true,
         settings: { HumanResources: true, permission: 3708, order: 2 }
     },
     {
         route: "projectTotaltimeSheetRpt",
-        moduleId: "reportCenter/projectTotaltimeSheet",
+        moduleId: "TimeSheet/ProjectTotaltimeSheet",
         title: "projectTotaltimeSheetRpt",
         nav: true,
         settings: { HumanResources: true, permission: 3714, order: 8 }
     },
     {
         route: "projectContactsTimeSheetRpt",
-        moduleId: "reportCenter/projectContactsTimeSheetRpt",
+        moduleId: "TimeSheet/ProjectContactsTimeSheetRpt",
         title: "projectContactsTimeSheetRpt",
         nav: true,
         settings: { HumanResources: true, permission: 3715, order: 9 }
