@@ -6,7 +6,7 @@ import Calendar from "react-calendar";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 import moment from "moment";
-import { number } from "prop-types";
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
@@ -111,7 +111,7 @@ class GridSetupWithFilter extends Component {
       }
     };
 
-    return sortDirection === "NONE" ? initialRows : [...this.state.rows].sort(comparer);
+    return sortDirection === "NONE" ? initialRows : [...this.props.rows].sort(comparer);
   };
 
   getRows = (rows, filters) => {
@@ -329,14 +329,6 @@ class GridSetupWithFilter extends Component {
 
       let filters = Object.keys(_filters).reduce((n, k) => (n[k] = _filters[k], n), {});
       if (Object.keys(filters).length > 1) {
-
-        // let Data = this.state.rows.map(item => ({
-        //   title: item.title.toLowerCase(),
-        //   action: item.action,
-        //   editable: item.editable,
-        //   id: item.id,
-        //   refCode: item.refCode
-        // }));
 
         rows.forEach(row => {
           matched = 0;
@@ -753,7 +745,6 @@ class GridSetupWithFilter extends Component {
           </div>
         </div>
 
-
         <div className={this.state.ShowModelFilter ? "filterModal__container active" : "filterModal__container"}>
           <h2 className="zero">{Resources.filterResults[currentLanguage]}</h2>
           <button className="filter__close" onClick={this.CloseModeFilter}>
@@ -851,35 +842,19 @@ class GridSetupWithFilter extends Component {
                   <ReactDataGrid rowKey="id"
                     minHeight={this.getRows() != undefined ? this.getCount() < 5 ? 350 : this.props.minHeight !== undefined ? this.props.minHeight : 750 : 1}
                     height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
-
                     columns={this.state.columns}
-                    rowGetter={index =>
-                      this.getRowAt(index)
-                    }
-
+                    rowGetter={index => this.props.rows[index]}
                     rowsCount={this.getCount()}
-                    onRowExpandToggle={row =>
-                      this.onRowExpandToggle(row)
-                    }
+                    onRowExpandToggle={row => this.onRowExpandToggle(row)}
                     expandedRows={this.expandedRows}
-                    onRowExpandClick={row =>
-                      this.onRowExpandClick(row)
-                    }
-
-                    enableCellSelect={true} onGridRowsUpdated={this.onGridRowsUpdated} onCellSelected={this.onCellSelected}
-                    onColumnResize={(idx, width, event) => {
-                      this.scrolllll();
-                    }}
-                    onGridSort={(
-                      sortColumn,
-                      sortDirection
-                    ) =>
+                    onRowExpandClick={row => this.onRowExpandClick(row)}
+                    enableCellSelect={true}
+                    onGridRowsUpdated={this.onGridRowsUpdated}
+                    onCellSelected={this.onCellSelected}
+                    onColumnResize={(idx, width, event) => { this.scrolllll(); }}
+                    onGridSort={(sortColumn, sortDirection) =>
                       this.setState({
-                        rows: this.sortRows(
-                          this.state.rows,
-                          sortColumn,
-                          sortDirection
-                        )
+                        rows: this.sortRows(this.props.rows, sortColumn, sortDirection)
                       })
                     }
                     enableDragAndDrop={true}
@@ -928,8 +903,7 @@ class GridSetupWithFilter extends Component {
             </div>
           </div>
         </div>
-
-      </Fragment >
+      </Fragment>
     );
   }
 }

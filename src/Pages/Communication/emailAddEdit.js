@@ -14,7 +14,7 @@ import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
-import moment from "moment"; 
+import moment from "moment";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
@@ -37,7 +37,7 @@ let projectName = 0;
 let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
-let arrange = 0; 
+let arrange = 0;
 
 class emailAddEdit extends Component {
 
@@ -101,7 +101,7 @@ class emailAddEdit extends Component {
 
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-      
+
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
                 links[i].classList.add('even');
@@ -160,7 +160,7 @@ class emailAddEdit extends Component {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
-        
+
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();

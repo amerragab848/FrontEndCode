@@ -14,7 +14,7 @@ import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter } = Filters;
+const { SingleSelectFilter } = Filters;
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -37,8 +37,22 @@ let subjectLink = ({ value, row }) => {
   let doc_view = "";
   let subject = "";
   if (row) {
-    doc_view = "/" + row.docLink + row.id + "/" + row.projectId + "/" + row.projectName;
+
+    let obj = {
+      docId: row.id,
+      projectId: row.projectId,
+      projectName: row.projectName,
+      arrange: row.arrange,
+      docApprovalId: row.accountDocWorkFlowId,
+      isApproveMode: true,
+      perviousRoute: window.location.pathname + window.location.search
+    };
+
+    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
+    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
+    doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
     subject = row.subject;
+
     return <a href={doc_view}> {subject} </a>;
   }
   return null;
@@ -46,6 +60,7 @@ let subjectLink = ({ value, row }) => {
 
 class DocNotifyLogDetails extends Component {
   constructor(props) {
+
     super(props);
 
     var columnsGrid = [
@@ -94,8 +109,7 @@ class DocNotifyLogDetails extends Component {
         resizable: true,
         filterable: true,
         sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: dateFormate
+        filterRenderer: SingleSelectFilter
       },
       {
         key: "projectName",
@@ -256,20 +270,23 @@ class DocNotifyLogDetails extends Component {
 
   onRowClick = (obj) => {
     if (obj) {
-      let objRout = {
-        docId: obj.docId,
-        projectId: obj.projectId,
-        projectName: obj.projectName,
-        arrange: 0,
-        docApprovalId: 0,
-        isApproveMode: false,
-        perviousRoute: window.location.pathname + window.location.search
-      }
-      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
-      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-      this.props.history.push({
-        pathname: "/" + obj.docLink,
-        search: "?id=" + encodedPaylod
+
+      Api.post(`UpdateReadStutas?id=${obj.id}`).then(result => {
+        let objRout = {
+          docId: obj.docId,
+          projectId: obj.projectId,
+          projectName: obj.projectName,
+          arrange: 0,
+          docApprovalId: 0,
+          isApproveMode: false,
+          perviousRoute: window.location.pathname + window.location.search
+        }
+        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+        this.props.history.push({
+          pathname: "/" + obj.docLink,
+          search: "?id=" + encodedPaylod
+        });
       });
     }
   }
@@ -297,11 +314,7 @@ class DocNotifyLogDetails extends Component {
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
             <span>{this.state.rows.length}</span>
-            <div
-              className="ui labeled icon top right pointing dropdown fillter-button"
-              tabIndex="0"
-              onClick={() => this.hideFilter(this.state.viewfilter)}
-            >
+            <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
               <span>
                 <svg
                   width="16px"

@@ -2145,7 +2145,26 @@ class SubmittalAddEdit extends Component {
                 </div>
               </div>
             </div>
-
+            {this.props.changeStatus === true && this.state.currentStep === 0 ? (
+              <div className="approveDocument">
+                <div className="approveDocumentBTNS">
+                  <DocumentActions
+                    isApproveMode={this.state.isApproveMode}
+                    docTypeId={this.state.docTypeId}
+                    docId={this.state.docId}
+                    projectId={this.state.projectId}
+                    subject={this.props.document.subject}
+                    previousRoute={this.state.previousRoute}
+                    docApprovalId={this.state.docApprovalId}
+                    currentArrange={this.state.arrange}
+                    showModal={this.props.showModal}
+                    showOptionPanel={this.showOptionPanel}
+                    permission={this.state.permission}
+                    documentName={Resources.Submittal[currentLanguage]}
+                  />
+                </div>
+              </div>
+            ) : null}
             <Steps steps_defination={steps_defination} exist_link="/submittal/" docId={this.state.docId}
               changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
               stepNo={this.state.currentStep}
@@ -2349,26 +2368,6 @@ class SubmittalAddEdit extends Component {
             </div>
           </SkyLight>
         </div>
-        {this.props.changeStatus === true && this.state.currentStep === 0 ? (
-          <div className="approveDocument">
-            <div className="approveDocumentBTNS">
-              <DocumentActions
-                isApproveMode={this.state.isApproveMode}
-                docTypeId={this.state.docTypeId}
-                docId={this.state.docId}
-                projectId={this.state.projectId}
-                subject={this.props.document.subject}
-                previousRoute={this.state.previousRoute}
-                docApprovalId={this.state.docApprovalId}
-                currentArrange={this.state.arrange}
-                showModal={this.props.showModal}
-                showOptionPanel={this.showOptionPanel}
-                permission={this.state.permission}
-                documentName={Resources.Submittal[currentLanguage]}
-              />
-            </div>
-          </div>
-        ) : null}
       </div>
     );
   }
