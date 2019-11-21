@@ -253,7 +253,8 @@ class requestPaymentsAddEdit extends Component {
             itemId: 0,
             quantityComplete: 0,
             currentDocument: "",
-            columnsApprovedInvoices: []
+            columnsApprovedInvoices: [],
+            CalculateRow: true
         };
 
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
@@ -290,13 +291,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.paymentPercent}
                         </span>
                     </a>
@@ -309,17 +304,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer",
-                                color:
-                                    row.revisedQuantity >= row.quantityComplete
-                                        ? "black"
-                                        : "#F50505"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer", color: row.revisedQuantity >= row.quantityComplete ? "black" : "#F50505" }}>
                             {row.quantityComplete}
                         </span>
                     </a>
@@ -332,13 +317,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.percentComplete}
                         </span>
                     </a>
@@ -351,13 +330,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.siteQuantityComplete}
                         </span>
                     </a>
@@ -370,13 +343,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.sitePercentComplete}
                         </span>
                     </a>
@@ -982,7 +949,7 @@ class requestPaymentsAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
         saveDocument.projectId = this.state.projectId;
-        this.changeCurrentStep(1);
+
         dataservice.addObject("AddContractsRequestPayment", saveDocument).then(result => {
             if (result.id) {
 
@@ -990,6 +957,8 @@ class requestPaymentsAddEdit extends Component {
                     docId: result.id,
                     isLoading: false
                 });
+
+                this.changeCurrentStep(1);
 
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }
@@ -1382,71 +1351,58 @@ class requestPaymentsAddEdit extends Component {
     }
 
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        this.setState({
-            isLoading: true
+        let paymentsItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+
+        let updateRow = paymentsItems[fromRow];
+
+        paymentsItems[fromRow] = Object.assign(paymentsItems[fromRow], updated);
+
+        let newValue = parseFloat(updated[Object.keys(updated)[0]]);
+        let oldValue = parseFloat(updateRow[Object.keys(updated)[0]]);
+
+        if (parseFloat(updateRow.revisedQuantity) == 0 && (parseFloat(updateRow.siteQuantityComplete) > 0 || parseFloat(updateRow.sitePercentComplete) > 0)) {
+            updateRow.revisedQuantity = 1;
+        }
+
+        updateRow[Object.keys(updated)[0]] = parseFloat(updated[Object.keys(updated)[0]]);
+
+        switch (Object.keys(updated)[0]) {
+            case "quantityComplete":
+                updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                break;
+            case "percentComplete":
+                updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                break;
+            case "sitePercentComplete":
+                updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                break;
+            case "siteQuantityComplete":
+                updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
+
+                if (this.props.changeStatus == false) {
+                    updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                }
+                break;
+        }
+
+        let editRows = [...this.state.editRows];
+
+        let sameRow = find(editRows, function (x) {
+            return x.id === updateRow.id;
         });
 
-        let rows = [...this.state.paymentsItems];
-        let updateRow = rows[fromRow];
-
-        this.setState(state => {
-            const paymentsItems = state.paymentsItems.slice();
-            for (let i = fromRow; i <= toRow; i++) {
-                rows[i] = { ...rows[i], ...updated };
-            }
-            return { paymentsItems };
-        }, function () {
-            if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
-                if (updateRow.revisedQuantity == 0 && (updateRow.siteQuantityComplete > 0 || updateRow.sitePercentComplete > 0)) {
-                    updateRow.revisedQuantity = 1;
-                }
-
-                let newValue = parseFloat(updated[Object.keys(updated)[0]]);
-
-                updateRow[Object.keys(updated)[0]] = parseFloat(
-                    updated[Object.keys(updated)[0]]
-                );
-
-                switch (Object.keys(updated)[0]) {
-                    case "quantityComplete":
-                        updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                        break;
-                    case "percentComplete":
-                        updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                        break;
-                    case "sitePercentComplete":
-                        updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                        break;
-                    case "siteQuantityComplete":
-                        updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
-
-                        if (this.props.changeStatus == false) {
-                            updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                        }
-                        break;
-                }
-
-                let editRows = [...this.state.editRows];
-
-                let sameRow = find(editRows, function (x) {
-                    return x.id === updateRow.id;
-                });
-
-                if (sameRow) {
-                    editRows = editRows.filter(function (i) {
-                        return i.id != updateRow.id;
-                    });
-                }
-
-                editRows.push(updateRow);
-
-                this.setState({
-                    editRows: editRows,
-                    isLoading: false
-                });
-            }
+        if (sameRow) {
+            editRows = editRows.filter(function (i) {
+                return i.id != updateRow.id;
+            });
         }
-        );
+
+        editRows.push(updateRow);
+
+        this.setState({
+            editRows: editRows,
+            paymentsItems
+        });
     };
 
     editRowsClick() {
@@ -2142,7 +2098,7 @@ class requestPaymentsAddEdit extends Component {
             }
         ];
 
-        const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 && itemsColumns.length > 0 ? (
+        const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
             <GridSetup
                 rows={this.state.paymentsItems}
                 showCheckbox={isCompany && this.props.changeStatus ? true : false}
@@ -2153,7 +2109,7 @@ class requestPaymentsAddEdit extends Component {
                 onGridRowsUpdated={this._onGridRowsUpdated}
                 getCellActions={this.GetCellActions}
                 key="PRitems" />
-        ) : (<LoadingSection />);
+        ) : null;
 
         const BoqTypeContent = (
             <Fragment>
@@ -2498,9 +2454,7 @@ class requestPaymentsAddEdit extends Component {
                                                                             {Resources.collectedStatus[currentLanguage]}
                                                                         </label>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="PR-collected"
-                                                                                defaultChecked={this.state.document.collected === false ? null : "checked"}
-                                                                                value="1" onChange={e => this.handleChange(e, "collected")} />
+                                                                            <input type="radio" name="PR-collected" defaultChecked={this.state.document.collected === false ? null : "checked"} value="1" onChange={e => this.handleChange(e, "collected")} />
                                                                             <label>
                                                                                 {Resources.yes[currentLanguage]}
                                                                             </label>
@@ -2555,9 +2509,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     <div className="proForm first-proform letterFullWidth proform__twoInput">
                                                                         <div className="linebylineInput valid-input">
                                                                             <label className="control-label">
-                                                                                {
-                                                                                    Resources.contractName[currentLanguage]
-                                                                                }
+                                                                                {Resources.contractName[currentLanguage]}
                                                                             </label>
                                                                             <div className="ui input inputDev">
                                                                                 <input type="text" className="form-control" id="contractSubject" readOnly
@@ -2571,9 +2523,7 @@ class requestPaymentsAddEdit extends Component {
                                                                             <Dropdown title="contractName"
                                                                                 data={this.state.contractsPos}
                                                                                 selectedValue={this.state.selectContract}
-                                                                                handleChange={event =>
-                                                                                    this.handleChangeDropDownContract(event, "contractId", "selectContract")
-                                                                                }
+                                                                                handleChange={event => this.handleChangeDropDownContract(event, "contractId", "selectContract")}
                                                                                 index="contractId"
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
@@ -2600,101 +2550,35 @@ class requestPaymentsAddEdit extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .retainagePercent[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.retainagePercent[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.retainagePercent &&
-                                                                                touched.retainagePercent
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="retainagePercent"
-                                                                            name="retainagePercent"
-                                                                            readOnly
-                                                                            value={this.state.document.retainagePercent || ''}
+                                                                    <div className={"ui input inputDev" + (errors.retainagePercent && touched.retainagePercent ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control" id="retainagePercent" name="retainagePercent" readOnly value={this.state.document.retainagePercent || ''}
                                                                             placeholder={Resources.retainagePercent[currentLanguage]}
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "retainagePercent"
-                                                                                )
-                                                                            }
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                            onChange={e => this.handleChange(e, "retainagePercent")}
                                                                         />
-                                                                        {touched.retainagePercent ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.retainagePercent
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                        {touched.retainagePercent ? (<em className="pError"> {errors.retainagePercent} </em>) : null}
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .tax[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.tax[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.tax &&
-                                                                                touched.tax
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input type="text" className="form-control" id="tax" name="tax"
-                                                                            readOnly value={this.state.document.tax || ''}
-                                                                            placeholder={Resources.tax[currentLanguage]}
-                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
-                                                                            onChange={e => this.handleChange(e, "tax")}
-                                                                        />
+                                                                    <div className={"ui input inputDev" + (errors.tax && touched.tax ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control" id="tax" name="tax" readOnly value={this.state.document.tax || ''}
+                                                                            placeholder={Resources.tax[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }} onChange={e => this.handleChange(e, "tax")} />
                                                                         {touched.tax ? (<em className="pError"> {errors.tax} </em>) : null}
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .vat[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.vat[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.vat &&
-                                                                                touched.vat
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input type="text" className="form-control" id="vat" name="vat"
-                                                                            readOnly
-                                                                            value={this.state.document.vat || ''}
+                                                                    <div className={"ui input inputDev" + (errors.vat && touched.vat ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control" id="vat" name="vat" readOnly value={this.state.document.vat || ''}
                                                                             placeholder={Resources.vat[currentLanguage]}
                                                                             onBlur={e => { handleChange(e); handleBlur(e); }}
                                                                             onChange={e => this.handleChange(e, "vat")} />
@@ -2704,50 +2588,22 @@ class requestPaymentsAddEdit extends Component {
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .insurance[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.insurance[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.insurance &&
-                                                                                touched.insurance
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
+                                                                    <div className={"ui input inputDev" + (errors.insurance && touched.insurance ? " has-error" : "ui input inputDev")}>
                                                                         <input type="text" className="form-control" id="insurance" name="insurance"
                                                                             value={this.state.document.insurance || ''}
                                                                             placeholder={Resources.insurance[currentLanguage]}
                                                                             onBlur={e => { handleChange(e); handleBlur(e); }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "insurance"
-                                                                                )
-                                                                            }
+                                                                            onChange={e => this.handleChange(e, "insurance")}
                                                                         />
-                                                                        {touched.insurance ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.insurance
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                        {touched.insurance ? (<em className="pError"> {errors.insurance} </em>) : null}
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .actualPayment[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.actualPayment[currentLanguage]}
                                                                     </label>
                                                                     <div className={"ui input inputDev" + (errors.actualPayment && touched.actualPayment ? " has-error" : "ui input inputDev")}>
                                                                         <input type="text" className="form-control" id="actualPayment" name="actualPayment"
@@ -2760,12 +2616,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .remainingPayment[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.remainingPayment[currentLanguage]}
                                                                     </label>
                                                                     <div className="ui input inputDev">
                                                                         <input type="text" className="form-control" name="remainingPayment"
@@ -3121,16 +2972,8 @@ class requestPaymentsAddEdit extends Component {
                                             <div className="slider-Btns">
                                                 <button
                                                     className="primaryBtn-1 btn meduimBtn"
-                                                    onClick={e =>
-                                                        this.changeCurrentStep(
-                                                            4
-                                                        )
-                                                    }>
-                                                    {
-                                                        Resources["next"][
-                                                        currentLanguage
-                                                        ]
-                                                    }
+                                                    onClick={e => this.changeCurrentStep(4)}>
+                                                    {Resources["next"][currentLanguage]}
                                                 </button>
                                             </div>
                                         </div>

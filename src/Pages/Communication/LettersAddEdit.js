@@ -738,7 +738,7 @@ class LettersAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="linebylineInput fullInputWidth">
-                                                            <label className="control-label">    {Resources.sharedSettings[currentLanguage]}</label>
+                                                            <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
                                                                 <div className={"inputDev ui input" + (errors.sharedSettings ? (" has-error") : !errors.sharedSettings && touched.sharedSettings ? (" has-success") : " ")} >
                                                                     <input type="text" className="form-control" id="sharedSettings"
