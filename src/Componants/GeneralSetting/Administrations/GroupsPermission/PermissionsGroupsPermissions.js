@@ -37,6 +37,8 @@ class PermissionsGroupsPermissions extends Component {
         Api.get('AccountsPermissionsGroupsGetById?id=' + this.state.groupId).then(res => {
             if (!isEmpty(res))
                 this.setState({ groupName: res[0].groupName, isLoading: false })
+            else
+                this.setState({ isLoading: false })
         }).catch(() => {
             this.setstate({ isLoading: false })
         })

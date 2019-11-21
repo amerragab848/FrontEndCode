@@ -215,7 +215,7 @@ class materialInspectionRequestAddEdit extends Component {
             else {
                 links[i].classList.add('odd');
             }
-        } 
+        }
         if (this.state.docId > 0) {
             let url = "GetMaterialInspectionRequestForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialInspectionRequest');

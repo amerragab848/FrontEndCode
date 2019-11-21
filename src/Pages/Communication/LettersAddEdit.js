@@ -911,53 +911,45 @@ class LettersAddEdit extends Component {
                                                             </div>}
                                                     </div>
 
-                                                    {this.props.changeStatus ===
-                                                        true ? (
-                                                            <div className="approveDocument">
-                                                                <div className="approveDocumentBTNS">
-                                                                    {this.state
-                                                                        .isLoading ? (
-                                                                            <button className="primaryBtn-1 btn disabled">
-                                                                                <div className="spinner">
-                                                                                    <div className="bounce1" />
-                                                                                    <div className="bounce2" />
-                                                                                    <div className="bounce3" />
-                                                                                </div>
-                                                                            </button>
-                                                                        ) : (
-                                                                            <button
-                                                                                className={
-                                                                                    this
-                                                                                        .state
-                                                                                        .isViewMode ===
-                                                                                        true
-                                                                                        ? "primaryBtn-1 btn middle__btn disNone"
-                                                                                        : "primaryBtn-1 btn middle__btn"
-                                                                                }>
-                                                                                {
-                                                                                    Resources
-                                                                                        .save[
-                                                                                    currentLanguage
-                                                                                    ]
-                                                                                }
-                                                                            </button>
-                                                                        )}
-                                                                    <DocumentActions
-                                                                        isApproveMode={this.state.isApproveMode}
-                                                                        docTypeId={this.state.docTypeId}
-                                                                        docId={this.state.docId}
-                                                                        projectId={this.state.projectId}
-                                                                        previousRoute={this.state.previousRoute}
-                                                                        docApprovalId={this.state.docApprovalId}
-                                                                        currentArrange={this.state.arrange}
-                                                                        showModal={this.props.showModal}
-                                                                        showOptionPanel={this.showOptionPanel}
-                                                                        permission={this.state.permission}
-                                                                        documentName={Resources.lettertitle[currentLanguage]}
-                                                                    />
-                                                                </div>
+
+                                                    {this.props.changeStatus === true ? (
+                                                        <div className="approveDocument">
+                                                            <div className="approveDocumentBTNS">
+                                                                {this.state.isLoading ? (
+                                                                    <button className="primaryBtn-1 btn disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button>
+                                                                ) : (
+                                                                        <button
+                                                                            className={this.state.isViewMode === true
+                                                                                ? "primaryBtn-1 btn middle__btn disNone"
+                                                                                : "primaryBtn-1 btn middle__btn"
+                                                                            }>
+                                                                            {
+                                                                                Resources.save[currentLanguage]
+                                                                            }
+                                                                        </button>
+                                                                    )}
+                                                                <DocumentActions
+                                                                    isApproveMode={this.state.isApproveMode}
+                                                                    docTypeId={this.state.docTypeId}
+                                                                    docId={this.state.docId}
+                                                                    projectId={this.state.projectId}
+                                                                    previousRoute={this.state.previousRoute}
+                                                                    docApprovalId={this.state.docApprovalId}
+                                                                    currentArrange={this.state.arrange}
+                                                                    showModal={this.props.showModal}
+                                                                    showOptionPanel={this.showOptionPanel}
+                                                                    permission={this.state.permission}
+                                                                    documentName={Resources.lettertitle[currentLanguage]}
+                                                                />
                                                             </div>
-                                                        ) : null}
+                                                        </div>
+                                                    ) : null}
                                                 </Form>
                                             )}
                                         </Formik>

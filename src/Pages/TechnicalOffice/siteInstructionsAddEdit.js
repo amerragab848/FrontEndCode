@@ -690,11 +690,11 @@ class siteInstructionsAddEdit extends Component {
                                         <div className="doc-pre-cycle letterFullWidth">
                                             <div>
                                                 {this.state.docId > 0 && this.state.isViewMode === false ? (
-                                                <UploadAttachment changeStatus={this.props.changeStatus} 
-                                                AddAttachments={863} EditAttachments={3269} ShowDropBox={3601}
-                                                 ShowGoogleDrive={3602} docTypeId={this.state.docTypeId} 
-                                                 docId={this.state.docId} 
-                                                 projectId={this.state.projectId} />) : null}
+                                                    <UploadAttachment changeStatus={this.props.changeStatus}
+                                                        AddAttachments={863} EditAttachments={3269} ShowDropBox={3601}
+                                                        ShowGoogleDrive={3602} docTypeId={this.state.docTypeId}
+                                                        docId={this.state.docId}
+                                                        projectId={this.state.projectId} />) : null}
                                                 {this.viewAttachments()}
                                                 <Fragment>
                                                     <div className="document-fields tableBTnabs">

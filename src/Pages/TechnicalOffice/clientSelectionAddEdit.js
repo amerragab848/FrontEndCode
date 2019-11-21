@@ -348,7 +348,7 @@ class clientSelectionAddEdit extends Component {
                 let buildingno = this.props.document.building;
                 let building = {};
                 if (buildingno) {
-                    building =find(result, function (i) { return i.value == buildingno; });
+                    building = find(result, function (i) { return i.value == buildingno; });
 
 
                     this.setState({

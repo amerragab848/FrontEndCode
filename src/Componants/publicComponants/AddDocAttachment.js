@@ -30,13 +30,13 @@ class AddDocAttachment extends Component {
       documents: [],
       selected: {},
       showDeleteModal: false,
-      currentId: null, 
+      currentId: null,
       selectedRows: [],
       modalAdd: false,
       isRelatedLink: this.props.docTypeId === 108 || this.props.docTypeId === 90 ? true : false,
     };
   }
- 
+
   componentDidMount() {
     if (this.state.docId > 0) {
       dataservice.GetDataList("GetModuleList", "modulType", "id").then(result => {
@@ -93,7 +93,7 @@ class AddDocAttachment extends Component {
   }
 
   save() {
-    if (this.state.selectedRows.length > 0) { 
+    if (this.state.selectedRows.length > 0) {
       this.props.actions.addCommunicationDocsAttach(this.state.selectedRows, this.props.projectId, this.props.docTypeId, this.props.docId);
       this.setState({ selectDocument: this.state.initialSelectDocument, selectedRows: [], selected: {} });
     }
@@ -140,7 +140,7 @@ class AddDocAttachment extends Component {
               return {
                 style: { display: 'none' },
               };
-            },
+            }
           } :
           {
             Header: Resources["delete"][currentLanguage],
@@ -203,16 +203,20 @@ class AddDocAttachment extends Component {
         {
           Header: Resources["subject"][currentLanguage],
           accessor: "subject",
-          width: 200
+          width: 200,
+          filterable: true
         },
         {
           Header: Resources["docStatus"][currentLanguage],
           accessor: "statusText",
           width: 200,
+          filterable: true
         },
         {
           Header: Resources["docDate"][currentLanguage],
           accessor: "docDate",
+          filterable: true,
+          filterMethod: (filter, row) => { return row[filter.id].startsWith(filter.value) && row[filter.id].endsWith(filter.value) },
           Cell: row => (
             <span>
               <span>{moment(row.value).format("DD/MM/YYYY")}</span>
@@ -240,10 +244,13 @@ class AddDocAttachment extends Component {
                 </div> : null}
 
               <div className="precycle-grid modalTable">
-                <ReactTable columns={columns} data={this.props.documentData} className="-striped -highlight"
-                  defaultPageSize={10} noDataText={Resources["noData"][currentLanguage]} />
+                <ReactTable 
+                  columns={columns} 
+                  data={this.props.documentData} 
+                  className="-striped -highlight"
+                  defaultPageSize={10} 
+                  noDataText={Resources["noData"][currentLanguage]} />
               </div>
-
             </Fragment>
             : null}
         </div>
@@ -316,6 +323,7 @@ class AddDocAttachment extends Component {
             <ReactTable
               data={this.props.docsAttachData}
               id="attachDocuments"
+
               columns={columnsDocument}
               defaultPageSize={5}
               noDataText={Resources["noData"][currentLanguage]}
