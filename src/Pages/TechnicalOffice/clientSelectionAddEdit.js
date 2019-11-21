@@ -126,62 +126,7 @@ class clientSelectionAddEdit extends Component {
             }
         }
         this.checkDocumentIsView();
-    };
 
-    componentWillUnmount() {
-        this.props.actions.clearCashDocument();
-        this.setState({
-            docId: 0
-        });
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
-            let doc = nextProps.document
-            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
-
-            this.setState({
-                document: doc,
-                hasWorkflow: nextProps.hasWorkflow,
-                answer: nextProps.document.answer
-            });
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
-        }
-        if (this.state.showModal != nextProps.showModal) {
-            this.setState({ showModal: nextProps.showModal });
-        }
-    };
-
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-            this.checkDocumentIsView();
-        }
-    }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(3148))) {
-                this.setState({ isViewMode: true });
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(3148)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(3148)) {
-                    if (this.props.document.status !== false && Config.IsAllow(3148)) {
-                        this.setState({ isViewMode: false });
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            }
-        }
-        else {
-            this.setState({ isViewMode: false });
-        }
-    }
-
-    componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetLogsClientSelectionForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'clientSelectionLog');
@@ -226,6 +171,62 @@ class clientSelectionAddEdit extends Component {
             this.props.actions.documentForAdding();
         }
     };
+
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
+        this.setState({
+            docId: 0
+        });
+    }
+
+
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+            let doc = nextProps.document
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+            return {
+                document: doc, hasWorkflow: nextProps.hasWorkflow, answer: nextProps.document.answer
+            }
+        }
+        if (state.showModal != nextProps.showModal) {
+            return { showModal: nextProps.showModal };
+        }
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+            this.checkDocumentIsView();
+        }
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+    }
+
+    checkDocumentIsView() {
+        if (this.props.changeStatus === true) {
+            if (!(Config.IsAllow(3148))) {
+                this.setState({ isViewMode: true });
+            }
+            if (this.state.isApproveMode != true && Config.IsAllow(3148)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(3148)) {
+                    if (this.props.document.status !== false && Config.IsAllow(3148)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            }
+        }
+        else {
+            this.setState({ isViewMode: false });
+        }
+    }
+
+
 
     GetNExtArrange() {
         let original_document = { ...this.state.document };
