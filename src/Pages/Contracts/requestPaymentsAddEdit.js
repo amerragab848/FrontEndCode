@@ -635,17 +635,7 @@ class requestPaymentsAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-            },
-            {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-            },
+            }, 
             {
                 key: "lastComment",
                 name: Resources["comment"][currentLanguage],
