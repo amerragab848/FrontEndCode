@@ -114,6 +114,37 @@ class siteInstructionsAddEdit extends Component {
         }
     }
 
+
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+            let doc = nextProps.document
+            doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+            doc.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(doc.requiredDate).format('YYYY-MM-DD')
+            doc.replayDate === null ? moment().format('YYYY-MM-DD') : moment(doc.replayDate).format('YYYY-MM-DD')
+            return {
+                document: doc, hasWorkflow: nextProps.hasWorkflow, message: nextProps.document.message,
+                replayMsg: nextProps.document.replayMsg, loadingPage: false
+            }
+        }
+        if (state.showModal != nextProps.showModal) {
+            return { showModal: nextProps.showModal };
+        }
+        return null;
+    }
+
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+            this.checkDocumentIsView();
+        }
+
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+    }
+
+
     componentDidMount() {
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -124,65 +155,6 @@ class siteInstructionsAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
-    };
-
-    componentWillUnmount() {
-        this.props.actions.clearCashDocument();
-        this.setState({
-            docId: 0
-        })
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id !== this.props.document.id) {
-            let doc = nextProps.document
-            doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
-            doc.requiredDate === null ? moment().format('YYYY-MM-DD') : moment(doc.requiredDate).format('YYYY-MM-DD')
-            doc.replayDate === null ? moment().format('YYYY-MM-DD') : moment(doc.replayDate).format('YYYY-MM-DD')
-            this.setState({
-                document: doc,
-                hasWorkflow: nextProps.hasWorkflow,
-                message: nextProps.document.message,
-                replayMsg: nextProps.document.replayMsg,
-                loadingPage: false
-            });
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
-        }
-    };
-
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-            this.checkDocumentIsView();
-        }
-        if (prevProps.showModal != this.props.showModal) {
-            this.setState({ showModal: this.props.showModal });
-        }
-    }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(638))) {
-                this.setState({ isViewMode: true });
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(638)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(638)) {
-                    if (this.props.document.status !== false && Config.IsAllow(638)) {
-                        this.setState({ isViewMode: false });
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            }
-        }
-        else {
-            this.setState({ isViewMode: false });
-        }
-    }
-
-    componentWillMount() {
         if (this.state.docId > 0) {
             //this.setState({ loadingPage: true })
             let url = "GetLogsSiteInstructionsForEdit?id=" + this.state.docId
@@ -219,6 +191,37 @@ class siteInstructionsAddEdit extends Component {
             this.GetNExtArrange();
         }
     };
+
+    componentWillUnmount() {
+        this.props.actions.clearCashDocument();
+        this.setState({
+            docId: 0
+        })
+    }
+
+    checkDocumentIsView() {
+        if (this.props.changeStatus === true) {
+            if (!(Config.IsAllow(638))) {
+                this.setState({ isViewMode: true });
+            }
+            if (this.state.isApproveMode != true && Config.IsAllow(638)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(638)) {
+                    if (this.props.document.status !== false && Config.IsAllow(638)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            }
+        }
+        else {
+            this.setState({ isViewMode: false });
+        }
+    }
+
+
 
     GetNExtArrange() {
         this.setState({ loadingPage: true })

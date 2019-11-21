@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
+import React, { Component, Fragment } from "react"; 
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
@@ -211,25 +210,7 @@ class dailyReportsAddEdit extends Component {
                 (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={854} />) : null) : null;
     }
 
-    componentWillMount() {
-        if (this.state.docId > 0) {
-            let url = "GetLogsDailyReportsForEdit?id=" + this.state.docId;
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'dailyReports')
-        }
-        else {
-            dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
-                res => {
-                    const Document = {
-                        projectId: projectId, arrange: res, status: "true", subject: "",
-                        docDate: moment(), companyId: '', companyId: '',
-                    }
-                    this.setState({ document: Document })
-                }
-            )
-            this.fillDropDowns(false);
-            this.props.actions.documentForAdding();
-        }
-    }
+   
 
     fillDropDowns(isEdit) {
         dataservice.GetDataListCached('GetProjectProjectsCompaniesForList?projectId= ' + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
@@ -245,22 +226,29 @@ class dailyReportsAddEdit extends Component {
         })
     }
 
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id) {
+
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
             let doc = nextProps.document
             doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
-            this.setState({ isEdit: true, document: doc, hasWorkflow: this.props.hasWorkflow })
-            let isEdit = nextProps.document.id > 0 ? true : false
-            this.fillDropDowns(isEdit);
-            this.checkDocumentIsView();
-        }
+            return { isEdit: true, document: doc, hasWorkflow: nextProps.hasWorkflow }
+        } 
+        return null; 
     }
 
-    componentDidUpdate(prevProps) {
+
+    componentDidUpdate(prevProps, prevState) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
+
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+          }
+ 
     }
+ 
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
@@ -311,10 +299,11 @@ class dailyReportsAddEdit extends Component {
     }
 
     componentDidMount() {
-        this.checkDocumentIsView();
-
+        this.checkDocumentIsView(); 
+ 
         if (this.state.docId !== 0) {
-
+            let url = "GetLogsDailyReportsForEdit?id=" + this.state.docId;
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'dailyReports')
             dataservice.GetDataGrid('GetLogsDailyReportsWorkActivity?reportId=' + this.state.docId).then(result => {
                 result.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
                 this.GetNextArrangeWorkActivity();
@@ -352,6 +341,17 @@ class dailyReportsAddEdit extends Component {
         }
         else {
             this.setState({ EditMood: false });
+            dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
+                res => {
+                    const Document = {
+                        projectId: projectId, arrange: res, status: "true", subject: "",
+                        docDate: moment(), companyId: '', companyId: '',
+                    }
+                    this.setState({ document: Document })
+                }
+            )
+            this.fillDropDowns(false);
+            this.props.actions.documentForAdding();
         }
 
         dataservice.GetDataList('GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
