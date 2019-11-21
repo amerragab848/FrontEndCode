@@ -339,6 +339,19 @@ class requestPaymentsAddEdit extends Component {
             return null;
         };
 
+        let editsitePaymentPercent = ({ value, row }) => {
+            if (row) {
+                return (
+                    <a className="editorCell">
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
+                            {row.sitePaymentPercent}
+                        </span>
+                    </a>
+                );
+            }
+            return null;
+        };
+
         let editSitePercentComplete = ({ value, row }) => {
             if (row) {
                 return (
@@ -377,6 +390,39 @@ class requestPaymentsAddEdit extends Component {
                 sortDescendingFirst: true,
                 type: "number"
             },
+            // {
+            //     key: "actions",
+            //     name: Resources["LogControls"][currentLanguage],
+            //     width: 50,
+            //     draggable: true,
+            //     sortable: true,
+            //     resizable: true,
+            //     filterable: true,
+            //     sortDescendingFirst: true,
+            //     formatter: changeStatus ? null : this.GetCellActions,
+            // },
+            {
+                key: "itemCode",
+                name: Resources["itemCode"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "string"
+            },
+            {
+                key: "details",
+                name: Resources["description"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "string"
+            },
             {
                 key: "boqType",
                 name: Resources["boqType"][currentLanguage],
@@ -411,28 +457,6 @@ class requestPaymentsAddEdit extends Component {
                 type: "string"
             },
             {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
-                key: "description",
-                name: Resources["details"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
                 key: "quantity",
                 name: Resources["boqQuanty"][currentLanguage],
                 width: 100,
@@ -447,6 +471,17 @@ class requestPaymentsAddEdit extends Component {
                 key: "revisedQuantity",
                 name: Resources["approvedQuantity"][currentLanguage],
                 width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                type: "number"
+            },
+            {
+                key: "actualPercentage",
+                name: Resources["actualPercentage"][currentLanguage],
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -525,6 +560,21 @@ class requestPaymentsAddEdit extends Component {
                 type: "number"
             },
             {
+                key: "sitePaymentPercent",
+                name: Resources["contractPaymentPercent"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                formatter: changeStatus ? null : editsitePaymentPercent,
+                editable: !changeStatus,
+                type: "number"
+            }];
+
+        if (this.state.changeStatus) {
+            itemsColumns.push({
                 key: "percentComplete",
                 name: Resources["percentComplete"][currentLanguage],
                 width: 120,
@@ -538,34 +588,84 @@ class requestPaymentsAddEdit extends Component {
                 visible: this.props.changeStatus,
                 type: "number"
             },
-            {
-                key: "quantityComplete",
-                name: Resources["quantityComplete"][currentLanguage],
+                {
+                    key: "quantityComplete",
+                    name: Resources["quantityComplete"][currentLanguage],
+                    width: 120,
+                    draggable: true,
+                    sortable: true,
+                    resizable: true,
+                    filterable: true,
+                    sortDescendingFirst: true,
+                    formatter: changeStatus ? null : editQuantityComplete,
+                    editable: !changeStatus,
+                    visible: this.props.changeStatus,
+                    type: "number"
+                },
+                {
+                    key: "paymentPercent",
+                    name: Resources["paymentPercent"][currentLanguage],
+                    width: 120,
+                    draggable: true,
+                    sortable: true,
+                    resizable: true,
+                    filterable: true,
+                    sortDescendingFirst: true,
+                    formatter: changeStatus ? null : editPaymentPercent,
+                    editable: !changeStatus,
+                    type: "number"
+                })
+        }
+
+        itemsColumns.push({
+            key: "wasAdded",
+            name: Resources["status"][currentLanguage],
+            width: 120,
+            draggable: true,
+            sortable: true,
+            resizable: true,
+            filterable: true,
+            sortDescendingFirst: true,
+        }, {
+                key: "totalExcutedPayment",
+                name: Resources["totalAmount"][currentLanguage],
                 width: 120,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: changeStatus ? null : editQuantityComplete,
-                editable: !changeStatus,
-                visible: this.props.changeStatus,
-                type: "number"
             },
             {
-                key: "paymentPercent",
-                name: Resources["paymentPercent"][currentLanguage],
+                key: "comment",
+                name: Resources["comment"][currentLanguage],
                 width: 120,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: changeStatus ? null : editPaymentPercent,
-                editable: !changeStatus,
-                type: "number"
-            }
-        ];
+            },
+            {
+                key: "lastComment",
+                name: Resources["comment"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+            },
+            {
+                key: "itemStatus",
+                name: Resources["itemStatus"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+            });
 
         if (changeStatus) {
             itemsColumns.push({
@@ -753,7 +853,7 @@ class requestPaymentsAddEdit extends Component {
                 tax: 0,
                 insurance: 0,
                 advancePaymentPercent: 0,
-                collected: 0,
+                collected: false,
                 useQuantity: false,
                 percentComplete: "",
                 quantityComplete: "",
@@ -1229,6 +1329,7 @@ class requestPaymentsAddEdit extends Component {
                             updated_document.quantityComplete = value.quantityComplete;
                             updated_document.paymentPercent = value.paymentPercent;
                             updated_document.lastComment = value.lastComment;
+                            updated_document.id = value.id;
 
                             updated_document = Object.assign(original_document, updated_document);
 
@@ -1536,12 +1637,13 @@ class requestPaymentsAddEdit extends Component {
     editPaymentRequistionItems = () => {
 
         let mainDoc = this.state.currentObject;
+        let mainDocs = this.state.document;
 
         mainDoc.requestId = this.state.docId;
 
-        this.setState({
-            isLoading: true
-        });
+        // this.setState({
+        //     isLoading: true
+        // });
 
         dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
 
@@ -1549,7 +1651,7 @@ class requestPaymentsAddEdit extends Component {
 
             this.setState({
                 viewPopUpRows: false,
-                isLoading: false
+                //isLoading: false
             });
         });
     };
@@ -2100,6 +2202,7 @@ class requestPaymentsAddEdit extends Component {
 
         const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
             <GridSetup
+                //groupBy={[{ key: 'itemCode', name: 'itemCode' }]}
                 rows={this.state.paymentsItems}
                 showCheckbox={isCompany && this.props.changeStatus ? true : false}
                 clickHandlerDeleteRows={this.clickHandlerDeleteRows}
@@ -3094,243 +3197,89 @@ class requestPaymentsAddEdit extends Component {
                             onSubmit={values => {
                                 this.editPaymentRequistionItems();
                             }}>
-                            {({
-                                errors,
-                                touched,
-                                handleBlur,
-                                handleChange,
-                                handleSubmit,
-                                setFieldValue,
-                                setFieldTouched
-                            }) => (
-                                    <Form
-                                        id="InspectionRequestForm"
-                                        className="customProform proForm"
-                                        noValidate="novalidate"
-                                        onSubmit={handleSubmit}>
-                                        <div className="dropWrapper">
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.percentComplete[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input" +
-                                                        (errors.percentComplete &&
-                                                            touched.percentComplete
-                                                            ? " has-error"
-                                                            : !errors.percentComplete &&
-                                                                touched.percentComplete
-                                                                ? " has-success"
-                                                                : " ")
-                                                    }>
-                                                    <input
-                                                        name="percentComplete"
-                                                        className="form-control fsadfsadsa"
-                                                        id="percentComplete"
-                                                        placeholder={
-                                                            Resources
-                                                                .percentComplete[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .percentComplete
-                                                        }
-                                                        onChange={e =>
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "percentComplete"
-                                                            )
-                                                        }
-                                                    />
-                                                    {touched.percentComplete ? (
-                                                        <em className="pError">
-                                                            {errors.percentComplete}
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.quantityComplete[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input" +
-                                                        (errors.quantityComplete &&
-                                                            touched.quantityComplete
-                                                            ? " has-error"
-                                                            : !errors.quantityComplete &&
-                                                                touched.quantityComplete
-                                                                ? " has-success"
-                                                                : " ")
-                                                    }>
-                                                    <input
-                                                        name="quantityComplete"
-                                                        className="form-control fsadfsadsa"
-                                                        id="quantityComplete"
-                                                        placeholder={
-                                                            Resources
-                                                                .quantityComplete[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .quantityComplete
-                                                        }
-                                                        onChange={e =>
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "quantityComplete"
-                                                            )
-                                                        }
-                                                    />
-                                                    {touched.quantityComplete ? (
-                                                        <em className="pError">
-                                                            {
-                                                                errors.quantityComplete
-                                                            }
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.paymentPercent[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input" +
-                                                        (errors.paymentPercent &&
-                                                            touched.paymentPercent
-                                                            ? " has-error"
-                                                            : !errors.paymentPercent &&
-                                                                touched.paymentPercent
-                                                                ? " has-success"
-                                                                : " ")
-                                                    }>
-                                                    <input
-                                                        name="paymentPercent"
-                                                        className="form-control fsadfsadsa"
-                                                        id="paymentPercent"
-                                                        placeholder={
-                                                            Resources
-                                                                .paymentPercent[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .paymentPercent
-                                                        }
-                                                        onChange={e => {
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "paymentPercent"
-                                                            );
-                                                        }}
-                                                    />
-                                                    {touched.paymentPercent ? (
-                                                        <em className="pError">
-                                                            {errors.paymentPercent}
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.comments[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={"inputDev ui input"}>
-                                                    <input
-                                                        name="comments"
-                                                        className="form-control fsadfsadsa"
-                                                        id="comments"
-                                                        placeholder={
-                                                            Resources.comments[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .lastComment
-                                                        }
-                                                        onChange={e => {
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "lastComment"
-                                                            );
-                                                        }}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="fullWidthWrapper">
-                                                {this.state.isLoading === true ? (
-                                                    <button
-                                                        className="primaryBtn-1 btn  disabled"
-                                                        disabled="disabled">
-                                                        <div className="spinner">
-                                                            <div className="bounce1" />
-                                                            <div className="bounce2" />
-                                                            <div className="bounce3" />
-                                                        </div>
-                                                    </button>
-                                                ) : (
-                                                        <button
-                                                            className="primaryBtn-1 btn "
-                                                            type="submit">
-                                                            {
-                                                                Resources.save[
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </button>
-                                                    )}
+                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                <Form id="InspectionRequestForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
+                                    <div className="dropWrapper">
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">
+                                                {Resources.percentComplete[currentLanguage]}
+                                            </label>
+                                            <div className={"inputDev ui input" + (errors.percentComplete && touched.percentComplete ? " has-error" : !errors.percentComplete && touched.percentComplete ? " has-success" : " ")}>
+                                                <input name="percentComplete" className="form-control fsadfsadsa" id="percentComplete"
+                                                    placeholder={Resources.percentComplete[currentLanguage]}
+                                                    autoComplete="off"
+                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                    defaultValue={this.state.document.percentComplete}
+                                                    onChange={e => this.handleChangeForEdit(e, "percentComplete")}
+                                                />
+                                                {touched.percentComplete ? (<em className="pError"> {errors.percentComplete} </em>) : null}
                                             </div>
                                         </div>
-                                    </Form>
-                                )}
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">
+                                                {Resources.quantityComplete[currentLanguage]}
+                                            </label>
+                                            <div className={"inputDev ui input" + (errors.quantityComplete && touched.quantityComplete ? " has-error" : !errors.quantityComplete && touched.quantityComplete ? " has-success" : " ")}>
+                                                <input name="quantityComplete" className="form-control fsadfsadsa" id="quantityComplete"
+                                                    placeholder={Resources.quantityComplete[currentLanguage]}
+                                                    autoComplete="off"
+                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                    defaultValue={this.state.document.quantityComplete}
+                                                    onChange={e => this.handleChangeForEdit(e, "quantityComplete")}
+                                                />
+                                                {touched.quantityComplete ? (<em className="pError">{errors.quantityComplete}</em>) : null}
+                                            </div>
+                                        </div>
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">
+                                                {Resources.paymentPercent[currentLanguage]}
+                                            </label>
+                                            <div className={"inputDev ui input" + (errors.paymentPercent && touched.paymentPercent ? " has-error" : !errors.paymentPercent && touched.paymentPercent ? " has-success" : " ")}>
+                                                <input name="paymentPercent" className="form-control fsadfsadsa" id="paymentPercent"
+                                                    placeholder={Resources.paymentPercent[currentLanguage]}
+                                                    autoComplete="off"
+                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                    defaultValue={this.state.document.paymentPercent}
+                                                    onChange={e => { this.handleChangeForEdit(e, "paymentPercent"); }}
+                                                />
+                                                {touched.paymentPercent ? (<em className="pError"> {errors.paymentPercent} </em>) : null}
+                                            </div>
+                                        </div>
+
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">
+                                                {Resources.comments[currentLanguage]}
+                                            </label>
+                                            <div className={"inputDev ui input"}>
+                                                <input name="comments" className="form-control fsadfsadsa" id="comments"
+                                                    placeholder={Resources.comments[currentLanguage]}
+                                                    autoComplete="off"
+                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                    defaultValue={this.state.document.lastComment}
+                                                    onChange={e => { this.handleChangeForEdit(e, "lastComment"); }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="fullWidthWrapper">
+                                            {this.state.isLoading === true ? (
+                                                <button
+                                                    className="primaryBtn-1 btn  disabled"
+                                                    disabled="disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button>
+                                            ) : (
+                                                    <button className="primaryBtn-1 btn " type="submit">
+                                                        {Resources.save[currentLanguage]}
+                                                    </button>
+                                                )}
+                                        </div>
+                                    </div>
+                                </Form>
+                            )}
                         </Formik>
                     </SkyLight>
                 </div>
