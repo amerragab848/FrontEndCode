@@ -573,7 +573,7 @@ class requestPaymentsAddEdit extends Component {
                 type: "number"
             }];
 
-        if (this.state.changeStatus) {
+        if (this.props.changeStatus) {
             itemsColumns.push({
                 key: "percentComplete",
                 name: Resources["percentComplete"][currentLanguage],
