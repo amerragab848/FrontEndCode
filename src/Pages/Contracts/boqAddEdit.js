@@ -1,34 +1,33 @@
-import React, { Component, Fragment } from "react";
-import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
-import Api from "../../api";
-import DatePicker from "../../Componants/OptionsPanels/DatePicker";
-import moment from "moment";
-import Resources from "../../resources.json";
-import find from "lodash/find";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
-import { withRouter } from "react-router-dom";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import DataService from "../../Dataservice";
 import CryptoJS from "crypto-js";
+import { Form, Formik } from "formik";
+import find from "lodash/find";
+import moment from "moment";
+import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import SkyLight from "react-skylight";
 import { toast } from "react-toastify";
+import { bindActionCreators } from "redux";
+import * as Yup from "yup";
+import Api from "../../api";
+import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
+import DatePicker from "../../Componants/OptionsPanels/DatePicker";
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
+import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
+import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
+import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
-import Config from "../../Services/Config.js";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import SkyLight from "react-skylight";
-import * as communicationActions from "../../store/actions/communication";
-import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
-import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
-import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
-import dataservice from "../../Dataservice";
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Steps from "../../Componants/publicComponants/Steps";
-import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
+import { default as DataService, default as dataservice } from "../../Dataservice";
+import Resources from "../../resources.json";
+import Config from "../../Services/Config.js";
+import * as communicationActions from "../../store/actions/communication";
+import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -461,30 +460,24 @@ class bogAddEdit extends Component {
     }
 
     fillDropDowns(isEdit) {
-        DataService.GetDataListCached(
-            "GetProjectProjectsCompaniesForList?projectId=" + projectId,
-            "companyName",
-            "companyId", 'companies', this.state.projectId, "projectId"
-        ).then(res => {
+        DataService.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(res => {
             if (isEdit) {
                 let companyId = this.state.document.company;
                 if (companyId) {
                     let comapny = find(res, function (x) {
                         return x.value == companyId;
                     });
-                    this.setState({
-                        selectedFromCompany: comapny
-                    });
+                    if (comapny) {
+                        this.setState({
+                            selectedFromCompany: comapny
+                        });
+                    }
                 }
             }
             this.setState({ Companies: [...res], isLoading: false });
         });
 
-        DataService.GetDataListCached(
-            "GetAccountsDefaultListForList?listType=discipline",
-            "title",
-            "id", 'defaultLists', "discipline", "listType"
-        ).then(res => {
+        DataService.GetDataListCached("GetAccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(res => {
             if (isEdit) {
                 let disciplineId = this.state.document.discipline;
                 if (disciplineId) {
@@ -499,11 +492,7 @@ class bogAddEdit extends Component {
 
             this.setState({ Disciplines: [...res], isLoading: false });
         });
-        DataService.GetDataListCached(
-            "GetAccountsDefaultListForList?listType=currency",
-            "title",
-            "id", 'defaultLists', "currency", "listType"
-        ).then(res => {
+        DataService.GetDataListCached("GetAccountsDefaultListForList?listType=currency", "title", "id", 'defaultLists', "currency", "listType").then(res => {
             this.setState({ currency: [...res], isLoading: false });
         });
     }
@@ -542,6 +531,11 @@ class bogAddEdit extends Component {
             }
         }
         this.checkDocumentIsView();
+        dataservice
+            .GetDataList("GetAllBoqParentNull?projectId=" + this.state.projectId, "title", "id")
+            .then(res => {
+                this.setState({ boqTypes: res });
+            });
     }
 
     getNextArrange = event => {
@@ -558,19 +552,7 @@ class bogAddEdit extends Component {
             });
         });
     };
-
-    componentDidMount() {
-        dataservice
-            .GetDataList(
-                "GetAllBoqParentNull?projectId=" + this.state.projectId,
-                "title",
-                "id"
-            )
-            .then(res => {
-                this.setState({ boqTypes: res });
-            });
-    }
-
+  
     disablePopUp = () => {
         this.setState({
             showPopUp: false
@@ -2267,13 +2249,31 @@ class bogAddEdit extends Component {
                         <div className="document-fields">
                             <Formik
                                 initialValues={{
-                                    subject: this.props.changeStatus ? this.state.document.subject : "",
-                                    fromCompany: this.state.selectedFromCompany.value != "0" ? this.state.selectedFromCompany.value : "",
-                                    discipline: this.state.selectedDiscipline.value > 0 ? this.state.selectedDiscipline.value : "",
-                                    status: this.props.changeStatus ? this.props.document.status : true,
-                                    documentDate: this.props.changeStatus ? this.props.document.documentDate : moment(),
-                                    showInSiteRequest: this.props.changeStatus ? this.props.document.showInSiteRequest : false,
-                                    showOptimization: this.props.changeStatus ? this.props.document.showOptimization : false
+                                    subject: this.props.changeStatus
+                                        ? this.state.document.subject
+                                        : "",
+                                    fromCompany:
+                                        this.state.selectedFromCompany.value != "0"
+                                            ? this.state.selectedFromCompany
+                                                .value
+                                            : "",
+                                    discipline:
+                                        this.state.selectedDiscipline.value != "0"
+                                            ? this.state.selectedDiscipline
+                                                .value
+                                            : "",
+                                    status: this.props.changeStatus
+                                        ? this.props.document.status
+                                        : true,
+                                    documentDate: this.props.changeStatus
+                                        ? this.props.document.documentDate
+                                        : moment(),
+                                    showInSiteRequest: this.props.changeStatus
+                                        ? this.props.document.showInSiteRequest
+                                        : false,
+                                    showOptimization: this.props.changeStatus
+                                        ? this.props.document.showOptimization
+                                        : false
                                 }}
                                 validationSchema={poqSchema}
                                 enableReinitialize={this.props.changeStatus}

@@ -9,7 +9,7 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import TextEditor from "../../Componants/OptionsPanels/TextEditor";
-import GridSetup from "../Communication/GridSetupWithFilter";
+import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -390,17 +390,6 @@ class requestPaymentsAddEdit extends Component {
                 sortDescendingFirst: true,
                 type: "number"
             },
-            // {
-            //     key: "actions",
-            //     name: Resources["LogControls"][currentLanguage],
-            //     width: 50,
-            //     draggable: true,
-            //     sortable: true,
-            //     resizable: true,
-            //     filterable: true,
-            //     sortDescendingFirst: true,
-            //     formatter: changeStatus ? null : this.GetCellActions,
-            // },
             {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -627,15 +616,15 @@ class requestPaymentsAddEdit extends Component {
             filterable: true,
             sortDescendingFirst: true,
         }, {
-                key: "totalExcutedPayment",
-                name: Resources["totalAmount"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-            }, 
+            key: "totalExcutedPayment",
+            name: Resources["totalAmount"][currentLanguage],
+            width: 120,
+            draggable: true,
+            sortable: true,
+            resizable: true,
+            filterable: true,
+            sortDescendingFirst: true,
+        },
             {
                 key: "lastComment",
                 name: Resources["comment"][currentLanguage],
@@ -2191,8 +2180,8 @@ class requestPaymentsAddEdit extends Component {
         ];
 
         const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
-            <GridSetup
-                //groupBy={[{ key: 'itemCode', name: 'itemCode' }]}
+            <GridSetupWithFilter
+                groupBy={[{ key: 'boqType', name: 'boqType' }, { key: 'boqSubType', name: 'boqSubType' }]}
                 rows={this.state.paymentsItems}
                 showCheckbox={isCompany && this.props.changeStatus ? true : false}
                 clickHandlerDeleteRows={this.clickHandlerDeleteRows}
@@ -2202,6 +2191,7 @@ class requestPaymentsAddEdit extends Component {
                 onGridRowsUpdated={this._onGridRowsUpdated}
                 getCellActions={this.GetCellActions}
                 key="PRitems" />
+ 
         ) : null;
 
         const BoqTypeContent = (
