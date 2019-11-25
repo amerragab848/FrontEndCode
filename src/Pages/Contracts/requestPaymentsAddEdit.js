@@ -390,6 +390,17 @@ class requestPaymentsAddEdit extends Component {
                 sortDescendingFirst: true,
                 type: "number"
             },
+            //  {
+            //     key: "actions",
+            //     name: Resources["LogControls"][currentLanguage],
+            //     width: 50,
+            //     draggable: true,
+            //     sortable: true,
+            //     resizable: true,
+            //     filterable: true,
+            //     sortDescendingFirst: true,
+            //     //formatter: changeStatus ? null : this.GetCellActions,
+            // },
             {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -560,10 +571,8 @@ class requestPaymentsAddEdit extends Component {
                 formatter: changeStatus ? null : editsitePaymentPercent,
                 editable: !changeStatus,
                 type: "number"
-            }];
-
-        if (this.props.changeStatus) {
-            itemsColumns.push({
+            },
+            ...(this.props.changeStatus ? [{
                 key: "percentComplete",
                 name: Resources["percentComplete"][currentLanguage],
                 width: 120,
@@ -577,54 +586,52 @@ class requestPaymentsAddEdit extends Component {
                 visible: this.props.changeStatus,
                 type: "number"
             },
-                {
-                    key: "quantityComplete",
-                    name: Resources["quantityComplete"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true,
-                    formatter: changeStatus ? null : editQuantityComplete,
-                    editable: !changeStatus,
-                    visible: this.props.changeStatus,
-                    type: "number"
-                },
-                {
-                    key: "paymentPercent",
-                    name: Resources["paymentPercent"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true,
-                    formatter: changeStatus ? null : editPaymentPercent,
-                    editable: !changeStatus,
-                    type: "number"
-                })
-        }
-
-        itemsColumns.push({
-            key: "wasAdded",
-            name: Resources["status"][currentLanguage],
-            width: 120,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
-        }, {
-            key: "totalExcutedPayment",
-            name: Resources["totalAmount"][currentLanguage],
-            width: 120,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
-        },
+            {
+                key: "quantityComplete",
+                name: Resources["quantityComplete"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: changeStatus ? null : editQuantityComplete,
+                editable: !changeStatus,
+                visible: this.props.changeStatus,
+                type: "number"
+            },
+            {
+                key: "paymentPercent",
+                name: Resources["paymentPercent"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                formatter: changeStatus ? null : editPaymentPercent,
+                editable: !changeStatus,
+                type: "number"
+            }] : []),
+            {
+                key: "wasAdded",
+                name: Resources["status"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+            }, {
+                key: "totalExcutedPayment",
+                name: Resources["totalAmount"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+            },
             {
                 key: "lastComment",
                 name: Resources["comment"][currentLanguage],
@@ -644,7 +651,9 @@ class requestPaymentsAddEdit extends Component {
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-            });
+            }
+        ];
+
 
         if (changeStatus) {
             itemsColumns.push({
@@ -2181,7 +2190,7 @@ class requestPaymentsAddEdit extends Component {
 
         const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
             <GridSetupWithFilter
-                groupBy={[{ key: 'boqType', name: 'boqType' }, { key: 'boqSubType', name: 'boqSubType' }]}
+                groupBy={this.props.changeStatus ? [{ key: 'wasAdded', name: 'status' }, { key: 'boqType', name: 'boqType' }, { key: 'boqSubType', name: 'boqSubType' }] : null}
                 rows={this.state.paymentsItems}
                 showCheckbox={isCompany && this.props.changeStatus ? true : false}
                 clickHandlerDeleteRows={this.clickHandlerDeleteRows}
@@ -2191,7 +2200,7 @@ class requestPaymentsAddEdit extends Component {
                 onGridRowsUpdated={this._onGridRowsUpdated}
                 getCellActions={this.GetCellActions}
                 key="PRitems" />
- 
+
         ) : null;
 
         const BoqTypeContent = (
