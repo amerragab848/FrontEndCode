@@ -1594,18 +1594,23 @@ class requestPaymentsAddEdit extends Component {
         switch (updated) {
             case "quantityComplete":
                 updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
+                updateRow.quantityComplete = parseFloat(e.target.value);
                 break;
             case "percentComplete":
                 updateRow.quantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
+                updateRow.percentComplete = parseFloat(e.target.value);
                 break;
             case "sitePercentComplete":
                 updateRow.siteQuantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
+                updateRow.sitePercentComplete = parseFloat(e.target.value);
                 break;
             case "lastComment":
                 updateRow.lastComment = e.target.value;
                 break;
             case "siteQuantityComplete":
                 updateRow.sitePercentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
+                updateRow.siteQuantityComplete = parseFloat(e.target.value);
+                
                 if (this.props.changeStatus == false) {
                     updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
                 }
@@ -1625,7 +1630,7 @@ class requestPaymentsAddEdit extends Component {
     editPaymentRequistionItems = () => {
 
         let mainDoc = this.state.currentObject;
-        let mainDocs = this.state.document;
+        //let mainDocs = this.state.document;
 
         mainDoc.requestId = this.state.docId;
 
@@ -3198,7 +3203,7 @@ class requestPaymentsAddEdit extends Component {
                                                     placeholder={Resources.percentComplete[currentLanguage]}
                                                     autoComplete="off"
                                                     onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                    defaultValue={this.state.document.percentComplete}
+                                                    defaultValue={this.state.currentObject.percentComplete}
                                                     onChange={e => this.handleChangeForEdit(e, "percentComplete")}
                                                 />
                                                 {touched.percentComplete ? (<em className="pError"> {errors.percentComplete} </em>) : null}
@@ -3213,7 +3218,7 @@ class requestPaymentsAddEdit extends Component {
                                                     placeholder={Resources.quantityComplete[currentLanguage]}
                                                     autoComplete="off"
                                                     onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                    defaultValue={this.state.document.quantityComplete}
+                                                    defaultValue={this.state.currentObject.quantityComplete}
                                                     onChange={e => this.handleChangeForEdit(e, "quantityComplete")}
                                                 />
                                                 {touched.quantityComplete ? (<em className="pError">{errors.quantityComplete}</em>) : null}
@@ -3228,7 +3233,7 @@ class requestPaymentsAddEdit extends Component {
                                                     placeholder={Resources.paymentPercent[currentLanguage]}
                                                     autoComplete="off"
                                                     onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                    defaultValue={this.state.document.paymentPercent}
+                                                    defaultValue={this.state.currentObject.paymentPercent}
                                                     onChange={e => { this.handleChangeForEdit(e, "paymentPercent"); }}
                                                 />
                                                 {touched.paymentPercent ? (<em className="pError"> {errors.paymentPercent} </em>) : null}
@@ -3244,7 +3249,7 @@ class requestPaymentsAddEdit extends Component {
                                                     placeholder={Resources.comments[currentLanguage]}
                                                     autoComplete="off"
                                                     onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                    defaultValue={this.state.document.lastComment}
+                                                    defaultValue={this.state.currentObject.lastComment}
                                                     onChange={e => { this.handleChangeForEdit(e, "lastComment"); }}
                                                 />
                                             </div>
