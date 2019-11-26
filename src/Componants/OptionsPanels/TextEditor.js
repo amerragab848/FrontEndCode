@@ -15,7 +15,7 @@ export default class TextEditor extends React.Component {
 
     render() {
         return (
-            <div>
+            <div> 
                 <CKEditor
                     editor={ClassicEditor}
                     data={this.props.value !=undefined?this.props.value:''}
