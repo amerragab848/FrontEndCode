@@ -841,7 +841,7 @@ class requestPaymentsAddEdit extends Component {
                 tax: 0,
                 insurance: 0,
                 advancePaymentPercent: 0,
-                collected: false,
+                collected: 0,
                 useQuantity: false,
                 percentComplete: "",
                 quantityComplete: "",
@@ -1610,7 +1610,7 @@ class requestPaymentsAddEdit extends Component {
             case "siteQuantityComplete":
                 updateRow.sitePercentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
                 updateRow.siteQuantityComplete = parseFloat(e.target.value);
-                
+
                 if (this.props.changeStatus == false) {
                     updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
                 }
@@ -2551,14 +2551,15 @@ class requestPaymentsAddEdit extends Component {
                                                                             {Resources.collectedStatus[currentLanguage]}
                                                                         </label>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="PR-collected" defaultChecked={this.state.document.collected === false ? null : "checked"} value="1" onChange={e => this.handleChange(e, "collected")} />
+                                                                            <input type="radio" name="PR-collected" defaultChecked={this.state.document.collected === 0 ? null : "checked"}
+                                                                             value="1" onChange={e => this.handleChange(e, "collected")} />
                                                                             <label>
                                                                                 {Resources.yes[currentLanguage]}
                                                                             </label>
                                                                         </div>
                                                                         <div className="ui checkbox radio radioBoxBlue">
                                                                             <input type="radio" name="PR-collected"
-                                                                                defaultChecked={this.state.document.collected === false ? "checked" : null}
+                                                                                defaultChecked={this.state.document.collected === 0 ? "checked" : null}
                                                                                 value="0" onChange={e => this.handleChange(e, "collected")} />
                                                                             <label>
                                                                                 {Resources.no[currentLanguage]}
