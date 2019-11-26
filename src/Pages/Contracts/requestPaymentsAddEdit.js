@@ -271,8 +271,6 @@ class requestPaymentsAddEdit extends Component {
 
         this.editRowsClick = this.editRowsClick.bind(this);
 
-        // this.GetCellActions = this.GetCellActions.bind(this);
-
         steps_defination = [
             {
                 name: "paymentRequisitions",
@@ -1389,7 +1387,7 @@ class requestPaymentsAddEdit extends Component {
 
             let userType = Config.getPayload();
 
-            if (userType.uty != "user") {
+            //if (userType.uty != "user") {
                 if (this.props.hasWorkflow == false) {
                     if (this.props.changeStatus) {
                         if (this.state.document.status === true && this.state.document.editable === true) {
@@ -1412,10 +1410,14 @@ class requestPaymentsAddEdit extends Component {
                                 document: updated_document
                             });
                             this.addCommentModal.show();
+                        }else {
+                            toast.warn(Resources["adminItemEditable"][currentLanguage]);
                         }
                     }
+                } else {
+                    toast.warn(Resources["adminItemEditable"][currentLanguage]);
                 }
-            }
+            //}
         } else if (column.key === "actions") {
             dataservice.GetDataGrid("GetReqPayCostCodingByRequestItemId?requestId=" + this.state.docId + "&reqItemId=" + value.id).then(result => {
                 this.setState({
@@ -1682,51 +1684,70 @@ class requestPaymentsAddEdit extends Component {
     handleChangeForEdit = (e, updated) => {
         let updateRow = this.state.currentObject;
 
-        let originalData = this.state.paymentsItems;
+        //let originalData = this.state.paymentsItems;
 
+        this.setState({
+            isLoading: true
+        });
+
+        let sitePercentComplete = 0;
+        let siteQuantityComplete = 0;
+        let currentvalue = parseFloat(e.target.value);
         switch (updated) {
+
             case "quantityComplete":
                 updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
                 updateRow.quantityComplete = parseFloat(e.target.value);
                 break;
+
             case "sitePaymentPercent":
-                updateRow.paymentPercent = parseFloat(e.target.value) ;
+                updateRow.paymentPercent = parseFloat(e.target.value);
                 updateRow.sitePaymentPercent = parseFloat(e.target.value);
                 break;
+
             case "percentComplete":
                 updateRow.quantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
                 updateRow.percentComplete = parseFloat(e.target.value);
                 break;
+
             case "sitePercentComplete":
-                updateRow.siteQuantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
-                
-                updateRow.quantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
-                updateRow.sitePercentComplete = parseFloat(e.target.value);
-                updateRow.percentComplete = parseFloat(e.target.value);
+                sitePercentComplete = parseFloat(e.target.value);
+                siteQuantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
+
+                updateRow.siteQuantityComplete = siteQuantityComplete;
+                updateRow.quantityComplete = siteQuantityComplete;
+
+                updateRow.percentComplete = sitePercentComplete;
+                updateRow.sitePercentComplete = sitePercentComplete;
+
                 break;
+
+            case "siteQuantityComplete":
+                sitePercentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
+                siteQuantityComplete = parseFloat(e.target.value);
+
+                updateRow.sitePercentComplete = sitePercentComplete;
+                updateRow.percentComplete = sitePercentComplete;
+
+                updateRow.quantityComplete = siteQuantityComplete;
+                updateRow.siteQuantityComplete = siteQuantityComplete;
+
+                break;
+
             case "lastComment":
                 updateRow.lastComment = e.target.value;
                 break;
-            case "siteQuantityComplete":
-                updateRow.sitePercentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
-                updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
-                updateRow.quantityComplete = parseFloat(e.target.value);
-                updateRow.siteQuantityComplete = parseFloat(e.target.value);
 
-                if (this.props.changeStatus == false) {
-                    updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
-                }
-                break;
-
-                let getIndex = originalData.findIndex(x => x.id === updateRow.id);
-
-                originalData.splice(getIndex, 1);
-
-                this.setState({
-                    paymentsItems: originalData,
-                    currentObject: updateRow
-                });
         }
+
+        // let getIndex = originalData.findIndex(x => x.id === updateRow.id); 
+        // originalData.splice(getIndex, 1);
+        console.log(updateRow, currentvalue);
+        this.setState({
+
+            currentObject: updateRow,
+            isLoading: false
+        });
     };
 
     editPaymentRequistionItems = () => {
@@ -2648,7 +2669,7 @@ class requestPaymentsAddEdit extends Component {
                                                                         </label>
                                                                         <div className="ui checkbox radio radioBoxBlue">
                                                                             <input type="radio" name="PR-collected" defaultChecked={this.state.document.collected === 0 ? null : "checked"}
-                                                                             value="1" onChange={e => this.handleChange(e, "collected")} />
+                                                                                value="1" onChange={e => this.handleChange(e, "collected")} />
                                                                             <label>
                                                                                 {Resources.yes[currentLanguage]}
                                                                             </label>
@@ -3285,7 +3306,9 @@ class requestPaymentsAddEdit extends Component {
                 {/* Edit Qty Value */}
                 <div className="largePopup largeModal " style={{ display: this.state.viewPopUpRows ? "block" : "none" }}>
                     <SkyLight hideOnOverlayClicked ref={ref => (this.addCommentModal = ref)}>
-                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationItemsSchema}
+                        <Formik
+                            initialValues={{ ...this.state.currentObject }}
+                            validationSchema={validationItemsSchema}
                             enableReinitialize={true}
                             onSubmit={values => {
                                 this.editPaymentRequistionItems();
@@ -3353,7 +3376,10 @@ class requestPaymentsAddEdit extends Component {
                                                         {Resources.sitePercentComplete[currentLanguage]}
                                                     </label>
                                                     <div className={"inputDev ui input" + (errors.sitePercentComplete && touched.sitePercentComplete ? " has-error" : !errors.sitePercentComplete && touched.sitePercentComplete ? " has-success" : " ")}>
-                                                        <input name="sitePercentComplete" className="form-control fsadfsadsa" id="percentComplete"
+                                                        <input
+                                                            name="sitePercentComplete"
+                                                            className="form-control fsadfsadsa"
+                                                            id="sitePercentComplete"
                                                             placeholder={Resources.percentComplete[currentLanguage]}
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
@@ -3367,12 +3393,15 @@ class requestPaymentsAddEdit extends Component {
                                                         {Resources.siteQuantityComplete[currentLanguage]}
                                                     </label>
                                                     <div className={"inputDev ui input" + (errors.siteQuantityComplete && touched.siteQuantityComplete ? " has-error" : !errors.siteQuantityComplete && touched.siteQuantityComplete ? " has-success" : " ")}>
-                                                        <input name="siteQuantityComplete" className="form-control fsadfsadsa" id="siteQuantityComplete"
+                                                        <input
+                                                            name="siteQuantityComplete"
+                                                            className="form-control fsadfsadsa"
+                                                            id="siteQuantityComplete"
                                                             placeholder={Resources.siteQuantityComplete[currentLanguage]}
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                             defaultValue={this.state.currentObject.siteQuantityComplete}
-                                                            onChange={e => { this.handleChangeForEdit(e, "siteQuantityComplete"); }} 
+                                                            onChange={e => { this.handleChangeForEdit(e, "siteQuantityComplete"); }}
                                                         />
                                                         {touched.siteQuantityComplete ? (<em className="pError">{errors.siteQuantityComplete}</em>) : null}
                                                     </div>
@@ -3388,7 +3417,7 @@ class requestPaymentsAddEdit extends Component {
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                             defaultValue={this.state.currentObject.sitePaymentPercent}
-                                                            onChange={e => { this.handleChangeForEdit(e, "sitePaymentPercent"); }} 
+                                                            onChange={e => { this.handleChangeForEdit(e, "sitePaymentPercent"); }}
                                                         />
                                                         {touched.sitePaymentPercent ? (<em className="pError"> {errors.sitePaymentPercent} </em>) : null}
                                                     </div>
