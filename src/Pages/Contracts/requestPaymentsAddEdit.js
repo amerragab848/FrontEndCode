@@ -271,8 +271,6 @@ class requestPaymentsAddEdit extends Component {
 
         this.editRowsClick = this.editRowsClick.bind(this);
 
-        // this.GetCellActions = this.GetCellActions.bind(this);
-
         steps_defination = [
             {
                 name: "paymentRequisitions",
@@ -745,10 +743,10 @@ class requestPaymentsAddEdit extends Component {
         ];
     }
 
-    customCell = ({ column, row }) => {
+    customCell(column, row) {
         if (column.key === "BtnActions") {
             const custom = [{
-                icon: <i className="fa fa-pencil" />,
+                icon: <span className="fa fa-history" />,
                 callback: e => {
                     this.setState({
                         isLoading: true
@@ -765,7 +763,7 @@ class requestPaymentsAddEdit extends Component {
                 }
             },
             {
-                icon: <span className="fa fa-pencil" />,
+                icon: <span className="fa fa-comment-o" />,
                 callback: () => {
                     if (Config.IsAllow(1001103)) {
                         this.setState({
@@ -815,10 +813,8 @@ class requestPaymentsAddEdit extends Component {
 
     getCellActions(column, row) {
 
-
-
         const cellActions = {
-            BtnActions: this.customCell
+            BtnActions: this.customCell(column, row)
         };
         return cellActions[column.key];
     }
@@ -1690,7 +1686,7 @@ class requestPaymentsAddEdit extends Component {
                 updateRow.quantityComplete = parseFloat(e.target.value);
                 break;
             case "sitePaymentPercent":
-                updateRow.paymentPercent = parseFloat(e.target.value) ;
+                updateRow.paymentPercent = parseFloat(e.target.value);
                 updateRow.sitePaymentPercent = parseFloat(e.target.value);
                 break;
             case "percentComplete":
@@ -1699,7 +1695,7 @@ class requestPaymentsAddEdit extends Component {
                 break;
             case "sitePercentComplete":
                 updateRow.siteQuantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
-                
+
                 updateRow.quantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
                 updateRow.sitePercentComplete = parseFloat(e.target.value);
                 updateRow.percentComplete = parseFloat(e.target.value);
@@ -2299,7 +2295,7 @@ class requestPaymentsAddEdit extends Component {
                 onRowClick={this.onRowClick}
                 columns={itemsColumns}
                 onGridRowsUpdated={this._onGridRowsUpdated}
-                getCellActions={this.getCellActions}
+                getCellActions={(column, row) => this.getCellActions(column, row)}
                 key="PRitems" />
 
         ) : null;
@@ -3292,7 +3288,6 @@ class requestPaymentsAddEdit extends Component {
                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                 <Form id="InspectionRequestForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
                                     <div className="dropWrapper">
-
                                         {
                                             Config.IsAllow(3674) ?
                                                 <Fragment>
@@ -3371,7 +3366,7 @@ class requestPaymentsAddEdit extends Component {
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                             defaultValue={this.state.currentObject.siteQuantityComplete}
-                                                            onChange={e => { this.handleChangeForEdit(e, "siteQuantityComplete"); }} 
+                                                            onChange={e => { this.handleChangeForEdit(e, "siteQuantityComplete"); }}
                                                         />
                                                         {touched.siteQuantityComplete ? (<em className="pError">{errors.siteQuantityComplete}</em>) : null}
                                                     </div>
@@ -3387,7 +3382,7 @@ class requestPaymentsAddEdit extends Component {
                                                             autoComplete="off"
                                                             onBlur={e => { handleBlur(e); handleChange(e); }}
                                                             defaultValue={this.state.currentObject.sitePaymentPercent}
-                                                            onChange={e => { this.handleChangeForEdit(e, "sitePaymentPercent"); }} 
+                                                            onChange={e => { this.handleChangeForEdit(e, "sitePaymentPercent"); }}
                                                         />
                                                         {touched.sitePaymentPercent ? (<em className="pError"> {errors.sitePaymentPercent} </em>) : null}
                                                     </div>
