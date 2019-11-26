@@ -389,7 +389,7 @@ class GridSetupWithFilter extends Component {
           Loading: false
         });
       } else {
-       
+
         rows.forEach(row => {
           matched = 0;
           Object.keys(filters).forEach(key => {

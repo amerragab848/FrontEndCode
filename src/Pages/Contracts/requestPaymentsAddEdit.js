@@ -52,6 +52,12 @@ const validationItemsSchema = Yup.object().shape({
     paymentPercent: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["paymentPercent"][currentLanguage])
 });
 
+const validationContractorSchema = Yup.object().shape({
+    sitePercentComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["percentComplete"][currentLanguage]),
+    siteQuantityComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["quantityComplete"][currentLanguage]),
+    sitePaymentPercent: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["paymentPercent"][currentLanguage])
+});
+
 const BoqTypeSchema = Yup.object().shape({
     boqType: Yup.string().required(Resources["boqSubType"][currentLanguage]),
     boqChild: Yup.string().required(Resources["boqSubType"][currentLanguage]),
@@ -238,6 +244,7 @@ class requestPaymentsAddEdit extends Component {
             editRows: [],
             comment: "",
             viewPopUpRows: false,
+            viewContractorPopUpRows: false,
             currentObject: {},
             currentId: 0,
             exportFile: "",
@@ -264,7 +271,7 @@ class requestPaymentsAddEdit extends Component {
 
         this.editRowsClick = this.editRowsClick.bind(this);
 
-        this.GetCellActions = this.GetCellActions.bind(this);
+        // this.GetCellActions = this.GetCellActions.bind(this);
 
         steps_defination = [
             {
@@ -390,17 +397,17 @@ class requestPaymentsAddEdit extends Component {
                 sortDescendingFirst: true,
                 type: "number"
             },
-            //  {
-            //     key: "actions",
-            //     name: Resources["LogControls"][currentLanguage],
-            //     width: 50,
-            //     draggable: true,
-            //     sortable: true,
-            //     resizable: true,
-            //     filterable: true,
-            //     sortDescendingFirst: true,
-            //     //formatter: changeStatus ? null : this.GetCellActions,
-            // },
+            ...(this.props.changeStatus ? [
+                {
+                    key: "BtnActions",
+                    name: Resources["LogControls"][currentLanguage],
+                    width: 150,
+                    draggable: true,
+                    sortable: true,
+                    resizable: true,
+                    filterable: true,
+                    sortDescendingFirst: true
+                }] : []),
             {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -736,6 +743,84 @@ class requestPaymentsAddEdit extends Component {
                 width: 120
             }
         ];
+    }
+
+    customCell = ({ column, row }) => {
+        if (column.key === "BtnActions") {
+            const custom = [{
+                icon: <i className="fa fa-pencil" />,
+                callback: e => {
+                    this.setState({
+                        isLoading: true
+                    });
+                    dataservice.GetDataGrid("GetContractsRequestPaymentsItemsHistory?id=" + this.state.docId).then(result => {
+                        this.setState({
+                            paymentRequestItemsHistory: result,
+                            isLoading: false,
+                            showViewHistoryModal: true
+                        });
+
+                        this.ViewHistoryModal.show();
+                    });
+                }
+            },
+            {
+                icon: <span className="fa fa-pencil" />,
+                callback: () => {
+                    if (Config.IsAllow(1001103)) {
+                        this.setState({
+                            showCommentModal: true,
+                            comment: row.comment
+                        });
+                        this.addCommentModal.show();
+                    }
+                }
+            },
+            {
+                icon: <span className="fa fa-pencil" />,
+                callback: () => {
+                    if (Config.IsAllow(1001104)) {
+                        let boqStractureObj = {
+                            ...this.state.boqStractureObj
+                        };
+                        let boqTypes = [...this.state.boqTypes];
+                        boqStractureObj.id = row.id;
+                        boqStractureObj.requestId = this.state.docId;
+                        boqStractureObj.contractId = this.state.document.contractId;
+
+                        if (boqTypes.length > 0) {
+                            this.setState({
+                                boqStractureObj: boqStractureObj,
+                                showBoqModal: true
+                            });
+                            this.boqTypeModal.show();
+                        } else {
+                            dataservice.GetDataList("GetAllBoqParentNull?projectId=" + projectId, "title", "id").then(data => {
+                                this.setState({
+                                    boqTypes: data,
+                                    boqStractureObj: boqStractureObj,
+                                    showBoqModal: true
+                                });
+                                this.boqTypeModal.show();
+                            });
+                        }
+                    }
+                }
+            }];
+
+            return custom;
+
+        }
+    }
+
+    getCellActions(column, row) {
+
+
+
+        const cellActions = {
+            BtnActions: this.customCell
+        };
+        return cellActions[column.key];
     }
 
     componentDidMount() {
@@ -1305,7 +1390,7 @@ class requestPaymentsAddEdit extends Component {
             let userType = Config.getPayload();
 
             if (userType.uty != "user") {
-                if (this.props.hasWorkflow == false && Config.IsAllow(185)) {
+                if (this.props.hasWorkflow == false) {
                     if (this.props.changeStatus) {
                         if (this.state.document.status === true && this.state.document.editable === true) {
 
@@ -1344,78 +1429,78 @@ class requestPaymentsAddEdit extends Component {
         }
     };
 
-    GetCellActions(column, row) {
-        if (column.key === "BtnActions") {
-            return [
-                {
-                    icon: "fa fa-pencil",
-                    actions: [this.props.changeStatus ? {
-                        text: Resources["viewHistory"][currentLanguage],
-                        callback: e => {
-                            if (this.props.changeStatus) {
-                                this.setState({
-                                    isLoading: true
-                                });
-                                dataservice.GetDataGrid("/GetContractsRequestPaymentsItemsHistory?id=" + this.state.docId).then(result => {
-                                    this.setState({
-                                        paymentRequestItemsHistory: result,
-                                        isLoading: false,
-                                        showViewHistoryModal: true
-                                    });
+    // GetCellActions(column, row) {
+    //     if (column.key === "BtnActions") {
+    //         return [
+    //             {
+    //                 icon: "fa fa-pencil",
+    //                 actions: [this.props.changeStatus ? {
+    //                     text: Resources["viewHistory"][currentLanguage],
+    //                     callback: e => {
+    //                         if (this.props.changeStatus) {
+    //                             this.setState({
+    //                                 isLoading: true
+    //                             });
+    //                             dataservice.GetDataGrid("/GetContractsRequestPaymentsItemsHistory?id=" + this.state.docId).then(result => {
+    //                                 this.setState({
+    //                                     paymentRequestItemsHistory: result,
+    //                                     isLoading: false,
+    //                                     showViewHistoryModal: true
+    //                                 });
 
-                                    this.ViewHistoryModal.show();
-                                });
-                            }
-                        }
-                    }
-                        : null,
-                    {
-                        text: "showAddComment",
-                        callback: () => {
-                            if (Config.IsAllow(1001103)) {
-                                this.setState({
-                                    showCommentModal: true,
-                                    comment: row.comment
-                                });
-                                this.addCommentModal.show();
-                            }
-                        }
-                    },
-                    {
-                        text: Resources["editBoq"][currentLanguage],
-                        callback: () => {
-                            if (Config.IsAllow(1001104)) {
-                                let boqStractureObj = {
-                                    ...this.state.boqStractureObj
-                                };
-                                let boqTypes = [...this.state.boqTypes];
-                                boqStractureObj.id = row.id;
-                                boqStractureObj.requestId = this.state.docId;
-                                boqStractureObj.contractId = this.state.document.contractId;
+    //                                 this.ViewHistoryModal.show();
+    //                             });
+    //                         }
+    //                     }
+    //                 }
+    //                     : null,
+    //                 {
+    //                     text: "showAddComment",
+    //                     callback: () => {
+    //                         if (Config.IsAllow(1001103)) {
+    //                             this.setState({
+    //                                 showCommentModal: true,
+    //                                 comment: row.comment
+    //                             });
+    //                             this.addCommentModal.show();
+    //                         }
+    //                     }
+    //                 },
+    //                 {
+    //                     text: Resources["editBoq"][currentLanguage],
+    //                     callback: () => {
+    //                         if (Config.IsAllow(1001104)) {
+    //                             let boqStractureObj = {
+    //                                 ...this.state.boqStractureObj
+    //                             };
+    //                             let boqTypes = [...this.state.boqTypes];
+    //                             boqStractureObj.id = row.id;
+    //                             boqStractureObj.requestId = this.state.docId;
+    //                             boqStractureObj.contractId = this.state.document.contractId;
 
-                                if (boqTypes.length > 0) {
-                                    this.setState({
-                                        boqStractureObj: boqStractureObj,
-                                        showBoqModal: true
-                                    });
-                                    this.boqTypeModal.show();
-                                } else {
-                                    dataservice.GetDataList("GetAllBoqParentNull?projectId=" + projectId, "title", "id").then(data => {
-                                        this.setState({
-                                            boqTypes: data,
-                                            boqStractureObj: boqStractureObj,
-                                            showBoqModal: true
-                                        });
-                                        this.boqTypeModal.show();
-                                    });
-                                }
-                            }
-                        }
-                    }]
-                }
-            ];
-        }
-    }
+    //                             if (boqTypes.length > 0) {
+    //                                 this.setState({
+    //                                     boqStractureObj: boqStractureObj,
+    //                                     showBoqModal: true
+    //                                 });
+    //                                 this.boqTypeModal.show();
+    //                             } else {
+    //                                 dataservice.GetDataList("GetAllBoqParentNull?projectId=" + projectId, "title", "id").then(data => {
+    //                                     this.setState({
+    //                                         boqTypes: data,
+    //                                         boqStractureObj: boqStractureObj,
+    //                                         showBoqModal: true
+    //                                     });
+    //                                     this.boqTypeModal.show();
+    //                                 });
+    //                             }
+    //                         }
+    //                     }
+    //                 }]
+    //             }
+    //         ];
+    //     }
+    // }
 
     handleChangeItemDropDownItems(event, field, selectedValue, isSubscribe, url, param, nextTragetState) {
         if (event == null) return;
@@ -1458,15 +1543,23 @@ class requestPaymentsAddEdit extends Component {
         switch (Object.keys(updated)[0]) {
             case "quantityComplete":
                 updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                updateRow.quantityComplete = parseFloat(newValue);
+
                 break;
             case "percentComplete":
                 updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                updateRow.percentComplete = parseFloat(newValue);
+
                 break;
             case "sitePercentComplete":
                 updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                updateRow.sitePercentComplete = parseFloat(newValue);
+
                 break;
             case "siteQuantityComplete":
                 updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                updateRow.siteQuantityComplete = parseFloat(newValue);
+
 
                 if (this.props.changeStatus == false) {
                     updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
@@ -1596,21 +1689,30 @@ class requestPaymentsAddEdit extends Component {
                 updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
                 updateRow.quantityComplete = parseFloat(e.target.value);
                 break;
+            case "sitePaymentPercent":
+                updateRow.paymentPercent = parseFloat(e.target.value) ;
+                updateRow.sitePaymentPercent = parseFloat(e.target.value);
+                break;
             case "percentComplete":
                 updateRow.quantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
                 updateRow.percentComplete = parseFloat(e.target.value);
                 break;
             case "sitePercentComplete":
                 updateRow.siteQuantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
+                
+                updateRow.quantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
                 updateRow.sitePercentComplete = parseFloat(e.target.value);
+                updateRow.percentComplete = parseFloat(e.target.value);
                 break;
             case "lastComment":
                 updateRow.lastComment = e.target.value;
                 break;
             case "siteQuantityComplete":
                 updateRow.sitePercentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
+                updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
+                updateRow.quantityComplete = parseFloat(e.target.value);
                 updateRow.siteQuantityComplete = parseFloat(e.target.value);
-                
+
                 if (this.props.changeStatus == false) {
                     updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
                 }
@@ -1630,21 +1732,15 @@ class requestPaymentsAddEdit extends Component {
     editPaymentRequistionItems = () => {
 
         let mainDoc = this.state.currentObject;
-        //let mainDocs = this.state.document;
 
         mainDoc.requestId = this.state.docId;
-
-        // this.setState({
-        //     isLoading: true
-        // });
 
         dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.setState({
-                viewPopUpRows: false,
-                //isLoading: false
+                viewPopUpRows: false
             });
         });
     };
@@ -2203,7 +2299,7 @@ class requestPaymentsAddEdit extends Component {
                 onRowClick={this.onRowClick}
                 columns={itemsColumns}
                 onGridRowsUpdated={this._onGridRowsUpdated}
-                getCellActions={this.GetCellActions}
+                getCellActions={this.getCellActions}
                 key="PRitems" />
 
         ) : null;
@@ -3184,6 +3280,8 @@ class requestPaymentsAddEdit extends Component {
                             )}
                     </SkyLight>
                 </div>
+
+                {/* Edit Qty Value */}
                 <div className="largePopup largeModal " style={{ display: this.state.viewPopUpRows ? "block" : "none" }}>
                     <SkyLight hideOnOverlayClicked ref={ref => (this.addCommentModal = ref)}>
                         <Formik initialValues={{ ...this.state.document }} validationSchema={validationItemsSchema}
@@ -3194,51 +3292,107 @@ class requestPaymentsAddEdit extends Component {
                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                 <Form id="InspectionRequestForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
                                     <div className="dropWrapper">
-                                        <div className="fillter-item-c fullInputWidth">
-                                            <label className="control-label">
-                                                {Resources.percentComplete[currentLanguage]}
-                                            </label>
-                                            <div className={"inputDev ui input" + (errors.percentComplete && touched.percentComplete ? " has-error" : !errors.percentComplete && touched.percentComplete ? " has-success" : " ")}>
-                                                <input name="percentComplete" className="form-control fsadfsadsa" id="percentComplete"
-                                                    placeholder={Resources.percentComplete[currentLanguage]}
-                                                    autoComplete="off"
-                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                    defaultValue={this.state.currentObject.percentComplete}
-                                                    onChange={e => this.handleChangeForEdit(e, "percentComplete")}
-                                                />
-                                                {touched.percentComplete ? (<em className="pError"> {errors.percentComplete} </em>) : null}
-                                            </div>
-                                        </div>
-                                        <div className="fillter-item-c fullInputWidth">
-                                            <label className="control-label">
-                                                {Resources.quantityComplete[currentLanguage]}
-                                            </label>
-                                            <div className={"inputDev ui input" + (errors.quantityComplete && touched.quantityComplete ? " has-error" : !errors.quantityComplete && touched.quantityComplete ? " has-success" : " ")}>
-                                                <input name="quantityComplete" className="form-control fsadfsadsa" id="quantityComplete"
-                                                    placeholder={Resources.quantityComplete[currentLanguage]}
-                                                    autoComplete="off"
-                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                    defaultValue={this.state.currentObject.quantityComplete}
-                                                    onChange={e => this.handleChangeForEdit(e, "quantityComplete")}
-                                                />
-                                                {touched.quantityComplete ? (<em className="pError">{errors.quantityComplete}</em>) : null}
-                                            </div>
-                                        </div>
-                                        <div className="fillter-item-c fullInputWidth">
-                                            <label className="control-label">
-                                                {Resources.paymentPercent[currentLanguage]}
-                                            </label>
-                                            <div className={"inputDev ui input" + (errors.paymentPercent && touched.paymentPercent ? " has-error" : !errors.paymentPercent && touched.paymentPercent ? " has-success" : " ")}>
-                                                <input name="paymentPercent" className="form-control fsadfsadsa" id="paymentPercent"
-                                                    placeholder={Resources.paymentPercent[currentLanguage]}
-                                                    autoComplete="off"
-                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                    defaultValue={this.state.currentObject.paymentPercent}
-                                                    onChange={e => { this.handleChangeForEdit(e, "paymentPercent"); }}
-                                                />
-                                                {touched.paymentPercent ? (<em className="pError"> {errors.paymentPercent} </em>) : null}
-                                            </div>
-                                        </div>
+
+                                        {
+                                            Config.IsAllow(3674) ?
+                                                <Fragment>
+                                                    <div className="fillter-item-c fullInputWidth">
+                                                        <label className="control-label">
+                                                            {Resources.percentComplete[currentLanguage]}
+                                                        </label>
+                                                        <div className={"inputDev ui input" + (errors.percentComplete && touched.percentComplete ? " has-error" : !errors.percentComplete && touched.percentComplete ? " has-success" : " ")}>
+                                                            <input name="percentComplete" className="form-control fsadfsadsa" id="percentComplete"
+                                                                placeholder={Resources.percentComplete[currentLanguage]}
+                                                                autoComplete="off"
+                                                                onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                                defaultValue={this.state.currentObject.percentComplete}
+                                                                onChange={e => this.handleChangeForEdit(e, "percentComplete")}
+                                                            />
+                                                            {touched.percentComplete ? (<em className="pError"> {errors.percentComplete} </em>) : null}
+                                                        </div>
+                                                    </div>
+                                                    <div className="fillter-item-c fullInputWidth">
+                                                        <label className="control-label">
+                                                            {Resources.quantityComplete[currentLanguage]}
+                                                        </label>
+                                                        <div className={"inputDev ui input" + (errors.quantityComplete && touched.quantityComplete ? " has-error" : !errors.quantityComplete && touched.quantityComplete ? " has-success" : " ")}>
+                                                            <input name="quantityComplete" className="form-control fsadfsadsa" id="quantityComplete"
+                                                                placeholder={Resources.quantityComplete[currentLanguage]}
+                                                                autoComplete="off"
+                                                                onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                                defaultValue={this.state.currentObject.quantityComplete}
+                                                                onChange={e => this.handleChangeForEdit(e, "quantityComplete")}
+                                                            />
+                                                            {touched.quantityComplete ? (<em className="pError">{errors.quantityComplete}</em>) : null}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="fillter-item-c fullInputWidth">
+                                                        <label className="control-label">
+                                                            {Resources.paymentPercent[currentLanguage]}
+                                                        </label>
+                                                        <div className={"inputDev ui input" + (errors.paymentPercent && touched.paymentPercent ? " has-error" : !errors.paymentPercent && touched.paymentPercent ? " has-success" : " ")}>
+                                                            <input name="paymentPercent" className="form-control fsadfsadsa" id="paymentPercent"
+                                                                placeholder={Resources.paymentPercent[currentLanguage]}
+                                                                autoComplete="off"
+                                                                onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                                defaultValue={this.state.currentObject.paymentPercent}
+                                                                onChange={e => { this.handleChangeForEdit(e, "paymentPercent"); }}
+                                                            />
+                                                            {touched.paymentPercent ? (<em className="pError"> {errors.paymentPercent} </em>) : null}
+                                                        </div>
+                                                    </div>
+
+                                                </Fragment> : null}
+
+                                        {Config.IsAllow(3673) ?
+                                            <Fragment>
+                                                <div className="fillter-item-c fullInputWidth">
+                                                    <label className="control-label">
+                                                        {Resources.sitePercentComplete[currentLanguage]}
+                                                    </label>
+                                                    <div className={"inputDev ui input" + (errors.sitePercentComplete && touched.sitePercentComplete ? " has-error" : !errors.sitePercentComplete && touched.sitePercentComplete ? " has-success" : " ")}>
+                                                        <input name="sitePercentComplete" className="form-control fsadfsadsa" id="percentComplete"
+                                                            placeholder={Resources.percentComplete[currentLanguage]}
+                                                            autoComplete="off"
+                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                            defaultValue={this.state.currentObject.sitePercentComplete}
+                                                            onChange={e => { this.handleChangeForEdit(e, "sitePercentComplete"); }} />
+                                                        {touched.sitePercentComplete ? (<em className="pError"> {errors.sitePercentComplete} </em>) : null}
+                                                    </div>
+                                                </div>
+                                                <div className="fillter-item-c fullInputWidth">
+                                                    <label className="control-label">
+                                                        {Resources.siteQuantityComplete[currentLanguage]}
+                                                    </label>
+                                                    <div className={"inputDev ui input" + (errors.siteQuantityComplete && touched.siteQuantityComplete ? " has-error" : !errors.siteQuantityComplete && touched.siteQuantityComplete ? " has-success" : " ")}>
+                                                        <input name="siteQuantityComplete" className="form-control fsadfsadsa" id="siteQuantityComplete"
+                                                            placeholder={Resources.siteQuantityComplete[currentLanguage]}
+                                                            autoComplete="off"
+                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                            defaultValue={this.state.currentObject.siteQuantityComplete}
+                                                            onChange={e => { this.handleChangeForEdit(e, "siteQuantityComplete"); }} 
+                                                        />
+                                                        {touched.siteQuantityComplete ? (<em className="pError">{errors.siteQuantityComplete}</em>) : null}
+                                                    </div>
+                                                </div>
+
+                                                <div className="fillter-item-c fullInputWidth">
+                                                    <label className="control-label">
+                                                        {Resources.contractPaymentPercent[currentLanguage]}
+                                                    </label>
+                                                    <div className={"inputDev ui input" + (errors.sitePaymentPercent && touched.sitePaymentPercent ? " has-error" : !errors.sitePaymentPercent && touched.sitePaymentPercent ? " has-success" : " ")}>
+                                                        <input name="sitePaymentPercent" className="form-control fsadfsadsa" id="sitePaymentPercent"
+                                                            placeholder={Resources.contractPaymentPercent[currentLanguage]}
+                                                            autoComplete="off"
+                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                            defaultValue={this.state.currentObject.sitePaymentPercent}
+                                                            onChange={e => { this.handleChangeForEdit(e, "sitePaymentPercent"); }} 
+                                                        />
+                                                        {touched.sitePaymentPercent ? (<em className="pError"> {errors.sitePaymentPercent} </em>) : null}
+                                                    </div>
+                                                </div></Fragment> : null
+                                        }
 
                                         <div className="fillter-item-c fullInputWidth">
                                             <label className="control-label">
@@ -3254,6 +3408,7 @@ class requestPaymentsAddEdit extends Component {
                                                 />
                                             </div>
                                         </div>
+
                                         <div className="fullWidthWrapper">
                                             {this.state.isLoading === true ? (
                                                 <button
@@ -3277,6 +3432,9 @@ class requestPaymentsAddEdit extends Component {
                         </Formik>
                     </SkyLight>
                 </div>
+
+
+
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources["smartDeleteMessage"][currentLanguage].content}
