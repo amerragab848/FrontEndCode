@@ -751,7 +751,7 @@ class requestPaymentsAddEdit extends Component {
                     this.setState({
                         isLoading: true
                     });
-                    dataservice.GetDataGrid("GetContractsRequestPaymentsItemsHistory?id=" + this.state.docId).then(result => {
+                    dataservice.GetDataGrid("GetContractsRequestPaymentsItemsHistory?id=" + row.id).then(result => {
                         this.setState({
                             paymentRequestItemsHistory: result,
                             isLoading: false,
@@ -2349,32 +2349,32 @@ class requestPaymentsAddEdit extends Component {
                 <table className="attachmentTable" key="DeductionsCertificate">
                     <thead>
                         <tr>
-                            <th>
+                            <th style={{width : "30%"}}>
                                 <div className="headCell">
                                     {Resources["description"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["completedQuantity"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["paymentPercent"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["addedBy"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["addedDate"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["comment"][currentLanguage]}
                                 </div>
@@ -2385,12 +2385,12 @@ class requestPaymentsAddEdit extends Component {
                         {this.state.paymentRequestItemsHistory.map(i => (
                             <tr key={i.id}>
                                 <Fragment>
-                                    <td>
+                                    <td style={{width : "50%"}}>
                                         <div className="contentCell">
                                             {i.description}
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style={{width : "50%"}}>
                                         <div className="contentCell">
                                             {i.completedQnty}
                                         </div>
