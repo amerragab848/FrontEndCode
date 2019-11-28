@@ -8290,5 +8290,20 @@
     "totalContractor": {
         "en": "Total Contractor",
         "ar": "الأجمالى"
+    },
+    "docTitle": {
+        "en": "Late Time Sheet",
+        "ar": "صحيفة التوقيت المتاخر"
+    },
+    "saveInTimeSheet": {
+        "en": "You Must Save In Time Sheet",
+        "ar": " يجب عليك حفظ في صحيفة التوقيت"
+    },
+    "workingHoursLessEleven": {
+        "en": "working Hours Must be Less 11",
+        "ar": "يجب عليك الحفظ فى صفحة التوقيت"
+    },
+    "":{
+        
     }
 }

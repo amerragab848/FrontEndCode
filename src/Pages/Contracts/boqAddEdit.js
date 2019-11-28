@@ -28,7 +28,8 @@ import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 import dataservice from "../../Dataservice";
 import Steps from "../../Componants/publicComponants/Steps";
-import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
+import Late from '../../Componants/DashBoardDetails/LateTimeSheetAddEdit';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 

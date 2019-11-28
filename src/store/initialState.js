@@ -35,7 +35,11 @@ export default {
 			isReject: null,
 			isLoadingFilesUpload: false,
 			totalCost: 0,
-			phone:{}
+			phone:{},
+			projectDropdown:[],
+			taskDropdown:[],
+			countryDropdown:[],
+			locationDropdown:[]
 		},
 		expensesWorkFlow: {
 			expensesWorkFlowData: {},
