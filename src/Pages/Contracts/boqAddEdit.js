@@ -23,7 +23,6 @@ import XSLfile from "../../Componants/OptionsPanels/XSLfiel";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Steps from "../../Componants/publicComponants/Steps";
-import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import { default as DataService, default as dataservice } from "../../Dataservice";
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
