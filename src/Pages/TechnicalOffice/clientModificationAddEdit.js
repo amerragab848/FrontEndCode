@@ -138,52 +138,6 @@ class clientModificationAddEdit extends Component {
             }
         }
         this.checkDocumentIsView();
-    };
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
-            let doc = nextProps.document
-            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
-            this.setState({
-                document: doc,
-                hasWorkflow: nextProps.hasWorkflow,
-                answer: nextProps.document.answer,
-
-            });
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
-        }
-    };
-
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
-            this.checkDocumentIsView();
-        }
-    }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!(Config.IsAllow(3134))) {
-                this.setState({ isViewMode: true });
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(3134)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(3134)) {
-                    if (this.props.document.status !== false && Config.IsAllow(3134)) {
-                        this.setState({ isViewMode: false });
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            }
-        }
-        else {
-            this.setState({ isViewMode: false });
-        }
-    }
-
-    componentWillMount() {
         if (this.state.docId > 0) {
             let url = "GetContractsClientModificationsForEdit?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'clientModificationLog');
@@ -226,6 +180,53 @@ class clientModificationAddEdit extends Component {
 
         }
     };
+
+
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
+            let doc = nextProps.document
+            doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
+            return {
+                document: doc, hasWorkflow: nextProps.hasWorkflow, answer: nextProps.document.answer
+            }
+        }
+
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+            this.checkDocumentIsView();
+        }
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+    }
+
+
+    checkDocumentIsView() {
+        if (this.props.changeStatus === true) {
+            if (!(Config.IsAllow(3134))) {
+                this.setState({ isViewMode: true });
+            }
+            if (this.state.isApproveMode != true && Config.IsAllow(3134)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(3134)) {
+                    if (this.props.document.status !== false && Config.IsAllow(3134)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            }
+        }
+        else {
+            this.setState({ isViewMode: false });
+        }
+    }
+
 
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value
@@ -510,7 +511,7 @@ class clientModificationAddEdit extends Component {
             <div className="mainContainer">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
-                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} 
+                    <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
                         docTitle={Resources.clientModificationLog[currentLanguage]}
                         moduleTitle={Resources['technicalOffice'][currentLanguage]} />
 

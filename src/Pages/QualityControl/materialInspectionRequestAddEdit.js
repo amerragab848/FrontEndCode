@@ -215,7 +215,7 @@ class materialInspectionRequestAddEdit extends Component {
             else {
                 links[i].classList.add('odd');
             }
-        } 
+        }
         if (this.state.docId > 0) {
             let url = "GetMaterialInspectionRequestForEdit?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'materialInspectionRequest');
@@ -1051,28 +1051,6 @@ class materialInspectionRequestAddEdit extends Component {
                                                                         startDate={this.state.document.resultDate}
                                                                         handleChange={e => this.handleChangeDate(e, 'resultDate')} />
                                                                 </div>
-                                                                 {/* Ahmed Yousry */}                                                                
-                                                                 <div className="linebylineInput valid-input">
-                                                            <label className="control-label">    {Resources.sharedSettings[currentLanguage]}</label>
-                                                            <div className="shareLinks">
-                                                                <div className={"inputDev ui input" + (errors.sharedSettings && touched.sharedSettings ? (" has-error") : !errors.sharedSettings && touched.sharedSettings ? (" has-success") : " ")} >
-                                                                    <input type="text" className="form-control" id="sharedSettings"
-                                                                        onChange={e => this.handleChange(e, "sharedSettings")}
-                                                                        value={this.state.document.sharedSettings}
-                                                                        name="sharedSettings" placeholder={Resources.sharedSettings[currentLanguage]}
-                                                                    />
-                                                                    {touched.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
-                                                                </div>
-                                                                {this.state.document.sharedSettings === '' ||
-                                                                    this.state.document.sharedSettings === null ||
-                                                                    this.state.document.sharedSettings === undefined ?
-                                                                    null
-                                                                    : <a target="_blank" href={this.state.document.sharedSettings}>
-                                                                        <span> {Resources.openFolder[currentLanguage]}  </span>
-                                                                    </a>}
-                                                            </div>
-                                                        </div>
-                                                                {/* Ahmed Yousry End */}
 
                                                                 <div className="linebylineInput valid-input mix_dropdown">
 

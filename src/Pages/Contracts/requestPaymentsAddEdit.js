@@ -9,7 +9,7 @@ import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import TextEditor from "../../Componants/OptionsPanels/TextEditor";
-import GridSetup from "../Communication/GridSetupWithFilter";
+import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -50,6 +50,12 @@ const validationItemsSchema = Yup.object().shape({
     percentComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["percentComplete"][currentLanguage]),
     quantityComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["quantityComplete"][currentLanguage]),
     paymentPercent: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["paymentPercent"][currentLanguage])
+});
+
+const validationContractorSchema = Yup.object().shape({
+    sitePercentComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["percentComplete"][currentLanguage]),
+    siteQuantityComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["quantityComplete"][currentLanguage]),
+    sitePaymentPercent: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["paymentPercent"][currentLanguage])
 });
 
 const BoqTypeSchema = Yup.object().shape({
@@ -238,6 +244,7 @@ class requestPaymentsAddEdit extends Component {
             editRows: [],
             comment: "",
             viewPopUpRows: false,
+            viewContractorPopUpRows: false,
             currentObject: {},
             currentId: 0,
             exportFile: "",
@@ -253,7 +260,8 @@ class requestPaymentsAddEdit extends Component {
             itemId: 0,
             quantityComplete: 0,
             currentDocument: "",
-            columnsApprovedInvoices: []
+            columnsApprovedInvoices: [],
+            CalculateRow: true
         };
 
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
@@ -262,8 +270,6 @@ class requestPaymentsAddEdit extends Component {
         }
 
         this.editRowsClick = this.editRowsClick.bind(this);
-
-        this.GetCellActions = this.GetCellActions.bind(this);
 
         steps_defination = [
             {
@@ -290,13 +296,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.paymentPercent}
                         </span>
                     </a>
@@ -309,17 +309,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer",
-                                color:
-                                    row.revisedQuantity >= row.quantityComplete
-                                        ? "black"
-                                        : "#F50505"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer", color: row.revisedQuantity >= row.quantityComplete ? "black" : "#F50505" }}>
                             {row.quantityComplete}
                         </span>
                     </a>
@@ -332,13 +322,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.percentComplete}
                         </span>
                     </a>
@@ -351,14 +335,21 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.siteQuantityComplete}
+                        </span>
+                    </a>
+                );
+            }
+            return null;
+        };
+
+        let editsitePaymentPercent = ({ value, row }) => {
+            if (row) {
+                return (
+                    <a className="editorCell">
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
+                            {row.sitePaymentPercent}
                         </span>
                     </a>
                 );
@@ -370,13 +361,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.sitePercentComplete}
                         </span>
                     </a>
@@ -409,6 +394,39 @@ class requestPaymentsAddEdit extends Component {
                 filterable: true,
                 sortDescendingFirst: true,
                 type: "number"
+            },
+            ...(this.props.changeStatus ? [
+                {
+                    key: "BtnActions",
+                    name: Resources["LogControls"][currentLanguage],
+                    width: 150,
+                    draggable: true,
+                    sortable: true,
+                    resizable: true,
+                    filterable: true,
+                    sortDescendingFirst: true
+                }] : []),
+            {
+                key: "itemCode",
+                name: Resources["itemCode"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "string"
+            },
+            {
+                key: "details",
+                name: Resources["description"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "string"
             },
             {
                 key: "boqType",
@@ -444,28 +462,6 @@ class requestPaymentsAddEdit extends Component {
                 type: "string"
             },
             {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
-                key: "description",
-                name: Resources["details"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
                 key: "quantity",
                 name: Resources["boqQuanty"][currentLanguage],
                 width: 100,
@@ -480,6 +476,17 @@ class requestPaymentsAddEdit extends Component {
                 key: "revisedQuantity",
                 name: Resources["approvedQuantity"][currentLanguage],
                 width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                type: "number"
+            },
+            {
+                key: "actualPercentage",
+                name: Resources["actualPercentage"][currentLanguage],
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -558,6 +565,19 @@ class requestPaymentsAddEdit extends Component {
                 type: "number"
             },
             {
+                key: "sitePaymentPercent",
+                name: Resources["contractPaymentPercent"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                formatter: changeStatus ? null : editsitePaymentPercent,
+                editable: !changeStatus,
+                type: "number"
+            },
+            ...(this.props.changeStatus ? [{
                 key: "percentComplete",
                 name: Resources["percentComplete"][currentLanguage],
                 width: 120,
@@ -597,8 +617,48 @@ class requestPaymentsAddEdit extends Component {
                 formatter: changeStatus ? null : editPaymentPercent,
                 editable: !changeStatus,
                 type: "number"
+            }] : []),
+            {
+                key: "wasAdded",
+                name: Resources["status"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+            }, {
+                key: "totalExcutedPayment",
+                name: Resources["totalAmount"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+            },
+            {
+                key: "lastComment",
+                name: Resources["comment"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+            },
+            {
+                key: "itemStatus",
+                name: Resources["itemStatus"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
             }
         ];
+
 
         if (changeStatus) {
             itemsColumns.push({
@@ -681,6 +741,70 @@ class requestPaymentsAddEdit extends Component {
                 width: 120
             }
         ];
+    }
+
+    customCellActions(column, row) {
+        if (column.key === "BtnActions") {
+            const custom = [{
+                icon: <span style={{cursor: 'pointer'}} className="fa fa-history" />,
+                callback: e => {
+                    this.setState({
+                        isLoading: true
+                    });
+                    dataservice.GetDataGrid("GetContractsRequestPaymentsItemsHistory?id=" + row.id).then(result => {
+                        this.setState({
+                            paymentRequestItemsHistory: result,
+                            isLoading: false,
+                            showViewHistoryModal: true
+                        });
+
+                        this.ViewHistoryModal.show();
+                    });
+                }
+            } ,
+            {
+                icon: <span style={{cursor: 'pointer'}} className="fa fa-pencil" />,
+                callback: () => {
+                    if (Config.IsAllow(1001104)) {
+                        let boqStractureObj = {
+                            ...this.state.boqStractureObj
+                        };
+                        let boqTypes = [...this.state.boqTypes];
+                        boqStractureObj.id = row.id;
+                        boqStractureObj.requestId = this.state.docId;
+                        boqStractureObj.contractId = this.state.document.contractId;
+
+                        if (boqTypes.length > 0) {
+                            this.setState({
+                                boqStractureObj: boqStractureObj,
+                                showBoqModal: true
+                            });
+                            this.boqTypeModal.show();
+                        } else {
+                            dataservice.GetDataList("GetAllBoqParentNull?projectId=" + projectId, "title", "id").then(data => {
+                                this.setState({
+                                    boqTypes: data,
+                                    boqStractureObj: boqStractureObj,
+                                    showBoqModal: true
+                                });
+                                this.boqTypeModal.show();
+                            });
+                        }
+                    }
+                }
+            }];
+
+            return custom;
+
+        }
+    }
+
+    getCellActions(column, row) {
+
+        const cellActions = {
+            BtnActions: this.customCellActions(column, row)
+        };
+        return cellActions[column.key];
     }
 
     componentDidMount() {
@@ -982,7 +1106,7 @@ class requestPaymentsAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
         saveDocument.projectId = this.state.projectId;
-        this.changeCurrentStep(1);
+
         dataservice.addObject("AddContractsRequestPayment", saveDocument).then(result => {
             if (result.id) {
 
@@ -990,6 +1114,8 @@ class requestPaymentsAddEdit extends Component {
                     docId: result.id,
                     isLoading: false
                 });
+
+                this.changeCurrentStep(1);
 
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }
@@ -1247,31 +1373,34 @@ class requestPaymentsAddEdit extends Component {
 
             let userType = Config.getPayload();
 
-            if (userType.uty != "user") {
-                if (this.props.hasWorkflow == false && Config.IsAllow(185)) {
-                    if (this.props.changeStatus) {
-                        if (this.state.document.status === true && this.state.document.editable === true) {
+            if (this.props.hasWorkflow == false) {
+                if (this.props.changeStatus) {
+                    if (this.state.document.status === true && this.state.document.editable === true) {
 
-                            let original_document = { ...this.state.document };
+                        let original_document = { ...this.state.document };
 
-                            let updated_document = {};
+                        let updated_document = {};
 
-                            updated_document.percentComplete = value.percentComplete;
-                            updated_document.quantityComplete = value.quantityComplete;
-                            updated_document.paymentPercent = value.paymentPercent;
-                            updated_document.lastComment = value.lastComment;
+                        updated_document.percentComplete = value.percentComplete;
+                        updated_document.quantityComplete = value.quantityComplete;
+                        updated_document.paymentPercent = value.paymentPercent;
+                        updated_document.lastComment = value.lastComment;
+                        updated_document.id = value.id;
 
-                            updated_document = Object.assign(original_document, updated_document);
+                        updated_document = Object.assign(original_document, updated_document);
 
-                            this.setState({
-                                viewPopUpRows: true,
-                                currentObject: value,
-                                document: updated_document
-                            });
-                            this.addCommentModal.show();
-                        }
+                        this.setState({
+                            viewPopUpRows: true,
+                            currentObject: value,
+                            document: updated_document
+                        });
+                        this.addCommentModal.show();
+                    } else {
+                        toast.warn(Resources["adminItemEditable"][currentLanguage]);
                     }
                 }
+            } else {
+                toast.warn(Resources["adminItemEditable"][currentLanguage]);
             }
         } else if (column.key === "actions") {
             dataservice.GetDataGrid("GetReqPayCostCodingByRequestItemId?requestId=" + this.state.docId + "&reqItemId=" + value.id).then(result => {
@@ -1285,79 +1414,6 @@ class requestPaymentsAddEdit extends Component {
             });
         }
     };
-
-    GetCellActions(column, row) {
-        if (column.key === "BtnActions") {
-            return [
-                {
-                    icon: "fa fa-pencil",
-                    actions: [this.props.changeStatus ? {
-                        text: Resources["viewHistory"][currentLanguage],
-                        callback: e => {
-                            if (this.props.changeStatus) {
-                                this.setState({
-                                    isLoading: true
-                                });
-                                dataservice.GetDataGrid("/GetContractsRequestPaymentsItemsHistory?id=" + this.state.docId).then(result => {
-                                    this.setState({
-                                        paymentRequestItemsHistory: result,
-                                        isLoading: false,
-                                        showViewHistoryModal: true
-                                    });
-
-                                    this.ViewHistoryModal.show();
-                                });
-                            }
-                        }
-                    }
-                        : null,
-                    {
-                        text: "showAddComment",
-                        callback: () => {
-                            if (Config.IsAllow(1001103)) {
-                                this.setState({
-                                    showCommentModal: true,
-                                    comment: row.comment
-                                });
-                                this.addCommentModal.show();
-                            }
-                        }
-                    },
-                    {
-                        text: Resources["editBoq"][currentLanguage],
-                        callback: () => {
-                            if (Config.IsAllow(1001104)) {
-                                let boqStractureObj = {
-                                    ...this.state.boqStractureObj
-                                };
-                                let boqTypes = [...this.state.boqTypes];
-                                boqStractureObj.id = row.id;
-                                boqStractureObj.requestId = this.state.docId;
-                                boqStractureObj.contractId = this.state.document.contractId;
-
-                                if (boqTypes.length > 0) {
-                                    this.setState({
-                                        boqStractureObj: boqStractureObj,
-                                        showBoqModal: true
-                                    });
-                                    this.boqTypeModal.show();
-                                } else {
-                                    dataservice.GetDataList("GetAllBoqParentNull?projectId=" + projectId, "title", "id").then(data => {
-                                        this.setState({
-                                            boqTypes: data,
-                                            boqStractureObj: boqStractureObj,
-                                            showBoqModal: true
-                                        });
-                                        this.boqTypeModal.show();
-                                    });
-                                }
-                            }
-                        }
-                    }]
-                }
-            ];
-        }
-    }
 
     handleChangeItemDropDownItems(event, field, selectedValue, isSubscribe, url, param, nextTragetState) {
         if (event == null) return;
@@ -1382,71 +1438,66 @@ class requestPaymentsAddEdit extends Component {
     }
 
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        this.setState({
-            isLoading: true
+        let paymentsItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
+
+        let updateRow = paymentsItems[fromRow];
+
+        paymentsItems[fromRow] = Object.assign(paymentsItems[fromRow], updated);
+
+        let newValue = parseFloat(updated[Object.keys(updated)[0]]);
+        let oldValue = parseFloat(updateRow[Object.keys(updated)[0]]);
+
+        if (parseFloat(updateRow.revisedQuantity) == 0 && (parseFloat(updateRow.siteQuantityComplete) > 0 || parseFloat(updateRow.sitePercentComplete) > 0)) {
+            updateRow.revisedQuantity = 1;
+        }
+
+        updateRow[Object.keys(updated)[0]] = parseFloat(updated[Object.keys(updated)[0]]);
+
+        switch (Object.keys(updated)[0]) {
+            case "quantityComplete":
+                updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                updateRow.quantityComplete = parseFloat(newValue);
+
+                break;
+            case "percentComplete":
+                updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                updateRow.percentComplete = parseFloat(newValue);
+
+                break;
+            case "sitePercentComplete":
+                updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                updateRow.sitePercentComplete = parseFloat(newValue);
+
+                break;
+            case "siteQuantityComplete":
+                updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                updateRow.siteQuantityComplete = parseFloat(newValue);
+
+
+                if (this.props.changeStatus == false) {
+                    updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                }
+                break;
+        }
+
+        let editRows = [...this.state.editRows];
+
+        let sameRow = find(editRows, function (x) {
+            return x.id === updateRow.id;
         });
 
-        let rows = [...this.state.paymentsItems];
-        let updateRow = rows[fromRow];
-
-        this.setState(state => {
-            const paymentsItems = state.paymentsItems.slice();
-            for (let i = fromRow; i <= toRow; i++) {
-                rows[i] = { ...rows[i], ...updated };
-            }
-            return { paymentsItems };
-        }, function () {
-            if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
-                if (updateRow.revisedQuantity == 0 && (updateRow.siteQuantityComplete > 0 || updateRow.sitePercentComplete > 0)) {
-                    updateRow.revisedQuantity = 1;
-                }
-
-                let newValue = parseFloat(updated[Object.keys(updated)[0]]);
-
-                updateRow[Object.keys(updated)[0]] = parseFloat(
-                    updated[Object.keys(updated)[0]]
-                );
-
-                switch (Object.keys(updated)[0]) {
-                    case "quantityComplete":
-                        updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                        break;
-                    case "percentComplete":
-                        updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                        break;
-                    case "sitePercentComplete":
-                        updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                        break;
-                    case "siteQuantityComplete":
-                        updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
-
-                        if (this.props.changeStatus == false) {
-                            updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                        }
-                        break;
-                }
-
-                let editRows = [...this.state.editRows];
-
-                let sameRow = find(editRows, function (x) {
-                    return x.id === updateRow.id;
-                });
-
-                if (sameRow) {
-                    editRows = editRows.filter(function (i) {
-                        return i.id != updateRow.id;
-                    });
-                }
-
-                editRows.push(updateRow);
-
-                this.setState({
-                    editRows: editRows,
-                    isLoading: false
-                });
-            }
+        if (sameRow) {
+            editRows = editRows.filter(function (i) {
+                return i.id != updateRow.id;
+            });
         }
-        );
+
+        editRows.push(updateRow);
+
+        this.setState({
+            editRows: editRows,
+            paymentsItems
+        });
     };
 
     editRowsClick() {
@@ -1544,37 +1595,65 @@ class requestPaymentsAddEdit extends Component {
     handleChangeForEdit = (e, updated) => {
         let updateRow = this.state.currentObject;
 
-        let originalData = this.state.paymentsItems;
+        //let originalData = this.state.paymentsItems;
 
+        this.setState({
+            isLoading: true
+        });
+
+        let sitePercentComplete = 0;
+        let siteQuantityComplete = 0;
+        let currentvalue = parseFloat(e.target.value);
         switch (updated) {
+
             case "quantityComplete":
                 updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
+                updateRow.quantityComplete = parseFloat(e.target.value);
                 break;
+
+            case "sitePaymentPercent":
+                updateRow.paymentPercent = parseFloat(e.target.value);
+                updateRow.sitePaymentPercent = parseFloat(e.target.value);
+                break;
+
             case "percentComplete":
                 updateRow.quantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
+                updateRow.percentComplete = parseFloat(e.target.value);
                 break;
+
             case "sitePercentComplete":
-                updateRow.siteQuantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
+                sitePercentComplete = parseFloat(e.target.value);
+                siteQuantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
+
+                updateRow.siteQuantityComplete = siteQuantityComplete;
+                updateRow.quantityComplete = siteQuantityComplete;
+
+                updateRow.percentComplete = sitePercentComplete;
+                updateRow.sitePercentComplete = sitePercentComplete;
+
                 break;
+
+            case "siteQuantityComplete":
+                sitePercentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
+                siteQuantityComplete = parseFloat(e.target.value);
+
+                updateRow.sitePercentComplete = sitePercentComplete;
+                updateRow.percentComplete = sitePercentComplete;
+
+                updateRow.quantityComplete = siteQuantityComplete;
+                updateRow.siteQuantityComplete = siteQuantityComplete;
+
+                break;
+
             case "lastComment":
                 updateRow.lastComment = e.target.value;
                 break;
-            case "siteQuantityComplete":
-                updateRow.sitePercentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
-                if (this.props.changeStatus == false) {
-                    updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
-                }
-                break;
-
-                let getIndex = originalData.findIndex(x => x.id === updateRow.id);
-
-                originalData.splice(getIndex, 1);
-
-                this.setState({
-                    paymentsItems: originalData,
-                    currentObject: updateRow
-                });
         }
+
+        this.setState({
+            currentObject: updateRow,
+            isLoading: false
+        });
     };
 
     editPaymentRequistionItems = () => {
@@ -1583,17 +1662,12 @@ class requestPaymentsAddEdit extends Component {
 
         mainDoc.requestId = this.state.docId;
 
-        this.setState({
-            isLoading: true
-        });
-
         dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.setState({
-                viewPopUpRows: false,
-                isLoading: false
+                viewPopUpRows: false
             });
         });
     };
@@ -2142,8 +2216,9 @@ class requestPaymentsAddEdit extends Component {
             }
         ];
 
-        const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 && itemsColumns.length > 0 ? (
-            <GridSetup
+        const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
+            <GridSetupWithFilter
+                groupBy={this.props.changeStatus ? [{ key: 'wasAdded', name: 'status' }, { key: 'boqType', name: 'boqType' }, { key: 'boqSubType', name: 'boqSubType' }] : null}
                 rows={this.state.paymentsItems}
                 showCheckbox={isCompany && this.props.changeStatus ? true : false}
                 clickHandlerDeleteRows={this.clickHandlerDeleteRows}
@@ -2151,9 +2226,10 @@ class requestPaymentsAddEdit extends Component {
                 onRowClick={this.onRowClick}
                 columns={itemsColumns}
                 onGridRowsUpdated={this._onGridRowsUpdated}
-                getCellActions={this.GetCellActions}
+                getCellActions={(column, row) => this.getCellActions(column, row)}
                 key="PRitems" />
-        ) : (<LoadingSection />);
+
+        ) : null;
 
         const BoqTypeContent = (
             <Fragment>
@@ -2273,32 +2349,32 @@ class requestPaymentsAddEdit extends Component {
                 <table className="attachmentTable" key="DeductionsCertificate">
                     <thead>
                         <tr>
-                            <th>
+                            <th style={{width : "30%"}}>
                                 <div className="headCell">
                                     {Resources["description"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["completedQuantity"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["paymentPercent"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["addedBy"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["addedDate"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["comment"][currentLanguage]}
                                 </div>
@@ -2309,12 +2385,12 @@ class requestPaymentsAddEdit extends Component {
                         {this.state.paymentRequestItemsHistory.map(i => (
                             <tr key={i.id}>
                                 <Fragment>
-                                    <td>
+                                    <td style={{width : "50%"}}>
                                         <div className="contentCell">
                                             {i.description}
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style={{width : "50%"}}>
                                         <div className="contentCell">
                                             {i.completedQnty}
                                         </div>
@@ -2498,8 +2574,7 @@ class requestPaymentsAddEdit extends Component {
                                                                             {Resources.collectedStatus[currentLanguage]}
                                                                         </label>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="PR-collected"
-                                                                                defaultChecked={this.state.document.collected === false ? null : "checked"}
+                                                                            <input type="radio" name="PR-collected" defaultChecked={this.state.document.collected === 0 ? null : "checked"}
                                                                                 value="1" onChange={e => this.handleChange(e, "collected")} />
                                                                             <label>
                                                                                 {Resources.yes[currentLanguage]}
@@ -2507,7 +2582,7 @@ class requestPaymentsAddEdit extends Component {
                                                                         </div>
                                                                         <div className="ui checkbox radio radioBoxBlue">
                                                                             <input type="radio" name="PR-collected"
-                                                                                defaultChecked={this.state.document.collected === false ? "checked" : null}
+                                                                                defaultChecked={this.state.document.collected === 0 ? "checked" : null}
                                                                                 value="0" onChange={e => this.handleChange(e, "collected")} />
                                                                             <label>
                                                                                 {Resources.no[currentLanguage]}
@@ -2555,9 +2630,7 @@ class requestPaymentsAddEdit extends Component {
                                                                     <div className="proForm first-proform letterFullWidth proform__twoInput">
                                                                         <div className="linebylineInput valid-input">
                                                                             <label className="control-label">
-                                                                                {
-                                                                                    Resources.contractName[currentLanguage]
-                                                                                }
+                                                                                {Resources.contractName[currentLanguage]}
                                                                             </label>
                                                                             <div className="ui input inputDev">
                                                                                 <input type="text" className="form-control" id="contractSubject" readOnly
@@ -2571,9 +2644,7 @@ class requestPaymentsAddEdit extends Component {
                                                                             <Dropdown title="contractName"
                                                                                 data={this.state.contractsPos}
                                                                                 selectedValue={this.state.selectContract}
-                                                                                handleChange={event =>
-                                                                                    this.handleChangeDropDownContract(event, "contractId", "selectContract")
-                                                                                }
+                                                                                handleChange={event => this.handleChangeDropDownContract(event, "contractId", "selectContract")}
                                                                                 index="contractId"
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
@@ -2600,101 +2671,35 @@ class requestPaymentsAddEdit extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .retainagePercent[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.retainagePercent[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.retainagePercent &&
-                                                                                touched.retainagePercent
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="retainagePercent"
-                                                                            name="retainagePercent"
-                                                                            readOnly
-                                                                            value={this.state.document.retainagePercent || ''}
+                                                                    <div className={"ui input inputDev" + (errors.retainagePercent && touched.retainagePercent ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control" id="retainagePercent" name="retainagePercent" readOnly value={this.state.document.retainagePercent || ''}
                                                                             placeholder={Resources.retainagePercent[currentLanguage]}
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "retainagePercent"
-                                                                                )
-                                                                            }
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                            onChange={e => this.handleChange(e, "retainagePercent")}
                                                                         />
-                                                                        {touched.retainagePercent ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.retainagePercent
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                        {touched.retainagePercent ? (<em className="pError"> {errors.retainagePercent} </em>) : null}
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .tax[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.tax[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.tax &&
-                                                                                touched.tax
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input type="text" className="form-control" id="tax" name="tax"
-                                                                            readOnly value={this.state.document.tax || ''}
-                                                                            placeholder={Resources.tax[currentLanguage]}
-                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
-                                                                            onChange={e => this.handleChange(e, "tax")}
-                                                                        />
+                                                                    <div className={"ui input inputDev" + (errors.tax && touched.tax ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control" id="tax" name="tax" readOnly value={this.state.document.tax || ''}
+                                                                            placeholder={Resources.tax[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }} onChange={e => this.handleChange(e, "tax")} />
                                                                         {touched.tax ? (<em className="pError"> {errors.tax} </em>) : null}
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .vat[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.vat[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.vat &&
-                                                                                touched.vat
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input type="text" className="form-control" id="vat" name="vat"
-                                                                            readOnly
-                                                                            value={this.state.document.vat || ''}
+                                                                    <div className={"ui input inputDev" + (errors.vat && touched.vat ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control" id="vat" name="vat" readOnly value={this.state.document.vat || ''}
                                                                             placeholder={Resources.vat[currentLanguage]}
                                                                             onBlur={e => { handleChange(e); handleBlur(e); }}
                                                                             onChange={e => this.handleChange(e, "vat")} />
@@ -2704,50 +2709,22 @@ class requestPaymentsAddEdit extends Component {
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .insurance[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.insurance[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.insurance &&
-                                                                                touched.insurance
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
+                                                                    <div className={"ui input inputDev" + (errors.insurance && touched.insurance ? " has-error" : "ui input inputDev")}>
                                                                         <input type="text" className="form-control" id="insurance" name="insurance"
                                                                             value={this.state.document.insurance || ''}
                                                                             placeholder={Resources.insurance[currentLanguage]}
                                                                             onBlur={e => { handleChange(e); handleBlur(e); }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "insurance"
-                                                                                )
-                                                                            }
+                                                                            onChange={e => this.handleChange(e, "insurance")}
                                                                         />
-                                                                        {touched.insurance ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.insurance
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                        {touched.insurance ? (<em className="pError"> {errors.insurance} </em>) : null}
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .actualPayment[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.actualPayment[currentLanguage]}
                                                                     </label>
                                                                     <div className={"ui input inputDev" + (errors.actualPayment && touched.actualPayment ? " has-error" : "ui input inputDev")}>
                                                                         <input type="text" className="form-control" id="actualPayment" name="actualPayment"
@@ -2760,12 +2737,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .remainingPayment[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.remainingPayment[currentLanguage]}
                                                                     </label>
                                                                     <div className="ui input inputDev">
                                                                         <input type="text" className="form-control" name="remainingPayment"
@@ -2808,33 +2780,16 @@ class requestPaymentsAddEdit extends Component {
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
                                                     {this.state.docId > 0 &&
-                                                        this.state.isViewMode ===
-                                                        false ? (
-                                                            <UploadAttachment
-                                                                changeStatus={
-                                                                    this.props
-                                                                        .changeStatus
-                                                                }
-                                                                AddAttachments={839}
-                                                                EditAttachments={
-                                                                    3223
-                                                                }
-                                                                ShowDropBox={3607}
-                                                                ShowGoogleDrive={
-                                                                    3608
-                                                                }
-                                                                docTypeId={
-                                                                    this.state
-                                                                        .docTypeId
-                                                                }
-                                                                docId={
-                                                                    this.state.docId
-                                                                }
-                                                                projectId={
-                                                                    this.state
-                                                                        .projectId
-                                                                }
-                                                            />
+                                                        this.state.isViewMode === false ?
+                                                        (<UploadAttachment changeStatus={this.props.changeStatus}
+                                                            AddAttachments={839}
+                                                            EditAttachments={3223}
+                                                            ShowDropBox={3607}
+                                                            ShowGoogleDrive={3608}
+                                                            docTypeId={this.state.docTypeId}
+                                                            docId={this.state.docId}
+                                                            projectId={this.state.projectId}
+                                                        />
                                                         ) : null}
                                                     {this.viewAttachments()}
                                                     {this.props.changeStatus === true ? (
@@ -2872,9 +2827,7 @@ class requestPaymentsAddEdit extends Component {
                                                     </div>
 
                                                     {this.state.viewUpdatePayment ? (
-                                                        <button
-                                                            className="primaryBtn-1 btn  disabled"
-                                                            disabled="disabled">
+                                                        <button className="primaryBtn-1 btn  disabled" disabled="disabled">
                                                             <div className="spinner">
                                                                 <div className="bounce1" />
                                                                 <div className="bounce2" />
@@ -2884,8 +2837,7 @@ class requestPaymentsAddEdit extends Component {
                                                     ) : (
                                                             <button className="primaryBtn-1 btn meduimBtn"
                                                                 onClick={this.updateActualPayments}>
-                                                                {Resources["update"][currentLanguage]
-                                                                }
+                                                                {Resources["update"][currentLanguage]}
                                                             </button>
                                                         )}
                                                 </div>
@@ -3121,16 +3073,8 @@ class requestPaymentsAddEdit extends Component {
                                             <div className="slider-Btns">
                                                 <button
                                                     className="primaryBtn-1 btn meduimBtn"
-                                                    onClick={e =>
-                                                        this.changeCurrentStep(
-                                                            4
-                                                        )
-                                                    }>
-                                                    {
-                                                        Resources["next"][
-                                                        currentLanguage
-                                                        ]
-                                                    }
+                                                    onClick={e => this.changeCurrentStep(4)}>
+                                                    {Resources["next"][currentLanguage]}
                                                 </button>
                                             </div>
                                         </div>
@@ -3139,8 +3083,7 @@ class requestPaymentsAddEdit extends Component {
                             ) : null}
 
                         </div>
-                        <Steps
-                            steps_defination={steps_defination}
+                        <Steps steps_defination={steps_defination}
                             exist_link="/requestPayments/"
                             docId={this.state.docId}
                             changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
@@ -3173,27 +3116,29 @@ class requestPaymentsAddEdit extends Component {
                         {BoqTypeContent}
                     </SkyLight>
                 </div>
+                {/* Edit Comment of Grid */}
                 <div className="largePopup largeModal " style={{ display: this.state.showCommentModal ? "block" : "none" }}>
-                    <SkyLight hideOnOverlayClicked ref={ref => (this.addCommentModal = ref)} title={Resources.comments[currentLanguage]}>
-                        <div className="proForm datepickerContainer">
-                            <div className="linebylineInput valid-input mix_dropdown">
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.commentModal = ref)} title={Resources.comments[currentLanguage]}>
+                        <div className="proForm">
+                            <div className="dropWrapper">
                                 <div className="letterFullWidth">
                                     <label className="control-label">
                                         {Resources.comment[currentLanguage]}
                                     </label>
-                                    <div className="inputDev ui input">
+                                    <div className="inputDev ui input" style={{ width: '100%' }}>
                                         <TextEditor value={this.state.comment} onChange={this.onChangeMessage.bind(this)} />
                                     </div>
                                 </div>
+                                <div className="fullWidthWrapper">
+                                    <button className="primaryBtn-1 btn " onClick={e => this.addCommentClick(e)}>
+                                        {Resources.save[currentLanguage]}
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <button
-                            className="primaryBtn-1 btn "
-                            onClick={e => this.addCommentClick(e)}>
-                            {Resources.save[currentLanguage]}
-                        </button>
                     </SkyLight>
                 </div>
+
                 <div className="largePopup largeModal " style={{ display: this.state.showCostCodingTree ? "block" : "none" }}>
                     <SkyLight hideOnOverlayClicked ref={ref => (this.costCodingTree = ref)} title={Resources.comments[currentLanguage]}>
                         <div className="dropWrapper proForm">
@@ -3244,253 +3189,166 @@ class requestPaymentsAddEdit extends Component {
                             )}
                     </SkyLight>
                 </div>
+
+                {/* Edit Qty Value */}
                 <div className="largePopup largeModal " style={{ display: this.state.viewPopUpRows ? "block" : "none" }}>
                     <SkyLight hideOnOverlayClicked ref={ref => (this.addCommentModal = ref)}>
-                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationItemsSchema}
+                        <Formik
+                            initialValues={{ ...this.state.currentObject }}
+                            validationSchema={validationItemsSchema}
                             enableReinitialize={true}
                             onSubmit={values => {
                                 this.editPaymentRequistionItems();
                             }}>
-                            {({
-                                errors,
-                                touched,
-                                handleBlur,
-                                handleChange,
-                                handleSubmit,
-                                setFieldValue,
-                                setFieldTouched
-                            }) => (
-                                    <Form
-                                        id="InspectionRequestForm"
-                                        className="customProform proForm"
-                                        noValidate="novalidate"
-                                        onSubmit={handleSubmit}>
-                                        <div className="dropWrapper">
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.percentComplete[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input" +
-                                                        (errors.percentComplete &&
-                                                            touched.percentComplete
-                                                            ? " has-error"
-                                                            : !errors.percentComplete &&
-                                                                touched.percentComplete
-                                                                ? " has-success"
-                                                                : " ")
-                                                    }>
-                                                    <input
-                                                        name="percentComplete"
-                                                        className="form-control fsadfsadsa"
-                                                        id="percentComplete"
-                                                        placeholder={
-                                                            Resources
-                                                                .percentComplete[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .percentComplete
-                                                        }
-                                                        onChange={e =>
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "percentComplete"
-                                                            )
-                                                        }
-                                                    />
-                                                    {touched.percentComplete ? (
-                                                        <em className="pError">
-                                                            {errors.percentComplete}
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.quantityComplete[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input" +
-                                                        (errors.quantityComplete &&
-                                                            touched.quantityComplete
-                                                            ? " has-error"
-                                                            : !errors.quantityComplete &&
-                                                                touched.quantityComplete
-                                                                ? " has-success"
-                                                                : " ")
-                                                    }>
-                                                    <input
-                                                        name="quantityComplete"
-                                                        className="form-control fsadfsadsa"
-                                                        id="quantityComplete"
-                                                        placeholder={
-                                                            Resources
-                                                                .quantityComplete[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .quantityComplete
-                                                        }
-                                                        onChange={e =>
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "quantityComplete"
-                                                            )
-                                                        }
-                                                    />
-                                                    {touched.quantityComplete ? (
-                                                        <em className="pError">
-                                                            {
-                                                                errors.quantityComplete
-                                                            }
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.paymentPercent[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input" +
-                                                        (errors.paymentPercent &&
-                                                            touched.paymentPercent
-                                                            ? " has-error"
-                                                            : !errors.paymentPercent &&
-                                                                touched.paymentPercent
-                                                                ? " has-success"
-                                                                : " ")
-                                                    }>
-                                                    <input
-                                                        name="paymentPercent"
-                                                        className="form-control fsadfsadsa"
-                                                        id="paymentPercent"
-                                                        placeholder={
-                                                            Resources
-                                                                .paymentPercent[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .paymentPercent
-                                                        }
-                                                        onChange={e => {
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "paymentPercent"
-                                                            );
-                                                        }}
-                                                    />
-                                                    {touched.paymentPercent ? (
-                                                        <em className="pError">
-                                                            {errors.paymentPercent}
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.comments[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={"inputDev ui input"}>
-                                                    <input
-                                                        name="comments"
-                                                        className="form-control fsadfsadsa"
-                                                        id="comments"
-                                                        placeholder={
-                                                            Resources.comments[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .lastComment
-                                                        }
-                                                        onChange={e => {
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "lastComment"
-                                                            );
-                                                        }}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="fullWidthWrapper">
-                                                {this.state.isLoading === true ? (
-                                                    <button
-                                                        className="primaryBtn-1 btn  disabled"
-                                                        disabled="disabled">
-                                                        <div className="spinner">
-                                                            <div className="bounce1" />
-                                                            <div className="bounce2" />
-                                                            <div className="bounce3" />
+                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                <Form id="InspectionRequestForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
+                                    <div className="dropWrapper">
+                                        {
+                                            Config.IsAllow(3674) ?
+                                                <Fragment>
+                                                    <div className="fillter-item-c fullInputWidth">
+                                                        <label className="control-label">
+                                                            {Resources.percentComplete[currentLanguage]}
+                                                        </label>
+                                                        <div className={"inputDev ui input" + (errors.percentComplete && touched.percentComplete ? " has-error" : !errors.percentComplete && touched.percentComplete ? " has-success" : " ")}>
+                                                            <input name="percentComplete" className="form-control fsadfsadsa" id="percentComplete"
+                                                                placeholder={Resources.percentComplete[currentLanguage]}
+                                                                autoComplete="off"
+                                                                onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                                defaultValue={this.state.currentObject.percentComplete}
+                                                                onChange={e => this.handleChangeForEdit(e, "percentComplete")}
+                                                            />
+                                                            {touched.percentComplete ? (<em className="pError"> {errors.percentComplete} </em>) : null}
                                                         </div>
-                                                    </button>
-                                                ) : (
-                                                        <button
-                                                            className="primaryBtn-1 btn "
-                                                            type="submit">
-                                                            {
-                                                                Resources.save[
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </button>
-                                                    )}
+                                                    </div>
+                                                    <div className="fillter-item-c fullInputWidth">
+                                                        <label className="control-label">
+                                                            {Resources.quantityComplete[currentLanguage]}
+                                                        </label>
+                                                        <div className={"inputDev ui input" + (errors.quantityComplete && touched.quantityComplete ? " has-error" : !errors.quantityComplete && touched.quantityComplete ? " has-success" : " ")}>
+                                                            <input name="quantityComplete" className="form-control fsadfsadsa" id="quantityComplete"
+                                                                placeholder={Resources.quantityComplete[currentLanguage]}
+                                                                autoComplete="off"
+                                                                onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                                defaultValue={this.state.currentObject.quantityComplete}
+                                                                onChange={e => this.handleChangeForEdit(e, "quantityComplete")}
+                                                            />
+                                                            {touched.quantityComplete ? (<em className="pError">{errors.quantityComplete}</em>) : null}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="fillter-item-c fullInputWidth">
+                                                        <label className="control-label">
+                                                            {Resources.paymentPercent[currentLanguage]}
+                                                        </label>
+                                                        <div className={"inputDev ui input" + (errors.paymentPercent && touched.paymentPercent ? " has-error" : !errors.paymentPercent && touched.paymentPercent ? " has-success" : " ")}>
+                                                            <input name="paymentPercent" className="form-control fsadfsadsa" id="paymentPercent"
+                                                                placeholder={Resources.paymentPercent[currentLanguage]}
+                                                                autoComplete="off"
+                                                                onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                                defaultValue={this.state.currentObject.paymentPercent}
+                                                                onChange={e => { this.handleChangeForEdit(e, "paymentPercent"); }}
+                                                            />
+                                                            {touched.paymentPercent ? (<em className="pError"> {errors.paymentPercent} </em>) : null}
+                                                        </div>
+                                                    </div>
+
+                                                </Fragment> : null}
+
+                                        {Config.IsAllow(3673) ?
+                                            <Fragment>
+                                                <div className="fillter-item-c fullInputWidth">
+                                                    <label className="control-label">
+                                                        {Resources.sitePercentComplete[currentLanguage]}
+                                                    </label>
+                                                    <div className={"inputDev ui input" + (errors.sitePercentComplete && touched.sitePercentComplete ? " has-error" : !errors.sitePercentComplete && touched.sitePercentComplete ? " has-success" : " ")}>
+                                                        <input
+                                                            name="sitePercentComplete"
+                                                            className="form-control fsadfsadsa"
+                                                            id="sitePercentComplete"
+                                                            placeholder={Resources.percentComplete[currentLanguage]}
+                                                            autoComplete="off"
+                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                            defaultValue={this.state.currentObject.sitePercentComplete}
+                                                            onChange={e => { this.handleChangeForEdit(e, "sitePercentComplete"); }} />
+                                                        {touched.sitePercentComplete ? (<em className="pError"> {errors.sitePercentComplete} </em>) : null}
+                                                    </div>
+                                                </div>
+                                                <div className="fillter-item-c fullInputWidth">
+                                                    <label className="control-label">
+                                                        {Resources.siteQuantityComplete[currentLanguage]}
+                                                    </label>
+                                                    <div className={"inputDev ui input" + (errors.siteQuantityComplete && touched.siteQuantityComplete ? " has-error" : !errors.siteQuantityComplete && touched.siteQuantityComplete ? " has-success" : " ")}>
+                                                        <input
+                                                            name="siteQuantityComplete"
+                                                            className="form-control fsadfsadsa"
+                                                            id="siteQuantityComplete"
+                                                            placeholder={Resources.siteQuantityComplete[currentLanguage]}
+                                                            autoComplete="off"
+                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                            defaultValue={this.state.currentObject.siteQuantityComplete}
+                                                            onChange={e => { this.handleChangeForEdit(e, "siteQuantityComplete"); }}
+                                                        />
+                                                        {touched.siteQuantityComplete ? (<em className="pError">{errors.siteQuantityComplete}</em>) : null}
+                                                    </div>
+                                                </div>
+
+                                                <div className="fillter-item-c fullInputWidth">
+                                                    <label className="control-label">
+                                                        {Resources.contractPaymentPercent[currentLanguage]}
+                                                    </label>
+                                                    <div className={"inputDev ui input" + (errors.sitePaymentPercent && touched.sitePaymentPercent ? " has-error" : !errors.sitePaymentPercent && touched.sitePaymentPercent ? " has-success" : " ")}>
+                                                        <input name="sitePaymentPercent" className="form-control fsadfsadsa" id="sitePaymentPercent"
+                                                            placeholder={Resources.contractPaymentPercent[currentLanguage]}
+                                                            autoComplete="off"
+                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                            defaultValue={this.state.currentObject.sitePaymentPercent}
+                                                            onChange={e => { this.handleChangeForEdit(e, "sitePaymentPercent"); }}
+                                                        />
+                                                        {touched.sitePaymentPercent ? (<em className="pError"> {errors.sitePaymentPercent} </em>) : null}
+                                                    </div>
+                                                </div></Fragment> : null
+                                        }
+
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">
+                                                {Resources.comments[currentLanguage]}
+                                            </label>
+                                            <div className={"inputDev ui input"}>
+                                                <input name="comments" className="form-control fsadfsadsa" id="comments"
+                                                    placeholder={Resources.comments[currentLanguage]}
+                                                    autoComplete="off"
+                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                    defaultValue={this.state.currentObject.lastComment}
+                                                    onChange={e => { this.handleChangeForEdit(e, "lastComment"); }}
+                                                />
                                             </div>
                                         </div>
-                                    </Form>
-                                )}
+
+                                        <div className="fullWidthWrapper">
+                                            {this.state.isLoading === true ? (
+                                                <button
+                                                    className="primaryBtn-1 btn  disabled"
+                                                    disabled="disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button>
+                                            ) : (
+                                                    <button className="primaryBtn-1 btn " type="submit">
+                                                        {Resources.save[currentLanguage]}
+                                                    </button>
+                                                )}
+                                        </div>
+                                    </div>
+                                </Form>
+                            )}
                         </Formik>
                     </SkyLight>
                 </div>
+ 
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources["smartDeleteMessage"][currentLanguage].content}

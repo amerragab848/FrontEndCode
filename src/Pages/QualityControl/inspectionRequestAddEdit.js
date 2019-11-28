@@ -1021,28 +1021,6 @@ class inspectionRequestAddEdit extends Component {
                                                                         startDate={this.state.document.resultDate}
                                                                         handleChange={e => this.handleChangeDate(e, 'resultDate')} />
                                                                 </div>
-                                                                {/* Ahmed Yousry */}                                                                
-                                                                <div className="linebylineInput valid-input">
-                                                            <label className="control-label">    {Resources.sharedSettings[currentLanguage]}</label>
-                                                            <div className="shareLinks">
-                                                                <div className={"inputDev ui input" + (errors.sharedSettings && touched.sharedSettings ? (" has-error") : !errors.sharedSettings && touched.sharedSettings ? (" has-success") : " ")} >
-                                                                    <input type="text" className="form-control" id="sharedSettings"
-                                                                        onChange={e => this.handleChange(e, "sharedSettings")}
-                                                                        value={this.state.document.sharedSettings}
-                                                                        name="sharedSettings" placeholder={Resources.sharedSettings[currentLanguage]}
-                                                                    />
-                                                                    {touched.sharedSettings ? (<em className="pError">{errors.sharedSettings}</em>) : null}
-                                                                </div>
-                                                                {this.state.document.sharedSettings === '' ||
-                                                                    this.state.document.sharedSettings === null ||
-                                                                    this.state.document.sharedSettings === undefined ?
-                                                                    null
-                                                                    : <a target="_blank" href={this.state.document.sharedSettings}>
-                                                                        <span> {Resources.openFolder[currentLanguage]}  </span>
-                                                                    </a>}
-                                                            </div>
-                                                        </div>
-                                                                {/* Ahmed Yousry End */}
                                                                 <div className="linebylineInput valid-input mix_dropdown">
                                                                     <label className="control-label">{Resources.fromCompany[currentLanguage]}</label>
                                                                     <div className="supervisor__company">
@@ -1260,6 +1238,23 @@ class inspectionRequestAddEdit extends Component {
                                                                                 </div>
                                                                             </div> : null}
                                                                     </div>
+                                                                    <div className="approveDocument">
+                                                                        <div className="approveDocumentBTNS">
+                                                                            <DocumentActions
+                                                                                isApproveMode={this.state.isApproveMode}
+                                                                                docTypeId={this.state.docTypeId}
+                                                                                docId={this.state.docId}
+                                                                                projectId={this.state.projectId}
+                                                                                previousRoute={this.state.previousRoute}
+                                                                                docApprovalId={this.state.docApprovalId}
+                                                                                currentArrange={this.state.arrange}
+                                                                                showModal={this.props.showModal}
+                                                                                showOptionPanel={this.showOptionPanel}
+                                                                                permission={this.state.permission}
+                                                                                documentName={Resources.inspectionRequest[currentLanguage]}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
                                                                 </Fragment>
                                                                 :
                                                                 <div className="slider-Btns">
@@ -1299,23 +1294,6 @@ class inspectionRequestAddEdit extends Component {
                             changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
                             stepNo={this.state.CurrentStep}
                             changeStatus={docId === 0 ? false : true} />
-                    </div>
-                </div>
-                <div className="approveDocument">
-                    <div className="approveDocumentBTNS">
-                        <DocumentActions
-                            isApproveMode={this.state.isApproveMode}
-                            docTypeId={this.state.docTypeId}
-                            docId={this.state.docId}
-                            projectId={this.state.projectId}
-                            previousRoute={this.state.previousRoute}
-                            docApprovalId={this.state.docApprovalId}
-                            currentArrange={this.state.arrange}
-                            showModal={this.props.showModal}
-                            showOptionPanel={this.showOptionPanel}
-                            permission={this.state.permission}
-                            documentName={Resources.inspectionRequest[currentLanguage]}
-                        />
                     </div>
                 </div>
             </div>

@@ -1581,6 +1581,7 @@
     "documentAddPermission": 89,
     "documentEditPermission": 90,
     "documentDeletePermission": 91,
+    "documentViewPermission": 92,
     "documentPermission": 93,
     "documentApi": {
       "get": "GetPhoneByProjectId",

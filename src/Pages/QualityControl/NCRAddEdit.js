@@ -22,7 +22,7 @@ import { SkyLightStateless } from 'react-skylight';
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
-import LoadingSection from "../../Componants/publicComponants/LoadingSection"; 
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
@@ -293,7 +293,7 @@ class NCRAddEdit extends Component {
             if (this.props.changeStatus === true) {
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
-               
+
                 this.setState({
                     [subSelectedValue]: targetFieldSelected,
                     [subDatasource]: result
@@ -303,21 +303,21 @@ class NCRAddEdit extends Component {
     }
 
 
-    FillDropDowns=()=> {
-       
+    FillDropDowns = () => {
+
 
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
-            if (docId >0) {
-               
-                let companyId = this.props.document.fromCompanyId; 
-                
-                let  fromCompanyName= find(result, function (i) { return i.value == companyId; });
-                
+            if (docId > 0) {
+
+                let companyId = this.props.document.fromCompanyId;
+
+                let fromCompanyName = find(result, function (i) { return i.value == companyId; });
+
                 if (companyId) {
                     this.setState({
                         // selectedFromCompany: { label: this.props.document.fromCompany, value: companyId } 
-                        selectedFromCompany: { label:fromCompanyName.label , value: companyId } 
+                        selectedFromCompany: { label: fromCompanyName.label, value: companyId }
 
                     });
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
@@ -326,24 +326,24 @@ class NCRAddEdit extends Component {
                 let toCompanyId = this.props.document.toCompanyId;
                 if (toCompanyId) {
                     this.setState({
-                         selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId } 
+                        selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
                     });
 
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
                 }
 
                 let bicCompanyId = this.props.document.bicCompanyId;
-                let bicCompany={};
+                let bicCompany = {};
                 if (bicCompanyId) {
-                    bicCompany=find(result,function(i){return i.value==bicCompanyId});
+                    bicCompany = find(result, function (i) { return i.value == bicCompanyId });
                     this.setState({
                         selectedActionByCompanyId: { label: bicCompany.label, value: bicCompanyId }
                     });
 
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', bicCompanyId, 'bicContactId', 'selectedActionByContactId', 'bicContacts');
                 }
-               
-            
+
+
             }
             this.setState({
                 companies: [...result],
@@ -358,12 +358,12 @@ class NCRAddEdit extends Component {
                 let discpline = {};
                 if (disciplineId) {
                     discpline = find(result, function (i) { return i.value == disciplineId; });
-                     if(discpline){
+                    if (discpline) {
                         this.setState({
                             selectedDiscpline: discpline
                         });
-                     }
-                  
+                    }
+
                 }
             }
             this.setState({
@@ -373,37 +373,37 @@ class NCRAddEdit extends Component {
         });
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", 'title', 'id', 'defaultLists', "area", "listType").then(result => {
 
-           
+
 
             if (docId > 0) {
                 let areaId = this.props.document.areaId;
-               
+
                 let area = {};
                 if (areaId) {
                     area = find(result, function (i) { return i.value == areaId; });
-                  if(area){
-                    this.setState({
-                        selecetedArea: {label:area.label,value:areaId},
-                        //Loading: false
-                    });
-                  }
-                    
+                    if (area) {
+                        this.setState({
+                            selecetedArea: { label: area.label, value: areaId },
+                            //Loading: false
+                        });
+                    }
+
                 }
             }
             this.setState({
                 areas: [...result],
-                Loading:false
+                Loading: false
             });
         });
-        dataservice.GetDataListCached("GetAccountsDefaultListforList?listType=apartmentno","title", "id", 'defaultLists', "apartmentno", "listType").then(result => {
+        dataservice.GetDataListCached("GetAccountsDefaultListforList?listType=apartmentno", "title", "id", 'defaultLists', "apartmentno", "listType").then(result => {
             if (docId > 0) {
                 let apartmentNoId = this.props.document.apartmentNumberId;
-                console.log("apartId "+apartmentNoId);
-                let apart={};
+                console.log("apartId " + apartmentNoId);
+                let apart = {};
                 if (apartmentNoId) {
-                    apart=find(result,function(i){return i.value==apartmentNoId});
-                    console.log("apart "+apart);
-                    if(apart){
+                    apart = find(result, function (i) { return i.value == apartmentNoId });
+                    console.log("apart " + apart);
+                    if (apart) {
                         this.setState({
                             selectedApartmentNoId: {
                                 label: apart.label,
@@ -411,7 +411,7 @@ class NCRAddEdit extends Component {
                             }
                         });
                     }
-                   
+
                 }
             }
             this.setState({
@@ -426,59 +426,58 @@ class NCRAddEdit extends Component {
                 let approvalStatus = {};
                 if (approvalStatusId) {
                     approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
-                   if(approvalStatus){
-                    this.setState({
-                        selectedApprovalStatusId: approvalStatus
-                    });
-                   }
-                    
+                    if (approvalStatus) {
+                        this.setState({
+                            selectedApprovalStatusId: approvalStatus
+                        });
+                    }
+
                 }
             }
             this.setState({
                 approvalstatusList: [...result],
-                Loading:false
+                Loading: false
             });
         });
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=specsSection", 'title', 'id', 'defaultLists', "specsSection", "listType").then(result => {
             if (docId > 0) {
-                let specId=this.props.document.specsSectionId;
-                let spec={};
-                if(specId)
-                {
-                   
-                    spec=find(result,function(i){return i.value==specId});
-                    if(spec){
+                let specId = this.props.document.specsSectionId;
+                let spec = {};
+                if (specId) {
+
+                    spec = find(result, function (i) { return i.value == specId });
+                    if (spec) {
                         this.setState({
                             selectedSpecsSectionId: { label: spec.label, value: this.props.document.specsSectionId }
                         });
                     }
-                   
+
                 }
-               
+
             }
             this.setState({
                 specificationSectionList: [...result],
-                Loading:false
+                Loading: false
             });
         });
-        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reviewresult", "title", "id",'defaultLists', "reviewResult", "listType").then(result => {
-           if(docId > 0){
-           let revId=this.props.document.reviewResultId;
-           let review={};
-           if(revId){
-            review=find(result,function(i){return i.value==revId});
-            if(review){
-                this.setState({
-                    selectedReviewResult:{label:review.label,value:revId}
-                });
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=reviewresult", "title", "id", 'defaultLists', "reviewResult", "listType").then(result => {
+            if (docId > 0) {
+                let revId = this.props.document.reviewResultId;
+                let review = {};
+                if (revId) {
+                    review = find(result, function (i) { return i.value == revId });
+                    if (review) {
+                        this.setState({
+                            selectedReviewResult: { label: review.label, value: revId }
+                        });
+                    }
+
+                }
             }
-           
-           }
-           }
-          
+
             this.setState({
                 reviewResultList: [...result],
-              Loading:false
+                Loading: false
             });
         });
 
@@ -488,62 +487,62 @@ class NCRAddEdit extends Component {
                 let reasonForIssue = {};
                 if (reasonForIssueId) {
                     reasonForIssue = find(result, function (i) { return i.value == reasonForIssueId; });
-                   if(reasonForIssue){
-                    this.setState({
-                        selectedReasonForIssue: reasonForIssue
-                    });
-                   }
-                   
+                    if (reasonForIssue) {
+                        this.setState({
+                            selectedReasonForIssue: reasonForIssue
+                        });
+                    }
+
                 }
             }
             this.setState({
                 reasonForIssues: [...result],
-                Loading:false
+                Loading: false
             });
         });
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=drawingfilenumber", 'title', 'id', 'defaultLists', "drawingfilenumber", "listType").then(result => {
-          if(docId){
-              let fileId=this.props.document.fileNumberId;
-             
-              let file={};
-              if(fileId){
-                  file =find(result,function(i){return i.value==fileId});
-                 
-                  if(file){
-                    this.setState({
-                        selectedFileNumberId:{label:file.label,value:fileId}
-                      });
-                  }
-                 
-              }
-          }
+            if (docId) {
+                let fileId = this.props.document.fileNumberId;
+
+                let file = {};
+                if (fileId) {
+                    file = find(result, function (i) { return i.value == fileId });
+
+                    if (file) {
+                        this.setState({
+                            selectedFileNumberId: { label: file.label, value: fileId }
+                        });
+                    }
+
+                }
+            }
 
 
             this.setState({
                 fileNumberList: [...result]
             });
 
-            
+
         });
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=buildingno", 'title', 'id', 'defaultLists', "buildingno", "listType").then(result => {
-            if (docId>0) {
+            if (docId > 0) {
                 let buildingno = this.props.document.buildingNumberId;
-               
+
                 let building = {};
                 if (buildingno) {
                     building = find(result, function (i) { return i.value == buildingno; });
-                   
-                    if(building){
+
+                    if (building) {
                         this.setState({
-                            selectedbuildingno: {label:building.label,value:buildingno}
+                            selectedbuildingno: { label: building.label, value: buildingno }
                         });
                     }
-                   
+
                 }
             }
             this.setState({
                 buildings: [...result],
-                Loading:false
+                Loading: false
             });
         });
         dataservice.GetDataList("GetInspectionRequest?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
@@ -556,28 +555,28 @@ class NCRAddEdit extends Component {
                     this.setState({ selecetedinspectionRequest: inspectionRequest });
                 }
             }
-            this.setState({ activityIRList: [...result],Loading:false });
+            this.setState({ activityIRList: [...result], Loading: false });
         });
         dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
-           if(docId){
-               
-               let conId=this.props.document.contractId;
-               let con={};
-               if(conId){
-                   con=find(result,function(i){return i.value==conId});
-                   if(con){
-                       this.setState({
-                         selectedContract:{label:con.label,value:conId}
-                       });
-                   }
-               }
-           }else{
-            this.setState({
-                contractsPos: [...result],
-                Loading:false
-              });
-           }
-           
+            if (docId) {
+
+                let conId = this.props.document.contractId;
+                let con = {};
+                if (conId) {
+                    con = find(result, function (i) { return i.value == conId });
+                    if (con) {
+                        this.setState({
+                            selectedContract: { label: con.label, value: conId }
+                        });
+                    }
+                }
+            } else {
+                this.setState({
+                    contractsPos: [...result],
+                    Loading: false
+                });
+            }
+
         });
 
 
@@ -1013,13 +1012,13 @@ class NCRAddEdit extends Component {
                                                             <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
                                                             <label>{Resources.closed[currentLanguage]}</label>
                                                         </div>
-                                                    </div> 
-                                                </div> 
-                                                <div className="proForm datepickerContainer"> 
+                                                    </div>
+                                                </div>
+                                                <div className="proForm datepickerContainer">
                                                     <div className="linebylineInput valid-input alternativeDate">
                                                         <DatePicker title='docDate' startDate={this.state.document.docDate}
                                                             handleChange={e => this.handleChangeDate(e, 'docDate')} />
-                                                    </div> 
+                                                    </div>
                                                     <div className="linebylineInput valid-input">
                                                         <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                         <div className="ui input inputDev"  >
@@ -1032,7 +1031,7 @@ class NCRAddEdit extends Component {
                                                                 }}
                                                                 onChange={(e) => this.handleChange(e, 'arrange')} />
                                                         </div>
-                                                    </div> 
+                                                    </div>
                                                     <div className="linebylineInput fullInputWidth">
                                                         <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                         <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >

@@ -8291,6 +8291,7 @@
         "en": "Total Contractor",
         "ar": "الأجمالى"
     },
+
     "docTitle": {
         "en": "Late Time Sheet",
         "ar": "صحيفة التوقيت المتاخر"
@@ -8303,7 +8304,9 @@
         "en": "working Hours Must be Less 11",
         "ar": "يجب عليك الحفظ فى صفحة التوقيت"
     },
-    "":{
-        
+     "contractPaymentPercent": {
+        "en": "Contract Payment Percent",
+        "ar": "Contract Payment Percent"
+
     }
 }

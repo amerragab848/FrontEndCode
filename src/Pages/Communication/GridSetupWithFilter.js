@@ -6,7 +6,6 @@ import Calendar from "react-calendar";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 import moment from "moment";
-import { number } from "prop-types";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
@@ -50,10 +49,7 @@ class GridSetupWithFilter extends Component {
   }
 
   componentDidMount() {
-    this.scrolllll();
-  }
 
-  componentWillMount() {
     let state = {};
 
     this.props.columns.map((column, index) => {
@@ -75,7 +71,20 @@ class GridSetupWithFilter extends Component {
     setTimeout(() => {
       this.setState(state);
     }, 500);
+
+    this.scrolllll();
   }
+
+
+  static getDerivedStateFromProps(props, current_state) {
+    if (current_state.rows !== props.rows) {
+      return {
+        rows: props.rows
+      }
+    }
+    return null
+  }
+
 
   onHeaderDrop = (source, target) => {
     const stateCopy = Object.assign({}, this.state);
@@ -330,14 +339,6 @@ class GridSetupWithFilter extends Component {
       let filters = Object.keys(_filters).reduce((n, k) => (n[k] = _filters[k], n), {});
       if (Object.keys(filters).length > 1) {
 
-        // let Data = this.state.rows.map(item => ({
-        //   title: item.title.toLowerCase(),
-        //   action: item.action,
-        //   editable: item.editable,
-        //   id: item.id,
-        //   refCode: item.refCode
-        // }));
-
         rows.forEach(row => {
           matched = 0;
           Object.keys(filters).forEach(key => {
@@ -388,13 +389,6 @@ class GridSetupWithFilter extends Component {
           Loading: false
         });
       } else {
-        // let Data = rows.map(item => ({
-        //   title: item.title,
-        //   action: item.action,
-        //   editable: item.editable,
-        //   id: item.id,
-        //   refCode: item.refCode
-        // }));
 
         rows.forEach(row => {
           matched = 0;
@@ -481,11 +475,7 @@ class GridSetupWithFilter extends Component {
         newFilters[filter.column.key] = typeof (event) === "object" ? "" : event;
       }
       else if (type === "number") {
-        if (event.target.value != "") {
-          newFilters[filter.column.key] = parseFloat(event.target.value);
-        } else {
-          delete newFilters[filter.column.key];
-        }
+        newFilters[filter.column.key] = parseFloat(event.target.value);
       } else if (event.target.value != "") {
         newFilters[filter.column.key] = event.target.value;
       } else {

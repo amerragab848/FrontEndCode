@@ -120,19 +120,34 @@ class projectPicturesAddEdit extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
+
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
             let ProjectPicDoc = nextProps.document
             ProjectPicDoc.docDate = ProjectPicDoc.docDate === null ? moment().format('YYYY-MM-DD') : moment(ProjectPicDoc.docDate).format('YYYY-MM-DD')
             ProjectPicDoc.picDate = ProjectPicDoc.picDate === null ? moment().format('YYYY-MM-DD') : moment(ProjectPicDoc.picDate).format('YYYY-MM-DD')
-            this.setState({
-                document: ProjectPicDoc,
-                hasWorkflow: nextProps.hasWorkflow,
-            });
 
+            return {
+                document: ProjectPicDoc, hasWorkflow: nextProps.hasWorkflow
+            }
+        }
+        if (state.showModal != nextProps.showModal) {
+            return { showModal: nextProps.showModal };
+        }
+
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+            this.checkDocumentIsView();
+        }
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
             this.checkDocumentIsView();
         }
     }
+
+
 
     handleChange(e, field) {
         let original_document = { ...this.state.document };
@@ -146,40 +161,6 @@ class projectPicturesAddEdit extends Component {
         this.setState({
             document: updated_document
         });
-    }
-
-    componentWillMount() {
-        if (docId > 0) {
-            this.setState({
-                IsEditMode: true,
-                isLoading: true
-            })
-            let url = "GetProjectPictureForEdit?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'projectPictures').then(
-                res => {
-                    this.FillDrowDowns()
-                }
-            )
-        } else {
-            ///Is Add Mode
-            let ProjectPicDoc = {
-                projectId: projectId,
-                subject: '',
-                docDate: moment(),
-                picDate: moment(),
-                status: true,
-                description: '',
-                fromCompanyId: '',
-                fromContactId: '',
-            }
-            this.setState({
-                document: ProjectPicDoc
-            })
-            this.FillDrowDowns()
-            this.props.actions.documentForAdding();
-        }
-
-
     }
 
     FillDrowDowns = () => {
@@ -221,16 +202,7 @@ class projectPicturesAddEdit extends Component {
         });
     }
 
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-            this.checkDocumentIsView();
-        }
 
-        if (prevProps.showModal != this.props.showModal) {
-            this.setState({ showModal: this.props.showModal });
-        }
-    }
 
     handleChangeDate(e, field) {
         console.log(field, e);
@@ -339,6 +311,35 @@ class projectPicturesAddEdit extends Component {
 
     componentDidMount = () => {
         this.checkDocumentIsView();
+        if (docId > 0) {
+            this.setState({
+                IsEditMode: true,
+                isLoading: true
+            })
+            let url = "GetProjectPictureForEdit?id=" + this.state.docId
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'projectPictures').then(
+                res => {
+                    this.FillDrowDowns()
+                }
+            )
+        } else {
+            ///Is Add Mode
+            let ProjectPicDoc = {
+                projectId: projectId,
+                subject: '',
+                docDate: moment(),
+                picDate: moment(),
+                status: true,
+                description: '',
+                fromCompanyId: '',
+                fromContactId: '',
+            }
+            this.setState({
+                document: ProjectPicDoc
+            })
+            this.FillDrowDowns()
+            this.props.actions.documentForAdding();
+        }
     }
 
     showOptionPanel = () => {

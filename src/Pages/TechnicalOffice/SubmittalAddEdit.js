@@ -435,7 +435,7 @@ class SubmittalAddEdit extends Component {
         }
       }
     });
- 
+
   }
 
   fillCycleDropDown(isEdit) {
@@ -466,7 +466,7 @@ class SubmittalAddEdit extends Component {
 
       if (isEdit) {
         let flowCompanyId = this.state.documentCycle.flowCompanyId;
-      
+
         if (flowCompanyId) {
 
           this.setState({
@@ -499,7 +499,7 @@ class SubmittalAddEdit extends Component {
           });
 
           this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "bicContactId", "selectedFromContact", "fromContacts");
-        } 
+        }
       }
       this.setState({
         selectedSubmittalType: this.props.document.submittalType != null && this.props.document.submittalType ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },

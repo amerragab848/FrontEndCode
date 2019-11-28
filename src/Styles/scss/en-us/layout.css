@@ -17240,7 +17240,13 @@ button.companies_icon {
     pointer-events: none;
     cursor: not-allowed;
 }
-
+.readOnly_inputs .skylight-dialog .linebylineInput, .readOnly_inputs .skylight-dialog .fillter-item-c , .readOnly_inputs .approveDocument .fillter-item-c {
+    -webkit-pointer-events: unset;
+    -moz-pointer-events: unset;
+    -ms-pointer-events: unset;
+    pointer-events: unset;
+    /* cursor: not-allowed; */
+}
 .proForm .has-error label.control-label {
     color: #26344c !important;
 }

@@ -12,6 +12,7 @@ import CryptoJS from 'crypto-js';
 import SkyLight from 'react-skylight';
 //const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
 class WFDistributionAccountReport extends Component {
 
     constructor(props) {
@@ -109,9 +110,9 @@ class WFDistributionAccountReport extends Component {
 
     subjectLink = ({ value, row }) => {
         let subject = "";
-        if (row) {
+        if (row) {   
             let obj = {
-                docId: row.id,
+                docId: row.url.split('/')[1],
                 projectId: row.projectId,
                 projectName: row.projectName,
                 arrange: 0,
@@ -202,7 +203,7 @@ class WFDistributionAccountReport extends Component {
             </div>
 
 
-      )
+        )
     }
 
 }
