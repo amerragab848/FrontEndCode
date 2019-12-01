@@ -17,7 +17,7 @@ const dateFormate = ({ value }) => {
 };
 
 
- class Timesheet extends Component {
+class Timesheet extends Component {
     constructor(props) {
         super(props)
 
@@ -154,6 +154,12 @@ const dateFormate = ({ value }) => {
         })
     }
 
+    addLateTimesheet = () => {
+        this.props.history.push({
+            pathname: 'LateTimeSheet'
+        })
+    }
+
     componentDidMount = () => {
         this.GetData("GetAccountsProjectsByIdForList", 'projectName', 'projectId', 'Projects');
     }
@@ -261,6 +267,7 @@ const dateFormate = ({ value }) => {
                                     </div>
                                 </button>
                             }
+                            <button onClick={this.addLateTimesheet} style={{ marginRight: '8px' }} className="primaryBtn-2 btn mediumBtn">Add Late Timesheet</button>
                         </div>
                         <div className="filterBTNS">
 

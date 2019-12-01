@@ -8,6 +8,10 @@ import Export from "../OptionsPanels/Export";
 import GridSetup from "../../Pages/Communication/GridSetup";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
+import * as actions from '../../store/actions/communication'
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+//import { bindActionCreators } from "C:/Users/a.yousry/AppData/Local/Microsoft/TypeScript/3.5/node_modules/redux";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const {
@@ -263,4 +267,12 @@ class TimeSheetDetails extends Component {
   }
 }
 
-export default withRouter(TimeSheetDetails);
+function mapDispatchToProps(dispatch)
+{
+  return{
+      actions:bindActionCreators(actions,dispatch)
+  };
+}
+export default connect(null,mapDispatchToProps)(withRouter(TimeSheetDetails));
+
+

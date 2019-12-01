@@ -8291,8 +8291,28 @@
         "en": "Total Contractor",
         "ar": "الأجمالى"
     },
+<<<<<<< HEAD
     "contractPaymentPercent": {
         "en": "Contractor's Payment Percent",
         "ar": "Contractor's Payment Percent"
+=======
+
+    "docTitle": {
+        "en": "Late Time Sheet",
+        "ar": "صحيفة التوقيت المتاخر"
+    },
+    "saveInTimeSheet": {
+        "en": "You Must Save In Time Sheet",
+        "ar": " يجب عليك حفظ في صحيفة التوقيت"
+    },
+    "workingHoursLessEleven": {
+        "en": "working Hours Must be Less 11",
+        "ar": "يجب عليك الحفظ فى صفحة التوقيت"
+    },
+     "contractPaymentPercent": {
+        "en": "Contract Payment Percent",
+        "ar": "Contract Payment Percent"
+
+>>>>>>> d6a598aec7b73ae88561fe4ea148b0852e13334c
     }
 }

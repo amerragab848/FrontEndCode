@@ -121,6 +121,7 @@ const FollowUpsSummaryDetails = AsyncComponent(() => import('./Componants/DashBo
 const DashBoardCounterLog = AsyncComponent(() => import('./Componants/DashBoardDetails/DashBoardCounterLog'));
 const DashBoardProjectCounterLog = AsyncComponent(() => import('./Componants/DashBoardDetails/DashBoardProjectCounterLog'));
 const RejectedTimesheetsDetails = AsyncComponent(() => import('./Componants/DashBoardDetails/RejectedTimesheetsDetails'));
+const LateTimeSheet = AsyncComponent(() => import('./Pages/LateTimeSheet/LateTimeSheet'));
 
 //General Settings
 
@@ -441,6 +442,7 @@ let originalRoutes = [
     , <Route key='r-186' path="/boqContractCost" component={BoqContractCost} />
     , <Route key='r-187' path="/deliveredQuantitieReport" component={DeliveredQuantitieReport} />
     , <Route key='r-188' path="/collectedInvoices" component={CollectedInvoices} />
+    , <Route key='r-188' path="/LateTimeSheet" component={LateTimeSheet} />
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes]
