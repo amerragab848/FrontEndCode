@@ -75,16 +75,14 @@ class GridSetupWithFilter extends Component {
     this.scrolllll();
   }
 
-
   static getDerivedStateFromProps(props, current_state) {
     if (current_state.rows !== props.rows) {
       return {
-        rows: props.rows
+        rows: current_state.rows
       }
     }
     return null
   }
-
 
   onHeaderDrop = (source, target) => {
     const stateCopy = Object.assign({}, this.state);
@@ -475,7 +473,11 @@ class GridSetupWithFilter extends Component {
         newFilters[filter.column.key] = typeof (event) === "object" ? "" : event;
       }
       else if (type === "number") {
-        newFilters[filter.column.key] = parseFloat(event.target.value);
+        if (event.target.value !== "") {
+          newFilters[filter.column.key] = parseFloat(event.target.value);
+        }else{
+          delete newFilters[filter.column.key];
+        }
       } else if (event.target.value != "") {
         newFilters[filter.column.key] = event.target.value;
       } else {
@@ -490,6 +492,8 @@ class GridSetupWithFilter extends Component {
         setFilters: newFilters,
         Loading: false
       });
+    } else {
+      console.log('this.state.filteredRows.length == 0')
     }
   }
 

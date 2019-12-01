@@ -384,6 +384,17 @@ class requestPaymentsAddEdit extends Component {
         if (this.state.isViewMode !== true) { itemsColumns.push({ key: "BtnActions", width: 150 }) }
 
         itemsColumns = [
+            ...(this.props.changeStatus ? [
+                {
+                    key: "BtnActions",
+                    name: Resources["LogControls"][currentLanguage],
+                    width: 150,
+                    draggable: false,
+                    sortable: false,
+                    resizable: true,
+                    filterable: false,
+                    sortDescendingFirst: false
+                }] : []),
             {
                 key: "arrange",
                 name: Resources["no"][currentLanguage],
@@ -395,17 +406,6 @@ class requestPaymentsAddEdit extends Component {
                 sortDescendingFirst: true,
                 type: "number"
             },
-            ...(this.props.changeStatus ? [
-                {
-                    key: "BtnActions",
-                    name: Resources["LogControls"][currentLanguage],
-                    width: 150,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }] : []),
             {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],

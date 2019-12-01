@@ -8290,13 +8290,7 @@
     "totalContractor": {
         "en": "Total Contractor",
         "ar": "الأجمالى"
-    },
-<<<<<<< HEAD
-    "contractPaymentPercent": {
-        "en": "Contractor's Payment Percent",
-        "ar": "Contractor's Payment Percent"
-=======
-
+    },  
     "docTitle": {
         "en": "Late Time Sheet",
         "ar": "صحيفة التوقيت المتاخر"
@@ -8309,10 +8303,9 @@
         "en": "working Hours Must be Less 11",
         "ar": "يجب عليك الحفظ فى صفحة التوقيت"
     },
-     "contractPaymentPercent": {
-        "en": "Contract Payment Percent",
-        "ar": "Contract Payment Percent"
+     "contractPaymentPercent": { 
+        "en": "Contractor's Payment Percent",
+        "ar": "Contractor's Payment Percent"
 
->>>>>>> d6a598aec7b73ae88561fe4ea148b0852e13334c
     }
 }
