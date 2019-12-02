@@ -174,6 +174,7 @@ class requestPaymentsAddEdit extends Component {
         let userType = Config.getPayload();
 
         this.state = {
+            isFilter: false,
             advancedPayment: null,
             currentStep: 0,
             trees: [],
@@ -659,7 +660,6 @@ class requestPaymentsAddEdit extends Component {
             }
         ];
 
-
         if (changeStatus) {
             itemsColumns.push({
                 key: "actions",
@@ -746,7 +746,7 @@ class requestPaymentsAddEdit extends Component {
     customCellActions(column, row) {
         if (column.key === "BtnActions") {
             const custom = [{
-                icon: <span style={{cursor: 'pointer'}} className="fa fa-history" />,
+                icon: <span style={{ cursor: 'pointer' }} className="fa fa-history" />,
                 callback: e => {
                     this.setState({
                         isLoading: true
@@ -761,9 +761,9 @@ class requestPaymentsAddEdit extends Component {
                         this.ViewHistoryModal.show();
                     });
                 }
-            } ,
+            },
             {
-                icon: <span style={{cursor: 'pointer'}} className="fa fa-pencil" />,
+                icon: <span style={{ cursor: 'pointer' }} className="fa fa-pencil" />,
                 callback: () => {
                     if (Config.IsAllow(1001104)) {
                         let boqStractureObj = {
@@ -1042,8 +1042,7 @@ class requestPaymentsAddEdit extends Component {
             this.buildColumns(this.props.changeStatus);
 
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" +
-                this.state.pageNumber + "&pageSize=" + this.state.pageSize)
-                .then(result => {
+                this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
                         paymentsItems: result,
                         isLoading: false
@@ -1496,9 +1495,14 @@ class requestPaymentsAddEdit extends Component {
 
         this.setState({
             editRows: editRows,
-            paymentsItems
+            paymentsItems,
+            isFilter: true
         });
     };
+
+    changeValueOfProps = () => {
+        this.setState({ isFilter: false });
+    }
 
     editRowsClick() {
         this.setState({ isLoading: true });
@@ -2220,6 +2224,7 @@ class requestPaymentsAddEdit extends Component {
             <GridSetupWithFilter
                 groupBy={this.props.changeStatus ? [{ key: 'wasAdded', name: 'status' }, { key: 'boqType', name: 'boqType' }, { key: 'boqSubType', name: 'boqSubType' }] : null}
                 rows={this.state.paymentsItems}
+                isFilter={this.state.isFilter}
                 showCheckbox={isCompany && this.props.changeStatus ? true : false}
                 clickHandlerDeleteRows={this.clickHandlerDeleteRows}
                 pageSize={this.state.pageSize}
@@ -2227,7 +2232,8 @@ class requestPaymentsAddEdit extends Component {
                 columns={itemsColumns}
                 onGridRowsUpdated={this._onGridRowsUpdated}
                 getCellActions={(column, row) => this.getCellActions(column, row)}
-                key="PRitems" />
+                key="PRitems"
+                changeValueOfProps={this.changeValueOfProps.bind(this)} />
 
         ) : null;
 
@@ -3348,7 +3354,7 @@ class requestPaymentsAddEdit extends Component {
                         </Formik>
                     </SkyLight>
                 </div>
- 
+
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources["smartDeleteMessage"][currentLanguage].content}
