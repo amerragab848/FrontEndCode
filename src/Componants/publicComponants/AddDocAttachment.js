@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SkyLightStateless } from "react-skylight";
 import * as communicationActions from '../../store/actions/communication';
+import Calendar from "react-calendar";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 class AddDocAttachment extends Component {
@@ -34,10 +35,17 @@ class AddDocAttachment extends Component {
       selectedRows: [],
       modalAdd: false,
       isRelatedLink: this.props.docTypeId === 108 || this.props.docTypeId === 90 ? true : false,
+      focused: false,
+      dateRange: moment().format("YYYY-MM-DD"),
+      documentData: [],
+      isFilter: false
     };
   }
 
   componentDidMount() {
+    //  this.setState({
+    //   documentData:this.props.documentData
+    //  })
     if (this.state.docId > 0) {
       dataservice.GetDataList("GetModuleList", "modulType", "id").then(result => {
         this.setState({
@@ -69,7 +77,7 @@ class AddDocAttachment extends Component {
     }
 
     else if (name === "docType") {
-      this.setState({ selectDocument: value });
+      this.setState({ selectDocument: value, isFilter: false });
       //In Handel Change Drop Down Document Fill Documnet Table
       this.props.actions.getCommunicationDocument(this.props.projectId, value.value);
     }
@@ -127,7 +135,60 @@ class AddDocAttachment extends Component {
     return <a href={doc_view}>{row.subject}</a>;
   }
 
+  setDateFilter = (date) => {
+    this.setState({
+      isloading: true
+    })
+    let mergeDate = date != null ? moment(date[0]).format("YYYY-MM-DD") + "|" + moment(date[1]).format("YYYY-MM-DD") : "";
+   
+    this.setState({
+      dateRange: mergeDate,
+      focused: false
+    })
+    this.filterDataByDate(mergeDate);
+  }
+
+  
+
+  filterDataByDate(mergeDate) {
+    let date1 = mergeDate.split('|')[0];
+    let date2 = mergeDate.split('|')[1];
+    let data = this.state.documentData;
+    let dataArray = [];
+    data.filter((item) => {
+     if(moment(new Date(item.docDate).toISOString().split('T')[0], 'YYYY-MM-DD').isBetween(moment(date1, 'YYYY-MM-DD'), moment(date2, 'YYYY-MM-DD'))){
+      dataArray.push(item);
+    }
+    });
+    this.setState({
+      documentData: dataArray
+    })
+
+    
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.documentData != prevState.documentData && prevState.isFilter === false) {
+      return {
+        documentData: nextProps.documentData,
+        isFilter: true
+       
+      };
+    }
+  }
+
+
+
+  changeDate() {
+    this.setState({
+      focused: true
+    })
+    // return <Calendar onChange={date => this.onChange()} selectRange={true} />
+  }
+
   render() {
+
+   
 
     let columnsDocument =
       [
@@ -216,10 +277,20 @@ class AddDocAttachment extends Component {
           Header: Resources["docDate"][currentLanguage],
           accessor: "docDate",
           filterable: true,
-          filterMethod: (filter, row) => { return row[filter.id].startsWith(filter.value) && row[filter.id].endsWith(filter.value) },
+          //filterMethod: (filter, row) => this.customOptionsFilterMethodssss(filter, row),
+          Filter: ({ filter, onChange }) => {
+            return <><input type="text" autoComplete="off"
+              value={this.state.dateRange}
+              //onChange={e => this.saveFilter(e, index, column.name, column.type)}
+              onFocus={() => this.changeDate()} />
+              <div className="viewCalender__reactTable" tabIndex={0} onMouseLeave={this.resetDate} ref={index => { this.index = index; }}>
+                {this.state.focused ? <Calendar onChange={date => this.setDateFilter(date)} selectRange={true} /> : null}
+              </div></>
+            // ,
+          },
           Cell: row => (
             <span>
-              <span>{moment(row.value).format("DD/MM/YYYY")}</span>
+              <span>{moment(row.value).format("YYYY-MM-DD")}</span>
             </span>
           )
         }
@@ -235,7 +306,7 @@ class AddDocAttachment extends Component {
           <Dropdown title="docType" data={this.state.documents}
             selectedValue={this.state.selectDocument} handleChange={event => this.dropDownsEvent(event, "docType")} />
 
-          {this.props.documentData.length ?
+          {this.state.documentData.length ?
             <Fragment>
 
               {this.state.selectedRows.length ?
@@ -243,12 +314,12 @@ class AddDocAttachment extends Component {
                   <button className="primaryBtn-1 btn meduimBtn" type="button" onClick={e => this.save()}>{Resources["save"][currentLanguage]} </button>
                 </div> : null}
 
-              <div className="precycle-grid modalTable">
-                <ReactTable 
-                  columns={columns} 
-                  data={this.props.documentData} 
+              ? <div className="precycle-grid modalTable">
+                <ReactTable
+                  columns={columns}
+                  data={this.state.documentData}
                   className="-striped -highlight"
-                  defaultPageSize={10} 
+                  defaultPageSize={10}
                   noDataText={Resources["noData"][currentLanguage]} />
               </div>
             </Fragment>

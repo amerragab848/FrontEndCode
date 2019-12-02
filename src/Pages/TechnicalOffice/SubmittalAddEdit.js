@@ -2276,7 +2276,7 @@ class SubmittalAddEdit extends Component {
                       <div className={"ui input inputDev " + (errors.subject && touched.subject ? "has-error" : !errors.subject && touched.subject ? "has-success" : "")}>
                         <input name="subject" className="form-control fsadfsadsa"
                           placeholder={Resources.subject[currentLanguage]} autoComplete="off"
-                          value={this.state.addCycleSubmital.subject} onBlur={e => { handleBlur(e); handleChange(e); }}
+                          value={this.state.addCycleSubmital.subject || ''} onBlur={e => { handleBlur(e); handleChange(e); }}
                           onChange={e => this.handleChangeCyclesPopUp(e, "subject")} />
                         {errors.subject && touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                       </div>

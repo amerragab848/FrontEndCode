@@ -500,6 +500,8 @@ class GridSetupWithFilter extends Component {
         setFilters: newFilters,
         Loading: false
       });
+    } else {
+      console.log('this.state.filteredRows.length == 0')
     }
   }
 

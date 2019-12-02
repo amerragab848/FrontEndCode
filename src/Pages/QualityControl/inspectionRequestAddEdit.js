@@ -23,8 +23,8 @@ import { toast } from "react-toastify";
 import AddDocAttachment from "../../Componants/publicComponants/AddDocAttachment";
 import Steps from "../../Componants/publicComponants/Steps";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
-import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
-
+import ContactDropdown from '../../Componants/publicComponants/ContactDropdown';
+import Late from '../../Componants/DashBoardDetails/LateTimeSheetAddEdit';
 import find from "lodash/find";
 
 var steps_defination = [];
@@ -824,7 +824,8 @@ class inspectionRequestAddEdit extends Component {
                                 </div>
                                 <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="approvalStatus"
+                                        <Dropdown 
+                                            title="approvalStatus"
                                             isMulti={false}
                                             data={this.state.approvalstatusList}
                                             selectedValue={this.state.selectedApprovalStatusId}
@@ -901,6 +902,8 @@ class inspectionRequestAddEdit extends Component {
 
         return (
             <div className="mainContainer">
+               {/* <Late />
+               <a href="/LateTimeSheet">test</a> */}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
                         docTitle={Resources.inspectionRequest[currentLanguage]} moduleTitle={Resources['qualityControl'][currentLanguage]} />

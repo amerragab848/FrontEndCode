@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
     contractId: Yup.string().required(Resources["selectContract"][currentLanguage]).nullable(true),
     vat: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
     tax: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
-    insurance: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
+    insurance: Yup.string().matches(/^\d+(?:[.,]\d?)$/, Resources["onlyNumbers"][currentLanguage]),
     advancePaymentPercent: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
     retainagePercent: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage])
 });
@@ -385,6 +385,17 @@ class requestPaymentsAddEdit extends Component {
         if (this.state.isViewMode !== true) { itemsColumns.push({ key: "BtnActions", width: 150 }) }
 
         itemsColumns = [
+            ...(this.props.changeStatus ? [
+                {
+                    key: "BtnActions",
+                    name: Resources["LogControls"][currentLanguage],
+                    width: 150,
+                    draggable: false,
+                    sortable: false,
+                    resizable: true,
+                    filterable: false,
+                    sortDescendingFirst: false
+                }] : []),
             {
                 key: "arrange",
                 name: Resources["no"][currentLanguage],
@@ -396,17 +407,6 @@ class requestPaymentsAddEdit extends Component {
                 sortDescendingFirst: true,
                 type: "number"
             },
-            ...(this.props.changeStatus ? [
-                {
-                    key: "BtnActions",
-                    name: Resources["LogControls"][currentLanguage],
-                    width: 150,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }] : []),
             {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -751,7 +751,7 @@ class requestPaymentsAddEdit extends Component {
                     this.setState({
                         isLoading: true
                     });
-                    dataservice.GetDataGrid("GetContractsRequestPaymentsItemsHistory?id=" + this.state.docId).then(result => {
+                    dataservice.GetDataGrid("GetContractsRequestPaymentsItemsHistory?id=" + row.id).then(result => {
                         this.setState({
                             paymentRequestItemsHistory: result,
                             isLoading: false,
@@ -1376,7 +1376,7 @@ class requestPaymentsAddEdit extends Component {
                 if (this.props.changeStatus) {
                     if (this.state.document.status === true && this.state.document.editable === true) {
 
-                        let original_document = { ...this.state.document };
+                        let original_document = { ...this.state.currentObject };
 
                         let updated_document = {};
 
@@ -1391,7 +1391,8 @@ class requestPaymentsAddEdit extends Component {
                         this.setState({
                             viewPopUpRows: true,
                             currentObject: value,
-                            document: updated_document
+                            document: updated_document,
+                            
                         });
                         this.addCommentModal.show();
                     } else {
@@ -1446,6 +1447,9 @@ class requestPaymentsAddEdit extends Component {
         let newValue = parseFloat(updated[Object.keys(updated)[0]]);
         let oldValue = parseFloat(updateRow[Object.keys(updated)[0]]);
 
+
+        let sitePercentComplete = 0;
+        let siteQuantityComplete = 0;
         if (parseFloat(updateRow.revisedQuantity) == 0 && (parseFloat(updateRow.siteQuantityComplete) > 0 || parseFloat(updateRow.sitePercentComplete) > 0)) {
             updateRow.revisedQuantity = 1;
         }
@@ -1453,29 +1457,68 @@ class requestPaymentsAddEdit extends Component {
         updateRow[Object.keys(updated)[0]] = parseFloat(updated[Object.keys(updated)[0]]);
 
         switch (Object.keys(updated)[0]) {
+            // case "quantityComplete":
+            //     updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+            //     updateRow.quantityComplete = parseFloat(newValue);
+
+            //     break;
+            // case "percentComplete":
+            //     updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+            //     updateRow.percentComplete = parseFloat(newValue);
+
+            //     break;
+
+            // case "sitePercentComplete":
+            //     updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+            //     updateRow.sitePercentComplete = parseFloat(newValue);
+
+            //     break;
+            // case "siteQuantityComplete":
+            //     updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
+            //     updateRow.siteQuantityComplete = parseFloat(newValue);
+
+
+            //     if (this.props.changeStatus == false) {
+            //         updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+            //     }
+            //     break;
             case "quantityComplete":
-                updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                updateRow.percentComplete = (parseFloat(newValue) / updateRow.revisedQuantity) * 100;
                 updateRow.quantityComplete = parseFloat(newValue);
-
                 break;
+
+            case "sitePaymentPercent":
+                updateRow.paymentPercent = parseFloat(newValue);
+                updateRow.sitePaymentPercent = parseFloat(newValue);
+                break;
+
             case "percentComplete":
-                updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                updateRow.quantityComplete = (parseFloat(newValue) / 100) * updateRow.revisedQuantity;
                 updateRow.percentComplete = parseFloat(newValue);
-
                 break;
+
             case "sitePercentComplete":
-                updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                updateRow.sitePercentComplete = parseFloat(newValue);
+                sitePercentComplete = parseFloat(newValue);
+                siteQuantityComplete = (parseFloat(newValue) / 100) * updateRow.revisedQuantity;
+
+                updateRow.siteQuantityComplete = siteQuantityComplete;
+                updateRow.quantityComplete = siteQuantityComplete;
+
+                updateRow.percentComplete = sitePercentComplete;
+                updateRow.sitePercentComplete = sitePercentComplete;
 
                 break;
+
             case "siteQuantityComplete":
-                updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                updateRow.siteQuantityComplete = parseFloat(newValue);
+                sitePercentComplete = (parseFloat(newValue) / updateRow.revisedQuantity) * 100;
+                siteQuantityComplete = parseFloat(newValue);
 
+                updateRow.sitePercentComplete = sitePercentComplete;
+                updateRow.percentComplete = sitePercentComplete;
 
-                if (this.props.changeStatus == false) {
-                    updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                }
+                updateRow.quantityComplete = siteQuantityComplete;
+                updateRow.siteQuantityComplete = siteQuantityComplete;
+
                 break;
         }
 
@@ -1597,9 +1640,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     handleChangeForEdit = (e, updated) => {
-        let updateRow = this.state.currentObject;
-
-        //let originalData = this.state.paymentsItems;
+        let updateRow = this.state.currentObject; 
 
         this.setState({
             isLoading: true
@@ -1608,26 +1649,31 @@ class requestPaymentsAddEdit extends Component {
         let sitePercentComplete = 0;
         let siteQuantityComplete = 0;
         let currentvalue = parseFloat(e.target.value);
+        
+        if (parseFloat(updateRow.revisedQuantity) == 0 && (parseFloat(updateRow.siteQuantityComplete) > 0 || parseFloat(updateRow.sitePercentComplete) > 0)) {
+            updateRow.revisedQuantity = 1;
+        }
+
         switch (updated) {
 
             case "quantityComplete":
-                updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
-                updateRow.quantityComplete = parseFloat(e.target.value);
+                updateRow.percentComplete = (currentvalue / updateRow.revisedQuantity) * 100;
+                updateRow.quantityComplete = currentvalue;
                 break;
 
             case "sitePaymentPercent":
-                updateRow.paymentPercent = parseFloat(e.target.value);
-                updateRow.sitePaymentPercent = parseFloat(e.target.value);
+                updateRow.paymentPercent = currentvalue;
+                updateRow.sitePaymentPercent = currentvalue;
                 break;
 
             case "percentComplete":
-                updateRow.quantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
-                updateRow.percentComplete = parseFloat(e.target.value);
+                updateRow.quantityComplete = (currentvalue / 100) * updateRow.revisedQuantity;
+                updateRow.percentComplete = currentvalue;
                 break;
 
             case "sitePercentComplete":
-                sitePercentComplete = parseFloat(e.target.value);
-                siteQuantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
+                sitePercentComplete = currentvalue;
+                siteQuantityComplete = (currentvalue / 100) * updateRow.revisedQuantity;
 
                 updateRow.siteQuantityComplete = siteQuantityComplete;
                 updateRow.quantityComplete = siteQuantityComplete;
@@ -1638,8 +1684,8 @@ class requestPaymentsAddEdit extends Component {
                 break;
 
             case "siteQuantityComplete":
-                sitePercentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
-                siteQuantityComplete = parseFloat(e.target.value);
+                sitePercentComplete = (currentvalue / updateRow.revisedQuantity) * 100;
+                siteQuantityComplete = currentvalue;
 
                 updateRow.sitePercentComplete = sitePercentComplete;
                 updateRow.percentComplete = sitePercentComplete;
@@ -2355,32 +2401,32 @@ class requestPaymentsAddEdit extends Component {
                 <table className="attachmentTable" key="DeductionsCertificate">
                     <thead>
                         <tr>
-                            <th>
+                            <th style={{width : "30%"}}>
                                 <div className="headCell">
                                     {Resources["description"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["completedQuantity"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["paymentPercent"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["addedBy"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["addedDate"][currentLanguage]}
                                 </div>
                             </th>
-                            <th>
+                            <th style={{width : "10%"}}>
                                 <div className="headCell">
                                     {Resources["comment"][currentLanguage]}
                                 </div>
@@ -2391,12 +2437,12 @@ class requestPaymentsAddEdit extends Component {
                         {this.state.paymentRequestItemsHistory.map(i => (
                             <tr key={i.id}>
                                 <Fragment>
-                                    <td>
+                                    <td style={{width : "50%"}}>
                                         <div className="contentCell">
                                             {i.description}
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style={{width : "50%"}}>
                                         <div className="contentCell">
                                             {i.completedQnty}
                                         </div>
