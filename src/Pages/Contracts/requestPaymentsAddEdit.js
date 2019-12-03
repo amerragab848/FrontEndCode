@@ -1368,6 +1368,7 @@ class requestPaymentsAddEdit extends Component {
     }
 
     onRowClick = (value, index, column) => {
+
         if (column.key != "BtnActions" && column.key != "actions") {
 
             let userType = Config.getPayload();
@@ -1390,9 +1391,7 @@ class requestPaymentsAddEdit extends Component {
 
                         this.setState({
                             viewPopUpRows: true,
-                            currentObject: value,
-                            document: updated_document,
-                            
+                            currentObject: value 
                         });
                         this.addCommentModal.show();
                     } else {
@@ -2268,7 +2267,10 @@ class requestPaymentsAddEdit extends Component {
 
         const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
             <GridSetupWithFilter
-                groupBy={this.props.changeStatus ? [{ key: 'wasAdded', name: 'status' }, { key: 'boqType', name: 'boqType' }, { key: 'boqSubType', name: 'boqSubType' }] : null}
+                groupBy={this.props.changeStatus ? [
+                  { key: 'wasAdded', name: 'status' }
+                , { key: 'boqType', name: 'boqType' }
+                , { key: 'secondLevel', name: 'boqTypeChild' }] : null}
                 rows={this.state.paymentsItems}
                 isFilter={this.state.isFilter}
                 showCheckbox={isCompany && this.props.changeStatus ? true : false}
