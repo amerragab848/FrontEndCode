@@ -1040,7 +1040,7 @@ class requestPaymentsAddEdit extends Component {
             });
 
             this.buildColumns(this.props.changeStatus);
- 
+
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" +
                 this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
@@ -1170,7 +1170,7 @@ class requestPaymentsAddEdit extends Component {
 
             if (paymentsItems.length === 0) {
                 this.buildColumns(this.props.changeStatus);
-                this.setState({ isLoading: true }); 
+                this.setState({ isLoading: true });
                 dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
                         paymentsItems: result != null ? result : [],
@@ -1391,7 +1391,7 @@ class requestPaymentsAddEdit extends Component {
 
                         this.setState({
                             viewPopUpRows: true,
-                            currentObject: value 
+                            currentObject: value
                         });
                         this.addCommentModal.show();
                     } else {
@@ -1639,7 +1639,7 @@ class requestPaymentsAddEdit extends Component {
     };
 
     handleChangeForEdit = (e, updated) => {
-        let updateRow = this.state.currentObject; 
+        let updateRow = this.state.currentObject;
 
         this.setState({
             isLoading: true
@@ -1648,7 +1648,7 @@ class requestPaymentsAddEdit extends Component {
         let sitePercentComplete = 0;
         let siteQuantityComplete = 0;
         let currentvalue = parseFloat(e.target.value);
-        
+
         if (parseFloat(updateRow.revisedQuantity) == 0 && (parseFloat(updateRow.siteQuantityComplete) > 0 || parseFloat(updateRow.sitePercentComplete) > 0)) {
             updateRow.revisedQuantity = 1;
         }
@@ -2268,9 +2268,9 @@ class requestPaymentsAddEdit extends Component {
         const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
             <GridSetupWithFilter
                 groupBy={this.props.changeStatus ? [
-                  { key: 'wasAdded', name: 'status' }
-                , { key: 'boqType', name: 'boqType' }
-                , { key: 'secondLevel', name: 'boqTypeChild' }] : null}
+                    { key: 'wasAdded', name: 'status' }
+                    , { key: 'boqType', name: 'boqType' }
+                    , { key: 'secondLevel', name: 'boqTypeChild' }] : null}
                 rows={this.state.paymentsItems}
                 isFilter={this.state.isFilter}
                 showCheckbox={isCompany && this.props.changeStatus ? true : false}
@@ -2403,32 +2403,32 @@ class requestPaymentsAddEdit extends Component {
                 <table className="attachmentTable" key="DeductionsCertificate">
                     <thead>
                         <tr>
-                            <th style={{width : "30%"}}>
+                            <th style={{ width: "30%" }}>
                                 <div className="headCell">
                                     {Resources["description"][currentLanguage]}
                                 </div>
                             </th>
-                            <th style={{width : "10%"}}>
+                            <th style={{ width: "10%" }}>
                                 <div className="headCell">
                                     {Resources["completedQuantity"][currentLanguage]}
                                 </div>
                             </th>
-                            <th style={{width : "10%"}}>
+                            <th style={{ width: "10%" }}>
                                 <div className="headCell">
                                     {Resources["paymentPercent"][currentLanguage]}
                                 </div>
                             </th>
-                            <th style={{width : "10%"}}>
+                            <th style={{ width: "10%" }}>
                                 <div className="headCell">
                                     {Resources["addedBy"][currentLanguage]}
                                 </div>
                             </th>
-                            <th style={{width : "10%"}}>
+                            <th style={{ width: "10%" }}>
                                 <div className="headCell">
                                     {Resources["addedDate"][currentLanguage]}
                                 </div>
                             </th>
-                            <th style={{width : "10%"}}>
+                            <th style={{ width: "10%" }}>
                                 <div className="headCell">
                                     {Resources["comment"][currentLanguage]}
                                 </div>
@@ -2439,12 +2439,12 @@ class requestPaymentsAddEdit extends Component {
                         {this.state.paymentRequestItemsHistory.map(i => (
                             <tr key={i.id}>
                                 <Fragment>
-                                    <td style={{width : "50%"}}>
+                                    <td style={{ width: "50%" }}>
                                         <div className="contentCell">
                                             {i.description}
                                         </div>
                                     </td>
-                                    <td style={{width : "50%"}}>
+                                    <td style={{ width: "50%" }}>
                                         <div className="contentCell">
                                             {i.completedQnty}
                                         </div>
@@ -2766,7 +2766,7 @@ class requestPaymentsAddEdit extends Component {
                                                                         {Resources.insurance[currentLanguage]}
                                                                     </label>
                                                                     <div className={"ui input inputDev" + (errors.insurance && touched.insurance ? " has-error" : "ui input inputDev")}>
-                                                                        <input type="text" className="form-control" id="insurance" name="insurance"
+                                                                        <input type="text" className="form-control" id="insurance" name="insurance" readOnly
                                                                             value={this.state.document.insurance || ''}
                                                                             placeholder={Resources.insurance[currentLanguage]}
                                                                             onBlur={e => { handleChange(e); handleBlur(e); }}
@@ -2776,30 +2776,34 @@ class requestPaymentsAddEdit extends Component {
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">
-                                                                        {Resources.actualPayment[currentLanguage]}
-                                                                    </label>
-                                                                    <div className={"ui input inputDev" + (errors.actualPayment && touched.actualPayment ? " has-error" : "ui input inputDev")}>
-                                                                        <input type="text" className="form-control" id="actualPayment" name="actualPayment"
-                                                                            value={this.state.document.actualPayment || ''}
-                                                                            placeholder={Resources.actualPayment[currentLanguage]}
-                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
-                                                                            onChange={e => this.handleChange(e, "actualPayment")} />
-                                                                        {touched.actualPayment ? (<em className="pError"> {errors.actualPayment} </em>) : null}
-                                                                    </div>
-                                                                </div>
-                                                                <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">
-                                                                        {Resources.remainingPayment[currentLanguage]}
-                                                                    </label>
-                                                                    <div className="ui input inputDev">
-                                                                        <input type="text" className="form-control" name="remainingPayment"
-                                                                            value={this.state.document.remainingPayment || ''}
-                                                                            placeholder={Resources.remainingPayment[currentLanguage]}
-                                                                            onChange={e => this.handleChange(e, "remainingPayment")} />
-                                                                    </div>
-                                                                </div>
+                                                                {this.props.changeStatus ?
+                                                                    <Fragment>
+                                                                        <div className="linebylineInput valid-input">
+                                                                            <label className="control-label">
+                                                                                {Resources.actualPayment[currentLanguage]}
+                                                                            </label>
+                                                                            <div className={"ui input inputDev" + (errors.actualPayment && touched.actualPayment ? " has-error" : "ui input inputDev")}>
+                                                                                <input type="text" className="form-control" id="actualPayment" name="actualPayment"
+                                                                                    value={this.state.document.actualPayment || ''}
+                                                                                    placeholder={Resources.actualPayment[currentLanguage]}
+                                                                                    onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                                    onChange={e => this.handleChange(e, "actualPayment")} />
+                                                                                {touched.actualPayment ? (<em className="pError"> {errors.actualPayment} </em>) : null}
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="linebylineInput valid-input">
+                                                                            <label className="control-label">
+                                                                                {Resources.remainingPayment[currentLanguage]}
+                                                                            </label>
+                                                                            <div className="ui input inputDev">
+                                                                                <input type="text" className="form-control" name="remainingPayment"
+                                                                                    value={this.state.document.remainingPayment || ''}
+                                                                                    placeholder={Resources.remainingPayment[currentLanguage]}
+                                                                                    onChange={e => this.handleChange(e, "remainingPayment")} />
+                                                                            </div>
+                                                                        </div>
+                                                                    </Fragment>
+                                                                    : null}
                                                             </div>
                                                             <div className="slider-Btns slider-Btns--menu">
                                                                 {this.state.isLoading === false ? (this.showBtnsSaving()) : (
