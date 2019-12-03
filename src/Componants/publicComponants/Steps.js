@@ -24,7 +24,7 @@ class Steps extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.stepNo !== this.state.stepNo) {
+        if (prevProps.stepNo !== this.state.stepNo && prevProps.changeStatus === false) {
 
             this.setCurrentStep(this.props.stepNo);
         }
@@ -74,9 +74,10 @@ class Steps extends Component {
 
     toggleNextStep(e, step, index) {
 
-        if (step.callBackFn) {
-            step.callBackFn();
-        }
+        // if (step.callBackFn) {
+        //     step.callBackFn();
+        // }
+
         this.setCurrentStep(index);
 
     }
@@ -103,7 +104,6 @@ class Steps extends Component {
                     </Fragment>
             );
         });
-
 
         return (
             <Fragment>

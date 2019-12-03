@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
     contractId: Yup.string().required(Resources["selectContract"][currentLanguage]).nullable(true),
     vat: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
     tax: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
-    insurance: Yup.string().matches(/^\d+(?:[.,]\d?)$/, Resources["onlyNumbers"][currentLanguage]),
+    insurance: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
     advancePaymentPercent: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
     retainagePercent: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage])
 });
@@ -279,7 +279,7 @@ class requestPaymentsAddEdit extends Component {
             },
             {
                 name: "items",
-                callBackFn: () => this.FillGridItems()
+                callBackFn: () => this.fillGridItems()
             },
             {
                 name: "deductions",
@@ -287,7 +287,7 @@ class requestPaymentsAddEdit extends Component {
             },
             {
                 name: "summaries",
-                callBackFn: () => this.FillSummariesTab()
+                callBackFn: () => this.fillSummariesTab()
             }
         ];
     }
@@ -1040,7 +1040,7 @@ class requestPaymentsAddEdit extends Component {
             });
 
             this.buildColumns(this.props.changeStatus);
-
+ 
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" +
                 this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
@@ -1163,15 +1163,15 @@ class requestPaymentsAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
 
-    FillGridItems = () => {
+    fillGridItems = () => {
         let contractId = this.state.document.contractId;
         if (this.props.changeStatus == true) {
             let paymentsItems = [...this.state.paymentsItems];
 
-            if (paymentsItems.length == 0) {
+            if (paymentsItems.length === 0) {
                 this.buildColumns(this.props.changeStatus);
-                this.setState({ isLoading: true });
-                dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                this.setState({ isLoading: true }); 
+                dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
                         paymentsItems: result != null ? result : [],
                         isLoading: false
@@ -1181,7 +1181,7 @@ class requestPaymentsAddEdit extends Component {
         }
     };
 
-    FillSummariesTab = () => {
+    fillSummariesTab = () => {
         let contractId = this.state.document.contractId;
 
         let interimInvoicedTable = [...this.state.interimInvoicedTable];

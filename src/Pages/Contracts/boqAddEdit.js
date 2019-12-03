@@ -1068,7 +1068,6 @@ class bogAddEdit extends Component {
         );
     };
 
-
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
 
