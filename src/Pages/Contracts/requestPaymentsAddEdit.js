@@ -174,6 +174,7 @@ class requestPaymentsAddEdit extends Component {
         let userType = Config.getPayload();
 
         this.state = {
+            isItemUpdate: false,
             isFilter: false,
             advancedPayment: null,
             currentStep: 0,
@@ -1185,8 +1186,9 @@ class requestPaymentsAddEdit extends Component {
         let contractId = this.state.document.contractId;
 
         let interimInvoicedTable = [...this.state.interimInvoicedTable];
+        let isItemUpdate = this.state.isItemUpdate;
 
-        if (interimInvoicedTable.length == 0) {
+        if (interimInvoicedTable.length == 0 || isItemUpdate === true) {
             this.setState({
                 isLoading: true
             });
@@ -1194,7 +1196,8 @@ class requestPaymentsAddEdit extends Component {
             dataservice.GetDataGrid("GetTotalForReqPay?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
                 this.setState({
                     interimInvoicedTable: result || [],
-                    isLoading: false
+                    isLoading: false,
+                    isItemUpdate: false
                 });
             }).catch(res => {
                 this.setState({
@@ -1710,13 +1713,26 @@ class requestPaymentsAddEdit extends Component {
         let mainDoc = this.state.currentObject;
 
         mainDoc.requestId = this.state.docId;
+        mainDoc.contractId = this.state.document.contractId;
 
+        this.setState({
+            isLoading: true 
+        });
         dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.setState({
-                viewPopUpRows: false
+                viewPopUpRows: false,
+                isItemUpdate: true,
+                isLoading: false
+            });
+        }).catch(res => {
+            toast.error(
+                Resources["operationCanceled"][currentLanguage]
+            );
+            this.setState({
+                isLoading: false 
             });
         });
     };
@@ -2485,62 +2501,64 @@ class requestPaymentsAddEdit extends Component {
                     </h2>
                 </header>
                 {btnExportApprovedInvoices}
-                <table className="attachmentTable " key="summaryOfApprovedInvoices">
-                    <thead>
-                        <tr>
-                            <th width="15%">
-                                <div className="headCell">
-                                    {Resources["JobBuilding"][currentLanguage]}
-                                </div>
-                            </th>
-                            {this.state.approvedInvoicesParent.map(i => (
-                                <th>
+                <div style={{ maxWidth: '100%', overflowX: 'scroll' }}>
+                    <table className="attachmentTable " key="summaryOfApprovedInvoices">
+                        <thead>
+                            <tr>
+                                <th width="15%">
                                     <div className="headCell">
-                                        {i.details.slice(0, i.details.lastIndexOf("-"))}
+                                        {Resources["JobBuilding"][currentLanguage]}
                                     </div>
                                 </th>
-                            ))}
-                            <th width="10%">
-                                <div className="headCell">
-                                    {Resources["total"][currentLanguage]}
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.approvedInvoicesChilds.map(i => (
-                            <tr>
-                                <td>
-                                    {i.building.slice(0, i.building.lastIndexOf("-"))}
-                                </td>
-
-                                {this.state.approvedInvoicesParent.map(
-                                    data => (
-                                        <td>
-                                            {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </td>
-                                    )
-                                )}
-                                <td>
-                                    {parseFloat(i.rowTotal).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ,")}
-                                </td>
+                                {this.state.approvedInvoicesParent.map(i => (
+                                    <th>
+                                        <div className="headCell">
+                                            {i.details.slice(0, i.details.lastIndexOf("-"))}
+                                        </div>
+                                    </th>
+                                ))}
+                                <th width="10%">
+                                    <div className="headCell">
+                                        {Resources["total"][currentLanguage]}
+                                    </div>
+                                </th>
                             </tr>
-                        ))}
-                    </tbody>
-                    <tfoot>
-                        <tr style={{ backgroundColor: "whitesmoke", color: "black" }}>
-                            <td width="15%">
-                                {Resources["total"][currentLanguage]}
-                            </td>
-                            {this.state.approvedInvoicesParent.map(i => (
-                                <td>
-                                    {parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                </td>
+                        </thead>
+                        <tbody>
+                            {this.state.approvedInvoicesChilds.map(i => (
+                                <tr>
+                                    <td>
+                                        {i.building.slice(0, i.building.lastIndexOf("-"))}
+                                    </td>
+
+                                    {this.state.approvedInvoicesParent.map(
+                                        data => (
+                                            <td>
+                                                {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </td>
+                                        )
+                                    )}
+                                    <td>
+                                        {parseFloat(i.rowTotal).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ,")}
+                                    </td>
+                                </tr>
                             ))}
-                            <td>{this.state.rowTotal} </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                        </tbody>
+                        <tfoot>
+                            <tr style={{ backgroundColor: "whitesmoke", color: "black" }}>
+                                <td width="15%">
+                                    {Resources["total"][currentLanguage]}
+                                </td>
+                                {this.state.approvedInvoicesParent.map(i => (
+                                    <td>
+                                        {parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </td>
+                                ))}
+                                <td>{this.state.rowTotal} </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </Fragment>
         ) : (<LoadingSection />);
 
