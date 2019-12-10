@@ -166,13 +166,22 @@ class projectsAddEdit extends Component {
             if (isEdit) {
                 let companyId = this.props.document.projectManager;
                 if (companyId) {
+
                     let selectedProjectManagerCompany = result.find(element => element.value == this.props.document.projectManager)
+
                     dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + this.props.document.projectManager, 'contactName', 'id').then(result => {
                         let selectedProjectManagerContact = result.find(element => element.value == this.props.document.projectManagerContactId)
-                        this.setState({
-                            projectManagerContacts: result,
-                            selectedProjectManagerCompany, selectedProjectManagerContact
-                        });
+                        if (selectedProjectManagerContact) {
+                            this.setState({
+                                projectManagerContacts: result,
+                                selectedProjectManagerCompany, selectedProjectManagerContact
+                            });
+                        }
+                        else {
+                            this.setState({
+                                projectManagerContacts: result
+                            });
+                        }
                     })
                     if (this.props.document.projectExcuteCompanyId) {
                         let selectedExecutiveManagerCompany = result.find(element => element.value == this.props.document.projectExcuteCompanyId)
@@ -371,7 +380,7 @@ class projectsAddEdit extends Component {
                                                 ...this.state.document,
                                                 projectType: this.state.selectedProjectType.value == '0' ? '' : this.state.selectedProjectType.value,
                                                 country: this.state.selectedCountry.value == '0' ? '' : this.state.selectedCountry.value,
-                                                projectManagerContact: this.state.selectedProjectManagerContact.value == '0' ? '' : this.state.selectedProjectManagerContact.value
+                                                //projectManagerContact: this.state.selectedProjectManagerContact.value == '0' ? '' : this.state.selectedProjectManagerContact.value
                                             }}
                                             enableReinitialize={true}
                                             validationSchema={validationSchema}
