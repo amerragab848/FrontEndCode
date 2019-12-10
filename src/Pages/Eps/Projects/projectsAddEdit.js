@@ -343,7 +343,7 @@ class projectsAddEdit extends Component {
     }
     render() {
         return (
-            <div className="mainContainer">
+            <div className="mainContainer main__fulldash">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
@@ -356,19 +356,7 @@ class projectsAddEdit extends Component {
                             docTitle={this.state.docId > 0 ? Resources.projectsEdit[currentLanguage] : Resources.projectsAdd[currentLanguage]}
                         />
                     </div>
-                    <div className="doc-container">
-                        {
-                            this.state.docId > 0 ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {Resources.goEdit[currentLanguage]}
-                                        </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header>
-                                : null
-                        }
+                    <div className="doc-container"> 
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
@@ -380,7 +368,7 @@ class projectsAddEdit extends Component {
                                                 ...this.state.document,
                                                 projectType: this.state.selectedProjectType.value == '0' ? '' : this.state.selectedProjectType.value,
                                                 country: this.state.selectedCountry.value == '0' ? '' : this.state.selectedCountry.value,
-                                                //projectManagerContact: this.state.selectedProjectManagerContact.value == '0' ? '' : this.state.selectedProjectManagerContact.value
+                                                projectManagerContact: this.state.selectedProjectManagerContact.value == '0' ? '' : this.state.selectedProjectManagerContact.value
                                             }}
                                             enableReinitialize={true}
                                             validationSchema={validationSchema}
