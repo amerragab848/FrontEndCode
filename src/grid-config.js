@@ -76,6 +76,7 @@ const documents = {
                 groupable: true,
                 fixed: true,
                 classes: ' subject',
+                href: 'https://demov5.procoor.com/',
             },
             {
                 title: resources['fromCompany'][lang],
