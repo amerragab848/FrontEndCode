@@ -1376,9 +1376,10 @@ class requestPaymentsAddEdit extends Component {
 
             let userType = Config.getPayload();
 
-            if (this.props.hasWorkflow == false) {
+            if (this.props.hasWorkflow == false || this.state.isApproveMode == true) {
                 if (this.props.changeStatus) {
-                    if (this.state.document.status === true && this.state.document.editable === true) {
+                    let obj = this.state.document;
+                    if (obj.status === true && obj.editable === true) {
 
                         let original_document = { ...this.state.currentObject };
 
@@ -1716,7 +1717,7 @@ class requestPaymentsAddEdit extends Component {
         mainDoc.contractId = this.state.document.contractId;
 
         this.setState({
-            isLoading: true 
+            isLoading: true
         });
         dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
 
@@ -1732,7 +1733,7 @@ class requestPaymentsAddEdit extends Component {
                 Resources["operationCanceled"][currentLanguage]
             );
             this.setState({
-                isLoading: false 
+                isLoading: false
             });
         });
     };

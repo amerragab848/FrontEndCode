@@ -3,6 +3,7 @@ import GridCustom from 'react-customized-grid';
 //import GridConfig from '../../../grid-config.js';
 
 import * as gridActions from '../../../store/actions/grid';
+
 class CustomGrid extends Component {
     constructor(props) {
         super(props);
