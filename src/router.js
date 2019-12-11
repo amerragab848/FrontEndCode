@@ -605,7 +605,7 @@ const CollectedInvoices = AsyncComponent(() =>
     import('../src/Pages/ReportsMenu/collectedInvoices'),
 );
 
-const Grid = AsyncComponent(() => import('./Componants/Templates/Grid'));
+const Logs = AsyncComponent(() => import('./Pages/Logs'));
 
 let setupRoutes = ProjectSetupRoutes.map((item, index) => {
     let path =
@@ -619,7 +619,7 @@ let setupRoutes = ProjectSetupRoutes.map((item, index) => {
 let originalRoutes = [
     <Route key="r-1" exact path="/" component={DashBoard} />,
     <Route key="r-2" path="/LettersAddEdit" component={LettersAddEdit} />,
-    <Route key="r-kk" path="/logs/:document/:project" component={Grid} />,
+    <Route key="r-kk" path="/logs/:document/:project" component={Logs} />,
     <Route key="r-3" path="/ActionByAlerts" component={ActionByAlerts} />,
     <Route
         key="r-4"
