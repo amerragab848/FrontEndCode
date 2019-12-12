@@ -1448,7 +1448,7 @@ class requestPaymentsAddEdit extends Component {
         paymentsItems[fromRow] = Object.assign(paymentsItems[fromRow], updated);
 
         let newValue = parseFloat(updated[Object.keys(updated)[0]]);
-        let oldValue = parseFloat(updateRow[Object.keys(updated)[0]]);
+        //let oldValue = parseFloat(updateRow[Object.keys(updated)[0]]);
 
 
         let sitePercentComplete = 0;
@@ -1460,31 +1460,7 @@ class requestPaymentsAddEdit extends Component {
         updateRow[Object.keys(updated)[0]] = parseFloat(updated[Object.keys(updated)[0]]);
 
         switch (Object.keys(updated)[0]) {
-            // case "quantityComplete":
-            //     updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-            //     updateRow.quantityComplete = parseFloat(newValue);
 
-            //     break;
-            // case "percentComplete":
-            //     updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-            //     updateRow.percentComplete = parseFloat(newValue);
-
-            //     break;
-
-            // case "sitePercentComplete":
-            //     updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-            //     updateRow.sitePercentComplete = parseFloat(newValue);
-
-            //     break;
-            // case "siteQuantityComplete":
-            //     updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
-            //     updateRow.siteQuantityComplete = parseFloat(newValue);
-
-
-            //     if (this.props.changeStatus == false) {
-            //         updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-            //     }
-            //     break;
             case "quantityComplete":
                 updateRow.percentComplete = (parseFloat(newValue) / updateRow.revisedQuantity) * 100;
                 updateRow.quantityComplete = parseFloat(newValue);
@@ -1667,6 +1643,10 @@ class requestPaymentsAddEdit extends Component {
             case "sitePaymentPercent":
                 updateRow.paymentPercent = currentvalue;
                 updateRow.sitePaymentPercent = currentvalue;
+                break;
+
+            case "paymentPercent": 
+                updateRow.paymentPercent = currentvalue;
                 break;
 
             case "percentComplete":

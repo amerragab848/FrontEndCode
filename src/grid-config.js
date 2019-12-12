@@ -14,8 +14,23 @@ const documents = {
         deletePermission: 50,
         viewPermission: 51,
         permission: 52,
-        actions: [],
-        rowActions: [],
+        actions: [
+            {
+                title: 'DELETE',
+                handleClick: checked => {
+                    alert('Deleted!!!');
+                },
+                classes: '',
+            },
+        ],
+        rowActions: [
+            {
+                title: 'Send',
+                handleClick: item => {
+                    alert(`Sent ${item.subject}!!!`);
+                },
+            },
+        ],
         api: {
             fetch: 'GetLettersByProjectId',
             customizedFetch: 'GetLettersByProjectIdCustom',
@@ -61,6 +76,7 @@ const documents = {
                 groupable: true,
                 fixed: true,
                 classes: ' subject',
+                href: 'https://demov5.procoor.com/',
             },
             {
                 title: resources['fromCompany'][lang],
