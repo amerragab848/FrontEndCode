@@ -17232,14 +17232,21 @@ button.companies_icon {
     }
 }
 
-.readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput, .readOnly_inputs .linebylineInput, .readOnly_inputs .linebylineInput__checkbox {
+.readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput, .readOnly_inputs .linebylineInput,
+ .readOnly_inputs .linebylineInput__checkbox, .readOnly_inputs .fillter-item-c {
     -webkit-pointer-events: none;
     -moz-pointer-events: none;
     -ms-pointer-events: none;
     pointer-events: none;
     cursor: not-allowed;
 }
-
+.readOnly_inputs .skylight-dialog .linebylineInput, .readOnly_inputs .skylight-dialog .fillter-item-c , .readOnly_inputs .approveDocument .fillter-item-c {
+    -webkit-pointer-events: unset;
+    -moz-pointer-events: unset;
+    -ms-pointer-events: unset;
+    pointer-events: unset;
+    /* cursor: not-allowed; */
+}
 .proForm .has-error label.control-label {
     color: #26344c !important;
 }
@@ -21918,4 +21925,14 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 
 .rdg-last--frozen {
     box-shadow: none !important
+}
+
+.reports__content .panel , .reports__content .donut__legend {
+    margin: 0;
+  }
+
+  @media screen and (min-width :1024px) {
+  .reportChart__charts .col-md-12.col-lg-6{
+    width: 100% !important
+  }
 }

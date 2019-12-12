@@ -201,7 +201,7 @@ class TransmittalAddEdit extends Component {
                 message: serverInspectionRequest.description
             };
         }
-        
+
         return null;
     };
 
@@ -604,7 +604,7 @@ class TransmittalAddEdit extends Component {
                                                                     onChange={(e) => this.handleChange(e, 'arrange')} />
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput fullInputWidth">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                             <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
                                                                 <input type="text" className="form-control" id="refDoc"
@@ -738,7 +738,7 @@ class TransmittalAddEdit extends Component {
                                                                 {errors.apartmentNumber && touched.apartmentNumber ? (<em className="pError">{errors.apartmentNumber}</em>) : null}
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput fullInputWidth">
                                                             <label className="control-label">{Resources.sharedSettings[currentLanguage]}</label>
                                                             <div className="shareLinks">
                                                                 <div className="inputDev ui input">
@@ -764,39 +764,38 @@ class TransmittalAddEdit extends Component {
                                                     <div className="slider-Btns">
                                                         {this.showBtnsSaving()}
                                                     </div>
-                                                    {
-                                                        this.props.changeStatus === true ?
-                                                            <div className="approveDocument">
-                                                                <div className="approveDocumentBTNS">
-                                                                    {this.state.isLoading ? (
-                                                                        <button className="primaryBtn-1 btn disabled">
-                                                                            <div className="spinner">
-                                                                                <div className="bounce1" />
-                                                                                <div className="bounce2" />
-                                                                                <div className="bounce3" />
-                                                                            </div>
+                                                    {this.props.changeStatus === true ?
+                                                        <div className="approveDocument">
+                                                            <div className="approveDocumentBTNS">
+                                                                {this.state.isLoading ? (
+                                                                    <button className="primaryBtn-1 btn disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button>
+                                                                ) : (
+                                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
+                                                                            {Resources.save[currentLanguage]}
                                                                         </button>
-                                                                    ) : (
-                                                                            <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
-                                                                                {Resources.save[currentLanguage]}
-                                                                            </button>
-                                                                        )}
-                                                                    <DocumentActions
-                                                                        isApproveMode={this.state.isApproveMode}
-                                                                        docTypeId={this.state.docTypeId}
-                                                                        docId={this.state.docId}
-                                                                        projectId={this.state.projectId}
-                                                                        previousRoute={this.state.previousRoute}
-                                                                        docApprovalId={this.state.docApprovalId}
-                                                                        currentArrange={this.state.arrange}
-                                                                        showModal={this.props.showModal}
-                                                                        showOptionPanel={this.showOptionPanel}
-                                                                        permission={this.state.permission}
-                                                                        documentName={Resources.transmittal[currentLanguage]}
-                                                                    />
-                                                                </div>
-                                                            </div> : null
-                                                    }
+                                                                    )}
+                                                                <DocumentActions
+                                                                    isApproveMode={this.state.isApproveMode}
+                                                                    docTypeId={this.state.docTypeId}
+                                                                    docId={this.state.docId}
+                                                                    projectId={this.state.projectId}
+                                                                    previousRoute={this.state.previousRoute}
+                                                                    docApprovalId={this.state.docApprovalId}
+                                                                    currentArrange={this.state.arrange}
+                                                                    showModal={this.props.showModal}
+                                                                    showOptionPanel={this.showOptionPanel}
+                                                                    permission={this.state.permission}
+                                                                    documentName={Resources.transmittal[currentLanguage]}
+                                                                />
+                                                            </div>
+                                                        </div> : null}
+
                                                 </Form>
                                             )}
                                         </Formik>
@@ -816,6 +815,7 @@ class TransmittalAddEdit extends Component {
                         </div>
                     </div>
                 </div>
+
             </div>
         );
     }

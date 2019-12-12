@@ -1172,7 +1172,7 @@ class bogAddEdit extends Component {
         const ItemsGrid =
             this.state.isLoading === false ? (
                 <GridSetupWithFilter
-                    groupBy={[{ key: 'boqType', name: 'boqType' },{ key: 'boqSubType', name: 'boqSubType' } ]}
+                    groupBy={[{ key: 'boqType', name: 'boqType' }, { key: 'boqSubType', name: 'boqSubType' }]}
                     rows={this.state._items}
                     showCheckbox={true}
                     pageSize={this.state.pageSize}
@@ -2267,31 +2267,13 @@ class bogAddEdit extends Component {
                         <div className="document-fields">
                             <Formik
                                 initialValues={{
-                                    subject: this.props.changeStatus
-                                        ? this.state.document.subject
-                                        : "",
-                                    fromCompany:
-                                        this.state.selectedFromCompany.value > 0
-                                            ? this.state.selectedFromCompany
-                                                .value
-                                            : "",
-                                    discipline:
-                                        this.state.selectedDiscipline.value > 0
-                                            ? this.state.selectedDiscipline
-                                                .value
-                                            : "",
-                                    status: this.props.changeStatus
-                                        ? this.props.document.status
-                                        : true,
-                                    documentDate: this.props.changeStatus
-                                        ? this.props.document.documentDate
-                                        : moment(),
-                                    showInSiteRequest: this.props.changeStatus
-                                        ? this.props.document.showInSiteRequest
-                                        : false,
-                                    showOptimization: this.props.changeStatus
-                                        ? this.props.document.showOptimization
-                                        : false
+                                    subject: this.props.changeStatus ? this.state.document.subject : "",
+                                    fromCompany: this.state.selectedFromCompany.value != "0" ? this.state.selectedFromCompany.value : "",
+                                    discipline: this.state.selectedDiscipline.value > 0 ? this.state.selectedDiscipline.value : "",
+                                    status: this.props.changeStatus ? this.props.document.status : true,
+                                    documentDate: this.props.changeStatus ? this.props.document.documentDate : moment(),
+                                    showInSiteRequest: this.props.changeStatus ? this.props.document.showInSiteRequest : false,
+                                    showOptimization: this.props.changeStatus ? this.props.document.showOptimization : false
                                 }}
                                 validationSchema={poqSchema}
                                 enableReinitialize={this.props.changeStatus}

@@ -14,8 +14,8 @@ class Steps extends Component {
         };
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) { 
-        if (nextProps.stepNo != prevState.stepNo) { 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.stepNo != prevState.stepNo) {
             return {
                 stepNo: nextProps.stepNo
             };
@@ -23,13 +23,13 @@ class Steps extends Component {
         return null
     }
 
-    componentDidUpdate(prevProps, prevState) {  
+    componentDidUpdate(prevProps, prevState) {
         if (prevProps.stepNo !== this.state.stepNo) {
 
             this.setCurrentStep(this.props.stepNo);
         }
     }
- 
+
     /// click over steps in edit mode
     /// params: stepNo to specify the desired step
     setCurrentStep = stepNo => {
@@ -138,7 +138,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(Steps));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Steps));

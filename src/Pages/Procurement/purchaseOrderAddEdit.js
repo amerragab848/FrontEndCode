@@ -3116,7 +3116,7 @@ class PurchaseOrderAddEdit extends Component {
                                         </div>
 
                                         <div className="proForm datepickerContainer">
-                                            <div className="linebylineInput valid-input">
+                                            <div className="linebylineInput fullInputWidth">
                                                 <label className="control-label">
                                                     {
                                                         Resources.refDoc[

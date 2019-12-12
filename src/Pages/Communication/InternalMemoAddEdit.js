@@ -417,7 +417,7 @@ class InternalMemoAddEdit extends Component {
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
-                                        <Formik initialValues={{ ...this.state.document }} 
+                                        <Formik initialValues={{ ...this.state.document }}
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
                                             onSubmit={(values) => {
@@ -478,7 +478,7 @@ class InternalMemoAddEdit extends Component {
                                                                     onChange={(e) => this.handleChange(e, 'arrange')} />
                                                             </div>
                                                         </div>
-                                                        <div className="linebylineInput valid-input">
+                                                        <div className="linebylineInput fullInputWidth">
                                                             <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                             <div className={"ui input inputDev" + (errors.refDoc && touched.refDoc ? (" has-error") : "ui input inputDev")} >
                                                                 <input type="text" className="form-control" id="refDoc"

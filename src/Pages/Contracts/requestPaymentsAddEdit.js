@@ -253,7 +253,8 @@ class requestPaymentsAddEdit extends Component {
             itemId: 0,
             quantityComplete: 0,
             currentDocument: "",
-            columnsApprovedInvoices: []
+            columnsApprovedInvoices: [],
+            CalculateRow: true
         };
 
         if (!Config.IsAllow(184) && !Config.IsAllow(187) && !Config.IsAllow(185)) {
@@ -290,13 +291,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.paymentPercent}
                         </span>
                     </a>
@@ -309,17 +304,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer",
-                                color:
-                                    row.revisedQuantity >= row.quantityComplete
-                                        ? "black"
-                                        : "#F50505"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer", color: row.revisedQuantity >= row.quantityComplete ? "black" : "#F50505" }}>
                             {row.quantityComplete}
                         </span>
                     </a>
@@ -332,13 +317,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.percentComplete}
                         </span>
                     </a>
@@ -351,14 +330,21 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.siteQuantityComplete}
+                        </span>
+                    </a>
+                );
+            }
+            return null;
+        };
+
+        let editsitePaymentPercent = ({ value, row }) => {
+            if (row) {
+                return (
+                    <a className="editorCell">
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
+                            {row.sitePaymentPercent}
                         </span>
                     </a>
                 );
@@ -370,13 +356,7 @@ class requestPaymentsAddEdit extends Component {
             if (row) {
                 return (
                     <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
+                        <span style={{ padding: "0 6px", margin: "5px 0", border: "1px dashed", cursor: "pointer" }}>
                             {row.sitePercentComplete}
                         </span>
                     </a>
@@ -409,6 +389,39 @@ class requestPaymentsAddEdit extends Component {
                 filterable: true,
                 sortDescendingFirst: true,
                 type: "number"
+            },
+            // {
+            //     key: "actions",
+            //     name: Resources["LogControls"][currentLanguage],
+            //     width: 50,
+            //     draggable: true,
+            //     sortable: true,
+            //     resizable: true,
+            //     filterable: true,
+            //     sortDescendingFirst: true,
+            //     formatter: changeStatus ? null : this.GetCellActions,
+            // },
+            {
+                key: "itemCode",
+                name: Resources["itemCode"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "string"
+            },
+            {
+                key: "details",
+                name: Resources["description"][currentLanguage],
+                width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
+                type: "string"
             },
             {
                 key: "boqType",
@@ -444,28 +457,6 @@ class requestPaymentsAddEdit extends Component {
                 type: "string"
             },
             {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
-                key: "description",
-                name: Resources["details"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
                 key: "quantity",
                 name: Resources["boqQuanty"][currentLanguage],
                 width: 100,
@@ -480,6 +471,17 @@ class requestPaymentsAddEdit extends Component {
                 key: "revisedQuantity",
                 name: Resources["approvedQuantity"][currentLanguage],
                 width: 100,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                type: "number"
+            },
+            {
+                key: "actualPercentage",
+                name: Resources["actualPercentage"][currentLanguage],
+                width: 150,
                 draggable: true,
                 sortable: true,
                 resizable: true,
@@ -558,6 +560,21 @@ class requestPaymentsAddEdit extends Component {
                 type: "number"
             },
             {
+                key: "sitePaymentPercent",
+                name: Resources["contractPaymentPercent"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: false,
+                sortDescendingFirst: true,
+                formatter: changeStatus ? null : editsitePaymentPercent,
+                editable: !changeStatus,
+                type: "number"
+            }];
+
+        if (this.props.changeStatus) {
+            itemsColumns.push({
                 key: "percentComplete",
                 name: Resources["percentComplete"][currentLanguage],
                 width: 120,
@@ -571,34 +588,74 @@ class requestPaymentsAddEdit extends Component {
                 visible: this.props.changeStatus,
                 type: "number"
             },
-            {
-                key: "quantityComplete",
-                name: Resources["quantityComplete"][currentLanguage],
+                {
+                    key: "quantityComplete",
+                    name: Resources["quantityComplete"][currentLanguage],
+                    width: 120,
+                    draggable: true,
+                    sortable: true,
+                    resizable: true,
+                    filterable: true,
+                    sortDescendingFirst: true,
+                    formatter: changeStatus ? null : editQuantityComplete,
+                    editable: !changeStatus,
+                    visible: this.props.changeStatus,
+                    type: "number"
+                },
+                {
+                    key: "paymentPercent",
+                    name: Resources["paymentPercent"][currentLanguage],
+                    width: 120,
+                    draggable: true,
+                    sortable: true,
+                    resizable: true,
+                    filterable: true,
+                    sortDescendingFirst: true,
+                    formatter: changeStatus ? null : editPaymentPercent,
+                    editable: !changeStatus,
+                    type: "number"
+                })
+        }
+
+        itemsColumns.push({
+            key: "wasAdded",
+            name: Resources["status"][currentLanguage],
+            width: 120,
+            draggable: true,
+            sortable: true,
+            resizable: true,
+            filterable: true,
+            sortDescendingFirst: true,
+        }, {
+                key: "totalExcutedPayment",
+                name: Resources["totalAmount"][currentLanguage],
                 width: 120,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: changeStatus ? null : editQuantityComplete,
-                editable: !changeStatus,
-                visible: this.props.changeStatus,
-                type: "number"
+            }, 
+            {
+                key: "lastComment",
+                name: Resources["comment"][currentLanguage],
+                width: 120,
+                draggable: true,
+                sortable: true,
+                resizable: true,
+                filterable: true,
+                sortDescendingFirst: true,
             },
             {
-                key: "paymentPercent",
-                name: Resources["paymentPercent"][currentLanguage],
+                key: "itemStatus",
+                name: Resources["itemStatus"][currentLanguage],
                 width: 120,
                 draggable: true,
                 sortable: true,
                 resizable: true,
                 filterable: true,
                 sortDescendingFirst: true,
-                formatter: changeStatus ? null : editPaymentPercent,
-                editable: !changeStatus,
-                type: "number"
-            }
-        ];
+            });
 
         if (changeStatus) {
             itemsColumns.push({
@@ -786,7 +843,7 @@ class requestPaymentsAddEdit extends Component {
                 tax: 0,
                 insurance: 0,
                 advancePaymentPercent: 0,
-                collected: 0,
+                collected: false,
                 useQuantity: false,
                 percentComplete: "",
                 quantityComplete: "",
@@ -982,7 +1039,7 @@ class requestPaymentsAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
         saveDocument.projectId = this.state.projectId;
-        this.changeCurrentStep(1);
+
         dataservice.addObject("AddContractsRequestPayment", saveDocument).then(result => {
             if (result.id) {
 
@@ -990,6 +1047,8 @@ class requestPaymentsAddEdit extends Component {
                     docId: result.id,
                     isLoading: false
                 });
+
+                this.changeCurrentStep(1);
 
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }
@@ -1260,6 +1319,7 @@ class requestPaymentsAddEdit extends Component {
                             updated_document.quantityComplete = value.quantityComplete;
                             updated_document.paymentPercent = value.paymentPercent;
                             updated_document.lastComment = value.lastComment;
+                            updated_document.id = value.id;
 
                             updated_document = Object.assign(original_document, updated_document);
 
@@ -1382,69 +1442,58 @@ class requestPaymentsAddEdit extends Component {
     }
 
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        let rows = [...this.state.paymentsItems];
-        let updateRow = rows[fromRow];
+        let paymentsItems = JSON.parse(JSON.stringify(this.state.paymentsItems));
 
-        this.setState(
-            state => {
-                const paymentsItems = state.paymentsItems.slice();
-                for (let i = fromRow; i <= toRow; i++) {
-                    rows[i] = { ...rows[i], ...updated };
+        let updateRow = paymentsItems[fromRow];
+
+        paymentsItems[fromRow] = Object.assign(paymentsItems[fromRow], updated);
+
+        let newValue = parseFloat(updated[Object.keys(updated)[0]]);
+        let oldValue = parseFloat(updateRow[Object.keys(updated)[0]]);
+
+        if (parseFloat(updateRow.revisedQuantity) == 0 && (parseFloat(updateRow.siteQuantityComplete) > 0 || parseFloat(updateRow.sitePercentComplete) > 0)) {
+            updateRow.revisedQuantity = 1;
+        }
+
+        updateRow[Object.keys(updated)[0]] = parseFloat(updated[Object.keys(updated)[0]]);
+
+        switch (Object.keys(updated)[0]) {
+            case "quantityComplete":
+                updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                break;
+            case "percentComplete":
+                updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                break;
+            case "sitePercentComplete":
+                updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                break;
+            case "siteQuantityComplete":
+                updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
+
+                if (this.props.changeStatus == false) {
+                    updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
                 }
-                return { paymentsItems };
-            },
-            function () {
-                if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
-                    if (updateRow.revisedQuantity == 0 && (updateRow.siteQuantityComplete > 0 || updateRow.sitePercentComplete > 0)) {
-                        updateRow.revisedQuantity = 1;
-                    }
+                break;
+        }
 
-                    let newValue = parseFloat(updated[Object.keys(updated)[0]]);
+        let editRows = [...this.state.editRows];
 
-                    updateRow[Object.keys(updated)[0]] = parseFloat(
-                        updated[Object.keys(updated)[0]]
-                    );
+        let sameRow = find(editRows, function (x) {
+            return x.id === updateRow.id;
+        });
 
-                    switch (Object.keys(updated)[0]) {
-                        case "quantityComplete":
-                            updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                            break;
-                        case "percentComplete":
-                            updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                            break;
-                        case "sitePercentComplete":
-                            updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                            break;
-                        case "siteQuantityComplete":
-                            updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
+        if (sameRow) {
+            editRows = editRows.filter(function (i) {
+                return i.id != updateRow.id;
+            });
+        }
 
-                            if (this.props.changeStatus == false) {
-                                updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                            }
-                            break;
-                    }
+        editRows.push(updateRow);
 
-                    let editRows = [...this.state.editRows];
-
-                    let sameRow = find(editRows, function (x) {
-                        return x.id === updateRow.id;
-                    });
-
-                    if (sameRow) {
-                        editRows = editRows.filter(function (i) {
-                            return i.id != updateRow.id;
-                        });
-                    }
-
-                    editRows.push(updateRow);
-
-                    this.setState({
-                        editRows: editRows
-                        // isLoading: false
-                    });
-                }
-            }
-        );
+        this.setState({
+            editRows: editRows,
+            paymentsItems
+        });
     };
 
     editRowsClick() {
@@ -1466,7 +1515,9 @@ class requestPaymentsAddEdit extends Component {
         dataservice.addObject(api, editItems).then(() => {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.setState({ isLoading: false });
+            this.setState({
+                isLoading: false, currentStep: 2
+            });
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
             this.setState({ isLoading: false });
@@ -1576,12 +1627,13 @@ class requestPaymentsAddEdit extends Component {
     editPaymentRequistionItems = () => {
 
         let mainDoc = this.state.currentObject;
+        let mainDocs = this.state.document;
 
         mainDoc.requestId = this.state.docId;
 
-        this.setState({
-            isLoading: true
-        });
+        // this.setState({
+        //     isLoading: true
+        // });
 
         dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
 
@@ -1589,7 +1641,7 @@ class requestPaymentsAddEdit extends Component {
 
             this.setState({
                 viewPopUpRows: false,
-                isLoading: false
+                //isLoading: false
             });
         });
     };
@@ -2138,8 +2190,9 @@ class requestPaymentsAddEdit extends Component {
             }
         ];
 
-        const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 && itemsColumns.length > 0 ? (
+        const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
             <GridSetup
+                //groupBy={[{ key: 'itemCode', name: 'itemCode' }]}
                 rows={this.state.paymentsItems}
                 showCheckbox={isCompany && this.props.changeStatus ? true : false}
                 clickHandlerDeleteRows={this.clickHandlerDeleteRows}
@@ -2149,7 +2202,7 @@ class requestPaymentsAddEdit extends Component {
                 onGridRowsUpdated={this._onGridRowsUpdated}
                 getCellActions={this.GetCellActions}
                 key="PRitems" />
-        ) : (<LoadingSection />);
+        ) : null;
 
         const BoqTypeContent = (
             <Fragment>
@@ -2494,9 +2547,7 @@ class requestPaymentsAddEdit extends Component {
                                                                             {Resources.collectedStatus[currentLanguage]}
                                                                         </label>
                                                                         <div className="ui checkbox radio radioBoxBlue">
-                                                                            <input type="radio" name="PR-collected"
-                                                                                defaultChecked={this.state.document.collected === false ? null : "checked"}
-                                                                                value="1" onChange={e => this.handleChange(e, "collected")} />
+                                                                            <input type="radio" name="PR-collected" defaultChecked={this.state.document.collected === false ? null : "checked"} value="1" onChange={e => this.handleChange(e, "collected")} />
                                                                             <label>
                                                                                 {Resources.yes[currentLanguage]}
                                                                             </label>
@@ -2542,10 +2593,7 @@ class requestPaymentsAddEdit extends Component {
                                                                         <input type="text" className="form-control" id="arrange"
                                                                             readOnly value={this.state.document.arrange || 1}
                                                                             name="arrange" placeholder={Resources.arrange[currentLanguage]}
-                                                                            onBlur={e => {
-                                                                                handleChange(e);
-                                                                                handleBlur(e);
-                                                                            }}
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
                                                                             onChange={e => this.handleChange(e, "arrange")} />
                                                                     </div>
                                                                 </div>
@@ -2554,76 +2602,34 @@ class requestPaymentsAddEdit extends Component {
                                                                     <div className="proForm first-proform letterFullWidth proform__twoInput">
                                                                         <div className="linebylineInput valid-input">
                                                                             <label className="control-label">
-                                                                                {
-                                                                                    Resources.contractName[currentLanguage]
-                                                                                }
+                                                                                {Resources.contractName[currentLanguage]}
                                                                             </label>
                                                                             <div className="ui input inputDev">
-                                                                                <input
-                                                                                    type="text"
-                                                                                    className="form-control"
-                                                                                    id="contractSubject"
-                                                                                    readOnly
-                                                                                    value={
-                                                                                        this
-                                                                                            .state
-                                                                                            .document
-                                                                                            .contractName
-                                                                                    }
-                                                                                    name="contractSubject"
-                                                                                />
+                                                                                <input type="text" className="form-control" id="contractSubject" readOnly
+                                                                                    value={this.state.document.contractName}
+                                                                                    name="contractSubject" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 ) : (
                                                                         <div className="linebylineInput valid-input">
-                                                                            <Dropdown
-                                                                                title="contractName"
-                                                                                data={
-                                                                                    this
-                                                                                        .state
-                                                                                        .contractsPos
-                                                                                }
-                                                                                selectedValue={
-                                                                                    this
-                                                                                        .state
-                                                                                        .selectContract
-                                                                                }
-                                                                                handleChange={event =>
-                                                                                    this.handleChangeDropDownContract(
-                                                                                        event,
-                                                                                        "contractId",
-                                                                                        "selectContract"
-                                                                                    )
-                                                                                }
+                                                                            <Dropdown title="contractName"
+                                                                                data={this.state.contractsPos}
+                                                                                selectedValue={this.state.selectContract}
+                                                                                handleChange={event => this.handleChangeDropDownContract(event, "contractId", "selectContract")}
                                                                                 index="contractId"
-                                                                                onChange={
-                                                                                    setFieldValue
-                                                                                }
-                                                                                onBlur={
-                                                                                    setFieldTouched
-                                                                                }
-                                                                                error={
-                                                                                    errors.contractId
-                                                                                }
-                                                                                touched={
-                                                                                    touched.contractId
-                                                                                }
-                                                                                isClear={
-                                                                                    false
-                                                                                }
+                                                                                onChange={setFieldValue}
+                                                                                onBlur={setFieldTouched}
+                                                                                error={errors.contractId}
+                                                                                touched={touched.contractId}
+                                                                                isClear={false}
                                                                                 name="contractId"
                                                                             />
                                                                         </div>
                                                                     )}
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .advancePaymentPercent[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.advancePaymentPercent[currentLanguage]}
                                                                     </label>
                                                                     <div className={"ui input inputDev" + (errors.advancePaymentPercent && touched.advancePaymentPercent ? " has-error" : "ui input inputDev")}>
                                                                         <input type="text" className="form-control"
@@ -2637,101 +2643,35 @@ class requestPaymentsAddEdit extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .retainagePercent[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.retainagePercent[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.retainagePercent &&
-                                                                                touched.retainagePercent
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="retainagePercent"
-                                                                            name="retainagePercent"
-                                                                            readOnly
-                                                                            value={this.state.document.retainagePercent || ''}
+                                                                    <div className={"ui input inputDev" + (errors.retainagePercent && touched.retainagePercent ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control" id="retainagePercent" name="retainagePercent" readOnly value={this.state.document.retainagePercent || ''}
                                                                             placeholder={Resources.retainagePercent[currentLanguage]}
-                                                                            onBlur={e => {
-                                                                                handleChange(
-                                                                                    e
-                                                                                );
-                                                                                handleBlur(
-                                                                                    e
-                                                                                );
-                                                                            }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "retainagePercent"
-                                                                                )
-                                                                            }
+                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                            onChange={e => this.handleChange(e, "retainagePercent")}
                                                                         />
-                                                                        {touched.retainagePercent ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.retainagePercent
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                        {touched.retainagePercent ? (<em className="pError"> {errors.retainagePercent} </em>) : null}
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .tax[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.tax[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.tax &&
-                                                                                touched.tax
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input type="text" className="form-control" id="tax" name="tax"
-                                                                            readOnly value={this.state.document.tax || ''}
-                                                                            placeholder={Resources.tax[currentLanguage]}
-                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
-                                                                            onChange={e => this.handleChange(e, "tax")}
-                                                                        />
+                                                                    <div className={"ui input inputDev" + (errors.tax && touched.tax ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control" id="tax" name="tax" readOnly value={this.state.document.tax || ''}
+                                                                            placeholder={Resources.tax[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }} onChange={e => this.handleChange(e, "tax")} />
                                                                         {touched.tax ? (<em className="pError"> {errors.tax} </em>) : null}
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .vat[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.vat[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.vat &&
-                                                                                touched.vat
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
-                                                                        <input type="text" className="form-control" id="vat" name="vat"
-                                                                            readOnly
-                                                                            value={this.state.document.vat || ''}
+                                                                    <div className={"ui input inputDev" + (errors.vat && touched.vat ? " has-error" : "ui input inputDev")}>
+                                                                        <input type="text" className="form-control" id="vat" name="vat" readOnly value={this.state.document.vat || ''}
                                                                             placeholder={Resources.vat[currentLanguage]}
                                                                             onBlur={e => { handleChange(e); handleBlur(e); }}
                                                                             onChange={e => this.handleChange(e, "vat")} />
@@ -2741,50 +2681,22 @@ class requestPaymentsAddEdit extends Component {
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .insurance[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.insurance[currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className={
-                                                                            "ui input inputDev" +
-                                                                            (errors.insurance &&
-                                                                                touched.insurance
-                                                                                ? " has-error"
-                                                                                : "ui input inputDev")
-                                                                        }>
+                                                                    <div className={"ui input inputDev" + (errors.insurance && touched.insurance ? " has-error" : "ui input inputDev")}>
                                                                         <input type="text" className="form-control" id="insurance" name="insurance"
                                                                             value={this.state.document.insurance || ''}
                                                                             placeholder={Resources.insurance[currentLanguage]}
                                                                             onBlur={e => { handleChange(e); handleBlur(e); }}
-                                                                            onChange={e =>
-                                                                                this.handleChange(
-                                                                                    e,
-                                                                                    "insurance"
-                                                                                )
-                                                                            }
+                                                                            onChange={e => this.handleChange(e, "insurance")}
                                                                         />
-                                                                        {touched.insurance ? (
-                                                                            <em className="pError">
-                                                                                {
-                                                                                    errors.insurance
-                                                                                }
-                                                                            </em>
-                                                                        ) : null}
+                                                                        {touched.insurance ? (<em className="pError"> {errors.insurance} </em>) : null}
                                                                     </div>
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .actualPayment[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.actualPayment[currentLanguage]}
                                                                     </label>
                                                                     <div className={"ui input inputDev" + (errors.actualPayment && touched.actualPayment ? " has-error" : "ui input inputDev")}>
                                                                         <input type="text" className="form-control" id="actualPayment" name="actualPayment"
@@ -2797,12 +2709,7 @@ class requestPaymentsAddEdit extends Component {
                                                                 </div>
                                                                 <div className="linebylineInput valid-input">
                                                                     <label className="control-label">
-                                                                        {
-                                                                            Resources
-                                                                                .remainingPayment[
-                                                                            currentLanguage
-                                                                            ]
-                                                                        }
+                                                                        {Resources.remainingPayment[currentLanguage]}
                                                                     </label>
                                                                     <div className="ui input inputDev">
                                                                         <input type="text" className="form-control" name="remainingPayment"
@@ -2901,58 +2808,27 @@ class requestPaymentsAddEdit extends Component {
                                                             {Resources.actualPayment[currentLanguage]}
                                                         </label>
                                                         <div className="ui input inputDev">
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                name="actualPayment"
-                                                                value={
-                                                                    this.state
-                                                                        .actualPayments
-                                                                }
-                                                                placeholder={
-                                                                    Resources
-                                                                        .actualPayment[
-                                                                    currentLanguage
-                                                                    ]
-                                                                }
-                                                                onChange={event =>
-                                                                    this.setState(
-                                                                        {
-                                                                            actualPayments:
-                                                                                event
-                                                                                    .target
-                                                                                    .value
-                                                                        }
-                                                                    )
-                                                                }
-                                                            />
+                                                            <input type="text" className="form-control" name="actualPayment"
+                                                                value={this.state.actualPayments}
+                                                                placeholder={Resources.actualPayment[currentLanguage]}
+                                                                onChange={event => this.setState({ actualPayments: event.target.value })} />
                                                         </div>
                                                     </div>
 
-                                                    {this.state
-                                                        .viewUpdatePayment ? (
-                                                            <button
-                                                                className="primaryBtn-1 btn  disabled"
-                                                                disabled="disabled">
-                                                                <div className="spinner">
-                                                                    <div className="bounce1" />
-                                                                    <div className="bounce2" />
-                                                                    <div className="bounce3" />
-                                                                </div>
-                                                            </button>
-                                                        ) : (
-                                                            <button
-                                                                className="primaryBtn-1 btn meduimBtn"
-                                                                onClick={
-                                                                    this
-                                                                        .updateActualPayments
-                                                                }>
-                                                                {
-                                                                    Resources[
-                                                                    "update"
-                                                                    ][
-                                                                    currentLanguage
-                                                                    ]
+                                                    {this.state.viewUpdatePayment ? (
+                                                        <button
+                                                            className="primaryBtn-1 btn  disabled"
+                                                            disabled="disabled">
+                                                            <div className="spinner">
+                                                                <div className="bounce1" />
+                                                                <div className="bounce2" />
+                                                                <div className="bounce3" />
+                                                            </div>
+                                                        </button>
+                                                    ) : (
+                                                            <button className="primaryBtn-1 btn meduimBtn"
+                                                                onClick={this.updateActualPayments}>
+                                                                {Resources["update"][currentLanguage]
                                                                 }
                                                             </button>
                                                         )}
@@ -2977,21 +2853,6 @@ class requestPaymentsAddEdit extends Component {
                                             </div>
                                         ) : ("")}
                                         <div className="doc-pre-cycle">
-                                            {this.state.editRows.length > 0 ? (
-                                                <div className="doc-pre-cycle">
-                                                    <div className="slider-Btns editableRows">
-                                                        <span>
-                                                            No.Update Rows.
-                                                            {this.state.editRows.length}
-                                                        </span>
-                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>
-                                                            {
-                                                                Resources["edit"][currentLanguage]
-                                                            }
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ) : null}
                                             <div className="submittalFilter">
                                                 <div className="subFilter">
                                                     <h3 className="zero">
@@ -3002,11 +2863,7 @@ class requestPaymentsAddEdit extends Component {
                                                     </span>
                                                 </div>
                                                 <div className="filterBTNS">
-                                                    <div
-                                                        className="default__dropdown--custom"
-                                                        style={{
-                                                            marginBottom: "0"
-                                                        }}>
+                                                    <div className="default__dropdown--custom" style={{ marginBottom: "0" }}>
                                                         <div className="default__dropdown">
                                                             <Dropdown data={this.state.fillDropDownExport}
                                                                 selectedValue={this.state.selectedDropDownExport}
@@ -3031,6 +2888,22 @@ class requestPaymentsAddEdit extends Component {
                                                 </div>
                                             </div>
                                             {ItemsGrid}
+
+                                            {this.state.editRows.length > 0 ? (
+                                                <div className="doc-pre-cycle">
+                                                    <div className="slider-Btns editableRows">
+                                                        <span>
+                                                            No.Update Rows.
+                                                            {this.state.editRows.length}
+                                                        </span>
+                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>
+                                                            {
+                                                                Resources["edit"][currentLanguage]
+                                                            }
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ) : null}
                                         </div>
                                     </div>
                                 </Fragment>
@@ -3112,6 +2985,7 @@ class requestPaymentsAddEdit extends Component {
                                     </div>
                                 </Fragment>
                             ) : null}
+
                             {this.state.currentStep == 2 ? (
                                 <Fragment>
                                     <div className="subiTabsContent feilds__top">
@@ -3191,22 +3065,15 @@ class requestPaymentsAddEdit extends Component {
                                             <div className="slider-Btns">
                                                 <button
                                                     className="primaryBtn-1 btn meduimBtn"
-                                                    onClick={e =>
-                                                        this.changeCurrentStep(
-                                                            4
-                                                        )
-                                                    }>
-                                                    {
-                                                        Resources["next"][
-                                                        currentLanguage
-                                                        ]
-                                                    }
+                                                    onClick={e => this.changeCurrentStep(4)}>
+                                                    {Resources["next"][currentLanguage]}
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </Fragment>
                             ) : null}
+
                         </div>
                         <Steps
                             steps_defination={steps_defination}
@@ -3215,7 +3082,7 @@ class requestPaymentsAddEdit extends Component {
                             changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
                             stepNo={this.state.currentStep}
                             changeStatus={docId === 0 ? false : true} />
-                            
+
                         {this.props.changeStatus === true ? (
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
@@ -3320,243 +3187,89 @@ class requestPaymentsAddEdit extends Component {
                             onSubmit={values => {
                                 this.editPaymentRequistionItems();
                             }}>
-                            {({
-                                errors,
-                                touched,
-                                handleBlur,
-                                handleChange,
-                                handleSubmit,
-                                setFieldValue,
-                                setFieldTouched
-                            }) => (
-                                    <Form
-                                        id="InspectionRequestForm"
-                                        className="customProform proForm"
-                                        noValidate="novalidate"
-                                        onSubmit={handleSubmit}>
-                                        <div className="dropWrapper">
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.percentComplete[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input" +
-                                                        (errors.percentComplete &&
-                                                            touched.percentComplete
-                                                            ? " has-error"
-                                                            : !errors.percentComplete &&
-                                                                touched.percentComplete
-                                                                ? " has-success"
-                                                                : " ")
-                                                    }>
-                                                    <input
-                                                        name="percentComplete"
-                                                        className="form-control fsadfsadsa"
-                                                        id="percentComplete"
-                                                        placeholder={
-                                                            Resources
-                                                                .percentComplete[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .percentComplete
-                                                        }
-                                                        onChange={e =>
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "percentComplete"
-                                                            )
-                                                        }
-                                                    />
-                                                    {touched.percentComplete ? (
-                                                        <em className="pError">
-                                                            {errors.percentComplete}
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.quantityComplete[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input" +
-                                                        (errors.quantityComplete &&
-                                                            touched.quantityComplete
-                                                            ? " has-error"
-                                                            : !errors.quantityComplete &&
-                                                                touched.quantityComplete
-                                                                ? " has-success"
-                                                                : " ")
-                                                    }>
-                                                    <input
-                                                        name="quantityComplete"
-                                                        className="form-control fsadfsadsa"
-                                                        id="quantityComplete"
-                                                        placeholder={
-                                                            Resources
-                                                                .quantityComplete[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .quantityComplete
-                                                        }
-                                                        onChange={e =>
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "quantityComplete"
-                                                            )
-                                                        }
-                                                    />
-                                                    {touched.quantityComplete ? (
-                                                        <em className="pError">
-                                                            {
-                                                                errors.quantityComplete
-                                                            }
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.paymentPercent[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={
-                                                        "inputDev ui input" +
-                                                        (errors.paymentPercent &&
-                                                            touched.paymentPercent
-                                                            ? " has-error"
-                                                            : !errors.paymentPercent &&
-                                                                touched.paymentPercent
-                                                                ? " has-success"
-                                                                : " ")
-                                                    }>
-                                                    <input
-                                                        name="paymentPercent"
-                                                        className="form-control fsadfsadsa"
-                                                        id="paymentPercent"
-                                                        placeholder={
-                                                            Resources
-                                                                .paymentPercent[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .paymentPercent
-                                                        }
-                                                        onChange={e => {
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "paymentPercent"
-                                                            );
-                                                        }}
-                                                    />
-                                                    {touched.paymentPercent ? (
-                                                        <em className="pError">
-                                                            {errors.paymentPercent}
-                                                        </em>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="fillter-item-c fullInputWidth">
-                                                <label className="control-label">
-                                                    {
-                                                        Resources.comments[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                </label>
-                                                <div
-                                                    className={"inputDev ui input"}>
-                                                    <input
-                                                        name="comments"
-                                                        className="form-control fsadfsadsa"
-                                                        id="comments"
-                                                        placeholder={
-                                                            Resources.comments[
-                                                            currentLanguage
-                                                            ]
-                                                        }
-                                                        autoComplete="off"
-                                                        onBlur={e => {
-                                                            handleBlur(e);
-                                                            handleChange(e);
-                                                        }}
-                                                        defaultValue={
-                                                            this.state.document
-                                                                .lastComment
-                                                        }
-                                                        onChange={e => {
-                                                            this.handleChangeForEdit(
-                                                                e,
-                                                                "lastComment"
-                                                            );
-                                                        }}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="fullWidthWrapper">
-                                                {this.state.isLoading === true ? (
-                                                    <button
-                                                        className="primaryBtn-1 btn  disabled"
-                                                        disabled="disabled">
-                                                        <div className="spinner">
-                                                            <div className="bounce1" />
-                                                            <div className="bounce2" />
-                                                            <div className="bounce3" />
-                                                        </div>
-                                                    </button>
-                                                ) : (
-                                                        <button
-                                                            className="primaryBtn-1 btn "
-                                                            type="submit">
-                                                            {
-                                                                Resources.save[
-                                                                currentLanguage
-                                                                ]
-                                                            }
-                                                        </button>
-                                                    )}
+                            {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
+                                <Form id="InspectionRequestForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
+                                    <div className="dropWrapper">
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">
+                                                {Resources.percentComplete[currentLanguage]}
+                                            </label>
+                                            <div className={"inputDev ui input" + (errors.percentComplete && touched.percentComplete ? " has-error" : !errors.percentComplete && touched.percentComplete ? " has-success" : " ")}>
+                                                <input name="percentComplete" className="form-control fsadfsadsa" id="percentComplete"
+                                                    placeholder={Resources.percentComplete[currentLanguage]}
+                                                    autoComplete="off"
+                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                    defaultValue={this.state.document.percentComplete}
+                                                    onChange={e => this.handleChangeForEdit(e, "percentComplete")}
+                                                />
+                                                {touched.percentComplete ? (<em className="pError"> {errors.percentComplete} </em>) : null}
                                             </div>
                                         </div>
-                                    </Form>
-                                )}
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">
+                                                {Resources.quantityComplete[currentLanguage]}
+                                            </label>
+                                            <div className={"inputDev ui input" + (errors.quantityComplete && touched.quantityComplete ? " has-error" : !errors.quantityComplete && touched.quantityComplete ? " has-success" : " ")}>
+                                                <input name="quantityComplete" className="form-control fsadfsadsa" id="quantityComplete"
+                                                    placeholder={Resources.quantityComplete[currentLanguage]}
+                                                    autoComplete="off"
+                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                    defaultValue={this.state.document.quantityComplete}
+                                                    onChange={e => this.handleChangeForEdit(e, "quantityComplete")}
+                                                />
+                                                {touched.quantityComplete ? (<em className="pError">{errors.quantityComplete}</em>) : null}
+                                            </div>
+                                        </div>
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">
+                                                {Resources.paymentPercent[currentLanguage]}
+                                            </label>
+                                            <div className={"inputDev ui input" + (errors.paymentPercent && touched.paymentPercent ? " has-error" : !errors.paymentPercent && touched.paymentPercent ? " has-success" : " ")}>
+                                                <input name="paymentPercent" className="form-control fsadfsadsa" id="paymentPercent"
+                                                    placeholder={Resources.paymentPercent[currentLanguage]}
+                                                    autoComplete="off"
+                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                    defaultValue={this.state.document.paymentPercent}
+                                                    onChange={e => { this.handleChangeForEdit(e, "paymentPercent"); }}
+                                                />
+                                                {touched.paymentPercent ? (<em className="pError"> {errors.paymentPercent} </em>) : null}
+                                            </div>
+                                        </div>
+
+                                        <div className="fillter-item-c fullInputWidth">
+                                            <label className="control-label">
+                                                {Resources.comments[currentLanguage]}
+                                            </label>
+                                            <div className={"inputDev ui input"}>
+                                                <input name="comments" className="form-control fsadfsadsa" id="comments"
+                                                    placeholder={Resources.comments[currentLanguage]}
+                                                    autoComplete="off"
+                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                    defaultValue={this.state.document.lastComment}
+                                                    onChange={e => { this.handleChangeForEdit(e, "lastComment"); }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="fullWidthWrapper">
+                                            {this.state.isLoading === true ? (
+                                                <button
+                                                    className="primaryBtn-1 btn  disabled"
+                                                    disabled="disabled">
+                                                    <div className="spinner">
+                                                        <div className="bounce1" />
+                                                        <div className="bounce2" />
+                                                        <div className="bounce3" />
+                                                    </div>
+                                                </button>
+                                            ) : (
+                                                    <button className="primaryBtn-1 btn " type="submit">
+                                                        {Resources.save[currentLanguage]}
+                                                    </button>
+                                                )}
+                                        </div>
+                                    </div>
+                                </Form>
+                            )}
                         </Formik>
                     </SkyLight>
                 </div>

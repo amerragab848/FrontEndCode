@@ -688,7 +688,7 @@ class VariationRequestAdd extends Component {
                                                                             onChange={(e) => this.handleChange(e, 'arrange')} />
                                                                     </div>
                                                                 </div>
-                                                                <div className="linebylineInput valid-input">
+                                                                <div className="linebylineInput fullInputWidth">
                                                                     <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
                                                                     <div className={"ui input inputDev"}>
                                                                         <input type="text" className="form-control" id="refDoc" value={this.state.document.refDoc || ''}

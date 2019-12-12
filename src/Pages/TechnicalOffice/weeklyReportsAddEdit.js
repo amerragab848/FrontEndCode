@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
@@ -20,10 +19,8 @@ import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
-import Api from "../../api";
 import ReactTable from "react-table";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import { SkyLightStateless } from "react-skylight";
 import Steps from "../../Componants/publicComponants/Steps";
 
 let currentLanguage =
@@ -290,42 +287,27 @@ class weeklyReportsAddEdit extends Component {
         });
     }
 
-    componentWillMount() {
-        if (this.state.docId > 0) {
-            let url = "GetLogsWeeklyReportsForEdit?id=" + this.state.docId;
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'weeklyReport')
-        }
-        else {
-            dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
-                res => {
-                    const Document = {
-                        projectId: projectId, arrange: res, status: "true", subject: "",
-                        docDate: moment(), companyId: '', weekNumber: 0, companyIdManager: '', contactIdManager: '',
-                        companyIdEngineer: '', contactIdEngineer: '', startDate: moment(), endDate: moment(),
-                    }
-                    this.setState({ document: Document })
-                }
-            )
-            this.fillDropDowns(false);
-            this.props.actions.documentForAdding();
-        }
-    }
 
-    componentWillReceiveProps(nextProps, prevProps) {
-        if (nextProps.document.id) {
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id != state.document.id && nextProps.changeStatus === true) {
             let doc = nextProps.document
             doc.docDate = doc.docDate === null ? moment().format('YYYY-MM-DD') : moment(doc.docDate).format('YYYY-MM-DD')
-            this.setState({ isEdit: true, document: doc, hasWorkflow: this.props.hasWorkflow })
-            let isEdit = nextProps.document.id > 0 ? true : false
-            this.fillDropDowns(isEdit);
-            this.checkDocumentIsView();
+            return { isEdit: true, document: doc, hasWorkflow: nextProps.hasWorkflow }
         }
+        return null;
     }
 
-    componentDidUpdate(prevProps) {
+
+    componentDidUpdate(prevProps, prevState) {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
+
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+        }
+
     }
 
     getCoordinationData = () => {
@@ -397,6 +379,9 @@ class weeklyReportsAddEdit extends Component {
             dataservice.GetDataGrid('GetLogsWeeklyReportsMeetings?parentId=' + this.state.docId).then(result => { this.setState({ meetingRows: result }) });
 
             dataservice.GetDataGrid('GetLogsWeeklyReportsModifications?parentId=' + this.state.docId).then(result => { this.setState({ ModificationRows: result }) });
+
+            let url = "GetLogsWeeklyReportsForEdit?id=" + this.state.docId;
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'weeklyReport')
         }
         else {
             let technicalOfficeObj = {
@@ -404,11 +389,25 @@ class weeklyReportsAddEdit extends Component {
                 architicturalContractors: '', electricityContractors: '', weeklyReportsId: this.state.docId
             }
             this.setState({ EditMood: false, technicalOfficeObj })
+            dataservice.GetNextArrangeMainDocument('GetNextArrangeMainDoc?projectId=' + projectId + '&docType=' + this.state.docTypeId + '&companyId=undefined&contactId=undefined').then(
+                res => {
+                    const Document = {
+                        projectId: projectId, arrange: res, status: "true", subject: "",
+                        docDate: moment(), companyId: '', weekNumber: 0, companyIdManager: '', contactIdManager: '',
+                        companyIdEngineer: '', contactIdEngineer: '', startDate: moment(), endDate: moment(),
+                    }
+                    this.setState({ document: Document })
+                }
+            )
+            this.fillDropDowns(false);
+            this.props.actions.documentForAdding();
         }
 
         dataservice.GetDataList('GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', 'title', 'id').then(result => {
             this.setState({ disciplineData: result });
         });
+
+
     }
 
     checkDocumentIsView() {

@@ -435,7 +435,7 @@ class SubmittalAddEdit extends Component {
         }
       }
     });
- 
+
   }
 
   fillCycleDropDown(isEdit) {
@@ -466,7 +466,7 @@ class SubmittalAddEdit extends Component {
 
       if (isEdit) {
         let flowCompanyId = this.state.documentCycle.flowCompanyId;
-      
+
         if (flowCompanyId) {
 
           this.setState({
@@ -499,7 +499,7 @@ class SubmittalAddEdit extends Component {
           });
 
           this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "bicContactId", "selectedFromContact", "fromContacts");
-        } 
+        }
       }
       this.setState({
         selectedSubmittalType: this.props.document.submittalType != null && this.props.document.submittalType ? { label: obj.label, value: obj.value } : { label: Resources.submittalType[currentLanguage], value: "0" },
@@ -1659,7 +1659,7 @@ class SubmittalAddEdit extends Component {
                                   {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
                                 </div>
                               </div>
-                              <div className="linebylineInput valid-input">
+                              <div className="linebylineInput fullInputWidth">
                                 <label className="control-label">
                                   {Resources.refDoc[currentLanguage]}
                                 </label>
@@ -1787,7 +1787,7 @@ class SubmittalAddEdit extends Component {
                                 <Dropdown title="submittalType" data={this.state.SubmittalTypes} selectedValue={this.state.selectedSubmittalType}
                                   handleChange={event => this.handleChangeDropDown(event, "submittalType", false, "", "", "", "selectedSubmittalType")} />
                               </div>
-                              <div className="linebylineInput valid-input">
+                              <div className="linebylineInput fullInputWidth">
                                 <label className="control-label">
                                   {Resources.sharedSettings[currentLanguage]}
                                 </label>

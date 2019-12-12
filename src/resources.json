@@ -8290,5 +8290,9 @@
     "totalContractor": {
         "en": "Total Contractor",
         "ar": "الأجمالى"
+    },
+    "contractPaymentPercent": {
+        "en": "Contract Payment Percent",
+        "ar": "Contract Payment Percent"
     }
 }
