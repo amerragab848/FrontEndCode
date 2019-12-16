@@ -1,5 +1,6 @@
 import Api from "./api.js";
 import IndexedDb from "./IndexedDb";
+import { object } from "prop-types";
 //let db = null; 
 //const cachedData = lf.schema.create('cachedAPI', 1);
 
@@ -12,6 +13,19 @@ export default class Dataservice {
                 var obj = {};
                 obj.label = item[label];
                 obj.value = item[value];
+                Data.push(obj);
+            });
+            return Data;
+        }).catch(ex => Data);
+    };
+    static GetDataListWithAdditionalParam(url, label, value,param) {
+        let Data = []
+        return Api.get(url).then(result => {
+            (result).forEach(item => {
+                var obj = {};
+                obj.label = item[label];
+                obj.value = item[value];
+                obj.param=item[param]
                 Data.push(obj);
             });
             return Data;

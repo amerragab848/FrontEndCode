@@ -6,7 +6,6 @@ import Calendar from "react-calendar";
 import { toast } from "react-toastify";
 import Resources from "../../resources.json";
 import moment from "moment";
-
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
@@ -20,7 +19,7 @@ class GridSetupWithFilter extends Component {
     super(props);
 
     this.state = {
-      columns: this.props.columns,
+      columns: this.props.columns.filter(x => x.key !== "BtnActions" && x.key !== "actions"),
       rows: this.props.rows,
       groupBy: this.props.groupBy != null ? this.props.groupBy : [],
       selectedIndexes: [],
@@ -40,7 +39,8 @@ class GridSetupWithFilter extends Component {
       currentData: 0,
       date: new Date(),
       setDate: moment(new Date()).format("DD/MM/YYYY"),
-      fieldDate: {}
+      fieldDate: {},
+      isFilter: false
     };
 
     this.groupColumn = this.groupColumn.bind(this);
@@ -50,10 +50,7 @@ class GridSetupWithFilter extends Component {
   }
 
   componentDidMount() {
-    this.scrolllll();
-  }
 
-  componentWillMount() {
     let state = {};
 
     this.props.columns.map((column, index) => {
@@ -75,6 +72,19 @@ class GridSetupWithFilter extends Component {
     setTimeout(() => {
       this.setState(state);
     }, 500);
+
+    this.scrolllll();
+  }
+
+  static getDerivedStateFromProps(props, current_state) {
+    if (current_state.rows !== props.rows && props.isFilter) {
+      props.changeValueOfProps();
+      return {
+        rows: props.rows,
+        filteredRows: props.rows
+      }
+    }
+    return null
   }
 
   onHeaderDrop = (source, target) => {
@@ -111,7 +121,7 @@ class GridSetupWithFilter extends Component {
       }
     };
 
-    return sortDirection === "NONE" ? initialRows : [...this.props.rows].sort(comparer);
+    return sortDirection === "NONE" ? initialRows : [...this.state.rows].sort(comparer);
   };
 
   getRows = (rows, filters) => {
@@ -303,6 +313,7 @@ class GridSetupWithFilter extends Component {
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
     if (this.props.onGridRowsUpdated !== undefined) {
+
       this.props.onGridRowsUpdated({ fromRow, toRow, updated });
     }
   };
@@ -328,6 +339,7 @@ class GridSetupWithFilter extends Component {
       let matched = 0;
 
       let filters = Object.keys(_filters).reduce((n, k) => (n[k] = _filters[k], n), {});
+
       if (Object.keys(filters).length > 1) {
 
         rows.forEach(row => {
@@ -379,14 +391,8 @@ class GridSetupWithFilter extends Component {
           rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
           Loading: false
         });
+
       } else {
-        // let Data = rows.map(item => ({
-        //   title: item.title,
-        //   action: item.action,
-        //   editable: item.editable,
-        //   id: item.id,
-        //   refCode: item.refCode
-        // }));
 
         rows.forEach(row => {
           matched = 0;
@@ -473,8 +479,9 @@ class GridSetupWithFilter extends Component {
         newFilters[filter.column.key] = typeof (event) === "object" ? "" : event;
       }
       else if (type === "number") {
-        if (event.target.value != "") {
-          newFilters[filter.column.key] = parseFloat(event.target.value);
+        let value = parseFloat(event.target.value);
+        if (!isNaN(value)) {
+          newFilters[filter.column.key] = value;
         } else {
           delete newFilters[filter.column.key];
         }
@@ -489,9 +496,12 @@ class GridSetupWithFilter extends Component {
       this.getRowsFilter(rows, newFilters);
 
       this.setState({
+        isFilter: false,
         setFilters: newFilters,
         Loading: false
       });
+    } else {
+      console.log('this.state.filteredRows.length == 0')
     }
   }
 
@@ -614,6 +624,8 @@ class GridSetupWithFilter extends Component {
 
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
+    const columns = this.state.columns.filter(x => x.key !== "BtnActions" && x.key !== "actions");
+
     let CustomToolbar = ({ groupBy, onColumnGroupAdded, onColumnGroupDeleted }) => {
       return (
         <Toolbar>
@@ -692,7 +704,7 @@ class GridSetupWithFilter extends Component {
           </div>
           <div className="filter__input-wrapper" onMouseLeave={this.resetDate} id="resetData">
             <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
-              {this.state.columns.map((column, index) => {
+              {columns.map((column, index) => {
                 let classX = arrColumn.findIndex(x => x == column.key) > -1 ? "small__input--width " : "medium__input--width";
                 if (column.type === "date") {
                   return column.filterable === true && index <= 5 ? (
@@ -745,6 +757,7 @@ class GridSetupWithFilter extends Component {
           </div>
         </div>
 
+
         <div className={this.state.ShowModelFilter ? "filterModal__container active" : "filterModal__container"}>
           <h2 className="zero">{Resources.filterResults[currentLanguage]}</h2>
           <button className="filter__close" onClick={this.CloseModeFilter}>
@@ -760,7 +773,7 @@ class GridSetupWithFilter extends Component {
                 <div className="filter__warrper">
                   <div className="filter__input-wrapper">
                     <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
-                      {this.props.columns.map((column, index) => {
+                      {columns.map((column, index) => {
                         let classX = arrColumn.findIndex(x => x == column.key) > -1 ? "small__input--width " : "medium__input--width";
                         if (column.type === "date") {
                           return column.filterable === true && column.key !== "customBtn" ? (
@@ -842,19 +855,35 @@ class GridSetupWithFilter extends Component {
                   <ReactDataGrid rowKey="id"
                     minHeight={this.getRows() != undefined ? this.getCount() < 5 ? 350 : this.props.minHeight !== undefined ? this.props.minHeight : 750 : 1}
                     height={this.props.minHeight !== undefined ? this.props.minHeight : 750}
+
                     columns={this.state.columns}
-                    rowGetter={index => this.props.rows[index]}
+                    rowGetter={index =>
+                      this.getRowAt(index)
+                    }
+
                     rowsCount={this.getCount()}
-                    onRowExpandToggle={row => this.onRowExpandToggle(row)}
+                    onRowExpandToggle={row =>
+                      this.onRowExpandToggle(row)
+                    }
                     expandedRows={this.expandedRows}
-                    onRowExpandClick={row => this.onRowExpandClick(row)}
-                    enableCellSelect={true}
-                    onGridRowsUpdated={this.onGridRowsUpdated}
-                    onCellSelected={this.onCellSelected}
-                    onColumnResize={(idx, width, event) => { this.scrolllll(); }}
-                    onGridSort={(sortColumn, sortDirection) =>
+                    onRowExpandClick={row =>
+                      this.onRowExpandClick(row)
+                    }
+
+                    enableCellSelect={true} onGridRowsUpdated={this.onGridRowsUpdated} onCellSelected={this.onCellSelected}
+                    onColumnResize={(idx, width, event) => {
+                      this.scrolllll();
+                    }}
+                    onGridSort={(
+                      sortColumn,
+                      sortDirection
+                    ) =>
                       this.setState({
-                        rows: this.sortRows(this.props.rows, sortColumn, sortDirection)
+                        rows: this.sortRows(
+                          this.state.rows,
+                          sortColumn,
+                          sortDirection
+                        )
                       })
                     }
                     enableDragAndDrop={true}
@@ -903,7 +932,8 @@ class GridSetupWithFilter extends Component {
             </div>
           </div>
         </div>
-      </Fragment>
+
+      </Fragment >
     );
   }
 }

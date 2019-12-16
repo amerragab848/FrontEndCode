@@ -365,11 +365,27 @@ export default function (state = initialState.app.communication, action) {
 
         case types.ADD_DOCS_ATTACH:
             return { ...state, docsAttachData: action.resp || [], documentData: [] }
+
         case types.SET_ISREJECT:
             return { ...state, isReject: action.data }
 
+        case types.FILL_PROJECTS_DROPDOWN:
+                    return{...state,projectDropdown:action.projectDropdown}
+
+        case types.FILL_TASKS_DROPDOWN:
+                    return{...state,taskDropdown:action.taskDropdown}
+
+        case types.FILL_LOCATIONS_DROPDOWN:
+                    return{...state,locationDropdown:action.locationDropdown}
+                    
+        case types.FILL_COUNTRIES_DROPDOWN:
+                    return{...state,countryDropdown:action.countryDropdown}
+       
+
+
         case types.SET_LOADING:
             return { ...state, isLoading: true, isLoadingFilesUpload: true }
+       
 
         default:
             return {

@@ -589,7 +589,44 @@ export function addCommunicationDocsAttach(data, projectId, docType, docId) {
 
     }
 }
-
+// region Ahmed Yousry
+export function fillProjectDropdown(){
+    return (dispatch)=>{
+       return Api.get('GetAccountsProjectsByIdForList').then(res=>{
+         dispatch({type:types.FILL_PROJECTS_DROPDOWN,projectDropdown:res.data})
+       }).catch((ex)=>{
+         dispatch({type:types.FILL_PROJECTS_DROPDOWN})
+       });
+    }
+}
+export function fillTasksDropdown(){
+    return(dispatch)=>{
+      return Api.get().then(res=>{
+        dispatch({type:types.FILL_TASKS_DROPDOWN,taskDropdown:res.data})
+      }).catch((ex)=>{
+        dispatch({type:types.FILL_TASKS_DROPDOWN})
+      });
+    }
+}
+export function fillLocationsDropdown(){
+    return(dispatch)=>{
+        return Api.get('GetAccountsDefaultList?listType=timesheetlocation&pageNumber=0&pageSize=10000').then(res=>{
+          dispatch({type:types.FILL_LOCATIONS_DROPDOWN,locationDropdown:res.data})
+        }).catch((ex)=>{
+            dispatch({type:types.FILL_LOCATIONS_DROPDOWN})
+        });
+    }
+}
+export function fillCountriesDropdown(){
+    return(dispatch)=>{
+        return Api.get('GetAccountsDefaultList?listType=country&pageNumber=0&pageSize=10000').then(res=>{
+            dispatch({type:types.FILL_COUNTRIES_DROPDOWN,countryDropdown:res.data})
+        }).catch((ex)=>{
+            dispatch({type:types.FILL_COUNTRIES_DROPDOWN})
+        })
+    }
+}
+// endregion Ahmed Yousry
 
 export function setLoading() {
     return (dispatch) => {
