@@ -1376,9 +1376,10 @@ class requestPaymentsAddEdit extends Component {
 
             let userType = Config.getPayload();
 
-            if (this.props.hasWorkflow == false) {
+            if (this.props.hasWorkflow == false || this.state.isApproveMode == true) {
                 if (this.props.changeStatus) {
-                    if (this.state.document.status === true && this.state.document.editable === true) {
+                    let obj = this.state.document;
+                    if (obj.status === true && obj.editable === true) {
 
                         let original_document = { ...this.state.currentObject };
 
@@ -1447,7 +1448,7 @@ class requestPaymentsAddEdit extends Component {
         paymentsItems[fromRow] = Object.assign(paymentsItems[fromRow], updated);
 
         let newValue = parseFloat(updated[Object.keys(updated)[0]]);
-        let oldValue = parseFloat(updateRow[Object.keys(updated)[0]]);
+        //let oldValue = parseFloat(updateRow[Object.keys(updated)[0]]);
 
 
         let sitePercentComplete = 0;
@@ -1459,31 +1460,7 @@ class requestPaymentsAddEdit extends Component {
         updateRow[Object.keys(updated)[0]] = parseFloat(updated[Object.keys(updated)[0]]);
 
         switch (Object.keys(updated)[0]) {
-            // case "quantityComplete":
-            //     updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-            //     updateRow.quantityComplete = parseFloat(newValue);
 
-            //     break;
-            // case "percentComplete":
-            //     updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-            //     updateRow.percentComplete = parseFloat(newValue);
-
-            //     break;
-
-            // case "sitePercentComplete":
-            //     updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-            //     updateRow.sitePercentComplete = parseFloat(newValue);
-
-            //     break;
-            // case "siteQuantityComplete":
-            //     updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
-            //     updateRow.siteQuantityComplete = parseFloat(newValue);
-
-
-            //     if (this.props.changeStatus == false) {
-            //         updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-            //     }
-            //     break;
             case "quantityComplete":
                 updateRow.percentComplete = (parseFloat(newValue) / updateRow.revisedQuantity) * 100;
                 updateRow.quantityComplete = parseFloat(newValue);
@@ -1668,6 +1645,10 @@ class requestPaymentsAddEdit extends Component {
                 updateRow.sitePaymentPercent = currentvalue;
                 break;
 
+            case "paymentPercent": 
+                updateRow.paymentPercent = currentvalue;
+                break;
+
             case "percentComplete":
                 updateRow.quantityComplete = (currentvalue / 100) * updateRow.revisedQuantity;
                 updateRow.percentComplete = currentvalue;
@@ -1716,7 +1697,7 @@ class requestPaymentsAddEdit extends Component {
         mainDoc.contractId = this.state.document.contractId;
 
         this.setState({
-            isLoading: true 
+            isLoading: true
         });
         dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
 
@@ -1732,7 +1713,7 @@ class requestPaymentsAddEdit extends Component {
                 Resources["operationCanceled"][currentLanguage]
             );
             this.setState({
-                isLoading: false 
+                isLoading: false
             });
         });
     };
