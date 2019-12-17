@@ -27,8 +27,11 @@ import { default as DataService, default as dataservice } from "../../Dataservic
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
-import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
+//import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+//import GridCustom from 'react-customized-grid';
 
+import "react-customized-grid/main.css";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -91,6 +94,7 @@ let docApprovalId = 0;
 let perviousRoute = 0;
 let arrange = 0;
 var steps_defination = [];
+
 class bogAddEdit extends Component {
     constructor(props) {
         super(props);
@@ -117,172 +121,186 @@ class bogAddEdit extends Component {
             }
             index++;
         }
+ 
+        this.boqItems = [
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
+            {
+                field: "arrange",
+                title: Resources["no"][currentLanguage],
+                width: 4,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type: "text"
+            },
+            {
+                field: "boqType",
+                title: Resources["boqType"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+            },
+            {
+                field: "boqTypeChild",
+                title: Resources["boqSubType"][currentLanguage],
+                width: 8,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+            },
+            {
+                field: "boqSubType",
+                title: Resources["boqTypeChild"][currentLanguage],
+                width: 8,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+            },
+            {
+                field: "itemCode",
+                title: Resources["itemCode"][currentLanguage],
+                width: 6,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+            },
+            {
+                field: "description",
+                title: Resources["details"][currentLanguage],
+                width: 20,
+                showTip: true,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+            },
+            {
+                field: "quantity",
+                title: Resources["quantity"][currentLanguage],
+                width: 6,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+            },
+            {
+                field: "revisedQuantity",
+                title: Resources["revisedQuantity"][currentLanguage],
+                width: 6,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+            },
+            {
+                field: "unit",
+                title: Resources["unit"][currentLanguage],
+                width: 8,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+            },
+            {
+                field: "unitPrice",
+                title: Resources["unitPrice"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                handleChange: (e, cell) => {
+                    cell.unitPrice = e.target.value;
 
-        let editUnitPrice = ({ value, row }) => {
-            if (row) {
-                return (
-                    <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
-                            {row.unitPrice}
-                        </span>
-                    </a>
-                );
-            }
-            return null;
-        };
+                },
+                handleBlur: (e, cell) => {
+                    this.setState({ isLoading: true });
 
-        this.itemsColumns = [
-            {
-                name: Resources["itemize"][currentLanguage],
-                formatter: this.customButton,
-                width: 70,
-                key: "customBtn"
+                    Api.post("EditBoqItemUnitPrice?id=" + cell.id + "&unitPrice=" + cell.unitPrice).then(() => {
+                        toast.success(
+                            Resources["operationSuccess"][currentLanguage]
+                        );
+                        this.setState({ isLoading: false });
+                    }).catch(() => {
+                        toast.error(
+                            Resources["operationCanceled"][currentLanguage]
+                        );
+                        this.setState({ isLoading: false });
+                    });
+                },
+                type: "input"
             },
             {
-                key: "arrange",
-                name: Resources["no"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: "total",
+                title: Resources["total"][currentLanguage],
+                width: 8,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "number"
+                type: "text"
             },
             {
-                key: "boqType",
-                name: Resources["boqType"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "resourceCode",
+                title: Resources["resourceCode"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
-                key: "boqTypeChild",
-                name: Resources["boqSubType"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: false,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
-                key: "boqSubType",
-                name: Resources["boqTypeChild"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
-                key: "description",
-                name: Resources["details"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "number"
-            },
-            {
-                key: "revisedQuantity",
-                name: Resources["revisedQuantity"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: false,
-                sortDescendingFirst: true,
-                type: "number"
-            },
-            {
-                key: "unit",
-                name: Resources["unit"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: false,
-                sortDescendingFirst: true,
-                type: "string"
-            },
-            {
-                key: "unitPrice",
-                name: Resources["unitPrice"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                editable: true,
-                resizable: true,
-                filterable: false,
-                sortDescendingFirst: true,
-                formatter: editUnitPrice,
-                type: "number"
-            },
-            {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: false,
-                sortDescendingFirst: true,
-                type: "number"
-            },
-            {
-                key: "resourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
+                type: "text"
             }
+        ];
+
+        this.actions = [
+            {
+                title: 'Assign',
+                handleClick: values => {
+                    console.log(values);
+                    this.setState({ showBoqModal: true });
+                    this.boqTypeModal.show();
+                },
+                classes: '',
+            }, {
+                title: 'Delete',
+                handleClick: values => {
+                    console.log(values);
+                    this.setState({
+                        showDeleteModal: true,
+                        selectedRow: values
+                    });
+                },
+                classes: '',
+            }
+        ];
+
+        this.rowActions = [
+            {
+                title: 'Itemization',
+                handleClick: value => {
+                    let obj = {
+                        id: value.id,
+                        boqId: value.boqId,
+                        projectId: this.state.projectId,
+                        projectName: this.state.projectName
+                    };
+                    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+                    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+                    this.props.history.push({ pathname: "/Itemize", search: "?id=" + encodedPaylod });
+                }
+            }
+        ];
+        this.groups = [
+            { title: 'boqType', field: 'boqType', type: 'text' },
+            { title: 'boqSubType', field: 'boqSubType', type: 'text' }
         ];
 
         this.state = {
             isCompany: Config.getPayload().uty === "company" ? true : false,
             showForm: false,
+            isLoadingEdit: false,
             loadingContractPurchase: false,
             AddedPurchase: false,
             loadingContract: false,
@@ -553,7 +571,7 @@ class bogAddEdit extends Component {
             });
         });
     };
-  
+
     disablePopUp = () => {
         this.setState({
             showPopUp: false
@@ -793,7 +811,6 @@ class bogAddEdit extends Component {
             Api.post("ContractsBoqItemsMultipleDelete?", this.state.selectedRow)
                 .then(res => {
                     let data = [];
-                    console.log(this.state.selectedRow);
                     this.state.selectedRow.forEach((element, index) => {
                         data = this.state._items.filter(item => {
                             return item.id != element;
@@ -818,7 +835,6 @@ class bogAddEdit extends Component {
         this.setState({ CurrStep: stepNo });
     };
 
-
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
@@ -839,6 +855,11 @@ class bogAddEdit extends Component {
             }
         }
     };
+    resetLoading = () => {
+        this.setState({
+            isLoadingEdit: false
+        });
+    }
 
     clickHandlerDeleteRowsMain = selectedRows => {
         this.setState({
@@ -900,8 +921,8 @@ class bogAddEdit extends Component {
         this.setState({
             btnText: "save"
         });
+        this.resetLoading();
     };
-
 
     addContract = values => {
         if (this.props.document.contractId != null || this.state.addedContract)
@@ -1025,49 +1046,6 @@ class bogAddEdit extends Component {
         } else this.setState({ activeTab: "" });
     };
 
-    _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        this.setState({ isLoading: true });
-
-        let updateRow = this.state._items[fromRow];
-
-        this.setState(
-            state => {
-                const _items = state._items.slice();
-                for (let i = fromRow; i <= toRow; i++) {
-                    _items[i] = { ..._items[i], ...updated };
-                }
-                return { _items };
-            },
-            function () {
-                if (
-                    updateRow[Object.keys(updated)[0]] !==
-                    updated[Object.keys(updated)[0]]
-                ) {
-                    updateRow[Object.keys(updated)[0]] =
-                        updated[Object.keys(updated)[0]];
-                    Api.post(
-                        "EditBoqItemUnitPrice?id=" +
-                        this.state._items[fromRow].id +
-                        "&unitPrice=" +
-                        updated.unitPrice
-                    )
-                        .then(() => {
-                            toast.success(
-                                Resources["operationSuccess"][currentLanguage]
-                            );
-                            this.setState({ isLoading: false });
-                        })
-                        .catch(() => {
-                            toast.error(
-                                Resources["operationCanceled"][currentLanguage]
-                            );
-                            this.setState({ isLoading: false });
-                        });
-                }
-            }
-        );
-    };
-
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
 
@@ -1151,23 +1129,33 @@ class bogAddEdit extends Component {
     }
 
     render() {
-        const ItemsGrid =
+         
+        let ItemsGrid =
             this.state.isLoading === false ? (
-                <GridSetupWithFilter
-                    groupBy={[{ key: 'boqType', name: 'boqType' }, { key: 'boqSubType', name: 'boqSubType' }]}
-                    rows={this.state._items}
-                    showCheckbox={true}
-                    pageSize={this.state.pageSize}
-                    onRowClick={this.onRowClick}
-                    columns={this.itemsColumns}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    onRowsSelected={this.onRowsSelected}
-                    onRowsDeselected={this.onRowsDeselected}
-                    onGridRowsUpdated={this._onGridRowsUpdated}
-                    assign={true}
-                    assignFn={() => this.assign()}
-                    key="items"
-                />
+        <GridCustom
+            cells={this.boqItems} 
+            data={this.state._items} 
+            groups={this.groups}
+            pageSize={this.state.pageSize}
+            actions={this.actions}
+            rowActions={this.rowActions}
+            rowClick={cell => {
+                if (!Config.IsAllow(11)) {
+                    toast.warning("you don't have permission");
+                } else if (cell.field != "select-row" && cell.field != "unitPrice") {
+
+                    this.setState({
+                        showPopUp: true,
+                        btnText: "save",
+                        selectedRow: cell,
+                        isLoadingEdit: true
+                    });
+                    this.simpleDialog1.show();
+
+                }
+            }}
+        />
+
             ) : (<LoadingSection />);
 
         const contractContent = (
@@ -2070,11 +2058,9 @@ class bogAddEdit extends Component {
             </Fragment>
         );
 
-        const itemsContent = (
+        let itemsContent = this.state.isLoadingEdit === false ? (
             <Fragment>
-                <div
-                    className=" proForm datepickerContainer customProform document-fields"
-                    key="editItem">
+                <div className=" proForm datepickerContainer customProform document-fields" key="editItem">
                     <EditItemDescription
                         showImportExcel={false}
                         docType="boq"
@@ -2090,7 +2076,7 @@ class bogAddEdit extends Component {
                     />
                 </div>
             </Fragment>
-        );
+        ) : <LoadingSection />;
 
         const BoqTypeContent = (
             <Fragment>
@@ -2702,15 +2688,6 @@ class bogAddEdit extends Component {
             <Fragment>
                 {addItemContent}
                 <Fragment>
-                    <XSLfile key="boqImport" docId={this.state.docId} docType="boq"
-                        link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQ.xlsx"}
-                        header="addManyItems"
-                        disabled={this.props.changeStatus ? this.props.document.contractId > 0 ? true : false : false}
-                        afterUpload={() => this.getTabelData()}
-                    />
-                </Fragment>
-
-                <Fragment>
                     <XSLfile key="boqStructure" docId={this.state.docId} docType="boq2"
                         link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/BOQStructure.xlsx"}
                         header="addManyItems"
@@ -2814,10 +2791,7 @@ class bogAddEdit extends Component {
                 <div className="mainContainer">
                     <div
                         className={
-                            this.state.isViewMode === true &&
-                                this.state.CurrStep != 2
-                                ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs"
-                                : "documents-stepper noTabs__document one__tab one_step"
+                            this.state.isViewMode === true && this.state.CurrStep != 2 ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"
                         }>
                         <HeaderDocument
                             projectName={projectName}
@@ -2830,66 +2804,40 @@ class bogAddEdit extends Component {
                         />
                         <div className="doc-container">
                             <div className="step-content">
-                                {this.state.LoadingPage ? (
-                                    <LoadingSection />
-                                ) : (
-                                        <Fragment>
-                                            {this.state.CurrStep == 0
-                                                ? Step_1
-                                                : this.state.CurrStep == 1
-                                                    ? Step_2
-                                                    : Step_3}
-                                            <div
-                                                className="largePopup largeModal "
-                                                style={{
-                                                    display: this.state.showPopUp
-                                                        ? "block"
-                                                        : "none"
-                                                }}>
-                                                <SkyLight
-                                                    hideOnOverlayClicked
-                                                    ref={ref =>
-                                                        (this.simpleDialog1 = ref)
-                                                    }
-                                                    title={
-                                                        Resources.editTitle[
-                                                        currentLanguage
-                                                        ] +
-                                                        " - " +
-                                                        Resources.edit[
-                                                        currentLanguage
-                                                        ]
-                                                    }
-                                                    beforeClose={
-                                                        this
-                                                            ._executeBeforeModalClose
-                                                    }
-                                                    beforeOpen={
-                                                        this._executeBeforeModalOpen
-                                                    }>
-                                                    {itemsContent}
-                                                </SkyLight>
-                                            </div>
-                                            {this.props.changeStatus === true ? (
-                                                <div className="approveDocument">
-                                                    <div className="approveDocumentBTNS">
-                                                        <DocumentActions
-                                                            isApproveMode={this.state.isApproveMode}
-                                                            docTypeId={this.state.docTypeId}
-                                                            docId={this.state.docId}
-                                                            projectId={this.state.projectId}
-                                                            previousRoute={this.state.previousRoute}
-                                                            docApprovalId={this.state.docApprovalId}
-                                                            currentArrange={this.state.arrange}
-                                                            showModal={this.props.showModal}
-                                                            showOptionPanel={this.showOptionPanel}
-                                                            permission={this.state.permission}
-                                                        />
-                                                    </div>
+                                {this.state.LoadingPage ? (<LoadingSection />) : (
+                                    <Fragment>
+                                        {this.state.CurrStep == 0 ? Step_1 : this.state.CurrStep == 1 ? Step_2 : Step_3}
+                                        <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? "block" : "none" }}>
+                                            <SkyLight hideOnOverlayClicked
+                                                ref={ref => (this.simpleDialog1 = ref)}
+                                                title={Resources.editTitle[currentLanguage] + " - " + Resources.edit[currentLanguage]
+                                                }
+                                                beforeClose={this._executeBeforeModalClose}
+                                                beforeOpen={this._executeBeforeModalOpen}>
+
+                                                {itemsContent}
+                                            </SkyLight>
+                                        </div>
+                                        {this.props.changeStatus === true ? (
+                                            <div className="approveDocument">
+                                                <div className="approveDocumentBTNS">
+                                                    <DocumentActions
+                                                        isApproveMode={this.state.isApproveMode}
+                                                        docTypeId={this.state.docTypeId}
+                                                        docId={this.state.docId}
+                                                        projectId={this.state.projectId}
+                                                        previousRoute={this.state.previousRoute}
+                                                        docApprovalId={this.state.docApprovalId}
+                                                        currentArrange={this.state.arrange}
+                                                        showModal={this.props.showModal}
+                                                        showOptionPanel={this.showOptionPanel}
+                                                        permission={this.state.permission}
+                                                    />
                                                 </div>
-                                            ) : null}
-                                        </Fragment>
-                                    )}
+                                            </div>
+                                        ) : null}
+                                    </Fragment>
+                                )}
                                 {this.state.CurrStep == 0 ? (
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
@@ -2946,10 +2894,7 @@ class bogAddEdit extends Component {
 
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
-                            title={
-                                Resources["smartDeleteMessage"][currentLanguage]
-                                    .content
-                            }
+                            title={Resources["smartDeleteMessage"][currentLanguage].content}
                             closed={this.onCloseModal}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}
@@ -2957,11 +2902,7 @@ class bogAddEdit extends Component {
                             clickHandlerContinue={this.ConfirmDelete}
                         />
                     ) : null}
-                    <div
-                        className="largePopup largeModal "
-                        style={{
-                            display: this.state.showBoqModal ? "block" : "none"
-                        }}>
+                    <div className="largePopup largeModal " style={{ display: this.state.showBoqModal ? "block" : "none" }}>
                         <SkyLight
                             hideOnOverlayClicked
                             ref={ref => (this.boqTypeModal = ref)}
