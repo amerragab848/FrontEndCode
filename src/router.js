@@ -525,6 +525,12 @@ const OverTime = AsyncComponent(() =>
     import('./Componants/TimeSheet/OverTime'),
 );
 
+// petty cash
+
+const PettyCashAddEdit = AsyncComponent(() =>
+    import('./Componants/PettyCash/PettyCashAddEdit'),
+);
+
 //Design
 
 const AddEditModificationDrawing = AsyncComponent(() =>
@@ -734,6 +740,7 @@ let originalRoutes = [
     />,
     <Route key="r-33" path="/MonitorTasks" component={MonitorTasks} />,
     <Route key="r-34" path="/AddTimeSheet" component={AddTimeSheet} />,
+    <Route key="r-34" path="/PettyCashAddEdit/:id?/:projectId?" component={PettyCashAddEdit} />,
     <Route key="r-35" path="/AddOverTime" component={AddOverTime} />,
     <Route key="r-36" path="/AddLateTimeSheet" component={AddLateTimeSheet} />,
     <Route key="r-37" path="/OverTime" component={OverTime} />,

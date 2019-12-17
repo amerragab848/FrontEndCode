@@ -1112,6 +1112,7 @@ class HeaderMenu extends Component {
         search: "?id=" + encodedPaylod
       });
     }
+    this.setState({ searchClass: true, subjectText: '' });
   }
 
   notfiClick = (e, field) => {
@@ -1131,11 +1132,9 @@ class HeaderMenu extends Component {
     }
   }
 
-  
   componentWillUnmount() {
-    this.props.actions.clearCashDocument(); 
-   
-}
+    this.props.actions.clearCashDocument();
+  }
 
   render() {
     let totalNotification = this.state.notifications.length + this.state.taskes.length;
@@ -1170,8 +1169,8 @@ class HeaderMenu extends Component {
               </ul>
               <ul id="nav-clickable" className="nav-right">
                 <li style={{ borderBottom: 0 }} ref={search => { this.search = search }}>
-                  <a className="header__search--container">
-                    <div className="header__search ">
+                  <a className="header__search--container" onMouseLeave={() => this.setState({ searchClass: false })}>
+                    <div className={"header__search " + (this.state.searchClass ? 'active' : '')}>
                       <span onClick={(e, field) => { this.notfiClick(e, 'search'); this.searchClick(e); }}>
                         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                           <g fill="none" fillRule="evenodd" transform="translate(3 3)">
@@ -1182,7 +1181,7 @@ class HeaderMenu extends Component {
                         </svg>
                       </span>
                       <div className="ui input ">
-                        <input type="text" placeholder={Resources["search"][currentLanguage]} onChange={e => this.setState({ subjectText: e.target.value })}
+                        <input type="text" value={this.state.subjectText} placeholder={Resources["search"][currentLanguage]} onChange={e => this.setState({ subjectText: e.target.value })}
                           onKeyUp={e => e.keyCode === 13 ? this.searchClick() : null} />
                       </div>
                     </div>

@@ -8307,5 +8307,9 @@
         "en": "Contractor's Payment Percent",
         "ar": "Contractor's Payment Percent"
 
+    },
+    "amountRequired": {
+        "en": "Please insert Amount",
+        "ar": "من فضلك ادخل الكمية "
     }
 }
