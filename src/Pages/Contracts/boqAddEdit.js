@@ -31,7 +31,7 @@ import * as communicationActions from "../../store/actions/communication";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 //import GridCustom from 'react-customized-grid';
 
-import "react-customized-grid/main.css";
+//import "react-customized-grid/main.css";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
