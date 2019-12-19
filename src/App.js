@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import "./Styles/css/font-awesome.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./Styles/css/semantic.min.css";
-import "react-customized-grid/main.css";
 
 import "react-table/react-table.css";
 import Menu from "./Pages/Menu/Menu";
@@ -16,6 +15,7 @@ import { ToastContainer } from "react-toastify";
 import Config from "./Services/Config";
 import IndexedDb from "./IndexedDb";
 
+import "react-customized-grid/main.css";
 const loadingStyle = {
     container: {
         position: "fixed",
@@ -107,12 +107,12 @@ class App extends Component {
 
         return this.state.cssLoaded ? (
             <Provider store={store}>
-                <ErrorHandler>
+                {/* <ErrorHandler> */}
                     <div>
                         {showComp}
                         <ToastContainer autoClose={3000} />
                     </div>
-                </ErrorHandler>
+                {/* </ErrorHandler> */}
             </Provider>
         ) : (
             <div style={loadingStyle.container}>

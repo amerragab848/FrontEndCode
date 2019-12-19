@@ -1388,7 +1388,7 @@ class requestPaymentsAddEdit extends Component {
                         updated_document.percentComplete = value.percentComplete;
                         updated_document.quantityComplete = value.quantityComplete;
                         updated_document.paymentPercent = value.paymentPercent;
-                        updated_document.lastComment = value.lastComment;
+                        updated_document.lastComment = value.comment;
                         updated_document.id = value.id;
 
                         updated_document = Object.assign(original_document, updated_document);
@@ -1679,7 +1679,7 @@ class requestPaymentsAddEdit extends Component {
                 break;
 
             case "lastComment":
-                updateRow.lastComment = e.target.value;
+                updateRow.comment = e.target.value;
                 break;
         }
 
@@ -1695,6 +1695,7 @@ class requestPaymentsAddEdit extends Component {
 
         mainDoc.requestId = this.state.docId;
         mainDoc.contractId = this.state.document.contractId;
+       // mainDoc.comment = mainDoc.lastComment;
 
         this.setState({
             isLoading: true

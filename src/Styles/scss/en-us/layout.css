@@ -6499,14 +6499,14 @@ h1, h2, h3, h4, h5 {
     padding: 8px;
 }
 
-.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table {
+.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table:not(.react-grid) {
     border-left: 0;
     border-right: 0;
 
     /**/
 }
 
-.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th {
+.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table:not(.react-grid) thead th {
     font-family: font-b;
     font-size: 14px;
     line-height: 1.43;
@@ -6514,20 +6514,20 @@ h1, h2, h3, h4, h5 {
     color: #a8b0bf;
 }
 
-.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(1) {
+.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table:not(.react-grid) thead th:nth-child(1) {
     padding: 0 13px;
     width: 40px;
 }
 
-.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(2) {
+.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table:not(.react-grid) thead th:nth-child(2) {
     border-right: 1px solid #e9ecf0;
 }
 
-.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
+.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table:not(.react-grid) thead th:nth-child(3) {
     padding-left: 30px;
 }
 
-.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td {
+.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table:not(.react-grid) tbody td {
     font-family: font-opens;
     font-size: 14px;
     line-height: 1.71;
@@ -6535,15 +6535,15 @@ h1, h2, h3, h4, h5 {
     color: #3e4352;
 }
 
-.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:nth-child(2) {
+.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table:not(.react-grid) tbody td:nth-child(2) {
     border-right: 1px solid #e9ecf0;
 }
 
-.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:nth-child(3) {
+.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table:not(.react-grid) tbody td:nth-child(3) {
     padding-left: 30px;
 }
 
-.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table tbody td:last-child {
+.documents-temp .doc-container .subiTabContainer .subiTabsContent .doc-pre-cycle .precycle-grid .table:not(.react-grid) tbody td:last-child {
     text-align: right;
 }
 
@@ -6637,14 +6637,14 @@ h1, h2, h3, h4, h5 {
     padding: 8px;
 }
 
-.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table {
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table:not(.react-grid) {
     border-left: 0;
     border-right: 0;
 
     /**/
 }
 
-.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th {
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table:not(.react-grid) thead th {
     font-family: font-b;
     font-size: 14px;
     line-height: 1.43;
@@ -6652,20 +6652,20 @@ h1, h2, h3, h4, h5 {
     color: #a8b0bf;
 }
 
-.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(1) {
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table:not(.react-grid) thead th:nth-child(1) {
     padding: 0 13px;
     width: 40px;
 }
 
-.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(2) {
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table:not(.react-grid) thead th:nth-child(2) {
     border-right: 1px solid #e9ecf0;
 }
 
-.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table thead th:nth-child(3) {
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table:not(.react-grid) thead th:nth-child(3) {
     padding-left: 30px;
 }
 
-.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table:not(.react-grid) tbody td {
     font-family: font-opens;
     font-size: 14px;
     line-height: 1.71;
@@ -6673,15 +6673,15 @@ h1, h2, h3, h4, h5 {
     color: #3e4352;
 }
 
-.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:nth-child(2) {
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table:not(.react-grid) tbody td:nth-child(2) {
     border-right: 1px solid #e9ecf0;
 }
 
-.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:nth-child(3) {
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table:not(.react-grid) tbody td:nth-child(3) {
     padding-left: 30px;
 }
 
-.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td:last-child {
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table:not(.react-grid) tbody td:last-child {
     text-align: right;
 }
 
@@ -16430,12 +16430,12 @@ em {
     color: #e9edf2 !important;
 }
 
-tfoot tr {
+.attachmentTable tfoot tr {
     height: 40px;
     background-color: #A8B0BF;
 }
 
-tfoot tr td p {
+.attachmentTable tfoot tr td p {
     padding-left: 20px;
     font-size: 15px;
     font-weight: bold;
@@ -17979,7 +17979,7 @@ button.companies_icon {
     margin-top: 0;
 }
 
-.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table tbody td {
+.documents-stepper .doc-container .step-content .doc-pre-cycle .precycle-grid .table:not(.react-grid) tbody td {
     max-width: 190px;
     white-space: nowrap;
     overflow: hidden;
@@ -21973,5 +21973,14 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     position: relative;
 }
 
+.attachmentTable.attachmentTableAuto.specialTable thead tr:first-of-type th {
+    position: sticky;
+    top: 147px;
+}
+
+.attachmentTable.attachmentTableAuto.specialTable thead tr:last-of-type th {
+    position: sticky;
+    top: 194px;
+}
 
 /* Added New After devided*/

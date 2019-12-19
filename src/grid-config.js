@@ -24,12 +24,12 @@ const documents = {
             },
         ],
         rowActions: [
-            {
-                title: 'Send',
-                handleClick: item => {
-                    alert(`Sent ${item.subject}!!!`);
-                },
-            },
+            // {
+            //     title: 'Send',
+            //     handleClick: item => {
+            //         alert(`Sent ${item.subject}!!!`);
+            //     },
+            // },
         ],
         api: {
             fetch: 'GetLettersByProjectId',
