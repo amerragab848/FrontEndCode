@@ -2631,5 +2631,56 @@
         ],
         "columnsItems": [],
         "friendlyNames": []
+    },
+    "71": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "documentDate",
+                "type": "D"
+            },
+            {
+                "name": "contract",
+                "value": "contractName",
+                "type": "S"
+            },
+            {
+                "name": "originalContractSum",
+                "value": "originalContractSum",
+                "type": "S"
+            },
+            {
+                "name": "revisedContractSumToDate",
+                "value": "revisedContractSumToDate",
+                "type": "S"
+            },
+            {
+                "name": "advancedPayment",
+                "value": "advancePaymentAmount",
+                "type": "S"
+            },
+            {
+                "name": "remainingPayment",
+                "value": "remainingPayment",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
     }
 }

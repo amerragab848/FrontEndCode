@@ -85,14 +85,7 @@ class Export extends Component {
             this.tableToExcel(this.props.fileName);
         }
     }
-
-    // componentWillUpdate(nextProps, nextState){
-    //     if (nextProps.isExportRequestPayment && nextState.isExportRequestPayment) {  
-    //         this.setState({columns:this.props.columns});
-    //         this.tableToExcel(this.props.fileName);
-    //     } 
-    // }
-
+ 
     ifIE() {
         var isIE11 = navigator.userAgent.indexOf(".NET CLR") > -1;
         var isIE11orLess = isIE11 || navigator.appVersion.indexOf("MSIE") != -1;

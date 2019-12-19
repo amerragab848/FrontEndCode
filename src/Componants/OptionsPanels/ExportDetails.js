@@ -38,10 +38,10 @@ class ExportDetails extends Component {
 
             this.setState({
                 isLoading: true
-            }); 
+            });
             var route = 'ExportDocumentServerSide';
-            var title =this.props.documentName.replace(/ /g,'_');
-             
+            var title = this.props.documentName.replace(/ /g, '_');
+
             Dataservice.GetNextArrangeMainDocument(route + `?documentName=${title}&documentId=${this.props.docId}&projectId=${this.props.projectId}&docTypeId=${this.props.docTypeId}`)
                 .then(result => {
                     if (result != null) {
@@ -555,7 +555,7 @@ class ExportDetails extends Component {
         });
     }
 
-    exportPDFFile() {
+    exportPDFFile() { 
         let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY');
         let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : [];
         let cycleWF = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0] : null;
@@ -564,7 +564,7 @@ class ExportDetails extends Component {
                 <div id="printPdf" className="printWrapper">
                     <div className="company__name">
                         <span className="company__logo" style={{ background: 'transparent' }}> <img src="/static/media/logo.f73844e0.svg" alt="Procoor" title="Procoor" style={{ maxWidth: '100%' }} /></span>
-                        <h3> {Resources[this.props.documentTitle][currentLanguage]}</h3>
+                        <h3> {this.props.documentName}</h3>
                     </div>
                     <div className="subiGrid printGrid">
                         <div className="docStatus">
@@ -678,8 +678,7 @@ class ExportDetails extends Component {
                     {this.drawWorkFlow()}
                     {this.drawattachDocuments()}
                 </div>
-                {this.state.isLoading === true ? this.exportPDFFile()
-                    : null}
+                {this.state.isLoading === true ? this.exportPDFFile() : null}
             </div>
         )
     }
@@ -695,8 +694,8 @@ function mapStateToProps(state, ownProps) {
         fields: state.communication.fields,
         fieldsItems: state.communication.fieldsItems,
         docsAttachData: state.communication.docsAttachData,
-        docTypeId: state.communication.docTypeId,
         documentTitle: state.communication.documentTitle
+        //docTypeId: state.communication.docTypeId,
     }
 }
 

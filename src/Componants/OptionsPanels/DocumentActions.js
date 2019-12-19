@@ -81,7 +81,7 @@ class DocumentActions extends Component {
         this.state = {
             selectedPanels: [],
             currentTitle: "sendToWorkFlow",
-            defualtValue: { label: Resources["action"][currentLanguage], value: '-1' },
+            defualtValue: { label: Resources["action"][currentLanguage], value: -1 },
             approvalStatus: true
         }
 
@@ -104,9 +104,9 @@ class DocumentActions extends Component {
             import(`${item.path}`).then(module => {
                 ///cahnage approvalStatus (true or false ) to set correct parameter for document approvel 
                 if (item.value == 3)
-                    this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: false, currentArrange: this.props.currentArrange });
+                    this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: false, currentArrange: this.props.currentArrange, docTypeId: this.props.docTypeId, documentTitle: this.props.documentName });
                 else
-                    this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: true, currentArrange: this.props.currentArrange });
+                    this.subComponentProps = Object.assign(this.subComponentProps, { approvalStatus: true, currentArrange: this.props.currentArrange, docTypeId: this.props.docTypeId, documentTitle: this.props.documentName });
 
                 this.setState({ module: module.default, currentTitle: item.title })
                 this.props.showOptionPanel();

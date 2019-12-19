@@ -945,7 +945,7 @@ class LettersAddEdit extends Component {
                                                                     showModal={this.props.showModal}
                                                                     showOptionPanel={this.showOptionPanel}
                                                                     permission={this.state.permission}
-                                                                    documentName={Resources.lettertitle[currentLanguage]}
+                                                                    documentName="lettertitle"
                                                                 />
                                                             </div>
                                                         </div>

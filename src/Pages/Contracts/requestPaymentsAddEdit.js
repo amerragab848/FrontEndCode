@@ -885,6 +885,7 @@ class requestPaymentsAddEdit extends Component {
 
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
+            this.props.actions.ExportingData({ items: [] });
 
             dataservice.GetDataList("GetCostCodingTreeByProjectId?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
                 this.setState({
@@ -1224,23 +1225,23 @@ class requestPaymentsAddEdit extends Component {
 
                     let columnsApprovedInvoices = [{
                         name: Resources["JobBuilding"][currentLanguage],
-                        key: result.building || ''
+                        key: 'building'
                     }]
-
+                    let trFoot = {};
                     result.map(parent => {
                         let sumRowTotal = 0;
                         let sumtotal = 0;
 
+                        trFoot.building = Resources["total"][currentLanguage];
+
                         res.map(child => {
                             var total = child[parent.details];
+
+                            trFoot[parent.details] = child[parent.details];
+
                             sumRowTotal += parseFloat(child.rowTotal);
                             sumtotal = total + sumtotal;
                             parent.total = sumtotal;
-
-                            columnsApprovedInvoices.push({
-                                name: Resources["total"][currentLanguage],
-                                key: rowTotal
-                            })
                         });
 
                         rowTotal = sumRowTotal;
@@ -1272,7 +1273,8 @@ class requestPaymentsAddEdit extends Component {
                         name: Resources["total"][currentLanguage],
                         key: rowTotal
                     })
-
+                    trFoot["rowTotal"] = rowTotal;
+                    res.push({ ...trFoot });
                     this.setState({
                         approvedInvoicesChilds: res,
                         approvedInvoicesParent: approvedInvoicesParent,
@@ -1645,7 +1647,7 @@ class requestPaymentsAddEdit extends Component {
                 updateRow.sitePaymentPercent = currentvalue;
                 break;
 
-            case "paymentPercent": 
+            case "paymentPercent":
                 updateRow.paymentPercent = currentvalue;
                 break;
 
@@ -1695,7 +1697,7 @@ class requestPaymentsAddEdit extends Component {
 
         mainDoc.requestId = this.state.docId;
         mainDoc.contractId = this.state.document.contractId;
-       // mainDoc.comment = mainDoc.lastComment;
+        // mainDoc.comment = mainDoc.lastComment;
 
         this.setState({
             isLoading: true
@@ -2213,8 +2215,10 @@ class requestPaymentsAddEdit extends Component {
         //ExportApprovedInvoices
         const btnExportApprovedInvoices = this.state.isLoading === false ?
             (
-                <Export key={"Export-5"} rows={this.state.isLoading === false ? this.state.approvedInvoicesChilds : []}
-                    columns={this.state.columnsApprovedInvoices} fileName={Resources["summaryOfApprovedInvoices"][currentLanguage]} />
+                <Export key={"Export-5"}
+                    rows={this.state.isLoading === false ? this.state.approvedInvoicesChilds : []}
+                    columns={this.state.columnsApprovedInvoices}
+                    fileName={Resources["summaryOfApprovedInvoices"][currentLanguage]} />
             ) : null;
 
         let columnsTrees = [
@@ -2513,12 +2517,13 @@ class requestPaymentsAddEdit extends Component {
                                         {i.building.slice(0, i.building.lastIndexOf("-"))}
                                     </td>
 
-                                    {this.state.approvedInvoicesParent.map(
-                                        data => (
-                                            <td>
-                                                {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </td>
-                                        )
+                                    {this.state.approvedInvoicesParent.map(data => (
+
+                                        <td>
+                                            {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </td>
+
+                                    )
                                     )}
                                     <td>
                                         {parseFloat(i.rowTotal).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ,")}
@@ -2526,19 +2531,6 @@ class requestPaymentsAddEdit extends Component {
                                 </tr>
                             ))}
                         </tbody>
-                        <tfoot>
-                            <tr style={{ backgroundColor: "whitesmoke", color: "black" }}>
-                                <td width="15%">
-                                    {Resources["total"][currentLanguage]}
-                                </td>
-                                {this.state.approvedInvoicesParent.map(i => (
-                                    <td>
-                                        {parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                    </td>
-                                ))}
-                                <td>{this.state.rowTotal} </td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </Fragment>
@@ -2837,8 +2829,7 @@ class requestPaymentsAddEdit extends Component {
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
-                                                    {this.state.docId > 0 &&
-                                                        this.state.isViewMode === false ?
+                                                    {this.state.docId > 0 && this.state.isViewMode === false ?
                                                         (<UploadAttachment changeStatus={this.props.changeStatus}
                                                             AddAttachments={839}
                                                             EditAttachments={3223}
@@ -2851,7 +2842,8 @@ class requestPaymentsAddEdit extends Component {
                                                         ) : null}
                                                     {this.viewAttachments()}
                                                     {this.props.changeStatus === true ? (
-                                                        <ViewWorkFlow docType={this.state.docTypeId}
+                                                        <ViewWorkFlow
+                                                            docType={this.state.docTypeId}
                                                             docId={this.state.docId}
                                                             projectId={this.state.projectId} />
                                                     ) : null}
@@ -3162,6 +3154,7 @@ class requestPaymentsAddEdit extends Component {
                                         showModal={this.props.showModal}
                                         showOptionPanel={this.showOptionPanel}
                                         permission={this.state.permission}
+                                        documentName="paymentRequisitions"
                                     />
                                 </div>
                             </div>
@@ -3470,7 +3463,8 @@ function mapStateToProps(state) {
         hasWorkflow: state.communication.hasWorkflow,
         projectId: state.communication.projectId,
         items: state.communication.items,
-        showModal: state.communication.showModal
+        showModal: state.communication.showModal,
+        //docTypeId: state.communication.docTypeId,
     };
 }
 
