@@ -157,7 +157,6 @@ class PettyCash extends Component {
                 });
             });
         }
-
     }
 
     // filterMethodMain = (event, query, apiFilter) => {
@@ -218,7 +217,7 @@ class PettyCash extends Component {
     }
 
     clickHandlerDeleteRows = (selectedRow) => {
-        this.setState({ showDeleteModal: true, selectedRow });
+        this.setState({ showDeleteModal: true, selectedRow: selectedRow.slice(-1) });
     }
 
     clickHandlerCancelMain = () => {
@@ -227,9 +226,12 @@ class PettyCash extends Component {
 
     clickHandlerContinueMain = () => {
         this.setState({ isLoading: true, showDeleteModal: false });
-
+        let updatedRows
         Api.post(`DeletePeetyCash?id=${this.state.selectedRow}`).then(result => {
-            this.setState({ isLoading: false, rows: this.state.rows });
+            this.setState({ isLoading: false });
+            updatedRows = this.state.rows
+            console.log(updatedRows);
+            console.log(updatedRows.splice(this.state.selectedRow, 1));
         }).catch(ex => {
             this.setState({ isLoading: false, showDeleteModal: false });
         });
