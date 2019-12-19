@@ -17247,6 +17247,7 @@ button.companies_icon {
     pointer-events: unset;
     /* cursor: not-allowed; */
 }
+
 .proForm .has-error label.control-label {
     color: #26344c !important;
 }
@@ -17283,6 +17284,9 @@ button.companies_icon {
     max-width: inherit;
 }
 
+.readOnly_inputs .doc-container .step-content  .submittalFilter  * {
+    pointer-events: unset !important;
+}
 /* grid show more filter */
 .showMore__btn {
     display: flex;
