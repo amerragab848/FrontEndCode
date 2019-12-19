@@ -106,8 +106,8 @@ class PettyCashAddEdit extends Component {
                                             validationSchema={validationSchema}
                                             onSubmit={(values) => { this.setPettyCash(values); }}
                                         >
-                                            {({ values, errors, touched, handleBlur, handleChange, setFieldValue, handleSubmit, setFieldTouched }) => (
-                                                <Form id="signupForm1" className="proForm customProform" noValidate="novalidate" onSubmit={handleSubmit}>
+                                            {({ values, errors, touched, handleBlur, handleChange, setFieldValue, handleSubmit }) => (
+                                                <Form className="proForm customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                                     <div className="proForm datepickerContainer">
 
                                                         <div className="letterFullWidth fullInputWidth">

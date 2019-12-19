@@ -62,7 +62,8 @@ class addItemDescription extends Component {
             selectedBOQSubTypeChild: { label: Resources.boqSubType[currentLanguage], value: "0" },
             addItemApi: this.props.addItemApi,
             getItemsApi: this.props.getItemsApi,
-            itemTypeTitle: ""
+            itemTypeTitle: "",
+            collapsed: true
         };
     }
 
@@ -236,13 +237,23 @@ class addItemDescription extends Component {
                         {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
                             <Form id="voItemForm" className="proForm datepickerContainer customProform" noValidate="novalidate">
                                 <header className="main__header">
-                                    <div className="main__header--div">
+                                    <div style={{ padding: '0' }} className="main__header--div">
                                         <h2 className="zero">
                                             {Resources["addItems"][currentLanguage]}
                                         </h2>
+                                        <button onClick={() => { this.setState({ collapsed: !this.state.collapsed }) }} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
+                                            {this.state.collapsed ?
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+                                                    <path fill="#A8B0BF" fill-rule="nonzero" d="M29.355 17.356h-6.712v-6.712a2.644 2.644 0 0 0-5.287 0v6.713h-6.712a2.644 2.644 0 0 0 0 5.287h6.713v6.713a2.644 2.644 0 0 0 5.287 0v-6.714h6.712a2.644 2.644 0 1 0-.001-5.287z" />
+                                                </svg> :
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+                                                    <path fill="#A8B0BF" fill-rule="nonzero" d="M29.355 17.356H10.644a2.644 2.644 0 0 0 0 5.288h18.712a2.644 2.644 0 1 0-.001-5.288z" />
+                                                </svg>
+                                            }
+                                        </button>
                                     </div>
                                 </header>
-                                <div className="document-fields">
+                                <div className="document-fields " style={{ maxHeight: this.state.collapsed ? '0' : '10000px', overflow: this.state.collapsed ? 'hidden' : 'unser', transition: 'all 0.3s ease-in-out' }}>
                                     <div className="letterFullWidth proForm  first-proform proform__twoInput">
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">

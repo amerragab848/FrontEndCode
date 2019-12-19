@@ -21977,5 +21977,14 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     position: relative;
 }
 
+.attachmentTable.attachmentTableAuto.specialTable thead tr:first-of-type th {
+    position: sticky;
+    top: 147px;
+}
+
+.attachmentTable.attachmentTableAuto.specialTable thead tr:last-of-type th {
+    position: sticky;
+    top: 194px;
+}
 
 /* Added New After devided*/
