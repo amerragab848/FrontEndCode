@@ -178,7 +178,7 @@ class ExpensesWorkFlowLog extends Component {
         return (
             <Fragment>
                 <NotifiMsg showNotify={this.state.showNotify} IsSuccess={true} Msg={Resources['successAlert'][currentLanguage]} />
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero">{CurrProject + ' - ' + Resources['expensesWorkFlow'][currentLanguage]}</h3>
                         <span>

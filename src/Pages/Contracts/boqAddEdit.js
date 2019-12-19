@@ -2692,14 +2692,14 @@ class bogAddEdit extends Component {
                     </header>
                     <div className="precycle-grid">
                         <div className="grid-container">
-                            <div className="submittalFilter">
+                            <div className="submittalFilter readOnly__disabled">
                                 <div className="subFilter">
                                     <h3 className="zero">
                                         {Resources["items"][currentLanguage]}
                                     </h3>
                                     <span>{this.state._items.length}</span>
                                 </div>
-                                <div className="rowsPaginations">
+                                <div className="rowsPaginations readOnly__disabled">
                                     <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                         <i className="angle left icon" />
                                     </button>

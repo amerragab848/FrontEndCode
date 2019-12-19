@@ -627,11 +627,7 @@ class ExportDetails extends Component {
         )
     }
 
-    render() {
-        // let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY')
-        // let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : []
-        // let cycle = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles : {}
-
+    render() { 
         return (
             <div id={'docExport'}   >
                 {this.state.isLoading === true ? null :

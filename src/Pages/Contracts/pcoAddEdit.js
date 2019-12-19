@@ -1177,7 +1177,7 @@ class pcoAddEdit extends Component {
                                                     <h3 class="zero"> {Resources['AddedItems'][currentLanguage]}</h3>
                                                     <span>{this.state.voItems.length}</span>
                                                 </div>
-                                                <div className="rowsPaginations">
+                                                 <div className="rowsPaginations readOnly__disabled">
                                                     <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                                         <i className="angle left icon" />
                                                     </button>

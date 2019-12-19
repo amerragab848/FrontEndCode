@@ -427,7 +427,7 @@ class DocApprovalDetails extends Component {
 
     return (
       <div className="mainContainer">
-        <div className="submittalFilter">
+        <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>
             <span>{this.state.rows.length}</span>
@@ -487,7 +487,7 @@ class DocApprovalDetails extends Component {
               </span>
             </div>
           </div>
-          <div className="rowsPaginations">
+           <div className="rowsPaginations readOnly__disabled">
             <div className="linebylineInput valid-input">
               <label className="control-label">
                 {Resources.totalDocs[currentLanguage]}

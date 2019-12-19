@@ -122,7 +122,7 @@ class DashBoardProjectCounterLog extends Component {
 
     return (
       <div className="mainContainer">
-        <div className="submittalFilter">
+        <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">
             <h3 className="zero">
               {Resources[this.state.pageTitle][currentLanguage]}

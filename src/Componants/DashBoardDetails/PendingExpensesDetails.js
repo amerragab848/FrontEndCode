@@ -319,7 +319,7 @@ class PendingExpensesDetails extends Component {
 
     return (
       <div className="mainContainer">
-        <div className="submittalFilter">
+        <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">
             <h3 className="zero">
               {this.state.pageTitle}
@@ -361,7 +361,7 @@ class PendingExpensesDetails extends Component {
           </div>
           <div className="filterBTNS"> {btnExport} </div>
 
-          <div className="rowsPaginations">
+           <div className="rowsPaginations readOnly__disabled">
             <div className="rowsPagiRange">
               <span>0</span> - <span>30</span> of<span> 156</span>
             </div>

@@ -268,7 +268,7 @@ class permissionsGroups extends Component {
         </React.Fragment> : <LoadingSection />
         return (
             <div >
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero">{Resources.groupsPermissions[currentLanguage]}</h3>
                         <span>{this.state.totalRows}</span>

@@ -411,7 +411,7 @@ class GeneralList extends Component {
 
         return (
             <Fragment >
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero"> {Resources['AccountsDefaultList'][currentLanguage]}</h3>
                         <span>
@@ -434,7 +434,7 @@ class GeneralList extends Component {
                         </div>
                         : null}
 
-                    <div className="rowsPaginations">
+                     <div className="rowsPaginations readOnly__disabled">
                         <div className="rowsPagiRange">
                             <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span>of<span> {this.state.totalRows}</span>
                         </div>

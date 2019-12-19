@@ -464,7 +464,7 @@ class Index extends Component {
                     perviousRoute={"/TemplatesSettings"}
                     docTitle={Resources.Projects[currentLanguage]}
                 />
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="filterBTNS">
                         <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord}>{Resources['add'][currentLanguage]}</button>
                     </div>

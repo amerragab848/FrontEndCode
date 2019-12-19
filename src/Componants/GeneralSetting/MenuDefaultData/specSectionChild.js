@@ -269,7 +269,7 @@ class specSectionChild extends Component {
 
         return (
             <Fragment >
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero"> {Resources['subSpecsSection'][currentLanguage]}</h3>
                         <span>

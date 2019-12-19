@@ -158,7 +158,7 @@ class ProjectTimeSheet extends Component {
                                     </form>
                                 </div>
                                 <div className={"grid-container " + (this.state.rows.length === 0 ? "griddata__load" : " ")}>
-                                    <div className="submittalFilter">
+                                    <div className="submittalFilter readOnly__disabled">
                                         <div className="subFilter">
                                             <h3 className="zero"></h3>
                                         </div>

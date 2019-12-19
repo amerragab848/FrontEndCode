@@ -17284,7 +17284,7 @@ button.companies_icon {
     max-width: inherit;
 }
 
-.readOnly_inputs .doc-container .step-content  .submittalFilter  * {
+.readOnly_inputs .doc-container .step-content  .readOnly__disabled  * {
     pointer-events: unset !important;
 }
 /* grid show more filter */

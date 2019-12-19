@@ -2911,7 +2911,7 @@ class requestPaymentsAddEdit extends Component {
                                             </div>
                                         ) : ("")}
                                         <div className="doc-pre-cycle">
-                                            <div className="submittalFilter">
+                                            <div className="submittalFilter readOnly__disabled">
                                                 <div className="subFilter">
                                                     <h3 className="zero">
                                                         {Resources["AddedItems"][currentLanguage]}
@@ -2936,7 +2936,7 @@ class requestPaymentsAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="rowsPaginations">
+                                                 <div className="rowsPaginations readOnly__disabled">
                                                     <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                                         <i className="angle left icon" />
                                                     </button>
