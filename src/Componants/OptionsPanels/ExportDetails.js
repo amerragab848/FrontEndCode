@@ -56,7 +56,15 @@ class ExportDetails extends Component {
                         this.setState({
                             isLoading: false
                         });
+                    } else {
+                        this.setState({
+                            isLoading: false
+                        });
                     }
+                }).catch(err => {
+                    this.setState({
+                        isLoading: false
+                    });
                 });
         }
         else {
@@ -555,7 +563,7 @@ class ExportDetails extends Component {
         });
     }
 
-    exportPDFFile() { 
+    exportPDFFile() {
         let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY');
         let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : [];
         let cycleWF = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0] : null;
@@ -627,7 +635,7 @@ class ExportDetails extends Component {
         )
     }
 
-    render() { 
+    render() {
         return (
             <div id={'docExport'}   >
                 {this.state.isLoading === true ? null :

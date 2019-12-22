@@ -1745,6 +1745,7 @@ class ContractInfoAddEdit extends Component {
                               showModal={this.props.showModal}
                               showOptionPanel={this.showOptionPanel}
                               permission={this.state.permission}
+                              documentName={Resources["contracts"][currentLanguage]}
                             />
                           </div>
                         </div>

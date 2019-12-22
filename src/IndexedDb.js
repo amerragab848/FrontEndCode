@@ -55,8 +55,7 @@ export default class IndexedDb {
             addColumn('permission', lf.Type.INTEGER).
             addColumn('checked', lf.Type.BOOLEAN).
             addColumn('type', lf.Type.STRING).
-            addPrimaryKey(['id']);
-
+            addPrimaryKey(['id']); 
     }
 
     static initializeCachedAPI() {
