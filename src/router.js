@@ -486,7 +486,9 @@ const AccountsAlerts = AsyncComponent(() =>
 const BoqStructure = AsyncComponent(() =>
     import('./Pages/ProjectSetup/boqStructure'),
 );
-
+const HeaderAndFooter = AsyncComponent(() =>
+    import('./Pages/ProjectSetup/HeaderAndFooter'),
+);
 //Menu
 
 const LeftReportMenu = AsyncComponent(() =>
@@ -888,6 +890,7 @@ let originalRoutes = [
         component={AddEditModificationDrawing}
     />,
     <Route key="r-82" path="/AccountsAlerts" component={AccountsAlerts} />,
+    <Route key="r-82" path="/HeaderAndFooter/:id" component={HeaderAndFooter} />,
     <Route
         key="r-83"
         path="/projectPicturesAddEdit"
