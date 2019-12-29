@@ -12,17 +12,19 @@ import Config from "../../Services/Config";
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import Dataservice from '../../Dataservice.js';
+import '../../Styles/scss/en-us/printStyle.css';
 const find = require('lodash/find')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const filedsIgnor = ['status', 'docDate'];
+//const iframe = '<iframe id="iframePrint"></iframe>';
 
 class ExportDetails extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            isExcel: "false",
+            isExcel: false,
             isLandscape: false,
             disNone: "disNone",
             isLoading: false,
@@ -30,15 +32,15 @@ class ExportDetails extends Component {
         };
 
         this.ExportDocument = this.ExportDocument.bind(this);
-        // this.exportPDFFile = this.exportPDFFile.bind(this);
     }
 
     ExportDocument(Fields, items, name) {
-        if (this.state.isExcel == "false") {
+        this.setState({
+            isLoading: true
+        });
 
-            this.setState({
-                isLoading: true
-            });
+        if (this.state.isExcel === false) {
+
             var route = 'ExportDocumentServerSide';
             var title = this.props.documentName.replace(/ /g, '_');
 
@@ -104,9 +106,11 @@ class ExportDetails extends Component {
                 docAttachments: docAttachments
             }
 
-            var blob = new Blob([format(template, ctx)]);
-            //var blobURL = window.URL.createObjectURL(blob);
+            this.setState({
+                isLoading: false
+            });
 
+            var blob = new Blob([format(template, ctx)]);
             if (this.ifIE()) {
                 //csvData = table.innerHTML;
                 if (window.navigator.msSaveBlob) {
@@ -121,26 +125,11 @@ class ExportDetails extends Component {
 
         }
     }
+
     componentDidMount() {
         // this.ExportDocument('salaryTable', 'testTable', 'procoor ');
         // console.log(this.props.workFlowCycles);
     }
-
-    // static getDerivedStateFromProps(nextProps, state) {
-    //     let random = new Date().valueOf();
-    //     if (random !== state.random) {
-    //         return {
-    //             random
-    //         };
-    //     }
-    //     return null; 
-    // }
-
-    // componentDidUpdate(prevProps, prevState) {
-    //     if (prevState.random !== this.props.random) {
-    //         this.ExportDocument('salaryTable', 'testTable', 'procoor ');
-    //     }
-    // }
 
     ifIE() {
         var isIE11 = navigator.userAgent.indexOf(".NET CLR") > -1;
@@ -191,40 +180,35 @@ class ExportDetails extends Component {
 
     drawItems() {
         let fieldsItems = DED[this.props.docTypeId].columnsItems
-        let rows = this.props.items.length > 0 ?
-            (this.props.items.map((row, index) => {
-                return (
-                    <tr key={'rwow- ' + index}>
-                        {fieldsItems.map((field, index) => {
-                            return (<td key={'field- ' + index}>{row[field]}</td>)
-                        })}
-                    </tr>
-                )
-            })
-            )
-            : null
+
         let fieldsName = DED[this.props.docTypeId].friendlyNames
         if (fieldsName.length > 0) {
             return (
-                <table id="items " style={{ border: 'double' }}>
+                <table id="items" style={{ border: 'double' }}>
 
                     <thead valign="top">
                         <tr key={'dd- '} style={{ border: '4px' }}>
                             {fieldsName.map((column, index) => {
+                                console.log(Resources[column][currentLanguage]);
                                 return (
-                                    <th key={'dddd- ' + index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {Resources[column][currentLanguage]}</th>
+                                    <th key={'dddd- ' + index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}>{Resources[column][currentLanguage]}</th>
                                 )
                             })}
                         </tr>
                     </thead>
                     <tbody>
-                        {rows}
+                        {this.props.items.map((row, index) => {
+                            return (
+                                <tr key={'rwow- ' + index}>
+                                    {fieldsItems.map((field, index) => {
+                                        return (<td key={'field- ' + index}>{row[field]}</td>)
+                                    })}
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 </table>
             )
-        }
-        else {
-            return (null)
         }
     }
 
@@ -556,21 +540,29 @@ class ExportDetails extends Component {
         )
     }
 
-    handleChange(e, field) {
+    handleChange(value, field) {
+        console.log(value, field);
         this.setState({
-            [field]: e.target.value
+            [field]: value
         });
     }
 
     exportPDFFile() {
+        if (this.state.isExcel === true) return;
         let formatData = moment(this.props.document.docDate).format('DD/MM/YYYY');
         let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : [];
         let cycleWF = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0] : null;
         return (
-            <div>
+            <div id="invoice" className="invoice">
                 <div id="printPdf" className="printWrapper">
                     <div className="company__name">
-                        <span className="company__logo" style={{ background: 'transparent' }}> <img src="/static/media/logo.f73844e0.svg" alt="Procoor" title="Procoor" style={{ maxWidth: '100%' }} /></span>
+                        <span className="company__logo" style={{
+                              width: '60px',
+                            height: '60px',
+                            borderRadius: '30px',
+                            backgroundColor: '#4382f9',
+                            marginRight: '26px'
+                        }}> <img src="/static/media/logo.f73844e0.svg" alt="Procoor" title="Procoor" style={{ maxWidth: '100%' }} /></span>
                         <h3> {this.props.documentName}</h3>
                     </div>
                     <div className="subiGrid printGrid">
@@ -587,7 +579,6 @@ class ExportDetails extends Component {
                         <div className="subiTable">
                             {this.drawFields_pdf()}
                         </div>
-
                     </div>
                     {this.props.items.length > 0 ?
                         < div className="table__withItem">
@@ -618,9 +609,11 @@ class ExportDetails extends Component {
                                             <div className={cycle.statusVal == null ? "flowStatus pendingStatue" : cycle.statusVal === true ? "flowStatus approvedStatue" : "flowStatus rejectedStatue"}>
                                                 <span className=" statueName">{cycle.status}</span>
                                                 <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>
-                                                <span className="statueSignature">
-                                                    <img src={cycle.statusVal == null ? null : cycle.signature != null ? cycle.signature : Signature} alt="..." />
-                                                </span>
+                                                {cycle.statusVal == null ? null :
+                                                    <span className="statueSignature">
+                                                        <img src={cycle.signature != null ? Config.getPublicConfiguartion().downloads + "/" + cycle.signature : Signature} alt="..." />
+                                                    </span>
+                                                }
                                             </div>
                                         </div>
                                     )
@@ -631,7 +624,33 @@ class ExportDetails extends Component {
                     }
                 </div>
             </div >
+
         )
+    }
+
+    PrintDocument() {
+        this.setState({
+            isExcel: false
+        });
+        var contents = document.getElementById("invoice").innerHTML;
+        var frame1 = document.getElementById('iframePrint');
+        //var head = frame1.getElementsByTagName('head')[0]; 
+        //var link = document.createElement('style');
+
+        // link.appendChild(document.createTextNode(css));
+        // link.setAttribute('href', "https://www.dropbox.com/s/vr1npoqizd7za8a/printStyle.css?dl=0");
+        // link.setAttribute("rel", "stylesheet"); 
+        //frame1.contentDocument.head.appendChild(link);
+
+        var frameDoc = frame1.contentWindow ? frame1.contentWindow : frame1.contentDocument.document ? frame1.contentDocument.document : frame1.contentDocument;
+        frameDoc.document.open();
+        frameDoc.document.write(contents);
+        frameDoc.document.close();
+
+        setTimeout(function () {
+            window.frames["iframePrint"].focus();
+            window.frames["iframePrint"].print();
+        }, 1000);
     }
 
     render() {
@@ -643,28 +662,30 @@ class ExportDetails extends Component {
                             <div className="fillter-status fillter-item-c">
                                 <label className="control-label">{Resources.export[currentLanguage]}</label>
                                 <div className="ui checkbox radio radioBoxBlue">
-                                    <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === "false" ? null : 'checked'} value={true} onChange={e => this.handleChange(e, 'isExcel')} />
+                                    <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? null : 'checked'} value={true} onChange={e => this.handleChange(true, 'isExcel')} />
                                     <label>{Resources.excel[currentLanguage]}</label>
                                 </div>
                                 <div className="ui checkbox radio radioBoxBlue">
-                                    <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === "false" ? 'checked' : null} value={false} onChange={e => this.handleChange(e, 'isExcel')} />
+                                    <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? 'checked' : null} value={false} onChange={e => this.handleChange(false, 'isExcel')} />
                                     <label>{Resources.pdf[currentLanguage]}</label>
                                 </div>
                             </div>
                             <div className="fillter-status fillter-item-c">
                                 <label className="control-label">{Resources.design[currentLanguage]}</label>
                                 <div className="ui checkbox radio radioBoxBlue">
-                                    <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'isLandscape')} />
+                                    <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? null : 'checked'} value="true" onChange={e => this.handleChange(true, 'isLandscape')} />
                                     <label>{Resources.landscape[currentLanguage]}</label>
                                 </div>
                                 <div className="ui checkbox radio radioBoxBlue">
-                                    <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? 'checked' : null} value="true" onChange={e => this.handleChange(e, 'isLandscape')} />
+                                    <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? 'checked' : null} value="true" onChange={e => this.handleChange(false, 'isLandscape')} />
                                     <label>{Resources.portrait[currentLanguage]}</label>
                                 </div>
                             </div>
                         </div>
                         <div className="fullWidthWrapper">
                             <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
+
+                            <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.PrintDocument()}>{Resources["print"][currentLanguage]}</button>
                         </div>
                         <div id="exportLink"></div>
                     </div>
@@ -675,14 +696,17 @@ class ExportDetails extends Component {
 
                 <div style={{ display: 'none' }}>
                     {this.drawFields()}
-
                     {this.drawItems()}
                     {this.drawAttachments()}
                     {this.drawWorkFlow()}
                     {this.drawattachDocuments()}
                 </div>
-                {this.state.isLoading === true ? this.exportPDFFile() : null}
-            </div>
+
+                {this.exportPDFFile()}
+                <iframe id="iframePrint" name="iframePrint">
+
+                </iframe>
+            </div >
         )
     }
 }

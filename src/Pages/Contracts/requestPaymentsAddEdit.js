@@ -51,13 +51,7 @@ const validationItemsSchema = Yup.object().shape({
     quantityComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["quantityComplete"][currentLanguage]),
     paymentPercent: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["paymentPercent"][currentLanguage])
 });
-
-const validationContractorSchema = Yup.object().shape({
-    sitePercentComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["percentComplete"][currentLanguage]),
-    siteQuantityComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["quantityComplete"][currentLanguage]),
-    sitePaymentPercent: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["paymentPercent"][currentLanguage])
-});
-
+ 
 const BoqTypeSchema = Yup.object().shape({
     boqType: Yup.string().required(Resources["boqSubType"][currentLanguage]),
     boqChild: Yup.string().required(Resources["boqSubType"][currentLanguage]),
