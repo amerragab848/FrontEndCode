@@ -2680,8 +2680,24 @@
                 "type": "S"
             }
         ],
-        "columnsItems": [],
-        "friendlyNames": []
+        "columnsItems": [
+            "description",
+            "prevoiuse",
+            "currentValue",
+            "total",
+            "contractorPrevoiuse",
+            "contractorCurrentValue",
+            "contractorTotal" 
+        ],
+        "friendlyNames": [
+            "workDescription",
+            "previous",
+            "current",
+            "total",
+            "previous",
+            "current",
+            "total" 
+        ]
     },
     "77": {
         "fields": [
