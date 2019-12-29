@@ -841,6 +841,7 @@ class requestPaymentsAddEdit extends Component {
                 hasWorkflow: nextProps.hasWorkflow
             });
 
+
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
             this.setState({
@@ -892,7 +893,6 @@ class requestPaymentsAddEdit extends Component {
                     fillDropDownTress: result
                 });
             });
-
             this.setState({
                 isLoading: true,
                 documentDeduction: documentDeduction
@@ -968,6 +968,9 @@ class requestPaymentsAddEdit extends Component {
                     contractsPool: result
                 });
             });
+            
+        }else{
+            this.fillSummariesTab();
         }
     }
 
@@ -1189,12 +1192,14 @@ class requestPaymentsAddEdit extends Component {
         let interimInvoicedTable = [...this.state.interimInvoicedTable];
         let isItemUpdate = this.state.isItemUpdate;
 
-        if (interimInvoicedTable.length == 0 || isItemUpdate === true) {
+        if ((interimInvoicedTable.length == 0 || isItemUpdate === true) && contractId > 0) {
             this.setState({
                 isLoading: true
             });
 
             dataservice.GetDataGrid("GetTotalForReqPay?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
+
+                this.props.actions.ExportingData({ items: result });
                 this.setState({
                     interimInvoicedTable: result || [],
                     isLoading: false,
@@ -1210,7 +1215,7 @@ class requestPaymentsAddEdit extends Component {
 
         let approvedInvoicesChilds = [...this.state.approvedInvoicesChilds];
 
-        if (approvedInvoicesChilds.length == 0) {
+        if (approvedInvoicesChilds.length == 0 && contractId > 0) {
             this.setState({
                 isLoading: true
             });
@@ -1219,10 +1224,11 @@ class requestPaymentsAddEdit extends Component {
             dataservice.GetDataGridPost("GetApprovedInvoicesParent?contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
                 var obj = {};
                 var conditionString = "";
+                result = result || [];  
                 dataservice.GetDataGridPost("GetApprovedInvoicesChilds?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(res => {
 
                     let approvedInvoicesParent = [];
-
+                    res = res || [];
                     let columnsApprovedInvoices = [{
                         name: Resources["JobBuilding"][currentLanguage],
                         key: 'building'
@@ -2936,7 +2942,7 @@ class requestPaymentsAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                 <div className="rowsPaginations readOnly__disabled">
+                                                <div className="rowsPaginations readOnly__disabled">
                                                     <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                                         <i className="angle left icon" />
                                                     </button>
