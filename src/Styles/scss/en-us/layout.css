@@ -8396,6 +8396,10 @@ h1, h2, h3, h4, h5 {
     border-top: 1px solid #e9ecf0;
 }
 
+.printWrapper .attachmentTable tbody tr td {
+    height: auto !important;
+}
+
 @media screen and (max-width: 1300px) {
     .attachmentTable tbody tr td {
         height: 34px;
@@ -8532,6 +8536,10 @@ h1, h2, h3, h4, h5 {
     max-width: 140px;
 }
 
+.printWrapper .attachmentTable tbody tr .contentCell {
+    min-height: 40px;
+}
+
 @media screen and (max-width: 1300px) {
     .attachmentTable tbody tr .contentCell {
         font-size: 10px;
@@ -8564,6 +8572,10 @@ h1, h2, h3, h4, h5 {
     white-space: nowrap;
     padding: 0 5px;
     font-family: font-opens;
+}
+
+.printWrapper .attachmentTable tbody tr .contentCell a {
+    white-space: unset !important; 
 }
 
 @media screen and (max-width: 1300px) {
