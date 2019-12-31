@@ -23,7 +23,7 @@ import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
 import "react-table/react-table.css";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridSetup from "./GridSetup";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
@@ -108,76 +108,95 @@ class meetingAgendaAddEdit extends Component {
         }
 
         this.topicColumns = [
+            { title: '', type: 'check-box', width: 65, fixed: true, field: 'id' },
             {
-                key: "no",
-                name: Resources["no"][currentLanguage],
-                visible: true,
-                width: 50
+                field: "no",
+                title: Resources["no"][currentLanguage],
+                groupable: true,
+                fixed: true,
+                width: 16,
+                sortable: true,
+                type: "text"
+
             },
             {
-                key: "description",
-                name: Resources["itemDescription"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "description",
+                title: Resources["itemDescription"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                type: "text",
             },
             {
-                key: "decision",
-                name: Resources["decisions"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "decision",
+                title: Resources["decisions"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "action",
-                name: Resources["action"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "action",
+                title: Resources["action"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                type: "text"
+
             },
             {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "comment",
+                title: Resources["comment"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                type: "text"
+
             }
         ];
 
         this.atteneesColumns = [
+            { title: '', type: 'check-box', width: 35, fixed: true, field: 'id' },
             {
-                key: "companyName",
-                name: Resources["company"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                field: "companyName",
+                title: Resources["company"][currentLanguage],
+                width: 42,
+                groupable: true,
+                fixed: true,
+                type: "text",
+                sortable: true
             },
             {
-                key: "contactName",
-                name: Resources["contact"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                field: "contactName",
+                title: Resources["contact"][currentLanguage],
+                width: 42,
+                groupable: true,
+                fixed: true,
+                type: "text",
+                sortable: true
             }
         ];
+
+        this.groups = [];
+
+        this.actions = [
+            {
+                title: 'Delete',
+                handleClick: selectedRows => {
+                    this.setState({
+                        showDeleteModal: true,
+                        selectedRow: selectedRows
+                    });
+                },
+                classes: '',
+            }
+        ];
+
+        this.rowActions = [];
 
         this.state = {
             topics: [],
@@ -201,12 +220,13 @@ class meetingAgendaAddEdit extends Component {
                 label: Resources.toCompanyRequired[currentLanguage],
                 value: 0
             },
-            selectedRow: "",
+            selectedRow: {},
             attendees: [],
             attendeesId: 0,
             attendencesContacts: [],
             currentComponent_2: "attendeesContact",
-            pageSize: 50,
+            pageNumber: 0,
+            pageSize: 2000,
             agendaId: 0,
             btnTxt: "save",
             CurrStep: 0,
@@ -275,6 +295,7 @@ class meetingAgendaAddEdit extends Component {
             ],
             document: {}
         };
+
         if (!Config.IsAllow(452) && !Config.IsAllow(453) && !Config.IsAllow(455)) {
             toast.warning(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(this.state.perviousRoute);
@@ -858,78 +879,7 @@ class meetingAgendaAddEdit extends Component {
     showOptionPanel = () => {
         this.props.actions.showOptionPanel(true);
     }
-
-    onRowClick = (value, index, column) => {
-        let id = value["id"];
-        if (!Config.IsAllow(11)) {
-            toast.warning("you don't have permission");
-        } else if (column.key != 0) {
-            this.setState({ showPopUp: true, btnText: "save" });
-            if (this.state.CurrStep == 2) {
-                let actionByCompany = find(this.state.Companies, function (
-                    company
-                ) {
-                    return company.value == value.byWhomCompanyId;
-                });
-                this.setState({ isLoading: true });
-                DataService.GetDataList(
-                    "GetContactsByCompanyId?companyId=" + value.byWhomCompanyId,
-                    "contactName",
-                    "id"
-                ).then(res => {
-                    let actionByContact = find(res, function (x) {
-                        return x.value == value.byWhomContactId;
-                    });
-                    this.setState({
-                        topic: {
-                            itemDescription: value.description,
-                            action: value.action,
-                            decision: value.decision,
-                            comment: value.comment,
-                            id: value.id,
-                            requiredDate: moment(value.requiredDate)
-                        },
-                        selectedActionByCompany: actionByCompany,
-                        selectedActionByContact: actionByContact,
-                        actionByContacts: res,
-                        isLoading: false
-                    });
-                });
-            } else if (this.state.CurrStep == 1) {
-                let actionByCompany = {
-                    label: value.companyName,
-                    value: value.companyId
-                };
-                this.setState({ isLoading: true });
-                DataService.GetDataList(
-                    "GetContactsByCompanyId?companyId=" + value.companyId,
-                    "contactName",
-                    "id"
-                ).then(res => {
-                    let actionByContact = {
-                        label: value.contactName,
-                        value: value.companyId
-                    };
-                    this.setState({
-                        attendeesId: value.id,
-                        selectedActionByCompany: actionByCompany,
-                        selectedActionByContact: actionByContact,
-                        attendencesContacts: res,
-                        isLoading: false
-                    });
-                });
-            }
-            this.simpleDialog1.show();
-        }
-    };
-
-    clickHandlerDeleteRowsMain = selectedRows => {
-        this.setState({
-            showDeleteModal: true,
-            selectedRow: selectedRows
-        });
-    };
-
+ 
     _executeBeforeModalClose = () => {
         this.setState({
             showPopUp: false,
@@ -967,15 +917,52 @@ class meetingAgendaAddEdit extends Component {
     render() {
         const dataGridTopic =
             this.state.isLoading === false ? (
-                <GridSetup
-                    rows={this.state.topics}
-                    showCheckbox={true}
+                <GridCustom
+                    key="Topic"
+                    data={this.state.topics}
                     pageSize={this.state.pageSize}
-                    onRowClick={this.onRowClick}
-                    columns={this.topicColumns}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    single={true}
-                    key="topic"
+                    groups={this.groups}
+                    actions={this.actions}
+                    cells={this.topicColumns}
+                    rowActions={this.rowActions}
+                    rowClick={cell => {
+                        let id = cell.id;
+                        if (!Config.IsAllow(11)) {
+                            toast.warning("you don't have permission");
+                        } else {
+                            this.setState({ showPopUp: true, btnText: "save" });
+                            let actionByCompany = find(this.state.Companies, function (
+                                company
+                            ) {
+                                return company.value == cell.byWhomCompanyId;
+                            });
+                            this.setState({ isLoading: true });
+                            DataService.GetDataList(
+                                "GetContactsByCompanyId?companyId=" + cell.byWhomCompanyId,
+                                "contactName",
+                                "id"
+                            ).then(res => {
+                                let actionByContact = find(res, function (x) {
+                                    return x.value == cell.byWhomContactId;
+                                });
+                                this.setState({
+                                    topic: {
+                                        itemDescription: cell.description,
+                                        action: cell.action,
+                                        decision: cell.decision,
+                                        comment: cell.comment,
+                                        id: cell.id,
+                                        requiredDate: moment(cell.requiredDate)
+                                    },
+                                    selectedActionByCompany: actionByCompany,
+                                    selectedActionByContact: actionByContact,
+                                    actionByContacts: res,
+                                    isLoading: false
+                                });
+                            });
+                            this.simpleDialog1.show();
+                        }
+                    }}
                 />
             ) : (
                     <LoadingSection />
@@ -983,15 +970,45 @@ class meetingAgendaAddEdit extends Component {
 
         const dataGridAttendees =
             this.state.isLoading === false ? (
-                <GridSetup
-                    rows={this.state.attendees}
-                    showCheckbox={true}
+                <GridCustom
+                    key="Attendes"
+                    data={this.state.attendees}
                     pageSize={this.state.pageSize}
-                    onRowClick={this.onRowClick}
-                    columns={this.atteneesColumns}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    single={true}
-                    key="attendess"
+                    groups={this.groups}
+                    actions={this.actions}
+                    cells={this.atteneesColumns}
+                    rowActions={this.rowActions}
+                    rowClick={cell => {
+                        let id = cell.id;
+                        if (!Config.IsAllow(11)) {
+                            toast.warning("you don't have permission");
+                        } else {
+                            this.setState({ showPopUp: true, btnText: "save" });
+                            let actionByCompany = {
+                                label: cell.companyName,
+                                value: cell.companyId
+                            };
+                            this.setState({ isLoading: true });
+                            DataService.GetDataList(
+                                "GetContactsByCompanyId?companyId=" + cell.companyId,
+                                "contactName",
+                                "id"
+                            ).then(res => {
+                                let actionByContact = {
+                                    label: cell.contactName,
+                                    value: cell.companyId
+                                };
+                                this.setState({
+                                    attendeesId: cell.id,
+                                    selectedActionByCompany: actionByCompany,
+                                    selectedActionByContact: actionByContact,
+                                    attendencesContacts: res,
+                                    isLoading: false
+                                });
+                            });
+                            this.simpleDialog1.show();
+                        }
+                    }}
                 />
             ) : (
                     <LoadingSection />

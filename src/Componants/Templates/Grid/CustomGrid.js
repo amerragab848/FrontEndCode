@@ -487,7 +487,8 @@ export default class CustomGrid extends Component {
                     </div>
                 </div>
 
-                <GridCustom
+                <GridCustom 
+                    key={this.props.key}
                     cells={this.props.cells}
                     data={this.state.rows}
                     pageSize={this.props.pageSize}
