@@ -19,7 +19,7 @@ class DashBoard extends Component {
             widgets: widgets,
             types: [],
             selected: {},
-            type: 1,
+            type: 0,
             category: 1,
             categoryOrder: [],
             showWidgets: false,
@@ -42,9 +42,7 @@ class DashBoard extends Component {
 
             this.setState(new_state);
         } else {
-            let old_state = this.state.selected[categoryId]
-                ? this.state.selected[categoryId]
-                : [];
+            let old_state = this.state.selected[categoryId] ? this.state.selected[categoryId] : [];
 
             new_state.selected[categoryId] = [...old_state, id];
 
@@ -79,11 +77,7 @@ class DashBoard extends Component {
             let type = widgetOrders[1] || {};
 
             type[category.id] = {
-                order: [
-                    ...types[0].categories
-                        .find(cat => cat.id === category.id)
-                        .widgets.map(widget => widget.order.toString())
-                ]
+                order: [...types[0].categories.find(cat => cat.id === category.id).widgets.map(widget => widget.order.toString())]
             };
 
             widgetOrders[1] = type;

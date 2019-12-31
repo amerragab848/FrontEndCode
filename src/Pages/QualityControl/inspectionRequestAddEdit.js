@@ -500,15 +500,17 @@ class inspectionRequestAddEdit extends Component {
 
     onChangeAnswer = (value) => {
         if (value != null) {
-            this.setState({ answer: value });
-            let original_document = { ...this.state.document };
+
+            let original_document = { ...this.state.documentCycle };
             let updated_document = {};
-            updated_document['answer'] = value;
+            updated_document['cycleComment'] = value;
             updated_document = Object.assign(original_document, updated_document);
             this.setState({
-                document: updated_document
+                documentCycle: updated_document
             });
         }
+
+
     }
 
     onChangeRfi = (value) => {
@@ -824,7 +826,7 @@ class inspectionRequestAddEdit extends Component {
                                 </div>
                                 <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown 
+                                        <Dropdown
                                             title="approvalStatus"
                                             isMulti={false}
                                             data={this.state.approvalstatusList}
@@ -839,17 +841,7 @@ class inspectionRequestAddEdit extends Component {
                                             name="approvalStatusId"
                                             id="approvalStatusId" />
                                     </div>
-                                    <div className="linebylineInput valid-input">
-                                        <label className="control-label">{Resources['comment'][currentLanguage]}</label>
-                                        <div className='ui input inputDev '>
-                                            <input autoComplete="off"
-                                                value={this.state.documentCycle.cycleComment}
-                                                className="form-control" name="comment"
-                                                onBlur={(e) => { handleBlur(e) }}
-                                                onChange={(e) => { this.handleChangeCycle(e, 'cycleComment') }}
-                                                placeholder={Resources['comment'][currentLanguage]} />
-                                        </div>
-                                    </div>
+
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources['progressPercent'][currentLanguage]}</label>
                                         <div className='ui input inputDev '>
@@ -859,6 +851,16 @@ class inspectionRequestAddEdit extends Component {
                                                 onBlur={(e) => { handleBlur(e) }}
                                                 onChange={(e) => { this.handleChangeCycle(e, 'progressPercent') }}
                                                 placeholder={Resources['progressPercent'][currentLanguage]} />
+                                        </div>
+                                    </div>
+                                    <div className="letterFullWidth">
+                                        <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
+                                        <div className="inputDev ui input">
+                                            <div className="inputDev ui input">
+                                                <TextEditor
+                                                    value={this.state.documentCycle.cycleComment}
+                                                    onChange={this.onChangeAnswer} />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -902,7 +904,7 @@ class inspectionRequestAddEdit extends Component {
 
         return (
             <div className="mainContainer">
-               {/* <Late />
+                {/* <Late />
                <a href="/LateTimeSheet">test</a> */}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
@@ -1196,16 +1198,7 @@ class inspectionRequestAddEdit extends Component {
                                                                             onChange={this.onChangeRfi} />
                                                                     </div>
                                                                 </div>
-                                                                <div className="letterFullWidth">
-                                                                    <label className="control-label">{Resources.replyMessage[currentLanguage]}</label>
-                                                                    <div className="inputDev ui input">
-                                                                        <div className="inputDev ui input">
-                                                                            <TextEditor
-                                                                                value={this.state.answer}
-                                                                                onChange={this.onChangeAnswer} />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+
                                                             </div>
                                                             <div className="doc-pre-cycle letterFullWidth">
                                                                 <div>

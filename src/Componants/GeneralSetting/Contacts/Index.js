@@ -354,7 +354,7 @@ class Index extends Component {
         return (
             <div className="mainContainer">
                 {this.props.Adminstration.popUp ? this.state.currentComponent : null}
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>
                         <span>{this.props.Adminstration.companyContact.length}</span>

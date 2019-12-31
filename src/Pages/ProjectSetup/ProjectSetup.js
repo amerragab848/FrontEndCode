@@ -398,7 +398,7 @@ class ProjectSetup extends Component {
                 {!this.state.isLoading ?
                     <div className='mainContainer'>
                         {/*Render Filter  */}
-                        <div className="submittalFilter">
+                        <div className="submittalFilter readOnly__disabled">
                             <div className="subFilter">
                                 <h3 className="zero">{this.state.title}</h3> 
                                 <div className="ui labeled icon top right pointing dropdown fillter-button"

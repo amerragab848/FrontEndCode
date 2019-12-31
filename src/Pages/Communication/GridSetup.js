@@ -11,9 +11,8 @@ const DraggableContainer = Draggable.Container;
 const Toolbar = ToolsPanel.AdvancedToolbar;
 const GroupedColumnsPanel = ToolsPanel.GroupedColumnsPanel;
 
-//const selectors = Data.Selectors;
-
 class GridSetup extends Component {
+
     constructor(props) {
         super(props);
 
@@ -399,7 +398,6 @@ class GridSetup extends Component {
 
     render() {
         const { rows, groupBy } = this.state;
-
         const drag =
             Resources["jqxGridLanguage"][currentLanguage].localizationobj
                 .groupsheaderstring;
@@ -535,12 +533,7 @@ class GridSetup extends Component {
 
         return (
             <Fragment>
-                <div
-                    className={
-                        this.state.minimizeClick
-                            ? "minimizeRelative miniRows"
-                            : "minimizeRelative"
-                    }>
+                <div className={this.state.minimizeClick ? "minimizeRelative miniRows" : "minimizeRelative"}>
                     <div className="minimizeSpan">
                         <div
                             className="V-tableSize"
@@ -567,7 +560,6 @@ class GridSetup extends Component {
                             </svg>
                         </div>
                     </div>
-
                     <div className="grid-container">
                         <div id="top__scroll">
                             <div id="empty__div--scroll" />
@@ -597,7 +589,7 @@ class GridSetup extends Component {
                                         onGridRowsUpdated={
                                             this.onGridRowsUpdated
                                         }
-                                        onCellSelected={ this.onCellSelected}
+                                        onCellSelected={this.onCellSelected}
                                         onColumnResize={(idx, width, event) => {
                                             this.scrolllll();
                                         }}
@@ -657,12 +649,11 @@ class GridSetup extends Component {
                                 )}
                         </div>
                     </div>
-                    <div
-                        className={
-                            this.state.columnsModal
-                                ? "grid__column active "
-                                : "grid__column "
-                        }>
+                    <div className={
+                        this.state.columnsModal
+                            ? "grid__column active "
+                            : "grid__column "
+                    }>
                         <div className="grid__column--container">
                             <button
                                 className="closeColumn"

@@ -179,7 +179,7 @@ class MonthlyTasksDetails extends Component {
     return (
       <div className="mainContainer">
         <div className="resetPassword">
-          <div className="submittalFilter">
+          <div className="submittalFilter readOnly__disabled">
             <div className="subFilter">
               <h3 className="zero">
                 {Resources["monthlyTasks"][currentLanguage]}
@@ -210,7 +210,7 @@ class MonthlyTasksDetails extends Component {
               </span>
             </div>
             <div className="filterBTNS">{btnExport}</div>
-            <div className="rowsPaginations">
+             <div className="rowsPaginations readOnly__disabled">
               <div className="rowsPagiRange">
                 <span>{this.state.rows.length}</span> of
                 <span>{this.state.rows.length}</span>

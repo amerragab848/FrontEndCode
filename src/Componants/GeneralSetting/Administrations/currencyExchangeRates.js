@@ -221,7 +221,7 @@ class currencyExchangeRates extends Component {
 
         return (
             <Fragment >
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero"> {Resources['currencyExchangeRates'][currentLanguage]}</h3>
                         <span>

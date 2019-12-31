@@ -601,7 +601,7 @@ class Accounts extends Component {
 
         return (
             <div>
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>
                         <span>{this.state.totalRows}</span>
@@ -662,7 +662,7 @@ class Accounts extends Component {
                         {btnExport}
                         {config.IsAllow(801) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button> : null}
                     </div>
-                    <div className="rowsPaginations">
+                     <div className="rowsPaginations readOnly__disabled">
                         <div className="rowsPagiRange">
                             <span>0</span> - <span>{this.state.pageSize}</span> of
                            <span> {this.state.totalRows}</span>

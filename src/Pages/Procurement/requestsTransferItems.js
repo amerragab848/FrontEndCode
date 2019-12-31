@@ -184,7 +184,7 @@ class requestsTransferItems extends Component {
 
             <div className='mainContainer'>
                 <div>
-                    <div className="submittalFilter">
+                    <div className="submittalFilter readOnly__disabled">
 
                         <div className="subFilter">
                             <h3 className="zero">{this.state.pageTitle}</h3>

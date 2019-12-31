@@ -318,7 +318,7 @@ class RejectedTimesheetsDetails extends Component {
 
         return (
             <div className="mainContainer main__withouttabs">
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>
                         <span>{this.state.rows.length}</span>

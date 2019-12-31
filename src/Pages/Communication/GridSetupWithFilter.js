@@ -19,7 +19,7 @@ class GridSetupWithFilter extends Component {
     super(props);
 
     this.state = {
-      columns: this.props.columns,
+      columns: this.props.columns.filter(x => x.key !== "BtnActions" && x.key !== "actions"),
       rows: this.props.rows,
       groupBy: this.props.groupBy != null ? this.props.groupBy : [],
       selectedIndexes: [],
@@ -39,7 +39,8 @@ class GridSetupWithFilter extends Component {
       currentData: 0,
       date: new Date(),
       setDate: moment(new Date()).format("DD/MM/YYYY"),
-      fieldDate: {}
+      fieldDate: {},
+      isFilter: false
     };
 
     this.groupColumn = this.groupColumn.bind(this);
@@ -75,16 +76,16 @@ class GridSetupWithFilter extends Component {
     this.scrolllll();
   }
 
-
   static getDerivedStateFromProps(props, current_state) {
-    if (current_state.rows !== props.rows) {
+    if (current_state.rows !== props.rows && props.isFilter) {
+      props.changeValueOfProps();
       return {
-        rows: props.rows
+        rows: props.rows,
+        filteredRows: props.rows
       }
     }
     return null
   }
-
 
   onHeaderDrop = (source, target) => {
     const stateCopy = Object.assign({}, this.state);
@@ -312,6 +313,7 @@ class GridSetupWithFilter extends Component {
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
     if (this.props.onGridRowsUpdated !== undefined) {
+
       this.props.onGridRowsUpdated({ fromRow, toRow, updated });
     }
   };
@@ -337,6 +339,7 @@ class GridSetupWithFilter extends Component {
       let matched = 0;
 
       let filters = Object.keys(_filters).reduce((n, k) => (n[k] = _filters[k], n), {});
+
       if (Object.keys(filters).length > 1) {
 
         rows.forEach(row => {
@@ -388,6 +391,7 @@ class GridSetupWithFilter extends Component {
           rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
           Loading: false
         });
+
       } else {
 
         rows.forEach(row => {
@@ -475,7 +479,12 @@ class GridSetupWithFilter extends Component {
         newFilters[filter.column.key] = typeof (event) === "object" ? "" : event;
       }
       else if (type === "number") {
-        newFilters[filter.column.key] = parseFloat(event.target.value);
+        let value = parseFloat(event.target.value);
+        if (!isNaN(value)) {
+          newFilters[filter.column.key] = value;
+        } else {
+          delete newFilters[filter.column.key];
+        }
       } else if (event.target.value != "") {
         newFilters[filter.column.key] = event.target.value;
       } else {
@@ -487,9 +496,12 @@ class GridSetupWithFilter extends Component {
       this.getRowsFilter(rows, newFilters);
 
       this.setState({
+        isFilter: false,
         setFilters: newFilters,
         Loading: false
       });
+    } else {
+      console.log('this.state.filteredRows.length == 0')
     }
   }
 
@@ -612,6 +624,8 @@ class GridSetupWithFilter extends Component {
 
     const drag = Resources["jqxGridLanguage"][currentLanguage].localizationobj.groupsheaderstring;
 
+    const columns = this.state.columns.filter(x => x.key !== "BtnActions" && x.key !== "actions");
+
     let CustomToolbar = ({ groupBy, onColumnGroupAdded, onColumnGroupDeleted }) => {
       return (
         <Toolbar>
@@ -689,8 +703,8 @@ class GridSetupWithFilter extends Component {
             ) : null}
           </div>
           <div className="filter__input-wrapper" onMouseLeave={this.resetDate} id="resetData">
-            <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
-              {this.state.columns.map((column, index) => {
+            <form id="signupForm1" method="post" className="proForm readOnly__disabled" action="" noValidate="noValidate">
+              {columns.map((column, index) => {
                 let classX = arrColumn.findIndex(x => x == column.key) > -1 ? "small__input--width " : "medium__input--width";
                 if (column.type === "date") {
                   return column.filterable === true && index <= 5 ? (
@@ -758,8 +772,8 @@ class GridSetupWithFilter extends Component {
               <div className="content">
                 <div className="filter__warrper">
                   <div className="filter__input-wrapper">
-                    <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
-                      {this.props.columns.map((column, index) => {
+                    <form id="signupForm1" method="post" className="proForm readOnly__disabled" action="" noValidate="noValidate">
+                      {columns.map((column, index) => {
                         let classX = arrColumn.findIndex(x => x == column.key) > -1 ? "small__input--width " : "medium__input--width";
                         if (column.type === "date") {
                           return column.filterable === true && column.key !== "customBtn" ? (

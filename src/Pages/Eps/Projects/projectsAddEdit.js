@@ -166,13 +166,22 @@ class projectsAddEdit extends Component {
             if (isEdit) {
                 let companyId = this.props.document.projectManager;
                 if (companyId) {
+
                     let selectedProjectManagerCompany = result.find(element => element.value == this.props.document.projectManager)
+
                     dataservice.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + this.props.document.projectManager, 'contactName', 'id').then(result => {
                         let selectedProjectManagerContact = result.find(element => element.value == this.props.document.projectManagerContactId)
-                        this.setState({
-                            projectManagerContacts: result,
-                            selectedProjectManagerCompany, selectedProjectManagerContact
-                        });
+                        if (selectedProjectManagerContact) {
+                            this.setState({
+                                projectManagerContacts: result,
+                                selectedProjectManagerCompany, selectedProjectManagerContact
+                            });
+                        }
+                        else {
+                            this.setState({
+                                projectManagerContacts: result
+                            });
+                        }
                     })
                     if (this.props.document.projectExcuteCompanyId) {
                         let selectedExecutiveManagerCompany = result.find(element => element.value == this.props.document.projectExcuteCompanyId)
@@ -334,7 +343,7 @@ class projectsAddEdit extends Component {
     }
     render() {
         return (
-            <div className="mainContainer">
+            <div className="mainContainer main__fulldash">
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
 
@@ -347,19 +356,7 @@ class projectsAddEdit extends Component {
                             docTitle={this.state.docId > 0 ? Resources.projectsEdit[currentLanguage] : Resources.projectsAdd[currentLanguage]}
                         />
                     </div>
-                    <div className="doc-container">
-                        {
-                            this.state.docId > 0 ?
-                                <header className="main__header">
-                                    <div className="main__header--div">
-                                        <h2 className="zero">
-                                            {Resources.goEdit[currentLanguage]}
-                                        </h2>
-                                        <p className="doc-infohead"><span> {this.state.document.refDoc}</span> - <span> {this.state.document.arrange}</span> - <span>{moment(this.state.document.docDate).format('DD/MM/YYYY')}</span></p>
-                                    </div>
-                                </header>
-                                : null
-                        }
+                    <div className="doc-container"> 
                         <div className="step-content">
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">

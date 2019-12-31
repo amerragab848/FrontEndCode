@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import Profile from "./Profile";
+import PettyCash from "./PettyCash";
 import PrivacySetting from "./PrivacySetting";
 import Timesheet from './Timesheet';
 import Expenses from './Expenses';
@@ -42,7 +43,7 @@ class Index extends Component {
               <Expenses />
             </TabPanel>
             <TabPanel>
-              <Profile />
+              <PettyCash />
             </TabPanel>
             <TabPanel>
               <Timesheet />

@@ -22,6 +22,46 @@ const Actions = ({ value }) => {
     return doc_view;
 };
 
+let publicFonts = currentLanguage === "ar" ? 'cairo-sb' : 'Muli, sans-serif'
+
+
+const filterStyle = {
+    control: (styles, { isFocused }) =>
+        ({
+            ...styles,
+            backgroundColor: '#fff',
+            width: '100%',
+            height: '36px',
+            borderRadius: '4px',
+            border: isFocused ? "solid 2px #83B4FC" : '2px solid #E9ECF0',
+            boxShadow: 'none',
+            transition: ' all 0.4s ease-in-out',
+            minHeight: '36px',
+            minWidth: '210px'
+        }),
+    option: (styles, { isDisabled, isFocused, isSelected }) => {
+        return {
+            ...styles,
+            backgroundColor: isDisabled ? '#fff' : isSelected ? '#e9ecf0' : isFocused ? '#f2f6fa' : "#fff",
+            color: '#3e4352',
+            fontSize: '14px',
+            cursor: isDisabled ? 'not-allowed' : 'pointer',
+            textTransform: 'capitalize',
+            fontFamily: publicFonts,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            zIndex: '155'
+        };
+    },
+    input: styles => ({ ...styles, maxWidth: '100%' }),
+    placeholder: styles => ({ ...styles, color: '#A8B0BF', fontSize: '13px', width: '100%', fontFamily: publicFonts }),
+    singleValue: styles => ({ ...styles, color: '#252833', fontSize: '13px', width: '100%', fontFamily: publicFonts }),
+    indicatorSeparator: styles => ({ ...styles, display: 'none' }),
+    menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db' })
+};
+
+
 class Expenses extends Component {
 
     constructor(props) {
@@ -318,7 +358,7 @@ class Expenses extends Component {
 
                 <div className="resetPassword">
 
-                    <div className="submittalFilter">
+                    <div className="submittalFilter readOnly__disabled">
                         <div className="subFilter">
                             <h3 className="zero"> {Resources['expenses'][currentLanguage]}</h3>
                             <span>{this.state.rows.length}</span>
@@ -348,7 +388,7 @@ class Expenses extends Component {
                             <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.RouteHandler()}>New</button>
                         </div>
 
-                        <div className="rowsPaginations">
+                         <div className="rowsPaginations readOnly__disabled">
                             <div className="rowsPagiRange">
                                 <span>0</span> - <span>{this.state.pageSize}</span> of
                              <span>{this.state.totalRows}</span>
@@ -366,7 +406,7 @@ class Expenses extends Component {
                         <div className="fillter-status-container">
                             <div className="form-group fillterinput fillter-item-c">
                                 <Dropdown title='Projects' data={this.state.Projects}
-                                    handleChange={this.ProjectshandleChange} placeholder='Projects' />
+                                    handleChange={this.ProjectshandleChange} placeholder='Projects' styles= {filterStyle}/>
                             </div>
                             <div className="form-group fillterinput fillter-item-c" >
                                 <DatePicker title='startDate' startDate={this.state.startDate}

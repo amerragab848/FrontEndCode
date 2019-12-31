@@ -903,10 +903,18 @@ class VariationRequestAdd extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
-                                        <DocumentActions isApproveMode={this.state.isApproveMode} docTypeId={this.state.docTypeId}
-                                            docId={this.state.docId} projectId={this.state.projectId} previousRoute={this.state.previousRoute}
-                                            docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange}
-                                            showModal={this.props.showModal} showOptionPanel={this.showOptionPanel} permission={this.state.permission} />
+                                        <DocumentActions isApproveMode={this.state.isApproveMode} 
+                                                         docTypeId={this.state.docTypeId}
+                                                         docId={this.state.docId}
+                                                         projectId={this.state.projectId}
+                                                         previousRoute={this.state.previousRoute}
+                                                         docApprovalId={this.state.docApprovalId} 
+                                                         currentArrange={this.state.arrange}
+                                                         showModal={this.props.showModal} 
+                                                         showOptionPanel={this.showOptionPanel}
+                                                         permission={this.state.permission}
+                                                         documentName={Resources.variationRequest[currentLanguage]}
+                                                         />
                                     </div>
                                 </div> : null
                         }

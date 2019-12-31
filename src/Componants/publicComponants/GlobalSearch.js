@@ -340,13 +340,13 @@ class GlobalSearch extends Component {
 
         return (
             <div className="main__withouttabs mainContainer" >
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero">Search Result</h3>
                         <span>{this.state.totalRows}</span>
                     </div>
 
-                    <div className="rowsPaginations">
+                     <div className="rowsPaginations readOnly__disabled">
                         <div className="rowsPagiRange">
                             <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -{" "}
                             <span>

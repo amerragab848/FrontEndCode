@@ -2631,5 +2631,182 @@
         ],
         "columnsItems": [],
         "friendlyNames": []
+    },
+    "71": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "documentDate",
+                "type": "D"
+            },
+            {
+                "name": "contract",
+                "value": "contractName",
+                "type": "S"
+            },
+            {
+                "name": "originalContractSum",
+                "value": "originalContractSum",
+                "type": "S"
+            },
+            {
+                "name": "revisedContractSumToDate",
+                "value": "revisedContractSumToDate",
+                "type": "S"
+            },
+            {
+                "name": "advancedPayment",
+                "value": "advancePaymentAmount",
+                "type": "S"
+            },
+            {
+                "name": "remainingPayment",
+                "value": "remainingPayment",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [
+            "description",
+            "prevoiuse",
+            "currentValue",
+            "total",
+            "contractorPrevoiuse",
+            "contractorCurrentValue",
+            "contractorTotal" 
+        ],
+        "friendlyNames": [
+            "workDescription",
+            "previous",
+            "current",
+            "total",
+            "previous",
+            "current",
+            "total" 
+        ]
+    },
+    "77": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "documentDate",
+                "type": "D"
+            },
+            {
+                "name": "arrange",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "refDoc",
+                "value": "refDoc",
+                "type": "S"
+            },
+            {
+                "name": "fromCompany",
+                "value": "fromCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "fromContact",
+                "value": "fromContactName",
+                "type": "S"
+            },
+            {
+                "name": "toCompany",
+                "value": "toCompanyName",
+                "type": "S"
+            },
+            {
+                "name": "attention",
+                "value": "toContactName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName ",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [],
+        "friendlyNames": []
+    },
+    "98": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "documentDate",
+                "type": "D"
+            },
+            {
+                "name": "fromCompany",
+                "value": "companyName",
+                "type": "S"
+            },
+            {
+                "name": "disciplineName",
+                "value": "disciplineName",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [
+            "arrange",
+            "details",
+            "quantity",
+            "revQuantity",
+            "unit",
+            "unitPrice",
+            "total",
+            "resourceCode"
+        ],
+        "friendlyNames": [
+            "arrange",
+            "details",
+            "quantity",
+            "revQuantity",
+            "unit",
+            "unitPrice",
+            "total",
+            "resourceCode"
+        ]
     }
 }

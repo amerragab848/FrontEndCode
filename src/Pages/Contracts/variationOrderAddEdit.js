@@ -1076,6 +1076,7 @@ class variationOrderAddEdit extends Component {
                     showModal={this.props.showModal}
                     showOptionPanel={this.showOptionPanel}
                     permission={this.state.permission}
+                    documentName={Resources.changeOrder[currentLanguage]}
                   />
                 </div>
               </div>

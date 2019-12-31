@@ -51,13 +51,7 @@ const validationItemsSchema = Yup.object().shape({
     quantityComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["quantityComplete"][currentLanguage]),
     paymentPercent: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["paymentPercent"][currentLanguage])
 });
-
-const validationContractorSchema = Yup.object().shape({
-    sitePercentComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["percentComplete"][currentLanguage]),
-    siteQuantityComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["quantityComplete"][currentLanguage]),
-    sitePaymentPercent: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["paymentPercent"][currentLanguage])
-});
-
+ 
 const BoqTypeSchema = Yup.object().shape({
     boqType: Yup.string().required(Resources["boqSubType"][currentLanguage]),
     boqChild: Yup.string().required(Resources["boqSubType"][currentLanguage]),
@@ -174,6 +168,8 @@ class requestPaymentsAddEdit extends Component {
         let userType = Config.getPayload();
 
         this.state = {
+            isItemUpdate: false,
+            isFilter: false,
             advancedPayment: null,
             currentStep: 0,
             trees: [],
@@ -278,7 +274,7 @@ class requestPaymentsAddEdit extends Component {
             },
             {
                 name: "items",
-                callBackFn: () => this.FillGridItems()
+                callBackFn: () => this.fillGridItems()
             },
             {
                 name: "deductions",
@@ -286,7 +282,7 @@ class requestPaymentsAddEdit extends Component {
             },
             {
                 name: "summaries",
-                callBackFn: () => this.FillSummariesTab()
+                callBackFn: () => this.fillSummariesTab()
             }
         ];
     }
@@ -384,6 +380,17 @@ class requestPaymentsAddEdit extends Component {
         if (this.state.isViewMode !== true) { itemsColumns.push({ key: "BtnActions", width: 150 }) }
 
         itemsColumns = [
+            ...(this.props.changeStatus ? [
+                {
+                    key: "BtnActions",
+                    name: Resources["LogControls"][currentLanguage],
+                    width: 150,
+                    draggable: false,
+                    sortable: false,
+                    resizable: true,
+                    filterable: false,
+                    sortDescendingFirst: false
+                }] : []),
             {
                 key: "arrange",
                 name: Resources["no"][currentLanguage],
@@ -395,17 +402,6 @@ class requestPaymentsAddEdit extends Component {
                 sortDescendingFirst: true,
                 type: "number"
             },
-            ...(this.props.changeStatus ? [
-                {
-                    key: "BtnActions",
-                    name: Resources["LogControls"][currentLanguage],
-                    width: 150,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }] : []),
             {
                 key: "itemCode",
                 name: Resources["itemCode"][currentLanguage],
@@ -659,7 +655,6 @@ class requestPaymentsAddEdit extends Component {
             }
         ];
 
-
         if (changeStatus) {
             itemsColumns.push({
                 key: "actions",
@@ -746,7 +741,7 @@ class requestPaymentsAddEdit extends Component {
     customCellActions(column, row) {
         if (column.key === "BtnActions") {
             const custom = [{
-                icon: <span style={{cursor: 'pointer'}} className="fa fa-history" />,
+                icon: <span style={{ cursor: 'pointer' }} className="fa fa-history" />,
                 callback: e => {
                     this.setState({
                         isLoading: true
@@ -761,9 +756,9 @@ class requestPaymentsAddEdit extends Component {
                         this.ViewHistoryModal.show();
                     });
                 }
-            } ,
+            },
             {
-                icon: <span style={{cursor: 'pointer'}} className="fa fa-pencil" />,
+                icon: <span style={{ cursor: 'pointer' }} className="fa fa-pencil" />,
                 callback: () => {
                     if (Config.IsAllow(1001104)) {
                         let boqStractureObj = {
@@ -840,6 +835,7 @@ class requestPaymentsAddEdit extends Component {
                 hasWorkflow: nextProps.hasWorkflow
             });
 
+
             this.fillDropDowns(nextProps.document.id > 0 ? true : false);
             this.checkDocumentIsView();
             this.setState({
@@ -884,13 +880,13 @@ class requestPaymentsAddEdit extends Component {
 
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
+            this.props.actions.ExportingData({ items: [] });
 
             dataservice.GetDataList("GetCostCodingTreeByProjectId?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
                 this.setState({
                     fillDropDownTress: result
                 });
             });
-
             this.setState({
                 isLoading: true,
                 documentDeduction: documentDeduction
@@ -966,6 +962,9 @@ class requestPaymentsAddEdit extends Component {
                     contractsPool: result
                 });
             });
+            
+        }else{
+            this.fillSummariesTab();
         }
     }
 
@@ -1042,8 +1041,7 @@ class requestPaymentsAddEdit extends Component {
             this.buildColumns(this.props.changeStatus);
 
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" +
-                this.state.pageNumber + "&pageSize=" + this.state.pageSize)
-                .then(result => {
+                this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
                         paymentsItems: result,
                         isLoading: false
@@ -1164,15 +1162,15 @@ class requestPaymentsAddEdit extends Component {
         this.props.actions.showOptionPanel(true);
     }
 
-    FillGridItems = () => {
+    fillGridItems = () => {
         let contractId = this.state.document.contractId;
         if (this.props.changeStatus == true) {
             let paymentsItems = [...this.state.paymentsItems];
 
-            if (paymentsItems.length == 0) {
+            if (paymentsItems.length === 0) {
                 this.buildColumns(this.props.changeStatus);
                 this.setState({ isLoading: true });
-                dataservice.GetDataGrid("/GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
+                dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
                         paymentsItems: result != null ? result : [],
                         isLoading: false
@@ -1182,20 +1180,24 @@ class requestPaymentsAddEdit extends Component {
         }
     };
 
-    FillSummariesTab = () => {
+    fillSummariesTab = () => {
         let contractId = this.state.document.contractId;
 
         let interimInvoicedTable = [...this.state.interimInvoicedTable];
+        let isItemUpdate = this.state.isItemUpdate;
 
-        if (interimInvoicedTable.length == 0) {
+        if ((interimInvoicedTable.length == 0 || isItemUpdate === true) && contractId > 0) {
             this.setState({
                 isLoading: true
             });
 
             dataservice.GetDataGrid("GetTotalForReqPay?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
+
+                this.props.actions.ExportingData({ items: result });
                 this.setState({
                     interimInvoicedTable: result || [],
-                    isLoading: false
+                    isLoading: false,
+                    isItemUpdate: false
                 });
             }).catch(res => {
                 this.setState({
@@ -1207,7 +1209,7 @@ class requestPaymentsAddEdit extends Component {
 
         let approvedInvoicesChilds = [...this.state.approvedInvoicesChilds];
 
-        if (approvedInvoicesChilds.length == 0) {
+        if (approvedInvoicesChilds.length == 0 && contractId > 0) {
             this.setState({
                 isLoading: true
             });
@@ -1216,29 +1218,30 @@ class requestPaymentsAddEdit extends Component {
             dataservice.GetDataGridPost("GetApprovedInvoicesParent?contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
                 var obj = {};
                 var conditionString = "";
+                result = result || [];  
                 dataservice.GetDataGridPost("GetApprovedInvoicesChilds?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(res => {
 
                     let approvedInvoicesParent = [];
-
+                    res = res || [];
                     let columnsApprovedInvoices = [{
                         name: Resources["JobBuilding"][currentLanguage],
-                        key: result.building || ''
+                        key: 'building'
                     }]
-
+                    let trFoot = {};
                     result.map(parent => {
                         let sumRowTotal = 0;
                         let sumtotal = 0;
 
+                        trFoot.building = Resources["total"][currentLanguage];
+
                         res.map(child => {
                             var total = child[parent.details];
+
+                            trFoot[parent.details] = child[parent.details];
+
                             sumRowTotal += parseFloat(child.rowTotal);
                             sumtotal = total + sumtotal;
                             parent.total = sumtotal;
-
-                            columnsApprovedInvoices.push({
-                                name: Resources["total"][currentLanguage],
-                                key: rowTotal
-                            })
                         });
 
                         rowTotal = sumRowTotal;
@@ -1270,7 +1273,8 @@ class requestPaymentsAddEdit extends Component {
                         name: Resources["total"][currentLanguage],
                         key: rowTotal
                     })
-
+                    trFoot["rowTotal"] = rowTotal;
+                    res.push({ ...trFoot });
                     this.setState({
                         approvedInvoicesChilds: res,
                         approvedInvoicesParent: approvedInvoicesParent,
@@ -1369,30 +1373,31 @@ class requestPaymentsAddEdit extends Component {
     }
 
     onRowClick = (value, index, column) => {
+
         if (column.key != "BtnActions" && column.key != "actions") {
 
             let userType = Config.getPayload();
 
-            if (this.props.hasWorkflow == false) {
+            if (this.props.hasWorkflow == false || this.state.isApproveMode == true) {
                 if (this.props.changeStatus) {
-                    if (this.state.document.status === true && this.state.document.editable === true) {
+                    let obj = this.state.document;
+                    if (obj.status === true && obj.editable === true) {
 
-                        let original_document = { ...this.state.document };
+                        let original_document = { ...this.state.currentObject };
 
                         let updated_document = {};
 
                         updated_document.percentComplete = value.percentComplete;
                         updated_document.quantityComplete = value.quantityComplete;
                         updated_document.paymentPercent = value.paymentPercent;
-                        updated_document.lastComment = value.lastComment;
+                        updated_document.lastComment = value.comment;
                         updated_document.id = value.id;
 
                         updated_document = Object.assign(original_document, updated_document);
 
                         this.setState({
                             viewPopUpRows: true,
-                            currentObject: value,
-                            document: updated_document
+                            currentObject: value
                         });
                         this.addCommentModal.show();
                     } else {
@@ -1445,8 +1450,11 @@ class requestPaymentsAddEdit extends Component {
         paymentsItems[fromRow] = Object.assign(paymentsItems[fromRow], updated);
 
         let newValue = parseFloat(updated[Object.keys(updated)[0]]);
-        let oldValue = parseFloat(updateRow[Object.keys(updated)[0]]);
+        //let oldValue = parseFloat(updateRow[Object.keys(updated)[0]]);
 
+
+        let sitePercentComplete = 0;
+        let siteQuantityComplete = 0;
         if (parseFloat(updateRow.revisedQuantity) == 0 && (parseFloat(updateRow.siteQuantityComplete) > 0 || parseFloat(updateRow.sitePercentComplete) > 0)) {
             updateRow.revisedQuantity = 1;
         }
@@ -1454,29 +1462,44 @@ class requestPaymentsAddEdit extends Component {
         updateRow[Object.keys(updated)[0]] = parseFloat(updated[Object.keys(updated)[0]]);
 
         switch (Object.keys(updated)[0]) {
+
             case "quantityComplete":
-                updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
+                updateRow.percentComplete = (parseFloat(newValue) / updateRow.revisedQuantity) * 100;
                 updateRow.quantityComplete = parseFloat(newValue);
-
                 break;
+
+            case "sitePaymentPercent":
+                updateRow.paymentPercent = parseFloat(newValue);
+                updateRow.sitePaymentPercent = parseFloat(newValue);
+                break;
+
             case "percentComplete":
-                updateRow.quantityComplete = (newValue / 100) * updateRow.revisedQuantity;
+                updateRow.quantityComplete = (parseFloat(newValue) / 100) * updateRow.revisedQuantity;
                 updateRow.percentComplete = parseFloat(newValue);
-
                 break;
+
             case "sitePercentComplete":
-                updateRow.siteQuantityComplete = (newValue / 100) * updateRow.revisedQuantity;
-                updateRow.sitePercentComplete = parseFloat(newValue);
+                sitePercentComplete = parseFloat(newValue);
+                siteQuantityComplete = (parseFloat(newValue) / 100) * updateRow.revisedQuantity;
+
+                updateRow.siteQuantityComplete = siteQuantityComplete;
+                updateRow.quantityComplete = siteQuantityComplete;
+
+                updateRow.percentComplete = sitePercentComplete;
+                updateRow.sitePercentComplete = sitePercentComplete;
 
                 break;
+
             case "siteQuantityComplete":
-                updateRow.sitePercentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                updateRow.siteQuantityComplete = parseFloat(newValue);
+                sitePercentComplete = (parseFloat(newValue) / updateRow.revisedQuantity) * 100;
+                siteQuantityComplete = parseFloat(newValue);
 
+                updateRow.sitePercentComplete = sitePercentComplete;
+                updateRow.percentComplete = sitePercentComplete;
 
-                if (this.props.changeStatus == false) {
-                    updateRow.percentComplete = (newValue / updateRow.revisedQuantity) * 100;
-                }
+                updateRow.quantityComplete = siteQuantityComplete;
+                updateRow.siteQuantityComplete = siteQuantityComplete;
+
                 break;
         }
 
@@ -1496,9 +1519,14 @@ class requestPaymentsAddEdit extends Component {
 
         this.setState({
             editRows: editRows,
-            paymentsItems
+            paymentsItems,
+            isFilter: true
         });
     };
+
+    changeValueOfProps = () => {
+        this.setState({ isFilter: false });
+    }
 
     editRowsClick() {
         this.setState({ isLoading: true });
@@ -1595,8 +1623,6 @@ class requestPaymentsAddEdit extends Component {
     handleChangeForEdit = (e, updated) => {
         let updateRow = this.state.currentObject;
 
-        //let originalData = this.state.paymentsItems;
-
         this.setState({
             isLoading: true
         });
@@ -1604,26 +1630,35 @@ class requestPaymentsAddEdit extends Component {
         let sitePercentComplete = 0;
         let siteQuantityComplete = 0;
         let currentvalue = parseFloat(e.target.value);
+
+        if (parseFloat(updateRow.revisedQuantity) == 0 && (parseFloat(updateRow.siteQuantityComplete) > 0 || parseFloat(updateRow.sitePercentComplete) > 0)) {
+            updateRow.revisedQuantity = 1;
+        }
+
         switch (updated) {
 
             case "quantityComplete":
-                updateRow.percentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
-                updateRow.quantityComplete = parseFloat(e.target.value);
+                updateRow.percentComplete = (currentvalue / updateRow.revisedQuantity) * 100;
+                updateRow.quantityComplete = currentvalue;
                 break;
 
             case "sitePaymentPercent":
-                updateRow.paymentPercent = parseFloat(e.target.value);
-                updateRow.sitePaymentPercent = parseFloat(e.target.value);
+                updateRow.paymentPercent = currentvalue;
+                updateRow.sitePaymentPercent = currentvalue;
+                break;
+
+            case "paymentPercent":
+                updateRow.paymentPercent = currentvalue;
                 break;
 
             case "percentComplete":
-                updateRow.quantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
-                updateRow.percentComplete = parseFloat(e.target.value);
+                updateRow.quantityComplete = (currentvalue / 100) * updateRow.revisedQuantity;
+                updateRow.percentComplete = currentvalue;
                 break;
 
             case "sitePercentComplete":
-                sitePercentComplete = parseFloat(e.target.value);
-                siteQuantityComplete = (parseFloat(e.target.value) / 100) * updateRow.revisedQuantity;
+                sitePercentComplete = currentvalue;
+                siteQuantityComplete = (currentvalue / 100) * updateRow.revisedQuantity;
 
                 updateRow.siteQuantityComplete = siteQuantityComplete;
                 updateRow.quantityComplete = siteQuantityComplete;
@@ -1634,8 +1669,8 @@ class requestPaymentsAddEdit extends Component {
                 break;
 
             case "siteQuantityComplete":
-                sitePercentComplete = (parseFloat(e.target.value) / updateRow.revisedQuantity) * 100;
-                siteQuantityComplete = parseFloat(e.target.value);
+                sitePercentComplete = (currentvalue / updateRow.revisedQuantity) * 100;
+                siteQuantityComplete = currentvalue;
 
                 updateRow.sitePercentComplete = sitePercentComplete;
                 updateRow.percentComplete = sitePercentComplete;
@@ -1646,7 +1681,7 @@ class requestPaymentsAddEdit extends Component {
                 break;
 
             case "lastComment":
-                updateRow.lastComment = e.target.value;
+                updateRow.comment = e.target.value;
                 break;
         }
 
@@ -1661,13 +1696,27 @@ class requestPaymentsAddEdit extends Component {
         let mainDoc = this.state.currentObject;
 
         mainDoc.requestId = this.state.docId;
+        mainDoc.contractId = this.state.document.contractId;
+        // mainDoc.comment = mainDoc.lastComment;
 
+        this.setState({
+            isLoading: true
+        });
         dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
 
             this.setState({
-                viewPopUpRows: false
+                viewPopUpRows: false,
+                isItemUpdate: true,
+                isLoading: false
+            });
+        }).catch(res => {
+            toast.error(
+                Resources["operationCanceled"][currentLanguage]
+            );
+            this.setState({
+                isLoading: false
             });
         });
     };
@@ -2166,8 +2215,10 @@ class requestPaymentsAddEdit extends Component {
         //ExportApprovedInvoices
         const btnExportApprovedInvoices = this.state.isLoading === false ?
             (
-                <Export key={"Export-5"} rows={this.state.isLoading === false ? this.state.approvedInvoicesChilds : []}
-                    columns={this.state.columnsApprovedInvoices} fileName={Resources["summaryOfApprovedInvoices"][currentLanguage]} />
+                <Export key={"Export-5"}
+                    rows={this.state.isLoading === false ? this.state.approvedInvoicesChilds : []}
+                    columns={this.state.columnsApprovedInvoices}
+                    fileName={Resources["summaryOfApprovedInvoices"][currentLanguage]} />
             ) : null;
 
         let columnsTrees = [
@@ -2218,8 +2269,12 @@ class requestPaymentsAddEdit extends Component {
 
         const ItemsGrid = this.state.isLoading === false && this.state.currentStep === 1 ? (
             <GridSetupWithFilter
-                groupBy={this.props.changeStatus ? [{ key: 'wasAdded', name: 'status' }, { key: 'boqType', name: 'boqType' }, { key: 'boqSubType', name: 'boqSubType' }] : null}
+                groupBy={this.props.changeStatus ? [
+                    { key: 'wasAdded', name: 'status' }
+                    , { key: 'boqType', name: 'boqType' }
+                    , { key: 'secondLevel', name: 'boqTypeChild' }] : null}
                 rows={this.state.paymentsItems}
+                isFilter={this.state.isFilter}
                 showCheckbox={isCompany && this.props.changeStatus ? true : false}
                 clickHandlerDeleteRows={this.clickHandlerDeleteRows}
                 pageSize={this.state.pageSize}
@@ -2227,7 +2282,8 @@ class requestPaymentsAddEdit extends Component {
                 columns={itemsColumns}
                 onGridRowsUpdated={this._onGridRowsUpdated}
                 getCellActions={(column, row) => this.getCellActions(column, row)}
-                key="PRitems" />
+                key="PRitems"
+                changeValueOfProps={this.changeValueOfProps.bind(this)} />
 
         ) : null;
 
@@ -2349,32 +2405,32 @@ class requestPaymentsAddEdit extends Component {
                 <table className="attachmentTable" key="DeductionsCertificate">
                     <thead>
                         <tr>
-                            <th style={{width : "30%"}}>
+                            <th style={{ width: "30%" }}>
                                 <div className="headCell">
                                     {Resources["description"][currentLanguage]}
                                 </div>
                             </th>
-                            <th style={{width : "10%"}}>
+                            <th style={{ width: "10%" }}>
                                 <div className="headCell">
                                     {Resources["completedQuantity"][currentLanguage]}
                                 </div>
                             </th>
-                            <th style={{width : "10%"}}>
+                            <th style={{ width: "10%" }}>
                                 <div className="headCell">
                                     {Resources["paymentPercent"][currentLanguage]}
                                 </div>
                             </th>
-                            <th style={{width : "10%"}}>
+                            <th style={{ width: "10%" }}>
                                 <div className="headCell">
                                     {Resources["addedBy"][currentLanguage]}
                                 </div>
                             </th>
-                            <th style={{width : "10%"}}>
+                            <th style={{ width: "10%" }}>
                                 <div className="headCell">
                                     {Resources["addedDate"][currentLanguage]}
                                 </div>
                             </th>
-                            <th style={{width : "10%"}}>
+                            <th style={{ width: "10%" }}>
                                 <div className="headCell">
                                     {Resources["comment"][currentLanguage]}
                                 </div>
@@ -2385,12 +2441,12 @@ class requestPaymentsAddEdit extends Component {
                         {this.state.paymentRequestItemsHistory.map(i => (
                             <tr key={i.id}>
                                 <Fragment>
-                                    <td style={{width : "50%"}}>
+                                    <td style={{ width: "50%" }}>
                                         <div className="contentCell">
                                             {i.description}
                                         </div>
                                     </td>
-                                    <td style={{width : "50%"}}>
+                                    <td style={{ width: "50%" }}>
                                         <div className="contentCell">
                                             {i.completedQnty}
                                         </div>
@@ -2431,62 +2487,52 @@ class requestPaymentsAddEdit extends Component {
                     </h2>
                 </header>
                 {btnExportApprovedInvoices}
-                <table className="attachmentTable " key="summaryOfApprovedInvoices">
-                    <thead>
-                        <tr>
-                            <th width="15%">
-                                <div className="headCell">
-                                    {Resources["JobBuilding"][currentLanguage]}
-                                </div>
-                            </th>
-                            {this.state.approvedInvoicesParent.map(i => (
-                                <th>
+                <div style={{ maxWidth: '100%', overflowX: 'scroll' }}>
+                    <table className="attachmentTable " key="summaryOfApprovedInvoices">
+                        <thead>
+                            <tr>
+                                <th width="15%">
                                     <div className="headCell">
-                                        {i.details.slice(0, i.details.lastIndexOf("-"))}
+                                        {Resources["JobBuilding"][currentLanguage]}
                                     </div>
                                 </th>
-                            ))}
-                            <th width="10%">
-                                <div className="headCell">
-                                    {Resources["total"][currentLanguage]}
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.approvedInvoicesChilds.map(i => (
-                            <tr>
-                                <td>
-                                    {i.building.slice(0, i.building.lastIndexOf("-"))}
-                                </td>
+                                {this.state.approvedInvoicesParent.map(i => (
+                                    <th>
+                                        <div className="headCell">
+                                            {i.details.slice(0, i.details.lastIndexOf("-"))}
+                                        </div>
+                                    </th>
+                                ))}
+                                <th width="10%">
+                                    <div className="headCell">
+                                        {Resources["total"][currentLanguage]}
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.approvedInvoicesChilds.map(i => (
+                                <tr>
+                                    <td>
+                                        {i.building.slice(0, i.building.lastIndexOf("-"))}
+                                    </td>
 
-                                {this.state.approvedInvoicesParent.map(
-                                    data => (
+                                    {this.state.approvedInvoicesParent.map(data => (
+
                                         <td>
                                             {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </td>
+
                                     )
-                                )}
-                                <td>
-                                    {parseFloat(i.rowTotal).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ,")}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                    <tfoot>
-                        <tr style={{ backgroundColor: "whitesmoke", color: "black" }}>
-                            <td width="15%">
-                                {Resources["total"][currentLanguage]}
-                            </td>
-                            {this.state.approvedInvoicesParent.map(i => (
-                                <td>
-                                    {parseFloat(i.total.toString()).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                </td>
+                                    )}
+                                    <td>
+                                        {parseFloat(i.rowTotal).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ,")}
+                                    </td>
+                                </tr>
                             ))}
-                            <td>{this.state.rowTotal} </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </Fragment>
         ) : (<LoadingSection />);
 
@@ -2712,7 +2758,7 @@ class requestPaymentsAddEdit extends Component {
                                                                         {Resources.insurance[currentLanguage]}
                                                                     </label>
                                                                     <div className={"ui input inputDev" + (errors.insurance && touched.insurance ? " has-error" : "ui input inputDev")}>
-                                                                        <input type="text" className="form-control" id="insurance" name="insurance"
+                                                                        <input type="text" className="form-control" id="insurance" name="insurance" readOnly
                                                                             value={this.state.document.insurance || ''}
                                                                             placeholder={Resources.insurance[currentLanguage]}
                                                                             onBlur={e => { handleChange(e); handleBlur(e); }}
@@ -2722,30 +2768,34 @@ class requestPaymentsAddEdit extends Component {
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">
-                                                                        {Resources.actualPayment[currentLanguage]}
-                                                                    </label>
-                                                                    <div className={"ui input inputDev" + (errors.actualPayment && touched.actualPayment ? " has-error" : "ui input inputDev")}>
-                                                                        <input type="text" className="form-control" id="actualPayment" name="actualPayment"
-                                                                            value={this.state.document.actualPayment || ''}
-                                                                            placeholder={Resources.actualPayment[currentLanguage]}
-                                                                            onBlur={e => { handleChange(e); handleBlur(e); }}
-                                                                            onChange={e => this.handleChange(e, "actualPayment")} />
-                                                                        {touched.actualPayment ? (<em className="pError"> {errors.actualPayment} </em>) : null}
-                                                                    </div>
-                                                                </div>
-                                                                <div className="linebylineInput valid-input">
-                                                                    <label className="control-label">
-                                                                        {Resources.remainingPayment[currentLanguage]}
-                                                                    </label>
-                                                                    <div className="ui input inputDev">
-                                                                        <input type="text" className="form-control" name="remainingPayment"
-                                                                            value={this.state.document.remainingPayment || ''}
-                                                                            placeholder={Resources.remainingPayment[currentLanguage]}
-                                                                            onChange={e => this.handleChange(e, "remainingPayment")} />
-                                                                    </div>
-                                                                </div>
+                                                                {this.props.changeStatus ?
+                                                                    <Fragment>
+                                                                        <div className="linebylineInput valid-input">
+                                                                            <label className="control-label">
+                                                                                {Resources.actualPayment[currentLanguage]}
+                                                                            </label>
+                                                                            <div className={"ui input inputDev" + (errors.actualPayment && touched.actualPayment ? " has-error" : "ui input inputDev")}>
+                                                                                <input type="text" className="form-control" id="actualPayment" name="actualPayment"
+                                                                                    value={this.state.document.actualPayment || ''}
+                                                                                    placeholder={Resources.actualPayment[currentLanguage]}
+                                                                                    onBlur={e => { handleChange(e); handleBlur(e); }}
+                                                                                    onChange={e => this.handleChange(e, "actualPayment")} />
+                                                                                {touched.actualPayment ? (<em className="pError"> {errors.actualPayment} </em>) : null}
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="linebylineInput valid-input">
+                                                                            <label className="control-label">
+                                                                                {Resources.remainingPayment[currentLanguage]}
+                                                                            </label>
+                                                                            <div className="ui input inputDev">
+                                                                                <input type="text" className="form-control" name="remainingPayment"
+                                                                                    value={this.state.document.remainingPayment || ''}
+                                                                                    placeholder={Resources.remainingPayment[currentLanguage]}
+                                                                                    onChange={e => this.handleChange(e, "remainingPayment")} />
+                                                                            </div>
+                                                                        </div>
+                                                                    </Fragment>
+                                                                    : null}
                                                             </div>
                                                             <div className="slider-Btns slider-Btns--menu">
                                                                 {this.state.isLoading === false ? (this.showBtnsSaving()) : (
@@ -2779,8 +2829,7 @@ class requestPaymentsAddEdit extends Component {
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
-                                                    {this.state.docId > 0 &&
-                                                        this.state.isViewMode === false ?
+                                                    {this.state.docId > 0 && this.state.isViewMode === false ?
                                                         (<UploadAttachment changeStatus={this.props.changeStatus}
                                                             AddAttachments={839}
                                                             EditAttachments={3223}
@@ -2793,7 +2842,8 @@ class requestPaymentsAddEdit extends Component {
                                                         ) : null}
                                                     {this.viewAttachments()}
                                                     {this.props.changeStatus === true ? (
-                                                        <ViewWorkFlow docType={this.state.docTypeId}
+                                                        <ViewWorkFlow
+                                                            docType={this.state.docTypeId}
                                                             docId={this.state.docId}
                                                             projectId={this.state.projectId} />
                                                     ) : null}
@@ -2861,7 +2911,7 @@ class requestPaymentsAddEdit extends Component {
                                             </div>
                                         ) : ("")}
                                         <div className="doc-pre-cycle">
-                                            <div className="submittalFilter">
+                                            <div className="submittalFilter readOnly__disabled">
                                                 <div className="subFilter">
                                                     <h3 className="zero">
                                                         {Resources["AddedItems"][currentLanguage]}
@@ -2886,7 +2936,7 @@ class requestPaymentsAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="rowsPaginations">
+                                                <div className="rowsPaginations readOnly__disabled">
                                                     <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                                         <i className="angle left icon" />
                                                     </button>
@@ -3104,6 +3154,7 @@ class requestPaymentsAddEdit extends Component {
                                         showModal={this.props.showModal}
                                         showOptionPanel={this.showOptionPanel}
                                         permission={this.state.permission}
+                                        documentName="paymentRequisitions"
                                     />
                                 </div>
                             </div>
@@ -3348,7 +3399,7 @@ class requestPaymentsAddEdit extends Component {
                         </Formik>
                     </SkyLight>
                 </div>
- 
+
                 {this.state.showDeleteModal == true ? (
                     <ConfirmationModal
                         title={Resources["smartDeleteMessage"][currentLanguage].content}
@@ -3412,7 +3463,8 @@ function mapStateToProps(state) {
         hasWorkflow: state.communication.hasWorkflow,
         projectId: state.communication.projectId,
         items: state.communication.items,
-        showModal: state.communication.showModal
+        showModal: state.communication.showModal,
+        //docTypeId: state.communication.docTypeId,
     };
 }
 
