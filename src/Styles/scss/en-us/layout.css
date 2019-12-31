@@ -21983,4 +21983,23 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     top: 194px;
 }
 
+.js-bar-chart-container-tooltip-container .x-axis-group .tick text ,
+.britechart.js-grouped-bar-chart-tooltip-container .x-axis-group .tick text{
+    transform: rotate(8deg) translateY(2px) translateX(45px);
+} 
+
+.js-bar-chart-container-tooltip-container svg.britechart.bar-chart, 
+.britechart.js-grouped-bar-chart-tooltip-container svg.britechart.grouped-bar {
+    overflow: visible !important;
+}
+
+@media (min-width: 1200) and (max-width: 1360) {
+    #legenbd__teext {
+        padding-left: 0;
+    }
+
+    #legenbd__teext .percentage {
+        font-size: 48px;
+    }
+}
 /* Added New After devided*/
