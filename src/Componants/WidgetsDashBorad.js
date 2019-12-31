@@ -81,7 +81,8 @@ var widgets = [
           isModal: false,
           // key: "0-1-6"
         }
-      }, {
+      },
+      {
         title: "monitorTasks",
         permission: 0,
         canView: false,

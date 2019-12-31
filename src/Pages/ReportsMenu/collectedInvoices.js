@@ -300,7 +300,7 @@ class CollectedInvoices extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="submittalFilter">
+                                                <div className="submittalFilter readOnly__disabled">
                                                     <div className="subFilter">
                                                         <h3 className="zero"></h3>
                                                     </div>

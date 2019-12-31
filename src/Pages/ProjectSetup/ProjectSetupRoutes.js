@@ -72,8 +72,18 @@ let routes = [
             order: 6
         }
     },
-
     {
+        route: "HeaderAndFooter",
+        moduleId: "ProjectSetup",
+        title: "headerAndFooter",
+        nav: true,
+        settings: {
+            General: true,
+            permission: 10056,
+            caption: "procoor-icon-task-groups",
+            order: 1
+        }
+    }, {
         route: "ActionByAlerts",
         moduleId: "ActionByAlerts",
         title: "bicAlerts",
@@ -84,7 +94,7 @@ let routes = [
             caption: "procoor-icon-task-groups",
             order: 5
         }
-    }, 
+    },
     {
         route: "WorkFlow",
         moduleId: "CommonLog",
@@ -96,7 +106,7 @@ let routes = [
             caption: "procoor-icon-task-groups",
             order: 1
         }
-    },{
+    }, {
         route: "AccountsAlerts",
         moduleId: "AccountsAlerts",
         title: "docAlerts",
@@ -108,7 +118,7 @@ let routes = [
             order: 3
         }
     },
-    ,{
+    , {
         route: "boqStructure",
         moduleId: "boqStructure",
         title: "boqStructure",

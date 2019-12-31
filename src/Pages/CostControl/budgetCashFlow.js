@@ -410,7 +410,7 @@ class budgetCashFlow extends Component {
 
             <div className='mainContainer'>
                 <div>
-                    <div className="submittalFilter">
+                    <div className="submittalFilter readOnly__disabled">
 
                         <div className="subFilter">
                             <h3 className="zero">{this.state.pageTitle}</h3>
@@ -462,7 +462,7 @@ class budgetCashFlow extends Component {
                             <button className="primaryBtn-1 btn mediumBtn" onClick={this.showPopupAdd.bind(this)}>NEW</button>
                         </div>
 
-                        <div className="rowsPaginations">
+                         <div className="rowsPaginations readOnly__disabled">
                             <div className="rowsPagiRange">
                                 <span>0</span> - <span>{this.state.pageSize}</span> of <span> {this.state.totalRows}</span>
                             </div>

@@ -268,7 +268,7 @@ class Timesheet extends Component {
                 <div className="resetPassword">
                     <NotifiMsg statusClass={this.state.statusClassSuccess} IsSuccess="true" Msg={Resources['successAlert'][currentLanguage]} />
 
-                    <div className="submittalFilter">
+                    <div className="submittalFilter readOnly__disabled">
                         <div className="subFilter">
                             <h3 className="zero"> {Resources['timeSheet'][currentLanguage]}</h3>
                             <span>{this.state.rows.length}</span>
@@ -313,7 +313,7 @@ class Timesheet extends Component {
                         </div>
 
 
-                        <div className="rowsPaginations">
+                         <div className="rowsPaginations readOnly__disabled">
                             <div className="rowsPagiRange">
                                 <span>0</span> - <span>{this.state.pageSize}</span> of
                    <span>{this.state.totalRows}</span>

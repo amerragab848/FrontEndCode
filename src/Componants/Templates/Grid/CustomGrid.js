@@ -363,7 +363,7 @@ export default class CustomGrid extends Component {
                         <button className="filter__more--btn" onClick={this.showFilterMore}>{Resources.seeAll[currentLanguage]}</button>
                     </div>
                     <div className="filter__input-wrapper" onMouseLeave={this.resetDate} id="resetData">
-                        <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
+                        <form id="signupForm1" method="post" className="proForm readOnly__disabled" action="" noValidate="noValidate">
                             {columns.map((column, index) => {
                                 let classX = arrColumn.findIndex(x => x == column.field) > -1 ? "small__input--width " : "medium__input--width";
                                 if (column.type === "date") {
@@ -429,7 +429,7 @@ export default class CustomGrid extends Component {
                             <div className="content">
                                 <div className="filter__warrper">
                                     <div className="filter__input-wrapper">
-                                        <form id="signupForm1" method="post" className="proForm" action="" noValidate="noValidate">
+                                        <form id="signupForm1" method="post" className="proForm readOnly__disabled" action="" noValidate="noValidate">
                                             {columns.map((column, index) => {
                                                 let classX = arrColumn.findIndex(x => x == column.field) > -1 ? "small__input--width " : "medium__input--width";
                                                 if (column.type === "date") {
@@ -487,7 +487,8 @@ export default class CustomGrid extends Component {
                     </div>
                 </div>
 
-                <GridCustom
+                <GridCustom 
+                    key={this.props.key}
                     cells={this.props.cells}
                     data={this.state.rows}
                     pageSize={this.props.pageSize}

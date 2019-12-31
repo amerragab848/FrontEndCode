@@ -996,6 +996,7 @@ class QsAddEdit extends Component {
                     showModal={this.props.showModal}
                     showOptionPanel={this.showOptionPanel}
                     permission={this.state.permission}
+                    documentName={Resources.contractsQs[currentLanguage]}
                   />
                 </div>
               </div>

@@ -27,11 +27,7 @@ import { default as DataService, default as dataservice } from "../../Dataservic
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
-//import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
-//import GridCustom from 'react-customized-grid';
-
-//import "react-customized-grid/main.css";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -121,7 +117,7 @@ class bogAddEdit extends Component {
             }
             index++;
         }
- 
+
         this.boqItems = [
             { title: '', type: 'check-box', fixed: true, field: 'id' },
             {
@@ -550,11 +546,9 @@ class bogAddEdit extends Component {
             }
         }
         this.checkDocumentIsView();
-        dataservice
-            .GetDataList("GetAllBoqParentNull?projectId=" + this.state.projectId, "title", "id")
-            .then(res => {
-                this.setState({ boqTypes: res });
-            });
+        dataservice.GetDataList("GetAllBoqParentNull?projectId=" + this.state.projectId, "title", "id").then(res => {
+            this.setState({ boqTypes: res });
+        });
     }
 
     getNextArrange = event => {
@@ -685,9 +679,7 @@ class bogAddEdit extends Component {
     componentWillReceiveProps(props, state) {
         if (props.document.id !== this.props.document.id) {
             let docDate = moment(props.document.documentDate);
-            props.document.statusName = props.document.status
-                ? "Opened"
-                : "Closed";
+            props.document.statusName = props.document.status ? "Opened" : "Closed";
             let document = Object.assign(props.document, {
                 documentDate: docDate
             });
@@ -696,9 +688,7 @@ class bogAddEdit extends Component {
             this.checkDocumentIsView();
         }
         let _items = props.items ? props.items : [];
-        if (
-            JSON.stringify(this.state._items.length) != JSON.stringify(_items)
-        ) {
+        if (JSON.stringify(this.state._items.length) != JSON.stringify(_items)) {
             this.setState({ isLoading: true });
             this.setState({ _items }, () =>
                 this.setState({ isLoading: false })
@@ -1129,34 +1119,33 @@ class bogAddEdit extends Component {
     }
 
     render() {
-         
-        let ItemsGrid =
-            this.state.isLoading === false ? (
-        <GridCustom
-            cells={this.boqItems} 
-            data={this.state._items} 
-            groups={this.groups}
-            pageSize={this.state.pageSize}
-            actions={this.actions}
-            rowActions={this.rowActions}
-            rowClick={cell => {
-                if (!Config.IsAllow(11)) {
-                    toast.warning("you don't have permission");
-                } else if (cell.field != "select-row" && cell.field != "unitPrice") {
 
-                    this.setState({
-                        showPopUp: true,
-                        btnText: "save",
-                        selectedRow: cell,
-                        isLoadingEdit: true
-                    });
-                    this.simpleDialog1.show();
+        let ItemsGrid = this.state.isLoading === false ? (
+            <GridCustom
+                cells={this.boqItems}
+                data={this.state._items}
+                groups={this.groups}
+                pageSize={this.state.pageSize}
+                actions={this.actions}
+                rowActions={this.rowActions}
+                rowClick={cell => {
+                    if (!Config.IsAllow(11)) {
+                        toast.warning("you don't have permission");
+                    } else if (cell.field != "select-row" && cell.field != "unitPrice") {
 
-                }
-            }}
-        />
+                        this.setState({
+                            showPopUp: true,
+                            btnText: "save",
+                            selectedRow: cell,
+                            isLoadingEdit: true
+                        });
+                        this.simpleDialog1.show();
 
-            ) : (<LoadingSection />);
+                    }
+                }}
+            />
+
+        ) : (<LoadingSection />);
 
         const contractContent = (
             <Fragment>
@@ -2703,14 +2692,14 @@ class bogAddEdit extends Component {
                     </header>
                     <div className="precycle-grid">
                         <div className="grid-container">
-                            <div className="submittalFilter">
+                            <div className="submittalFilter readOnly__disabled">
                                 <div className="subFilter">
                                     <h3 className="zero">
                                         {Resources["items"][currentLanguage]}
                                     </h3>
                                     <span>{this.state._items.length}</span>
                                 </div>
-                                <div className="rowsPaginations">
+                                <div className="rowsPaginations readOnly__disabled">
                                     <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                         <i className="angle left icon" />
                                     </button>
@@ -2832,6 +2821,8 @@ class bogAddEdit extends Component {
                                                         showModal={this.props.showModal}
                                                         showOptionPanel={this.showOptionPanel}
                                                         permission={this.state.permission}
+                                                        documentName="boq"
+
                                                     />
                                                 </div>
                                             </div>
@@ -2841,38 +2832,36 @@ class bogAddEdit extends Component {
                                 {this.state.CurrStep == 0 ? (
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 &&
-                                                this.state.isViewMode === false ? (
-                                                    <UploadAttachment
-                                                        changeStatus={
-                                                            this.props.changeStatus
-                                                        }
-                                                        AddAttachments={861}
-                                                        EditAttachments={3254}
-                                                        ShowDropBox={3565}
-                                                        ShowGoogleDrive={3566}
-                                                        docTypeId={
-                                                            this.state.docTypeId
-                                                        }
-                                                        docId={this.state.docId}
-                                                        projectId={
-                                                            this.state.projectId
-                                                        }
-                                                    />
-                                                ) : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ? (
+                                                <UploadAttachment
+                                                    changeStatus={
+                                                        this.props.changeStatus
+                                                    }
+                                                    AddAttachments={861}
+                                                    EditAttachments={3254}
+                                                    ShowDropBox={3565}
+                                                    ShowGoogleDrive={3566}
+                                                    docTypeId={
+                                                        this.state.docTypeId
+                                                    }
+                                                    docId={this.state.docId}
+                                                    projectId={
+                                                        this.state.projectId
+                                                    }
+                                                />
+                                            ) : null}
                                             {this.viewAttachments()}
-                                            {this.props.changeStatus ===
-                                                true ? (
-                                                    <ViewWorkFlow
-                                                        docType={
-                                                            this.state.docTypeId
-                                                        }
-                                                        docId={this.state.docId}
-                                                        projectId={
-                                                            this.state.projectId
-                                                        }
-                                                    />
-                                                ) : null}
+                                            {this.props.changeStatus === true ? (
+                                                <ViewWorkFlow
+                                                    docType={
+                                                        this.state.docTypeId
+                                                    }
+                                                    docId={this.state.docId}
+                                                    projectId={
+                                                        this.state.projectId
+                                                    }
+                                                />
+                                            ) : null}
                                         </div>
                                     </div>
                                 ) : null}

@@ -443,7 +443,7 @@ class Index extends Component {
 
         return (
             <div>
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero">{this.state.pageTitle}</h3>
                         <span>{this.state.totalRows}</span>
@@ -503,7 +503,7 @@ class Index extends Component {
                         {btnExport}
                         <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord}>{Resources['add'][currentLanguage]}</button>
                     </div>
-                    <div className="rowsPaginations">
+                     <div className="rowsPaginations readOnly__disabled">
                         <div className="rowsPagiRange">
                             <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
                             <span>{this.state.totalRows}</span>

@@ -249,7 +249,7 @@ class PettyCash extends Component {
         return (
             <div className="main__fulldash--container">
 
-                <div className="submittalFilter">
+                <div className="submittalFilter readOnly__disabled">
                     <div className="subFilter">
                         <h3 className="zero"> {Resources["peetyCash"][currentLanguage]}</h3>
                         <span>{this.state.rows.length}</span>
@@ -283,7 +283,7 @@ class PettyCash extends Component {
                         <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>New</button>
                         {btnExport}
                     </div>
-                    <div className="rowsPaginations">
+                     <div className="rowsPaginations readOnly__disabled">
                         <div className="rowsPagiRange">
                             <span>0</span> - <span>{this.state.pageSize}</span> of <span>{this.state.totalRows}</span>
                         </div>

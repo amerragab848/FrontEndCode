@@ -1001,7 +1001,6 @@ class pcoAddEdit extends Component {
                                                                             id="contractId" />
                                                                     </div>
                                                                 }
-
                                                                 <div className="linebylineInput  account__checkbox">
                                                                     <div className="linebylineInput valid-input">
                                                                         <label className="control-label">{Resources.isLumpSum[currentLanguage]}</label>
@@ -1015,13 +1014,9 @@ class pcoAddEdit extends Component {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
                                                                 <div className="linebylineInput valid-input">
-
                                                                     <label className="control-label">{Resources.arrange[currentLanguage]}</label>
-
                                                                     <div className="ui input inputDev"  >
-
                                                                         <input type="text" className="form-control" id="arrange" readOnly
                                                                             value={this.state.document.arrange}
                                                                             name="arrange"
@@ -1044,7 +1039,6 @@ class pcoAddEdit extends Component {
                                                                                     name="approvalStatusTitle" />
                                                                             </div>
                                                                         </div>
-
                                                                         <div className="linebylineInput valid-input">
                                                                             <label className="control-label">{Resources.cvr[currentLanguage]}</label>
                                                                             <div className="ui input inputDev"  >
@@ -1062,12 +1056,10 @@ class pcoAddEdit extends Component {
                                                                                 data={this.state.approvalstatusList}
                                                                                 selectedValue={this.state.selectedApprovalStatusId}
                                                                                 handleChange={(e) => this.handleChangeDropDown(e, "approvalStatusId", 'selectedApprovalStatusId', false, '', '', '', '')}
-
                                                                                 onChange={setFieldValue}
                                                                                 onBlur={setFieldTouched}
                                                                                 error={errors.approvalStatusId}
                                                                                 touched={touched.approvalStatusId}
-
                                                                                 isClear={false}
                                                                                 index="pco-approvalStatusId"
                                                                                 name="approvalStatusId"
@@ -1177,7 +1169,7 @@ class pcoAddEdit extends Component {
                                                     <h3 class="zero"> {Resources['AddedItems'][currentLanguage]}</h3>
                                                     <span>{this.state.voItems.length}</span>
                                                 </div>
-                                                <div className="rowsPaginations">
+                                                 <div className="rowsPaginations readOnly__disabled">
                                                     <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                                         <i className="angle left icon" />
                                                     </button>
@@ -1223,6 +1215,7 @@ class pcoAddEdit extends Component {
                                             showModal={this.props.showModal}
                                             showOptionPanel={this.showOptionPanel}
                                             permission={this.state.permission}
+                                            documentName={Resources.pco[currentLanguage]}
                                         />
                                     </div>
                                 </div>

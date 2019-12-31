@@ -2224,7 +2224,7 @@ class materialRequestAddEdit extends Component {
                             )}
                         </div>{" "}
                     </div>
-                    <div className="rowsPaginations">
+                     <div className="rowsPaginations readOnly__disabled">
                         <button
                             className={
                                 this.state.pageNumber == 0 ? "rowunActive" : ""
