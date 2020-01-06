@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SkyLightStateless } from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-import GridSetup from "../Communication/GridSetup";
+// import GridSetup from "../Communication/GridSetup";
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
@@ -27,6 +27,7 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import Api from "../../api";
 import Steps from "../../Componants/publicComponants/Steps";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let docId = 0;
@@ -59,56 +60,51 @@ const ValidtionSchemaDrawItems = Yup.object().shape({
 class drawingListAddEdit extends Component {
 
     constructor(props) {
-
+      
         const columnsGrid = [
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
+           
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                field: "details",
+                title: Resources["details"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+               
+                sortable: true,
+                type: "text"
+
             },
             {
-                key: "details",
-                name: Resources["details"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "paper",
+                title: Resources["paper"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+              
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                type: "text"
             },
             {
-                key: "paper",
-                name: Resources["paper"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "scale",
+                title: Resources["scale"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+               type:"text"
             },
             {
-                key: "scale",
-                name: Resources["scale"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "estimatedTime",
+                title: Resources["estimatedTime"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "estimatedTime",
-                name: Resources["estimatedTime"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
         ]
-
+        
         super(props)
 
         const query = new URLSearchParams(this.props.location.search);
@@ -187,11 +183,13 @@ class drawingListAddEdit extends Component {
             contactData: []
         }
 
+
         if (!Config.IsAllow(301) && !Config.IsAllow(302) && !Config.IsAllow(303)) {
 
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/drawingList/" + this.state.projectId);
         }
+      
         steps_defination = [
             {
                 name: "drawingList",
@@ -202,8 +200,42 @@ class drawingListAddEdit extends Component {
                 callBackFn: null
             }
         ];
+        this.actions = [
+            {
+                title: 'Delete',
+                handleClick: selectedRows => {
+                    console.log(selectedRows);
+                    this.setState({
+                        showDeleteModal: true,
+                        selectedRows
+            
+                    })
+                },
+                classes: '',
+            }, {
+                title: 'TaskGroup',
+                handleClick: selectedRows => {
+                    console.log(selectedRows);
+                   
+                },
+                classes: 'autoGridBtn',
+            },
+            {
+                title: 'ProjectTasks',
+                handleClick: selectedRows => {
+                    this.setState({
+                        showPopUpProjectTask: true,
+                        selectedRows
+                    })
+                   
+                },
+                classes: 'autoGridBtn',
+            }
+        ];
+        this.rowActions = [];
+        this.groups=[];
     }
-
+    
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
             if (!(Config.IsAllow(302))) {
@@ -666,13 +698,32 @@ class drawingListAddEdit extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox} minHeight={350}
-                    onRowClick={this.ShowPopUpForEdit}
-                    clickHandlerDeleteRows={this.DeleteItem}
-                    Panels={true} TaskGroupFun={this.TaskGroupFun} ProjectTaskFun={this.ProjectTaskFun}
-                    single={true}
-                />
+                // <GridSetup rows={this.state.rows} 
+                //     columns={this.state.columns}
+                //     showCheckbox={this.state.showCheckbox} 
+                //     minHeight={350}
+                //     onRowClick={this.ShowPopUpForEdit}
+                //     clickHandlerDeleteRows={this.DeleteItem}
+                //     Panels={true} 
+                //     TaskGroupFun={this.TaskGroupFun} 
+                //     ProjectTaskFun={this.ProjectTaskFun}
+                //     single={true}
+                // />
+                <GridCustom
+                cells={this.state.columns}
+                data={this.state.rows}
+                groups={[]}
+                pageSize={50}
+                actions={this.actions}
+                rowActions={this.rowActions}
+                rowClick={obj => {
+                    this.setState({
+                        showPopUp: true,
+                        ItemForEdit: obj,
+                        IsEditModeItem: true
+                    })
+                }}
+            />
             ) : <LoadingSection />
 
         let SecondStepItems = () => {

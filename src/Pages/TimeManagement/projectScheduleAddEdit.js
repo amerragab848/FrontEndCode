@@ -12,7 +12,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SkyLightStateless } from 'react-skylight';
 import * as communicationActions from '../../store/actions/communication';
-import GridSetup from "../Communication/GridSetup";
+import GridCustom from 'react-customized-grid';
+import 'react-customized-grid/main.css';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
@@ -53,110 +54,86 @@ const validationItemsForAddEdit = Yup.object().shape({
     bicContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
 });
 
-// const validationItemsForAdd = Yup.object().shape({
-//     taskIdItem: Yup.string().required(Resources["taskIdRequired"][currentLanguage]),
-//     descriptionitem: Yup.string().required(Resources["descriptionRequired"][currentLanguage]),
-//     toContactIdItem: Yup.string().required(Resources['fromContactRequired'][currentLanguage]).nullable(true),
-// });
-
-
-
 class projectScheduleAddEdit extends Component {
 
     constructor(props) {
 
+        super(props)
+
         const columnsGrid = [
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                "title": "",
+                "type": "check-box",
+                "fixed": true,
+                "field": "id",
+                "showTip": true
             },
             {
-                key: "arrange",
-                name: Resources.arrange[currentLanguage],
-                width: 50,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "arrange",
+                "title": Resources.arrange[currentLanguage],
+                "type": "text",
+                "width": 8,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
             },
             {
-                key: "statusName",
-                name: Resources.status[currentLanguage],
-                width: 90,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "statusName",
+                "title": Resources.status[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             },
             {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "description",
+                "title": Resources.description[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
             },
             {
-                key: "bicCompanyName",
-                name: Resources["toCompany"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "bicCompanyName",
+                "title": Resources.toCompany[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             },
             {
-                key: "bicContactName",
-                name: Resources["ToContact"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "bicContactName",
+                "title": Resources.ToContact[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             },
             {
-                key: "startDate",
-                name: Resources["startDate"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
+                "field": "startDate",
+                "title": Resources.startDate[currentLanguage],
+                "type": "date",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             },
             {
-                key: "finishDate",
-                name: Resources["finishDate"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
+                "field": "finishDate",
+                "title": Resources.finishDate[currentLanguage],
+                "type": "date",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             },
             {
-                key: "taskId",
-                name: Resources["taskId"][currentLanguage],
-                width: 80,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
+                "field": "taskId",
+                "title": Resources.taskId[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
+            }
         ]
-
-        super(props)
 
         const query = new URLSearchParams(this.props.location.search);
         let index = 0;
@@ -182,7 +159,7 @@ class projectScheduleAddEdit extends Component {
 
         this.state = {
             showCheckbox: true,
-            columns: columnsGrid.filter(column => column.visible !== false),
+            columns: columnsGrid,
             rows: [],
             FirstStep: true,
             SecondStep: false,
@@ -321,8 +298,7 @@ class projectScheduleAddEdit extends Component {
         updated_documentItem = Object.assign(original_documentItem, updated_documentItem);
         this.setState({
             documentItem: updated_documentItem
-        })
-
+        }) 
     }
 
     handleChangeDropItemsEdit = (e, field) => {
@@ -347,7 +323,6 @@ class projectScheduleAddEdit extends Component {
     }
 
     NextStep = () => {
-
         if (this.state.CurrStep === 1) {
             window.scrollTo(0, 0);
             this.setState({
@@ -363,7 +338,6 @@ class projectScheduleAddEdit extends Component {
     }
 
     PreviousStep = () => {
-
         if (this.state.IsEditMode) {
             if (this.state.CurrStep === 2) {
                 window.scrollTo(0, 0)
@@ -576,6 +550,7 @@ class projectScheduleAddEdit extends Component {
             });
         }
     }
+
     viewAttachments() {
         return (
             this.state.docId !== 0 ? (
@@ -655,7 +630,6 @@ class projectScheduleAddEdit extends Component {
     }
 
     ShowPopUpForEdit = (obj) => {
-
         dataservice.GetRowById('GetProjectScheduleItemsById?id=' + obj.id).then(
             res => {
                 if (res) {
@@ -670,7 +644,6 @@ class projectScheduleAddEdit extends Component {
 
                     this.setState({
                         selectedToCompanyEdit: bicCompany,
-
                         IsEditModeItem: true,
                         documentItemEdit: res,
                         showPopUp: true,
@@ -726,7 +699,9 @@ class projectScheduleAddEdit extends Component {
             isLoading: true
         })
 
-        let DocAdd = this.state.documentItem
+        let DocAdd = this.state.documentItem;
+
+        DocAdd.scheduleId = this.state.docId;
         DocAdd.finishDate = moment(DocAdd.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
         DocAdd.startDate = moment(DocAdd.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
 
@@ -822,7 +797,6 @@ class projectScheduleAddEdit extends Component {
     render() {
 
         const columnsSchedule = [
-
             {
                 Header: Resources.arrange[currentLanguage],
                 accessor: "arrange",
@@ -886,11 +860,18 @@ class projectScheduleAddEdit extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox} minHeight={350}
-                    onRowClick={this.ShowPopUpForEdit}
-                    clickHandlerDeleteRows={this.DeleteItem}
-                    single={false}
+                <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.state.columns}
+                    pageSize={50} actions={[{
+                        title: 'Delete',
+                        handleClick: values => {
+                            this.setState({
+                                showDeleteModal: true,
+                                selectedRows: values
+                            });
+                        },
+                        classes: '',
+                    }]} rowActions={[]}
+                    rowClick={(cell) => this.ShowPopUpForEdit(cell)}
                 />
             ) : <LoadingSection />
 
@@ -904,10 +885,8 @@ class projectScheduleAddEdit extends Component {
                         onSubmit={(values) => {
                             this.EditItems(values);
                         }}>
-
                         {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                             <Form id="scheduleItemFormGrid" className="proForm customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">
                                         {Resources.arrange[currentLanguage]}
@@ -921,19 +900,17 @@ class projectScheduleAddEdit extends Component {
                                         {errors.arrange && touched.arrange ? (<em className="pError">{errors.arrange}</em>) : null}
                                     </div>
                                 </div>
-
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">{Resources.status[currentLanguage]}</label>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                        <input type="radio" name="letter-status" defaultChecked={this.state.documentItem.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                        <input type="radio" name="letter-status" defaultChecked={this.state.documentItem.status === false ? null : 'checked'} value="true" onChange={e => this.handleChangeItems(e, 'status')} />
                                         <label>{Resources.oppened[currentLanguage]}</label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                        <input type="radio" name="letter-status" defaultChecked={this.state.documentItem.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                        <input type="radio" name="letter-status" defaultChecked={this.state.documentItem.status === false ? 'checked' : null} value="false" onChange={e => this.handleChangeItems(e, 'status')} />
                                         <label>{Resources.closed[currentLanguage]}</label>
                                     </div>
                                 </div>
-
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">
                                         {Resources.activityDescription[currentLanguage]}
@@ -948,7 +925,6 @@ class projectScheduleAddEdit extends Component {
                                         {errors.description && touched.description ? (<em className="pError"> {errors.description} </em>) : null}
                                     </div>
                                 </div>
-
                                 <div className="fillter-status fillter-item-c fullInputWidth">
                                     <label className="control-label">
                                         {Resources.activityId[currentLanguage]}
@@ -963,19 +939,16 @@ class projectScheduleAddEdit extends Component {
                                         {errors.taskId && touched.taskId ? (<em className="pError"> {errors.taskId} </em>) : null}
                                     </div>
                                 </div>
-
                                 <div className="fillter-status fillter-item-c alternativeDate">
                                     <DatePicker title='startDate'
                                         startDate={this.state.documentItemEdit.startDate}
                                         handleChange={this.startDatehandleChangeForEdit} />
                                 </div>
-
                                 <div className="fillter-status fillter-item-c alternativeDate">
                                     <DatePicker title='finishDate'
                                         startDate={this.state.documentItemEdit.finishDate}
                                         handleChange={this.finishDatehandleChangeForEdit} />
                                 </div>
-
                                 <div className="fillter-status fillter-item-c mix_dropdown">
                                     <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                     <div className="supervisor__company">
@@ -985,12 +958,10 @@ class projectScheduleAddEdit extends Component {
                                                 data={this.state.ToContacts}
                                                 selectedValue={this.state.selectedToContactEdit}
                                                 handleChange={event => this.handleChangeDropDownEdit(event, 'toContactId', false, '', '', '', 'selectedToContactEdit')}
-
                                                 onChange={setFieldValue}
                                                 onBlur={setFieldTouched}
                                                 error={errors.bicCompanyId}
                                                 touched={touched.bicCompanyId}
-
                                                 index="letter-toContactId"
                                                 name="toContactId"
                                                 id="toContactId" styles={CompanyDropdown} classDrop="companyName1 " />
@@ -1000,14 +971,11 @@ class projectScheduleAddEdit extends Component {
                                                 isMulti={false}
                                                 data={this.state.companies}
                                                 selectedValue={this.state.selectedToCompanyEdit}
-                                                handleChange={event =>
-                                                    this.handleChangeDropDownEdit(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompanyEdit', 'selectedToContactEdit')}
-
+                                                handleChange={event => this.handleChangeDropDownEdit(event, 'toCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompanyEdit', 'selectedToContactEdit')}
                                                 onChange={setFieldValue}
                                                 onBlur={setFieldTouched}
                                                 error={errors.bicCompanyId}
                                                 touched={touched.bicCompanyId}
-
                                                 index="letter-toCompany"
                                                 name="toCompanyId"
                                                 id="toCompanyId" classDrop=" contactName1" styles={ContactDropdown} />
@@ -1039,7 +1007,6 @@ class projectScheduleAddEdit extends Component {
         let SecondStepItems = () => {
             return (
                 <div className="subiTabsContent feilds__top">
-
                     <div className="document-fields">
                         <Formik
                             initialValues={{ ...this.state.documentItem }}
@@ -1048,7 +1015,6 @@ class projectScheduleAddEdit extends Component {
                             onSubmit={(values) => {
                                 this.AddItems(values);
                             }}>
-
                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, values }) => (
                                 <Form id="scheduleItemForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                                     <div className="doc-pre-cycle ">
@@ -1058,9 +1024,7 @@ class projectScheduleAddEdit extends Component {
                                             </h2>
                                         </header>
                                     </div>
-
                                     <div className="proForm first-proform">
-
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">
                                                 {Resources.arrange[currentLanguage]}
@@ -1071,22 +1035,19 @@ class projectScheduleAddEdit extends Component {
                                                     onChange={e => this.handleChangeItemsAdd(e, "arrange")} />
                                             </div>
                                         </div>
-
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources.status[currentLanguage]}</label>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input type="radio" name="letter-status" defaultChecked={this.state.documentItem.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
+                                                <input type="radio" name="letter-status" defaultChecked={this.state.documentItem.status === false ? null : 'checked'} value="true" onChange={e => this.handleChangeItemsAdd(e, 'status')} />
                                                 <label>{Resources.oppened[currentLanguage]}</label>
                                             </div>
                                             <div className="ui checkbox radio radioBoxBlue">
-                                                <input type="radio" name="letter-status" defaultChecked={this.state.documentItem.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
+                                                <input type="radio" name="letter-status" defaultChecked={this.state.documentItem.status === false ? 'checked' : null} value="false" onChange={e => this.handleChangeItemsAdd(e, 'status')} />
                                                 <label>{Resources.closed[currentLanguage]}</label>
                                             </div>
                                         </div>
                                     </div>
-
                                     <div className="proForm datepickerContainer">
-
                                         <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">
                                                 {Resources.activityDescription[currentLanguage]}
@@ -1101,7 +1062,6 @@ class projectScheduleAddEdit extends Component {
                                                 {errors.description && touched.description ? (<em className="pError"> {errors.description} </em>) : null}
                                             </div>
                                         </div>
-
                                         <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">
                                                 {Resources.activityId[currentLanguage]}
@@ -1116,19 +1076,16 @@ class projectScheduleAddEdit extends Component {
                                                 {errors.taskId && touched.taskId ? (<em className="pError"> {errors.taskId} </em>) : null}
                                             </div>
                                         </div>
-
                                         <div className="linebylineInput valid-input alternativeDate">
                                             <DatePicker title='startDate'
                                                 startDate={this.state.documentItem.startDate}
                                                 handleChange={this.startDatehandleChange} />
                                         </div>
-
                                         <div className="linebylineInput valid-input alternativeDate">
                                             <DatePicker title='finishDate'
                                                 startDate={this.state.documentItem.finishDate}
                                                 handleChange={this.finishDatehandleChange} />
                                         </div>
-
                                         <div className="linebylineInput valid-input mix_dropdown">
                                             <label className="control-label">{Resources.toCompany[currentLanguage]}</label>
                                             <div className="supervisor__company">
@@ -1138,12 +1095,10 @@ class projectScheduleAddEdit extends Component {
                                                         data={this.state.ToContacts}
                                                         selectedValue={this.state.selectedToContact}
                                                         handleChange={event => this.handleChangeDropDown(event, 'bicContactId', false, '', '', '', 'selectedToContact')}
-
                                                         onChange={setFieldValue}
                                                         onBlur={setFieldTouched}
                                                         error={errors.bicContactId}
                                                         touched={touched.bicContactId}
-
                                                         index="letter-bicContactId"
                                                         name="bicContactId"
                                                         id="bicContactId" styles={CompanyDropdown} classDrop="companyName1 " />
@@ -1153,14 +1108,11 @@ class projectScheduleAddEdit extends Component {
                                                         isMulti={false}
                                                         data={this.state.companies}
                                                         selectedValue={this.state.selectedToCompany}
-                                                        handleChange={event =>
-                                                            this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
-
+                                                        handleChange={event => this.handleChangeDropDown(event, 'bicCompanyId', true, 'ToContacts', 'GetContactsByCompanyId', 'companyId', 'selectedToCompany', 'selectedToContact')}
                                                         onChange={setFieldValue}
                                                         onBlur={setFieldTouched}
                                                         error={errors.bicCompanyId}
                                                         touched={touched.bicCompanyId}
-
                                                         index="letter-bicCompanyId"
                                                         name="bicCompanyId"
                                                         id="bicCompanyId" classDrop=" contactName1" styles={ContactDropdown} />
@@ -1187,7 +1139,6 @@ class projectScheduleAddEdit extends Component {
                             )}
                         </Formik>
                     </div>
-
                     <XSLfiel header="addManyActivities" />
                     <div className="doc-pre-cycle">
                         <header>
@@ -1202,41 +1153,33 @@ class projectScheduleAddEdit extends Component {
             )
         }
         return (
-
             <div className="mainContainer">
-
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs " : "documents-stepper noTabs__document one__tab one_step"}>
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.schedule[currentLanguage]}
                         moduleTitle={Resources['timeCoordination'][currentLanguage]} />
 
                     <div className="doc-container" style={{ flexFlow: this.state.IsEditMode ? 'row' : 'column' }}>
-
                         <div className="step-content" style={{ width: '100%', paddingLeft: '98px' }}>
                             {this.state.FirstStep ?
-
                                 <div className="subiTabsContent">
                                     {this.state.isLoading ? <LoadingSection /> : null}
                                     <div className="document-fields">
                                         <Formik
                                             initialValues={{ ...this.state.document }}
-
                                             validationSchema={validationSchema}
                                             enableReinitialize={true}
                                             onSubmit={(values) => {
                                                 this.AddEditDoc();
                                             }}>
-
                                             {({ errors, touched, handleBlur, values, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                                 <Form id="scheduleForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                                     <div className="proForm first-proform">
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                                             <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                                                 <input name='subject' className="form-control fsadfsadsa" id="subject"
                                                                     placeholder={Resources.subject[currentLanguage]} autoComplete='off'
-                                                                    value={this.state.document.subject}
+                                                                    value={this.state.document.subject || ''}
                                                                     onChange={(e) => this.handleChange(e, 'subject')}
                                                                     onBlur={(e) => {
                                                                         handleBlur(e)
@@ -1246,7 +1189,6 @@ class projectScheduleAddEdit extends Component {
                                                                 {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                                             </div>
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                             <div className="ui checkbox radio radioBoxBlue">
@@ -1258,29 +1200,22 @@ class projectScheduleAddEdit extends Component {
                                                                 <label>{Resources.closed[currentLanguage]}</label>
                                                             </div>
                                                         </div>
-
                                                     </div>
-
                                                     <div className="proForm datepickerContainer">
-
                                                         <div className="linebylineInput valid-input alternativeDate">
                                                             <DatePicker title='docDate' startDate={this.state.document.docDate}
                                                                 handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                                         </div>
-
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
                                                             <div className="inputDev ui input" >
                                                                 <input autoComplete="off" className="form-control" readOnly
                                                                     onChange={(e) => this.handleChange(e, 'arrange')}
-                                                                    value={this.state.document.arrange} name="arrange" placeholder={Resources['numberAbb'][currentLanguage]} />
+                                                                    value={this.state.document.arrange || ''} name="arrange" placeholder={Resources['numberAbb'][currentLanguage]} />
                                                             </div>
                                                         </div>
-
                                                     </div>
-
                                                     {this.showBtnsSaving()}
-
                                                     {this.state.IsEditMode === true && docId !== 0 ?
                                                         <div className="approveDocument">
                                                             <div className="approveDocumentBTNS">
@@ -1340,7 +1275,6 @@ class projectScheduleAddEdit extends Component {
                                     {SecondStepItems()}
                                 </Fragment>
                             }
-
                             <div className="skyLight__form">
                                 <SkyLightStateless onOverlayClicked={() => this.setState({ showPopUp: false, IsEditModeItem: false, })}
                                     title={Resources['editTitle'][currentLanguage]}
@@ -1350,12 +1284,7 @@ class projectScheduleAddEdit extends Component {
                             </div>
                         </div>
                         {/* Right Menu */}
-
-
-
-
                         {this.state.IsEditMode ?
-
                             <div className="editView__tabs">
                                 <div onClick={this.StepOneLink} className={this.state.FirstStep ? "editView__tabs--title active" : "editView__tabs--title "}>
                                     <p className="zero">{Resources["schedule"][currentLanguage]}</p>
@@ -1363,11 +1292,8 @@ class projectScheduleAddEdit extends Component {
                                 <div onClick={this.StepTwoLink} className={this.state.SecondStep ? "editView__tabs--title active" : "editView__tabs--title "}>
                                     <p className="zero">{Resources["items"][currentLanguage]}</p>
                                 </div>
-
                             </div>
-
                             :
-
                             <div className="docstepper-levels" style={{ boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2)', width: '100%', background: '#fff', zIndex: '14' }}>
                                 <div class="StepperNum1 StepperNum" style={{ justifyContent: 'center', marginTop: '40px' }}>
                                     <div onClick={this.StepOneLink} data-id="step1" className={'StepNumber ' + (this.state.FirstStep ? "current__step active" : ' active')}>
@@ -1388,9 +1314,7 @@ class projectScheduleAddEdit extends Component {
                                 </div>
                             </div>
                         }
-
                     </div>
-
                 </div>
                 {
                     this.state.showDeleteModal === true ? (
@@ -1403,7 +1327,6 @@ class projectScheduleAddEdit extends Component {
                         />
                     ) : null
                 }
-
             </div>
         )
     }
@@ -1425,7 +1348,6 @@ class projectScheduleAddEdit extends Component {
             });
         }).catch(ex => {
         });
-
     }
 }
 
@@ -1449,10 +1371,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(projectScheduleAddEdit))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(projectScheduleAddEdit))
 
 
 
