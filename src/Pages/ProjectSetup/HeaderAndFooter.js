@@ -20,14 +20,11 @@ import Dropzone from 'react-dropzone';
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import api from '../../api'
 import { tr } from 'date-fns/locale';
-
-
-
+ 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProjectName = localStorage.getItem('lastSelectedprojectName')
 
-
-
+  
 const ValidtionSchema = Yup.object().shape({
     type: Yup.string().required(Resources['isRequiredField'][currentLanguage]).nullable(true)
 });
@@ -186,7 +183,7 @@ class HeaderAndFooter extends Component {
     }
 
     showPopupModel = () => {
-        if (config.IsAllow(485) && localStorage.getItem('isCompany') == true)
+        if (config.IsAllow(485) )
             this.setState({ showPopup: true, IsEditModel: false, selectedId: 0, document: {} });
     }
 
@@ -250,8 +247,7 @@ class HeaderAndFooter extends Component {
             document: updated_document
         });
     }
-
-    //signture Methods
+ 
     onDrop = (file) => {
         this.setState({
             uploadedImage: file,

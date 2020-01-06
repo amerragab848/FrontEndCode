@@ -4,11 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import ProjectSetupRoutes from './Pages/ProjectSetup/ProjectSetupRoutes';
 
 import AsyncComponent from './Componants/AsyncComponent';
-
-//import OldAppNavigation from './OldAppNavigation';
-// import PaymentRequisitionList from "./Pages/Contracts/Schedule";
-//import RiskCause from './Componants/OptionsPanels/RiskCause';
-
+ 
 const DashBoard = AsyncComponent(() => import('./Pages/DashBoard'));
 
 const DashboardProject = AsyncComponent(() => import('./DashboardProject'));
@@ -932,11 +928,7 @@ let originalRoutes = [
         component={ProjectIssuesAddEdit}
     />,
     <Route key="r-95" path="/qsAddEdit" component={QuestionsAddEdit} />,
-    <Route
-        key="r-96"
-        path="/requestPaymentsAddEdit"
-        component={RequestPaymentsAddEdit}
-    />,
+    <Route key="r-96" path="/requestPaymentsAddEdit" component={RequestPaymentsAddEdit} />,
     <Route key="r-97" path="/projectsAddEdit" component={ProjectsAddEdit} />,
     <Route key="r-98" path="/baseAddEdit" component={BaseAddEdit} />,
     <Route
@@ -1264,7 +1256,7 @@ originalRoutes = [...originalRoutes, ...setupRoutes];
 let routes = (
     <Switch>
         {originalRoutes.map((item, index) => item)}
-        <Route path="/:document/:projectId" component={CommonLog} />
+        <Route key={'commonLog-i'} path="/:document/:projectId" component={CommonLog} />
     </Switch>
 );
 export default routes;
