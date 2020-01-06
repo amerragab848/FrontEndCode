@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import moment from "moment";
 import Resources from '../../resources.json';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
+// import jsPDF from 'jspdf';
 import DED from './DocumentExportDefination.json'
 import { connect } from 'react-redux';
 import Profile from '../../Styles/images/icons/person.svg'
@@ -11,8 +11,7 @@ import Signature from '../../Styles/images/mySignature.png';
 import Config from "../../Services/Config";
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import Dataservice from '../../Dataservice.js';
-//import '../../Styles/scss/en-us/printStyle.css';
+import Dataservice from '../../Dataservice.js'; 
 const find = require('lodash/find')
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -354,9 +353,9 @@ class ExportDetails extends Component {
         let rows = this.props.items.length > 0 ?
             (this.props.items.map((row, index) => {
                 return (
-                    <tr key={'tr- ' + index}>
+                    <tr key={'tr-item- ' + index}>
                         {fieldsItems.map((field, index) => {
-                            return (<td key={'td- ' + index}><div className="contentCell tableCell-2"><a>{row[field]}</a></div></td>)
+                            return (<td key={'td-item- ' + index}><div className="contentCell tableCell-2"><a>{row[field]}</a></div></td>)
                         })}
                     </tr>
                 )
@@ -373,7 +372,7 @@ class ExportDetails extends Component {
                             <tr >
                                 {fieldsName.map((column, index) => {
                                     return (
-                                        <th key={'th- ' + index}>
+                                        <th key={'th-items ' + index}>
                                             <div className="headCell ">
                                                 {Resources[column][currentLanguage]}
                                             </div>
@@ -601,7 +600,7 @@ class ExportDetails extends Component {
                                             </div>
                                             <div className={cycle.statusVal == null ? "flowStatus pendingStatue" : cycle.statusVal === true ? "flowStatus approvedStatue" : "flowStatus rejectedStatue"}>
                                                 <span className=" statueName">{cycle.status}</span>
-                                                <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>
+                                                {cycle.statusVal == null ? null :<span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>}
                                                 {cycle.statusVal == null ? null :
                                                     <span className="statueSignature">
                                                         <img src={cycle.signature != null ? Config.getPublicConfiguartion().downloads + "/" + cycle.signature : Signature} alt="..." />
@@ -1533,7 +1532,9 @@ class ExportDetails extends Component {
                     {this.drawattachDocuments()}
                 </div>
 
+                <div style={{display: 'none'}}>
                 {this.exportPDFFile()}
+                </div>
                 <div style={{display: 'none'}}>
                 <iframe id="iframePrint" name="iframePrint">
 

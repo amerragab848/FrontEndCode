@@ -15,6 +15,8 @@ import * as communicationActions from '../../store/actions/communication';
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import GridSetup from "../Communication/GridSetup";
+import GridCustom from 'react-customized-grid';
+import 'react-customized-grid/main.css';
 import Config from "../../Services/Config.js";
 import CryptoJS from 'crypto-js';
 import moment from "moment";
@@ -67,8 +69,7 @@ const validationSchemaForAddItem = Yup.object().shape({
 
 const validationSchemaForEditItem = Yup.object().shape({
     description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
-    ActionByContactItem: Yup.string()
-        .required(Resources['toContactRequired'][currentLanguage]),
+    ActionByContactItem: Yup.string().required(Resources['toContactRequired'][currentLanguage])
 })
 
 const dateFormate = ({ value }) => {
@@ -81,96 +82,70 @@ class punchListAddEdit extends Component {
 
         const columnsGrid = [
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
+                "title": "",
+                "type": "check-box",
+                "fixed": true,
+                "field": "id",
+                "showTip": true
+            }, {
+                "field": "arrange",
+                "title": Resources.arrange[currentLanguage],
+                "type": "text",
+                "width": 8,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
             },
             {
-                key: "arrange",
-                name: Resources["numberAbb"][currentLanguage],
-                width: 50,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "bicCompanyName",
-                name: Resources["actionByCompany"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "bicContactName",
-                name: Resources["actionByContact"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "areaName",
-                name: Resources["area"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "locationName",
-                name: Resources["location"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "openedDate",
-                name: Resources["openedDate"][currentLanguage],
-                width: 110,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate,
-            },
-            {
-                key: "requiredDate",
-                name: Resources["requiredDate"][currentLanguage],
-                width: 110,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate,
-            }
-
-
-        ]
+                "field": "description",
+                "title": Resources.description[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "bicCompanyName",
+                "title": Resources.actionByCompany[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "bicContactName",
+                "title": Resources.actionByContact[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "areaName",
+                "title": Resources.area[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "locationName",
+                "title": Resources.location[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "openedDate",
+                "title": Resources.openedDate[currentLanguage],
+                "type": "date",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "requiredDate",
+                "title": Resources.requiredDate[currentLanguage],
+                "type": "date",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
+            }]
 
         super(props)
         const query = new URLSearchParams(this.props.location.search);
@@ -204,7 +179,7 @@ class punchListAddEdit extends Component {
             showDeleteModal: false,
             selectedRows: [],
             showCheckbox: true,
-            columns: columnsGrid.filter(column => column.visible !== false),
+            columns: columnsGrid,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -223,16 +198,11 @@ class punchListAddEdit extends Component {
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 992 },
             { name: 'createTransmittal', code: 3078 }, { name: 'sendToWorkFlow', code: 738 },
             { name: 'viewAttachments', code: 3311 }, { name: 'deleteAttachments', code: 888 }],
-
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
-
             selectedToContact: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
-
             selectedDiscpline: { label: Resources.disciplineRequired[currentLanguage], value: "0" },
-
             selectedActionByCompanyId: { label: Resources.actionByCompany[currentLanguage], value: "0" },
             selectedActionByContactId: { label: Resources.actionByContact[currentLanguage], value: "0" },
             selectedContract: { label: Resources.contractPoSelection[currentLanguage], value: "0" },
@@ -244,7 +214,7 @@ class punchListAddEdit extends Component {
 
             //Adding Items States
             ToContactsItem: [],
-            bicContacts:[],
+            bicContacts: [],
             StatusItem: 'true',
             MaxArrangeItem: 1,
             OpenedDateItem: moment(),
@@ -255,14 +225,7 @@ class punchListAddEdit extends Component {
             selectedLocationItem: { label: Resources.locationRequired[currentLanguage], value: "0" },
             //Edit Items States
             EditItems: [],
-            StatusItemForEdit: 'true'
-            // OpenedDateItem: moment(),
-            // RequiredDateItem: moment(),
-            // SelectedAreaItem: { label: Resources.selectArea[currentLanguage], value: "0" },
-            // selectedActionByCompanyIdItem: { label: Resources.actionByCompany[currentLanguage], value: "0" },
-            // selectedActionByContactItem: { label: Resources.toContactRequired[currentLanguage], value: "0" },
-            // selectedLocationItem: { label: Resources.locationRequired[currentLanguage], value: "0" },
-
+            StatusItemForEdit: true
         }
 
         if (!Config.IsAllow(274) && !Config.IsAllow(275) && !Config.IsAllow(277)) {
@@ -380,108 +343,34 @@ class punchListAddEdit extends Component {
         this.setState({ CurrentStep: stepNo });
     };
 
-
-    // FillDropDowns = () => {
-
-    //     let DropDownsData = [
-    //         { Api: 'GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000', DropDataName: 'discplines', Label: 'title', Value: 'id', Name: 'disciplineId', selectedValue: 'selectedDiscpline' },
-    //         { Api: 'GetAccountsDefaultList?listType=area&pageNumber=0&pageSize=10000', DropDataName: 'areas', Label: 'title', Value: 'id', Name: 'areaId', selectedValue: 'selecetedArea' },
-    //         { Api: 'GetProjectProjectsCompaniesForList?projectId=' + projectId + '', DropDataName: 'companies', Label: 'companyName', Value: 'companyId', Name: 'toCompanyId', selectedValue: 'selectedFromCompany' },
-    //         { Api: 'GetPoContractForList?projectId=' + projectId + '', DropDataName: 'contractsPos', Label: 'subject', Value: 'id', Name: 'contractId', selectedValue: 'selectedContract' },
-    //         { Api: 'GetAccountsDefaultList?listType=location&pageNumber=0&pageSize=10000', DropDataName: 'locations', Label: 'title', Value: 'id', Name: 'locationId', selectedValue: 'selectedlocation' },
-    //     ]
-
-    //     let CompaniesDropDownsData = [
-    //         { Name: 'bicCompanyId', SelectedValueCompany: 'selectedActionByCompanyId', ContactName: 'bicContactId', DropDataContactName: 'ToContacts', SelectedValueContact: 'selectedToContact' },
-    //         { Name: 'toCompanyId', SelectedValueCompany: 'selectedToCompany', ContactName: '', DropDataContactName: '', SelectedValueContact: '' },
-    //         { Name: 'fromCompanyId', SelectedValueCompany: 'selectedFromCompany', ContactName: '', DropDataContactName: '', SelectedValueContact: '' },
-    //     ]
-
-    //     DropDownsData.map(element => {
-    //         return dataservice.GetDataList(element.Api, element.Label, element.Value).then(
-    //             result => {
-    //                 this.setState({
-    //                     [element.DropDataName]: result,
-    //                     Loading: false
-    //                 })
-
-    //                 if (this.state.IsEditMode && docId > 0) {
-    //                     if (element.DropDataName === 'companies') {
-    //                         CompaniesDropDownsData.map(company => {
-    //                             //console.log("company "+JSON.stringify(company));
-    //                             console.log("company.ContactId "+JSON.stringify(company.ContactName));
-    //                             console.log("company.SelectedValueContact "+JSON.stringify(company.SelectedValueContact));
-    //                             console.log("company.DropDataContactName "+JSON.stringify(company.DropDataContactName));
-    //                             let elementID = this.state.document[company.Name];
-    //                             let SelectedValue = find(result, function (i) { return i.value == elementID });
-    //                             this.setState({
-    //                                 [company.SelectedValueCompany]: SelectedValue,
-    //                             })
-    //                             if (company.ContactName !== '') {
-    //                                 dataservice.GetDataList('GetContactsByCompanyId?companyId=' + elementID + '', 'contactName', 'id').then(
-    //                                     res => {
-    //                                         let ContactId = this.state.document[company.ContactName];
-    //                                         let SelectedValueContact = find(res, function (i) { return i.value == ContactId; });
-    //                                         this.setState({
-    //                                             [company.DropDataContactName]: res,
-    //                                             [company.SelectedValueContact]: SelectedValueContact,
-    //                                             Loading: false
-    //                                         })
-    //                                     }
-    //                                 )
-    //                             }
-    //                         })
-    //                     }
-    //                     else {
-    //                         let elementID = this.state.document[element.Name];
-    //                         let SelectedValue = find(result, function (i) { return i.value == elementID; });
-    //                         this.setState({
-    //                             [element.selectedValue]: SelectedValue,
-    //                             Loading: false
-    //                         });
-    //                     }
-    //                 }
-    //             }
-    //         )
-    //     })
-    // }
-
-
-
     fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
         let action = url + "?" + param + "=" + value;
-       
+
         dataservice.GetDataList(action, 'contactName', 'id').then(result => {
             if (this.props.changeStatus === true) {
-           
+
                 let toSubField = this.state.document[subField];
                 let targetFieldSelected = find(result, function (i) { return i.value == toSubField; });
-               
-               
+
                 this.setState({
                     [subDatasource]: result,
                     [subSelectedValue]: targetFieldSelected
-                   
+
                 });
-               
             }
         });
     }
 
 
-    FillDropDowns=()=> {
-        
-
+    FillDropDowns = () => {
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + this.state.projectId, 'companyName', 'companyId', 'companies', this.state.projectId, "projectId").then(result => {
 
             if (this.state.IsEditMode) {
                 let companyId = this.props.document.fromCompanyId;
                 if (companyId) {
                     this.setState({
-                        selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId },
-                        //Loading: false
+                        selectedFromCompany: { label: this.props.document.fromCompanyName, value: companyId }
                     });
-                   // this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', companyId, 'fromContactId', 'selectedFromContact', 'fromContacts');
                 }
 
                 let toCompanyId = this.props.document.toCompanyId;
@@ -489,8 +378,6 @@ class punchListAddEdit extends Component {
                     this.setState({
                         selectedToCompany: { label: this.props.document.toCompanyName, value: toCompanyId }
                     });
-
-                    //this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', toCompanyId, 'toContactId', 'selectedToContact', 'ToContacts');
                 }
 
                 let bicCompanyId = this.props.document.bicCompanyId;
@@ -498,16 +385,13 @@ class punchListAddEdit extends Component {
                     this.setState({
                         selectedActionByCompanyId: { label: this.props.document.bicCompanyName, value: bicCompanyId }
                     });
-
-                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', bicCompanyId, 'bicContactId', 'selectedToContact', 'ToContacts');
-                    //this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', bicCompanyId, 'ActionByContactItem', 'selectedActionByContactItem', 'ToContactsItem');
+                    this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', bicCompanyId, 'bicContactId', 'selectedToContact', 'ToContacts');
                 }
             }
             this.setState({
                 companies: [...result]
             });
         });
-
 
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", 'title', 'id', 'defaultLists', "discipline", "listType").then(result => {
             if (this.state.IsEditMode) {
@@ -528,20 +412,17 @@ class punchListAddEdit extends Component {
         });
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=area", 'title', 'id', 'defaultLists', "area", "listType").then(result => {
 
-           
-
             if (this.state.IsEditMode) {
                 let areaId = this.props.document.areaId;
                 let area = {};
                 if (areaId) {
                     area = find(result, function (i) { return i.value == areaId; });
-                    if(area){
+                    if (area) {
                         this.setState({
-                            selecetedArea: {label:area.label,value:areaId},
+                            selecetedArea: { label: area.label, value: areaId },
                             Loading: false
                         });
                     }
-                  
                 }
             }
             this.setState({
@@ -568,37 +449,26 @@ class punchListAddEdit extends Component {
         });
 
         dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
-            if(docId){
-                
-                let conId=this.props.document.contractId;
-                let con={};
-                if(conId){
-                    con=find(result,function(i){return i.value==conId});
-                    if(con){
+            if (docId) {
+
+                let conId = this.props.document.contractId;
+                let con = {};
+                if (conId) {
+                    con = find(result, function (i) { return i.value == conId });
+                    if (con) {
                         this.setState({
-                          selectedContract:{label:con.label,value:conId}
+                            selectedContract: { label: con.label, value: conId }
                         });
                     }
                 }
-            }else{
-             this.setState({
-                 contractsPos: [...result],
-                 Loading:false
-               });
+            } else {
+                this.setState({
+                    contractsPos: [...result],
+                    Loading: false
+                });
             }
-            
-         });
 
-        // if (this.state.IsEditMode === false) {
-        //     dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, 'subject', 'id').then(result => {
-        //         this.setState({
-        //             contractsPos: [...result]
-        //         });
-        //     });
-        // }
-
-
-
+        });
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
@@ -615,7 +485,7 @@ class punchListAddEdit extends Component {
 
         if (field == "toContactId") {
             let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=" + this.state.document.fromCompanyId + "&contactId=" + event.value;
-            // this.props.actions.GetNextArrange(url);
+
             dataservice.GetNextArrangeMainDocument(url).then(res => {
                 updated_document.arrange = res;
                 updated_document = Object.assign(original_document, updated_document);
@@ -719,7 +589,6 @@ class punchListAddEdit extends Component {
         this.setState({ showDeleteModal: false });
     }
 
-
     clickHandlerDeleteRowsMain = (selectedRows) => {
         this.setState({
             selectedRows,
@@ -773,7 +642,7 @@ class punchListAddEdit extends Component {
                     }).catch(ex => {
                         toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
                     });
-                  
+
             }
 
             else {
@@ -852,8 +721,8 @@ class punchListAddEdit extends Component {
             docCloseDate: DocCloseDate, areaId: this.state.SelectedAreaItem.value,
             locationId: this.state.selectedLocationItem.value, description: values.description,
             bicCompanyId: this.state.selectedActionByCompanyIdItem.value,
-           
-           bicContactId: this.state.selectedActionByContactItem.value,
+            bicContactId: this.state.selectedActionByContactItem.value,
+            status: this.state.StatusItemForEdit
         }
 
         Api.post('EditLogsPunchListDetails', AddItemObj).then(
@@ -878,9 +747,9 @@ class punchListAddEdit extends Component {
         Api.get('GetLogsPunchListDetailsForEdit?id=' + obj.id + '').then(
             res => {
                 this.setState({ showPopUp: true, StatusItemForEdit: res.status })
-                let SelectedCompany = find(this.state.companies, function (i) { return i.value == res.bicCompanyId });
-                let SelectedAreaItem = find(this.state.areas, function (i) { return i.value == res.areaId });
-                let selectedLocationItem = find(this.state.locations, function (i) { return i.value == res.locationId });
+                let SelectedCompany = { label: res.bicCompanyName, value: res.bicCompanyId };
+                let SelectedAreaItem = { label: res.areaName, value: res.areaId };
+                let selectedLocationItem = { label: res.locationName, value: res.locationId };
 
                 dataservice.GetDataList('GetContactsByCompanyId?companyId=' + res.bicCompanyId + '', 'contactName', 'id').then(
                     result => {
@@ -901,6 +770,12 @@ class punchListAddEdit extends Component {
         )
     }
 
+    handleChangeStatusItem = (e) => {
+        this.setState({
+            StatusItemForEdit: e.target.value
+        });
+    }
+
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
@@ -914,7 +789,7 @@ class punchListAddEdit extends Component {
     ClosePopup = () => {
         this.setState({
             showPopUp: false,
-            StatusItemForEdit: 'true',
+            StatusItemForEdit: true,
             SelectedAreaItem: { label: Resources.selectArea[currentLanguage], value: "0" },
             selectedActionByCompanyIdItem: { label: Resources.actionByCompany[currentLanguage], value: "0" },
             selectedActionByContactItem: { label: Resources.toContactRequired[currentLanguage], value: "0" },
@@ -942,18 +817,15 @@ class punchListAddEdit extends Component {
                                 enableReinitialize={true}
                                 onSubmit={(values) => {
                                     this.SaveAddEditSnagList();
-                                }}  >
-
+                                }} >
                                 {({ errors, touched, handleBlur, values, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                     <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                         <div className="proForm first-proform">
-
                                             <div className="linebylineInput valid-input">
                                                 <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                                 <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
                                                     <input name='subject' className="form-control fsadfsadsa" id="subject"
-                                                        placeholder={Resources.subject[currentLanguage]} value={this.state.document.subject}
+                                                        placeholder={Resources.subject[currentLanguage]} value={this.state.document.subject || ''}
                                                         autoComplete='off' onChange={(e) => this.handleChange(e, 'subject')}
                                                         onBlur={(e) => {
                                                             handleBlur(e)
@@ -962,7 +834,6 @@ class punchListAddEdit extends Component {
                                                     {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                                 </div>
                                             </div>
-
                                             <div className="linebylineInput valid-input">
                                                 <label className="control-label">{Resources.status[currentLanguage]}</label>
                                                 <div className="ui checkbox radio radioBoxBlue">
@@ -974,21 +845,17 @@ class punchListAddEdit extends Component {
                                                     <label>{Resources.closed[currentLanguage]}</label>
                                                 </div>
                                             </div>
-
                                         </div>
-
                                         <div className="proForm datepickerContainer">
-
                                             <div className="linebylineInput valid-input alternativeDate">
                                                 <DatePicker title='docDate' startDate={this.state.document.docDate}
                                                     handleChange={e => this.handleChangeDate(e, 'docDate')} />
                                             </div>
-
                                             <div className="linebylineInput valid-input">
                                                 <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                                 <div className="ui input inputDev"  >
                                                     <input type="text" className="form-control" id="arrange" readOnly
-                                                        value={this.state.document.arrange} placeholder={Resources.arrange[currentLanguage]}
+                                                        value={this.state.document.arrange || ''} placeholder={Resources.arrange[currentLanguage]}
                                                         onChange={(e) => this.handleChange(e, 'arrange')} onBlur={(e) => {
                                                             handleChange(e)
                                                             handleBlur(e)
@@ -996,7 +863,6 @@ class punchListAddEdit extends Component {
 
                                                 </div>
                                             </div>
-
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown data={this.state.companies} selectedValue={this.state.selectedFromCompany}
                                                     handleChange={event => this.handleChangeDropDown(event, 'fromCompanyId', false, '', '', '', 'selectedFromCompany')}
@@ -1004,7 +870,6 @@ class punchListAddEdit extends Component {
                                                     error={errors.fromCompanyId} touched={touched.fromCompanyId}
                                                     index="IR-fromCompanyId" name="fromCompanyId" id="fromCompanyId" />
                                             </div>
-
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown data={this.state.companies} selectedValue={this.state.selectedToCompany}
                                                     handleChange={event => this.handleChangeDropDown(event, 'toCompanyId', false, '', '', '', 'selectedToCompany')}
@@ -1012,8 +877,6 @@ class punchListAddEdit extends Component {
                                                     error={errors.toCompanyId} touched={touched.toCompanyId}
                                                     index="IR-toCompanyId" name="toCompanyId" id="toCompanyId" />
                                             </div>
-
-
                                             <div className="linebylineInput valid-input mix_dropdown">
                                                 <label className="control-label">{Resources.actionByCompany[currentLanguage]}</label>
                                                 <div className="supervisor__company">
@@ -1071,8 +934,7 @@ class punchListAddEdit extends Component {
                                                         <div className="bounce2" />
                                                         <div className="bounce3" />
                                                     </div>
-                                                </button>
-                                                : this.showBtnsSaving()}
+                                                </button> : this.showBtnsSaving()}
                                         </div>
 
                                     </Form>
@@ -1112,7 +974,6 @@ class punchListAddEdit extends Component {
                         console.log(values)
                         this.AddItem(values)
                     }}>
-
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit}>
                             <div className="documents-stepper noTabs__document">
@@ -1121,7 +982,6 @@ class punchListAddEdit extends Component {
                                         <div className='document-fields'>
                                             <div className="proForm datepickerContainer">
                                                 <div className="proForm first-proform fullWidthWrapper textLeft">
-
                                                     <div className={'ui input inputDev linebylineInput ' + (errors.description && touched.description ? 'has-error' : null) + ' '}>
                                                         <label className="control-label">{Resources['description'][currentLanguage]}</label>
                                                         <div className="inputDev ui input">
@@ -1135,24 +995,17 @@ class punchListAddEdit extends Component {
                                                             {errors.description && touched.description ? (<em className="pError">{errors.description}</em>) : null}
                                                         </div>
                                                     </div>
-
                                                     <div className="linebylineInput valid-input">
-                                                        <label className="control-label"> {Resources['status'][currentLanguage]} </label>
-                                                        <div className="ui checkbox radio radioBoxBlue checked">
-                                                            <input type="radio"
-                                                                defaultChecked={this.state.StatusItem ? 'checked' : null}
-                                                                name="StatusItem" value="true" onChange={(e) => this.setState({ StatusItem: e.target.value })} />
-                                                            <label>{Resources['oppened'][currentLanguage]}</label>
+                                                        <label className="control-label">{Resources.status[currentLanguage]}</label>
+                                                        <div className="ui checkbox radio radioBoxBlue">
+                                                            <input type="radio" name="StatusItem" defaultChecked={this.state.StatusItem === false ? null : 'checked'} value="true" onChange={(e) => this.setState({ StatusItem: e.target.value })} />
+                                                            <label>{Resources.oppened[currentLanguage]}</label>
                                                         </div>
-                                                        <div className="ui checkbox radio radioBoxBlue ">
-                                                            <input type="radio" name="StatusItem" value="false"
-                                                                defaultChecked={this.state.StatusItem ? null : 'checked'}
-                                                                onChange={(e) => this.setState({ StatusItem: e.target.value })} />
-                                                            <label> {Resources['closed'][currentLanguage]}</label>
+                                                        <div className="ui checkbox radio radioBoxBlue">
+                                                            <input type="radio" name="StatusItem" defaultChecked={this.state.StatusItem === false ? 'checked' : null} value="false" onChange={(e) => this.setState({ StatusItem: e.target.value })} />
+                                                            <label>{Resources.closed[currentLanguage]}</label>
                                                         </div>
-
                                                     </div>
-
                                                 </div>
 
                                                 <div className="linebylineInput valid-input">
@@ -1219,9 +1072,7 @@ class punchListAddEdit extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
-
                                             <div className="slider-Btns">
                                                 <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['addTitle'][currentLanguage]}</button>
                                             </div>
@@ -1237,11 +1088,18 @@ class punchListAddEdit extends Component {
         //Render Grid In Second Step
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox}
-                    minHeight={350}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                    onRowClick={this.ShowPopUp}
+                <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.state.columns}
+                    pageSize={50} actions={[{
+                        title: 'Delete',
+                        handleClick: values => {
+                            this.setState({
+                                showDeleteModal: true,
+                                selectedRows: values
+                            });
+                        },
+                        classes: '',
+                    }]} rowActions={[]}
+                    rowClick={(cell) => this.ShowPopUp(cell)}
                 />
             ) : <LoadingSection />
 
@@ -1249,16 +1107,14 @@ class punchListAddEdit extends Component {
 
         let RenderEditItem = () => {
             return (
-                <Formik
-                    initialValues={{
-                        description: this.state.EditItems.description,
-                        ActionByContactItem: ' ',
-                        arrangeItem: this.state.EditItems.arrange,
-                        location: ' ',
-                        ActionByCompanyIdItem: ' ',
-                        AreaIdItem: ' ',
-                    }}
-
+                <Formik initialValues={{
+                    description: this.state.EditItems.description,
+                    ActionByContactItem: this.state.selectedToContact.value,
+                    arrangeItem: this.state.EditItems.arrange,
+                    location: '',
+                    ActionByCompanyIdItem: this.state.selectedActionByCompanyId.value,
+                    AreaIdItem: ''
+                }}
                     enableReinitialize={true}
                     validationSchema={validationSchemaForEditItem}
                     onSubmit={(values, actions) => {
@@ -1269,14 +1125,12 @@ class punchListAddEdit extends Component {
 
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form className="dropWrapper" onSubmit={handleSubmit}>
-
                             <div className="proForm customProform">
-
                                 <div className={'fillter-status fillter-item-c ' + (errors.description && touched.description ? 'has-error' : null) + ' '}>
                                     <label className="control-label">{Resources['description'][currentLanguage]}</label>
                                     <div className="inputDev ui input">
                                         <input autoComplete="off" className="form-control" name="description"
-                                            value={values.description}
+                                            value={values.description || ''}
                                             onBlur={(e) => { handleBlur(e) }}
                                             onChange={(e) => {
                                                 handleChange(e)
@@ -1287,29 +1141,25 @@ class punchListAddEdit extends Component {
                                 </div>
 
                                 <div className="fillter-status fillter-item-c">
-                                    <label className="control-label"> {Resources['status'][currentLanguage]} </label>
-                                    <div className="ui checkbox radio radioBoxBlue checked">
-                                        <input type="radio" name="StatusItemForEdit" id='StatusItemForEdit'
-                                            checked={this.state.StatusItemForEdit} value='true'
-                                            onChange={(e) => this.setState({ StatusItemForEdit: e.target.value })} />
-                                        <label>{Resources['oppened'][currentLanguage]}</label>
+                                    <div className="linebylineInput valid-input">
+                                        <label className="control-label">{Resources.status[currentLanguage]}</label>
+                                        <div className="ui checkbox radio radioBoxBlue">
+                                            <input type="radio" name="StatusItemForEdit" defaultChecked={this.state.StatusItemForEdit === false ? null : 'checked'} value="true" onChange={(e) => this.setState({ StatusItemForEdit: e.target.value })} />
+                                            <label>{Resources.oppened[currentLanguage]}</label>
+                                        </div>
+                                        <div className="ui checkbox radio radioBoxBlue">
+                                            <input type="radio" name="StatusItemForEdit" defaultChecked={this.state.StatusItemForEdit === false ? 'checked' : null} value="false" onChange={(e) => this.setState({ StatusItemForEdit: e.target.value })} />
+                                            <label>{Resources.closed[currentLanguage]}</label>
+                                        </div>
                                     </div>
-                                    <div className="ui checkbox radio radioBoxBlue ">
-                                        <input type="radio" name="StatusItemForEdit"
-                                            checked={!this.state.StatusItemForEdit} value='false'
-                                            onChange={(e) => this.setState({ StatusItemForEdit: e.target.value })} />
-                                        <label> {Resources['closed'][currentLanguage]}</label>
-                                    </div>
-
                                 </div>
-
                                 <div className="fillter-status fillter-item-c">
                                     <label className="control-label">{Resources['numberAbb'][currentLanguage]}</label>
                                     <div className="inputDev ui input">
                                         <input autoComplete="off" className="form-control" readOnly
                                             onChange={(e) => {
                                                 handleChange(e)
-                                            }} value={values.arrangeItem} name="arrangeItem" placeholder={Resources['numberAbb'][currentLanguage]} />
+                                            }} value={values.arrangeItem || ''} name="arrangeItem" placeholder={Resources['numberAbb'][currentLanguage]} />
                                     </div>
                                 </div>
 
@@ -1361,14 +1211,10 @@ class punchListAddEdit extends Component {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className="slider-Btns fullWidthWrapper">
                                     <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['addTitle'][currentLanguage]}</button>
                                 </div>
-
                             </div>
-
-
                         </Form>
                     )}
                 </Formik>
@@ -1379,13 +1225,10 @@ class punchListAddEdit extends Component {
             <div className="mainContainer">
                 {this.state.Loading ? <LoadingSection /> : null}
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute}
                         docTitle={Resources.punchList[currentLanguage]}
                         moduleTitle={Resources['qualityControl'][currentLanguage]} />
-
                     <div className="doc-container">
-
                         <div className="skyLight__form">
                             <SkyLightStateless onOverlayClicked={() => this.ClosePopup()}
                                 title={Resources['editTitle'][currentLanguage]}
@@ -1393,15 +1236,12 @@ class punchListAddEdit extends Component {
                                 {RenderEditItem()}
                             </SkyLightStateless>
                         </div>
-
                         <div className="step-content">
                             {this.state.CurrentStep == 0 ?
                                 <Fragment>
                                     {RenderSnagListAddEdit()}
                                 </Fragment>
-
                                 : < div className="subiTabsContent feilds__top">
-
                                     {RenderAddItem()}
                                     <div className="doc-pre-cycle">
                                         <header>
@@ -1493,123 +1333,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(punchListAddEdit))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(punchListAddEdit))

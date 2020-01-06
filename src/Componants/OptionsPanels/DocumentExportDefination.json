@@ -1826,12 +1826,7 @@
                 "name": "docDate",
                 "value": "docDate",
                 "type": "D"
-            },
-            {
-                "name": "fileNumber",
-                "value": "fileNumber",
-                "type": "S"
-            },
+            }, 
             {
                 "name": "reasonForIssue",
                 "value": "reasonForIssueName",
@@ -1881,67 +1876,7 @@
                 "name": "submittalType",
                 "value": "submittalType",
                 "type": "S"
-            },
-            {
-                "name": "SubmittalDetails",
-                "value": " ",
-                "type": "S"
-            },
-            {
-                "name": "recievedFrom",
-                "value": "receivedFromCompanyName",
-                "type": "S"
-            },
-            {
-                "name": "receivedStatus",
-                "value": "receivedStatusName",
-                "type": "S"
-            },
-            {
-                "name": "receivedDate",
-                "value": "receivedDate",
-                "type": "D"
-            },
-            {
-                "name": "sendTo",
-                "value": "sentToCompanyName",
-                "type": "S"
-            },
-            {
-                "name": "sentStatus",
-                "value": "sentStatusName",
-                "type": "S"
-            },
-            {
-                "name": "sendDate",
-                "value": "sentDate",
-                "type": "D"
-            },
-            {
-                "name": "returnedBy",
-                "value": "returnedByCompanyName",
-                "type": "S"
-            },
-            {
-                "name": "returnStatus",
-                "value": "returnedByStatusName",
-                "type": "S"
-            },
-            {
-                "name": "returnedByDate",
-                "value": "returnedByDate",
-                "type": "D"
-            },
-            {
-                "name": "forwardedTo",
-                "value": "forwardToCompanyName",
-                "type": "S"
-            },
-            {
-                "name": "forwardStatus",
-                "value": "forwardToStatusName",
-                "type": "S"
-            },
+            }, 
             {
                 "name": "CycleDetails",
                 "value": " ",
@@ -2635,6 +2570,11 @@
     "71": {
         "fields": [
             {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
                 "name": "subject",
                 "value": "subject",
                 "type": "S"
@@ -2660,23 +2600,18 @@
                 "type": "S"
             },
             {
-                "name": "revisedContractSumToDate",
-                "value": "revisedContractSumToDate",
+                "name": "contractExecutedToDate",
+                "value": "contractExecutedToDate",
                 "type": "S"
-            },
+            }, 
             {
                 "name": "advancedPayment",
                 "value": "advancePaymentAmount",
                 "type": "S"
             },
             {
-                "name": "remainingPayment",
-                "value": "remainingPayment",
-                "type": "S"
-            },
-            {
-                "name": "projectName",
-                "value": "projectName",
+                "name": "actualPayment",
+                "value": "actualPayment",
                 "type": "S"
             }
         ],
@@ -2694,9 +2629,9 @@
             "previous",
             "current",
             "total",
-            "previous",
-            "current",
-            "total" 
+            "previousContractor",
+            "currentContractor",
+            "totalContractor" 
         ]
     },
     "77": {

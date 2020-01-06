@@ -51,7 +51,7 @@ const validationItemsSchema = Yup.object().shape({
     quantityComplete: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["quantityComplete"][currentLanguage]),
     paymentPercent: Yup.number().typeError(Resources["onlyNumbers"][currentLanguage]).required(Resources["paymentPercent"][currentLanguage])
 });
- 
+
 const BoqTypeSchema = Yup.object().shape({
     boqType: Yup.string().required(Resources["boqSubType"][currentLanguage]),
     boqChild: Yup.string().required(Resources["boqSubType"][currentLanguage]),
@@ -265,7 +265,6 @@ class requestPaymentsAddEdit extends Component {
             this.props.history.push(this.state.perviousRoute);
         }
 
-        this.editRowsClick = this.editRowsClick.bind(this);
 
         steps_defination = [
             {
@@ -285,6 +284,8 @@ class requestPaymentsAddEdit extends Component {
                 callBackFn: () => this.fillSummariesTab()
             }
         ];
+
+        //this.editRowsClick = this.editRowsClick.bind(this);
     }
 
     buildColumns(changeStatus) {
@@ -811,68 +812,7 @@ class requestPaymentsAddEdit extends Component {
                 links[i].classList.add("odd");
             }
         }
-    }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.document.id) {
-            let serverChangeOrder = { ...nextProps.document };
-            serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format("YYYY-MM-DD");
-            serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0;
-            serverChangeOrder.tax = serverChangeOrder.tax != null ? serverChangeOrder.tax : 0;
-            serverChangeOrder.vat = serverChangeOrder.vat != null ? serverChangeOrder.vat : 0;
-            serverChangeOrder.insurance = serverChangeOrder.insurance != null ? serverChangeOrder.insurance : 0;
-            serverChangeOrder.actualPayment = serverChangeOrder.actualPayment != null ? serverChangeOrder.actualPayment : 0;
-            serverChangeOrder.advancedPaymentAmount = serverChangeOrder.advancedPaymentAmount != null ? serverChangeOrder.advancedPaymentAmount : 0;
-            serverChangeOrder.retainagePercent = serverChangeOrder.retainagePercent != null ? serverChangeOrder.retainagePercent : 0;
-            serverChangeOrder.remainingPayment = serverChangeOrder.remainingPayment != null ? serverChangeOrder.remainingPayment : 0;
-            serverChangeOrder.percentComplete = "";
-            serverChangeOrder.quantityComplete = "";
-            serverChangeOrder.paymentPercent = "";
-            serverChangeOrder.lastComment = "";
-
-            this.setState({
-                document: { ...serverChangeOrder },
-                hasWorkflow: nextProps.hasWorkflow
-            });
-
-
-            this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-            this.checkDocumentIsView();
-            this.setState({
-                isLoading: false
-            });
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-            this.checkDocumentIsView();
-        }
-    }
-
-    checkDocumentIsView() {
-        if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(187)) {
-                this.setState({ isViewMode: true });
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(187)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(187)) {
-                    //close => false
-                    if (this.props.document.status !== false && Config.IsAllow(187)) {
-                        this.setState({ isViewMode: false });
-                    } else {
-                        this.setState({ isViewMode: true });
-                    }
-                } else {
-                    this.setState({ isViewMode: true });
-                }
-            }
-        } else {
-            this.setState({ isViewMode: false });
-        }
-    }
-
-    componentWillMount() {
         let documentDeduction = {
             title: "",
             deductionValue: 0
@@ -927,6 +867,158 @@ class requestPaymentsAddEdit extends Component {
         }
     }
 
+    // componentWillReceiveProps(nextProps) { 
+
+    //     if (nextProps.document.id) {
+    //         let serverChangeOrder = { ...nextProps.document };
+    //         serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format("YYYY-MM-DD");
+    //         serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0;
+    //         serverChangeOrder.tax = serverChangeOrder.tax != null ? serverChangeOrder.tax : 0;
+    //         serverChangeOrder.vat = serverChangeOrder.vat != null ? serverChangeOrder.vat : 0;
+    //         serverChangeOrder.insurance = serverChangeOrder.insurance != null ? serverChangeOrder.insurance : 0;
+    //         serverChangeOrder.actualPayment = serverChangeOrder.actualPayment != null ? serverChangeOrder.actualPayment : 0;
+    //         serverChangeOrder.advancedPaymentAmount = serverChangeOrder.advancedPaymentAmount != null ? serverChangeOrder.advancedPaymentAmount : 0;
+    //         serverChangeOrder.retainagePercent = serverChangeOrder.retainagePercent != null ? serverChangeOrder.retainagePercent : 0;
+    //         serverChangeOrder.remainingPayment = serverChangeOrder.remainingPayment != null ? serverChangeOrder.remainingPayment : 0;
+    //         serverChangeOrder.percentComplete = "";
+    //         serverChangeOrder.quantityComplete = "";
+    //         serverChangeOrder.paymentPercent = "";
+    //         serverChangeOrder.lastComment = "";
+
+    //         this.setState({
+    //             document: { ...serverChangeOrder },
+    //             hasWorkflow: nextProps.hasWorkflow
+    //         });
+
+
+    //         this.fillDropDowns(nextProps.document.id > 0 ? true : false);
+    //         this.checkDocumentIsView();
+    //         this.setState({
+    //             isLoading: false
+    //         });
+    //     }
+    // }
+
+    static getDerivedStateFromProps(nextProps, state) {
+        if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
+            let serverChangeOrder = { ...nextProps.document };
+            serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format("YYYY-MM-DD");
+            serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0;
+            serverChangeOrder.tax = serverChangeOrder.tax != null ? serverChangeOrder.tax : 0;
+            serverChangeOrder.vat = serverChangeOrder.vat != null ? serverChangeOrder.vat : 0;
+            serverChangeOrder.insurance = serverChangeOrder.insurance != null ? serverChangeOrder.insurance : 0;
+            serverChangeOrder.actualPayment = serverChangeOrder.actualPayment != null ? serverChangeOrder.actualPayment : 0;
+            serverChangeOrder.advancedPaymentAmount = serverChangeOrder.advancedPaymentAmount != null ? serverChangeOrder.advancedPaymentAmount : 0;
+            serverChangeOrder.retainagePercent = serverChangeOrder.retainagePercent != null ? serverChangeOrder.retainagePercent : 0;
+            serverChangeOrder.remainingPayment = serverChangeOrder.remainingPayment != null ? serverChangeOrder.remainingPayment : 0;
+            serverChangeOrder.percentComplete = "";
+            serverChangeOrder.quantityComplete = "";
+            serverChangeOrder.paymentPercent = "";
+            serverChangeOrder.lastComment = "";
+
+            return {
+                document: { ...serverChangeOrder },
+                hasWorkflow: nextProps.hasWorkflow 
+            };
+        }
+        return null
+    }
+    
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+            this.fillDropDowns(this.props.document.id > 0 ? true : false);
+            this.checkDocumentIsView();
+            this.fillSummariesTab();
+        }
+
+        if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+            this.checkDocumentIsView();
+        }
+    }
+
+    // componentDidUpdate(prevProps) {
+    //     if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+    //         this.checkDocumentIsView();
+    //     }
+    // }
+
+    checkDocumentIsView() {
+        if (this.props.changeStatus === true) {
+            if (!Config.IsAllow(187)) {
+                this.setState({ isViewMode: true });
+            }
+            if (this.state.isApproveMode != true && Config.IsAllow(187)) {
+                if (this.props.hasWorkflow == false && Config.IsAllow(187)) {
+                    //close => false
+                    if (this.props.document.status !== false && Config.IsAllow(187)) {
+                        this.setState({ isViewMode: false });
+                    } else {
+                        this.setState({ isViewMode: true });
+                    }
+                } else {
+                    this.setState({ isViewMode: true });
+                }
+            }
+        } else {
+            this.setState({ isViewMode: false });
+        }
+    }
+
+    // componentWillMount() {
+    //     let documentDeduction = {
+    //         title: "",
+    //         deductionValue: 0
+    //     };
+
+    //     if (this.state.docId > 0) {
+    //         this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
+    //         this.props.actions.ExportingData({ items: [] });
+
+    //         dataservice.GetDataList("GetCostCodingTreeByProjectId?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
+    //             this.setState({
+    //                 fillDropDownTress: result
+    //             });
+    //         });
+    //         this.setState({
+    //             isLoading: true,
+    //             documentDeduction: documentDeduction
+    //         });
+    //     } else {
+    //         let paymentRequistion = {
+    //             subject: "..",
+    //             id: 0,
+    //             projectId: this.state.projectId,
+    //             arrange: "",
+    //             docDate: moment(),
+    //             status: true,
+    //             useCommulative: true,
+    //             advancedPaymentAmount: 0,
+    //             contractId: "",
+    //             vat: 0,
+    //             tax: 0,
+    //             insurance: 0,
+    //             advancePaymentPercent: 0,
+    //             collected: 0,
+    //             useQuantity: false,
+    //             percentComplete: "",
+    //             quantityComplete: "",
+    //             paymentPercent: ""
+    //         };
+
+    //         this.setState(
+    //             {
+    //                 document: paymentRequistion,
+    //                 documentDeduction: documentDeduction
+    //             },
+    //             function () {
+    //                 this.GetNExtArrange();
+    //             }
+    //         );
+    //         this.fillDropDowns(false);
+    //         this.props.actions.documentForAdding();
+    //     }
+    // }
+
     GetNExtArrange() {
         let original_document = { ...this.state.document };
 
@@ -962,10 +1054,11 @@ class requestPaymentsAddEdit extends Component {
                     contractsPool: result
                 });
             });
-            
-        }else{
-            this.fillSummariesTab();
+
         }
+       // else {
+            //this.fillSummariesTab();
+       // }
     }
 
     componentWillUnmount() {
@@ -1182,7 +1275,6 @@ class requestPaymentsAddEdit extends Component {
 
     fillSummariesTab = () => {
         let contractId = this.state.document.contractId;
-
         let interimInvoicedTable = [...this.state.interimInvoicedTable];
         let isItemUpdate = this.state.isItemUpdate;
 
@@ -1202,9 +1294,16 @@ class requestPaymentsAddEdit extends Component {
             }).catch(res => {
                 this.setState({
                     interimInvoicedTable: [],
-                    isLoading: false
+                    isLoading: false,
+                    isItemUpdate: false
                 });
             });
+        } else {
+            this.setState({
+                isLoading: false,
+                isItemUpdate: false
+            });
+
         }
 
         let approvedInvoicesChilds = [...this.state.approvedInvoicesChilds];
@@ -1218,7 +1317,7 @@ class requestPaymentsAddEdit extends Component {
             dataservice.GetDataGridPost("GetApprovedInvoicesParent?contractId=" + contractId + "&requestId=" + this.state.docId).then(result => {
                 var obj = {};
                 var conditionString = "";
-                result = result || [];  
+                result = result || [];
                 dataservice.GetDataGridPost("GetApprovedInvoicesChilds?projectId=" + projectId + "&contractId=" + contractId + "&requestId=" + this.state.docId).then(res => {
 
                     let approvedInvoicesParent = [];
@@ -1694,14 +1793,13 @@ class requestPaymentsAddEdit extends Component {
     editPaymentRequistionItems = () => {
 
         let mainDoc = this.state.currentObject;
-
         mainDoc.requestId = this.state.docId;
         mainDoc.contractId = this.state.document.contractId;
-        // mainDoc.comment = mainDoc.lastComment;
 
         this.setState({
             isLoading: true
         });
+
         dataservice.addObject("EditRequestPaymentItem", mainDoc).then(result => {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -1711,6 +1809,7 @@ class requestPaymentsAddEdit extends Component {
                 isItemUpdate: true,
                 isLoading: false
             });
+
         }).catch(res => {
             toast.error(
                 Resources["operationCanceled"][currentLanguage]
@@ -1719,6 +1818,7 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: false
             });
         });
+
     };
 
     handleDropAction(event) {
@@ -2339,7 +2439,7 @@ class requestPaymentsAddEdit extends Component {
             </Fragment>
         );
 
-        let interimTable = this.state.isLoading === false ? (
+        let interimTable = 
             this.state.interimInvoicedTable.map(i => (
                 <tr key={i.id}>
                     {i.comment == "True" ? (
@@ -2397,8 +2497,7 @@ class requestPaymentsAddEdit extends Component {
                             </Fragment>
                         )}
                 </tr>
-            ))
-        ) : (<LoadingSection />);
+            )) 
 
         let viewHistory = (
             <div className="doc-pre-cycle">
@@ -2496,10 +2595,10 @@ class requestPaymentsAddEdit extends Component {
                                         {Resources["JobBuilding"][currentLanguage]}
                                     </div>
                                 </th>
-                                {this.state.approvedInvoicesParent.map(i => (
-                                    <th>
+                                {this.state.approvedInvoicesParent.map((i,index) => (
+                                    <th key={'th-approvedInvoicesParent'+index}>
                                         <div className="headCell">
-                                            {i.details.slice(0, i.details.lastIndexOf("-"))}
+                                            {i.details ? i.details.slice(0, i.details.lastIndexOf("-")) : ""}
                                         </div>
                                     </th>
                                 ))}
@@ -2511,15 +2610,15 @@ class requestPaymentsAddEdit extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.approvedInvoicesChilds.map(i => (
-                                <tr>
+                            {this.state.approvedInvoicesChilds.map((i ,idx)=> (
+                                <tr key={'tr-approvedInvoicesChilds-'+idx}>
                                     <td>
-                                        {i.building.slice(0, i.building.lastIndexOf("-"))}
+                                        {i.building ? i.building.slice(0, i.building.lastIndexOf("-")) : ""}
                                     </td>
 
-                                    {this.state.approvedInvoicesParent.map(data => (
+                                    {this.state.approvedInvoicesParent.map((data,index) => (
 
-                                        <td>
+                                        <td key={'td-approvedInvoicesParent-'+index}>
                                             {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </td>
 
@@ -2563,7 +2662,7 @@ class requestPaymentsAddEdit extends Component {
                                                         }
                                                     }}>
                                                     {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                                                        <Form id="InspectionRequestForm" className="customProform" noValidate="novalidate"
+                                                        <Form id="RequestPaymentForm" className="customProform" noValidate="novalidate"
                                                             onSubmit={handleSubmit}>
                                                             <div className="proForm first-proform">
                                                                 <div className="linebylineInput valid-input">
@@ -3252,7 +3351,7 @@ class requestPaymentsAddEdit extends Component {
                                 this.editPaymentRequistionItems();
                             }}>
                             {({ errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
-                                <Form id="InspectionRequestForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
+                                <Form id="RequestPaymentItemEditForm" className="customProform proForm" noValidate="novalidate" onSubmit={handleSubmit}>
                                     <div className="dropWrapper">
                                         {
                                             Config.IsAllow(3674) ?
