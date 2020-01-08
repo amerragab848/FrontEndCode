@@ -22009,7 +22009,7 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     overflow: visible !important;
 }
 
-@media (min-width: 1200) and (max-width: 1360) {
+@media (min-width: 1200px) and (max-width: 1360px) {
     #legenbd__teext {
         padding-left: 0;
     }

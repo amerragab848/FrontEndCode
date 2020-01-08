@@ -22152,3 +22152,19 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+    
+@media (min-width: 1200px) and (max-width: 1360px) {
+    #legenbd__teext {
+        padding-left: 0;
+    }
+
+    #legenbd__teext .percentage {
+        font-size: 48px;
+    }
+}
+
+thead.grid-header tr.action-bar .actions button.autoGridBtn {
+    width: auto !important;
+    min-width: 72px
+}

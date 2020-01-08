@@ -8,6 +8,8 @@ import LoadingSection from '../../Componants/publicComponants/LoadingSection';
 import 'react-table/react-table.css'
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 import SubContract from '../Contracts/SubContract';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const dateFormate = ({ value }) => {
@@ -19,102 +21,94 @@ class SubContractLog extends Component {
     constructor(props) {
         super(props)
 
+        this.actions = [];
+
+        this.rowActions = [];
+
         this.itemsColumns = [
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
             {
-                key: "arrange",
-                name: Resources["arrange"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: "arrange",
+                title: Resources["arrange"][currentLanguage],
+                width: 5,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "number"
-            }, {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "subject",
+                title: Resources["subject"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            }, {
-                key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-                width: 120,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "companyName",
+                title: Resources["CompanyName"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            }, {
-                key: "toCompanyName",
-                name: Resources["contractTo"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "toCompanyName",
+                title: Resources["contractTo"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            }, {
-                key: "toContactName",
-                name: Resources["ToContact"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "toContactName",
+                title: Resources["ToContact"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            }, {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "docDate",
+                title: Resources["docDate"][currentLanguage],
+                width: 8,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate,
                 type: "date"
-            }, {
-                key: "completionDate",
-                name: Resources["completionDate"][currentLanguage],
-                width: 100,
-                draggable: true,
+            },
+            {
+                field: "completionDate",
+                title: Resources["completionDate"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate,
                 type: "date"
-            }, {
-                key: "actualExceuted",
-                name: Resources["actualExecuted"][currentLanguage],
-                width: 100,
-                draggable: true,
+            },
+            {
+                field: "actualExceuted",
+                title: Resources["actualExceuted"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "number"
-            }, {
-                key: "docCloseDate",
-                name: Resources["closeDate"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate,
                 type: "date"
-            }
-        ];
+            },
+            {
+                field: "docCloseDate",
+                title: Resources["closeDate"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "date"
+            },
+        ]
 
         this.state = {
             ApiGet: this.props.ApiGet,
@@ -154,7 +148,11 @@ class SubContractLog extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ?
-            (<GridSetupWithFilter rows={this.state.rows} showCheckbox={false} columns={this.itemsColumns} key='items' />) : <LoadingSection />;
+            (<GridCustom
+                cells={this.itemsColumns} data={this.state.rows} groups={[]} pageSize={50} actions={this.actions}
+                rowActions={this.rowActions} rowClick={() => { }}
+            />
+            ) : <LoadingSection />;
         return (
             <Fragment>
                 {this.state.viewModel === false ?

@@ -15,6 +15,8 @@ import DropdownMelcous from '../../Componants/OptionsPanels/DropdownMelcous';
 import * as Yup from 'yup';
 import ReactTable from "react-table";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 let selectedRows = [];
 const dateFormate = ({ value }) => {
@@ -40,108 +42,99 @@ class AmendmentList extends Component {
     constructor(props) {
 
         let Gridcolumns = [
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
             {
-                formatter: customButton,
-                key: 'customBtn'
+                field: "arrange",
+                title: Resources["arrange"][currentLanguage],
+                width: 5,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type: "text"
             },
             {
-                key: "arrange",
-                name: Resources["arrange"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "refDoc",
+                title: Resources["refDoc"][currentLanguage],
+                width: 7,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                type: "text"
             },
             {
-                key: "refDoc",
-                name: Resources["refDoc"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "statusName",
+                title: Resources["statusName"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                type: "text",
+                leftPadding: 0,
+                classes: ' grid-status',
             },
             {
-                key: "statusName",
-                name: Resources["statusName"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "subject",
+                title: Resources["subject"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                type: "text"
             },
             {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "companyName",
+                title: Resources["fromCompany"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-
-            }, {
-                key: "companyName",
-                name: Resources["fromCompany"][currentLanguage],
-                width: 150,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "toCompanyName",
+                title: Resources["contractTo"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "toCompanyName",
-                name: Resources["contractTo"][currentLanguage],
-                width: 150,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "toContactName",
+                title: Resources["contractWithContact"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "toContactName",
-                name: Resources["contractWithContact"][currentLanguage],
-                width: 200,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "docDate",
+                title: Resources["docDate"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 150,
-                draggable: true,
+                type: "date"
+            },
+            {
+                field: "completionDate",
+                title: Resources["completionDate"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            }, {
-                key: "completionDate",
-                name: Resources["completionDate"][currentLanguage],
-                width: 150,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            }, {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                editable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-            }
+                type: "text"
+            },
         ];
 
         super(props)
@@ -165,10 +158,28 @@ class AmendmentList extends Component {
             BoqTypeChilds: [],
             BoqSubTypes: [],
         }
+
+        this.rowActions = [
+            {
+                title: 'Show Information',
+                handleClick: row => {
+                    this.showContarctItemInfo(row)
+                }
+            }
+        ];
+        this.groups = [];
+        this.actions = [
+            {
+                title: Resources['delete'][currentLanguage],
+                handleClick: cell => {
+                    this.clickHandlerDeleteRowsMain(cell)
+                },
+                classes: '',
+            }
+        ];
     }
 
     componentWillMount = () => {
-
         dataservice.GetDataGrid('GetContractAmendmentByContractId?parentId=' + this.state.contractId).then(
             res => {
                 this.setState({
@@ -203,15 +214,13 @@ class AmendmentList extends Component {
         });
     }
 
-    onRowClick = (value, index, column) => {
-        if (column.key == 'customBtn') {
-            Api.get('ShowContractItemsByContractId?contractId=' + value.id + '&pageNumber=0&pageSize=0').then(res => {
-                this.setState({
-                    ShowPopupItem: true,
-                    AmendmentItems: res
-                })
+    showContarctItemInfo = (value) => {
+        Api.get('ShowContractItemsByContractId?contractId=' + value.id + '&pageNumber=0&pageSize=0').then(res => {
+            this.setState({
+                ShowPopupItem: true,
+                AmendmentItems: res
             })
-        }
+        })
     }
 
     clickHandlerDeleteRowsMain = selectedRows => {
@@ -229,17 +238,17 @@ class AmendmentList extends Component {
         this.setState({ showDeleteModal: false });
     }
 
-    onRowsSelected = selectedRows => {
-        this.setState({
-            selectedRow: selectedRows
-        });
-    }
+    // onRowsSelected = selectedRows => {
+    //     this.setState({
+    //         selectedRow: selectedRows
+    //     });
+    // }
 
-    onRowsDeselected = () => {
-        this.setState({
-            selectedRow: []
-        });
-    }
+    // onRowsDeselected = () => {
+    //     this.setState({
+    //         selectedRow: []
+    //     });
+    // }
 
     ConfirmDelete = () => {
         this.setState({ isLoading: true })
@@ -488,10 +497,11 @@ class AmendmentList extends Component {
 
         ]
 
-        const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.AmendmentList} columns={this.state.columns} onRowClick={this.onRowClick}
-                showCheckbox={true} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} />
-        ) : <LoadingSection />
+        const dataGrid = this.state.isLoading === false ?
+            <GridCustom
+                cells={this.state.columns} data={this.state.AmendmentList} groups={this.groups} actions={this.actions}
+                rowActions={this.rowActions} rowClick={() => { }}
+            /> : <LoadingSection />
 
         return (
             <div>
