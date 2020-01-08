@@ -543,7 +543,7 @@ class LettersAddEdit extends Component {
                 }
             });
     }
-
+    
     async replyNewLetter() {
 
         if (Config.IsAllow(48)) {
