@@ -10,8 +10,9 @@ import Config from "../../Services/Config.js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import GridSetup from "../Communication/GridSetup";
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument' 
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+
 import Export from "../../Componants/OptionsPanels/Export";
 import sumBy from 'lodash/sumBy';
 import BarChartComp from '../../Componants/ChartsWidgets/BarChartCompJS'
@@ -29,49 +30,49 @@ class CollectedInvoices extends Component {
 
         this.columnsGrid = [
             {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "subject",
+                title: Resources["subject"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "collected",
-                name: Resources["collected"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "collected",
+                title: Resources["collected"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "variance",
-                name: Resources["variance"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "variance",
+                title: Resources["variance"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "total",
+                title: Resources["total"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "totalExcuted",
-                name: Resources["totalExcuted"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "totalExcuted",
+                title: Resources["totalExcuted"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
             }
         ];
 
@@ -86,7 +87,8 @@ class CollectedInvoices extends Component {
             totalExecuted: 0,
             totalcollected: 0,
             total: 0,
-            variance: 0
+            variance: 0,
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(691)) {
@@ -161,7 +163,18 @@ class CollectedInvoices extends Component {
 
         const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ? <GridSetup rows={this.state.rows} showCheckbox={false} columns={this.columnsGrid} /> : null
+                this.state.rows.length > 0 ? 
+                <GridCustom 
+                ref='custom-data-grid'
+                key="collectedInvoices"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                rowClick={() => { }}
+                cells={this.columnsGrid}
+                   /> : null
             ) : (
                 <LoadingSection />
             );

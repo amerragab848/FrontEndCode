@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import dataservice from "../../../Dataservice";
 import SkyLight from 'react-skylight';
 import moment from "moment";
@@ -23,6 +24,7 @@ class TasksStatus extends Component {
         this.state = {
             isLoading: false,
             dropDownList: [],
+            pageSize: 200,
             selectedProject: { label: Resources.selectProjects[currentLanguage], value: "0" },
             rows: [], series: [], showModal: false, selectedRow: {}
         }
@@ -35,144 +37,125 @@ class TasksStatus extends Component {
         }
         this.columns = [
             {
-                key: "arrange",
-                name: Resources["arrange"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: "arrange",
+                title: Resources["arrange"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                frozen: true,
-                sortDescendingFirst: true
             }, {
-                key: "description",
-                name: Resources["Task"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "description",
+                title: Resources["Task"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                frozen: true,
-                sortDescendingFirst: true
             }, {
-                key: "bicCompanyName",
-                name: Resources["actionByCompany"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "bicCompanyName",
+                title: Resources["actionByCompany"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                frozen: true,
-                sortDescendingFirst: true
             }, {
-                key: "actionBy",
-                name: Resources["actionByContact"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "actionBy",
+                title: Resources["actionByContact"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "estimatedTime",
-                name: Resources["estimatedTime"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "estimatedTime",
+                title: Resources["estimatedTime"][currentLanguage],
+                width: 8,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "actualTotal",
-                name: Resources["actualTotal"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "actualTotal",
+                title: Resources["actualTotal"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "userProgress",
-                name: Resources["userProgress"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "userProgress",
+                title: Resources["userProgress"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "actualProgress",
-                name: Resources["actualProgress"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "actualProgress",
+                title: Resources["actualProgress"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "earnedProgress",
-                name: Resources["earnedProgress"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "earnedProgress",
+                title: Resources["earnedProgress"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "remaining",
-                name: Resources["remaining"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "remaining",
+                title: Resources["remaining"][currentLanguage],
+                width: 8,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "estimatedCost",
-                name: Resources["estimatedCost"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "estimatedCost",
+                title: Resources["estimatedCost"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "earnedHours",
-                name: Resources["earnedHours"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "earnedHours",
+                title: Resources["earnedHours"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "startDate",
-                name: Resources["startDate"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "startDate",
+                title: Resources["startDate"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }, {
-                key: "finishDate",
-                name: Resources["finishDate"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "finishDate",
+                title: Resources["finishDate"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }, {
-                key: "docCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "docCloseDate",
+                title: Resources["docClosedate"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }
         ];
     }
@@ -187,14 +170,13 @@ class TasksStatus extends Component {
         })
         if (Config.IsAllow(3737)) {
             this.columns.push({
-                key: "cost",
-                name: Resources["cost"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "cost",
+                title: Resources["cost"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             })
         }
     }
@@ -333,10 +315,21 @@ class TasksStatus extends Component {
 
             </Fragment>
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true} selectedRows={rows => this.selectedRows(rows)}
-                pageSize={this.state.pageSize} columns={this.columns} onRowClick={(value, index, column) => this.onRowClick(value, index, column)} />) : <LoadingSection />
 
+            <GridCustom
+                ref='custom-data-grid'
+                key="taskStatus"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={cell => {
+                    this.setState({ showModal: true, selectedRow: cell });
+                    this.simpleDialog.show()
+                }}
+            />) : <LoadingSection />
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['taskStatus'][currentLanguage]} />
             : null

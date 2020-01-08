@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-//import GridSetup from "../../../Pages/Communication/GridSetup";
+
 import GridSetupWithFilter from "../../../Pages/Communication/GridSetupWithFilter";
 import Export from "../../OptionsPanels/Export";
 import { SkyLightStateless } from 'react-skylight';

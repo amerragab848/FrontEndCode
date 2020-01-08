@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
 import moment from "moment";
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 
 import PieChartComp from '../PieChartComp'
 import Api from '../../../api';
@@ -30,11 +30,12 @@ class ActiveProjectsReport extends Component {
             selectedStatus: { label: Resources.selectAll[currentLanguage], value: '' },
             rows: [],
             finishDate: moment(),
-            startDate: moment(), 
+            startDate: moment(),
             series: [],
             xAxis: { type: 'pie' },
             noClicks: 0,
-            showChart:false
+            showChart: false,
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3686)) {
@@ -46,34 +47,31 @@ class ActiveProjectsReport extends Component {
 
         this.columns = [
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "job",
-                name: Resources["projectCode"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: "job",
+                title: Resources["projectCode"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "statusName",
-                name: Resources["holded"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: "statusName",
+                title: Resources["holded"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }
         ];
 
@@ -90,7 +88,7 @@ class ActiveProjectsReport extends Component {
         let noClicks = this.state.noClicks;
         Api.get('ActiveProjectReport?status=' + this.state.selectedStatus.value + '').then(
             res => {
-                this.setState({showChart:true});
+                this.setState({ showChart: true });
                 let hold = 0
                 let unhold = 0
                 res.map(i => {
@@ -111,7 +109,7 @@ class ActiveProjectsReport extends Component {
 
                 this.setState({
                     series, noClicks: noClicks + 1,
-                    rows: res, isLoading: false,showChart:true
+                    rows: res, isLoading: false, showChart: true
                 })
             }
         ).catch(() => {
@@ -121,15 +119,25 @@ class ActiveProjectsReport extends Component {
 
     render() {
 
-        let Chart = this.state.showChart ? 
+        let Chart = this.state.showChart ?
             (<PieChartComp
                 noClicks={this.state.noClicks}
                 series={this.state.series}
-                title='activeProjectsReport' />):null
+                title='activeProjectsReport' />) : null
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom
+                ref='custom-data-grid'
+                key="ActiveProjectsReport"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
+
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'activeProjectsReport'} />
@@ -143,7 +151,7 @@ class ActiveProjectsReport extends Component {
                 </header>
                 <div className="proForm reports__proForm">
                     <div className="linebylineInput valid-input">
-                        <Dropdown  title='status'
+                        <Dropdown title='status'
                             data={StatusDropData}
                             selectedValue={this.state.selectedStatus}
                             handleChange={e => this.setState({ selectedStatus: e })} />

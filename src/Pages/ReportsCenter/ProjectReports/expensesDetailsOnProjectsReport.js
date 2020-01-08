@@ -8,13 +8,15 @@ import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Export from "../../../Componants/OptionsPanels/Export";
 import moment from "moment";
-import dataService from '../../../Dataservice'
-import GridSetup from "../../Communication/GridSetup"
+import dataService from '../../../Dataservice' 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import BarChartComp from '../TechnicalOffice/BarChartComp'
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 const sumBy = require('lodash/sumBy')
-const groupBy = require('lodash/groupBy')
+//const groupBy = require('lodash/groupBy')
+const _ = require("lodash");
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
@@ -27,7 +29,7 @@ class expensesDetailsOnProjectsReport extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            showChart:false,
+            showChart: false,
             projectsList: [],
             companiesList: [],
             usersList: [],
@@ -37,46 +39,42 @@ class expensesDetailsOnProjectsReport extends Component {
             selectedUser: { label: Resources.users[currentLanguage], value: "-1" },
             finishDate: moment(),
             startDate: moment(),
-            series:[],
+            pageSize: 200,
+            series: [],
             columns: [
                 {
-                    key: "projectName",
-                    name: Resources["projectName"][currentLanguage],
-                    width: 180,
-                    draggable: true,
+                    field: "projectName",
+                    title: Resources["projectName"][currentLanguage],
+                    width: 18,
+                    groupable: true,
+                    fixed: true,
+                    type: "text",
                     sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
                 },
                 {
-                    key: "docDate",
-                    name: Resources["docDate"][currentLanguage],
-                    width: 180,
-                    draggable: true,
+                    field: "docDate",
+                    title: Resources["docDate"][currentLanguage],
+                    width: 18,
+                    groupable: true,
+                    fixed: false,
+                    type: "date",
                     sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true,
-                    formatter: dateFormate
                 }, {
-                    key: "expenseValue",
-                    name: Resources["expenseValue"][currentLanguage],
-                    width: 180,
-                    draggable: true,
+                    field: "expenseValue",
+                    title: Resources["expenseValue"][currentLanguage],
+                    width: 18,
+                    groupable: true,
+                    fixed: false,
+                    type: "text",
                     sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
                 }, {
-                    key: "expenseTypeName",
-                    name: Resources["expenseTypeName"][currentLanguage],
-                    width: 180,
-                    draggable: true,
+                    field: "expenseTypeName",
+                    title: Resources["expenseTypeName"][currentLanguage],
+                    width: 18,
+                    groupable: true,
+                    fixed: false,
+                    type: "text",
                     sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
                 }
             ]
         }
@@ -86,7 +84,7 @@ class expensesDetailsOnProjectsReport extends Component {
             this.props.history.push({
                 pathname: "/"
             });
-        } 
+        }
     }
     componentWillMount() {
         this.setState({ isLoading: true })
@@ -107,21 +105,22 @@ class expensesDetailsOnProjectsReport extends Component {
             projectIds: this.state.projectIds,
             companyId: this.state.selectedCompany.value == -1 ? undefined : this.state.selectedCompany.value,
             contactId: this.state.selectedUser.value == -1 ? undefined : this.state.selectedUser.value,
-            start: moment(this.state.startDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-            finish: moment(this.state.finishDate,'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            start: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+            finish: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
         }
         this.setState({ isLoading: true })
         Api.post('ExpensesDetailsOnProjectReport', reportobj).then(res => {
             let rows = res == null ? [] : res;
-            this.setState({showChart:true});
+            this.setState({ showChart: true });
 
-            let seriesData = groupBy(res).groupBy('projectName').map((objs, key) => {
-                                return {
-                                    'name': key,
-                                    'value': sumBy(objs, 'expenseValue')
-                                }}).value();
-  
-            this.setState({ rows, isLoading: false,showChart:true,series:seriesData })
+            let seriesData = _(res)
+            .groupBy(x => x.projectName)
+            .map((objs, key) => (
+            {  'name': key,
+               'value': sumBy(objs, 'expenseValue')
+            })).value(); 
+
+            this.setState({ rows, isLoading: false, showChart: true, series: seriesData })
         }).catch(() => {
             this.setState({ isLoading: false, rows: [] })
             toast.error(Resources.operationCanceled[currentLanguage])
@@ -148,12 +147,23 @@ class expensesDetailsOnProjectsReport extends Component {
     }
     render() {
         let Chart = this.state.showChart ?
-        (<BarChartComp  series={this.state.series}  multiSeries="no"
-            title={Resources['expensesDetailsOnProjectsReport'][currentLanguage]}
-            yTitle={Resources['total'][currentLanguage]} />) :null
+            (<BarChartComp series={this.state.series} multiSeries="no"
+                title={Resources['expensesDetailsOnProjectsReport'][currentLanguage]}
+                yTitle={Resources['total'][currentLanguage]} />) : null
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.state.columns} />) : <LoadingSection />
+
+            <GridCustom
+                ref='custom-data-grid'
+                key="expensesDetailsOnProjectsReport"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.state.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
+
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'expensesDetailsOnProjectsReport'} />
             : null
@@ -222,10 +232,10 @@ class expensesDetailsOnProjectsReport extends Component {
                         </Form>
                     )}
                 </Formik>
-                {this.state.showChart==true?
+                {this.state.showChart == true ?
                     <div className="row">
                         {Chart}
-                    </div>:null}
+                    </div> : null}
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}
                 </div>
