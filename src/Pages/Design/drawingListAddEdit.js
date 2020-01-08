@@ -69,8 +69,7 @@ class drawingListAddEdit extends Component {
                 title: Resources["details"][currentLanguage],
                 width: 10,
                 groupable: true,
-                fixed: true,
-               
+                fixed: false,  
                 sortable: true,
                 type: "text"
 
@@ -80,8 +79,7 @@ class drawingListAddEdit extends Component {
                 title: Resources["paper"][currentLanguage],
                 width: 10,
                 groupable: true,
-                fixed: true,
-              
+                fixed: false, 
                 sortable: true,
                 type: "text"
             },
@@ -90,7 +88,7 @@ class drawingListAddEdit extends Component {
                 title: Resources["scale"][currentLanguage],
                 width: 10,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 sortable: true,
                type:"text"
             },
@@ -99,7 +97,7 @@ class drawingListAddEdit extends Component {
                 title: Resources["estimatedTime"][currentLanguage],
                 width: 10,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 sortable: true,
                 type:"text"
             },

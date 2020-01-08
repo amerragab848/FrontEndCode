@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import dataservice from "../../../Dataservice";
 import PieChartComp from '../../../Componants/ChartsWidgets/PieChartComp';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
@@ -31,6 +32,7 @@ class UserTimeSheet extends Component {
             showChart: false,
             finishDate: moment(),
             startDate: moment(),
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3704)) {
@@ -42,42 +44,37 @@ class UserTimeSheet extends Component {
         }
         this.columns = [
             {
-                key: "contactName",
-                name: Resources["ContactName"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "contactName",
+                title: Resources["ContactName"][currentLanguage],
+                width: 22,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                frozen: true,
-                sortDescendingFirst: true
             }, {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                frozen: true,
-                sortDescendingFirst: true
             }, {
-                key: "taskName",
-                name: Resources["taskName"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "taskName",
+                title: Resources["taskName"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                frozen: true,
-                sortDescendingFirst: true
             }, {
-                key: "hours",
-                name: Resources["hours"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "hours",
+                title: Resources["hours"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }
         ];
     }
@@ -86,14 +83,13 @@ class UserTimeSheet extends Component {
         dataservice.GetDataList('GetUsersTask', 'subject', 'id').then(result => {
             if (Config.IsAllow(3737)) {
                 this.columns.push({
-                    key: "cost",
-                    name: Resources["cost"][currentLanguage],
-                    width: 50,
-                    draggable: true,
+                    field: "cost",
+                    title: Resources["cost"][currentLanguage],
+                    width: 10,
+                    groupable: true,
+                    fixed: false,
+                    type: "text",
                     sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
                 })
             }
             this.setState({
@@ -150,10 +146,18 @@ class UserTimeSheet extends Component {
             /> : null
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true} selectedRows={rows => this.selectedRows(rows)}
-                pageSize={this.state.pageSize} columns={this.columns} onRowClick={(value, index, column) => this.onRowClick(value, index, column)} />) : <LoadingSection />
 
+            <GridCustom
+                ref='custom-data-grid'
+                key="UserTimeSheet"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['userTimeSheet'][currentLanguage]} />
             : null

@@ -9,7 +9,7 @@ import LoadingSection from "../../../Componants/publicComponants/LoadingSection"
 import Resources from "../../../resources.json";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-let arrColumn = ["arrange", "quantity",  "unitPrice"];
+let arrColumn = ["arrange", "quantity", "unitPrice"];
 
 export default class CustomGrid extends Component {
 
@@ -166,6 +166,24 @@ export default class CustomGrid extends Component {
         this.setState({ rows: this.props.data, setFilters: {}, state });
     };
 
+
+    onChange = (date, index, columnName, type, key) => {
+
+        let margeDate = date != null ? moment(date[0]).format("DD/MM/YYYY") + "|" + moment(date[1]).format("DD/MM/YYYY") : "";
+
+        this.saveFilter(margeDate, index, columnName, type, key);
+
+        let state = this.state;
+
+        state[index + "-column"] = margeDate;
+
+        this.setState({ state, currentData: 0 });
+    };
+
+    resetDate = () => {
+        this.setState({ currentData: 0 });
+    }
+
     saveFilter(event, index, name, type, key) {
 
         if (this.state.filteredRows.length > 0) {
@@ -199,7 +217,7 @@ export default class CustomGrid extends Component {
                     delete newFilters[filter.column.key];
                 }
             } else if (event.target.value != "") {
-                newFilters[filter.column.key] = event.target.value;
+                newFilters[filter.column.key] = event.target.value.toUpperCase();
             } else {
                 delete newFilters[filter.column.key];
             }
@@ -250,8 +268,7 @@ export default class CustomGrid extends Component {
                                     matched++;
                                 } else if (typeof filters[key] === "number") {
                                     matched = 0;
-                                }
-                                else if (row[`${key}`].includes(`${filters[key]}`)) {
+                                }else if (row[`${key}`].toString().includes(`${filters[key]}`)) {
                                     matched++;
                                 } else if (row[`${key}`] === `${filters[key]}`) {
                                     matched++;
@@ -302,7 +319,7 @@ export default class CustomGrid extends Component {
                                     matched++;
                                 } else if (typeof filters[key] === "number") {
                                     matched = 0;
-                                } else if (row[`${key}`].includes(`${filters[key]}`)) {
+                                } else if (row[`${key}`].toString().includes(`${filters[key]}`)) {
                                     matched++;
                                 } else if (row[`${key}`] === `${filters[key]}`) {
                                     matched++;
@@ -311,9 +328,9 @@ export default class CustomGrid extends Component {
                                 }
                             } else if (typeof filters[key] === "number") {
                                 matched = 0;
-                            } else if (row[`${key}`].includes(`${filters[key]}`)) {
+                            } else if ((row[`${key}`].toString().toUpperCase()).includes(`${filters[key]}`)) {
                                 matched++;
-                            } else if (row[`${key}`] === `${filters[key]}`) {
+                            } else if (row[`${key}`].toString().toUpperCase() === `${filters[key]}`) {
                                 matched++;
                             }
                             else {
@@ -332,13 +349,23 @@ export default class CustomGrid extends Component {
         }
     };
 
+    changeDate(index, type) {
+        if (type == "date") {
+            document.addEventListener('click', this.handleOutsideClick, false);
+            this.setState({ currentData: index });
+        } else {
+            document.removeEventListener('click', this.handleOutsideClick, false);
+            this.setState({ currentData: 0 });
+        }
+    }
+
     showFilterMore = () => {
         this.setState({
-          ShowModelFilter: true,
-          rows: this.props.data
+            ShowModelFilter: true,
+            rows: this.props.data
         });
-      };
-    
+    };
+
     render() {
 
         const columns = this.state.columns.filter(x => x.type !== "check-box");
@@ -424,7 +451,11 @@ export default class CustomGrid extends Component {
                         <div style={{ position: 'relative', minHeight: '200px' }}>
                             <div className="header-filter">
                                 <h2 className="zero">Filter results</h2>
-                                <span><span className={this.state.Loading ? "res__load" : ""}>{this.state.rows.length}</span> Results</span>
+                                {this.state.rows ?
+                                    <span><span className={this.state.Loading ? "res__load" : ""}>{this.state.rows.length}</span> Results</span>
+                                    :
+                                    null
+                                }
                             </div>
                             <div className="content">
                                 <div className="filter__warrper">
@@ -487,7 +518,7 @@ export default class CustomGrid extends Component {
                     </div>
                 </div>
 
-                <GridCustom 
+                <GridCustom
                     key={this.props.key}
                     cells={this.props.cells}
                     data={this.state.rows}
