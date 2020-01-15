@@ -50,7 +50,6 @@ class InventoryDetails extends Component {
         }
         this.GetCellActions = this.GetCellActions.bind(this);
         this.columns = [
-
             {
                 field: "projectName",
                 title: Resources["projectName"][currentLanguage],
@@ -71,52 +70,49 @@ class InventoryDetails extends Component {
                         this.setState({ RowsChilds, isLoading: false, })
                     }, 200);
                 }
-            },
-            {
+            }, {
                 field: "itemCode",
                 title: Resources["itemCode"][currentLanguage],
                 width: 18,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 type: "text",
                 sortable: true
-            },
-            {
+            }, {
                 field: "quantity",
                 title: Resources["quantity"][currentLanguage],
                 width: 18,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 type: "text",
                 sortable: true
             }, {
                 field: "unitPrice",
                 title: Resources["unitPrice"][currentLanguage],
-                width: 14,
+                width: 10,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 type: "text",
                 sortable: true
-            },
-            {
+            }, {
                 field: "resourceCode",
                 title: Resources["resourceCode"][currentLanguage],
-                width: 15,
+                width: 10,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 type: "text",
                 sortable: true
-            },
-            {
+            }, {
                 field: "total",
                 title: Resources["total"][currentLanguage],
-                width: 15,
+                width: 10,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 type: "text",
                 sortable: true
             }
         ];
+
         this.rowActions = [
             {
                 title: 'Itemization',
@@ -135,22 +131,7 @@ class InventoryDetails extends Component {
         ];
 
     }
-
-    cellClick = (rowID, colID) => {
-        if (colID != 0) {
-            this.setState({ isLoading: true })
-            let RowsChilds = []
-            this.state.RowsChilds.map(i => {
-                if (i.parentId === rowID) {
-                    RowsChilds.push(i)
-                }
-            })
-            setTimeout(() => {
-                this.setState({ RowsChilds, isLoading: false, })
-            }, 200);
-        }
-    }
-
+  
     GetCellActions(column, row) {
         if (column.key === 'BtnActions') {
             return [{
@@ -172,7 +153,6 @@ class InventoryDetails extends Component {
                 toast.error('somthing wrong')
             })
     }
-
 
     getGridRows = () => {
         this.setState({ isLoading: true })
@@ -202,11 +182,7 @@ class InventoryDetails extends Component {
             this.setState({ isLoading: false })
         })
     }
-
-    onRowClick = (row) => {
-        alert(row.id)
-    }
-
+ 
     render() {
 
         const DataGridChilds = this.state.isLoading === false ? (
@@ -216,10 +192,10 @@ class InventoryDetails extends Component {
                 data={this.state.RowsChilds}
                 pageSize={this.state.pageSize}
                 groups={[]}
-                actions={[]} 
+                actions={[]}
                 rowActions={[]}
                 cells={this.columns}
-                rowClick={()=>{}}
+                rowClick={() => { }}
             />) : <LoadingSection />
 
         const DataGridParent = this.state.isLoading === false ? (
@@ -231,7 +207,7 @@ class InventoryDetails extends Component {
                 groups={[]}
                 actions={[]}
                 rowActions={this.rowActions}
-                rowClick={()=>{}} 
+                rowClick={() => { }}
                 //getCellActions={this.GetCellActions}
                 cells={this.columns} />) : <LoadingSection />
 
