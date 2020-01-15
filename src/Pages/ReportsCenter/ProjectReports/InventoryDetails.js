@@ -77,7 +77,7 @@ class InventoryDetails extends Component {
                 title: Resources["itemCode"][currentLanguage],
                 width: 18,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 type: "text",
                 sortable: true
             },
@@ -86,7 +86,7 @@ class InventoryDetails extends Component {
                 title: Resources["quantity"][currentLanguage],
                 width: 18,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 type: "text",
                 sortable: true
             }, {
@@ -94,7 +94,7 @@ class InventoryDetails extends Component {
                 title: Resources["unitPrice"][currentLanguage],
                 width: 14,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 type: "text",
                 sortable: true
             },
@@ -103,7 +103,7 @@ class InventoryDetails extends Component {
                 title: Resources["resourceCode"][currentLanguage],
                 width: 15,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 type: "text",
                 sortable: true
             },
@@ -112,7 +112,7 @@ class InventoryDetails extends Component {
                 title: Resources["total"][currentLanguage],
                 width: 15,
                 groupable: true,
-                fixed: true,
+                fixed: false,
                 type: "text",
                 sortable: true
             }

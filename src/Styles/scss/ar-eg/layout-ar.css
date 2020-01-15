@@ -22168,3 +22168,7 @@ thead.grid-header tr.action-bar .actions button.autoGridBtn {
     width: auto !important;
     min-width: 72px
 }
+
+.tbody.grid-body tr td.text.bold a {
+    font-weight: bold !important;
+}

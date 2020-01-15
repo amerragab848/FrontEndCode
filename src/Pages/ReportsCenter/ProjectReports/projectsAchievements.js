@@ -76,7 +76,7 @@ class projectsAchievements extends Component {
             {
                 field: "quarter",
                 title: Resources["quarter"][currentLanguage],
-                width: 20,
+                width: 15,
                 groupable: true,
                 fixed: false,
                 type: "text",
