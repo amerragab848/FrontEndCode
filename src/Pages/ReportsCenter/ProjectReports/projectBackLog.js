@@ -39,7 +39,7 @@ class projectBackLog extends Component {
             {
                 field: "docDate",
                 title: Resources["docDate"][currentLanguage],
-                width: 20,
+                width: 15,
                 groupable: true,
                 fixed: false,
                 type: "date",
@@ -48,7 +48,7 @@ class projectBackLog extends Component {
             {
                 field: "total",
                 title: Resources["total"][currentLanguage],
-                width: 20,
+                width: 15,
                 groupable: true,
                 fixed: true,
                 type: "text",

@@ -9,8 +9,7 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-// import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 
 import Dataservice from '../../../Dataservice';
@@ -207,8 +206,7 @@ class InventoryDetails extends Component {
                 groups={[]}
                 actions={[]}
                 rowActions={this.rowActions}
-                rowClick={() => { }}
-                //getCellActions={this.GetCellActions}
+                rowClick={() => { }} 
                 cells={this.columns} />) : <LoadingSection />
 
         let Exportcolumns = this.columns.filter(s => s.key !== 'BtnActions')

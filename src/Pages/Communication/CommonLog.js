@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import GridSetup from "./GridSetup";
+import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import Api from "../../api";
 import moment from "moment";
@@ -15,6 +16,7 @@ import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import { toast } from "react-toastify";
 import Config from "../../Services/Config.js";
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
 
@@ -38,6 +40,7 @@ class CommonLog extends Component {
       filtersColumns: [],
       docType: "",
       rows: [],
+      ColumnsHideShow: [],
       totalRows: 0,
       columns: [],
       pageSize: 50,
@@ -342,54 +345,38 @@ class CommonLog extends Component {
     var documents = documentName;
 
     documentObj = documentDefenition[documentName];
-
-    let subjectLink = ({ value, row }) => {
-
-      let subject = "";
-
-      if (row) {
-        let obj = {
-          docId: row.id,
-          projectId: row.projectId,
-          projectName: row.projectName,
-          arrange: 0,
-          docApprovalId: 0,
-          isApproveMode: false,
-          perviousRoute: window.location.pathname + window.location.search
-        };
-
-        let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-
-        let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
-        let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
-
-        subject = row.subject;
-
-        return <a href={doc_view}> {subject} </a>;
-      }
-      return null;
-    };
-
+    
     var cNames = [];
 
     var filtersColumns = [];
 
     if (documentObj.documentColumns) {
+      if (Config.IsAllow(this.state.documentObj.documentDeletePermission)) {
+
+        cNames.push({ title: '', type: 'check-box', fixed: true, field: 'id' });
+      }
       documentObj.documentColumns.map((item, index) => {
 
         var obj = {
-          key: item.field,
-          frozen: index < 2 ? true : false,
-          name: Resources[item.friendlyName][currentLanguage],
-          width: item.minWidth,
-          draggable: true,
+          field: item.field,
+          fixed: index < 3 ? true : false,
+          title: Resources[item.friendlyName][currentLanguage],
+          width: 16, //item.minWidth,
           sortable: true,
-          resizable: true,
-          filterable: false,
-          sortDescendingFirst: true,
-          formatter: item.field === "subject" ? subjectLink : item.dataType === "date" ? dateFormate : ""
+          groupable: true,
+          type: item.dataType === ("string" || "status") ? "text" : (item.dataType === ("number" || "date") ? item.dataType : "text")
         };
+        if (item.field === "subject") {
+          obj.href = this.subjectLink(item);
+          obj.onClick = () => { };
+          obj.classes = 'bold'
+        }
+        if (item.field === "statusName") {
+          obj.classes = 'grid-status';
+          obj.fixed = false;
+          obj.leftPadding = 17;
+
+        }
 
         if (isCustom !== true) {
           cNames.push(obj);
@@ -398,6 +385,17 @@ class CommonLog extends Component {
             cNames.push(obj);
           }
         }
+
+        let ColumnsHideShow = [...cNames];
+
+        for (var i in ColumnsHideShow) {
+          ColumnsHideShow[i].hidden = false;
+        }
+
+        this.setState({
+          ColumnsHideShow: ColumnsHideShow
+        });
+
       });
     }
 
@@ -426,8 +424,7 @@ class CommonLog extends Component {
     } else {
       this.setState({ isLoading: false });
     }
-  }
-
+  };
   GetLogData(url) {
     Api.get(url).then(result => {
       this.setState({
@@ -438,8 +435,33 @@ class CommonLog extends Component {
     }).catch(ex => {
       this.setState({ isLoading: false });
     });
-  }
+  };
+  subjectLink = (row) => {
 
+    let subject = "";
+    if (row) {
+      let obj = {
+        docId: row.id,
+        projectId: row.projectId,
+        projectName: row.projectName,
+        arrange: 0,
+        docApprovalId: 0,
+        isApproveMode: false,
+        perviousRoute: window.location.pathname + window.location.search
+      };
+
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+      let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
+
+      subject = row.subject;
+
+      return doc_view;
+    }
+    return null;
+  };
   handleMinimize = () => {
 
     const currentClass = this.state.minimizeClick;
@@ -458,61 +480,108 @@ class CommonLog extends Component {
       !this.state.isCustom
     );
   };
-
-  cellClick = (rowId, colID) => {
-
-    if (colID != 0 && colID != 1) {
-
-      if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
-
-        let rowData = this.state.rows[rowId];
-
-        let addView = this.state.routeAddEdit;
-
-        if (this.state.columns[colID - 1].key !== "subject") {
-          let obj = {
-            docId: rowData.id,
-            projectId: this.state.projectId,
-            projectName: this.state.projectName,
-            arrange: 0,
-            docApprovalId: 0,
-            isApproveMode: false,
-            perviousRoute: window.location.pathname + window.location.search
-          };
-
-          if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
-            obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
-          }
-
-          let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-
-          let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
-          this.props.history.push({ pathname: "/" + addView, search: "?id=" + encodedPaylod });
-        }
-      } else {
-        toast.warning(Resources["missingPermissions"][currentLanguage]);
+  openModalColumn = () => {
+    this.setState({ columnsModal: true })
+  };
+  closeModalColumn = () => {
+    this.setState({ columnsModal: false })
+  };
+  ResetShowHide = () => {
+    this.setState({ Loading: true })
+    let ColumnsHideShow = this.state.ColumnsHideShow
+    for (var i in ColumnsHideShow) {
+      ColumnsHideShow[i].hidden = false;
+      let key = ColumnsHideShow[i].field
+      this.setState({ [key]: false })
+    }
+    setTimeout(() => {
+      this.setState({
+        columns: ColumnsHideShow.filter(i => i.hidden === false),
+        ColumnsHideShow: ColumnsHideShow.filter(i => i.hidden === false),
+        Loading: false, columnsModal: false
+      })
+    }, 300)
+  };
+  handleCheck = (key) => {
+    this.setState({ [key]: !this.state[key], Loading: true })
+    let data = this.state.ColumnsHideShow
+    for (var i in data) {
+      if (data[i].field === key) {
+        let status = data[i].hidden === true ? false : true
+        data[i].hidden = status
+        break;
       }
     }
+    setTimeout(() => {
+      this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
+    }, 300);
   };
-
   render() {
-
-    const showCheckbox = Config.IsAllow(this.state.documentObj.documentDeletePermission);
-
+    let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
+      return (
+        <div className="grid__content" key={item.field}>
+          <div className={'ui checkbox checkBoxGray300 count checked'}>
+            <input name="CheckBox" type="checkbox" id="allPermissionInput" checked={!this.state[item.field]}
+              onChange={(e) => this.handleCheck(item.field)} />
+            <label>{item.title}</label>
+          </div>
+        </div>
+      )
+    })
     const dataGrid = this.state.isLoading === false ?
       (
-        <GridSetup
-          rows={this.state.rows}
-          clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-          showCheckbox={showCheckbox}
+        <GridCustom
+          ref='custom-data-grid'
+          key='CommonLog'
+          data={this.state.rows}
           pageSize={this.state.pageSize}
-          cellClick={this.cellClick}
-          columns={this.state.columns}
-        />
-      ) : (
-        <LoadingSection />
-      );
+          groups={[]}
+          actions={[]}
+          rowActions={[]}
+          cells={this.state.columns}
+          openModalColumn={this.state.columnsModal}
+          rowClick={cell => {
+            if (cell.id != 0) {
+
+              if (Config.IsAllow(this.state.documentObj.documentViewPermission) || Config.IsAllow(this.state.documentObj.documentEditPermission)) {
+
+                let addView = this.state.routeAddEdit;
+
+                let columns = this.state.columns;
+
+                let rowData = columns.filter(x => x.id == cell.id - 1).key;
+
+                if (rowData !== "subject") {
+                  let obj = {
+                    docId: cell.id,
+                    projectId: this.state.projectId,
+                    projectName: this.state.projectName,
+                    arrange: 0,
+                    docApprovalId: 0,
+                    isApproveMode: false,
+                    perviousRoute: window.location.pathname + window.location.search
+                  };
+                  if (rowData === "subject") {
+                    obj.href = this.subjectLink(rowData);
+                    obj.onClick = () => { };
+                    obj.classes = 'bold'
+                  }
+                  if (this.state.documentObj.docTyp === 37 || this.state.documentObj.docTyp === 114) {
+                    obj.isModification = this.state.documentObj.docTyp === 114 ? true : false;
+                  }
+
+                  let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+                  let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+                  this.props.history.push({ pathname: "/" + addView, search: "?id=" + encodedPaylod });
+                }
+              } else {
+                toast.warning(Resources["missingPermissions"][currentLanguage]);
+              }
+            };
+          }}
+        />) : (<LoadingSection />);
 
     const btnExport = this.state.isLoading === false ?
       (
@@ -567,7 +636,7 @@ class CommonLog extends Component {
               {btnExport}
               <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button>
             </div>
-             <div className="rowsPaginations readOnly__disabled">
+            <div className="rowsPaginations readOnly__disabled">
               <div className="rowsPagiRange">
                 <span>{this.state.pageSize * this.state.pageNumber + 1}</span> -
                 <span>
@@ -623,6 +692,21 @@ class CommonLog extends Component {
                 clickHandlerContinue={this.clickHandlerContinueMain}
               />
             ) : null}
+          </div>
+          <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
+            <div className="grid__column--container">
+              <button className="closeColumn" onClick={this.closeModalColumn}>X</button>
+              <div className="grid__column--title">
+                <h2>{Resources.gridColumns[currentLanguage]}</h2>
+              </div>
+              <div className="grid__column--content">
+                {RenderPopupShowColumns}
+              </div>
+              <div className="grid__column--footer">
+                <button className="btn primaryBtn-1" onClick={this.closeModalColumn}>{Resources.close[currentLanguage]}</button>
+                <button className="btn primaryBtn-2" onClick={this.ResetShowHide}>{Resources.reset[currentLanguage]} </button>
+              </div>
+            </div>
           </div>
         </div>
       </Fragment>
