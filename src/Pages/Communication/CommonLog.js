@@ -390,7 +390,7 @@ class CommonLog extends Component {
           width:  item.width.replace('%',''),
           sortable: true,
           groupable: true,
-          type: item.dataType === ("string" || "status") ? "text" : (item.dataType === ("number" || "date") ? item.dataType : "text")
+          type: item.dataType === "number" ? item.dataType : (item.dataType === "date" ? item.dataType : "text")
         };
         if (item.field === "subject") {
           obj.href = 'link';
