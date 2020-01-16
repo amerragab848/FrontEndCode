@@ -345,7 +345,7 @@ class CommonLog extends Component {
     var documents = documentName;
 
     documentObj = documentDefenition[documentName];
-    
+
     var cNames = [];
 
     var filtersColumns = [];
@@ -367,7 +367,7 @@ class CommonLog extends Component {
           type: item.dataType === ("string" || "status") ? "text" : (item.dataType === ("number" || "date") ? item.dataType : "text")
         };
         if (item.field === "subject") {
-          obj.href = this.subjectLink(item);
+          obj.href = 'link';
           obj.onClick = () => { };
           obj.classes = 'bold'
         }
@@ -377,7 +377,6 @@ class CommonLog extends Component {
           obj.leftPadding = 17;
 
         }
-
         if (isCustom !== true) {
           cNames.push(obj);
         } else {
@@ -398,7 +397,6 @@ class CommonLog extends Component {
 
       });
     }
-
     filtersColumns = documentObj.filters;
 
     this.setState({
@@ -427,6 +425,29 @@ class CommonLog extends Component {
   };
   GetLogData(url) {
     Api.get(url).then(result => {
+      result.data.forEach(row => {
+        let subject = "";
+        if (row) {
+          let obj = {
+            docId: row.id,
+            projectId: row.projectId,
+            projectName: row.projectName,
+            arrange: 0,
+            docApprovalId: 0,
+            isApproveMode: false,
+            perviousRoute: window.location.pathname + window.location.search
+          };
+
+          let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+          let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+          let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
+
+          subject = doc_view;
+        }
+        row.link = subject;
+      });
       this.setState({
         rows: result.data,
         totalRows: result.total,
@@ -436,32 +457,32 @@ class CommonLog extends Component {
       this.setState({ isLoading: false });
     });
   };
-  subjectLink = (row) => {
+  // subjectLink = (row) => {
 
-    let subject = "";
-    if (row) {
-      let obj = {
-        docId: row.id,
-        projectId: row.projectId,
-        projectName: row.projectName,
-        arrange: 0,
-        docApprovalId: 0,
-        isApproveMode: false,
-        perviousRoute: window.location.pathname + window.location.search
-      };
+  //   let subject = "";
+  //   if (row) {
+  //     let obj = {
+  //       docId: row.id,
+  //       projectId: row.projectId,
+  //       projectName: row.projectName,
+  //       arrange: 0,
+  //       docApprovalId: 0,
+  //       isApproveMode: false,
+  //       perviousRoute: window.location.pathname + window.location.search
+  //     };
 
-      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+  //     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
-      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+  //     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
 
-      let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
+  //     let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
 
-      subject = row.subject;
+  //     subject = row.subject;
 
-      return doc_view;
-    }
-    return null;
-  };
+  //     return doc_view;
+  //   }
+  //   return null;
+  // };
   handleMinimize = () => {
 
     const currentClass = this.state.minimizeClick;
@@ -562,7 +583,7 @@ class CommonLog extends Component {
                     perviousRoute: window.location.pathname + window.location.search
                   };
                   if (rowData === "subject") {
-                    obj.href = this.subjectLink(rowData);
+                    //obj.href = this.subjectLink(rowData);
                     obj.onClick = () => { };
                     obj.classes = 'bold'
                   }

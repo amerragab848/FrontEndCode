@@ -38,7 +38,8 @@ export default class CustomGrid extends Component {
             date: new Date(),
             setDate: moment(new Date()).format("DD/MM/YYYY"),
             fieldDate: {},
-            isFilter: false
+            isFilter: false,
+            showPicker : false
         };
     }
 
@@ -527,6 +528,7 @@ export default class CustomGrid extends Component {
                     rowActions={this.props.rowActions}
                     rowClick={cell => this.props.rowClick(cell)}
                     groups={this.props.groups}
+                    showPicker = {this.props.showPicker}
                 />
 
                 <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
