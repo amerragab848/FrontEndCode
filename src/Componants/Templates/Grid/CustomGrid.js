@@ -3,9 +3,9 @@ import React, { Component, Fragment } from 'react';
 import GridCustom from 'react-customized-grid';
 
 import Calendar from "react-calendar";
-import { toast } from "react-toastify";
+//import { toast } from "react-toastify";
 import moment from "moment";
-import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
+//import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Resources from "../../../resources.json";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -38,7 +38,8 @@ export default class CustomGrid extends Component {
             date: new Date(),
             setDate: moment(new Date()).format("DD/MM/YYYY"),
             fieldDate: {},
-            isFilter: false
+            isFilter: false,
+            showPicker : false
         };
     }
 
@@ -165,8 +166,7 @@ export default class CustomGrid extends Component {
 
         this.setState({ rows: this.props.data, setFilters: {}, state });
     };
-
-
+ 
     onChange = (date, index, columnName, type, key) => {
 
         let margeDate = date != null ? moment(date[0]).format("DD/MM/YYYY") + "|" + moment(date[1]).format("DD/MM/YYYY") : "";
@@ -380,8 +380,7 @@ export default class CustomGrid extends Component {
                     </div>
                 </div>
             )
-        })
-        // this.props.cells.length > 5 ? 
+        }) 
         return (
             <Fragment>
                 <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
@@ -527,6 +526,7 @@ export default class CustomGrid extends Component {
                     rowActions={this.props.rowActions}
                     rowClick={cell => this.props.rowClick(cell)}
                     groups={this.props.groups}
+                    showPicker = {this.props.showPicker}
                 />
 
                 <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>

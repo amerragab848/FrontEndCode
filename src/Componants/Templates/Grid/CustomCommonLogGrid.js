@@ -1,16 +1,11 @@
 import React, { Component, Fragment } from 'react';
 
 import GridCustom from 'react-customized-grid';
-
-import Calendar from "react-calendar";
-import { toast } from "react-toastify";
-import moment from "moment";
-import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
+ 
+import moment from "moment"; 
 import Resources from "../../../resources.json";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-let arrColumn = ["arrange", "quantity", "unitPrice"];
-
+ 
 export default class CustomGrid extends Component {
 
     constructor(props) {
@@ -41,14 +36,14 @@ export default class CustomGrid extends Component {
             isFilter: false
         };
     } 
+    
     componentDidMount() {
 
         let state = {};
         this.props.cells.map((column, index) => {
             if (column.type === "date") {
                 state[index + "-column"] = moment().format("DD/MM/YYYY");
-            }
-
+            } 
         });
 
         let ColumnsHideShow = this.props.cells
@@ -64,6 +59,7 @@ export default class CustomGrid extends Component {
             this.setState(state);
         }, 500);
     }; 
+    
     static getDerivedStateFromProps(props, current_state) {
         if (current_state.rows !== props.rows && props.isFilter) {
             props.changeValueOfProps();
@@ -74,12 +70,14 @@ export default class CustomGrid extends Component {
         }
         return null
     };
+    
     showFilterMore = () => {
         this.setState({
             ShowModelFilter: true,
             rows: this.props.data
         });
     };
+    
     CloseModeFilter = () => {
         var filterArray = Array.from(document.querySelectorAll(".filterModal input"));
 
@@ -87,6 +85,7 @@ export default class CustomGrid extends Component {
 
         this.setState({ ShowModelFilter: false });
     };
+    
     resetModeFilter = () => {
 
         var filterArray = Array.from(document.querySelectorAll(".filterModal input"));
@@ -105,6 +104,7 @@ export default class CustomGrid extends Component {
 
         this.setState({ rows: this.props.data, setFilters: {}, state });
     };
+    
     render() { 
         let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
             return (
@@ -149,4 +149,5 @@ export default class CustomGrid extends Component {
             </Fragment>
         );
     }
+
 }

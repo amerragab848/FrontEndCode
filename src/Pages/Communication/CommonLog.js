@@ -19,11 +19,7 @@ import Config from "../../Services/Config.js";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : Resources.noDate[currentLanguage];
-};
-
+ 
 class CommonLog extends Component {
 
   constructor(props) {
@@ -345,7 +341,7 @@ class CommonLog extends Component {
     var documents = documentName;
 
     documentObj = documentDefenition[documentName];
-    
+
     var cNames = [];
 
     var filtersColumns = [];
@@ -356,18 +352,17 @@ class CommonLog extends Component {
         cNames.push({ title: '', type: 'check-box', fixed: true, field: 'id' });
       }
       documentObj.documentColumns.map((item, index) => {
-
         var obj = {
           field: item.field,
           fixed: index < 3 ? true : false,
           title: Resources[item.friendlyName][currentLanguage],
-          width: 16, //item.minWidth,
+          width:  item.width.replace('%',''),
           sortable: true,
           groupable: true,
           type: item.dataType === ("string" || "status") ? "text" : (item.dataType === ("number" || "date") ? item.dataType : "text")
         };
         if (item.field === "subject") {
-          obj.href = this.subjectLink(item);
+          obj.href = 'link';
           obj.onClick = () => { };
           obj.classes = 'bold'
         }
@@ -377,7 +372,6 @@ class CommonLog extends Component {
           obj.leftPadding = 17;
 
         }
-
         if (isCustom !== true) {
           cNames.push(obj);
         } else {
@@ -398,7 +392,6 @@ class CommonLog extends Component {
 
       });
     }
-
     filtersColumns = documentObj.filters;
 
     this.setState({
@@ -425,8 +418,32 @@ class CommonLog extends Component {
       this.setState({ isLoading: false });
     }
   };
+  
   GetLogData(url) {
     Api.get(url).then(result => {
+      result.data.forEach(row => {
+        let subject = "";
+        if (row) {
+          let obj = {
+            docId: row.id,
+            projectId: row.projectId,
+            projectName: row.projectName,
+            arrange: 0,
+            docApprovalId: 0,
+            isApproveMode: false,
+            perviousRoute: window.location.pathname + window.location.search
+          };
+
+          let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+          let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+          let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
+
+          subject = doc_view;
+        }
+        row.link = subject;
+      });
       this.setState({
         rows: result.data,
         totalRows: result.total,
@@ -436,32 +453,32 @@ class CommonLog extends Component {
       this.setState({ isLoading: false });
     });
   };
-  subjectLink = (row) => {
+  // subjectLink = (row) => {
 
-    let subject = "";
-    if (row) {
-      let obj = {
-        docId: row.id,
-        projectId: row.projectId,
-        projectName: row.projectName,
-        arrange: 0,
-        docApprovalId: 0,
-        isApproveMode: false,
-        perviousRoute: window.location.pathname + window.location.search
-      };
+  //   let subject = "";
+  //   if (row) {
+  //     let obj = {
+  //       docId: row.id,
+  //       projectId: row.projectId,
+  //       projectName: row.projectName,
+  //       arrange: 0,
+  //       docApprovalId: 0,
+  //       isApproveMode: false,
+  //       perviousRoute: window.location.pathname + window.location.search
+  //     };
 
-      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+  //     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
 
-      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+  //     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
 
-      let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
+  //     let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
 
-      subject = row.subject;
+  //     subject = row.subject;
 
-      return doc_view;
-    }
-    return null;
-  };
+  //     return doc_view;
+  //   }
+  //   return null;
+  // };
   handleMinimize = () => {
 
     const currentClass = this.state.minimizeClick;
@@ -480,12 +497,15 @@ class CommonLog extends Component {
       !this.state.isCustom
     );
   };
+  
   openModalColumn = () => {
     this.setState({ columnsModal: true })
   };
+  
   closeModalColumn = () => {
     this.setState({ columnsModal: false })
   };
+  
   ResetShowHide = () => {
     this.setState({ Loading: true })
     let ColumnsHideShow = this.state.ColumnsHideShow
@@ -502,6 +522,7 @@ class CommonLog extends Component {
       })
     }, 300)
   };
+  
   handleCheck = (key) => {
     this.setState({ [key]: !this.state[key], Loading: true })
     let data = this.state.ColumnsHideShow
@@ -516,6 +537,7 @@ class CommonLog extends Component {
       this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
     }, 300);
   };
+
   render() {
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
       return (
@@ -562,7 +584,7 @@ class CommonLog extends Component {
                     perviousRoute: window.location.pathname + window.location.search
                   };
                   if (rowData === "subject") {
-                    obj.href = this.subjectLink(rowData);
+                    //obj.href = this.subjectLink(rowData);
                     obj.onClick = () => { };
                     obj.classes = 'bold'
                   }
