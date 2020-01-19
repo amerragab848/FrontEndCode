@@ -384,8 +384,7 @@ export default class CustomGrid extends Component {
         return (
             <Fragment>
                 <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
-                    <div className="filter__more" style={{ padding: 0 }}>
-                        {/* <span>{this.props.filterColumnsLength != undefined ? this.props.filterColumnsLength : 5}{Resources.filtersApplied[currentLanguage]}</span> */}
+                    <div className="filter__more" style={{ padding: 0 }}> 
                         <button className="filter__more--btn" onClick={this.showFilterMore}>{Resources.seeAll[currentLanguage]}</button>
                     </div>
                     <div className="filter__input-wrapper" onMouseLeave={this.resetDate} id="resetData">
