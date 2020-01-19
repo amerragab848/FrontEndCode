@@ -55,15 +55,13 @@ class CommonLog extends Component {
 
     this.filterMethodMain = this.filterMethodMain.bind(this);
     this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
-  }
-
+  };
   componentDidMount() {
 
     this.props.actions.FillGridLeftMenu();
 
     this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
-  }
-
+  };
   componentWillUnmount() {
 
     this.props.actions.clearCashDocument();
@@ -72,8 +70,7 @@ class CommonLog extends Component {
       isLoading: true,
       isCustom: true
     });
-  }
-
+  };
   static getDerivedStateFromProps(nextProps, state) {
     if (nextProps.match !== state.match) {
       return {
@@ -94,8 +91,7 @@ class CommonLog extends Component {
 
     return null;
 
-  }
-
+  };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.match !== this.props.match) {
       this.renderComponent(this.props.match.params.document, this.props.projectId, true);
@@ -108,18 +104,15 @@ class CommonLog extends Component {
         this.GetRecordOfLog(this.state.isCustom === true ? this.state.documentObj.documentApi.getCustom : this.state.documentObj.documentApi.get, this.props.projectId);
       }
     }
-  }
-
+  };
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = this.state.isCustom !== nextProps.isCustom;
     return shouldUpdate;
-  }
-
+  };
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
     return this.state.viewfilter;
-  }
-
+  };
   addRecord() {
 
     if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
@@ -149,8 +142,7 @@ class CommonLog extends Component {
     } else {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
-  }
-
+  };
   editHandler(row) {
 
     if (Config.IsAllow(this.state.documentObj.documentEditPermission)) {
@@ -180,8 +172,7 @@ class CommonLog extends Component {
     } else {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
-  }
-
+  };
   GetPrevoiusData() {
 
     let pageNumber = this.state.pageNumber - 1;
@@ -199,11 +190,34 @@ class CommonLog extends Component {
 
         let oldRows = []; // this.state.rows;
 
-        const newRows = [...oldRows, ...result];
+        const newRows = [...oldRows, ...result.data];
 
+        newRows.forEach(row => {
+          let subject = "";
+          if (row) {
+            let obj = {
+              docId: row.id,
+              projectId: row.projectId,
+              projectName: row.projectName,
+              arrange: 0,
+              docApprovalId: 0,
+              isApproveMode: false,
+              perviousRoute: window.location.pathname + window.location.search
+            };
+  
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+  
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+  
+            let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
+  
+            subject = doc_view;
+          }
+          row.link = subject;
+        }); 
         this.setState({
           rows: newRows,
-          totalRows: newRows.length,
+          totalRows: result.total,
           isLoading: false
         });
       }).catch(ex => {
@@ -214,8 +228,7 @@ class CommonLog extends Component {
         });
       });
     }
-  }
-
+  };
   GetNextData() {
 
     let pageNumber = this.state.pageNumber + 1;
@@ -234,11 +247,35 @@ class CommonLog extends Component {
 
         let oldRows = [];
 
-        const newRows = [...oldRows, ...result.data];
+        const newRows = [...oldRows, ...result.data]; 
+        
+        newRows.forEach(row => {
+          let subject = "";
+          if (row) {
+            let obj = {
+              docId: row.id,
+              projectId: row.projectId,
+              projectName: row.projectName,
+              arrange: 0,
+              docApprovalId: 0,
+              isApproveMode: false,
+              perviousRoute: window.location.pathname + window.location.search
+            };
+  
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+  
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+  
+            let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
+  
+            subject = doc_view;
+          }
+          row.link = subject;
+        });
 
         this.setState({
           rows: newRows,
-          totalRows: newRows.length,
+          totalRows: result.total,
           isLoading: false
         });
 
@@ -250,8 +287,7 @@ class CommonLog extends Component {
         });
       });
     }
-  }
-
+  };
   filterMethodMain = (event, query, apiFilter) => {
 
     var stringifiedQuery = JSON.stringify(query);
@@ -283,16 +319,13 @@ class CommonLog extends Component {
     } else {
       this.GetRecordOfLog(this.state.isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, this.state.projectId);
     }
-  };
-
+  }; 
   onCloseModal = () => {
     this.setState({ showDeleteModal: false });
-  };
-
+  }; 
   clickHandlerCancelMain = () => {
     this.setState({ showDeleteModal: false });
-  };
-
+  }; 
   clickHandlerContinueMain = () => {
     this.setState({
       isLoading: true
@@ -321,8 +354,7 @@ class CommonLog extends Component {
         showDeleteModal: false
       });
     });
-  };
-
+  }; 
   clickHandlerDeleteRowsMain = selectedRows => {
     if (Config.IsAllow(this.state.documentObj.documentDeletePermission)) {
       this.setState({
@@ -332,8 +364,7 @@ class CommonLog extends Component {
     } else {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
-  };
-
+  }; 
   renderComponent(documentName, projectId, isCustom) {
 
     var projectId = projectId;
@@ -353,7 +384,7 @@ class CommonLog extends Component {
           width:  item.width.replace('%',''),
           sortable: true,
           groupable: true,
-          type: item.dataType === ("string" || "status") ? "text" : (item.dataType === ("number" || "date") ? item.dataType : "text")
+          type: item.dataType === "number" ? item.dataType : (item.dataType === "date" ? item.dataType : "text")
         };
         if (item.field === "subject") {
           obj.href = 'link';
@@ -402,8 +433,7 @@ class CommonLog extends Component {
     });
 
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
-  }
-
+  };
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
       let url = api + (documentObj.docTyp == 33 ? "projectId=" + projectId : "?projectId=" + projectId) + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
@@ -411,8 +441,7 @@ class CommonLog extends Component {
     } else {
       this.setState({ isLoading: false });
     }
-  };
-  
+  }; 
   GetLogData(url) {
     Api.get(url).then(result => {
       result.data.forEach(row => {
@@ -446,33 +475,7 @@ class CommonLog extends Component {
     }).catch(ex => {
       this.setState({ isLoading: false });
     });
-  };
-  // subjectLink = (row) => {
-
-  //   let subject = "";
-  //   if (row) {
-  //     let obj = {
-  //       docId: row.id,
-  //       projectId: row.projectId,
-  //       projectName: row.projectName,
-  //       arrange: 0,
-  //       docApprovalId: 0,
-  //       isApproveMode: false,
-  //       perviousRoute: window.location.pathname + window.location.search
-  //     };
-
-  //     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-
-  //     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-
-  //     let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
-
-  //     subject = row.subject;
-
-  //     return doc_view;
-  //   }
-  //   return null;
-  // };
+  }; 
   handleMinimize = () => {
 
     const currentClass = this.state.minimizeClick;
@@ -490,16 +493,13 @@ class CommonLog extends Component {
       this.state.projectId,
       !this.state.isCustom
     );
-  };
-  
+  }; 
   openModalColumn = () => {
     this.setState({ columnsModal: true })
-  };
-  
+  }; 
   closeModalColumn = () => {
     this.setState({ columnsModal: false })
-  };
-  
+  }; 
   ResetShowHide = () => {
     this.setState({ Loading: true })
     let ColumnsHideShow = this.state.ColumnsHideShow
@@ -515,8 +515,7 @@ class CommonLog extends Component {
         Loading: false, columnsModal: false
       })
     }, 300)
-  };
-  
+  }; 
   handleCheck = (key) => {
     this.setState({ [key]: !this.state[key], Loading: true })
     let data = this.state.ColumnsHideShow
@@ -530,8 +529,7 @@ class CommonLog extends Component {
     setTimeout(() => {
       this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
     }, 300);
-  };
-
+  }; 
   render() {
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
       return (
@@ -727,7 +725,7 @@ class CommonLog extends Component {
         </div>
       </Fragment>
     );
-  }
+  };
 
 }
 

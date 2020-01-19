@@ -99,8 +99,8 @@ class Export extends Component {
             (this.props.rows.map((row, index) => {
                 return (
                     <tr key={index}>
-                        {fieldsItems.map((field, index) => {
-                            return (<td key={index + "td"}>{row[field.key]}</td>)
+                        {fieldsItems.map((rowfield, index) => {
+                            return (<td key={index + "td"}>{row[rowfield.field]}</td>)
                         })}
                     </tr>
                 )
@@ -114,7 +114,7 @@ class Export extends Component {
                     <thead valign="top">
                         <tr style={{ border: '4px' }}>
                             {fieldsName.map((column, index) => {
-                                return (<th key={index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {column.name}</th>)
+                                return (<th key={index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {column.title}</th>)
                             })}
                         </tr>
                     </thead>
