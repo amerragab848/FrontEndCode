@@ -13180,7 +13180,7 @@ h1, h2, h3, h4, h5 {
     left: 0;
     right: 0;
     top: 50%;
-    height: 2px;
+    height: 4px;
     background: #fff;
     z-index: -1;
 }
@@ -21701,15 +21701,14 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
     max-width: 100%
 }
 
-    .editView__tabs .editView__tabs { 
-        border-bottom: 0;
-        justify-content: unset
-    }
-    .editView__tabs::-webkit-scrollbar {
-        height: 4px;
-    }
+.editView__tabs .editView__tabs { 
+    border-bottom: 0;
+    justify-content: unset
+}
 
-
+.editView__tabs::-webkit-scrollbar {
+    height: 4px;
+}
   
 .editView__tabs .editView__tabs--title {
     margin: 0 6px;
