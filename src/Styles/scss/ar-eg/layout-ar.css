@@ -22170,5 +22170,10 @@ thead.grid-header tr.action-bar .actions button.autoGridBtn {
 }
 
 .tbody.grid-body tr td.text.bold a {
-    font-weight: bold !important;
+    font-weight: bold !important;    white-space: nowrap;
+}
+
+thead.grid-header tr.action-bar .actions {
+    width: calc(100% - 256px);
+    height: 60px;
 }

@@ -3187,14 +3187,20 @@ class requestPaymentsAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="slider-Btns">
-                                                            {this.state.isLoading === false ? (this.state.userType != "user" ? (
-                                                                (this.state.isViewMode !== true || this.state.addDeducation ?
-                                                                    <button className="primaryBtn-1 btn meduimBtn">
-                                                                        {Resources["save"][currentLanguage]}
-                                                                    </button> : null)
-
-                                                            ) : null
-                                                            ) : (
+                                                            {this.state.isLoading === false ?
+                                                                (this.state.userType != "user" ? (
+                                                                    (this.state.document.editable === true ?
+                                                                        <button className="primaryBtn-1 btn meduimBtn">
+                                                                            {Resources["save"][currentLanguage]}
+                                                                        </button>
+                                                                        :
+                                                                        (this.state.addDeducation ?
+                                                                            <button className="primaryBtn-1 btn meduimBtn">
+                                                                                {Resources["save"][currentLanguage]}
+                                                                            </button> : null)
+                                                                    )
+                                                                ) : null
+                                                                ) : (
                                                                     <button
                                                                         className="primaryBtn-1 btn  disabled"
                                                                         disabled="disabled">
