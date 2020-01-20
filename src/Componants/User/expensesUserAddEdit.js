@@ -8,8 +8,7 @@ import Resources from '../../resources.json';
 import Tree from '../OptionsPanels/Tree'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import ReactTable from "react-table";
-// import 'react-table/react-table.css'
+import ReactTable from "react-table"; 
 import UploadExpensesAttachment from "../OptionsPanels/UploadExpensesAttachment";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import DatePicker from "../OptionsPanels/DatePicker";
@@ -24,8 +23,7 @@ import { bindActionCreators } from 'redux';
 import SendToExpensesWorkFlow from './sendToExpensesWorkFlow';
 import ViewExpensesWF from './viewExpensesWF';
 import ExpensesWFApproval from './expensesWFApproval';
-import CryptoJS from "crypto-js";
-//UploadExpensesAttachment
+import CryptoJS from "crypto-js"; 
 var steps_defination = [];
 steps_defination = [
     { name: "expenses", callBackFn: null },

@@ -866,7 +866,7 @@ class requestPaymentsAddEdit extends Component {
             this.props.actions.documentForAdding();
         }
     }
- 
+
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
             let serverChangeOrder = { ...nextProps.document };
@@ -886,12 +886,12 @@ class requestPaymentsAddEdit extends Component {
 
             return {
                 document: { ...serverChangeOrder },
-                hasWorkflow: nextProps.hasWorkflow 
+                hasWorkflow: nextProps.hasWorkflow
             };
         }
         return null
     }
-    
+
     componentDidUpdate(prevProps, prevState) {
         if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
@@ -902,7 +902,7 @@ class requestPaymentsAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
-    } 
+    }
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
@@ -924,7 +924,7 @@ class requestPaymentsAddEdit extends Component {
         } else {
             this.setState({ isViewMode: false });
         }
-    } 
+    }
 
     GetNExtArrange() {
         let original_document = { ...this.state.document };
@@ -963,9 +963,9 @@ class requestPaymentsAddEdit extends Component {
             });
 
         }
-       // else {
-            //this.fillSummariesTab();
-       // }
+        // else {
+        //this.fillSummariesTab();
+        // }
     }
 
     componentWillUnmount() {
@@ -2346,7 +2346,7 @@ class requestPaymentsAddEdit extends Component {
             </Fragment>
         );
 
-        let interimTable = 
+        let interimTable =
             this.state.interimInvoicedTable.map(i => (
                 <tr key={i.id}>
                     {i.comment == "True" ? (
@@ -2404,7 +2404,7 @@ class requestPaymentsAddEdit extends Component {
                             </Fragment>
                         )}
                 </tr>
-            )) 
+            ))
 
         let viewHistory = (
             <div className="doc-pre-cycle">
@@ -2502,8 +2502,8 @@ class requestPaymentsAddEdit extends Component {
                                         {Resources["JobBuilding"][currentLanguage]}
                                     </div>
                                 </th>
-                                {this.state.approvedInvoicesParent.map((i,index) => (
-                                    <th key={'th-approvedInvoicesParent'+index}>
+                                {this.state.approvedInvoicesParent.map((i, index) => (
+                                    <th key={'th-approvedInvoicesParent' + index}>
                                         <div className="headCell">
                                             {i.details ? i.details.slice(0, i.details.lastIndexOf("-")) : ""}
                                         </div>
@@ -2517,15 +2517,15 @@ class requestPaymentsAddEdit extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.approvedInvoicesChilds.map((i ,idx)=> (
-                                <tr key={'tr-approvedInvoicesChilds-'+idx}>
+                            {this.state.approvedInvoicesChilds.map((i, idx) => (
+                                <tr key={'tr-approvedInvoicesChilds-' + idx}>
                                     <td>
                                         {i.building ? i.building.slice(0, i.building.lastIndexOf("-")) : ""}
                                     </td>
 
-                                    {this.state.approvedInvoicesParent.map((data,index) => (
+                                    {this.state.approvedInvoicesParent.map((data, index) => (
 
-                                        <td key={'td-approvedInvoicesParent-'+index}>
+                                        <td key={'td-approvedInvoicesParent-' + index}>
                                             {parseFloat(i[data.details]).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </td>
 
@@ -3094,24 +3094,21 @@ class requestPaymentsAddEdit extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="slider-Btns">
-                                                            {this.state.isLoading === false ? (this.state.userType != "user" ? (
-                                                                (this.state.isViewMode !== true || this.state.addDeducation ?
-                                                                    <button className="primaryBtn-1 btn meduimBtn">
-                                                                        {Resources["save"][currentLanguage]}
-                                                                    </button> : null)
-
-                                                            ) : null
-                                                            ) : (
-                                                                    <button
-                                                                        className="primaryBtn-1 btn  disabled"
-                                                                        disabled="disabled">
-                                                                        <div className="spinner">
-                                                                            <div className="bounce1" />
-                                                                            <div className="bounce2" />
-                                                                            <div className="bounce3" />
-                                                                        </div>
-                                                                    </button>
-                                                                )}
+                                                            {this.state.isLoading === false ?
+                                                                (this.state.document.editable === true ? <button className="primaryBtn-1 btn meduimBtn">{Resources["save"][currentLanguage]}</button>
+                                                                    : (this.state.addDeducation ? <button className="primaryBtn-1 btn meduimBtn">{Resources["save"][currentLanguage]}</button> : null)
+                                                                )
+                                                                :
+                                                                <button
+                                                                    className="primaryBtn-1 btn  disabled"
+                                                                    disabled="disabled">
+                                                                    <div className="spinner">
+                                                                        <div className="bounce1" />
+                                                                        <div className="bounce2" />
+                                                                        <div className="bounce3" />
+                                                                    </div>
+                                                                </button>
+                                                            }
                                                             {btnExportDeducation}
                                                         </div>
                                                     </Form>

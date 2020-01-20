@@ -301,8 +301,36 @@ class CommonLog extends Component {
 
     if (stringifiedQuery !== "{}") {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
+        let oldRows = [];
+
+        const newRows = [...oldRows, ...result.data]; 
+        
+        newRows.forEach(row => {
+          let subject = "";
+          if (row) {
+            let obj = {
+              docId: row.id,
+              projectId: row.projectId,
+              projectName: row.projectName,
+              arrange: 0,
+              docApprovalId: 0,
+              isApproveMode: false,
+              perviousRoute: window.location.pathname + window.location.search
+            };
+  
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+  
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+  
+            let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
+  
+            subject = doc_view;
+          }
+          row.link = subject;
+        });
+      
         this.setState({
-          rows: result.data != undefined ? [...result.data] : result,
+          rows: newRows,
           totalRows: result.data != undefined ? result.total : 0,
           isLoading: false
         });

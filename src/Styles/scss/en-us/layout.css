@@ -22026,8 +22026,16 @@ thead.grid-header tr.action-bar .actions button.autoGridBtn {
 
 tbody.grid-body tr td.text.bold >a {
     font-weight: bold !important;
+    white-space: nowrap;
 }
 
+thead.grid-header tr th.check-box{
+    height: 60px;
+}
+thead.grid-header tr.action-bar .actions {
+    width: calc(100% - 256px);
+    height: 60px;
+}
 .company__name.company__name--image {
     padding: 20px 40px; 
     margin-bottom: 15px; 

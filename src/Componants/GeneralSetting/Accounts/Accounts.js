@@ -661,7 +661,17 @@ class Accounts extends Component {
                     pageSize={this.state.pageSize}
                     actions={this.actions}
                     rowActions={this.rowActions}
-                    rowClick={() => {}}
+                    rowClick={cell => {
+                        let id = cell.id;
+                        if (config.IsAllow(797)) {
+                            if (cell) {
+                                this.props.history.push({
+                                    pathname: "/EditAccount",
+                                    search: "?id=" + id
+                                });
+                            }
+                        }
+                    }}
                     groups={[]}
                 />
             ) : <LoadingSection />
