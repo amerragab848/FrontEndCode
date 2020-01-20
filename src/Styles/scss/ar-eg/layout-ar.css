@@ -22182,7 +22182,7 @@ thead.grid-header tr.action-bar .actions button.autoGridBtn {
 
   .company__name.company__name--image img {
       width: 100%;
-      max-height: 150px;
+      max-height: 80px;
   }
   
   .footer_print {
@@ -22192,5 +22192,5 @@ thead.grid-header tr.action-bar .actions button.autoGridBtn {
   
   .footer_print img {
       width: 100%;
-      max-height: 120px;
+      max-height: 60px;
   }

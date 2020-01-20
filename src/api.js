@@ -107,8 +107,7 @@ export default class Api {
         if (header) {
             headers.docid = header.docId;
             headers.doctypeid = header.docTypeId;
-            headers.parentid = header.parentId;
-
+            headers.parentid = header.parentId; 
             headers.docType = header.docType;
         }
         return fetch(url, {
@@ -149,6 +148,7 @@ export default class Api {
                 // response is not a valid json string
             });
     }
+
     static getPassword(route, password) {
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
 

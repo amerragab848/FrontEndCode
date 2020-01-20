@@ -866,39 +866,7 @@ class requestPaymentsAddEdit extends Component {
             this.props.actions.documentForAdding();
         }
     }
-
-    // componentWillReceiveProps(nextProps) { 
-
-    //     if (nextProps.document.id) {
-    //         let serverChangeOrder = { ...nextProps.document };
-    //         serverChangeOrder.docDate = moment(serverChangeOrder.docDate).format("YYYY-MM-DD");
-    //         serverChangeOrder.advancePaymentPercent = serverChangeOrder.advancePaymentPercent != null ? serverChangeOrder.advancePaymentPercent : 0;
-    //         serverChangeOrder.tax = serverChangeOrder.tax != null ? serverChangeOrder.tax : 0;
-    //         serverChangeOrder.vat = serverChangeOrder.vat != null ? serverChangeOrder.vat : 0;
-    //         serverChangeOrder.insurance = serverChangeOrder.insurance != null ? serverChangeOrder.insurance : 0;
-    //         serverChangeOrder.actualPayment = serverChangeOrder.actualPayment != null ? serverChangeOrder.actualPayment : 0;
-    //         serverChangeOrder.advancedPaymentAmount = serverChangeOrder.advancedPaymentAmount != null ? serverChangeOrder.advancedPaymentAmount : 0;
-    //         serverChangeOrder.retainagePercent = serverChangeOrder.retainagePercent != null ? serverChangeOrder.retainagePercent : 0;
-    //         serverChangeOrder.remainingPayment = serverChangeOrder.remainingPayment != null ? serverChangeOrder.remainingPayment : 0;
-    //         serverChangeOrder.percentComplete = "";
-    //         serverChangeOrder.quantityComplete = "";
-    //         serverChangeOrder.paymentPercent = "";
-    //         serverChangeOrder.lastComment = "";
-
-    //         this.setState({
-    //             document: { ...serverChangeOrder },
-    //             hasWorkflow: nextProps.hasWorkflow
-    //         });
-
-
-    //         this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-    //         this.checkDocumentIsView();
-    //         this.setState({
-    //             isLoading: false
-    //         });
-    //     }
-    // }
-
+ 
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
             let serverChangeOrder = { ...nextProps.document };
@@ -934,13 +902,7 @@ class requestPaymentsAddEdit extends Component {
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
             this.checkDocumentIsView();
         }
-    }
-
-    // componentDidUpdate(prevProps) {
-    //     if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-    //         this.checkDocumentIsView();
-    //     }
-    // }
+    } 
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
@@ -962,62 +924,7 @@ class requestPaymentsAddEdit extends Component {
         } else {
             this.setState({ isViewMode: false });
         }
-    }
-
-    // componentWillMount() {
-    //     let documentDeduction = {
-    //         title: "",
-    //         deductionValue: 0
-    //     };
-
-    //     if (this.state.docId > 0) {
-    //         this.props.actions.documentForEdit("GetContractsRequestPaymentsForEdit?id=" + this.state.docId);
-    //         this.props.actions.ExportingData({ items: [] });
-
-    //         dataservice.GetDataList("GetCostCodingTreeByProjectId?projectId=" + this.state.projectId, "codeTreeTitle", "id").then(result => {
-    //             this.setState({
-    //                 fillDropDownTress: result
-    //             });
-    //         });
-    //         this.setState({
-    //             isLoading: true,
-    //             documentDeduction: documentDeduction
-    //         });
-    //     } else {
-    //         let paymentRequistion = {
-    //             subject: "..",
-    //             id: 0,
-    //             projectId: this.state.projectId,
-    //             arrange: "",
-    //             docDate: moment(),
-    //             status: true,
-    //             useCommulative: true,
-    //             advancedPaymentAmount: 0,
-    //             contractId: "",
-    //             vat: 0,
-    //             tax: 0,
-    //             insurance: 0,
-    //             advancePaymentPercent: 0,
-    //             collected: 0,
-    //             useQuantity: false,
-    //             percentComplete: "",
-    //             quantityComplete: "",
-    //             paymentPercent: ""
-    //         };
-
-    //         this.setState(
-    //             {
-    //                 document: paymentRequistion,
-    //                 documentDeduction: documentDeduction
-    //             },
-    //             function () {
-    //                 this.GetNExtArrange();
-    //             }
-    //         );
-    //         this.fillDropDowns(false);
-    //         this.props.actions.documentForAdding();
-    //     }
-    // }
+    } 
 
     GetNExtArrange() {
         let original_document = { ...this.state.document };

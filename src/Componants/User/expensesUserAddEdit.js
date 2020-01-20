@@ -9,7 +9,8 @@ import Tree from '../OptionsPanels/Tree'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import ReactTable from "react-table";
-import 'react-table/react-table.css'
+// import 'react-table/react-table.css'
+import UploadExpensesAttachment from "../OptionsPanels/UploadExpensesAttachment";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import DatePicker from "../OptionsPanels/DatePicker";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
@@ -24,12 +25,15 @@ import SendToExpensesWorkFlow from './sendToExpensesWorkFlow';
 import ViewExpensesWF from './viewExpensesWF';
 import ExpensesWFApproval from './expensesWFApproval';
 import CryptoJS from "crypto-js";
+//UploadExpensesAttachment
 var steps_defination = [];
 steps_defination = [
     { name: "expenses", callBackFn: null },
     { name: "items", callBackFn: null }
 ];
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 const find = require('lodash/find');
 
 let selectedRows = [];
@@ -56,7 +60,6 @@ const itemValidationSchemaEdit = Yup.object().shape({
     unitRate: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
     expenseValue: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
 });
-
 
 class ExpensesUserAddEdit extends Component {
 
@@ -469,7 +472,6 @@ class ExpensesUserAddEdit extends Component {
                                                         {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                                     </div>
                                                 </div>
-
                                             </div>
                                         }
                                         <div className={"proForm datepickerContainer" + (this.state.isEdit ? ' readOnly_inputs' : '')}>
@@ -565,9 +567,13 @@ class ExpensesUserAddEdit extends Component {
                                                         />
                                                     </div>
                                                 </div>
-                                                : null}
+                                                : null
+                                            }
                                         </div>
-
+                                            {this.state.isEdit ? null :
+                                                <div className="doc-pre-cycle letterFullWidth">
+                                                    <UploadExpensesAttachment changeStatus={false}/>
+                                                </div>}
                                         <div className="slider-Btns">
                                             {this.state.isLoading ?
                                                 <button className="primaryBtn-1 btn disabled">

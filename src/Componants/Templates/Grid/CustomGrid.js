@@ -2,10 +2,8 @@ import React, { Component, Fragment } from 'react';
 
 import GridCustom from 'react-customized-grid';
 
-import Calendar from "react-calendar";
-//import { toast } from "react-toastify";
-import moment from "moment";
-//import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
+import Calendar from "react-calendar"; 
+import moment from "moment"; 
 import Resources from "../../../resources.json";
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
