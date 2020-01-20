@@ -396,18 +396,12 @@ class CommonLog extends Component {
   renderComponent(documentName, projectId, isCustom) {
 
     var projectId = projectId;
-
     var documents = documentName;
-
     documentObj = documentDefenition[documentName];
-
     var cNames = [];
-
     var filtersColumns = [];
-
     if (documentObj.documentColumns) {
       if (Config.IsAllow(this.state.documentObj.documentDeletePermission)) {
-
         cNames.push({ title: '', type: 'check-box', fixed: true, field: 'id' });
       }
       documentObj.documentColumns.map((item, index) => {

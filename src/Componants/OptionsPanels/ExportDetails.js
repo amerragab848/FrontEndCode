@@ -553,9 +553,11 @@ class ExportDetails extends Component {
         return (
             <div id="invoice" className="invoice">
                 <div id="printPdf" className="printWrapper">
-                    <div className="company__name">
-                        <span className="company__logo" style={{ backgroundColor: 'transparent', }}> <img src="/static/media/logo.f73844e0.svg" alt="Procoor" title="Procoor" style={{ maxWidth: '100%' }} /></span>
-                        <h3> {this.props.documentName}</h3>
+                    <div className="company__name  company__name--image"> 
+                        {/* <span className="company__logo" style={{ backgroundColor: 'transparent', }}>  */}
+                        <img src="/static/media/logo.f73844e0.svg" alt="Procoor" title="Procoor" style={{ maxWidth: '100%' }} />
+                        {/* </span> */}
+                        {/* <h3> {this.props.documentName}</h3> */}
                     </div>
                     <div className="subiGrid printGrid">
                         <div className="docStatus">
@@ -614,6 +616,10 @@ class ExportDetails extends Component {
                         </Fragment>
                         : null
                     }
+
+                  <div className="footer_print">
+                      <img src="static/media/logo.f73844e0.svg" alt="Logo" />
+                  </div>
                 </div>
             </div >
 
@@ -652,6 +658,28 @@ class ExportDetails extends Component {
           letter-spacing: -0.4px;
           color: #4f515a;
           margin: 0;
+        }
+
+        .company__name.company__name--image {
+          padding: 40px; 
+          margin-bottom: 15px; 
+          align-items: unset;
+          border-bottom: 2px solid #E9ECF0;
+        }
+
+        .company__name.company__name--image img {
+            max-width: 100%;
+            max-height: 150px;
+        }
+        
+        .footer_print {
+            margin-top: 15px;
+            padding:  40px;
+        }
+        
+        .footer_print img {
+            max-width: 100%;
+            max-height: 120px;
         }
         
         .docStatus {
@@ -1532,7 +1560,7 @@ class ExportDetails extends Component {
                     {this.drawattachDocuments()}
                 </div>
 
-                <div style={{display: 'none'}}>
+                <div style={{display: 'block'}}>
                 {this.exportPDFFile()}
                 </div>
                 <div style={{display: 'none'}}>
