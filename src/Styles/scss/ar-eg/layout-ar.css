@@ -22167,9 +22167,10 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 thead.grid-header tr.action-bar .actions button.autoGridBtn {
     width: auto !important;
     min-width: 72px
-}
+} 
+ 
 tbody.grid-body tr td.text.bold >a {
-    font-weight: bold !important;
+    font-weight: bold !important; 
     white-space: nowrap;
 }
 
@@ -22178,8 +22179,8 @@ thead.grid-header tr th.check-box{
 }
 thead.grid-header tr.action-bar .actions {
     width: calc(100% - 256px);
-    height: 60px;
-}
+    height: 60px; 
+}  
 .company__name.company__name--image {
     padding: 20px 40px; 
     margin-bottom: 15px; 
@@ -22198,6 +22199,7 @@ thead.grid-header tr.action-bar .actions {
   }
   
   .footer_print img {
-      width: 100%;
+      width: 100%;  
       max-height: 60px;
   }
+ 
