@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs"; 
 import Profile from "./Profile";
 import PettyCash from "./PettyCash";
-import PrivacySetting from "./PrivacySetting";
 import Timesheet from './Timesheet';
 import Expenses from './Expenses';
 import DocumentEmailNotification from './DocumentEmailNotification';
@@ -11,9 +9,11 @@ import Resources from "../../resources.json";
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import * as actions from '../../store/actions/Adminstration';
+// import * as communicationActions from "../../store/actions/communication";
 import { bindActionCreators } from 'redux';
-let currentLanguage =
-  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
+let currentLanguage =  localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 class Index extends Component {
 
   constructor(props) {
@@ -22,6 +22,15 @@ class Index extends Component {
     this.state = {
       tabIndex: 0
     };
+
+  }
+
+  componentDidMount() {
+    let projectId = localStorage.getItem("lastSelectedProject");
+    let projectName = localStorage.getItem("lastSelectedprojectName");
+    var e = { label: projectName, value: projectId };
+
+    // this.props.actions.RouteToMainDashboard(e);
   }
 
   render() {

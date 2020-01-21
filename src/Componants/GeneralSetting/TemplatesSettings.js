@@ -22,8 +22,7 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 class TemplatesSettings extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            //tabIndex: this.props.Adminstration.tabIndex,
+        this.state = { 
             showNotify: false
         };
     }
