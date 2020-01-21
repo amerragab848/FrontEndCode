@@ -9,7 +9,8 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Export from "../../../Componants/OptionsPanels/Export";
 import moment from "moment";
 import dataService from '../../../Dataservice'
-import GridSetup from "../../Communication/GridSetup"
+ import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 //const _ = require('lodash')
@@ -35,53 +36,46 @@ class compareApprovedQuantity extends Component {
             startDate: moment(),
             ContractSum: 0,
             countContract: 0,
+            pageSize: 200,
             columns: [
                 {
-                    key: "details",
-                    name: Resources["details"][currentLanguage],
-                    width: 80,
-                    draggable: true,
+                    field: "details",
+                    title: Resources["details"][currentLanguage],
+                    width: 18,
+                    groupable: true,
+                    fixed: true,
+                    type: "text",
                     sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
                 },
                 {
-                    key: "unit",
-                    name: Resources["unit"][currentLanguage],
-                    width: 80,
-                    draggable: true,
+                    field: "unit",
+                    title: Resources["unit"][currentLanguage],
+                    width: 18,
+                    groupable: true,
+                    fixed: false,
+                    type: "text",
                     sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
                 }, {
-                    key: "unitPrice",
-                    name: Resources["unitPrice"][currentLanguage],
-                    width: 80,
-                    draggable: true,
+                    field: "unitPrice",
+                    title: Resources["unitPrice"][currentLanguage],
+                    width: 18,
+                    fixed: false,
+                    type: "text",
                     sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
                 }, {
-                    key: "quantity",
-                    name: Resources["quantity"][currentLanguage],
-                    width: 80,
-                    draggable: true,
+                    field: "quantity",
+                    title: Resources["quantity"][currentLanguage],
+                    width: 18,
+                    fixed: false,
+                    type: "text",
                     sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
                 }, {
-                    key: "revised Quantity",
-                    name: Resources["revQuantity"][currentLanguage],
-                    width: 80,
-                    draggable: true,
+                    field: "revised Quantity",
+                    title: Resources["revQuantity"][currentLanguage],
+                    width: 18,
+                    fixed: false,
+                    type: "text",
                     sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true,
                 }
             ]
 
@@ -117,14 +111,13 @@ class compareApprovedQuantity extends Component {
                 let objLength = Object.getOwnPropertyNames(rows[0])
                 for (var i = 0; i < objLength.length; i++) {
                     columns.push({
-                        key: objLength[i],
-                        name: objLength[i],
-                        width: 80,
-                        draggable: true,
+                        field: objLength[i],
+                        title: objLength[i],
+                        width: 18,
+                        groupable: true,
+                        fixed: true,
+                        type: "text",
                         sortable: true,
-                        resizable: true,
-                        filterable: true,
-                        sortDescendingFirst: true
                     })
                 }
             }
@@ -147,8 +140,19 @@ class compareApprovedQuantity extends Component {
     }
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.state.columns} />) : <LoadingSection />
+
+            <GridCustom
+                ref='custom-data-grid'
+                key="compareApprovedQuantity"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.state.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
+
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'compareApprovedQuantity'} />
             : null

@@ -6,8 +6,9 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import { Formik, Form } from 'formik';
 import BarChartComp from '../TechnicalOffice/BarChartComp'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import * as Yup from 'yup';
 import dataservice from "../../../Dataservice";
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
@@ -26,53 +27,50 @@ class budgetVarianceReport extends Component {
         this.state = {
             isLoading: false,
             showChart: false,
-            rows:[],
+            rows: [],
             actualTotal: 0,
             totalBalance: 0,
             totalBudget: 0,
+            pageSize: 200,
             projectList: [], noClicks: 0,
             selectedProject: { label: Resources.projectRequired[currentLanguage], value: "0" },
         }
-       
+
         this.columns = [
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },{
-                key: "budgetedExpenseValue",
-                name: Resources["budget"][currentLanguage],
-                width: 150,
-                draggable: true,
+            }, {
+                field: "budgetedExpenseValue",
+                title: Resources["budget"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },{
-                key: "actual",
-                name: Resources["actualTotal"][currentLanguage],
-                width: 150,
-                draggable: true,
+            }, {
+                field: "actual",
+                title: Resources["actualTotal"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },{
-                key: "balance",
-                name: Resources["balance"][currentLanguage],
-                width: 150,
-                draggable: true,
+            }, {
+                field: "balance",
+                title: Resources["balance"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
-          
+
         ];
 
         if (!Config.IsAllow(3683)) {
@@ -97,13 +95,13 @@ class budgetVarianceReport extends Component {
     getChartData = () => {
         this.setState({ isLoading: true })
         Api.get('GetBudgetVarianceByProject?projectId=' + this.state.selectedProject.value).then((result) => {
-            this.setState({  showChart: true})
+            this.setState({ showChart: true })
             if (result.length > 0) {
                 let catag = [];
                 let valuesActual = [];
                 let valuesExpenses = [];
                 let series = [];
-                let stacks =["Actual Total", "Budget Expenses"];
+                let stacks = ["Actual Total", "Budget Expenses"];
                 let actual = 0;
                 let balance = 0;
                 let budget = 0;
@@ -125,39 +123,48 @@ class budgetVarianceReport extends Component {
                             balance = balance + parseFloat(item2["balance"]);
                             budget = budget + parseFloat(item2["budgetedExpenseValue"]);
                         }
-                    }); 
-                 });
+                    });
+                });
 
-                    result.forEach(function (item2) {
-                        series.push({stack : stacks[0] , name :item2.expenseTypeName ,total : item2.actual}); 
-                        series.push({stack : stacks[1] , name :item2.expenseTypeName ,total : item2.budgetedExpenseValue});
-                    }); 
- 
+                result.forEach(function (item2) {
+                    series.push({ stack: stacks[0], name: item2.expenseTypeName, total: item2.actual });
+                    series.push({ stack: stacks[1], name: item2.expenseTypeName, total: item2.budgetedExpenseValue });
+                });
+
                 let xAxis = { categories: catag }
                 let noClicks = this.state.noClicks
-                this.setState({isLoading: false, series:series, xAxis, noClicks: noClicks + 1, showChart: true, actualTotal: actual, totalBalance: balance, totalBudget: budget,rows:result });
+                this.setState({ isLoading: false, series: series, xAxis, noClicks: noClicks + 1, showChart: true, actualTotal: actual, totalBalance: balance, totalBudget: budget, rows: result });
             }
-            else{
-                this.setState({isLoading: false, series:[], xAxis:[], noClicks:0, showChart: false, actualTotal: 0, totalBalance: 0, totalBudget: 0,rows:[] })
+            else {
+                this.setState({ isLoading: false, series: [], xAxis: [], noClicks: 0, showChart: false, actualTotal: 0, totalBalance: 0, totalBudget: 0, rows: [] })
             }
         }).catch(() => {
-            this.setState({ isLoading: false,rows:[]  })
+            this.setState({ isLoading: false, rows: [] })
         })
     }
     render() {
-        const Chart =this.state.showChart ?
+        const Chart = this.state.showChart ?
             (<BarChartComp
                 noClicks={this.state.noClicks}
                 type={'spline'}
                 series={this.state.series}
                 xAxis={this.state.xAxis}
                 multiSeries="yes"
-                title={Resources['budgetVariance'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />):null
+                title={Resources['budgetVariance'][currentLanguage]} yTitle={Resources['total'][currentLanguage]} />) : null
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
-
+            <GridCustom
+                ref='custom-data-grid'
+                key="budgetVarianceReport"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
+            
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'budgetVarianceReport'} />
             : null

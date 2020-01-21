@@ -6,13 +6,13 @@ let signautre = null;
 export default class Config {
 
     static getPublicConfiguartion() {
-        return IP_CONFIG;
-
+        return IP_CONFIG; 
     }
 
     static SetConfigObject(info) {
         IP_CONFIG = info;
     }
+    
     static setSignature(sign) {
         signautre = sign;
     }

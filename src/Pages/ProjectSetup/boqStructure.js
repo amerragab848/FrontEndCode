@@ -27,9 +27,7 @@ const validationSchema = Yup.object().shape({
     titleEn: Yup.string().test('projectNameEn', 'Name cannot be arabic', value => {
         return !en.test(value);
     }).required(Resources["titleEnRequired"][currentLanguage]),
-    titleAr: Yup.string().test('projectNameAr', 'Name cannot be english', value => {
-        return ar.test(value)
-    }).required(Resources["titleArRequired"][currentLanguage]),
+    titleAr: Yup.string().required(Resources["titleArRequired"][currentLanguage]),
 });
 
 const validationSchemaForCopyTo = Yup.object().shape({

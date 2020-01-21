@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -35,7 +36,8 @@ class SiteRequestReleasedQnt extends Component {
             rows: [],
             showChart: false,
             series: [],
-            xAxis: { type: 'category' }
+            xAxis: { type: 'category' },
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3693)) {
@@ -44,35 +46,32 @@ class SiteRequestReleasedQnt extends Component {
                 pathname: "/"
             })
         }
-        this.columns = [ 
+        this.columns = [
             {
-                key: "details",
-                name: Resources["description"][currentLanguage],
-                width: 500,
-                draggable: true,
+                field: "details",
+                title: Resources["description"][currentLanguage],
+                width: 50,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "requestedQuantity",
-                name: Resources["requestedQuantity"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "requestedQuantity",
+                title: Resources["requestedQuantity"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "releasedQuantity",
-                name: Resources["releasedQuantity"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "releasedQuantity",
+                title: Resources["releasedQuantity"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }
         ];
     }
@@ -94,9 +93,9 @@ class SiteRequestReleasedQnt extends Component {
         let noClicks = this.state.noClicks;
         Dataservice.GetDataGrid('GetSiteRequestItemsForReport?RequestId=' + this.state.selectedMaterialRequest.value + '').then(
             res => {
-                 
+
                 this.setState({
-                    showChart:true,
+                    showChart: true,
                     rows: res,
                     isLoading: false
                 })
@@ -109,17 +108,17 @@ class SiteRequestReleasedQnt extends Component {
                     totalReleased += element['releasedQuantity']
                 });
                 let seriesData = [{ name: Resources['requestedQuantity'][currentLanguage], value: totalRequested },
-                                  { name: Resources['releasedQuantity'][currentLanguage], value: totalReleased }]
+                { name: Resources['releasedQuantity'][currentLanguage], value: totalReleased }]
 
                 let series = []
                 series.push({ name: Resources['total'][currentLanguage], data: seriesData })
 
                 this.setState({
-                    series:seriesData,
+                    series: seriesData,
                     rows: res,
                     noClicks: noClicks + 1,
                     isLoading: false,
-                    showChart:true
+                    showChart: true
                 })
             }
         ).catch(() => {
@@ -130,7 +129,7 @@ class SiteRequestReleasedQnt extends Component {
     HandleChangeProject = (e) => {
         this.setState({ selectedProject: e })
         Dataservice.GetDataList('GetContractsSiteRequestList?projectId=' + e.value + '&pageNumber=0&pageSize=1000', 'subject', 'id').then(
-            res => { 
+            res => {
                 this.setState({
                     MaterialRequest: res
                 })
@@ -140,18 +139,28 @@ class SiteRequestReleasedQnt extends Component {
     }
 
     render() {
-        let Chart =this.state.showChart ?
+        let Chart = this.state.showChart ?
             (<BarChartComp
                 noClicks={this.state.noClicks}
                 series={this.state.series}
                 multiSeries="no"
                 xAxis={this.state.xAxis}
                 title='Payment Requisition Quantities'
-                yTitle={Resources['total'][currentLanguage]} />) :null
+                yTitle={Resources['total'][currentLanguage]} />) : null
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+
+            <GridCustom
+                ref='custom-data-grid'
+                key="SiteReqReleasedQnt"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectInvoices'} />

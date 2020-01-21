@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import moment from "moment";
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
@@ -37,7 +38,7 @@ class projectsAchievements extends Component {
             ProjectsData: [],
             selectedYear: { label: Resources['selectYear'][currentLanguage], value: "0" },
             rows: [],
-            showChart:false,
+            showChart: false,
             yearList: [
                 { label: '2010', value: "2010" },
                 { label: '2011', value: "2011" },
@@ -51,7 +52,8 @@ class projectsAchievements extends Component {
                 { label: '2019', value: "2019" },
                 { label: '2020', value: "2020" },
                 { label: '2021', value: "2021" }
-            ] 
+            ],
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3680)) {
@@ -63,25 +65,22 @@ class projectsAchievements extends Component {
 
         this.columns = [
             {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "total",
+                title: Resources["total"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "quarter",
-                name: Resources["quarter"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "quarter",
+                title: Resources["quarter"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
         ];
     }
@@ -94,7 +93,7 @@ class projectsAchievements extends Component {
                 this.setState({
                     rows: res,
                     isLoading: false,
-                    showChart:true
+                    showChart: true
                 })
                 let _data = []
                 let _catag = []
@@ -102,11 +101,11 @@ class projectsAchievements extends Component {
                 res.map((item, index) => {
                     _data.push(item.total)
                     _catag.push(item.quarter)
-                    seriesData.push({ name: item.quarter, value: item.total ,stack:index})
+                    seriesData.push({ name: item.quarter, value: item.total, stack: index })
                 })
                 let xAxis = { categories: _catag }
                 //series.push({ name: Resources['total'][currentLanguage], data: _data })
-                this.setState({ series:seriesData, xAxis, noClicks: noClicks + 1,showChart:true });
+                this.setState({ series: seriesData, xAxis, noClicks: noClicks + 1, showChart: true });
             }
         ).catch(() => {
             this.setState({ isLoading: false })
@@ -125,11 +124,20 @@ class projectsAchievements extends Component {
                 noClicks={this.state.noClicks}
                 series={this.state.series}
                 xAxis={this.state.xAxis}
-                title={'INCREASES IN PROJECTS'} yTitle={Resources['total'][currentLanguage]} />):null
+                title={'INCREASES IN PROJECTS'} yTitle={Resources['total'][currentLanguage]} />) : null
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom
+                ref='custom-data-grid'
+                key="projectAchievements"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectsAchievments'} />

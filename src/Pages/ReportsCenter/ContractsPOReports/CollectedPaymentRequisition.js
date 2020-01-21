@@ -7,7 +7,8 @@ import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import moment from "moment";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
@@ -32,6 +33,7 @@ class CollectedPaymentRequisition extends Component {
             rows: [],
             finishDate: moment(),
             startDate: moment(),
+            pageSize: 200,
         }
         if (!Config.IsAllow(3681)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
@@ -41,25 +43,22 @@ class CollectedPaymentRequisition extends Component {
         }
         this.columns = [
             {
-                key: "collected",
-                name: Resources["total"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "collected",
+                title: Resources["total"][currentLanguage],
+                width: 40,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "docDate",
+                title: Resources["docDate"][currentLanguage],
+                width: 40,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
         ];
     }
@@ -103,9 +102,17 @@ class CollectedPaymentRequisition extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
-
+            <GridCustom
+                ref='custom-data-grid'
+                key="CollectedPaymentRequisition"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'collectedPaymentRequisition'} />
             : null

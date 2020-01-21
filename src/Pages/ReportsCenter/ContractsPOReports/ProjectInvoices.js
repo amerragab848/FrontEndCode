@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import moment from "moment";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
@@ -28,7 +29,8 @@ class ProjectInvoices extends Component {
             isLoading: false,
             ProjectsData: [],
             selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
-            rows: []
+            rows: [],
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3691)) {
@@ -39,73 +41,64 @@ class ProjectInvoices extends Component {
         }
         this.columns = [
             {
-                key: "arrange",
-                name: Resources["numberAbb"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "arrange",
+                title: Resources["numberAbb"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: "subject",
+                title: Resources["subject"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "docDate",
+                title: Resources["docDate"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }, {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: "total",
+                title: Resources["total"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "balance",
-                name: Resources["balanceToFinish"][currentLanguage],
-                width: 140,
-                draggable: true,
+                field: "balance",
+                title: Resources["balanceToFinish"][currentLanguage],
+                width: 14,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "docCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "docCloseDate",
+                title: Resources["docClosedate"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "createdBy",
-                name: Resources["createdBy"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "createdBy",
+                title: Resources["createdBy"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
         ];
     }
@@ -138,8 +131,18 @@ class ProjectInvoices extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+
+            <GridCustom
+                ref='custom-data-grid'
+                key="ProjectInvoices"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectInvoices'} />
