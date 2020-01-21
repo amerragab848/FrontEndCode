@@ -40,16 +40,14 @@ class UploadExpensesAttachment extends Component {
 
     onDropAcceptedHandler = acceptedFiles => {
 
-        this.setState({ _className: "hundredPercent" });
-
-
+        this.setState({ _className: "hundredPercent" }); 
         acceptedFiles.forEach(element => {
             let formData = new FormData();
             formData.append("file", element);
             let header = {
                 docType: "expenses_Attach" 
             };
-            this.props.actions.uploadFile("UploadFiles", formData, header);
+            this.props.actions.uploadFile("UploadFilesExpenses", formData, header);
         }); 
         this.setState({ _className: "zeropercent" });
     };
@@ -112,13 +110,7 @@ class UploadExpensesAttachment extends Component {
                 <div>
                     {this.props.changeStatus === false ? this.renderAddAttachments()
                         :   null}
-                    {/* <div className="drives__upload">
-                        <form>
-                            <input type="file" name="file" id="file" className="inputfile" />
-                            <label htmlFor="file">{Resources.openMyFolders[currentLanguage]}</label>
-                        </form>
-                      
-                    </div> */}
+                    
                 </div>
             </Fragment>
         );

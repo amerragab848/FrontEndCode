@@ -8,7 +8,7 @@ import Resources from '../../resources.json';
 import Tree from '../OptionsPanels/Tree'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import ReactTable from "react-table"; 
+import ReactTable from "react-table";
 import UploadExpensesAttachment from "../OptionsPanels/UploadExpensesAttachment";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import DatePicker from "../OptionsPanels/DatePicker";
@@ -23,8 +23,11 @@ import { bindActionCreators } from 'redux';
 import SendToExpensesWorkFlow from './sendToExpensesWorkFlow';
 import ViewExpensesWF from './viewExpensesWF';
 import ExpensesWFApproval from './expensesWFApproval';
-import CryptoJS from "crypto-js"; 
+import ViewAttachment from "../../Componants/OptionsPanels/ViewExpensesAttachmments";
+import CryptoJS from "crypto-js";
+
 var steps_defination = [];
+
 steps_defination = [
     { name: "expenses", callBackFn: null },
     { name: "items", callBackFn: null }
@@ -69,11 +72,7 @@ class ExpensesUserAddEdit extends Component {
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
-                    let obj = JSON.parse(
-                        CryptoJS.enc.Base64.parse(param[1]).toString(
-                            CryptoJS.enc.Utf8
-                        )
-                    );
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
                     approvalData = obj
                 } catch {
                     this.props.history.goBack();
@@ -431,6 +430,16 @@ class ExpensesUserAddEdit extends Component {
         }, 1000);
     }
 
+    viewAttachments() {
+        return (
+            <ViewAttachment
+                isApproveMode={false}
+                docTypeId={6}
+                docId={this.state.id}
+                deleteAttachments={840}
+            />)
+    }
+
     render() {
 
         let stepOne = () => {
@@ -568,10 +577,15 @@ class ExpensesUserAddEdit extends Component {
                                                 : null
                                             }
                                         </div>
-                                            {this.state.isEdit ? null :
-                                                <div className="doc-pre-cycle letterFullWidth">
-                                                    <UploadExpensesAttachment changeStatus={false}/>
-                                                </div>}
+                                        {this.state.isEdit ? null :
+                                            <div className="doc-pre-cycle letterFullWidth">
+                                                <UploadExpensesAttachment changeStatus={false} />
+                                            </div>
+                                        }
+                                        <div>
+
+                                            {this.viewAttachments()}
+                                        </div>
                                         <div className="slider-Btns">
                                             {this.state.isLoading ?
                                                 <button className="primaryBtn-1 btn disabled">
@@ -726,6 +740,9 @@ class ExpensesUserAddEdit extends Component {
                                         </div>
                                     </div>
 
+                                </div>
+                                <div className="doc-pre-cycle letterFullWidth">
+                                    <UploadExpensesAttachment changeStatus={false} />
                                 </div>
 
                                 <div className="slider-Btns">
