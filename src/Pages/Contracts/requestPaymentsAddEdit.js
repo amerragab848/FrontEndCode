@@ -906,19 +906,24 @@ class requestPaymentsAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (!Config.IsAllow(187)) {
-                this.setState({ isViewMode: true });
-            }
-            if (this.state.isApproveMode != true && Config.IsAllow(187)) {
-                if (this.props.hasWorkflow == false && Config.IsAllow(187)) {
-                    //close => false
-                    if (this.props.document.status !== false && Config.IsAllow(187)) {
-                        this.setState({ isViewMode: false });
+            if (this.state.isCompany() === true) 
+            { 
+                this.setState({ isViewMode: false }); 
+            } else {
+                if (!Config.IsAllow(187)) {
+                    this.setState({ isViewMode: true });
+                }
+                if (this.state.isApproveMode != true && Config.IsAllow(187)) {
+                    if (this.props.hasWorkflow == false && Config.IsAllow(187)) {
+                        //close => false
+                        if (this.props.document.status !== false && Config.IsAllow(187)) {
+                            this.setState({ isViewMode: false });
+                        } else {
+                            this.setState({ isViewMode: true });
+                        }
                     } else {
                         this.setState({ isViewMode: true });
                     }
-                } else {
-                    this.setState({ isViewMode: true });
                 }
             }
         } else {
