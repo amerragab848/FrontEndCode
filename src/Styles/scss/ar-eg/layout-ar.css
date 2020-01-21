@@ -22169,19 +22169,15 @@ thead.grid-header tr.action-bar .actions button.autoGridBtn {
     min-width: 72px
 }
 
-.tbody.grid-body tr td.text.bold a {
-<<<<<<< HEAD
-    font-weight: bold !important;    white-space: nowrap;
+.tbody.grid-body tr td.text.bold a { 
+    font-weight: bold !important;   
+    white-space: nowrap;
 }
 
 thead.grid-header tr.action-bar .actions {
     width: calc(100% - 256px);
     height: 60px;
-}
-=======
-    font-weight: bold !important;
-}
-
+} 
 .company__name.company__name--image {
     padding: 20px 40px; 
     margin-bottom: 15px; 
@@ -22202,5 +22198,4 @@ thead.grid-header tr.action-bar .actions {
   .footer_print img {
       width: 100%;
       max-height: 120px;
-  }
->>>>>>> 405e2c5abb058107e3fe5ed684149de63ed0f9e1
+  } 
