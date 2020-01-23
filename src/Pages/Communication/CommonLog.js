@@ -414,11 +414,14 @@ class CommonLog extends Component {
           groupable: true,
           type: item.dataType === "number" ? item.dataType : (item.dataType === "date" ? item.dataType : "text")
         };
+
         if (item.field === "subject") {
           obj.href = 'link';
           obj.onClick = () => { };
-          obj.classes = 'bold'
+          obj.classes = 'bold';
+          obj.showTip = true;
         }
+
         if (item.field === "statusName") {
           obj.classes = 'grid-status';
           obj.fixed = false;
