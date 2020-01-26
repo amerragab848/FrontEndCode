@@ -11,9 +11,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import GridSetup from "../Communication/GridSetup";
+//import GridSetup from "../Communication/GridSetup";
 import moment from "moment";
 import Export from "../../Componants/OptionsPanels/Export";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -29,104 +30,105 @@ class BoqContractCost extends Component {
 
         this.columnsGrid = [
             {
-                key: "details",
-                name: Resources["details"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "details",
+                title: Resources["details"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "itemCode",
+                title: Resources["itemCode"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "resourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "resourceCode",
+                title: Resources["resourceCode"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "quantity",
-                name: Resources["originalQuantity"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "quantity",
+                title: Resources["originalQuantity"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "executedQuantity",
-                name: Resources["executedQuantity"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "executedQuantity",
+                title: Resources["executedQuantity"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "mainContractQty",
-                name: Resources["contractQty"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "mainContractQty",
+                title: Resources["contractQty"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "subContractQty",
-                name: Resources["subContractQty"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "subContractQty",
+                title: Resources["subContractQty"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "poQuantity",
-                name: Resources["poQuantity"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "poQuantity",
+                title: Resources["poQuantity"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "percent",
-                name: Resources["percentage"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "percent",
+                title: Resources["percentage"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "expenseseTotal",
-                name: Resources["totalExpenses"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "expenseseTotal",
+                title: Resources["totalExpenses"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "executedTotal",
-                name: Resources["totalExecuted"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "executedTotal",
+                title: Resources["totalExecuted"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            }
+                type:"text"
+            },
+         
         ];
 
         this.state = {
@@ -189,10 +191,11 @@ class BoqContractCost extends Component {
     }
 
     render() {
-
+            
+             //<GridSetup rows={this.state.rows} showCheckbox={false} columns={this.columnsGrid} />
         const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ? <GridSetup rows={this.state.rows} showCheckbox={false} columns={this.columnsGrid} /> : null
+                this.state.rows.length > 0 ? <GridCustom  cells={this.columnsGrid}  data={this.state.rows}  groups={[]} pageSize={50}   pageSize={50} actions={[]} rowActions={[]} rowClick={()=>{}} />: null
             ) : (
                 <LoadingSection />
             );
