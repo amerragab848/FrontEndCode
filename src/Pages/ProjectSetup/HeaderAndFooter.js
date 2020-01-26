@@ -21,11 +21,8 @@ import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import api from '../../api'
 import { tr } from 'date-fns/locale';
 
-
-
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let CurrProjectName = localStorage.getItem('lastSelectedprojectName')
-
 
 
 const ValidtionSchema = Yup.object().shape({
@@ -113,8 +110,9 @@ class HeaderAndFooter extends Component {
 
     componentDidMount() {
         this.props.actions.FillGridLeftMenu();
-
-        Api.get('ProjectHeaderFooterGet?projectId=' + this.props.match.params.id + '&pageNumber=' + this.state.PageNumber + '&pageSize=' + this.state.PageSize).then(res => {
+ 
+        let projectId = window.localStorage.getItem("lastSelectedProject") ? window.localStorage.getItem("lastSelectedProject") : null;
+        Api.get('ProjectHeaderFooterGet?projectId=' + projectId + '&pageNumber=' + this.state.PageNumber + '&pageSize=' + this.state.PageSize).then(res => {
             this.setState({ rows: res.data, isLoading: false, totalRows: res.total })
         })
         if (config.IsAllow(485)) {
@@ -186,7 +184,7 @@ class HeaderAndFooter extends Component {
     }
 
     showPopupModel = () => {
-        if (config.IsAllow(485) && localStorage.getItem('isCompany') == true)
+        if (config.IsAllow(485))
             this.setState({ showPopup: true, IsEditModel: false, selectedId: 0, document: {} });
     }
 
@@ -212,18 +210,31 @@ class HeaderAndFooter extends Component {
 
     AddEditAction = (values, actions) => {
         this.setState({ isLoading: true })
-        let url = this.state.IsEditModel ? "EditProjectHeaderFooter" : "AddProjectHeaderFooter";
 
-        if (this.state.uploadedImage) {
-            let formData = new FormData();
-            formData.append("file", this.state.uploadedImage[0])
-            api.postFile('UploadSignature', formData).then(res => {
-                dataservice.addObject(url, {
-                    id: this.state.selectedId,
-                    projectId: this.props.match.params.id,
-                    description: this.state.document.description,
-                    type: this.state.document.type
-                }).then(res => {
+        let projectId = window.localStorage.getItem("lastSelectedProject") ? window.localStorage.getItem("lastSelectedProject") : null;
+        var objServer = {
+            id: this.state.selectedId,
+            projectId: projectId,
+            description: this.state.document.description,
+            type: this.state.document.type
+        };
+
+        let url = this.state.IsEditModel ? "EditProjectHeaderFooter" : "addProjectHeaderFooter";
+
+        dataservice.addObject(url, objServer).then(res => {
+            var storageApi = config.getPublicConfiguartion().azureStorage ? '/BlobUpload' :
+                (this.state.IsEditModel == true ? '/UploadFilesByDocId?docId=' + res.id : '/UploadFiles');
+
+            if (this.state.uploadedImage) {
+                let formData = new FormData();
+                formData.append("file", this.state.uploadedImage[0]);
+
+                let header = {};
+                header.docId = res.id;
+                header.docTypeId = 3;
+                header.parentId = '';
+
+                api.postFile(storageApi, formData, header).then(data => {
                     let _rows = [...this.state.rows];
                     if (!this.state.IsEditModel)
                         _rows.push(res)
@@ -234,11 +245,11 @@ class HeaderAndFooter extends Component {
                     this.setState({ showPopup: false, rows: _rows, isLoading: false, document: {}, uploadedImage: null, uploadedImagePreview: null, showRemoveBtn: false });
                     toast.success(Resources["operationSuccess"][currentLanguage]);
 
+                }).catch(ex => {
+                    toast.error(Resources["operationCanceled"][currentLanguage]);
                 });
-            }).catch(ex => {
-                toast.error(Resources["operationCanceled"][currentLanguage]);
-            });
-        }
+            }
+        });
     }
 
     handleChange = (value, field) => {
@@ -251,7 +262,6 @@ class HeaderAndFooter extends Component {
         });
     }
 
-    //signture Methods
     onDrop = (file) => {
         this.setState({
             uploadedImage: file,
@@ -274,7 +284,8 @@ class HeaderAndFooter extends Component {
 
             this.setState({ isLoading: true, PageNumber });
 
-            Api.get('ProjectHeaderFooterGet?projectId=' + this.props.match.params.id + '&pageNumber=' + PageNumber + '&pageSize=' + this.state.PageSize).then(res => {
+            let projectId = window.localStorage.getItem("lastSelectedProject") ? window.localStorage.getItem("lastSelectedProject") : null;
+            Api.get('ProjectHeaderFooterGet?projectId=' + projectId + '&pageNumber=' + PageNumber + '&pageSize=' + this.state.PageSize).then(res => {
 
                 let newRows = [...this.state.rows, ...res.data];
                 this.setState({ rows: newRows, isLoading: false, totalRows: res.total })

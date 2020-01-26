@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import moment from "moment";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
@@ -25,7 +26,7 @@ const StatusDropData = [
 ]
 
 const FixedNumber = ({ value }) => {
-    return value ? value.toFixed(2)  : '';
+    return value ? value.toFixed(2) : '';
 }
 class ProjectBalanceReport extends Component {
     constructor(props) {
@@ -38,6 +39,7 @@ class ProjectBalanceReport extends Component {
             series: [],
             xAxis: {},
             noClicks: 0,
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3676)) {
@@ -49,56 +51,48 @@ class ProjectBalanceReport extends Component {
 
         this.columns = [
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "referenceCode",
-                name: Resources["referenceCode"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "referenceCode",
+                title: Resources["referenceCode"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "totalExpenses",
-                name: Resources["expensesTotal"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "totalExpenses",
+                title: Resources["expensesTotal"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true ,
-                formatter:FixedNumber
             }, {
-                key: "totalBudgeted",
-                name: Resources["totalBudgeted"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "totalBudgeted",
+                title: Resources["totalBudgeted"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter:FixedNumber
             },
             {
-                key: "balance",
-                name: Resources["balance"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "balance",
+                title: Resources["balance"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter:FixedNumber
             },
         ];
 
@@ -108,8 +102,8 @@ class ProjectBalanceReport extends Component {
         Dataservice.GetDataGrid('GetProjectsWithNegativeAndPositiveBalanceReport?statusBalance=' + this.state.selectedStatus.value + '').then(
             res => {
 
-                this.setState({showChart:true});
-                
+                this.setState({ showChart: true });
+
                 let noClicks = this.state.noClicks;
                 let _Equal = 0
                 let _Positive = 0
@@ -130,9 +124,9 @@ class ProjectBalanceReport extends Component {
                 series.push({ name: Resources['balance'][currentLanguage], data: seriesData })
                 let xAxis = { categories: _catag }
                 this.setState({
-                    series:seriesData, xAxis,
+                    series: seriesData, xAxis,
                     rows: res,
-                    showChart:true,
+                    showChart: true,
                     noClicks: noClicks + 1,
                     isLoading: false
                 })
@@ -143,19 +137,28 @@ class ProjectBalanceReport extends Component {
     }
 
     render() {
-        let Chart =this.state.showChart ?
+        let Chart = this.state.showChart ?
             (<BarChartComp
                 noClicks={this.state.noClicks}
                 series={this.state.series}
                 xAxis={this.state.xAxis}
                 multiSeries="no"
                 title={Resources['projectBalanceReport'][currentLanguage]}
-                yTitle={Resources['total'][currentLanguage]} />):null
+                yTitle={Resources['total'][currentLanguage]} />) : null
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
 
+            <GridCustom
+                ref='custom-data-grid'
+                key="projectBalanceReport"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectBalanceReport'} />
             : null
@@ -166,41 +169,41 @@ class ProjectBalanceReport extends Component {
                     <h2 className="zero">{Resources.projectBalanceReport[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-             
-                    <Formik
-                        initialValues={{
-                            selectedStatus: '',
-                        }}
-                        enableReinitialize={true}
-                        validationSchema={ValidtionSchema}
-                        onSubmit={(values, actions) => {
 
-                            this.getGridRows()
-                        }}>
-                        {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                            <Form className="proForm reports__proForm" onSubmit={handleSubmit}>
-                               
-                                <div className="linebylineInput valid-input">
-                                    <Dropdown
-                                     title='statusName' data={StatusDropData}
-                                        name='selectedStatus' value={values.selectedStatus}
-                                        selectedValue={this.state.selectedStatus} onChange={setFieldValue}
-                                        handleChange={e => this.setState({ selectedStatus: e })}
-                                        onBlur={setFieldTouched}
-                                        error={errors.selectedStatus}
-                                        touched={touched.selectedStatus} />
-                                </div>
-                                    <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
-                            </Form>
-                        )}
-                    </Formik>
-                    {this.state.showChart==true?
+                <Formik
+                    initialValues={{
+                        selectedStatus: '',
+                    }}
+                    enableReinitialize={true}
+                    validationSchema={ValidtionSchema}
+                    onSubmit={(values, actions) => {
+
+                        this.getGridRows()
+                    }}>
+                    {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                        <Form className="proForm reports__proForm" onSubmit={handleSubmit}>
+
+                            <div className="linebylineInput valid-input">
+                                <Dropdown
+                                    title='statusName' data={StatusDropData}
+                                    name='selectedStatus' value={values.selectedStatus}
+                                    selectedValue={this.state.selectedStatus} onChange={setFieldValue}
+                                    handleChange={e => this.setState({ selectedStatus: e })}
+                                    onBlur={setFieldTouched}
+                                    error={errors.selectedStatus}
+                                    touched={touched.selectedStatus} />
+                            </div>
+                            <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
+                        </Form>
+                    )}
+                </Formik>
+                {this.state.showChart == true ?
                     <div className="row">
                         {Chart}
-                    </div>:null}
-                    <div className="doc-pre-cycle letterFullWidth">
-                        {dataGrid}
-                    </div>
+                    </div> : null}
+                <div className="doc-pre-cycle letterFullWidth">
+                    {dataGrid}
+                </div>
             </div>
         )
     }

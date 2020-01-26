@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -26,7 +27,8 @@ class BoqStractureCost extends Component {
             isLoading: false,
             BoqTypeData: [],
             selectedBoq: [{ label: Resources.boqType[currentLanguage], value: "0" }],
-            rows: []
+            rows: [],
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(4019)) {
@@ -38,46 +40,41 @@ class BoqStractureCost extends Component {
 
         this.columns = [
             {
-                key: "building",
-                name: Resources["Building"][currentLanguage],
-                width: 300,
-                draggable: true,
+                field: "building",
+                title: Resources["Building"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "code",
-                name: Resources["code"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "code",
+                title: Resources["code"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "exists",
-                name: Resources["exists"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "exists",
+                title: Resources["exists"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             },
             {
-                key: "rowTotal",
-                name: Resources["rowTotal"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "rowTotal",
+                title: Resources["rowTotal"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
         ];
-
     }
 
     componentWillMount() {
@@ -98,10 +95,9 @@ class BoqStractureCost extends Component {
         this.state.selectedBoq.map(s => {
             selectedBoqLsit.push(s.value)
         })
-        Api.post('GetTotalBOQParentFromChild', selectedBoqLsit).then(
-            res => {
+        Api.post('GetTotalBOQParentFromChild', selectedBoqLsit).then(            res => {
                 this.setState({
-                    rows: res.data,
+                    rows: res || [],
                     isLoading: false
                 }) 
             }
@@ -112,8 +108,17 @@ class BoqStractureCost extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+              <GridCustom
+                ref='custom-data-grid'
+                key="BoqStractureCost"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'boqStractureCost'} />

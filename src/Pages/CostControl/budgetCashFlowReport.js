@@ -7,7 +7,8 @@ import Config from '../../Services/Config';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import Export from "../../Componants/OptionsPanels/Export";
 import BarChartComp from '../ReportsCenter/TechnicalOffice/BarChartComp'
-import GridSetup from "../Communication/GridSetup"
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+
 import { SkyLightStateless } from 'react-skylight';
 import moment from 'moment';
 import Api from '../../api.js';
@@ -51,63 +52,106 @@ class BudgetCashFlowReport extends Component {
                 pathname: "/"
             })
         }
+        this.groups = [];
 
-        this.columns = [
+        this.actions = [];
+
+        this.rowActions = [];
+
+        this.columns = [ 
             {
-                key: "date",
-                name: Resources["docDate"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
+                field: "estimatedCashIn",
+                title: Resources["estimatedCashIn"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: true,
+                type: "text", 
+                sortable: true
 
+            }, {
+                field: "estimatedCashOut",
+                title: Resources["estimatedCashOut"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: true,
+                type: "text",
+                sortable: true
             },
             {
-                key: "estimatedCashIn",
-                name: Resources["estimatedCashIn"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "estimatedCashOut",
-                name: Resources["estimatedCashOut"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
+                field: "date",
+                title: Resources["docDate"][currentLanguage],
+                width: 20,
+                groupable: false,
+                fixed: false,
+                type: "date",
+                sortable: true
             },
             {
-                key: "totalIn",
-                name: Resources["actualTotalIn"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "totalIn",
+                title: Resources["actualTotalIn"][currentLanguage],
+                width: 14,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                onClick: (cell) => {
+                    if (cell.totalIn !== 0) {
+
+                        this.setState({ isLoading: true })
+
+                        let obj = {
+                            startDate: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                            finishDate: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+                        }
+
+                        Api.post('GetActualTotalIn', obj).then(
+                            res => {
+                                this.setState({
+                                    RowsDetails: res,
+                                    isLoading: false,
+                                    ShowPopup: true
+                                })
+                            }
+                        )
+                    }
+                }
+
             }, {
-                key: "totalOut",
-                name: Resources["actualTotalOut"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "totalOut",
+                title: Resources["actualTotalOut"][currentLanguage],
+                width: 14,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
+                onClick: (cell) => {
+                    if (cell.totalOut !== 0) {
+                        this.setState({ isLoading: true })
+                        let obj = {
+                            startDate: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+                            finishDate: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
+                        }
+                        Api.post('GetActualTotalOut', obj).then(
+                            res => {
+                                this.setState({
+                                    RowsDetails: res,
+                                    isLoading: false,
+                                    ShowPopup: true
+                                })
+                            }
+                        )
+                    }
+
+                }
+
             }
         ];
     }
 
     componentDidMount() {
         this.props.actions.FillGridLeftMenu();
+        this.setState({ isLoading: true })
+        setTimeout(() => this.setState({ isLoading: false }), 1000)
     }
 
     getGridRows = () => {
@@ -180,53 +224,11 @@ class BudgetCashFlowReport extends Component {
         this.setState({ [name]: value })
     }
 
-    onRowClick = (rowData, value, column) => {
-        if (column.idx === 3) {
-            if (rowData.totalIn !== 0) {
-
-                this.setState({ isLoading: true })
-
-                let obj = {
-                    startDate: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-                    finishDate: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-                }
-
-                Api.post('GetActualTotalIn', obj).then(
-                    res => {
-                        this.setState({
-                            RowsDetails: res,
-                            isLoading: false,
-                            ShowPopup: true
-                        })
-                    }
-                )
-            }
-        }
-
-        if (column.idx === 4) {
-            if (rowData.totalOut !== 0) {
-                this.setState({ isLoading: true })
-                let obj = {
-                    startDate: moment(this.state.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-                    finishDate: moment(this.state.finishDate, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS')
-                }
-                Api.post('GetActualTotalOut', obj).then(
-                    res => {
-                        this.setState({
-                            RowsDetails: res,
-                            isLoading: false,
-                            ShowPopup: true
-                        })
-                    }
-                )
-            }
-        }
-    }
-
     render() {
 
         const Chart = this.state.showChart ?
             (<BarChartComp
+
                 noClicks={this.state.noClicks}
                 type={'spline'}
                 series={this.state.series}
@@ -267,10 +269,19 @@ class BudgetCashFlowReport extends Component {
             }
         ]
 
-        const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} onRowClick={this.onRowClick} columns={this.columns} />) : <LoadingSection />
-
+        const dataGrid =
+            this.state.isLoading === false ? (
+                <GridCustom
+                    ref='custom-data-grid'
+                    key="BudgetCashFlowReport"
+                    data={this.state.rows}
+                    pageSize={this.state.pageSize}
+                    groups={[]}
+                    actions={[]}
+                    cells={this.columns}
+                    rowActions={[]}
+                    rowClick={()=>{}}
+                />) : <LoadingSection />
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'budgetCashFlowReport'} />
             : null
@@ -278,11 +289,11 @@ class BudgetCashFlowReport extends Component {
         return (
 
             <div className="mainContainer">
-                <div class="submittalFilter">
-                    <div class="subFilter">
-                        <h3 class="zero">{Resources.budgetCashFlowReport[currentLanguage]}</h3>
+                <div className="submittalFilter">
+                    <div className="subFilter">
+                        <h3 className="zero">{Resources.budgetCashFlowReport[currentLanguage]}</h3>
                     </div>
-                    <div class="filterBTNS">
+                    <div className="filterBTNS">
                         {btnExport}
                     </div>
                 </div>
@@ -298,15 +309,10 @@ class BudgetCashFlowReport extends Component {
                             startDate={this.state.finishDate}
                             handleChange={e => this.handleChange('finishDate', e)} />
                     </div>
-
                     <button className="primaryBtn-1 btn smallBtn" onClick={this.getGridRows}>{Resources['search'][currentLanguage]}</button>
-
                 </div>
-
                 <div className="doc-pre-cycle letterFullWidth">
-
                     <div className='proForm reports__proForm'>
-
                         <div className="linebylineInput valid-input">
                             <label className="control-label">{Resources.estimatedCashIn[currentLanguage]}</label>
                             <div className="inputDev ui input">
@@ -334,9 +340,7 @@ class BudgetCashFlowReport extends Component {
                                 <input readOnly className="form-control" value={this.state.ActualTotalOut} />
                             </div>
                         </div>
-
                     </div>
-
                     {this.state.showChart ?
                         <div className="row">
                             {Chart}
@@ -347,21 +351,15 @@ class BudgetCashFlowReport extends Component {
                 <SkyLightStateless onOverlayClicked={() => this.setState({ ShowPopup: false })}
                     title={Resources['actualTotalInOut'][currentLanguage]}
                     onCloseClicked={() => this.setState({ ShowPopup: false })} isVisible={this.state.ShowPopup}>
-
                     <div className="doc-pre-cycle letterFullWidth">
-
                         <ReactTable data={this.state.RowsDetails}
                             columns={columnsCycles}
                             defaultPageSize={5}
                             noDataText={Resources["noData"][currentLanguage]}
                             className="-striped -highlight" />
                     </div>
-
                 </SkyLightStateless>
-
-
-            </div >
-
+            </div>
         )
     }
 

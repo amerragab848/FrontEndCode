@@ -4,8 +4,9 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import moment from "moment";
 import Dataservice from '../../../Dataservice';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
@@ -20,7 +21,8 @@ class BoqTemplateReport extends Component {
         super(props)
         this.state = {
             isLoading: false,
-            rows: []
+            rows: [],
+            pageSize: 200,
         }
         if (!Config.IsAllow(3690)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
@@ -30,163 +32,142 @@ class BoqTemplateReport extends Component {
         }
         this.columns = [
             {
-                key: "arrange",
-                name: Resources["numberAbb"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "arrange",
+                title: Resources["numberAbb"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "textStatus",
-                name: Resources["status"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "textStatus",
+                title: Resources["status"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: "subject",
+                title: Resources["subject"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 23,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "companyName",
+                title: Resources["CompanyName"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "docCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "docCloseDate",
+                title: Resources["docClosedate"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }, {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "docDate",
+                title: Resources["docDate"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "disciplineName",
-                name: Resources["disciplineName"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "disciplineName",
+                title: Resources["disciplineName"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "openedBy",
-                name: Resources["openedBy"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "openedBy",
+                title: Resources["openedBy"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "closedBy",
-                name: Resources["closedBy"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "closedBy",
+                title: Resources["closedBy"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "lastEditBy",
-                name: Resources["lastEdit"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "lastEditBy",
+                title: Resources["lastEdit"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "lastEditDate",
-                name: Resources["lastEditDate"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "lastEditDate",
+                title: Resources["lastEditDate"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }, {
-                key: "lastSendTime",
-                name: Resources["lastSendTime"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "lastSendTime",
+                title: Resources["lastSendTime"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "lastSendDate",
-                name: Resources["lastSendDate"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "lastSendDate",
+                title: Resources["lastSendDate"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "lastApproveTime",
-                name: Resources["lastApprovedTime"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "lastApproveTime",
+                title: Resources["lastApprovedTime"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "lastApproveDate",
-                name: Resources["lastApproveDate"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "lastApproveDate",
+                title: Resources["lastApproveDate"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }
         ];
     }
@@ -208,9 +189,18 @@ class BoqTemplateReport extends Component {
 
 
     render() {
-        const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                columns={this.columns} onRowClick={this.OnRowClick} />) : <LoadingSection />
+        const dataGrid = this.state.isLoading === false ? ( 
+            <GridCustom
+                ref='custom-data-grid'
+                key="BoqTemplateReport"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'boqTemplateReport'} />
@@ -231,7 +221,7 @@ class BoqTemplateReport extends Component {
                     {dataGrid}
                 </div>
             </div>
-       )
+        )
     }
 
 }

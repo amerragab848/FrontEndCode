@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import dataservice from "../../../Dataservice";
 import BarChartComp from '../../../Componants/ChartsWidgets/BarChartCompJS'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -21,7 +22,8 @@ class TaskEstimatedHoursVariance extends Component {
             selectedProjects: [],
             selectedStatus: { label: Resources['all'][currentLanguage], value: null },
             rows: [],
-            showChart: false
+            showChart: false,
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3700)) {
@@ -37,42 +39,37 @@ class TaskEstimatedHoursVariance extends Component {
             { label: Resources['closed'][currentLanguage], value: false }
         ]
         this.columns = [{
-            key: "projectName",
-            name: Resources["projectName"][currentLanguage],
-            width: 150,
-            draggable: true,
+            field: "projectName",
+            title: Resources["projectName"][currentLanguage],
+            width: 15,
+            groupable: true,
+            fixed: true,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            frozen: true,
-            sortDescendingFirst: true
         }, {
-            key: "estimatedTime",
-            name: Resources["estimatedTime"][currentLanguage],
-            width: 150,
-            draggable: true,
+            field: "estimatedTime",
+            title: Resources["estimatedTime"][currentLanguage],
+            width: 15,
+            groupable: true,
+            fixed: false,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
         }, {
-            key: "actualTotal",
-            name: Resources["actualTotal"][currentLanguage],
-            width: 150,
-            draggable: true,
+            field: "actualTotal",
+            title: Resources["actualTotal"][currentLanguage],
+            width: 15,
+            groupable: true,
+            fixed: false,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
         }, {
-            key: "variance",
-            name: Resources["variance"][currentLanguage],
-            width: 150,
-            draggable: true,
+            field: "variance",
+            title: Resources["variance"][currentLanguage],
+            width: 15,
+            groupable: true,
+            fixed: false,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
         }
         ];
     }
@@ -121,10 +118,19 @@ class TaskEstimatedHoursVariance extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
 
+            <GridCustom
+                ref='custom-data-grid'
+                key="TaskEstimatedHoursVariance"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
+            
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['taskEstimatedHoursVariance'][currentLanguage]} />
             : null

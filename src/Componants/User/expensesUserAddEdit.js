@@ -9,7 +9,7 @@ import Tree from '../OptionsPanels/Tree'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import ReactTable from "react-table";
-import 'react-table/react-table.css'
+import UploadExpensesAttachment from "../OptionsPanels/UploadExpensesAttachment";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import DatePicker from "../OptionsPanels/DatePicker";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
@@ -23,13 +23,18 @@ import { bindActionCreators } from 'redux';
 import SendToExpensesWorkFlow from './sendToExpensesWorkFlow';
 import ViewExpensesWF from './viewExpensesWF';
 import ExpensesWFApproval from './expensesWFApproval';
+import ViewAttachment from "../../Componants/OptionsPanels/ViewExpensesAttachmments";
 import CryptoJS from "crypto-js";
+
 var steps_defination = [];
+
 steps_defination = [
     { name: "expenses", callBackFn: null },
     { name: "items", callBackFn: null }
 ];
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 const find = require('lodash/find');
 
 let selectedRows = [];
@@ -57,7 +62,6 @@ const itemValidationSchemaEdit = Yup.object().shape({
     expenseValue: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
 });
 
-
 class ExpensesUserAddEdit extends Component {
 
     constructor(props) {
@@ -68,11 +72,7 @@ class ExpensesUserAddEdit extends Component {
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
-                    let obj = JSON.parse(
-                        CryptoJS.enc.Base64.parse(param[1]).toString(
-                            CryptoJS.enc.Utf8
-                        )
-                    );
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
                     approvalData = obj
                 } catch {
                     this.props.history.goBack();
@@ -430,6 +430,16 @@ class ExpensesUserAddEdit extends Component {
         }, 1000);
     }
 
+    viewAttachments() {
+        return (
+            <ViewAttachment
+                isApproveMode={false}
+                docTypeId={6}
+                docId={this.state.id}
+                deleteAttachments={840}
+            />)
+    }
+
     render() {
 
         let stepOne = () => {
@@ -469,7 +479,6 @@ class ExpensesUserAddEdit extends Component {
                                                         {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                                     </div>
                                                 </div>
-
                                             </div>
                                         }
                                         <div className={"proForm datepickerContainer" + (this.state.isEdit ? ' readOnly_inputs' : '')}>
@@ -565,9 +574,18 @@ class ExpensesUserAddEdit extends Component {
                                                         />
                                                     </div>
                                                 </div>
-                                                : null}
+                                                : null
+                                            }
                                         </div>
+                                        {this.state.isEdit ? null :
+                                            <div className="doc-pre-cycle letterFullWidth">
+                                                <UploadExpensesAttachment changeStatus={false} />
+                                            </div>
+                                        }
+                                        <div>
 
+                                            {this.viewAttachments()}
+                                        </div>
                                         <div className="slider-Btns">
                                             {this.state.isLoading ?
                                                 <button className="primaryBtn-1 btn disabled">
@@ -722,6 +740,9 @@ class ExpensesUserAddEdit extends Component {
                                         </div>
                                     </div>
 
+                                </div>
+                                <div className="doc-pre-cycle letterFullWidth">
+                                    <UploadExpensesAttachment changeStatus={false} />
                                 </div>
 
                                 <div className="slider-Btns">

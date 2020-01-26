@@ -1,5 +1,6 @@
 
 
+import CryptoJS from "crypto-js";
 
 import React, { Component, Fragment } from 'react'
 import { withRouter } from "react-router-dom";
@@ -8,8 +9,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -35,7 +37,8 @@ class InventoryDetails extends Component {
             RowsChilds: [],
             Description: '',
             ResourceCode: '',
-            AllRows: []
+            AllRows: [],
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3689)) {
@@ -47,88 +50,87 @@ class InventoryDetails extends Component {
         this.GetCellActions = this.GetCellActions.bind(this);
         this.columns = [
             {
-                key: 'BtnActions',
-                width: 50
-            },
-            {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 180,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 180,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                onClick: (cell) => {
+                    this.setState({ isLoading: true })
+                    let RowsChilds = []
+                    this.state.RowsChilds.map(i => {
+                        if (i.parentId === cell.id) {
+                            RowsChilds.push(i)
+                        }
+                    })
+                    setTimeout(() => {
+                        this.setState({ RowsChilds, isLoading: false, })
+                    }, 200);
+                }
             }, {
-                key: "unitPrice",
-                name: Resources["unitPrice"][currentLanguage],
-                width: 140,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-            },
-            {
-                key: "resourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                field: "itemCode",
+                title: Resources["itemCode"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true
+            }, {
+                field: "quantity",
+                title: Resources["quantity"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true
+            }, {
+                field: "unitPrice",
+                title: Resources["unitPrice"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true
+            }, {
+                field: "resourceCode",
+                title: Resources["resourceCode"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true
+            }, {
+                field: "total",
+                title: Resources["total"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true
             }
         ];
 
-
-    }
-
-    cellClick = (rowID, colID) => {
-        if (colID != 0) {
-            this.setState({ isLoading: true })
-            let RowsChilds = []
-            this.state.RowsChilds.map(i => {
-                if (i.parentId === rowID) {
-                    RowsChilds.push(i)
+        this.rowActions = [
+            {
+                title: 'Itemization',
+                handleClick: value => {
+                    let obj = {
+                        id: value.id,
+                        boqId: value.boqId,
+                        projectId: this.state.projectId,
+                        projectName: this.state.projectName
+                    };
+                    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+                    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+                    this.props.history.push({ pathname: "/Itemize", search: "?id=" + encodedPaylod });
                 }
-            })
-            setTimeout(() => {
-                this.setState({ RowsChilds, isLoading: false, })
-            }, 200);
-        }
-    }
+            }
+        ];
 
+    }
+  
     GetCellActions(column, row) {
         if (column.key === 'BtnActions') {
             return [{
@@ -150,7 +152,6 @@ class InventoryDetails extends Component {
                 toast.error('somthing wrong')
             })
     }
-
 
     getGridRows = () => {
         this.setState({ isLoading: true })
@@ -180,24 +181,33 @@ class InventoryDetails extends Component {
             this.setState({ isLoading: false })
         })
     }
-
-    onRowClick = (row) => {
-        alert(row.id)
-    }
-
+ 
     render() {
 
         const DataGridChilds = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.RowsChilds}
-                showCheckbox={false}
-                columns={this.columns}
-                onRowClick={this.onRowClick}
+            <GridCustom
+                ref='custom-data-grid'
+                key="BudgetCashFlowReport"
+                data={this.state.RowsChilds}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
             />) : <LoadingSection />
 
         const DataGridParent = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.RowsParent} showCheckbox={false}
-                getCellActions={this.GetCellActions} cellClick={this.cellClick}
-                columns={this.columns} />) : <LoadingSection />
+            <GridCustom
+                ref='custom-data-grid'
+                key="BudgetCashFlowReport"
+                data={this.state.RowsParent}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={this.rowActions}
+                rowClick={() => { }} 
+                cells={this.columns} />) : <LoadingSection />
 
         let Exportcolumns = this.columns.filter(s => s.key !== 'BtnActions')
         const btnExport = this.state.isLoading === false ?

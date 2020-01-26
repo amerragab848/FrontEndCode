@@ -925,7 +925,7 @@ class meetingAgendaAddEdit extends Component {
                     actions={this.actions}
                     cells={this.topicColumns}
                     rowActions={this.rowActions}
-                    rowClick={cell => {
+                    rowClick={(row,cell) => {
                         let id = cell.id;
                         if (!Config.IsAllow(11)) {
                             toast.warning("you don't have permission");

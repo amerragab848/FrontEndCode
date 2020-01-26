@@ -5,7 +5,7 @@ import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import moment from "moment";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import Resources from "../../resources.json"; 
+import Resources from "../../resources.json";
 import find from "lodash/find";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -35,6 +35,7 @@ import ConfirmationModal from "../../Componants/publicComponants/ConfirmationMod
 import GridSetup from "../Communication/GridSetup";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 var steps_defination = [];
 
@@ -79,17 +80,6 @@ let columnsGrid = [];
 let voColumns = [];
 let selectedRow = [];
 let indexx = 0;
-
-let editRevQuantity = ({ value, row }) => {
-  if (row) {
-    return <a className="editorCell"><span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.revisedQuantity != null ? row.revisedQuantity : 0}</span></a>;
-  }
-  return null;
-};
-
-let spanRevQuantity = ({ value, row }) => {
-  return <span style={{ padding: '0 6px', margin: '5px 0', border: '1px dashed', cursor: 'pointer' }}>{row.revisedQuantity != null ? row.revisedQuantity : 0}</span>;
-}
 
 class ContractInfoAddEdit extends Component {
 
@@ -178,6 +168,138 @@ class ContractInfoAddEdit extends Component {
       objItems: {},
       showSubPurchaseOrders: false
     };
+    this.groups = [];
+
+    this.actions = [
+      {
+        title: Resources['delete'][currentLanguage],
+        handleClick: cell => {
+          this.clickHandlerDeleteRowsMain(cell)
+        },
+        classes: '',
+      }
+    ];
+
+    this.rowActions = [
+      {
+        title: 'veiw History',
+        handleClick: row => {
+          this.viewHistoryDocument(row.id)
+        }
+      }
+    ];
+
+    this.cells = [
+      { title: '', type: 'check-box', fixed: true, field: 'id' },
+      {
+        field: "details",
+        title: Resources["description"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: true,
+        sortable: true,
+        type: "text"
+      },
+      {
+        field: "itemCode",
+        title: Resources["itemCode"][currentLanguage],
+        width: 7,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text"
+      },
+      {
+        field: "resourceCode",
+        title: Resources["resourceCode"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text"
+      },
+      {
+        field: "boqType",
+        title: Resources["boqType"][currentLanguage],
+        width: 7,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text"
+      },
+      {
+        field: "boqTypeChild",
+        title: Resources["boqTypeChild"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text"
+      },
+      {
+        field: "boqSubType",
+        title: Resources["boqSubType"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text"
+      },
+      {
+        field: "originalQuantity",
+        title: Resources["originalQuantity"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text"
+      },
+      {
+        field: "excutionQuantity",
+        title: Resources["excutionQuantity"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text"
+      },
+      {
+        field: "quantity",
+        title: Resources["remainingQuantity"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text"
+      },
+      {
+        field: "unit",
+        title: Resources["unit"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text"
+      },
+      {
+        field: "originalUnitPrice",
+        title: Resources["unitPrice"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text"
+      },
+      {
+        field: "total",
+        title: Resources["total"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
+        sortable: true,
+        type: "text"
+      },
+    ];
 
     columnsGrid = [
       {
@@ -194,7 +316,7 @@ class ContractInfoAddEdit extends Component {
       {
         key: "details",
         name: Resources["description"][currentLanguage],
-        width: 150,
+        width: 100,
         draggable: true,
         sortable: true,
         resizable: true,
@@ -562,19 +684,33 @@ class ContractInfoAddEdit extends Component {
       if (indexx === 0) {
 
         if (Config.IsAllow(3739)) {
-          columnsGrid.push(
+          this.cells.push(
             {
-              key: "revisedQuantity",
-              name: Resources["revQuantity"][currentLanguage],
-              width: 120,
-              draggable: true,
+              title: Resources["revQuantity"][currentLanguage],
+              field: "revisedQuantity",
+              width: 10,
+              groupable: true,
+              fixed: false,
               sortable: true,
-              resizable: true,
-              filterable: true,
-              sortDescendingFirst: true,
-              formatter: this.state.isViewMode === false ? editRevQuantity : spanRevQuantity,
-              editable: this.state.isViewMode === false ? true : false
-            });
+              handleChange: (e, cell) => {
+                cell.revisedQuantity = e.target.value;
+              },
+              handleBlur: (e, cell) => {
+                let obj = {};
+                obj.contractId = this.state.docId;
+                obj.revisedQuantity = cell.revisedQuantity;
+                obj.id = cell.id;
+                Api.post("EditRevisedQuantity", obj).then(() => {
+                  toast.success(Resources["operationSuccess"][currentLanguage]);
+                  this.setState({ isLoading: false });
+                }).catch(() => {
+                  toast.error(Resources["operationCanceled"][currentLanguage]);
+                  this.setState({ isLoading: false });
+                });
+              },
+              type: this.state.isViewMode === false ? "input" : "text"
+            },
+          );
         }
         indexx++;
       }
@@ -705,11 +841,11 @@ class ContractInfoAddEdit extends Component {
     this.props.actions.showOptionPanel(true);
   }
 
-  onRowClick = (value, index, column) => {
-    if (column.name != "Actions" && column.key != "revisedQuantity") {
+  onRowClick = (cell) => {
+    if (cell.key === "revisedQuantity") {
       this.setState({
         viewItemPopUp: true,
-        objItems: value
+        objItems: cell
       });
       this.simpleDialogForEdit.show();
     }
@@ -717,9 +853,7 @@ class ContractInfoAddEdit extends Component {
 
   clickHandlerDeleteRowsMain = selectedRows => {
     selectedRow = selectedRows;
-    this.setState({
-      showDeleteModal: true
-    });
+    this.setState({ showDeleteModal: true });
   };
 
   changeTab = tabName => {
@@ -765,42 +899,6 @@ class ContractInfoAddEdit extends Component {
     this.setState({ selectedVO: row, showItemEdit: true });
     this.itemDialog.show();
   }
-
-  _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    this.setState({ isLoading: true });
-    let updateRow = this.state.rows[fromRow];
-    this.setState(
-      state => {
-        const rows = state.rows.slice();
-        for (let i = fromRow; i <= toRow; i++) {
-          rows[i] = { ...rows[i], ...updated };
-        }
-        return { rows };
-      },
-      function () {
-        if (updateRow[Object.keys(updated)[0]] !== updated[Object.keys(updated)[0]]) {
-
-          updateRow[Object.keys(updated)[0]] = updated[Object.keys(updated)[0]];
-
-          let obj = {};
-
-          obj.contractId = this.state.docId;
-          obj.revisedQuantity = updateRow.revisedQuantity;
-          obj.id = updateRow.id;
-
-          Api.post("EditRevisedQuantity", obj).then(() => {
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.setState({ isLoading: false });
-
-          })
-            .catch(() => {
-              toast.error(Resources["operationCanceled"][currentLanguage]);
-              this.setState({ isLoading: false });
-            });
-        }
-      }
-    );
-  };
 
   handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
 
@@ -1237,10 +1335,10 @@ class ContractInfoAddEdit extends Component {
     const ItemsGrid =
       this.state.isLoading === false ? (
         <Fragment>
-          <GridSetup rows={this.state.rows} showCheckbox={this.state.isViewMode === false ? true : false}
-            clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain.bind(this)}
-            pageSize={this.state.pageSize} onRowClick={this.onRowClick.bind(this)} columns={columnsGrid}
-            onGridRowsUpdated={this._onGridRowsUpdated} key='rows' />
+          <GridCustom
+            cells={this.cells} data={this.state.rows} groups={this.groups} pageSize={this.state.pageSize} actions={this.actions}
+            rowActions={this.rowActions} rowClick={cells => this.onRowClick(cells)}
+          />
         </Fragment>
       ) : (<LoadingSection />);
     const voItemsGrid =
@@ -1265,7 +1363,7 @@ class ContractInfoAddEdit extends Component {
               <h3 className="zero"> {Resources['items'][currentLanguage]}</h3>
               <span>{this.state.rows.length}</span>
             </div>
-             <div className="rowsPaginations readOnly__disabled">
+            <div className="rowsPaginations readOnly__disabled">
               <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                 <i className="angle left icon" />
               </button>
@@ -1287,7 +1385,7 @@ class ContractInfoAddEdit extends Component {
               <h3 className="zero"> {Resources['items'][currentLanguage]}</h3>
               <span>{this.state.voItemsLength}</span>
             </div>
-             <div className="rowsPaginations readOnly__disabled">
+            <div className="rowsPaginations readOnly__disabled">
               <button className={this.state.voPageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData('vo')}>
                 <i className="angle left icon" />
               </button>

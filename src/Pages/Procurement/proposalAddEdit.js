@@ -1,4 +1,4 @@
-import React, { Component } from "react"; 
+import React, { Component } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
@@ -14,7 +14,7 @@ import { bindActionCreators } from "redux";
 import * as communicationActions from "../../store/actions/communication";
 import Config from "../../Services/Config.js";
 import CryptoJS from "crypto-js";
-import moment from "moment"; 
+import moment from "moment";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
@@ -22,7 +22,7 @@ import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
 
-import find from"lodash/find";
+import find from "lodash/find";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -109,72 +109,6 @@ class ProposalAddEdit extends Component {
   }
 
   componentDidMount() {
-    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-
-    for (var i = 0; i < links.length; i++) {
-      if ((i + 1) % 2 == 0) {
-        links[i].classList.add("even");
-      } else {
-        links[i].classList.add("odd");
-      }
-    }
-    this.checkDocumentIsView();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.document.id) {
-      nextProps.document.docDate = nextProps.document.docDate === null ? moment().format('YYYY-MM-DD') : moment(nextProps.document.docDate).format('YYYY-MM-DD')
-
-      this.setState({
-        document: nextProps.document,
-        hasWorkflow: nextProps.hasWorkflow,
-        message: nextProps.document.message
-      });
-      this.fillDropDowns(nextProps.document.id > 0 ? true : false);
-      this.checkDocumentIsView();
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.actions.clearCashDocument();
-    this.setState({
-      docId: 0
-    });
-  }
-
-  componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
-    if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
-      this.checkDocumentIsView();
-    }
-
-    if (this.state.showModal != this.props.showModal) {
-      this.setState({ showModal: this.props.showModal });
-    }
-  }
-
-  checkDocumentIsView() {
-    if (this.props.changeStatus === true) {
-      if (!Config.IsAllow(67)) {
-        this.setState({ isViewMode: true });
-      }
-      if (this.state.isApproveMode != true && Config.IsAllow(67)) {
-        if (this.props.hasWorkflow == false && Config.IsAllow(67)) {
-          if (this.props.document.status !== false && Config.IsAllow(67)) {
-            this.setState({ isViewMode: false });
-          } else {
-            this.setState({ isViewMode: true });
-          }
-        } else {
-          this.setState({ isViewMode: true });
-        }
-      }
-    } else {
-      this.setState({ isViewMode: false });
-    }
-  }
-
-  componentWillMount() {
     if (this.state.docId > 0) {
 
       let url = "GetCommunicationProposalForEdit?id=" + this.state.docId;
@@ -201,6 +135,75 @@ class ProposalAddEdit extends Component {
       this.fillDropDowns(false);
       this.props.actions.documentForAdding();
     }
+
+    var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+
+    for (var i = 0; i < links.length; i++) {
+      if ((i + 1) % 2 == 0) {
+        links[i].classList.add("even");
+      } else {
+        links[i].classList.add("odd");
+      }
+    }
+    this.checkDocumentIsView();
+  }
+
+
+  static getDerivedStateFromProps(nextProps, state) {
+    if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
+      let serverOrder = { ...nextProps.document };
+      serverOrder.docDate = moment(serverOrder.docDate).format("YYYY-MM-DD");
+
+      return {
+        document: { ...serverOrder },
+        hasWorkflow: nextProps.hasWorkflow,
+        message: nextProps.document.message
+      };
+    }
+    return null
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+      this.fillDropDowns(this.props.document.id > 0 ? true : false);
+      this.checkDocumentIsView();
+    }
+
+    if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+      this.checkDocumentIsView();
+    }
+
+    if (this.state.showModal != this.props.showModal) {
+      this.setState({ showModal: this.props.showModal });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.actions.clearCashDocument();
+    this.setState({
+      docId: 0
+    });
+  }
+
+  checkDocumentIsView() {
+    if (this.props.changeStatus === true) {
+      if (!Config.IsAllow(67)) {
+        this.setState({ isViewMode: true });
+      }
+      if (this.state.isApproveMode != true && Config.IsAllow(67)) {
+        if (this.props.hasWorkflow == false && Config.IsAllow(67)) {
+          if (this.props.document.status !== false && Config.IsAllow(67)) {
+            this.setState({ isViewMode: false });
+          } else {
+            this.setState({ isViewMode: true });
+          }
+        } else {
+          this.setState({ isViewMode: true });
+        }
+      }
+    } else {
+      this.setState({ isViewMode: false });
+    }
   }
 
   fillSubDropDownInEdit(url, param, value, subField, subSelectedValue, subDatasource) {
@@ -212,7 +215,7 @@ class ProposalAddEdit extends Component {
         let toSubField = this.state.document[subField];
         let targetFieldSelected = find(result, function (i) {
           return i.value == toSubField;
-        }); 
+        });
         this.setState({
           [subSelectedValue]: targetFieldSelected,
           [subDatasource]: result
@@ -362,6 +365,8 @@ class ProposalAddEdit extends Component {
         isLoading: false
       });
       toast.success(Resources["operationSuccess"][currentLanguage]);
+    }).catch(r => {
+      toast.error(Resources["operationCanceled"][currentLanguage]);
     });
   }
 

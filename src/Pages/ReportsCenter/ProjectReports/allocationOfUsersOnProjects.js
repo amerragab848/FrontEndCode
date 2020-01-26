@@ -4,8 +4,8 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../../Dataservice";
@@ -33,43 +33,39 @@ class allocationOfUsersOnProjects extends Component {
         super(props)
         this.projectColumns = [
             {
-                key: 'projectName',
-                name: Resources['projectName'][currentLanguage],
-                width: 300,
-                draggable: true,
+                field: 'projectName',
+                title: Resources['projectName'][currentLanguage],
+                width: 30,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },  {
-                key: 'referenceCode',
-                name: Resources['referenceCode'][currentLanguage],
-                width: 300,
-                draggable: true,
+                field: 'referenceCode',
+                title: Resources['referenceCode'][currentLanguage],
+                width: 30,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }];
         this.companyColumns = [
             {
-                key: 'contactName',
-                name: Resources['ContactName'][currentLanguage],
-                width: 300,
-                draggable: true,
+                field: 'contactName',
+                title: Resources['ContactName'][currentLanguage],
+                width: 30,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },{
-                key: 'companyName',
-                name: Resources['CompanyName'][currentLanguage],
-                width: 300,
-                draggable: true,
+                field: 'companyName',
+                title: Resources['CompanyName'][currentLanguage],
+                width: 30,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }];
 
         this.state = {
@@ -83,7 +79,8 @@ class allocationOfUsersOnProjects extends Component {
             selectedProject: { label: Resources.projectRequired[currentLanguage], value: "0" },
             selectedContact: { label: Resources.selectContact[currentLanguage], value: "0" },
             rows: [],
-            status: true
+            status: true,
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3683)) {
@@ -211,9 +208,18 @@ class allocationOfUsersOnProjects extends Component {
                 </Formik>}</Fragment>
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.state.currentColumns} />) : <LoadingSection />
-
+            <GridCustom
+            ref='custom-data-grid'
+            key="allocationOfUsersOnProjects"
+            data={this.state.rows}
+            pageSize={this.state.pageSize}
+            groups={[]}
+            actions={[]}
+            rowActions={[]}
+            cells={this.state.currentColumns}
+            rowClick={() => { }}
+        />) : <LoadingSection />
+ 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.currentColumns} fileName={'projectsAllocationOnCompanies'} />
             : null

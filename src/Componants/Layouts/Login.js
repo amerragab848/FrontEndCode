@@ -13,7 +13,7 @@ import Logo from "../../Styles/images/logo.svg";
 import Config from "../../Services/Config";
 import Resources from "../../resources.json";
 const isEmpty = require("lodash/isEmpty");
-let currentLanguage =    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const validationSchema = Yup.object().shape({
     userName: Yup.string().required(
         Resources["userNameRequired"][currentLanguage]
@@ -22,7 +22,7 @@ const validationSchema = Yup.object().shape({
         Resources["passwordRequired"][currentLanguage]
     )
 });
-const publicConfiguarion = Config.IP_CONFIG; // Config.getPublicConfiguartion();
+//const publicConfiguarion = Config.IP_CONFIG; // Config.getPublicConfiguartion();
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -162,6 +162,7 @@ class Login extends Component {
             }
         });
     };
+
     getCookie = () => {
         let cookieName = Cookies.loadAll();
         if (!isEmpty(cookieName)) {
@@ -169,12 +170,14 @@ class Login extends Component {
         }
         return "";
     };
+
     setCookie = name => {
         let documentCookie = this.getCookie();
         if (documentCookie === "") {
             Cookies.save("randomNumber", name);
         }
     };
+
     createBrowserObject = () => {
         let size = {};
         size.height = window.innerHeight;
@@ -191,13 +194,16 @@ class Login extends Component {
         };
         return objBrowser;
     };
+
     toggle = () => {
         const currentType = this.state.type;
         this.setState({ type: !currentType });
     };
+
     keepActive = e => {
         this.setState({ checked: !this.state.checked });
     };
+
     render() {
         return (
             <div className="login__page">
@@ -341,20 +347,7 @@ class Login extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div
-                                    className={
-                                        this.state.checked
-                                            ? "ui checkbox checkBoxGray300 loginChecked checked"
-                                            : "ui checkbox checkBoxGray300 loginChecked"
-                                    }>
-                                    <input
-                                        id="keep_login"
-                                        type="checkbox"
-                                        onChange={this.keepActive}
-                                        defaultChecked={this.state.checked}
-                                    />
-                                    <label>Keep me logged In</label>
-                                </div>
+                              
                                 <div className="ui input inputDev">
                                     {this.state.isLoading === false ? (
                                         <button

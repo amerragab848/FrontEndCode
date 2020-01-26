@@ -4,8 +4,9 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import Dataservice from '../../../Dataservice';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 class MaterialStatusReport extends Component {
@@ -16,7 +17,8 @@ class MaterialStatusReport extends Component {
             isLoading: false,
             ProjectsData: [],
             selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
-            rows: []
+            rows: [],
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3688)) {
@@ -28,53 +30,48 @@ class MaterialStatusReport extends Component {
 
         this.columns = [
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "resourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 180,
-                draggable: true,
+                field: "resourceCode",
+                title: Resources["resourceCode"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: 180,
-                draggable: true,
+                field: "description",
+                title: Resources["description"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "unitPrice",
-                name: Resources["unitPrice"][currentLanguage],
-                width: 140,
-                draggable: true,
+                field: "unitPrice",
+                title: Resources["unitPrice"][currentLanguage],
+                width: 14,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             },
             {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "quantity",
+                title: Resources["quantity"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }
         ];
 
@@ -97,9 +94,17 @@ class MaterialStatusReport extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                columns={this.columns} />) : <LoadingSection />
-
+            <GridCustom
+                ref='custom-data-grid'
+                key="materialStatusReport"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'invoicesReport'} />
             : null

@@ -5,7 +5,10 @@ import LoadingSection from "../../../Componants/publicComponants/LoadingSection"
 import Export from "../../OptionsPanels/Export";
 import Filter from "../../FilterComponent/filterComponent";
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../Pages/Communication/GridSetup";
+//import GridSetup from "../../../Pages/Communication/GridSetup"; 
+
+import GridCustom from "../../../Componants/Templates/Grid/CustomCommonLogGrid";
+
 import moment from "moment";
 import CryptoJS from 'crypto-js';
 import config from "../../../Services/Config";
@@ -26,109 +29,97 @@ class Accounts extends Component {
     constructor(props) {
         super(props);
 
-        const columnsGrid = [
+        this.columnsGrid = [
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
             {
-                key: 'BtnActions',
-                width: 80
-            },
-            {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
-            },
-            {
-                key: "userName",
-                name: Resources["UserName"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "userName",
+                title: Resources["UserName"][currentLanguage],
+                groupable: true,
+                fixed: true,
+                width: 16,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "empCode",
-                name: Resources["employeeCode"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "contactName",
-                name: Resources["ContactName"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "position",
-                name: Resources["position"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "supervisorCompanyName",
-                name: Resources["SupervisorCompany"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "activationStatus",
-                name: Resources["activationStatus"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "supervisorName",
-                name: Resources["SupervisorName"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "groupName",
-                name: Resources["GroupName"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }
-        ];
+                type: "text"
 
+            },
+            {
+                field: "empCode",
+                title: Resources["employeeCode"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type: "text",
+            },
+            {
+                field: "companyName",
+                title: Resources["CompanyName"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: "contactName",
+                title: Resources["ContactName"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+
+            },
+            {
+                field: "position",
+                title: Resources["position"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+
+            },
+            {
+                field: "supervisorCompanyName",
+                title: Resources["SupervisorCompany"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+
+            },
+            {
+                field: "activationStatus",
+                title: Resources["activationStatus"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+
+            },
+            {
+                field: "supervisorName",
+                title: Resources["SupervisorName"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+
+            },
+            {
+                field: "groupName",
+                title: Resources["GroupName"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+
+            }
+        ]; 
         const filtersColumns = [
             {
                 field: "userName",
@@ -184,8 +175,89 @@ class Accounts extends Component {
             }
         ];
 
+        this.actions = [
+            {
+                title: 'Delete',
+                handleClick: values => {
+                    console.log(values);
+                    this.setState({
+                        showDeleteModal: true,
+                        selectedRow: values
+                    });
+                },
+                classes: '',
+            }
+        ];
+
+        this.rowActions = [
+            {
+                title: Resources['isTaskAdmin'][currentLanguage],
+                handleClick: value => {
+                    if (config.IsAllow(1001102)) {
+                        this.props.history.push({
+                            pathname: '/TaskAdmin',
+                            search: "?id=" + value.id
+                        })
+                    }
+                }
+            },
+            {
+                title: 'EPS',
+                handleClick: value => {
+                    if (config.IsAllow(1001103)) {
+                        this.props.history.push({
+                            pathname: '/AccountsEPSPermissions',
+                            search: "?id=" + value.id
+                        })
+                    }
+                }
+            },
+            {
+                title: Resources['Projects'][currentLanguage],
+                handleClick: value => {
+                    if (config.IsAllow(1001104)) {
+                        this.props.history.push({
+                            pathname: '/UserProjects',
+                            search: "?id=" + value.id
+                        })
+                    }
+                }
+            },
+            {
+                title: Resources['Companies'][currentLanguage],
+                handleClick: value => {
+                    if (config.IsAllow(1001105)) {
+                        this.props.history.push({
+                            pathname: '/AccountsCompaniesPermissions',
+                            search: "?id=" + value.id
+                        })
+                    }
+                }
+            },
+            {
+                title: "Reset Password",
+                handleClick: value => {
+                    if (config.IsAllow(1001106)) {
+                        let text = "";
+                        let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                        for (var i = 0; i < 7; i++) {
+                            text += possible.charAt(Math.floor(Math.random() * possible.length));
+                        }
+                        let _newPassEncode = CryptoJS.enc.Utf8.parse(JSON.stringify(text))
+                        let newPassEncode = CryptoJS.enc.Base64.stringify(_newPassEncode)
+
+                        this.setState({
+                            NewPassword: newPassEncode,
+                            showResetPasswordModal: true,
+                            rowSelectedId: value.id,
+                        })
+                    }
+                }
+            }
+        ];
+
         this.state = {
-            columns: columnsGrid.filter(column => column.visible !== false),
+            columns: this.columnsGrid,
             isLoading: true,
             rows: [],
             selectedRows: [],
@@ -581,15 +653,26 @@ class Accounts extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows}
-                    columns={this.state.columns}
-                    showCheckbox={this.state.showCheckbox}
-                    IsActiv={this.IsActive}
-                    cellClick={this.cellClick}
-                    clickHandlerDeleteRows={this.DeleteAccount}
-                    getCellActions={this.GetCellActions}
-                    UnSelectIsActiv={this.UnSelectIsActiv}
+
+                <GridCustom
+                    key="Accounts"
+                    cells={this.columnsGrid}
+                    data={this.state.rows}
                     pageSize={this.state.pageSize}
+                    actions={this.actions}
+                    rowActions={this.rowActions}
+                    rowClick={cell => {
+                        let id = cell.id;
+                        if (config.IsAllow(797)) {
+                            if (cell) {
+                                this.props.history.push({
+                                    pathname: "/EditAccount",
+                                    search: "?id=" + id
+                                });
+                            }
+                        }
+                    }}
+                    groups={[]}
                 />
             ) : <LoadingSection />
 
@@ -662,7 +745,7 @@ class Accounts extends Component {
                         {btnExport}
                         {config.IsAllow(801) ? <button className="primaryBtn-1 btn mediumBtn" onClick={this.addRecord.bind(this)}>NEW</button> : null}
                     </div>
-                     <div className="rowsPaginations readOnly__disabled">
+                    <div className="rowsPaginations readOnly__disabled">
                         <div className="rowsPagiRange">
                             <span>0</span> - <span>{this.state.pageSize}</span> of
                            <span> {this.state.totalRows}</span>

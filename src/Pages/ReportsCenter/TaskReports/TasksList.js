@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import dataservice from "../../../Dataservice";
 import moment from "moment";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -24,7 +25,8 @@ class TasksList extends Component {
             selectedCompany: { label: Resources.companyRequired[currentLanguage], value: 0 },
             rows: [],
             selectedContact: { label: Resources.selectContact[currentLanguage], value: 0 },
-            contactsList: []
+            contactsList: [],
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3705)) {
@@ -36,61 +38,53 @@ class TasksList extends Component {
         }
 
         this.columns = [{
-            key: "arrange",
-            name: Resources["documentNumber"][currentLanguage],
-            width: 180,
-            draggable: true,
+            field: "arrange",
+            title: Resources["documentNumber"][currentLanguage],
+            width: 18,
+            groupable: true,
+            fixed: true,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            frozen: true,
-            sortDescendingFirst: true
         }, {
-            key: "subject",
-            name: Resources["subject"][currentLanguage],
-            width: 140,
-            draggable: true,
+            field: "subject",
+            title: Resources["subject"][currentLanguage],
+            width: 14,
+            groupable: true,
+            fixed: false,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
         }, {
-            key: "bicContactName",
-            name: Resources["ContactName"][currentLanguage],
-            width: 140,
-            draggable: true,
+            field: "bicContactName",
+            title: Resources["ContactName"][currentLanguage],
+            width: 14,
+            groupable: true,
+            fixed: false,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
         }, {
-            key: "projectName",
-            name: Resources["projectName"][currentLanguage],
-            width: 120,
-            draggable: true,
+            field: "projectName",
+            title: Resources["projectName"][currentLanguage],
+            width: 12,
+            groupable: true,
+            fixed: false,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
         }, {
-            key: "finishDate",
-            name: Resources["requiredDate"][currentLanguage],
-            width: 120,
-            draggable: true,
+            field: "finishDate",
+            title: Resources["requiredDate"][currentLanguage],
+            width: 12,
+            groupable: true,
+            fixed: false,
+            type: "date",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
-            formatter: dateFormate
         }, {
-            key: "docDelay",
-            name: Resources["delay"][currentLanguage],
+            field: "docDelay",
+            title: Resources["delay"][currentLanguage],
             width: 100,
-            draggable: true,
+            groupable: true,
+            fixed: false,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
         }
         ];
 
@@ -101,13 +95,12 @@ class TasksList extends Component {
         if (Config.IsAllow(3737))
             this.columns.push({
                 key: "cost",
-                name: Resources["cost"][currentLanguage],
-                width: 50,
-                draggable: true,
+                title: Resources["cost"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             })
     }
 
@@ -155,9 +148,18 @@ class TasksList extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+
+            <GridCustom
+                ref='custom-data-grid'
+                key="TaskList"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['taskList'][currentLanguage]} />

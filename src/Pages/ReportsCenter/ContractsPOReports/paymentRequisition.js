@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import moment from "moment";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
@@ -37,6 +38,7 @@ class paymentRequisition extends Component {
             selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
             selectContractor: { label: Resources.siteRequestSelection[currentLanguage], value: "0" },
             rows: [],
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3696)) {
@@ -48,70 +50,62 @@ class paymentRequisition extends Component {
 
         this.columns = [
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "contractName",
-                name: Resources["contracts"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "contractName",
+                title: Resources["contracts"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "subject",
+                title: Resources["subject"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "totalExcuted",
-                name: Resources["totalExcuted"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "totalExcuted",
+                title: Resources["totalExcuted"][currentLanguage],
+                width: 7,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "originalContractSum",
-                name: Resources["originalContractSum"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "originalContractSum",
+                title: Resources["originalContractSum"][currentLanguage],
+                width: 7,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "variance",
-                name: Resources["totalVariance"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "variance",
+                title: Resources["totalVariance"][currentLanguage],
+                width: 7,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "docDate",
+                title: Resources["docDate"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }
         ];
 
@@ -170,9 +164,17 @@ class paymentRequisition extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
-
+            <GridCustom
+                ref='custom-data-grid'
+                key="paymentRequisition"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'paymentRequisition'} />
             : null
