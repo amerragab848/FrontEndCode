@@ -99,6 +99,7 @@ export default class Api {
     }
 
     static postFile(route, params, header) {
+       
         let json = "";
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
         const url = `${host}${route}`;
@@ -111,6 +112,7 @@ export default class Api {
 
             headers.docType = header.docType;
         }
+        console.log("params ... ",params,"headers ... ",headers);
         return fetch(url, {
             method: "POST",
             headers: {
