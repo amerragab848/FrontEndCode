@@ -206,6 +206,44 @@ class requestPaymentsAddEdit extends Component {
             documentDeduction: {},
             interimInvoicedTable: [],
             approvedInvoicesParent: [],
+            approvedInvoicesChilds: [], isItemUpdate: false,
+            isFilter: false,
+            advancedPayment: null,
+            currentStep: 0,
+            trees: [],
+            showCostCodingTree: false,
+            showDeleteModal: false,
+            userType: userType.uty,
+            addDeducation: false,
+            fillDropDown: [
+                { label: "Add Missing Amendments", value: "1" },
+                { label: "ReCalculator Payment", value: "2" },
+                { label: "Update Items From VO", value: "3" },
+                { label: "Add Missing Items", value: "4" },
+                { label: "Edit Advanced Payment Amount", value: "5" },
+                { label: "Calculate Interim Invoice", value: "6" },
+                { label: "Add Deductions", value: "7" },
+                { label: "Update Advance Payment Amount", value: "8" }
+            ],
+            selectedDropDownTrees: { label: Resources.codingTree[currentLanguage], value: "0" },
+            selectedPercentageStatus: { label: Resources.percentageStatus[currentLanguage], value: "0" },
+            fillDropDownTress: [],
+            fillDropDownExport: [
+                { label: "Export", value: "1" },
+                { label: "ExportAsVo", value: "2" }
+            ],
+            selectedDropDown: [{ label: "Admin Actions", value: "0" }],
+            selectedDropDownExport: [{ label: "Export File", value: "0" }],
+            selectedBoqTypeEdit: { label: Resources.boqType[currentLanguage], value: "0" },
+            selectedBoqTypeChildEdit: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
+            selectedBoqSubTypeEdit: { label: Resources.boqSubType[currentLanguage], value: "0" },
+            boqTypes: [],
+            BoqTypeChilds: [],
+            BoqSubTypes: [],
+            boqStractureObj: {},
+            documentDeduction: {},
+            interimInvoicedTable: [],
+            approvedInvoicesParent: [],
             approvedInvoicesChilds: [],
             deductionObservableArray: [],
             paymentRequestItemsHistory: [],
@@ -906,7 +944,7 @@ class requestPaymentsAddEdit extends Component {
 
     checkDocumentIsView() {
         if (this.props.changeStatus === true) {
-            if (this.state.isCompany === true) {
+            if (isCompany === true) {
                 this.setState({ isViewMode: false });
             } else {
                 if (!Config.IsAllow(187)) {
@@ -2820,7 +2858,8 @@ class requestPaymentsAddEdit extends Component {
                                                                     </button>
                                                                 )}
 
-                                                                {this.props.changeStatus === true ? (this.state.userType != "user" ? (
+                                                                {this.props.changeStatus === true ? 
+                                                                    (this.state.userType != "user" ? (
                                                                     <div className="default__dropdown" style={{ minWidth: "225px" }}>
                                                                         <Dropdown data={this.state.fillDropDown}
                                                                             selectedValue={this.state.selectedDropDown}
@@ -2839,7 +2878,7 @@ class requestPaymentsAddEdit extends Component {
                                             </div>
                                             <div className="doc-pre-cycle letterFullWidth">
                                                 <div>
-                                                    {this.state.docId > 0 && this.state.isViewMode === false ?
+                                                    {this.state.docId > 0 ?
                                                         (<UploadAttachment changeStatus={this.props.changeStatus}
                                                             AddAttachments={839}
                                                             EditAttachments={3223}
