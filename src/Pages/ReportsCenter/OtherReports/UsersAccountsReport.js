@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import GridCustom from 'react-customized-grid';
 import PieChartComp from '../PieChartComp'
 const sum = require('lodash/sum')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -23,7 +23,7 @@ class UsersAccountsReport extends Component {
             series: [],
             xAxis: { type: 'pie' },
             noClicks: 0,
-            showChart:false
+            showChart: false
         }
 
         if (!Config.IsAllow(3722)) {
@@ -35,44 +35,36 @@ class UsersAccountsReport extends Component {
 
         this.columns = [
             {
-                key: "groupName",
-                name: Resources["GroupName"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "groupName",
+                "title": Resources.GroupName[currentLanguage],
+                "type": "text",
+                "width": 25,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "totalActiveAccounts",
-                name: Resources["activeAccounts"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "totalActiveAccounts",
+                "title": Resources.activeAccounts[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "totalInActiveAccounts",
-                name: Resources["inActiveAccounts"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "totalInActiveAccounts",
+                "title": Resources.inActiveAccounts[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "total",
-                name: Resources["totalAccounts"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "total",
+                "title": Resources.totalAccounts[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }
-        ];
-
+        ]; 
     }
 
     componentDidMount() {
@@ -82,7 +74,7 @@ class UsersAccountsReport extends Component {
 
         dataService.GetDataGrid('GetUsersAccountsReport').then(
             res => {
-                this.setState({showChart:true});
+                this.setState({ showChart: true });
 
                 let noClicks = this.state.noClicks;
                 //Lables Count
@@ -113,7 +105,6 @@ class UsersAccountsReport extends Component {
                     series, noClicks: noClicks + 1,
                     isLoading: false
                 })
-
             }
         )
     }
@@ -123,11 +114,13 @@ class UsersAccountsReport extends Component {
 
         let Chart = this.state.showChart ?
             (<PieChartComp noClicks={this.state.noClicks}
-            series={this.state.series} title='usersAccountsReport' />):null
+                series={this.state.series} title='usersAccountsReport' />) : null
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />
+        ) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'usersAccountsReport'} />
@@ -174,7 +167,7 @@ class UsersAccountsReport extends Component {
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}
                 </div>
-                
+
             </div>
 
 

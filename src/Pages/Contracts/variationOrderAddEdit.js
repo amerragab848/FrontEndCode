@@ -1036,7 +1036,7 @@ class variationOrderAddEdit extends Component {
                     />
                     <div className="doc-pre-cycle">
                       <GridSetupWithFilter
-                        rows={this.state.items}
+                        rows={this.state.voItems}
                         pageSize={10}
                         columns={this.state.itemsColumns}
                         key='items'

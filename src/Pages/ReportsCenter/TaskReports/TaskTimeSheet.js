@@ -122,7 +122,7 @@ class TaskTimeSheet extends Component {
         const dataGrid = this.state.isLoading === false ? (
             <GridSetup rows={this.state.rows} showCheckbox={false}
                 selectedCopmleteRow={true} selectedRows={rows => this.selectedRows(rows)}
-                pageSize={this.state.pageSize} columns={this.columns} onRowClick={(value, index, column) => this.onRowClick(value, index, column)} />) : <LoadingSection />
+                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['taskStatus'][currentLanguage]} />

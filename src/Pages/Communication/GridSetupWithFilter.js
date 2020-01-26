@@ -757,7 +757,7 @@ class GridSetupWithFilter extends Component {
           </div>
         </div>
 
-
+        {/* popUp Columns Seach */}
         <div className={this.state.ShowModelFilter ? "filterModal__container active" : "filterModal__container"}>
           <h2 className="zero">{Resources.filterResults[currentLanguage]}</h2>
           <button className="filter__close" onClick={this.CloseModeFilter}>

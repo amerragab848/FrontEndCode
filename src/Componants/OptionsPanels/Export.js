@@ -85,7 +85,7 @@ class Export extends Component {
             this.tableToExcel(this.props.fileName);
         }
     }
- 
+
     ifIE() {
         var isIE11 = navigator.userAgent.indexOf(".NET CLR") > -1;
         var isIE11orLess = isIE11 || navigator.appVersion.indexOf("MSIE") != -1;
@@ -100,7 +100,7 @@ class Export extends Component {
                 return (
                     <tr key={index}>
                         {fieldsItems.map((field, index) => {
-                            return (<td key={index + "td"}>{row[field.key]}</td>)
+                            return (<td key={index + "td"}>{row[field.field]}</td>)
                         })}
                     </tr>
                 )
@@ -114,7 +114,7 @@ class Export extends Component {
                     <thead valign="top">
                         <tr style={{ border: '4px' }}>
                             {fieldsName.map((column, index) => {
-                                return (<th key={index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {column.name}</th>)
+                                return (<th key={index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {column.title}</th>)
                             })}
                         </tr>
                     </thead>
@@ -128,7 +128,6 @@ class Export extends Component {
             return (null)
         }
     }
-
 
     render() {
         return (

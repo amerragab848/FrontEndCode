@@ -6,6 +6,7 @@ import Config from "../../../Services/Config";
 import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup";
+import GridCustom from 'react-customized-grid';
 import dataService from "../../../../src/Dataservice";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
@@ -46,34 +47,27 @@ class RiskReports extends Component {
 
         this.columns = [
             {
-                key: "month",
-                name: 'Newly entered IN LAST MONTH',
-                width: 350,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "updated",
-                name: 'Updated',
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "closed",
-                name: 'Closed',
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "month",
+                "title": 'Newly entered IN LAST MONTH',
+                "type": "text",
+                "width": 25,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "updated",
+                "title": 'Updated',
+                "width": 15,
+                "groupable": true,
+                "sortable": true,
+                "type": "text"
+            }, {
+                "field": "closed",
+                "title": 'Closed',
+                "width": 15,
+                "groupable": true,
+                "sortable": true,
+                "type": "text"
             }
         ];
     }
@@ -367,7 +361,11 @@ class RiskReports extends Component {
     }
 
     render() {
-        const dataGrid = this.state.isLoading === false ? (<GridSetup rows={this.state.fillDataGrid} showCheckbox={false} pageSize={this.state.pageSize} columns={this.columns} />) : (<LoadingSection />);
+        const dataGrid = this.state.isLoading === false ? (
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.fillDataGrid || []} cells={this.columns}
+                pageSize={this.state.fillDataGrid.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />
+        ) : (<LoadingSection />);
 
         const btnExport = this.state.isLoading === false ? (<Export rows={this.state.isLoading === false ? this.state.fillDataGrid : []} columns={this.columns} fileName={"Risk Report"} />) : null;
 

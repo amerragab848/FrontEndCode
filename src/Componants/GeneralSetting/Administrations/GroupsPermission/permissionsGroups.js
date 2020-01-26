@@ -238,7 +238,7 @@ class permissionsGroups extends Component {
                 enableReinitialize={true}
                 onSubmit={(values) => {
                     this.addEditGroupName(values)
-                }}  >
+                }}>
                 {({ errors, touched, handleBlur, handleChange, handleSubmit, values }) => (
                     <Form id="letterForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
                         <div className="fullWidthWrapper textLeft">

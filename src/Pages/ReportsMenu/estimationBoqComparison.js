@@ -10,11 +10,10 @@ import Config from "../../Services/Config.js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import GridSetup from "../Communication/GridSetup";
-import moment from "moment";
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import Export from "../../Componants/OptionsPanels/Export";
-
+import GridCustom from 'react-customized-grid';
+import 'react-customized-grid/main.css';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -36,12 +35,6 @@ let subjectFormat = ({ value, row }) => {
     return null;
 };
 
-
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-
 class EstimationBoqComparison extends Component {
     constructor(props) {
 
@@ -49,78 +42,62 @@ class EstimationBoqComparison extends Component {
 
         this.columnsGrid = [
             {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                formatter: subjectFormat
-            },
-            {
-                key: "details",
-                name: Resources["details"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            },
-            {
-                key: "unit",
-                name: Resources["unit"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "unitPrice",
-                name: Resources["unitPrice"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 150,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                "field": "subject",
+                "title": Resources.subject[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "details",
+                "title": Resources.details[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "docDate",
+                "title": Resources.docDate[currentLanguage],
+                "type": "date",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "unit",
+                "title": Resources.unit[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "quantity",
+                "title": Resources.quantity[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "unitPrice",
+                "title": Resources.unitPrice[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "total",
+                "title": Resources.total[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "itemCode",
+                "title": Resources.itemCode[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             }
         ];
 
@@ -167,6 +144,18 @@ class EstimationBoqComparison extends Component {
         this.setState({ isLoading: true })
 
         dataService.GetDataGrid(`GetEstimationBoqItemsForReport?id=${id}`).then(result => {
+            if (result.length > 0) {
+                result.map(x => {
+                    let subject = '';
+                    if (x.isItem === true) {
+                        subject = <span>&#9679; {x.subject}</span>;
+                    } else {
+                        subject = <span>{x.subject}</span>
+                    } 
+                    return subject;
+                })
+            }
+
             this.setState({
                 rows: result || [],
                 isLoading: false
@@ -187,7 +176,11 @@ class EstimationBoqComparison extends Component {
 
         const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ? <GridSetup rows={this.state.rows} showCheckbox={false} columns={this.columnsGrid} /> : null
+                this.state.rows.length > 0 ?
+                    <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columnsGrid}
+                        pageSize={this.state.rows.length} actions={[]} rowActions={[]}rowClick={() => { }}
+                    />
+                    : null
             ) : (
                 <LoadingSection />
             );
@@ -245,8 +238,7 @@ class EstimationBoqComparison extends Component {
                                                                 <div className="bounce3" />
                                                             </div>
                                                         </button>
-                                                    ) : (
-                                                            <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.search[currentLanguage]}</button>)}
+                                                    ) : (<button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.search[currentLanguage]}</button>)}
                                                 </div>
                                             </Form>
                                         )}

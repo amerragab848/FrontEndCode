@@ -6,9 +6,8 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
-import moment from "moment";
-//const _ = require('lodash')
+import GridCustom from 'react-customized-grid'; 
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 
@@ -39,35 +38,31 @@ class PaymentReqStatusReport extends Component {
             ],
             columns: [
                 {
-                    key: "projectName",
-                    name: Resources["projectName"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "projectName",
+                    "title": Resources.projectName[currentLanguage],
+                    "type": "text",
+                    "width": 20,
+                    "fixed": true,
+                    "groupable": true,
+                    "sortable": true
                 }, {
-                    key: "contractName",
-                    name: Resources["contractName"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "contractName",
+                    "title": Resources.contractName[currentLanguage],
+                    "type": "text",
+                    "width": 20,
+                    "fixed": true,
+                    "groupable": true,
+                    "sortable": true
                 }, {
-                    key: "subject",
-                    name: Resources["subject"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "subject",
+                    "title": Resources.subject[currentLanguage],
+                    "type": "text",
+                    "width": 20,
+                    "fixed": true,
+                    "groupable": true,
+                    "sortable": true
                 }
             ]
-
         }
 
         if (!Config.IsAllow(3758)) {
@@ -76,13 +71,6 @@ class PaymentReqStatusReport extends Component {
                 pathname: "/"
             });
         }
-
-    }
-
-    componentDidMount() {
-    }
-
-    componentWillMount() {
 
     }
 
@@ -102,84 +90,66 @@ class PaymentReqStatusReport extends Component {
 
         if (this.state.payment.value != '0' && this.state.code != 0) {
             this.setState({ isLoading: true })
-            let dateFormate = ({ value }) => {
-                let levelDesc = "Pending";
-                if (value) {
-                    let date = value != undefined ? value.split('-')[0] : '';
-                    let days = value != undefined ? value.split('-')[1] : '';
-                    levelDesc = moment(date).format("DD/MM/YYYY") + "-" + days + ' days';
-                }
-                return levelDesc;
-            };
-
+            
             let columns = [
                 {
-                    key: "projectName",
-                    name: Resources["projectName"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }
-
-                , {
-                    key: "contractName",
-                    name: Resources["contractName"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "projectName",
+                    "title": Resources.projectName[currentLanguage],
+                    "type": "text",
+                    "width": 20,
+                    "fixed": true,
+                    "groupable": true,
+                    "sortable": true
                 }, {
-                    key: "subject",
-                    name: Resources["subject"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "contractName",
+                    "title": Resources.contractName[currentLanguage],
+                    "type": "text",
+                    "width": 20,
+                    "groupable": true,
+                    "sortable": true
+                }, {
+                    "field": "subject",
+                    "title": Resources.subject[currentLanguage],
+                    "type": "text",
+                    "width": 20,
+                    "groupable": true,
+                    "sortable": true
                 }
             ]
             Api.post('GetReqPaymentStatusParent?code=' + this.state.code + '&date=' + this.state.payment.value).then(res => {
-
-                let wfLevelDescription = res[0] != null ? res[0].wfLevelDescription : null
-                if (wfLevelDescription != null) {
-                    wfLevelDescription.forEach(element => {
-                        let afterReplace = element.subject.replace(/#|_|&|\s/g, '-')
-                        columns.push(
-                            {
-                                key: afterReplace,
-                                name: afterReplace,
-                                width: 100,
-                                draggable: true,
-                                sortable: true,
-                                resizable: true,
-                                filterable: true,
-                                sortDescendingFirst: true,
-                                formatter: dateFormate
-                            })
-                    })
-                    this.setState({ columns, isLoading: false, rows: [] })
+                if (res) {
+                    let wfLevelDescription = res[0] != null ? res[0].wfLevelDescription : null
+                    if (wfLevelDescription != null) {
+                        wfLevelDescription.forEach(element => {
+                            let afterReplace = element.subject.replace(/#|_|&|\s/g, '-')
+                            columns.push(
+                                {
+                                    "field": afterReplace,
+                                    "title": afterReplace,
+                                    "type": "date",
+                                    "width": 20,
+                                    "groupable": true,
+                                    "sortable": true
+                                })
+                        })
+                        this.setState({ columns, isLoading: false, rows: [] })
+                    }
+                    else {
+                        this.setState({ isLoading: false })
+                    }
                 }
-                else {
-                    this.setState({ isLoading: false })
-                }
+            }).catch(err => {
+                this.setState({ isLoading: false })
             })
         }
-
-
-
     }
 
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.state.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.state.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'paymentReqStatusReport'} />

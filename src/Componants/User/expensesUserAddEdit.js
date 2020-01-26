@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import Api from '../../api'
-import config from "../../Services/Config";
 import dataservice from "../../Dataservice";
 import { toast } from "react-toastify";
 import LoadingSection from "../publicComponants/LoadingSection";
@@ -19,6 +17,8 @@ import { SkyLightStateless } from "react-skylight";
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import * as AdminstrationActions from '../../store/actions/Adminstration';
+import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
+import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import { bindActionCreators } from 'redux';
 import SendToExpensesWorkFlow from './sendToExpensesWorkFlow';
 import ViewExpensesWF from './viewExpensesWF';
@@ -68,11 +68,7 @@ class ExpensesUserAddEdit extends Component {
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
-                    let obj = JSON.parse(
-                        CryptoJS.enc.Base64.parse(param[1]).toString(
-                            CryptoJS.enc.Utf8
-                        )
-                    );
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
                     approvalData = obj
                 } catch {
                     this.props.history.goBack();
@@ -112,6 +108,7 @@ class ExpensesUserAddEdit extends Component {
             showApproval: false,
             approvalData: approvalData,
             workFlowData: [],
+            docTypeId: 6
         }
 
     }
@@ -331,7 +328,6 @@ class ExpensesUserAddEdit extends Component {
                 parentData.parentId = result.parentId
                 this.setState({ Loading: false, parent: obj.subject, parentData, id: obj.id });
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
-                this.changeCurrentStep(1);
             }).catch(ex => {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
@@ -430,6 +426,25 @@ class ExpensesUserAddEdit extends Component {
         }, 1000);
     }
 
+    viewAttachments() {
+        return (this.state.id > 0 ? (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.id} deleteAttachments={true} />) : null)
+    }
+
+    showBtnsSaving() {
+        let btn = null;
+        if (this.state.id === 0) {
+            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
+        } else if (this.state.id > 0) {
+            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
+        }
+        return btn;
+    }
+
+    routeToLog = () => {
+        this.props.actions.userSettingsTabIndex(1)
+        this.props.history.push("/ProfileSetting");
+    }
+
     render() {
 
         let stepOne = () => {
@@ -469,11 +484,9 @@ class ExpensesUserAddEdit extends Component {
                                                         {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                                     </div>
                                                 </div>
-
                                             </div>
                                         }
                                         <div className={"proForm datepickerContainer" + (this.state.isEdit ? ' readOnly_inputs' : '')}>
-
                                             <div className="linebylineInput valid-input alternativeDate">
                                                 <DatePicker title='docDate' startDate={values.docDate}
                                                     handleChange={e => setFieldValue('docDate', e)} />
@@ -520,7 +533,7 @@ class ExpensesUserAddEdit extends Component {
                                                 <div className="shareLinks">
                                                     <div className="inputDev ui input">
                                                         <input type="text" className="form-control"
-                                                            value={this.state.costCodingTreeName} name="costCodingTreeName"
+                                                            value={this.state.costCodingTreeName || ''} name="costCodingTreeName"
                                                             placeholder={Resources.costCoding[currentLanguage]} />
                                                     </div>
                                                     <div style={{ marginLeft: '8px' }} onClick={e => this.ShowCostTree()}>
@@ -567,7 +580,6 @@ class ExpensesUserAddEdit extends Component {
                                                 </div>
                                                 : null}
                                         </div>
-
                                         <div className="slider-Btns">
                                             {this.state.isLoading ?
                                                 <button className="primaryBtn-1 btn disabled">
@@ -578,7 +590,7 @@ class ExpensesUserAddEdit extends Component {
                                                     </div>
                                                 </button>
                                                 :
-                                                this.state.isEdit ? <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={() => this.changeCurrentStep(1)} >
+                                                this.state.id > 0 ? <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={() => this.changeCurrentStep(1)}>
                                                     {Resources.next[currentLanguage]}</button> :
                                                     <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.save[currentLanguage]}</button>
                                             }
@@ -586,7 +598,13 @@ class ExpensesUserAddEdit extends Component {
                                     </Form>
                                 )}
                             </Formik>
-
+                            <div className="doc-pre-cycle">
+                                <div>
+                                    {this.state.id > 0 && this.state.isEdit === false ? (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.id}
+                                        projectId={this.state.selectedProject.value} />) : null}
+                                    {this.state.id > 0 && this.state.isEdit === false ? this.viewAttachments() : null}
+                                </div>
+                            </div>
                             {/* show work flow when in edit mood  */}
                             {this.state.showWFModal ?
                                 <SendToExpensesWorkFlow expenseId={this.state.id} subject={this.state.itemEdit.description}
@@ -616,11 +634,9 @@ class ExpensesUserAddEdit extends Component {
                                     </div>
                                 </SkyLightStateless>
                             </div>
-
                         </Fragment>
                     }
-                </div >
-
+                </div>
             )
         }
 
@@ -735,7 +751,6 @@ class ExpensesUserAddEdit extends Component {
                                         </button>
                                         : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.viewWorkFlow ? 'disabled' : '')} type="submit" >{Resources.save[currentLanguage]}</button>}
                                 </div>
-
                             </Form>
                         )}
                     </Formik>
@@ -748,7 +763,6 @@ class ExpensesUserAddEdit extends Component {
                         </header>
 
                         <div className="reactTableActions" style={{ pointerEvents: this.state.viewWorkFlow ? 'none' : 'unset' }}>
-
                             {selectedRows.length > 0 ? (
                                 <div className={"gridSystemSelected " + (selectedRows.length > 0 ? " active" : "")} >
                                     <div className="tableselcted-items">
@@ -765,24 +779,20 @@ class ExpensesUserAddEdit extends Component {
                                 </div>
                             ) : null}
 
+                            <div className="doc-pre-cycle">
+                                <div>
+                                    {this.state.id > 0 && this.state.isEdit === true ? (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.id}
+                                        projectId={this.state.selectedProject.value} />) : null}
+                                    {this.state.id > 0 && this.state.isEdit === true ? this.viewAttachments() : null}
+                                </div>
+                            </div>
                             <ReactTable data={this.state.itemData} columns={columns} defaultPageSize={5} noDataText={Resources["noData"][currentLanguage]}
                                 className="-striped -highlight"
                                 getTrProps={(state, rowInfo, column, instance) => {
                                     return { onClick: e => { this.viewEditModel(rowInfo.original, e.target.type); } };
                                 }} />
-
-                        </div>
-
-                        <div className="slider-Btns">
-                            <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={() => {
-                                this.props.actions.userSettingsTabIndex(1)
-                                this.changeCurrentStep(2)
-                            }}>{Resources.next[currentLanguage]}
-                            </button>
-                        </div>
-
+                        </div>  
                     </div>
-
                 </div >
             )
         }
@@ -871,7 +881,7 @@ class ExpensesUserAddEdit extends Component {
 
                     <div className="submittalHead">
                         <h2 className="zero">{Resources['expenses'][currentLanguage] + ' - ' + Resources[this.state.isEdit ? 'editTitle' : 'add'][currentLanguage]}</h2>
-                        <div className="SubmittalHeadClose">
+                        <div className="SubmittalHeadClose" onClick={this.routeToLog}>
                             <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                                 <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                                     <g id="Components/Sections/Doc-page/Title/Base" transform="translate(-1286.000000, -24.000000)">

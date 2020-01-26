@@ -6,6 +6,7 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
+import GridCustom from 'react-customized-grid';
 import GridSetup from "../../Communication/GridSetup"
 import dataservice from "../../../Dataservice";
 import PieChartComp from '../../../Componants/ChartsWidgets/PieChartComp';
@@ -40,44 +41,40 @@ class TimeSheet extends Component {
 
         }
 
-        this.columns = [{
-            key: "projectName",
-            name: Resources["projectName"][currentLanguage],
-            width: 220,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            frozen: true,
-            sortDescendingFirst: true
-        }, {
-            key: "taskName",
-            name: Resources["taskName"][currentLanguage],
-            width: 220,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
-        }, {
-            key: "estimateHours",
-            name: Resources["estimateTime"][currentLanguage],
-            width: 160,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
-        }, {
-            key: "hours",
-            name: Resources["timesheetuser"][currentLanguage],
-            width: 160,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
-        }
+        this.columns = [
+            {
+                "field": "projectName",
+                "title": Resources.projectName[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "taskName",
+                "title": Resources.taskName[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "estimateHours",
+                "title": Resources.estimateTime[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "hours",
+                "title": Resources.timesheetuser[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
+            }
         ];
 
     }
@@ -114,7 +111,6 @@ class TimeSheet extends Component {
         }).catch(() => {
             this.setState({ isLoading: false })
         })
-
     }
 
     setDate = (name, value) => {
@@ -123,9 +119,9 @@ class TimeSheet extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['timeSheetUserDetails'][currentLanguage]} />

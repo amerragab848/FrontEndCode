@@ -5,6 +5,7 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
+import GridCustom from 'react-customized-grid';
 import GridSetup from "../../Communication/GridSetup"
 import dataservice from "../../../Dataservice";
 import PieChartComp from '../../../Componants/ChartsWidgets/PieChartComp';
@@ -41,45 +42,35 @@ class ProjectTypesTimeSheet extends Component {
         }
 
         this.columns = [{
-            key: "job",
-            name: Resources["job"][currentLanguage],
-            width: 220,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            frozen: true,
-            sortDescendingFirst: true
+            "field": "job",
+            "title": Resources.job[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "fixed": true,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "projectName",
-            name: Resources["projectName"][currentLanguage],
-            width: 220,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
+            "field": "projectName",
+            "title": Resources.projectName[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "companyName",
-            name: Resources["CompanyName"][currentLanguage],
-            width: 160,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "companyName",
+            "title": Resources.CompanyName[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "totalHours",
-            name: Resources["totalHours"][currentLanguage],
-            width: 160,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
-        }
-        ];
-
+            "field": "totalHours",
+            "title": Resources.totalHours[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
+        }];
     }
 
     componentDidMount() {
@@ -132,9 +123,9 @@ class ProjectTypesTimeSheet extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                columns={this.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []}

@@ -5,9 +5,10 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import GridCustom from 'react-customized-grid';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import moment from "moment";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class UserWithOutTimeSheet extends Component {
@@ -29,34 +30,30 @@ class UserWithOutTimeSheet extends Component {
         }
 
         this.columns = [{
-            key: "code",
-            name: Resources["refNo"][currentLanguage],
-            width: 180,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "code",
+            "title": Resources.refNo[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "fixed": true,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "contactName",
-            name: Resources["ContactName"][currentLanguage],
-            width: 180,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
+            "field": "contactName",
+            "title": Resources.ContactName[currentLanguage],
+            "type": "text",
+            "width": 25,
+            "fixed": true,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "companyName",
-            name: Resources["CompanyName"][currentLanguage],
-            width: 180,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
-        }
-        ];
+            "field": "companyName",
+            "title": Resources.CompanyName[currentLanguage],
+            "type": "text",
+            "width": 25,
+            "fixed": true,
+            "groupable": true,
+            "sortable": true
+        }];
     }
 
 
@@ -83,9 +80,9 @@ class UserWithOutTimeSheet extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                pageSize={200} columns={this.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['usersWithoutTimeSheet'][currentLanguage]} />

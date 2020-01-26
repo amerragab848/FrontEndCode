@@ -5,17 +5,16 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
+import GridCustom from 'react-customized-grid';
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
+
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang'); 
+
 const validationSchema = Yup.object().shape({
     expensesType: Yup.string().required(Resources['companyRequired'][currentLanguage]).nullable(true)
 })
@@ -48,45 +47,36 @@ class ExpensesReport extends Component {
         }
 
         this.columns = [{
-            key: "projectName",
-            name: Resources["projectName"][currentLanguage],
-            width: 150,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "projectName",
+            "title": Resources.projectName[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "fixed": true,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "docDate",
-            name: Resources["docDate"][currentLanguage],
-            width: 150,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
-            formatter: dateFormate
+            "field": "docDate",
+            "title": Resources.docDate[currentLanguage],
+            "type": "date",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "expenseValue",
-            name: Resources["expenseValue"][currentLanguage],
-            width: 150,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "expenseValue",
+            "title": Resources.expenseValue[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "expenseTypeName",
-            name: Resources["expenseTypeName"][currentLanguage],
-            width: 150,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "expenseTypeName",
+            "title": Resources.expenseTypeName[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }
         ];
-
     }
 
     componentDidMount() {
@@ -161,13 +151,12 @@ class ExpensesReport extends Component {
         })
     }
 
-
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['expensesReport'][currentLanguage]} />
@@ -212,7 +201,6 @@ class ExpensesReport extends Component {
                         }}>
                         {({ errors, touched, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="InspectionRequestForm" className="proForm reports__proForm" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="Projects" name="projectName" index="projects"
                                         data={this.state.projectsList} selectedValue={this.state.selectedProject}

@@ -1,21 +1,18 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import Resources from "../../../resources.json";
 import { toast } from "react-toastify";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Config from "../../../Services/Config";
 import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup";
+import Export from "../../../Componants/OptionsPanels/Export"; 
 import moment from "moment";
 import DatePicker from "../../../Componants/OptionsPanels/DatePicker";
 import dataService from "../../../../src/Dataservice";
+import GridCustom from 'react-customized-grid';
+import 'react-customized-grid/main.css';
 
-let currentLanguage =
-    localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
 
 class RiskPriority extends Component {
     constructor(props) {
@@ -42,138 +39,91 @@ class RiskPriority extends Component {
 
         this.columns = [
             {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "statusName",
-                name: Resources["status"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "toCompanyName",
-                name: Resources["responsibleCompanyName"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "toContactName",
-                name: Resources["responsibleContactName"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            },
-            {
-                key: "requiredDate",
-                name: Resources["requiredDate"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            },
-            {
-                key: "emv",
-                name: Resources["EMV"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "riskRanking",
-                name: Resources["riskRanking10"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "docCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            },
-            {
-                key: "oppenedBy",
-                name: Resources["openedBy"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "closedBy",
-                name: Resources["closedBy"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "lastEditBy",
-                name: Resources["lastEdit"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "lastEditDate",
-                name: Resources["lastEditDate"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
+                "field": "subject",
+                "title": Resources.subject[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "statusName",
+                "title": Resources.status[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "toCompanyName",
+                "title": Resources.responsibleCompanyName[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "docDate",
+                "title": Resources.docDate[currentLanguage],
+                "type": "date",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "requiredDate",
+                "title": Resources.requiredDate[currentLanguage],
+                "type": "date",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "emv",
+                "title": Resources.EMV[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "riskRanking",
+                "title": Resources.riskRanking10[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "docCloseDate",
+                "title": Resources.docClosedate[currentLanguage],
+                "type": "date",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "oppenedBy",
+                "title": Resources.openedBy[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "closedBy",
+                "title": Resources.closedBy[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "lastEditBy",
+                "title": Resources.lastEdit[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "lastEditDate",
+                "title": Resources.lastEditDate[currentLanguage],
+                "type": "date",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }
         ];
     }
@@ -211,11 +161,11 @@ class RiskPriority extends Component {
         dataService
             .GetDataGrid(
                 "GetRiskByPriorityId?priorityId=" +
-                    this.state.selectedStatus.value +
-                    "&startDate=" +
-                    startDate +
-                    "&finishDate=" +
-                    finishDate
+                this.state.selectedStatus.value +
+                "&startDate=" +
+                startDate +
+                "&finishDate=" +
+                finishDate
             )
             .then(res => {
                 this.setState({
@@ -231,15 +181,12 @@ class RiskPriority extends Component {
     render() {
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup
-                    rows={this.state.rows}
-                    showCheckbox={false}
-                    pageSize={this.state.pageSize}
-                    columns={this.columns}
+                <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                    pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
                 />
             ) : (
-                <LoadingSection />
-            );
+                    <LoadingSection />
+                );
 
         const btnExport =
             this.state.isLoading === false ? (

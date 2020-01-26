@@ -11,7 +11,7 @@
     "calidation": "^1.7.0",
     "cors": "^2.8.5",
     "crypto-js": "^3.1.9-1",
-    "d3": "^5.9.2",
+    "d3": "^5.15.0",
     "env": "0.0.2",
     "fine-uploader": "^5.16.2",
     "fine-uploader-wrappers": "^1.0.1",
@@ -29,7 +29,7 @@
     "platform": "^1.3.5",
     "query-string": "^6.2.0",
     "rc-animate": "^2.6.0",
-    "rc-table": "^6.4.3",
+    "rc-table": "^6.10.10",
     "react": "^16.6.3",
     "react-accessible-accordion": "^2.4.5",
     "react-bootstrap-table-next": "^2.0.1",
@@ -37,10 +37,10 @@
     "react-ckeditor-component": "^1.1.0",
     "react-cookie": "^3.0.8",
     "react-cookies": "^0.1.0",
-    "react-customized-grid": "^2.2.1",
+    "react-customized-grid": "^2.2.3",
     "react-data-grid": "github:elsokary/react-data-grid#master",
     "react-data-grid-addons": "github:elsokary/react-data-grid-addons#master",
-    "react-date-picker": "^7.1.1",
+    "react-date-picker": "^7.10.0",
     "react-datepicker": "^2.0.0",
     "react-dom": "^16.6.3",
     "react-dropbox-chooser": "0.0.5",
@@ -67,13 +67,13 @@
     "react-skylight": "^0.5.1",
     "react-sortable-pane": "^1.0.4",
     "react-table": "^6.8.6",
-    "react-tabs": "^3.0.0",
+    "react-tabs": "^3.1.0",
     "react-toastify": "^4.5.2",
     "react-validation": "^3.0.7",
-    "redux": "^4.0.1",
+    "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
-    "simple-react-validator": "^1.0.3",
+    "simple-react-validator": "^1.4.0",
     "xlsx": "^0.14.1",
     "yup": "^0.26.10"
   },
@@ -93,7 +93,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "copy-webpack-plugin": "^5.0.3",
+    "copy-webpack-plugin": "^5.1.1",
     "react-app-rewired": "^2.1.4"
   }
 }
