@@ -3,9 +3,8 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import GridCustom from 'react-customized-grid'; 
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from "formik";
@@ -35,42 +34,34 @@ class OverTimeReport extends Component {
         }
 
         this.columns = [{
-            key: "empCode",
-            name: Resources["employeeCode"][currentLanguage],
-            width: 120,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            frozen: true,
-            sortDescendingFirst: true
+            "field": "empCode",
+            "title": Resources.employeeCode[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "fixed": true,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "contactName",
-            name: Resources["ContactName"][currentLanguage],
-            width: 220,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
+            "field": "contactName",
+            "title": Resources.ContactName[currentLanguage],
+            "type": "text",
+            "width": 30,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "companyName",
-            name: Resources["CompanyName"][currentLanguage],
-            width: 250,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "companyName",
+            "title": Resources.CompanyName[currentLanguage],
+            "type": "text",
+            "width": 30,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "totalOvertime",
-            name: Resources["actualHours"][currentLanguage],
-            width: 100,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "totalOvertime",
+            "title": Resources.actualHours[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }];
     }
 
@@ -85,7 +76,7 @@ class OverTimeReport extends Component {
         }
 
         dataservice.addObject('GetUsersOverTime', obj).then((res) => {
-            if (res.length > 0) {
+            if (res.length > 0) { 
                 this.setState({
                     rows: res, isLoading: false
                 });
@@ -109,9 +100,9 @@ class OverTimeReport extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                columns={this.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []}

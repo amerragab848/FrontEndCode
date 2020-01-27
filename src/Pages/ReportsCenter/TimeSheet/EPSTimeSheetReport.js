@@ -6,7 +6,7 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from "formik";
@@ -35,85 +35,65 @@ class EpsTimeSheet extends Component {
             this.props.history.push({
                 pathname: "/"
             });
-
         }
 
         this.columns = [{
-            key: "number",
-            name: Resources["arrange"][currentLanguage],
-            width: 220,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            frozen: true,
-            sortDescendingFirst: true
+            "field": "number",
+            "title": Resources.arrange[currentLanguage],
+            "type": "text",
+            "width": 8,
+            "fixed": true,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "projectName",
-            name: Resources["projectName"][currentLanguage],
-            width: 220,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
+            "field": "projectName",
+            "title": Resources.projectName[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "subject",
-            name: Resources["subject"][currentLanguage],
-            width: 160,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "subject",
+            "title": Resources.subject[currentLanguage],
+            "type": "text",
+            "width": 20,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "total",
-            name: Resources["total"][currentLanguage],
-            width: 160,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
-
+            "field": "total",
+            "title": Resources.total[currentLanguage],
+            "type": "text",
+            "width": 8,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "estimatedTime",
-            name: Resources["estimatedTime"][currentLanguage],
-            width: 160,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
-
+            "field": "estimatedTime",
+            "title": Resources.estimatedTime[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "variance",
-            name: Resources["variance"][currentLanguage],
-            width: 160,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
-
-        }
-        ];
-
+            "field": "variance",
+            "title": Resources.variance[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
+        }];
     }
 
     componentDidMount() {
         dataservice.GetDataList('GetAllEPSForDrop', 'title', 'id').then(result => {
             if (Config.IsAllow(3737)) {
                 this.columns.push({
-                    key: "cost",
-                    name: Resources["cost"][currentLanguage],
-                    width: 80,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                })
+                    "field": "cost",
+                    "title": Resources["cost"][currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "groupable": true,
+                    "sortable": true
+                });
             }
             this.setState({
                 dropDownList: result
@@ -154,9 +134,9 @@ class EpsTimeSheet extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['epsTimeSheetReport'][currentLanguage]} />

@@ -14,7 +14,6 @@ import Config from "../../Services/Config";
 import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-
 class UploadAttachment extends Component {
     constructor(props) {
         super(props);
@@ -126,7 +125,7 @@ class UploadAttachment extends Component {
                         </Fragment>
                     );
                 }}
-            </Dropzone >
+            </Dropzone>
         );
     };
 
@@ -249,13 +248,8 @@ class UploadAttachment extends Component {
                         <span className="upload__border"></span>
                         <div className="drive__wrapper">
                             <h2 className="zero">{Resources.uploadFrom[currentLanguage]}</h2>
-                            {Config.IsAllow(this.props.ShowGoogleDrive)
-                                ? this.renderGoogleDrive()
-                                : null}
-                            {Config.IsAllow(this.props.ShowDropBox)
-                                ? this.renderDropBox()
-                                : null}
-
+                            {Config.IsAllow(this.props.ShowGoogleDrive) ? this.renderGoogleDrive() : null}
+                            {Config.IsAllow(this.props.ShowDropBox) ? this.renderDropBox() : null}
                         </div>
                     </div>
                 </div>

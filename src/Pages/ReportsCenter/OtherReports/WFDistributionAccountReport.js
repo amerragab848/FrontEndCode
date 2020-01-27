@@ -6,16 +6,19 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
 import CryptoJS from 'crypto-js';
 import SkyLight from 'react-skylight';
-//const _ = require('lodash')
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class WFDistributionAccountReport extends Component {
 
     constructor(props) {
+
+        console.log("window.location.href", window.location.href);
+
         super(props)
         this.state = {
             isLoading: false,
@@ -31,58 +34,55 @@ class WFDistributionAccountReport extends Component {
                 pathname: "/"
             });
         }
+
         this.columns = [
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
             {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: this.subjectLink
-            }, {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "type",
-                name: Resources["type"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-            }, {
-                key: "levelCount",
-                name: Resources["levelNo"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
+                "field": "subject",
+                "title": Resources.subject[currentLanguage],
+                "type": "text",
+                "width": 25,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true,
+                "href": window.location.href
+            },
+            {
+                "field": "description",
+                "title": Resources.description[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
+            },
+            {
+                "field": "type",
+                "title": Resources.type[currentLanguage],
+                "type": "text",
+                "width": 12,
+                "groupable": true,
+                "sortable": true
+            },
+            {
+                "field": "projectName",
+                "title": Resources.projectName[currentLanguage],
+                "type": "text",
+                "width": 17,
+                "groupable": true,
+                "sortable": true
+            },
+            {
+                "field": "levelCount",
+                "title": Resources.levelNo[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             }
         ];
     }
 
-    componentWillMount() {
+    componentDidMount() {
         dataservice.GetDataList('GetContactsHasAccountsWithoutCompId', 'contactName', 'id').then(result => {
             this.setState({
                 dropDownList: result
@@ -110,7 +110,7 @@ class WFDistributionAccountReport extends Component {
 
     subjectLink = ({ value, row }) => {
         let subject = "";
-        if (row) {   
+        if (row) {
             let obj = {
                 docId: row.url.split('/')[1],
                 projectId: row.projectId,
@@ -143,11 +143,28 @@ class WFDistributionAccountReport extends Component {
         }
     }
 
+    checkedRow = (id, checked) => {
+        //  id is current row
+        //  checked is array of already checked rows
+        if (id !== 139585) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={true}
-                selectedCopmleteRow={true} selectedRows={rows => this.selectedRows(rows)}
-                pageSize={this.state.pageSize} columns={this.columns} addLevel={e => this.showPopUp()} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+                shouldCheck={(id, checked) => {
+                    this.checkedRow(id, checked);
+                }}
+            />
+            // <GridSetup rows={this.state.rows} showCheckbox={true}
+            //     selectedCopmleteRow={true} selectedRows={rows => this.selectedRows(rows)}
+            //     pageSize={this.state.pageSize} columns={this.columns} addLevel={e => this.showPopUp()} />
+        ) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'wokFlowDistrbutionAccountsReport'} />
@@ -173,11 +190,7 @@ class WFDistributionAccountReport extends Component {
             </div>
         </div>
 
-
         return (
-
-
-
             <div className="reports__content">
                 <header>
                     <h2 className="zero">{Resources.wokFlowDistrbutionAccountsReport[currentLanguage]}</h2>
@@ -199,13 +212,9 @@ class WFDistributionAccountReport extends Component {
                         {addToSameLevel}
                     </SkyLight>
                 </div>
-
             </div>
-
-
         )
     }
-
 }
 
 export default WFDistributionAccountReport
