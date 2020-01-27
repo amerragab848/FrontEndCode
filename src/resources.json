@@ -8311,5 +8311,9 @@
     "amountRequired": {
         "en": "Please insert Amount",
         "ar": "من فضلك ادخل الكمية "
+    },
+    "approvalText": {
+        "en": "Approval Text",
+        "ar": "نص الموافقة"
     }
 }
