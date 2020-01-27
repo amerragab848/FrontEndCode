@@ -129,7 +129,7 @@ class boqStructure extends Component {
             projectId: this.state.projectId, titleEn: '',
             titleAr: '', title: '', costCodingId: undefined,
             trees: '', showPaymentRequsition: false, code: '',
-        } 
+        }
         this.setState({
             parentId: item.id,
             viewPopUp: true,
@@ -139,7 +139,7 @@ class boqStructure extends Component {
         });
     }
 
-    EditNode(item) { 
+    EditNode(item) {
         this.setState({
             parentId: item.id,
             SelectedNode: item,
@@ -151,6 +151,7 @@ class boqStructure extends Component {
     search(id, trees, updateTrees, parentId) {
 
         trees.map(item => {
+            if (item.collapse === undefined){item.collapse = true}
             if (id == item.id) {
                 item.collapse = !item.collapse;
             } else {
@@ -255,7 +256,7 @@ class boqStructure extends Component {
         this.setState({
             trees,
             isLoading: false
-        }); 
+        });
     }
 
     closePopUp() {
@@ -347,7 +348,7 @@ class boqStructure extends Component {
     AddEditNode = () => {
 
         this.setState({ isLoading: true })
- 
+
         let EditObj = this.state.SelectedNode
         if (this.state.IsEditMode) {
             if (EditObj.perentId !== null) {
@@ -387,7 +388,7 @@ class boqStructure extends Component {
         }
     }
 
-    handleChange(e, field) { 
+    handleChange(e, field) {
         let updated_document = this.state.SelectedNode;
         updated_document[field] = e.target.value;
         this.setState({
@@ -436,7 +437,8 @@ class boqStructure extends Component {
                 <div className="documents-stepper noTabs__document">
                     <div className="tree__header">
                         <h2 className="zero">{Resources.boqStructure[currentLanguage]}</h2>
-                        <button className="primaryBtn-1 btn" onClick={() => this.setState({ viewPopUp: true, IsEditMode: false, IsFirstParent: true })}>
+                        <button className="primaryBtn-1 btn " onClick={() => this.setState({ viewPopUp: true, IsEditMode: false, IsFirstParent: true })}>
+                          
                             {Resources["goAdd"][currentLanguage]}
                         </button>
                     </div>
@@ -448,8 +450,8 @@ class boqStructure extends Component {
                             <Fragment>
                                 {this.state.trees.map((item, i) => {
                                     return (
-                                        <Fragment key={item.id}>
-                                            <div className="epsTitle active" key={item.id}>
+                                        <Fragment key={item.id}> 
+                                            <div className={"epsTitle" + (item.collapse === false ? ' active' : ' ')} key={item.id} onClick={() => this.viewChild(item)}>
                                                 <div className="listTitle">
                                                     <span className="dropArrow">
                                                         <i className="dropdown icon" />

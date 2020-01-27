@@ -128,6 +128,7 @@ export default class CustomGrid extends Component {
                     rowActions={this.props.rowActions}
                     rowClick={cell => this.props.rowClick(cell)}
                     groups={this.props.groups}
+                    showCheckAll = {this.props.showCheckAll}
                 />
 
                 <div className={this.state.columnsModal ? "grid__column active " : "grid__column "}>
