@@ -599,6 +599,7 @@ class CommonLog extends Component {
           rowActions={this.rowActions}
           cells={this.state.columns}
           openModalColumn={this.state.columnsModal}
+          showCheckAll ={true}
           rowClick={cell => {
             if (cell.id != 0) {
 
