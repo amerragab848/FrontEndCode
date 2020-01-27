@@ -4143,7 +4143,7 @@ h1, h2, h3, h4, h5 {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    z-index: 999;
+    z-index: 999 !important;
     top: unset !important
 }
 
@@ -22156,8 +22156,8 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 }
 
 .mainContainer:not(.main__fulldash) .approveDocument {
-    left: 88px;
-    right: 0px;
+    left: 0;
+    right: 88px;
 }
 
 .mainContainer.main__fulldash .approveDocument {
@@ -22341,9 +22341,10 @@ button.ck.ck-button.ck-on.ck-button_with-text.ck-dropdown__button > .ck-dropdown
 thead.grid-header tr.action-bar .actions button.autoGridBtn {
     width: auto !important;
     min-width: 72px
-}
+} 
+ 
 tbody.grid-body tr td.text.bold >a {
-    font-weight: bold !important;
+    font-weight: bold !important; 
     white-space: nowrap;
 }
 
@@ -22352,8 +22353,8 @@ thead.grid-header tr th.check-box{
 }
 thead.grid-header tr.action-bar .actions {
     width: calc(100% - 256px);
-    height: 60px;
-}
+    height: 60px; 
+}  
 .company__name.company__name--image {
     padding: 20px 40px; 
     margin-bottom: 15px; 
@@ -22372,6 +22373,7 @@ thead.grid-header tr.action-bar .actions {
   }
   
   .footer_print img {
-      width: 100%;
+      width: 100%;  
       max-height: 60px;
   }
+ 
