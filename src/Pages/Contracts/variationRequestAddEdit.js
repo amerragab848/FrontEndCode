@@ -28,6 +28,7 @@ import EditItemDescription from "../../Componants/OptionsPanels/editItemDescript
 import SkyLight from "react-skylight";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 var steps_defination = [];
 
@@ -77,105 +78,108 @@ class VariationRequestAdd extends Component {
             index++;
         }
 
-        let itemsColumns = [
+        this.cells = [
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
             {
-                key: "arrange",
-                name: Resources["arrange"][currentLanguage],
-                width: 50,
-                draggable: true,
+                field: "arrange",
+                title: Resources["arrange"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "number"
-            }, {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "description",
+                title: Resources["description"][currentLanguage],
+                width: 5,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            }, {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 120,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "quantity",
+                title: Resources["quantity"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "number"
-            }, {
-                key: "unitPrice",
-                name: Resources["unitPrice"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "unitPrice",
+                title: Resources["unitPrice"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "number"
-            }, {
-                key: "resourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "resourceCode",
+                title: Resources["resourceCode"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            }, {
-                key: "itemCode",
-                name: Resources["itemCode"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "itemCode",
+                title: Resources["itemCode"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            }, {
-                key: "boqType",
-                name: Resources["boqType"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "boqType",
+                title: Resources["boqType"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            }, {
-                key: "boqSubType",
-                name: Resources["boqSubType"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "boqSubType",
+                title: Resources["boqSubType"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            }, {
-                key: "boqTypeChild",
-                name: Resources["boqTypeChild"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            },
+            {
+                field: "boqTypeChild",
+                title: Resources["boqTypeChild"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
+                type: "text"
+            },
+        ]
+
+        this.actions = [
+            {
+                title: Resources['delete'][currentLanguage],
+                handleClick: ids => {
+                    this.clickHandlerDeleteRowsMain(ids)
+                },
+                classes: '',
             }
         ];
 
+        this.rowActions = [];
 
         this.state = {
             showDeleteModal: false,
+            LoadingSectionEdit: false,
             showPopUp: false,
-            itemsColumns: itemsColumns,
+            //            itemsColumns: itemsColumns,
             isViewMode: false,
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
@@ -263,6 +267,10 @@ class VariationRequestAdd extends Component {
         // Typical usage (don't forget to compare props):
         if (this.props.hasWorkflow !== prevProps.hasWorkflow) {
             this.checkDocumentIsView();
+        }
+
+        if (this.props.items !== prevProps.items) {
+            this.setState({ items: this.props.items });
         }
     }
 
@@ -562,20 +570,14 @@ class VariationRequestAdd extends Component {
     };
 
 
-    onRowClick = (value, index, column) => {
-
-        this.setState({
-            showPopUp: true,
-            btnText: "save",
-            selectedRow: value,
-        });
+    onRowClick = (value) => {
+        this.setState({ LoadingSectionEdit: true });
+        setTimeout(() => { this.setState({ showPopUp: true, btnText: "save", selectedRow: value, LoadingSectionEdit: false }); }, 200);
         this.simpleDialog1.show();
     };
 
     disablePopUp = () => {
-        this.setState({
-            showPopUp: false
-        });
+        this.setState({ showPopUp: false, });
     }
 
     onCloseModal = () => {
@@ -841,13 +843,10 @@ class VariationRequestAdd extends Component {
                                             showImportExcel={false}
                                         />
                                         <div className="doc-pre-cycle">
-                                            <GridSetupWithFilter
-                                                rows={this.state.items}
-                                                pageSize={10}
-                                                clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                                                onRowClick={this.onRowClick.bind(this)}
-                                                columns={this.state.itemsColumns}
-                                                key='items'
+                                            <GridCustom
+                                                cells={this.cells} data={this.state.items}
+                                                groups={[]} pageSize={50} actions={this.actions}
+                                                rowActions={this.rowActions} rowClick={cells => this.onRowClick(cells)}
                                             />
                                         </div>
                                         <div className="doc-pre-cycle">
@@ -866,20 +865,22 @@ class VariationRequestAdd extends Component {
                                     title={Resources.editTitle[currentLanguage] + " - " + Resources.edit[currentLanguage]}>
                                     <Fragment>
                                         <div className=" proForm datepickerContainer customProform document-fields" key="editItem">
-                                            <EditItemDescription
-                                                showImportExcel={false}
-                                                docType="vr"
-                                                isViewMode={this.state.isViewMode}
-                                                mainColumn="variationRequestId"
-                                                editItemApi="EditVRItem"
-                                                projectId={this.state.projectId}
-                                                showItemType={false}
-                                                item={this.state.selectedRow}
-                                                showBoqType={true}
-                                                isViewMode={this.state.isViewMode}
-                                                onRowClick={this.state.showPopUp}
-                                                disablePopUp={this.disablePopUp}
-                                            />
+                                            {this.state.LoadingSectionEdit ? <LoadingSection /> :
+                                                <EditItemDescription
+                                                    showImportExcel={false}
+                                                    docType="vr"
+                                                    isViewMode={this.state.isViewMode}
+                                                    mainColumn="variationRequestId"
+                                                    editItemApi="EditVRItem"
+                                                    projectId={this.state.projectId}
+                                                    showItemType={false}
+                                                    item={this.state.selectedRow}
+                                                    showBoqType={true}
+                                                    isViewMode={this.state.isViewMode}
+                                                    onRowClick={this.state.showPopUp}
+                                                    disablePopUp={this.disablePopUp}
+                                                />
+                                            }
                                         </div>
                                     </Fragment>
                                 </SkyLight>
@@ -903,18 +904,18 @@ class VariationRequestAdd extends Component {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
-                                        <DocumentActions isApproveMode={this.state.isApproveMode} 
-                                                         docTypeId={this.state.docTypeId}
-                                                         docId={this.state.docId}
-                                                         projectId={this.state.projectId}
-                                                         previousRoute={this.state.previousRoute}
-                                                         docApprovalId={this.state.docApprovalId} 
-                                                         currentArrange={this.state.arrange}
-                                                         showModal={this.props.showModal} 
-                                                         showOptionPanel={this.showOptionPanel}
-                                                         permission={this.state.permission}
-                                                         documentName={Resources.variationRequest[currentLanguage]}
-                                                         />
+                                        <DocumentActions isApproveMode={this.state.isApproveMode}
+                                            docTypeId={this.state.docTypeId}
+                                            docId={this.state.docId}
+                                            projectId={this.state.projectId}
+                                            previousRoute={this.state.previousRoute}
+                                            docApprovalId={this.state.docApprovalId}
+                                            currentArrange={this.state.arrange}
+                                            showModal={this.props.showModal}
+                                            showOptionPanel={this.showOptionPanel}
+                                            permission={this.state.permission}
+                                            documentName={Resources.variationRequest[currentLanguage]}
+                                        />
                                     </div>
                                 </div> : null
                         }

@@ -37,7 +37,7 @@
     "react-ckeditor-component": "^1.1.0",
     "react-cookie": "^3.0.8",
     "react-cookies": "^0.1.0",
-    "react-customized-grid": "^2.2.3",
+    "react-customized-grid": "^2.2.5",
     "react-data-grid": "github:elsokary/react-data-grid#master",
     "react-data-grid-addons": "github:elsokary/react-data-grid-addons#master",
     "react-date-picker": "^7.10.0",
@@ -73,7 +73,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
-    "simple-react-validator": "^1.4.0",
+    "simple-react-validator": "^1.4.1",
     "xlsx": "^0.14.1",
     "yup": "^0.26.10"
   },

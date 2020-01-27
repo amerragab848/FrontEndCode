@@ -30,42 +30,49 @@ class CollectedInvoices extends Component {
 
         this.columnsGrid = [
             {
-                "field": "subject",
-                "title": Resources.subject[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "fixed": true,
-                "groupable": true,
-                "sortable": true
+                field: "subject",
+                title: Resources["subject"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: true,
+                type: "text",
+                sortable: true,
             },
             {
-                "field": "collected",
-                "title": Resources.collected[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "variance",
-                "title": Resources.variance[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "total",
-                "title": Resources.total[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "totalExcuted",
-                "title": Resources.totalExcuted[currentLanguage],
-                "type": "text",
-                "width": 10,
-                "groupable": true,
-                "sortable": true
+                field: "collected",
+                title: Resources["collected"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: "variance",
+                title: Resources["variance"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: "total",
+                title: Resources["total"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
+            },
+            {
+                field: "totalExcuted",
+                title: Resources["totalExcuted"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "text",
+                sortable: true,
             }
         ];
 
@@ -80,7 +87,8 @@ class CollectedInvoices extends Component {
             totalExecuted: 0,
             totalcollected: 0,
             total: 0,
-            variance: 0
+            variance: 0,
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(691)) {
@@ -155,11 +163,18 @@ class CollectedInvoices extends Component {
 
         const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ?
-                    <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columnsGrid}
-                        pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
-                    />
-                    : null
+                this.state.rows.length > 0 ? 
+                <GridCustom 
+                ref='custom-data-grid'
+                key="collectedInvoices"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                rowClick={() => { }}
+                cells={this.columnsGrid}
+                   /> : null
             ) : (
                 <LoadingSection />
             );

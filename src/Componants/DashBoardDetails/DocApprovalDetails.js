@@ -4,12 +4,13 @@ import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
-import GridSetup from "../../Pages/Communication/GridSetup";
 import Resources from "../../resources.json";
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
+
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -61,165 +62,160 @@ class DocApprovalDetails extends Component {
     super(props);
 
     const columnsGrid = [
+      { title: '', type: 'check-box', fixed: true, field: 'id' },
       {
-        key: "readStatusText",
-        name: Resources["statusName"][currentLanguage],
-        width: 100,
-        draggable: true,
+        field: "readStatusText",
+        title: Resources["statusName"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        formatter: statusButton
+        type: "text"
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "subject",
+        title: Resources["subject"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        formatter: subjectLink
+        type: "text"
       },
       {
-        key: "creationDate",
-        name: Resources["docDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "creationDate",
+        title: Resources["docDate"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
+        type: "date"
       },
       {
-        key: "duration2",
-        name: Resources["durationDays"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "duration2",
+        title: Resources["durationDays"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "arrange",
-        name: Resources["levelNo"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "arrange",
+        title: Resources["levelNo"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "actionBy",
-        name: Resources["actionByContact"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "actionBy",
+        title: Resources["actionByContact"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "openedBy",
-        name: Resources["openedBy"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "openedBy",
+        title: Resources["openedBy"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        type: "text"
 
       },
       {
-        key: "description",
-        name: Resources["description"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "description",
+        title: Resources["description"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "projectName",
+        title: Resources["projectName"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "docType",
-        name: Resources["docType"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "docType",
+        title: Resources["docType"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "refDoc",
-        name: Resources["docNo"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "refDoc",
+        title: Resources["docNo"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "lastApprovalDate",
-        name: Resources["lastApproveDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "lastApprovalDate",
+        title: Resources["lastApproveDate"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
+        type: "date"
       },
       {
-        key: "delayDuration",
-        name: Resources["delay"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "delayDuration",
+        title: Resources["delay"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "dueDate",
-        name: Resources["dueDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "dueDate",
+        title: Resources["dueDate"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
+        type: "date"
       },
       {
-        key: "lastSendDate",
-        name: Resources["lastSendDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "lastSendDate",
+        title: Resources["lastSendDate"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
+        type: "date"
       },
       {
-        key: "lastSendTime",
-        name: Resources["lastSendTime"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "lastSendTime",
+        title: Resources["lastSendTime"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "lastApproveTime",
-        name: Resources["lastApprovedTime"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "lastApproveTime",
+        title: Resources["lastApprovedTime"][currentLanguage],
+        groupable: true,
+        fixed: false,
+        width: 16,
         sortable: true,
-        resizable: true,
-        sortDescendingFirst: true
+        type: "text"
       }
     ];
 
@@ -285,26 +281,7 @@ class DocApprovalDetails extends Component {
         name: "delay",
         type: "date",
         isCustom: true
-      }
-      // ,
-      // {
-      //   field: "lastSendDate",
-      //   name: "lastSendDate",
-      //   type: "date",
-      //   isCustom: true
-      // },
-      // {
-      //   field: "lastSendTime",
-      //   name: "lastSendTime",
-      //   type: "string",
-      //   isCustom: true
-      // },
-      // {
-      //   field: "lastApproveTime",
-      //   name: "lastApprovedTime",
-      //   type: "string",
-      //   isCustom: true
-      // }
+      } 
     ];
 
     this.state = {
@@ -375,10 +352,10 @@ class DocApprovalDetails extends Component {
       query: stringifiedQuery
     });
 
-    this.setState({ 
+    this.setState({
       isLoading: false
     });
- 
+
   };
 
   onRowClick = (obj) => {
@@ -408,11 +385,40 @@ class DocApprovalDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows}
-          columns={this.state.columns}
-          showCheckbox={false}
-          onRowClick={this.onRowClick} />
-      ) : <LoadingSection />;
+        < GridCustom
+          key="DocApproval"
+          cells={this.state.columns}
+          data={this.state.rows}
+          actions={[]}
+          rowActions={[]}
+          rowClick={cell => { 
+            if (cell) { 
+              if (cell.readStatus != true) {
+                Api.post("UpdateStatusWorkFlow?id=" + cell.id);
+              }
+              let objRout = {
+                docId: cell.docId,
+                projectId: cell.projectId,
+                projectName: cell.projectName,
+                arrange: cell.arrange,
+                docApprovalId: cell.accountDocWorkFlowId,
+                isApproveMode: true,
+                perviousRoute: window.location.pathname + window.location.search
+              }
+              let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+              let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+              this.props.history.push({
+                pathname: "/" + cell.docLink,
+                search: "?id=" + encodedPaylod
+              });
+            }
+          }
+          }
+          groups={[]}
+        />
+      ) : <LoadingSection />
+
+
 
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
@@ -435,7 +441,7 @@ class DocApprovalDetails extends Component {
               className="ui labeled icon top right pointing dropdown fillter-button"
               tabIndex="0"
               onClick={() => this.hideFilter(this.state.viewfilter)} >
-              <span>
+              {/* <span>
                 <svg
                   width="16px"
                   height="18px"
@@ -479,15 +485,15 @@ class DocApprovalDetails extends Component {
                     </g>
                   </g>
                 </svg>
-              </span>
+              </span> */}
 
-              <span className={"text " + (this.state.viewfilter === false ? " " : " active")}>
+              {/* <span className={"text " + (this.state.viewfilter === false ? " " : " active")}>
                 <span className="show-fillter">Show Fillter</span>
                 <span className="hide-fillter">Hide Fillter</span>
-              </span>
+              </span> */}
             </div>
           </div>
-           <div className="rowsPaginations readOnly__disabled">
+          <div className="rowsPaginations readOnly__disabled">
             <div className="linebylineInput valid-input">
               <label className="control-label">
                 {Resources.totalDocs[currentLanguage]}
@@ -511,11 +517,11 @@ class DocApprovalDetails extends Component {
             {btnExport}
           </div>
         </div>
-        <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
+        {/* <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
             {ComponantFilter}
           </div>
-        </div>
+        </div> */}
         <div>{dataGrid}</div>
       </div>
     );

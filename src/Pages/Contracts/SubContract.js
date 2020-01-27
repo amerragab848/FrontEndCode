@@ -18,6 +18,7 @@ import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 
 import CompanyDropdown from '../../Componants/publicComponants/CompanyDropdown'
 import ContactDropdown from '../../Componants/publicComponants/ContactDropdown'
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -335,6 +336,7 @@ class SubContract extends Component {
 
     render() {
         const ItemsGrid = this.state.isLoading === false ? (
+            <>
             <GridSetupWithFilter
                 rows={this.state.rows}
                 onRowClick={this.onRowClick}
@@ -345,7 +347,9 @@ class SubContract extends Component {
                 onGridRowsUpdated={this._onGridRowsUpdated}
                 showToolBar={false}
                 key='items'
-            />) : <LoadingSection />;
+            />
+            
+           </> ) : <LoadingSection />;
 
         let Step_1 = <Fragment>
             <div id="step1" className="step-content-body">

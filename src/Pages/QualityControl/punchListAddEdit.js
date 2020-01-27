@@ -71,7 +71,7 @@ const validationSchemaForEditItem = Yup.object().shape({
     description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
     ActionByContactItem: Yup.string().required(Resources['toContactRequired'][currentLanguage])
 })
-
+ 
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
 }
@@ -171,6 +171,8 @@ class punchListAddEdit extends Component {
         }
 
         this.state = {
+            AprovalsData: [],
+            selectedApprovalStatus: { label: Resources.selectStatus[currentLanguage], value: "0" },  
             Loading: true,
             IsAddModel: false,
             isLoading: false,
@@ -428,8 +430,7 @@ class punchListAddEdit extends Component {
             this.setState({
                 areas: [...result]
             });
-        });
-
+        }); 
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=location", 'title', 'id', 'defaultLists', "location", "listType").then(result => {
             if (this.state.IsEditMode) {
                 let location = this.props.document.location;
@@ -446,8 +447,7 @@ class punchListAddEdit extends Component {
                 locations: [...result],
                 Loading: false
             });
-        });
-
+        }); 
         dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
             if (docId) {
 
@@ -468,7 +468,23 @@ class punchListAddEdit extends Component {
                 });
             }
 
-        });
+        }); 
+        dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=approvalstatus", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
+            if (this.state.IsEditMode) {
+                let approvalStatusId = this.state.document.approvalStatusId;
+                let approvalStatus = {};
+                if (approvalStatusId) {
+                    approvalStatus =find(result, function (i) { return i.value == approvalStatusId; });
+
+                    this.setState({
+                        selectedApprovalStatus: approvalStatus
+                    });
+                }
+            }
+            this.setState({
+                AprovalsData: [...result]
+            });
+        }); 
     }
 
     handleChangeDropDown(event, field, isSubscrib, targetState, url, param, selectedValue, subDatasource) {
@@ -923,7 +939,10 @@ class punchListAddEdit extends Component {
                                                     error={errors.areaId} touched={touched.areaId}
                                                     index="IR-areaId" name="areaId" id="areaId" />
                                             </div>
-
+                                            <div className="linebylineInput valid-input">
+                                                <Dropdown title="approvalStatus" data={this.state.AprovalsData} selectedValue={this.state.selectedApprovalStatus}
+                                                    handleChange={event => this.handleChangeDropDown(event, 'approvalStatus', false, '', '', '', 'selectedApprovalStatus')} />
+                                            </div>
                                         </div>
 
                                         <div className="slider-Btns">

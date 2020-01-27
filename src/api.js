@@ -99,6 +99,7 @@ export default class Api {
     }
 
     static postFile(route, params, header) {
+       
         let json = "";
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
         const url = `${host}${route}`;
@@ -107,10 +108,10 @@ export default class Api {
         if (header) {
             headers.docid = header.docId;
             headers.doctypeid = header.docTypeId;
-            headers.parentid = header.parentId;
-
+            headers.parentid = header.parentId; 
             headers.docType = header.docType;
         }
+        console.log("params ... ",params,"headers ... ",headers);
         return fetch(url, {
             method: "POST",
             headers: {
@@ -149,6 +150,7 @@ export default class Api {
                 // response is not a valid json string
             });
     }
+
     static getPassword(route, password) {
         const host = Config.getPublicConfiguartion().static + "/api/Procoor/";
 

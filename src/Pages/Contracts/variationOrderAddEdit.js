@@ -7,7 +7,7 @@ import UploadAttachment from "../../Componants/OptionsPanels/UploadAttachment";
 import ViewAttachment from "../../Componants/OptionsPanels/ViewAttachmments";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import Resources from "../../resources.json";
-import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -21,6 +21,12 @@ import DatePicker from "../../Componants/OptionsPanels/DatePicker";
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
+import Api from "../../api";
+import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
+import SkyLight from "react-skylight";
+
 var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
@@ -64,106 +70,107 @@ class variationOrderAddEdit extends Component {
       index++;
     }
 
-    let itemsColumns = [
+    this.cells = [
+      { title: '', type: 'check-box', fixed: true, field: 'id' },
       {
-        key: "arrange",
-        name: Resources["arrange"][currentLanguage],
-        width: 50,
-        draggable: true,
+        field: "arrange",
+        title: Resources["arrange"][currentLanguage],
+        width: 5,
+        groupable: true,
+        fixed: true,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        type: "number"
-      }, {
-        key: "description",
-        name: Resources["description"][currentLanguage],
-        width: 100,
-        draggable: true,
+        type: "text"
+      },
+      {
+        field: "description",
+        title: Resources["description"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        type: "string"
-      }, {
-        key: "quantity",
-        name: Resources["quantity"][currentLanguage],
-        width: 120,
-        draggable: true,
+        type: "text"
+      },
+      {
+        field: "quantity",
+        title: Resources["quantity"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        type: "number"
-      }, {
-        key: "unitPrice",
-        name: Resources["unitPrice"][currentLanguage],
-        width: 100,
-        draggable: true,
+        type: "text"
+      },
+      {
+        field: "unitPrice",
+        title: Resources["unitPrice"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        type: "number"
-      }, {
-        key: "resourceCode",
-        name: Resources["resourceCode"][currentLanguage],
-        width: 100,
-        draggable: true,
+        type: "text"
+      },
+      {
+        field: "resourceCode",
+        title: Resources["resourceCode"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        type: "string"
-      }, {
-        key: "itemCode",
-        name: Resources["itemCode"][currentLanguage],
-        width: 100,
-        draggable: true,
+        type: "text"
+      },
+      {
+        field: "itemCode",
+        title: Resources["itemCode"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        type: "string"
-      }, {
-        key: "boqType",
-        name: Resources["boqType"][currentLanguage],
-        width: 100,
-        draggable: true,
+        type: "text"
+      },
+      {
+        field: "boqType",
+        title: Resources["boqType"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        type: "string"
-      }, {
-        key: "boqSubType",
-        name: Resources["boqSubType"][currentLanguage],
-        width: 100,
-        draggable: true,
+        type: "text"
+      },
+      {
+        field: "boqSubType",
+        title: Resources["boqSubType"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        type: "string"
-      }, {
-        key: "boqTypeChild",
-        name: Resources["boqTypeChild"][currentLanguage],
-        width: 100,
-        draggable: true,
+        type: "text"
+      },
+      {
+        field: "boqTypeChild",
+        title: Resources["boqTypeChild"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        type: "string"
-      }
-    ];
+        type: "text"
+      },
+    ]
 
+    this.actions = [
+      {
+        title: Resources['delete'][currentLanguage],
+        handleClick: ids => {
+          this.clickHandlerDeleteRowsMain(ids)
+        },
+        classes: '',
+      }
+    ]
+
+    this.rowActions = [];
 
     this.state = {
-      items: this.props.items,
+      // items: this.props.items,
       pageNumber: 0,
       pageSize: 500,
-      itemsColumns: itemsColumns,
       isViewMode: false,
       isApproveMode: isApproveMode,
       perviousRoute: perviousRoute,
@@ -183,8 +190,13 @@ class variationOrderAddEdit extends Component {
       selectPco: { label: Resources.pco[currentLanguage], value: "0" },
       pcos: [],
       contractsPos: [],
-      voItems: [],
-      CurrentStep: 0
+      voItems: this.props.items,
+      CurrentStep: 0,
+      itemLoading: false,
+      showDeleteModal: false,
+      selectedrow: '',
+      editdRow: {},
+      showPopUp: false
     }
 
     if (!Config.IsAllow(159) && !Config.IsAllow(158) && !Config.IsAllow(160)) {
@@ -228,18 +240,22 @@ class variationOrderAddEdit extends Component {
 
       this.setState({
         document: { ...serverChangeOrder },
-        hasWorkflow: nextProps.hasWorkflow
+        hasWorkflow: nextProps.hasWorkflow,
+        voItems: nextProps.items,
       });
 
       this.fillDropDowns(nextProps.document.id > 0 ? true : false);
       this.checkDocumentIsView();
     }
-
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
       this.checkDocumentIsView();
+    }
+    if (this.props.items !== prevProps.items) {
+      this.setState({ voItems: this.props.items, isLoading: true });
+      setTimeout(() => { this.setState({ isLoading: false }) }, 500);
     }
   }
 
@@ -444,9 +460,7 @@ class variationOrderAddEdit extends Component {
   }
 
   editVariationOrder(event) {
-    this.setState({
-      isLoading: true
-    });
+    this.setState({ isLoading: true });
 
     let saveDocument = this.state.document;
 
@@ -454,17 +468,10 @@ class variationOrderAddEdit extends Component {
     saveDocument.dateApproved = moment(saveDocument.dateApproved, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditContractsChangeOrder", saveDocument).then(result => {
-      this.setState({
-        isLoading: true,
-        items: this.props.items
-      });
-
+      this.setState({ isLoading: true, voItems: this.props.items, });
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(res => {
-      this.setState({
-        isLoading: true
-      });
-      toast.error(Resources["operationCanceled"][currentLanguage]);
+      this.setState({ isLoading: true }); toast.error(Resources["operationCanceled"][currentLanguage]);
     });
   }
 
@@ -529,13 +536,14 @@ class variationOrderAddEdit extends Component {
     let saveDocument = { ...this.state.voItem };
 
     saveDocument.changeOrderId = this.state.docId;
-
+    this.setState({ itemLoading: true });
     dataservice.addObject("AddVOItems", saveDocument).then(result => {
       if (result) {
         let oldItems = [...this.state.voItems];
         oldItems.push(result);
         this.setState({
-          voItems: [...oldItems]
+          voItems: [...oldItems],
+          itemLoading: false
         });
         toast.success(Resources["operationSuccess"][currentLanguage]);
       }
@@ -640,6 +648,42 @@ class variationOrderAddEdit extends Component {
     this.setState({ CurrentStep: stepNo });
   };
 
+  clickHandlerCancelMain = () => {
+    this.setState({ showDeleteModal: false });
+  };
+
+  clickHandlerContinueMain = () => {
+    this.setState({ isLoading: true });
+
+    this.props.actions.setLoading();
+
+    Api.post(`DeleteVoItemById?id=${this.state.selectedrow}`, this.state.selectedrow).then(result => {
+      this.props.actions.deleteItemDescription(this.state.selectedrow);
+      this.setState({ isLoading: false, showDeleteModal: false, selectedrow: '' });
+
+      toast.success(Resources["operationSuccess"][currentLanguage]);
+
+    }).catch(ex => { this.setState({ isLoading: false, showDeleteModal: false }); });
+  };
+
+  clickHandlerDeleteRowsMain = (selectedrow) => {
+    this.setState({ showDeleteModal: true, selectedrow: selectedrow.slice(-1) });
+  }
+
+  onRowClick = (value) => {
+    this.setState({ LoadingSectionEdit: true, editdRow: value });
+    setTimeout(() => { this.setState({ showPopUp: true, LoadingSectionEdit: false }); }, 200);
+    setTimeout(() => { console.log(this.state.editdRow) }, 700);
+    this.simpleDialog1.show();
+
+  }
+  // DeleteVoItemById?id=
+
+
+  disablePopUp = () => {
+    this.setState({ showPopUp: false, });
+  }
+
   render() {
     return (
       <div className="mainContainer">
@@ -689,19 +733,8 @@ class variationOrderAddEdit extends Component {
                                     {Resources.status[currentLanguage]}
                                   </label>
                                   <div className="ui checkbox radio radioBoxBlue">
-                                    <input
-                                      type="radio"
-                                      name="letter-status"
-                                      defaultChecked={
-                                        this.state.document.status === false
-                                          ? null
-                                          : "checked"
-                                      }
-                                      value="true"
-                                      onChange={e =>
-                                        this.handleChange(e, "status")
-                                      }
-                                    />
+                                    <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? null : "checked"}
+                                      value="true" onChange={e => this.handleChange(e, "status")} />
                                     <label>
                                       {Resources.oppened[currentLanguage]}
                                     </label>
@@ -745,15 +778,9 @@ class variationOrderAddEdit extends Component {
 
                                 <div className="linebylineInput valid-input alternativeDate">
                                   <DatePicker
-                                    title="dateApproved"
-                                    onChange={e =>
-                                      setFieldValue("dateApproved", e)
-                                    }
-                                    name="dateApproved"
-                                    startDate={this.state.document.dateApproved}
-                                    handleChange={e =>
-                                      this.handleChangeDate(e, "dateApproved")
-                                    }
+                                    title="dateApproved" onChange={e => setFieldValue("dateApproved", e)}
+                                    name="dateApproved" startDate={this.state.document.dateApproved}
+                                    handleChange={e => this.handleChangeDate(e, "dateApproved")}
                                   />
                                 </div>
 
@@ -763,111 +790,43 @@ class variationOrderAddEdit extends Component {
                                       {Resources.raisedPrices[currentLanguage]}
                                     </label>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input
-                                        type="radio"
-                                        name="vo-isRaisedPrices"
-                                        defaultChecked={
-                                          this.state.document.isRaisedPrices ===
-                                            false
-                                            ? null
-                                            : "checked"
-                                        }
-                                        value="true"
-                                        onChange={e =>
-                                          this.handleChange(e, "isRaisedPrices")
-                                        }
+                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ? null : "checked"}
+                                        value="true" onChange={e => this.handleChange(e, "isRaisedPrices")}
                                       />
-                                      <label>
-                                        {Resources.yes[currentLanguage]}
-                                      </label>
+                                      <label> {Resources.yes[currentLanguage]} </label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input
-                                        type="radio"
-                                        name="vo-isRaisedPrices"
-                                        defaultChecked={
-                                          this.state.document.isRaisedPrices ===
-                                            false
-                                            ? "checked"
-                                            : null
-                                        }
-                                        value="false"
-                                        onChange={e =>
-                                          this.handleChange(e, "isRaisedPrices")
-                                        }
+                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ? "checked" : null}
+                                        value="false" onChange={e => this.handleChange(e, "isRaisedPrices")}
                                       />
-                                      <label>
-                                        {Resources.no[currentLanguage]}
-                                      </label>
+                                      <label> {Resources.no[currentLanguage]}</label>
                                     </div>
                                   </div>
 
                                   <div className="linebylineInput valid-input">
-                                    <label className="control-label">
-                                      {Resources.executed[currentLanguage]}
-                                    </label>
+                                    <label className="control-label"> {Resources.executed[currentLanguage]} </label>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input
-                                        type="radio"
-                                        name="vo-executed"
-                                        defaultChecked={
-                                          this.state.document.executed === "yes"
-                                            ? null
-                                            : "checked"
-                                        }
-                                        value="yes"
-                                        onChange={e =>
-                                          this.handleChange(e, "executed")
-                                        }
+                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "yes" ? null : "checked"}
+                                        value="yes" onChange={e => this.handleChange(e, "executed")}
                                       />
-                                      <label>
-                                        {Resources.yes[currentLanguage]}
-                                      </label>
+                                      <label> {Resources.yes[currentLanguage]} </label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input
-                                        type="radio"
-                                        name="vo-executed"
-                                        defaultChecked={
-                                          this.state.document.executed === "no"
-                                            ? "checked"
-                                            : null
-                                        }
-                                        value="no"
-                                        onChange={e =>
-                                          this.handleChange(e, "executed")
-                                        }
+                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "no" ? "checked" : null}
+                                        value="no" onChange={e => this.handleChange(e, "executed")}
                                       />
-                                      <label>
-                                        {Resources.no[currentLanguage]}
-                                      </label>
+                                      <label> {Resources.no[currentLanguage]} </label>
                                     </div>
                                   </div>
                                 </div>
 
                                 <div className="linebylineInput valid-input">
-                                  <label className="control-label">
-                                    {Resources.arrange[currentLanguage]}
-                                  </label>
+                                  <label className="control-label"> {Resources.arrange[currentLanguage]}</label>
 
                                   <div className="ui input inputDev">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      id="arrange"
-                                      readOnly
-                                      value={this.state.document.arrange}
-                                      name="arrange"
-                                      placeholder={
-                                        Resources.arrange[currentLanguage]
-                                      }
-                                      onBlur={e => {
-                                        handleChange(e);
-                                        handleBlur(e);
-                                      }}
-                                      onChange={e =>
-                                        this.handleChange(e, "arrange")
-                                      }
+                                    <input type="text" className="form-control" id="arrange" readOnly value={this.state.document.arrange} name="arrange"
+                                      placeholder={Resources.arrange[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
+                                      onChange={e => this.handleChange(e, "arrange")}
                                     />
                                   </div>
                                 </div>
@@ -875,36 +834,16 @@ class variationOrderAddEdit extends Component {
                                 {this.props.changeStatus === true ? (
                                   <div className="proForm letterFullWidth">
                                     <div className="letterFullWidth fullInputWidth">
-                                      <label className="control-label">
-                                        {Resources.pco[currentLanguage]}
-                                      </label>
+                                      <label className="control-label"> {Resources.pco[currentLanguage]} </label>
                                       <div className="ui input inputDev">
-                                        <input
-                                          type="text"
-                                          className="form-control"
-                                          id="pcoSubject"
-                                          readOnly
-                                          value={this.state.document.pcoSubject}
-                                          name="pcoSubject"
-                                        />
+                                        <input type="text" className="form-control" id="pcoSubject" readOnly value={this.state.document.pcoSubject} name="pcoSubject" />
                                       </div>
                                     </div>
 
                                     <div className="letterFullWidth fullInputWidth">
-                                      <label className="control-label">
-                                        {Resources.contractPo[currentLanguage]}
-                                      </label>
+                                      <label className="control-label"> {Resources.contractPo[currentLanguage]}</label>
                                       <div className="ui input inputDev">
-                                        <input
-                                          type="text"
-                                          className="form-control"
-                                          id="contractSubject"
-                                          readOnly
-                                          value={
-                                            this.state.document.contractSubject
-                                          }
-                                          name="contractSubject"
-                                        />
+                                        <input type="text" className="form-control" id="contractSubject" readOnly value={this.state.document.contractSubject} name="contractSubject" />
                                       </div>
                                     </div>
                                   </div>
@@ -912,76 +851,37 @@ class variationOrderAddEdit extends Component {
                                     <Fragment>
                                       <div className="linebylineInput valid-input">
                                         <Dropdown
-                                          title="pco"
-                                          isMulti={false}
-                                          data={this.state.pcos}
+                                          title="pco" isMulti={false} data={this.state.pcos}
                                           selectedValue={this.state.selectPco}
-                                          handleChange={event =>
-                                            this.handleChangeDropDown(
-                                              event,
-                                              "pcoId",
-                                              "selectPco",
-                                              true
-                                            )
-                                          }
-                                          id="pcoId"
+                                          handleChange={event => this.handleChangeDropDown(event, "pcoId", "selectPco", true)} id="pcoId"
                                         />
                                       </div>
 
                                       <div className="linebylineInput valid-input">
                                         <Dropdown
-                                          title="contractPo"
-                                          data={this.state.contractsPos}
-                                          selectedValue={
-                                            this.state.selectContract
-                                          }
-                                          handleChange={event =>
-                                            this.handleChangeDropDown(
-                                              event,
-                                              "contractId",
-                                              "selectContract",
-                                              false
-                                            )
-                                          }
-                                          index="contractId"
-                                          onChange={setFieldValue}
-                                          onBlur={setFieldTouched}
-                                          error={errors.contractId}
-                                          touched={touched.contractId}
-                                          isClear={false}
-                                          name="contractId"
-                                        />
+                                          title="contractPo" data={this.state.contractsPos} selectedValue={this.state.selectContract}
+                                          handleChange={event => this.handleChangeDropDown(event, "contractId", "selectContract", false)}
+                                          index="contractId" onChange={setFieldValue} onBlur={setFieldTouched} error={errors.contractId} touched={touched.contractId}
+                                          isClear={false} name="contractId" />
                                       </div>
                                     </Fragment>
                                   )}
                                 <div className="linebylineInput valid-input">
-                                  <label className="control-label">
-                                    {Resources.total[currentLanguage]}
-                                  </label>
+                                  <label className="control-label">{Resources.total[currentLanguage]}</label>
                                   <div className={"ui input inputDev" + (errors.total && touched.total ? " has-error" : "ui input inputDev")} >
                                     <input type="text" className="form-control" id="total" value={this.state.document.total}
-                                      name="total" placeholder={Resources.total[currentLanguage]}
-                                      onBlur={e => { handleChange(e); handleBlur(e); }}
+                                      name="total" placeholder={Resources.total[currentLanguage]} onBlur={e => { handleChange(e); handleBlur(e); }}
                                       onChange={e => this.handleChange(e, "total")} />
-                                    {touched.total ? (
-                                      <em className="pError">{errors.total}</em>
-                                    ) : null}
+                                    {touched.total ? (<em className="pError">{errors.total}</em>) : null}
                                   </div>
                                 </div>
                                 <div className="linebylineInput valid-input">
-                                  <label className="control-label">
-                                    {Resources.timeExtension[currentLanguage]}
-                                  </label>
+                                  <label className="control-label">{Resources.timeExtension[currentLanguage]}</label>
                                   <div className={"ui input inputDev" + (errors.timeExtension && touched.timeExtension ? " has-error" : "ui input inputDev")}>
                                     <input type="text" className="form-control" id="timeExtension" value={this.state.document.timeExtensionRequired}
                                       name="timeExtension" placeholder={Resources.timeExtension[currentLanguage]}
-                                      onBlur={e => { handleChange(e); handleBlur(e); }}
-                                      onChange={e => this.handleChange(e, "timeExtensionRequired")} />
-                                    {touched.timeExtension ? (
-                                      <em className="pError">
-                                        {errors.timeExtension}
-                                      </em>
-                                    ) : null}
+                                      onBlur={e => { handleChange(e); handleBlur(e); }} onChange={e => this.handleChange(e, "timeExtensionRequired")} />
+                                    {touched.timeExtension ? (<em className="pError">{errors.timeExtension}</em>) : null}
                                   </div>
                                 </div>
                               </div>
@@ -1032,16 +932,56 @@ class variationOrderAddEdit extends Component {
                       mainColumn="changeOrderId"
                       addItemApi="AddVOItems"
                       projectId={this.state.projectId}
-                      showItemType={false}
+                      showItemType={false} showBoqType={true}
                     />
                     <div className="doc-pre-cycle">
-                      <GridSetupWithFilter
-                        rows={this.state.voItems}
-                        pageSize={10}
-                        columns={this.state.itemsColumns}
-                        key='items'
-                      />
+
+                      {this.state.isLoading ? <LoadingSection /> :
+                        <GridCustom
+                          cells={this.cells} data={this.state.voItems} groups={[]} pageSize={50} actions={this.state.document.executed === "no" ? this.actions : []}
+                          rowActions={this.rowActions} rowClick={cell => { this.state.document.executed === "no" ? this.onRowClick(cell) : console.log('error') }}
+                        />
+                      }
+                      <div>
+                        {this.state.showDeleteModal == true ? (
+                          <ConfirmationModal
+                            title={Resources["smartDeleteMessage"][currentLanguage].content}
+                            buttonName="delete"
+                            closed={this.onCloseModal}
+                            showDeleteModal={this.state.showDeleteModal}
+                            clickHandlerCancel={this.clickHandlerCancelMain}
+                            clickHandlerContinue={this.clickHandlerContinueMain}
+                          />
+                        ) : null}
+                      </div>
                     </div>
+
+                    <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? "block" : "none" }}>
+                      <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog1 = ref)}
+                        title={Resources.editTitle[currentLanguage] + " - " + Resources.edit[currentLanguage]}>
+                        <Fragment>
+                          <div className=" proForm datepickerContainer customProform document-fields" key="editItem">
+                            {this.state.LoadingSectionEdit ? <LoadingSection /> :
+                              <EditItemDescription
+                                showImportExcel={false}
+                                docType="vo"
+                                docId={this.state.docId}
+                                isViewMode={this.state.isViewMode}
+                                mainColumn="changeOrderId"
+                                editItemApi="EditChangeOrderItem"
+                                projectId={this.state.projectId}
+                                showItemType={false}
+                                item={this.state.editdRow}
+                                isViewMode={this.state.isViewMode}
+                                onRowClick={this.state.showPopUp}
+                                disablePopUp={this.disablePopUp} showBoqType={true}
+                              />
+                            }
+                          </div>
+                        </Fragment>
+                      </SkyLight>
+                    </div>
+
                     <div className="doc-pre-cycle">
                       <div className="slider-Btns">
                         <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(2)}>

@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import moment from "moment";
@@ -25,6 +26,8 @@ class TaskTimeSheet extends Component {
             rows: [],
             startDate: moment(),
             finishDate: moment(),
+            pageSize: 200,
+
         }
 
         if (!Config.IsAllow(3737)) {
@@ -36,33 +39,29 @@ class TaskTimeSheet extends Component {
         }
 
         this.columns = [{
-            key: "taskName",
-            name: Resources["taskName"][currentLanguage],
-            width: 120,
-            draggable: true,
+            field: "taskName",
+            title: Resources["taskName"][currentLanguage],
+            width: 20,
+            groupable: true,
+            fixed: true,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            frozen: true,
-            sortDescendingFirst: true
         }, {
-            key: "contactName",
-            name: Resources["ContactName"][currentLanguage],
-            width: 120,
-            draggable: true,
+            field: "contactName",
+            title: Resources["ContactName"][currentLanguage],
+            width: 20,
+            groupable: true,
+            fixed: false,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
         }, {
-            key: "totalExpenseValue",
-            name: Resources["total"][currentLanguage],
-            width: 80,
-            draggable: true,
+            field: "totalExpenseValue",
+            title: Resources["total"][currentLanguage],
+            width: 18,
+            groupable: true,
+            fixed: false,
+            type: "text",
             sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
         }
         ];
     }
@@ -71,14 +70,13 @@ class TaskTimeSheet extends Component {
         if (Config.IsAllow(3737)) {
             this.columns.push(
                 {
-                    key: "cost",
-                    name: Resources["cost"][currentLanguage],
-                    width: 80,
-                    draggable: true,
+                    field: "cost",
+                    title: Resources["cost"][currentLanguage],
+                    width: 18,
+                    groupable: true,
+                    fixed: false,
+                    type: "text",
                     sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
                 })
         }
         dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'id').then(result => {
@@ -120,9 +118,18 @@ class TaskTimeSheet extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true} selectedRows={rows => this.selectedRows(rows)}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+
+            <GridCustom
+                ref='custom-data-grid'
+                key="TaskTimeSheet"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['taskStatus'][currentLanguage]} />

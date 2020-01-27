@@ -161,8 +161,9 @@ class addItemDescription extends Component {
             if (result) {
 
                 let arr = [];
-
-                arr.push(result);
+                
+                if (this.props.docType === "vo") arr.push(saveDocument);
+                else arr.push(result);
                 this.props.actions.editItemDescriptions(arr);
                 this.setState({
                     id: 0,

@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import moment from "moment";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Dataservice from '../../../Dataservice';
@@ -29,6 +30,7 @@ class ProjectsList extends Component {
             rows: [],
             finishDate: moment(),
             startDate: moment(),
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3677)) {
@@ -39,95 +41,85 @@ class ProjectsList extends Component {
         }
         this.columns = [
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 25, 
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "job",
-                name: Resources["projectCode"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "job",
+                title: Resources["projectCode"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "projectManagerContactName",
-                name: Resources["projectManagerContact"][currentLanguage],
-                width: 210,
+                field: "projectManagerContactName",
+                title: Resources["projectManagerContact"][currentLanguage],
+                width: 21,
                 draggable: true,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "excuteContactManager",
-                name: Resources["executiveManagerContact"][currentLanguage],
-                width: 210,
-                draggable: true,
+                field: "excuteContactManager",
+                title: Resources["executiveManagerContact"][currentLanguage],
+                width: 21,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             },
             {
-                key: "statusName",
-                name: Resources["statusName"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "statusName",
+                title: Resources["statusName"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "holdedName",
-                name: Resources["holded"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "holdedName",
+                title: Resources["holded"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "clientsConstraints",
-                name: Resources["client"][currentLanguage],
-                width: 130,
-                draggable: true,
+                field: "clientsConstraints",
+                title: Resources["client"][currentLanguage],
+                width: 13,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "projectOpenDate",
-                name: Resources["openDate"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "projectOpenDate",
+                title: Resources["openDate"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "projectCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "projectCloseDate",
+                title: Resources["docClosedate"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
         ];
     }
@@ -172,8 +164,17 @@ class ProjectsList extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+                <GridCustom
+                ref='custom-data-grid'
+                key="projectList"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectsList'} />

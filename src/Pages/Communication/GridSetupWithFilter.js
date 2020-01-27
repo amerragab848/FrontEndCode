@@ -901,7 +901,7 @@ class GridSetupWithFilter extends Component {
                       enableShiftSelect: true,
                       onRowsSelected: this.onRowsSelected,
                       onRowsDeselected: this.onRowsDeselected,
-                      enableRowSelect: "single",
+                      rowSelection: "single",
                       selectBy: {
                         indexes: this.state.selectedIndexes
                       }

@@ -14,7 +14,6 @@ import Config from "../../Services/Config";
 import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-
 class UploadAttachment extends Component {
     constructor(props) {
         super(props);

@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
-import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-//import GridSetup from "../../../Pages/Communication/GridSetup";
-import GridSetupWithFilter from "../../../Pages/Communication/GridSetupWithFilter";
+import ConfirmationModal from "../../publicComponants/ConfirmationModal"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid"; 
 import Export from "../../OptionsPanels/Export";
 import { SkyLightStateless } from 'react-skylight';
 import Select from '../../OptionsPanels/DropdownMelcous';
@@ -91,29 +90,42 @@ class GeneralList extends Component {
 
     constructor(props) {
 
-        const columnsGrid = [
+        super(props) 
+
+        this.columnsGrid = [
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
-            },
-            {
-                key: "title",
-                name: Resources["generalListTitle"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: "title",
+                title: Resources["generalListTitle"][currentLanguage],
+                groupable: true,
+                fixed: true,
+                width: 16,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-        ]
-        super(props)
+                type: "text"
+
+            }
+        ];
+
+        this.groups = [];
+
+        this.actions = [
+            {
+                title: 'Delete',
+                handleClick: selectedRows => {
+                    this.setState({
+                        showDeleteModal: true,
+                        selectedRow: selectedRows
+                    });
+                },
+                classes: '',
+            }
+        ]; 
+
+        this.rowActions = [];
 
         this.state = {
             showCheckbox: false,
-            columns: columnsGrid.filter(column => column.visible !== false),
+            columns: this.columnsGrid,
             isLoading: true,
             rows: [],
             selectedRows: [],
@@ -159,8 +171,7 @@ class GeneralList extends Component {
                 isLoading: false
             });
         });;
-    }
-
+    };
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
         this.setState({
@@ -184,14 +195,12 @@ class GeneralList extends Component {
                 isLoading: false
             });
         });;
-    }
-
+    };
     componentWillMount = () => {
         if (config.IsAllow(1181)) {
             this.setState({ showCheckbox: true, isLoading: false })
         }
-    }
-
+    };
     clickHandlerDeleteRowsMain = (selectedRows) => {
         let id = ''
         selectedRows.map(i => { id = i })
@@ -214,8 +223,7 @@ class GeneralList extends Component {
                 this.setState({ isLoading: false })
             }, 100);
         }
-    }
-
+    };
     ConfirmDelete = () => {
         this.setState({
             isLoading: true
@@ -235,16 +243,13 @@ class GeneralList extends Component {
         }).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
         })
-    }
-
+    };
     onCloseModal = () => {
         this.setState({ showDeleteModal: false });
     };
-
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     };
-
     GeneralListHandelChange = (e) => {
 
         this.setState({
@@ -261,8 +266,7 @@ class GeneralList extends Component {
             }
         )
         this.setState({ isLoading: true })
-    }
-
+    };
     onRowClick = (obj) => {
         if (config.IsAllow(1180)) {
             if (obj.editable) {
@@ -284,13 +288,11 @@ class GeneralList extends Component {
         else {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
         }
-    }
-
+    };
     showPopup = (e) => {
         this.setState({ ShowPopup: true, IsEdit: false });
 
-    }
-
+    };
     save(values, resetForm) {
         this.setState({ isLoading: true });
         if (this.state.IsEdit) {
@@ -314,26 +316,44 @@ class GeneralList extends Component {
                 })
         }
         resetForm();
-    }
-
+    };
     render() {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetupWithFilter
-                    rows={this.state.rows}
-                    showCheckbox={this.state.showCheckbox}
-                    pageSize={this.state.pageSize}
-                    onRowClick={this.onRowClick.bind(this)}
-                    columns={this.state.columns}
-                    clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
 
-                    onRowsSelected={this.onRowsSelected}
-                    onRowsDeselected={this.onRowsDeselected}
-                    onGridRowsUpdated={this._onGridRowsUpdated}
-                    assign={true}
-                    assignFn={() => this.assign()}
+                <GridCustom
                     key="items"
+                    data={this.state.rows}
+                    pageSize={this.state.pageSize}
+                    groups={[]}
+                    actions={this.actions}
+                    cells={this.columnsGrid}
+                    rowActions={this.rowActions}
+                    showPicker = {false}
+                    rowClick={(row, cell) => {
+                        let id = cell.id;
+                        if (config.IsAllow(1180)) {
+                            if (row.editable) {
+                                Api.get('GetAccountsDefaultListForEdit?id=' + id + '').then(
+                                    res => {
+                                        this.setState({
+                                            EditListData: res,
+                                            IsEdit: true,
+                                            selectedrow: id,
+                                            ShowPopup: true,
+                                        })
+                                    }
+                                )
+                            }
+                            else {
+                                toast.error(Resources["adminItemEditable"][currentLanguage]);
+                            }
+                        }
+                        else {
+                            toast.warn(Resources["missingPermissions"][currentLanguage]);
+                        }
+                    }}
                 />
             ) : <LoadingSection />
 
@@ -434,7 +454,7 @@ class GeneralList extends Component {
                         </div>
                         : null}
 
-                     <div className="rowsPaginations readOnly__disabled">
+                    <div className="rowsPaginations readOnly__disabled">
                         <div className="rowsPagiRange">
                             <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span>of<span> {this.state.totalRows}</span>
                         </div>

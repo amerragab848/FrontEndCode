@@ -99,8 +99,8 @@ class Export extends Component {
             (this.props.rows.map((row, index) => {
                 return (
                     <tr key={index}>
-                        {fieldsItems.map((field, index) => {
-                            return (<td key={index + "td"}>{row[field.field]}</td>)
+                        {fieldsItems.map((rowfield, index) => {
+                            return (<td key={index + "td"}>{row[rowfield.field]}</td>)
                         })}
                     </tr>
                 )

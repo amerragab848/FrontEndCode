@@ -4,8 +4,9 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import moment from "moment";
 import Api from '../../../api';
 import HeaderDocument from '../../../Componants/OptionsPanels/HeaderDocument'
@@ -16,7 +17,8 @@ class projectInvoicesCollected extends Component {
         super(props)
         this.state = {
             isLoading: false,
-            rows: []
+            rows: [],
+            pageSize: 200,
         }
         if (!Config.IsAllow(3681)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
@@ -26,50 +28,45 @@ class projectInvoicesCollected extends Component {
         }
         this.columns = [
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "invoiced",
-                name: Resources["total"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "invoiced",
+                title: Resources["total"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "collected",
-                name: Resources["collected"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "collected",
+                title: Resources["collected"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "collectedPercentage",
-                name: Resources["progressPercent"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "collectedPercentage",
+                title: Resources["progressPercent"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "remainingAmount",
-                name: Resources["totalRemaining"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "remainingAmount",
+                title: Resources["totalRemaining"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             },
         ];
     }
@@ -81,8 +78,17 @@ class projectInvoicesCollected extends Component {
     }
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom
+                ref='custom-data-grid'
+                key="projectInvoicesColleced"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectedInvoicedCollecetd'} />

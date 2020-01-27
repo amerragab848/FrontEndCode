@@ -6,8 +6,7 @@ import Resources from '../../resources.json';
 import Tree from '../OptionsPanels/Tree'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import ReactTable from "react-table";
-import 'react-table/react-table.css'
+import ReactTable from "react-table"; 
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import DatePicker from "../OptionsPanels/DatePicker";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
@@ -22,14 +21,18 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import { bindActionCreators } from 'redux';
 import SendToExpensesWorkFlow from './sendToExpensesWorkFlow';
 import ViewExpensesWF from './viewExpensesWF';
-import ExpensesWFApproval from './expensesWFApproval';
+import ExpensesWFApproval from './expensesWFApproval'; 
 import CryptoJS from "crypto-js";
+
 var steps_defination = [];
+
 steps_defination = [
     { name: "expenses", callBackFn: null },
     { name: "items", callBackFn: null }
 ];
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
+
 const find = require('lodash/find');
 
 let selectedRows = [];
@@ -56,7 +59,6 @@ const itemValidationSchemaEdit = Yup.object().shape({
     unitRate: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
     expenseValue: Yup.number().typeError(Resources['onlyNumbers'][currentLanguage]),
 });
-
 
 class ExpensesUserAddEdit extends Component {
 
@@ -427,17 +429,13 @@ class ExpensesUserAddEdit extends Component {
     }
 
     viewAttachments() {
-        return (this.state.id > 0 ? (<ViewAttachment docTypeId={this.state.docTypeId} docId={this.state.id} deleteAttachments={true} />) : null)
-    }
-
-    showBtnsSaving() {
-        let btn = null;
-        if (this.state.id === 0) {
-            btn = <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>;
-        } else if (this.state.id > 0) {
-            btn = <button className="primaryBtn-1 btn mediumBtn" type="submit" >{Resources.saveAndExit[currentLanguage]}</button>
-        }
-        return btn;
+        return (
+            <ViewAttachment
+                isApproveMode={false}
+                docTypeId={6}
+                docId={this.state.id}
+                deleteAttachments={840}
+            />)
     }
 
     routeToLog = () => {
@@ -578,7 +576,10 @@ class ExpensesUserAddEdit extends Component {
                                                         />
                                                     </div>
                                                 </div>
-                                                : null}
+                                                : null
+                                            }
+                                        </div>
+                                        <div> 
                                         </div>
                                         <div className="slider-Btns">
                                             {this.state.isLoading ?
@@ -600,8 +601,9 @@ class ExpensesUserAddEdit extends Component {
                             </Formik>
                             <div className="doc-pre-cycle">
                                 <div>
-                                    {this.state.id > 0 && this.state.isEdit === false ? (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.id}
-                                        projectId={this.state.selectedProject.value} />) : null}
+                                    {this.state.id > 0 && this.state.isEdit === false ?
+                                        (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.id}
+                                            projectId={this.state.selectedProject.value} />) : null}
                                     {this.state.id > 0 && this.state.isEdit === false ? this.viewAttachments() : null}
                                 </div>
                             </div>
@@ -738,8 +740,7 @@ class ExpensesUserAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                </div>
-
+                                </div> 
                                 <div className="slider-Btns">
                                     {this.state.isLoading ?
                                         <button className="primaryBtn-1 btn disabled">
@@ -781,8 +782,9 @@ class ExpensesUserAddEdit extends Component {
 
                             <div className="doc-pre-cycle">
                                 <div>
-                                    {this.state.id > 0 && this.state.isEdit === true ? (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.id}
-                                        projectId={this.state.selectedProject.value} />) : null}
+                                    {this.state.id > 0 && this.state.isEdit === true ?
+                                        (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.id}
+                                            projectId={this.state.selectedProject.value} />) : null}
                                     {this.state.id > 0 && this.state.isEdit === true ? this.viewAttachments() : null}
                                 </div>
                             </div>
@@ -791,7 +793,7 @@ class ExpensesUserAddEdit extends Component {
                                 getTrProps={(state, rowInfo, column, instance) => {
                                     return { onClick: e => { this.viewEditModel(rowInfo.original, e.target.type); } };
                                 }} />
-                        </div>  
+                        </div>
                     </div>
                 </div >
             )
@@ -876,9 +878,7 @@ class ExpensesUserAddEdit extends Component {
 
         return (
             <div className="mainContainer main__fulldash" >
-
-                <div className="documents-stepper noTabs__document one__tab one_step" >
-
+                <div className="documents-stepper noTabs__document one__tab one_step">
                     <div className="submittalHead">
                         <h2 className="zero">{Resources['expenses'][currentLanguage] + ' - ' + Resources[this.state.isEdit ? 'editTitle' : 'add'][currentLanguage]}</h2>
                         <div className="SubmittalHeadClose" onClick={this.routeToLog}>
@@ -901,29 +901,23 @@ class ExpensesUserAddEdit extends Component {
                             </svg>
                         </div>
                     </div>
-
                     <div className="doc-container">
-
                         <div className="skyLight__form">
                             <SkyLightStateless onOverlayClicked={e => this.setState({ showEditModal: false, itemEdit: false })}
                                 title={Resources['editTitle'][currentLanguage]}
                                 onCloseClicked={e => this.setState({ showEditModal: false, itemEdit: {} })} isVisible={this.state.showEditModal}>
                                 {this.state.showEditModal ? <Fragment>{editModal()}</Fragment> : null}
-
                             </SkyLightStateless>
                         </div>
-
                         <div className="step-content">
                             {this.state.CurrentStep === 0 ? <Fragment>{stepOne()}</Fragment> : <Fragment>{stepTwo()}</Fragment>}
                         </div>
-
                         <Fragment>
                             <Steps steps_defination={steps_defination}
                                 exist_link="/ProfileSetting/" docId={this.state.id}
                                 changeCurrentStep={stepNo => this.changeCurrentStep(stepNo)}
                                 stepNo={this.state.CurrentStep} changeStatus={this.state.id === 0 ? false : true} isEdit={this.state.isEdit} />
                         </Fragment>
-
                     </div>
 
                     {this.state.showDeleteModal == true ? (

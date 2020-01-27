@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import moment from "moment";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Dataservice from '../../../Dataservice';
@@ -29,6 +30,7 @@ class NewprojectList extends Component {
             rows: [],
             finishDate: moment(),
             startDate: moment(),
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(3687)) {
@@ -40,46 +42,40 @@ class NewprojectList extends Component {
 
         this.columns = [
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "job",
-                name: Resources["projectCode"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "job",
+                title: Resources["projectCode"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "projectOpenDate",
-                name: Resources["openDate"][currentLanguage],
-                width: 170,
-                draggable: true,
+                field: "projectOpenDate",
+                title: Resources["openDate"][currentLanguage],
+                width: 17,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "projectCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 170,
-                draggable: true,
+                field: "projectCloseDate",
+                title: Resources["docClosedate"][currentLanguage],
+                width: 17,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
         ];
 
@@ -124,8 +120,18 @@ class NewprojectList extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+
+            <GridCustom
+                ref='custom-data-grid'
+                key="NewProjectList"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'newprojectList'} />

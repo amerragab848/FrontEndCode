@@ -11,6 +11,8 @@ import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
 import GridSetup from "../Communication/GridSetup";
 import Export from "../../Componants/OptionsPanels/Export";
 import sumBy from 'lodash/sumBy';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
+
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -21,41 +23,43 @@ class ProjectTimeSheet extends Component {
 
         this.columnsGrid = [
             {
-                key: "contactName",
-                name: Resources["ContactName"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "contactName",
+                title: Resources["ContactName"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type: "text"
             },
             {
-                key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "companyName",
+                title: Resources["CompanyName"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type: "text"
             },
             {
-                key: "totalExpenseValue",
-                name: Resources["timehours"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "totalExpenseValue",
+                title: Resources["timehours"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type: "text"
             },
             {
-                key: "total",
-                name: Resources["totalCost"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "total",
+                title: Resources["totalCost"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type: "text"
             }
+           
+           
         ];
 
         this.state = {
@@ -103,10 +107,14 @@ class ProjectTimeSheet extends Component {
     }
 
     render() {
-
+{/* <GridSetup rows={this.state.rows} showCheckbox={false} columns={this.columnsGrid} /> */}
         const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ? <GridSetup rows={this.state.rows} showCheckbox={false} columns={this.columnsGrid} /> : null
+                this.state.rows.length > 0 ? <GridCustom  cells={this.columnsGrid} data={this.state.rows}  groups={[]}  pageSize={this.state.rows.length}  actions={[]}   rowActions={[]}  rowClick={() => { }}      /> : null
+               
+                
+               
+               
             ) : (
                 <LoadingSection />
             );

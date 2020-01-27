@@ -8,8 +8,9 @@ import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Export from "../../../Componants/OptionsPanels/Export";
 import moment from "moment";
-import dataService from '../../../Dataservice'
-import GridSetup from "../../Communication/GridSetup"
+import dataService from '../../../Dataservice' 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import HeaderDocument from '../../../Componants/OptionsPanels/HeaderDocument'
 //const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -26,203 +27,180 @@ class executiveSummary extends Component {
             finishDate: moment(),
             startDate: moment(),
             ContractSum: 0,
-            countContract: 0
+            countContract: 0,
+            pageSize: 200,
         }
         this.columns = [
             {
-                key: "arrange",
-                name: Resources["numberAbb"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "arrange",
+                title: Resources["numberAbb"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "statusName",
-                name: Resources["status"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "statusName",
+                title: Resources["status"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "subject",
-                name: Resources["projectManagerContact"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "subject",
+                title: Resources["projectManagerContact"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "companyName",
+                title: Resources["CompanyName"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "docDate",
+                title: Resources["docDate"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }, {
-                key: "toCompanyName",
-                name: Resources["contractTo"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "toCompanyName",
+                title: Resources["contractTo"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "toContactName",
-                name: Resources["ToContact"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "toContactName",
+                title: Resources["ToContact"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "docCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "docCloseDate",
+                title: Resources["docClosedate"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }, {
-                key: "originalContactSum",
-                name: Resources["originalContractSum"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "originalContactSum",
+                title: Resources["originalContractSum"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "refDoc",
-                name: Resources["refDoc"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "refDoc",
+                title: Resources["refDoc"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "tax",
-                name: Resources["tax"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "tax",
+                title: Resources["tax"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "retainage",
-                name: Resources["retainage"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "retainage",
+                title: Resources["retainage"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "vat",
-                name: Resources["vat"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "vat",
+                title: Resources["vat"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "advancedPayment",
-                name: Resources["advancedPayment"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "advancedPayment",
+                title: Resources["advancedPayment"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "insurance",
-                name: Resources["insurance"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "insurance",
+                title: Resources["insurance"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "oppenedBy",
-                name: Resources["openedBy"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "oppenedBy",
+                title: Resources["openedBy"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             }, {
-                key: "closedBy",
-                name: Resources["closedBy"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "closedBy",
+                title: Resources["closedBy"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "lastEditDate",
-                name: Resources["lastEditDate"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "lastEditDate",
+                title: Resources["lastEditDate"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }, {
-                key: "lastSnedTime",
-                name: Resources["lastSendTime"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "lastSnedTime",
+                title: Resources["lastSendTime"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "lastApproveDate",
-                name: Resources["lastApproveDate"][currentLanguage],
+                field: "lastApproveDate",
+                title: Resources["lastApproveDate"][currentLanguage],
                 width: 80,
-                draggable: true,
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }, {
-                key: "lastApproveTime",
-                name: Resources["lastApprovedTime"][currentLanguage],
-                width: 80,
-                draggable: true,
+                field: "lastApproveTime",
+                title: Resources["lastApprovedTime"][currentLanguage],
+                width: 18,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
         ];
         if (!Config.IsAllow(3697)) {
@@ -269,8 +247,18 @@ class executiveSummary extends Component {
     }
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom
+                ref='custom-data-grid'
+                key="executiveSummary"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
+
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'executiveSummary'} />
             : null
@@ -303,7 +291,7 @@ class executiveSummary extends Component {
                     </div>
 
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridtData()}>{Resources['search'][currentLanguage]}</button>
-                    <div className="fullWidthWrapper textLeft reports__proForm" style={{marginBottom:'0'}}>
+                    <div className="fullWidthWrapper textLeft reports__proForm" style={{ marginBottom: '0' }}>
                         <div className="linebylineInput even ">
                             <label className="control-label">{Resources.originalContractSum[currentLanguage]}</label>
                             <div className="inputDev ui input">

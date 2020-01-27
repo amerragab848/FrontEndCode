@@ -10,10 +10,11 @@ import Config from "../../Services/Config.js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
+import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
+//import GridSetup from "../Communication/GridSetup";
+import moment from "moment";
 import Export from "../../Componants/OptionsPanels/Export";
-import GridCustom from 'react-customized-grid';
-import 'react-customized-grid/main.css';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -29,85 +30,105 @@ class BoqContractCost extends Component {
 
         this.columnsGrid = [
             {
-                "field": "details",
-                "title": Resources.details[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "fixed": true,
-                "groupable": true,
-                "sortable": true
+                field: "details",
+                title: Resources["details"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type:"text"
             },
             {
-                "field": "itemCode",
-                "title": Resources.itemCode[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "resourceCode",
-                "title": Resources.resourceCode[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "quantity",
-                "title": Resources.originalQuantity[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "executedQuantity",
-                "title": Resources.executedQuantity[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "mainContractQty",
-                "title": Resources.contractQty[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "subContractQty",
-                "title": Resources.subContractQty[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "poQuantity",
-                "title": Resources.poQuantity[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "percent",
-                "title": Resources.percentage[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "expenseseTotal",
-                "title": Resources.totalExpenses[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "executedTotal",
-                "title": Resources.totalExecuted[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }
+                field: "itemCode",
+                title: Resources["itemCode"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type:"text"
+            },
+            {
+                field: "resourceCode",
+                title: Resources["resourceCode"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type:"text"
+            },
+            {
+                field: "quantity",
+                title: Resources["originalQuantity"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type:"text"
+            },
+            {
+                field: "executedQuantity",
+                title: Resources["executedQuantity"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type:"text"
+            },
+            {
+                field: "mainContractQty",
+                title: Resources["contractQty"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type:"text"
+            },
+            {
+                field: "subContractQty",
+                title: Resources["subContractQty"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type:"text"
+            },
+            {
+                field: "poQuantity",
+                title: Resources["poQuantity"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type:"text"
+            },
+            {
+                field: "percent",
+                title: Resources["percentage"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type:"text"
+            },
+            {
+                field: "expenseseTotal",
+                title: Resources["totalExpenses"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type:"text"
+            },
+            {
+                field: "executedTotal",
+                title: Resources["totalExecuted"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                sortable: true,
+                type:"text"
+            },
+         
         ];
 
         this.state = {
@@ -170,14 +191,11 @@ class BoqContractCost extends Component {
     }
 
     render() {
-
+            
+             //<GridSetup rows={this.state.rows} showCheckbox={false} columns={this.columnsGrid} />
         const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ?
-                    <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columnsGrid}
-                        pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
-                    />
-                    : null
+                this.state.rows.length > 0 ? <GridCustom  cells={this.columnsGrid}  data={this.state.rows}  groups={[]} pageSize={50}   pageSize={50} actions={[]} rowActions={[]} rowClick={()=>{}} />: null
             ) : (
                 <LoadingSection />
             );

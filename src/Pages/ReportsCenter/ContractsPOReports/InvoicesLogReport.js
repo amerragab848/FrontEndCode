@@ -4,8 +4,9 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+
 import moment from "moment";
 import Dataservice from '../../../Dataservice';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
@@ -20,7 +21,8 @@ class InvoicesLogReport extends Component {
             isLoading: false,
             ProjectsData: [],
             selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
-            rows: []
+            rows: [],
+            pageSize: 200,
         }
 
         if (!Config.IsAllow(194)) {
@@ -32,84 +34,74 @@ class InvoicesLogReport extends Component {
 
         this.columns = [
             {
-                key: "projectCode",
-                name: Resources["projectCode"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "projectCode",
+                title: Resources["projectCode"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 250,
-                draggable: true,
+                field: "subject",
+                title: Resources["subject"][currentLanguage],
+                width: 25,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "docDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 160,
-                draggable: true,
+                field: "docDate",
+                title: Resources["docDate"][currentLanguage],
+                width: 16,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             }, {
-                key: "docCloseDate",
-                name: Resources["docClosedate"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "docCloseDate",
+                title: Resources["docClosedate"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                type: "date",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
             },
             {
-                key: "total",
-                name: Resources["total"][currentLanguage],
+                field: "total",
+                title: Resources["total"][currentLanguage],
                 width: 50,
-                draggable: true,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             }, {
-                key: "balance",
-                name: Resources["balanceToFinish"][currentLanguage],
-                width: 140,
-                draggable: true,
+                field: "balance",
+                title: Resources["balanceToFinish"][currentLanguage],
+                width: 14,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
             },
             {
-                key: "comment",
-                name: Resources["comment"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "comment",
+                title: Resources["comment"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
             {
-                key: "lastEditBy",
-                name: Resources["lastEdit"][currentLanguage],
-                width: 120,
-                draggable: true,
+                field: "lastEditBy",
+                title: Resources["lastEdit"][currentLanguage],
+                width: 12,
+                groupable: true,
+                fixed: false,
+                type: "text",
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
             },
         ];
 
@@ -132,8 +124,17 @@ class InvoicesLogReport extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                columns={this.columns} onRowClick={this.OnRowClick} />) : <LoadingSection />
+            <GridCustom
+                ref='custom-data-grid'
+                key="InvoicesLogReport"
+                data={this.state.rows}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={[]}
+                rowActions={[]}
+                cells={this.columns}
+                rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'invoicesReport'} />
