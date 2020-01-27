@@ -217,6 +217,7 @@ class projectWorkFlowAddEdit extends Component {
             indexFollowUp: '',
             WorkFlowDocumentData: [],
             NewMultiApprovalData: [],
+            SelectedApproval: { label: "Select Approval", value: "0" },
             permission: [{ name: 'sendByEmail', code: 606 }, { name: 'sendByInbox', code: 605 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 949 },
             { name: 'createTransmittal', code: 3035 }, { name: 'sendToWorkFlow', code: 702 }],
@@ -622,7 +623,7 @@ class projectWorkFlowAddEdit extends Component {
                     Description: values.Description,
                     workFlowId: this.state.docId,
                     multiApproval: false,
-                    approval: values.approvalText.value
+                    approvalId: values.approvalText.value
                 }
             ).then(
                 res => {
@@ -725,7 +726,7 @@ class projectWorkFlowAddEdit extends Component {
                     Description: values.DescriptionForEdit,
                     workFlowId: this.state.docId,
                     multiApproval: false,
-                    approval: values.approvalText.value
+                    approvalId: values.approvalText.value
                 }
             ).then(
                 res => {
@@ -799,15 +800,16 @@ class projectWorkFlowAddEdit extends Component {
                     res => {
                         this.setState({
                             ContactData: res,
-                            Approval: res.approvalStatusText
+                            Approval: res.approvalStatusText,
                         })
                     }
                 )
 
                 this.setState({
                     ContactDataForEdit: res,
+                    SelectedApproval: { label: res.approvalStatusText, value: res.approvalId },
                     SelectedCompanyForEditContacts: SelectedCompany,
-                    SelectedContactForEditContacts: { 'value': res.contactId, 'label': res.contactName },
+                    SelectedContactForEditContacts: { 'value': res.contactId, 'label': res.contactName }
                 })
             }
         )
@@ -1234,7 +1236,7 @@ class projectWorkFlowAddEdit extends Component {
                             Company: '',
                             ContactName: '',
                             Description: '',
-                            approval: this.state.ApprovalData[0].id
+                            approval: ''
                         }}
 
                         enableReinitialize={true}
@@ -1282,7 +1284,7 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                         <div className="linebylineInput valid-input">
                                             <Dropdown title="approvalText" data={this.state.ApprovalData} name="approvalText"
-                                                selectedValue={values.approval} onChange={setFieldValue} value={values.approval}
+                                                selectedValue={this.state.SelectedApproval} onChange={setFieldValue} value={this.state.SelectedApproval.value}
                                                 handleChange={(e) => this.handleChangeDrops(e, "Approval")}
                                                 onBlur={setFieldTouched} error={errors.approval} touched={touched.approval} />
                                         </div>
@@ -1595,7 +1597,7 @@ class projectWorkFlowAddEdit extends Component {
                                     </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown title="approvalText" data={this.state.ApprovalData} name="approvalText"
-                                            selectedValue={values.approval} onChange={setFieldValue} value={values.approval}
+                                            selectedValue={this.state.SelectedApproval} onChange={setFieldValue} value={this.state.SelectedApproval.value}
                                             handleChange={(e) => this.handleChangeDrops(e, "Approval")}
                                             onBlur={setFieldTouched} error={errors.approval} touched={touched.approval} />
                                     </div>
