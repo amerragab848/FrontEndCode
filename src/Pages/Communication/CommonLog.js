@@ -19,7 +19,7 @@ import Config from "../../Services/Config.js";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let documentObj = {};
- 
+
 class CommonLog extends Component {
 
   constructor(props) {
@@ -52,10 +52,24 @@ class CommonLog extends Component {
       documentObj: {},
       match: props.match
     };
+    this.actions = [
+      {
+        title: 'Delete',
+        handleClick: values => {
+          this.setState({
+            showDeleteModal: true,
+            selectedRows: values
+          });
+        },
+        classes: '',
+      }
+    ];
 
+    this.rowActions = [];
     this.filterMethodMain = this.filterMethodMain.bind(this);
     this.clickHandlerDeleteRowsMain = this.clickHandlerDeleteRowsMain.bind(this);
   };
+
   componentDidMount() {
 
     this.props.actions.FillGridLeftMenu();
@@ -204,17 +218,17 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-  
+
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-  
+
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-  
+
             let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
-  
+
             subject = doc_view;
           }
           row.link = subject;
-        }); 
+        });
         this.setState({
           rows: newRows,
           totalRows: result.total,
@@ -247,8 +261,8 @@ class CommonLog extends Component {
 
         let oldRows = [];
 
-        const newRows = [...oldRows, ...result.data]; 
-        
+        const newRows = [...oldRows, ...result.data];
+
         newRows.forEach(row => {
           let subject = "";
           if (row) {
@@ -261,13 +275,13 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-  
+
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-  
+
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-  
+
             let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
-  
+
             subject = doc_view;
           }
           row.link = subject;
@@ -303,8 +317,8 @@ class CommonLog extends Component {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
         let oldRows = [];
 
-        const newRows = [...oldRows, ...result.data]; 
-        
+        const newRows = [...oldRows, ...result.data];
+
         newRows.forEach(row => {
           let subject = "";
           if (row) {
@@ -317,18 +331,18 @@ class CommonLog extends Component {
               isApproveMode: false,
               perviousRoute: window.location.pathname + window.location.search
             };
-  
+
             let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
-  
+
             let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-  
+
             let doc_view = "/" + documentObj.documentAddEditLink.replace("/", "") + "?id=" + encodedPaylod;
-  
+
             subject = doc_view;
           }
           row.link = subject;
         });
-      
+
         this.setState({
           rows: newRows,
           totalRows: result.data != undefined ? result.total : 0,
@@ -347,13 +361,13 @@ class CommonLog extends Component {
     } else {
       this.GetRecordOfLog(this.state.isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, this.state.projectId);
     }
-  }; 
+  };
   onCloseModal = () => {
     this.setState({ showDeleteModal: false });
-  }; 
+  };
   clickHandlerCancelMain = () => {
     this.setState({ showDeleteModal: false });
-  }; 
+  };
   clickHandlerContinueMain = () => {
     this.setState({
       isLoading: true
@@ -382,7 +396,7 @@ class CommonLog extends Component {
         showDeleteModal: false
       });
     });
-  }; 
+  };
   clickHandlerDeleteRowsMain = selectedRows => {
     if (Config.IsAllow(this.state.documentObj.documentDeletePermission)) {
       this.setState({
@@ -392,7 +406,7 @@ class CommonLog extends Component {
     } else {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
-  }; 
+  };
   renderComponent(documentName, projectId, isCustom) {
 
     var projectId = projectId;
@@ -409,7 +423,7 @@ class CommonLog extends Component {
           field: item.field,
           fixed: index < 3 ? true : false,
           title: Resources[item.friendlyName][currentLanguage],
-          width:  item.width.replace('%',''),
+          width: item.width.replace('%', ''),
           sortable: true,
           groupable: true,
           type: item.dataType === "number" ? item.dataType : (item.dataType === "date" ? item.dataType : "text")
@@ -472,7 +486,7 @@ class CommonLog extends Component {
     } else {
       this.setState({ isLoading: false });
     }
-  }; 
+  };
   GetLogData(url) {
     Api.get(url).then(result => {
       result.data.forEach(row => {
@@ -506,7 +520,7 @@ class CommonLog extends Component {
     }).catch(ex => {
       this.setState({ isLoading: false });
     });
-  }; 
+  };
   handleMinimize = () => {
 
     const currentClass = this.state.minimizeClick;
@@ -524,13 +538,13 @@ class CommonLog extends Component {
       this.state.projectId,
       !this.state.isCustom
     );
-  }; 
+  };
   openModalColumn = () => {
     this.setState({ columnsModal: true })
-  }; 
+  };
   closeModalColumn = () => {
     this.setState({ columnsModal: false })
-  }; 
+  };
   ResetShowHide = () => {
     this.setState({ Loading: true })
     let ColumnsHideShow = this.state.ColumnsHideShow
@@ -546,7 +560,7 @@ class CommonLog extends Component {
         Loading: false, columnsModal: false
       })
     }, 300)
-  }; 
+  };
   handleCheck = (key) => {
     this.setState({ [key]: !this.state[key], Loading: true })
     let data = this.state.ColumnsHideShow
@@ -560,7 +574,7 @@ class CommonLog extends Component {
     setTimeout(() => {
       this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
     }, 300);
-  }; 
+  };
   render() {
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
       return (
@@ -581,8 +595,8 @@ class CommonLog extends Component {
           data={this.state.rows}
           pageSize={this.state.pageSize}
           groups={[]}
-          actions={[]}
-          rowActions={[]}
+          actions={this.actions}
+          rowActions={this.rowActions}
           cells={this.state.columns}
           openModalColumn={this.state.columnsModal}
           rowClick={cell => {

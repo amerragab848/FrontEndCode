@@ -19,10 +19,8 @@ import { __esModule } from "react-modern-datepicker/build/components/ModernDatep
 import companyId from '../../../IP_Configrations.json'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 const find = require('lodash/find')
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-const publicConfiguarion = config.getPayload();
+// const dateFormate = ({ value }) => {    return value ? moment(value).format("DD/MM/YYYY") : "No Date";};
+// const publicConfiguarion = config.getPayload();
 
 class Accounts extends Component {
 
