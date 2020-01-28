@@ -5,17 +5,16 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
+
 const validationSchema = Yup.object().shape({
     companyName: Yup.string().required(Resources['companyRequired'][currentLanguage]).nullable(true)
 })
@@ -45,109 +44,87 @@ class timeSheet extends Component {
             this.props.history.push({
                 pathname: "/"
             });
-
         }
+
         this.columns = [
             {
-                key: "timesheetDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate,
-                frozen: true,
+                "field": "contactName",
+                "title": Resources.ContactName[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "contactName",
-                name: Resources["ContactName"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                frozen: true
+                "field": "timesheetDate",
+                "title": Resources.docDate[currentLanguage],
+                "type": "date",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                frozen: true
+                "field": "description",
+                "title": Resources.description[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "projectName",
+                "title": Resources.projectName[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "refrenceCode",
-                name: Resources["refrenceCode"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "refrenceCode",
+                "title": Resources.refrenceCode[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "taskName",
-                name: Resources["taskName"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "taskName",
+                "title": Resources.taskName[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "hours",
-                name: Resources["hours"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "hours",
+                "title": Resources.hours[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "country",
-                name: Resources["country"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
+                "field": "country",
+                "title": Resources.country[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "location",
-                name: Resources["location"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
+                "field": "location",
+                "title": Resources.location[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "approvalDate",
-                name: Resources["approvalDate"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                formatter: dateFormate
+                "field": "approvalDate",
+                "title": Resources.approvalDate[currentLanguage],
+                "type": "date",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "approvalStatusName",
-                name: Resources["approvalStatus"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
+                "field": "approvalStatusName",
+                "title": Resources.approvalStatus[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             }
         ];
     }
@@ -158,13 +135,13 @@ class timeSheet extends Component {
         if (Config.IsAllow(3737)) {
             this.columns.push(
                 {
-                    key: "cost",
-                    name: Resources["cost"][currentLanguage],
-                    width: 100,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
+                    "field": "cost",
+                    "title": Resources.cost[currentLanguage],
+                    "type": "date",
+                    "width": 15,
+                    "fixed": true,
+                    "groupable": true,
+                    "sortable": true
                 }
             )
         }
@@ -229,13 +206,12 @@ class timeSheet extends Component {
         })
     }
 
-
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['timeSheetReport'][currentLanguage]} />

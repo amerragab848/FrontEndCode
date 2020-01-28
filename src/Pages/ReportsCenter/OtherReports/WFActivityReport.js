@@ -6,13 +6,9 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
-import moment from "moment";
-//const _ = require('lodash')
+import GridCustom from 'react-customized-grid';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
+
 class WFActivityReport extends Component {
 
     constructor(props) {
@@ -33,90 +29,69 @@ class WFActivityReport extends Component {
         }
         this.columns = [
             {
-                key: "arrange",
-                name: Resources["levelNo"][currentLanguage],
-                width: 50,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }
-
-            , {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "arrange",
+                "title": Resources.levelNo[currentLanguage],
+                "type": "text",
+                "width": 5,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "projectName",
+                "title": Resources.projectName[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "docDurationDays",
-                name: Resources["docDurationDays"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "subject",
+                "title": Resources.subject[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "docTypeName",
-                name: Resources["docType"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "docDurationDays",
+                "title": Resources.docDurationDays[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "previousLevelApprovalDate",
-                name: Resources["previousLevelApprovalDate"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
+                "field": "docTypeName",
+                "title": Resources.docType[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "userApprovalDate",
-                name: Resources["userApprovalDate"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
+                "field": "previousLevelApprovalDate",
+                "title": Resources.previousLevelApprovalDate[currentLanguage],
+                "type": "date",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "approvalStatusName",
-                name: Resources["approvalStatusName"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "userApprovalDate",
+                "title": Resources.userApprovalDate[currentLanguage],
+                "type": "date",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "userDurationDays",
-                name: Resources["userDurationDays"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "approvalStatusName",
+                "title": Resources.approvalStatusName[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "userDurationDays",
+                "title": Resources.userDurationDays[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
             }
         ];
 
@@ -159,17 +134,16 @@ class WFActivityReport extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />;
-
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />
+        ) : <LoadingSection />;
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'workFlowActivity'} />
             : null
 
         return (
-
-
             <div className="reports__content">
                 <header>
                     <h2 className="zero">{Resources.workFlowActivity[currentLanguage]}</h2>
@@ -188,10 +162,8 @@ class WFActivityReport extends Component {
                     {dataGrid}
                 </div>
             </div>
-
-
-     )
+        )
     }
-
 }
+
 export default WFActivityReport

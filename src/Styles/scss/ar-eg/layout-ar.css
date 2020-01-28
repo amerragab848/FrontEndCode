@@ -1673,7 +1673,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .boxessss .color-palette li p span {
-    display: inline-block;
+    display: block;
     float: right;
 }
 
@@ -2861,6 +2861,7 @@ h1, h2, h3, h4, h5 {
 
 .mainSide .mainSideNav .mainSidenavContent .sidenavinner .modulesMenuIcons .MenuUl::-webkit-scrollbar-thumb {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background: #fff;
     border: none;
 }
@@ -5726,7 +5727,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .main-header .header-content .nav-right li.notifi-icon .inboxNotif.smallSquare {
-    top: -3px;
+    top: 19px;
     left: -15px;
     position: absolute;
 }
@@ -13131,8 +13132,8 @@ h1, h2, h3, h4, h5 {
     position: absolute;
     left: 0;
     right: 0;
-    top: 50%;
-    height: 4px;
+    top: 4px;
+    height: 10px;
     background: #fff;
     z-index: -1;
 }
@@ -13629,7 +13630,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .ui.dropdown.classico.parent .menu .item .nameofitem {
-    display: inline-block;
+    display: block;
     min-width: 125px;
     width: 100%;
     float: right;
@@ -16622,11 +16623,11 @@ table edition
 .thumbStyle {
     display: inline-flex;
     border-radius: 2px;
-    border: 1px solid #eaeaea;
+    /* border: 1px solid #eaeaea; */
     margin-bottom: 8px;
     margin-left: 8px;
     width: 150px;
-    height: 150px;
+    height: 115px;
     padding: 1px;
     box-sizing: border-box;
 }
@@ -16639,7 +16640,8 @@ table edition
 .imgStyle {
     display: block;
     width: auto;
-    height: 100%;
+    max-height: 100%;
+    max-width: 100%;
 }
 
 .highcharts-container {
@@ -22360,20 +22362,26 @@ thead.grid-header tr.action-bar .actions {
     margin-bottom: 15px; 
     align-items: unset;
     border-bottom: 2px solid #E9ECF0;
-  }
+}
 
-  .company__name.company__name--image img {
-      width: 100%;
-      max-height: 80px;
-  }
-  
-  .footer_print {
-      margin-top: 15px;
-      padding: 20px 40px;
-  }
-  
-  .footer_print img {
-      width: 100%;  
-      max-height: 60px;
-  }
+.company__name.company__name--image img {
+    width: 100%;
+    max-height: 80px;
+}
+
+.footer_print {
+    margin-top: 15px;
+    padding: 20px 40px;
+}
+
+.footer_print img {
+    width: 100%;  
+    max-height: 60px;
+}
  
+.upload__title {
+    text-align: right;
+    font-size: 15px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}

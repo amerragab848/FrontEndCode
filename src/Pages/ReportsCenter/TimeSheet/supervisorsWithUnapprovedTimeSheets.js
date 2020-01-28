@@ -3,13 +3,11 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
+import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
+import { Formik, Form } from "formik"; 
 import moment from "moment";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -32,51 +30,41 @@ class SupervisorsWithUnapprovedTimeSheets extends Component {
         }
 
         this.columns = [{
-            key: "empCode",
-            name: Resources["employeeCode"][currentLanguage],
-            width: 120,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            frozen: true,
-            sortDescendingFirst: true
+            "field": "empCode",
+            "title": Resources.employeeCode[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "fixed": true,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "contactName",
-            name: Resources["ContactName"][currentLanguage],
-            width: 220,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
+            "field": "contactName",
+            "title": Resources.ContactName[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "companyName",
-            name: Resources["CompanyName"][currentLanguage],
-            width: 250,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "companyName",
+            "title": Resources.CompanyName[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "supervisorName",
-            name: Resources["Supervisor"][currentLanguage],
-            width: 200,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "supervisorName",
+            "title": Resources.Supervisor[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "timeSheetCount",
-            name: Resources["timeSheetCount"][currentLanguage],
-            width: 100,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "timeSheetCount",
+            "title": Resources.timeSheetCount[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }];
     }
 
@@ -108,12 +96,11 @@ class SupervisorsWithUnapprovedTimeSheets extends Component {
         this.setState({ [name]: value })
     }
 
-
     render() {
-        const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                columns={this.columns} />) : <LoadingSection />
+        const dataGrid = this.state.isLoading === false ?
+            (<GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []}

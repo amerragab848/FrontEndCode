@@ -11,9 +11,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import GridSetup from "../Communication/GridSetup";
+//import GridSetup from "../Communication/GridSetup";
 import moment from "moment";
 import Export from "../../Componants/OptionsPanels/Export";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -35,97 +36,96 @@ class DeliveredQuantitieReport extends Component {
 
         this.columnsGrid = [
             {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "description",
+                title: Resources["description"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true 
+                type:"text"
             },
             {
-                key: "recourceCode",
-                name: Resources["resourceCode"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "recourceCode",
+                title: Resources["resourceCode"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "materialDeliverySubject",
-                name: Resources["subject"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "materialDeliverySubject",
+                title: Resources["subject"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true 
+                type:"text"
             },
             {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "quantity",
+                title: Resources["quantity"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "unitPrice",
-                name: Resources["unitPrice"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "unitPrice",
+                title: Resources["unitPrice"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "remaining",
-                name: Resources["remaining"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "remaining",
+                title: Resources["remaining"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "projectName",
+                title: Resources["projectName"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "fromContact",
-                name: Resources["fromContact"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "fromContact",
+                title: Resources["fromContact"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type:"text"
             },
             {
-                key: "purchaseOrderDate",
-                name: Resources["purchaseOrderDate"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "purchaseOrderDate",
+                title: Resources["purchaseOrderDate"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
+                type:"date"
             },
             {
-                key: "conditionDate",
-                name: Resources["conditionDate"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "conditionDate",
+                title: Resources["conditionDate"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
-            }
+                type:"date"
+            },
+         
         ];
 
         this.state = {
@@ -188,10 +188,10 @@ class DeliveredQuantitieReport extends Component {
     }
 
     render() {
-
+{/* <GridSetup rows={this.state.rows} showCheckbox={false} columns={this.columnsGrid} /> */}
         const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ? <GridSetup rows={this.state.rows} showCheckbox={false} columns={this.columnsGrid} /> : null
+                this.state.rows.length > 0 ?<GridCustom  cells={this.columnsGrid}  data={this.state.rows}  groups={[]} pageSize={50}   pageSize={50} actions={[]} rowActions={[]} rowClick={()=>{}}  />  : null
             ) : (
                 <LoadingSection />
             );

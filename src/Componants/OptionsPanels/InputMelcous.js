@@ -17,7 +17,7 @@ class InputMelcous extends Component {
           <input
             type={this.props.type === undefined ? "text" : this.props.type}
             className="form-control"
-            id="lastname1"
+            // id="lastname1"
             placeholder={
               this.props.placeholderText == null
                 ? " "

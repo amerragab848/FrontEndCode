@@ -11,9 +11,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument'
-import GridSetup from "../Communication/GridSetup";
+// import GridSetup from "../Communication/GridSetup";
 import Export from "../../Componants/OptionsPanels/Export";
-import sumBy from 'lodash/sumBy'; 
+import sumBy from 'lodash/sumBy';
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -27,95 +28,92 @@ class InvoiceQuantity extends Component {
         super(props)
 
         this.columnsGrid = [
+
             {
-                key: "arrange",
-                name: Resources["numberAbb"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "arrange",
+                title: Resources["numberAbb"][currentLanguage],
+                width: 5,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type: "text"
+            },  {
+                field: "specsSectionTitle",
+                title: Resources["specification"][currentLanguage],
+                width: 10,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+            },   {
+                field: "details",
+                title: Resources["description"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+            },  {
+                field: "quantity",
+                title: Resources["quantity"][currentLanguage],
+                width: 5,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
             },
             {
-                key: "specsSectionTitle",
-                name: Resources["specification"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "quantityComplete",
+                title: Resources["requestedQuantity"][currentLanguage],
+                width: 5,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type: "text"
             },
             {
-                key: "details",
-                name: Resources["description"][currentLanguage],
-                width: 200,
-                draggable: true,
+                field: "variance",
+                title: Resources["releasedQuantity"][currentLanguage],
+                width: 5,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type: "text"
             },
             {
-                key: "quantity",
-                name: Resources["quantity"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "unit",
+                title: Resources["unit"][currentLanguage],
+                width: 5,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type: "text"
             },
             {
-                key: "quantityComplete",
-                name: Resources["requestedQuantity"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "unitPrice",
+                title: Resources["price"][currentLanguage],
+                width: 5,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type: "text"
             },
             {
-                key: "variance",
-                name: Resources["releasedQuantity"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "total",
+                title: Resources["total"][currentLanguage],
+                width: 5,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "unit",
-                name: Resources["unit"][currentLanguage],
-                width: 100,
-                draggable: true,
+                type: "text"
+            }, {
+                field: "totalExcuted",
+                title: Resources["totalRequest"][currentLanguage],
+                width: 5,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "unitPrice",
-                name: Resources["price"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "total",
-                name: Resources["total"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "totalExcuted",
-                name: Resources["totalRequest"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                sortDescendingFirst: true
+                type: "text"
             }
         ];
 
@@ -214,7 +212,15 @@ class InvoiceQuantity extends Component {
 
         const dataGrid = this.state.isLoading === false ?
             (
-                this.state.rows.length > 0 ? <GridSetup rows={this.state.rows} showCheckbox={false} columns={this.columnsGrid} /> : null
+                this.state.rows.length > 0 ?
+                    <GridCustom
+                        cells={this.columnsGrid}
+                        data={this.state.rows}
+                        groups={[]}
+                        pageSize={50} 
+                        actions={[]}
+                        rowActions={[]}
+                        rowClick={() => { }} /> : null
             ) : (
                 <LoadingSection />
             );

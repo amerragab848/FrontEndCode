@@ -6,7 +6,7 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import GridCustom from 'react-customized-grid'; 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class WFUsageReport extends Component {
@@ -20,73 +20,57 @@ class WFUsageReport extends Component {
             rows: [],
             columns: [
                 {
-                    key: "subject",
-                    name: Resources["subject"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }
-
-                , {
-                    key: "weekNo",
-                    name: Resources["weekNumber"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "subject",
+                    "title": Resources.subject[currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "fixed": true,
+                    "groupable": true,
+                    "sortable": true
                 }, {
-                    key: "weeklyPending",
-                    name: Resources["weeklyPending"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "weekNo",
+                    "title": Resources.weekNumber[currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "groupable": true,
+                    "sortable": true
                 }, {
-                    key: "weeklyTotal",
-                    name: Resources["weeklyTotal"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "weeklyPending",
+                    "title": Resources.weeklyPending[currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "groupable": true,
+                    "sortable": true
                 }, {
-                    key: "avgDurationWeekly",
-                    name: Resources["avgDurationWeekly"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "weeklyTotal",
+                    "title": Resources.weeklyTotal[currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "groupable": true,
+                    "sortable": true
                 }, {
-                    key: "avgDuration",
-                    name: Resources["avgDuration"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "avgDurationWeekly",
+                    "title": Resources.avgDurationWeekly[currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "groupable": true,
+                    "sortable": true
                 }, {
-                    key: "totalDocs",
-                    name: Resources["totalDocs"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "avgDuration",
+                    "title": Resources.avgDuration[currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "groupable": true,
+                    "sortable": true
+                }, {
+                    "field": "totalDocs",
+                    "title": Resources.totalDocs[currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "groupable": true,
+                    "sortable": true
                 }
             ]
-
         }
 
         if (!Config.IsAllow(3749)) {
@@ -95,7 +79,6 @@ class WFUsageReport extends Component {
                 pathname: "/"
             });
         }
-
     }
 
     componentDidMount() {
@@ -167,8 +150,9 @@ class WFUsageReport extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.state.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.state.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'workFlowActivity'} />
