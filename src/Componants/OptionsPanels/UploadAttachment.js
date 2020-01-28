@@ -14,7 +14,6 @@ import Config from "../../Services/Config";
 import Resources from "../../resources.json";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
-
 class UploadAttachment extends Component {
     constructor(props) {
         super(props);
@@ -126,7 +125,7 @@ class UploadAttachment extends Component {
                         </Fragment>
                     );
                 }}
-            </Dropzone >
+            </Dropzone>
         );
     };
 
@@ -239,8 +238,9 @@ class UploadAttachment extends Component {
         return (
             <Fragment>
                 <div>
-                    {this.props.changeStatus === false ? (Config.IsAllow(this.props.AddAttachments) ? this.renderAddAttachments() : null)
-                        : (Config.IsAllow(this.props.EditAttachments) ? this.renderEditAttachments() : null)}
+                    {this.props.changeStatus === false ?
+                        (Config.IsAllow(this.props.AddAttachments) ? this.renderAddAttachments() : this.props.docTypeId === 6 ? this.renderAddAttachments() : null)
+                        : (Config.IsAllow(this.props.EditAttachments) ? this.renderEditAttachments() : this.props.docTypeId === 6 ? this.renderEditAttachments() : null)}
                     <div className="drives__upload">
                         <form>
                             <input type="file" name="file" id="file" className="inputfile" />
@@ -249,13 +249,8 @@ class UploadAttachment extends Component {
                         <span className="upload__border"></span>
                         <div className="drive__wrapper">
                             <h2 className="zero">{Resources.uploadFrom[currentLanguage]}</h2>
-                            {Config.IsAllow(this.props.ShowGoogleDrive)
-                                ? this.renderGoogleDrive()
-                                : null}
-                            {Config.IsAllow(this.props.ShowDropBox)
-                                ? this.renderDropBox()
-                                : null}
-
+                            {Config.IsAllow(this.props.ShowGoogleDrive) ? this.renderGoogleDrive() : null}
+                            {Config.IsAllow(this.props.ShowDropBox) ? this.renderDropBox() : null}
                         </div>
                     </div>
                 </div>

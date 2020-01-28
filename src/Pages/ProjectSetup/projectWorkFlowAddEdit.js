@@ -28,8 +28,10 @@ import { SkyLightStateless } from 'react-skylight';
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import Steps from "../../Componants/publicComponants/Steps";
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
-import find from'lodash/find';
-import filter from'lodash/filter';
+import GridCustom from 'react-customized-grid';
+import 'react-customized-grid/main.css';
+import find from 'lodash/find';
+import filter from 'lodash/filter';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let docId = 0;
@@ -39,8 +41,6 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let perviousRoute = '';
 let arrange = 0;
-// const find = require('lodash/find')
-// const filter = require('lodash/filter')
 
 var steps_defination = [];
 
@@ -115,7 +115,9 @@ class projectWorkFlowAddEdit extends Component {
         super(props)
 
         const query = new URLSearchParams(this.props.location.search);
+
         let index = 0;
+
         for (let param of query.entries()) {
             if (index == 0) {
                 try {
@@ -138,53 +140,44 @@ class projectWorkFlowAddEdit extends Component {
         }
 
         const columnsGrid = [
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
             {
-                key: "id",
-                visible: false,
-                width: 50,
-                frozen: true
-            },
-            {
-                key: "arrange",
-                name: Resources["numberAbb"][currentLanguage],
-                width: 50,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "companyName",
-                name: Resources["CompanyName"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "contactName",
-                name: Resources["ContactName"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-            {
-                key: "description",
-                name: Resources["description"][currentLanguage],
-                width: 250,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            },
-        ]
+                "field": "arrange",
+                "title": Resources.numberAbb[currentLanguage],
+                "type": "text",
+                "width": 8,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "companyName",
+                "title": Resources.CompanyName[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "contactName",
+                "title": Resources.ContactName[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "description",
+                "title": Resources.description[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "approvalStatusText",
+                "title": Resources.approvalText[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "sortable": true
+            }
+        ];
 
         this.state = {
             IsAddModel: false,
@@ -216,6 +209,7 @@ class projectWorkFlowAddEdit extends Component {
             DocumentType: [],
             DocumentTypeDropData: [],
             MultiApprovalData: [],
+            ApprovalData: [],
             ContactDataForEdit: {},
             SelectedContactForEditContacts: {},
             SelectedContactForEditContacts: {},
@@ -223,6 +217,7 @@ class projectWorkFlowAddEdit extends Component {
             indexFollowUp: '',
             WorkFlowDocumentData: [],
             NewMultiApprovalData: [],
+            SelectedApproval: { label: "Select Approval", value: "0" },
             permission: [{ name: 'sendByEmail', code: 606 }, { name: 'sendByInbox', code: 605 },
             { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 949 },
             { name: 'createTransmittal', code: 3035 }, { name: 'sendToWorkFlow', code: 702 }],
@@ -320,7 +315,7 @@ class projectWorkFlowAddEdit extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({
             isLoading: true
         })
@@ -419,8 +414,6 @@ class projectWorkFlowAddEdit extends Component {
                 })
             }
         )
-
-
     }
 
     handleChangeDrops = (item, name) => {
@@ -435,6 +428,9 @@ class projectWorkFlowAddEdit extends Component {
 
             case 'ContactName':
                 this.setState({ SelectedContact: item })
+                break;
+            case 'Approval':
+                this.setState({ SelectedApproval: item })
                 break;
 
             case 'Company':
@@ -550,6 +546,14 @@ class projectWorkFlowAddEdit extends Component {
             }
         })
 
+        dataservice.GetDataList('GetDefaultListForList?listType=WFApprovalstatus', 'title', 'id').then(res => {
+
+            this.setState({
+                ApprovalData: res,
+                isLoading: false
+            })
+        })
+
         dataservice.GetDataList('ProjectWorkFlowGetList?projectId=' + projectId + '', 'subject', 'id').then(result => {
 
             this.setState({
@@ -619,6 +623,7 @@ class projectWorkFlowAddEdit extends Component {
                     Description: values.Description,
                     workFlowId: this.state.docId,
                     multiApproval: false,
+                    approvalId: values.approvalText.value
                 }
             ).then(
                 res => {
@@ -642,11 +647,9 @@ class projectWorkFlowAddEdit extends Component {
                         }
                     )
                 }
-
             )
         }
         else {
-
             setTimeout(() => {
                 this.setState({
                     isLoading: false,
@@ -655,7 +658,6 @@ class projectWorkFlowAddEdit extends Component {
             toast.error('This Contact Already Exist in Same Level ....')
             values.ContactName = ''
         }
-
     }
 
     onCloseModal = () => {
@@ -724,6 +726,7 @@ class projectWorkFlowAddEdit extends Component {
                     Description: values.DescriptionForEdit,
                     workFlowId: this.state.docId,
                     multiApproval: false,
+                    approvalId: values.approvalText.value
                 }
             ).then(
                 res => {
@@ -797,14 +800,16 @@ class projectWorkFlowAddEdit extends Component {
                     res => {
                         this.setState({
                             ContactData: res,
+                            Approval: res.approvalStatusText,
                         })
                     }
                 )
 
                 this.setState({
                     ContactDataForEdit: res,
+                    SelectedApproval: { label: res.approvalStatusText, value: res.approvalId },
                     SelectedCompanyForEditContacts: SelectedCompany,
-                    SelectedContactForEditContacts: { 'value': res.contactId, 'label': res.contactName },
+                    SelectedContactForEditContacts: { 'value': res.contactId, 'label': res.contactName }
                 })
             }
         )
@@ -964,11 +969,24 @@ class projectWorkFlowAddEdit extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows} columns={this.state.columns} minHeight={700} onRowClick={this.ShowPopUpForEdit}
-                    showCheckbox={this.state.showCheckbox} clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain} />
+                <GridCustom cells={this.state.columns} data={this.state.rows}
+                    groups={[]} pageSize={this.state.rows.length}
+                    actions={[{
+                        title: 'Delete',
+                        handleClick: (values) => {
+                            this.clickHandlerDeleteRowsMain(values);
+                        },
+                        classes: '',
+                    }]}
+                    rowActions={[]}
+                    rowClick={(values) => {
+                        this.ShowPopUpForEdit(values);
+                    }}
+                />
             ) : <LoadingSection />
 
-        let FollowUpsData = this.state.FollowUpsData
+        let FollowUpsData = this.state.FollowUpsData;
+
         let RenderFollowUpsTable =
             FollowUpsData.map((item, index) => {
                 return (
@@ -994,7 +1012,8 @@ class projectWorkFlowAddEdit extends Component {
                 )
             })
 
-        let DocumentTypeData = this.state.WorkFlowDocumentData
+        let DocumentTypeData = this.state.WorkFlowDocumentData;
+
         let RenderDocumentTypeTable =
             DocumentTypeData.map((item, index) => {
                 return (
@@ -1063,9 +1082,9 @@ class projectWorkFlowAddEdit extends Component {
                         this.AddEditWorkFlow(values, actions)
                     }}>
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldValue, setFieldTouched }) => (
-                        <Form onSubmit={handleSubmit}> 
-                            <div className="document-fields"> 
-                                <div className="proForm first-proform"> 
+                        <Form onSubmit={handleSubmit}>
+                            <div className="document-fields">
+                                <div className="proForm first-proform">
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.subject[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
@@ -1095,13 +1114,13 @@ class projectWorkFlowAddEdit extends Component {
                                                 onBlur={e => this.handleChange(e, 'status')} value="false" onChange={e => this.handleChange(e, 'status')} />
                                             <label>{Resources.closed[currentLanguage]}</label>
                                         </div>
-                                    </div> 
-                                </div> 
-                                <div className="proForm datepickerContainer"> 
+                                    </div>
+                                </div>
+                                <div className="proForm datepickerContainer">
                                     <div className="linebylineInput valid-input alternativeDate">
                                         <DatePicker title='docDate' startDate={this.state.document.docDate}
                                             handleChange={e => this.handleChangeDate(e, 'docDate')} />
-                                    </div> 
+                                    </div>
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources.arrange[currentLanguage]}</label>
                                         <div className="ui input inputDev"  >
@@ -1112,7 +1131,7 @@ class projectWorkFlowAddEdit extends Component {
                                                     handleBlur(e)
                                                 }} name="arrange" />
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown data={this.state.RejectionOptionData} selectedValue={this.state.selectedRejectionOptions}
                                             handleChange={event => this.handleChangeDropDown(event, 'rejectionOptions', false, '', '', '', 'selectedRejectionOptions')}
@@ -1217,6 +1236,7 @@ class projectWorkFlowAddEdit extends Component {
                             Company: '',
                             ContactName: '',
                             Description: '',
+                            approval: ''
                         }}
 
                         enableReinitialize={true}
@@ -1232,29 +1252,20 @@ class projectWorkFlowAddEdit extends Component {
                                         <h2 className="zero">{Resources['addContact'][currentLanguage]}</h2>
                                     </div>
                                 </header>
-
                                 <div className='document-fields'>
-
                                     <div className="proForm datepickerContainer">
-
                                         <div className="linebylineInput valid-input">
-
                                             <Dropdown title="company" data={this.state.CompanyData} name="Company"
                                                 selectedValue={values.Company} onChange={setFieldValue}
                                                 handleChange={(e) => this.handleChangeDrops(e, "Company")} touched={touched.Company}
                                                 onBlur={setFieldTouched} error={errors.Company} value={values.Company} />
-
                                         </div>
-
                                         <div className="linebylineInput valid-input">
-
                                             <Dropdown title="ContactName" data={this.state.ContactData} name="ContactName"
                                                 selectedValue={values.ContactName} onChange={setFieldValue} value={values.ContactName}
                                                 handleChange={(e) => this.handleChangeDrops(e, "ContactName")}
                                                 onBlur={setFieldTouched} error={errors.ContactName} touched={touched.ContactName} />
-
                                         </div>
-
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['levelNo'][currentLanguage]}</label>
                                             <div className={'ui input inputDev ' + (errors.levelNo && touched.levelNo ? 'has-error' : null) + ' '}>
@@ -1264,7 +1275,6 @@ class projectWorkFlowAddEdit extends Component {
                                                 {errors.levelNo && touched.levelNo ? (<em className="pError">{errors.levelNo}</em>) : null}
                                             </div>
                                         </div>
-
                                         <div className="linebylineInput valid-input fullInputWidth">
                                             <label className="control-label">{Resources['description'][currentLanguage]}</label>
                                             <div className="inputDev ui input">
@@ -1272,23 +1282,25 @@ class projectWorkFlowAddEdit extends Component {
                                                     onChange={(e) => { handleChange(e) }} placeholder={Resources['description'][currentLanguage]} />
                                             </div>
                                         </div>
-
-                                        <div className="slider-Btns">
+                                        <div className="linebylineInput valid-input">
+                                            <Dropdown title="approvalText" data={this.state.ApprovalData} name="approvalText"
+                                                selectedValue={this.state.SelectedApproval} onChange={setFieldValue} value={this.state.SelectedApproval.value}
+                                                handleChange={(e) => this.handleChangeDrops(e, "Approval")}
+                                                onBlur={setFieldTouched} error={errors.approval} touched={touched.approval} />
+                                        </div>
+                                        <div className="slider-Btns letterFullWidth">
                                             <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['add'][currentLanguage]}</button>
                                         </div>
                                     </div>
-
                                     <div className="doc-pre-cycle">
                                         <header>
                                             <h2 className="zero">{Resources['contactList'][currentLanguage]}</h2>
                                         </header>
                                         {dataGrid}
-
                                     </div>
                                 </div>
                             </Form>
                         )}
-
                     </Formik>
                     <div className="doc-pre-cycle">
                         <div className="slider-Btns">
@@ -1297,7 +1309,6 @@ class projectWorkFlowAddEdit extends Component {
                     </div>
                 </div>
             )
-
         }
 
         let ThirdStepFollowingUps = () => {
@@ -1399,7 +1410,6 @@ class projectWorkFlowAddEdit extends Component {
         let FouthStepDocumentType = () => {
             return (
                 <div className="subiTabsContent feilds__top">
-
                     <Formik
                         initialValues={{
                             DocumentTypeDrop: '',
@@ -1407,15 +1417,11 @@ class projectWorkFlowAddEdit extends Component {
                             yellowAlert: '',
                             GreenAlert: '',
                         }}
-
                         enableReinitialize={true}
-
                         validationSchema={ValidtionSchemaDocumentType}
-
                         onSubmit={(values, actions) => {
                             this.AddDocumentType(values, actions)
                         }}>
-
                         {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                             <Form onSubmit={handleSubmit}>
                                 <header className="main__header">
@@ -1423,7 +1429,6 @@ class projectWorkFlowAddEdit extends Component {
                                         <h2 className="zero">{Resources['addItems'][currentLanguage]}</h2>
                                     </div>
                                 </header>
-
                                 <div className='document-fields'>
                                     <div className="proForm datepickerContainer">
                                         <div className="linebylineInput valid-input">
@@ -1435,46 +1440,6 @@ class projectWorkFlowAddEdit extends Component {
                                                 touched={touched.DocumentTypeDrop}
                                                 value={values.DocumentTypeDrop} />
                                         </div>
-
-                                        {/* <div className="linebylineInput valid-input">
-                                            <label className="control-label">{Resources['redAlert'][currentLanguage]}</label>
-                                            <div className={'ui input inputDev ' + (errors.redAlert && touched.redAlert ? 'has-error' : null) + ' '}>
-                                                <input autoComplete="off" value={values.redAlert} className="form-control" name="redAlert"
-                                                    onBlur={(e) => { handleBlur(e) }}
-                                                    onChange={(e) => {
-                                                        handleChange(e)
-                                                    }}
-                                                    placeholder={Resources['redAlert'][currentLanguage]} />
-                                                {errors.redAlert && touched.redAlert ? (<em className="pError">{errors.redAlert}</em>) : null}
-                                            </div>
-                                        </div>
-
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">{Resources['yellowAlert'][currentLanguage]}</label>
-                                            <div className={'ui input inputDev ' + (errors.yellowAlert && touched.yellowAlert ? 'has-error' : null) + ' '}>
-                                                <input autoComplete="off" value={values.yellowAlert} className="form-control" name="yellowAlert"
-                                                    onBlur={(e) => { handleBlur(e) }}
-                                                    onChange={(e) => {
-                                                        handleChange(e)
-                                                    }}
-                                                    placeholder={Resources['yellowAlert'][currentLanguage]} />
-                                                {errors.yellowAlert && touched.yellowAlert ? (<em className="pError">{errors.yellowAlert}</em>) : null}
-                                            </div>
-                                        </div>
-
-                                        <div className="linebylineInput valid-input">
-                                            <label className="control-label">{Resources['GreenAlert'][currentLanguage]}</label>
-                                            <div className={'ui input inputDev ' + (errors.GreenAlert && touched.GreenAlert ? 'has-error' : null) + ' '}>
-                                                <input autoComplete="off" value={values.GreenAlert} className="form-control" name="GreenAlert"
-                                                    onBlur={(e) => { handleBlur(e) }}
-                                                    onChange={(e) => {
-                                                        handleChange(e)
-                                                    }}
-                                                    placeholder={Resources['GreenAlert'][currentLanguage]} />
-                                                {errors.GreenAlert && touched.GreenAlert ? (<em className="pError">{errors.GreenAlert}</em>) : null}
-                                            </div>
-                                        </div> */}
-
                                     </div>
                                     <div className="slider-Btns">
                                         <button className="primaryBtn-1 btn meduimBtn" type='submit' >ADD</button>
@@ -1520,15 +1485,11 @@ class projectWorkFlowAddEdit extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     {RenderDocumentTypeTable}
-
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
-
                     <div className="doc-pre-cycle">
                         <div className="slider-Btns">
                             <button className="primaryBtn-1 btn meduimBtn" onClick={() => this.changeCurrentStep(4)}>NEXT STEP</button>
@@ -1589,6 +1550,7 @@ class projectWorkFlowAddEdit extends Component {
                         SelectedCompanyForEditContacts: this.state.SelectedCompanyForEditContacts,
                         SelectedContactForEditContacts: this.state.SelectedContactForEditContacts,
                         DescriptionForEdit: this.state.ContactDataForEdit.description,
+                        approval: this.state.Approval
                     }}
 
                     enableReinitialize={true}
@@ -1596,7 +1558,6 @@ class projectWorkFlowAddEdit extends Component {
                     onSubmit={(values, actions) => {
                         this.EditContact(values, actions)
                     }}>
-
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit}>
                             <header className="main__header">
@@ -1604,26 +1565,20 @@ class projectWorkFlowAddEdit extends Component {
                                     <h2 className="zero">{Resources['addContact'][currentLanguage]}</h2>
                                 </div>
                             </header>
-
                             <div className='document-fields'>
-
                                 <div className="proForm datepickerContainer">
-
                                     <div className="linebylineInput">
-
                                         <Dropdown title="company" data={this.state.CompanyData} name="SelectedCompanyForEditContacts"
                                             selectedValue={this.state.SelectedCompanyForEditContacts} onChange={setFieldValue}
                                             handleChange={(e) => this.handleChangeDrops(e, "SelectedCompanyForEditContacts")} touched={touched.SelectedCompanyForEditContacts}
                                             onBlur={setFieldTouched} error={errors.SelectedCompanyForEditContacts} value={values.SelectedCompanyForEditContacts} />
                                     </div>
-
                                     <div className="linebylineInput">
                                         <Dropdown title="ContactName" data={this.state.ContactData} name="SelectedContactForEditContacts"
                                             selectedValue={values.SelectedContactForEditContacts} onChange={setFieldValue} value={values.SelectedContactForEditContacts}
                                             handleChange={(e) => this.handleChangeDrops(e, "SelectedContactForEditContacts")}
                                             onBlur={setFieldTouched} error={errors.SelectedContactForEditContacts} touched={touched.SelectedContactForEditContacts} />
                                     </div>
-
                                     <div className="linebylineInput fullInputWidth">
                                         <label className="control-label">{Resources['levelNo'][currentLanguage]}</label>
                                         <div className={'ui input inputDev ' + (errors.levelNoForEdit && touched.levelNoForEdit ? 'has-error' : null) + ' '}>
@@ -1633,7 +1588,6 @@ class projectWorkFlowAddEdit extends Component {
                                             {errors.levelNoForEdit && touched.levelNoForEdit ? (<em className="pError">{errors.levelNoForEdit}</em>) : null}
                                         </div>
                                     </div>
-
                                     <div className="linebylineInput fullInputWidth">
                                         <label className="control-label">{Resources['description'][currentLanguage]}</label>
                                         <div className="inputDev ui input">
@@ -1641,12 +1595,16 @@ class projectWorkFlowAddEdit extends Component {
                                                 onChange={(e) => { handleChange(e) }} placeholder={Resources['description'][currentLanguage]} />
                                         </div>
                                     </div>
-
+                                    <div className="linebylineInput valid-input">
+                                        <Dropdown title="approvalText" data={this.state.ApprovalData} name="approvalText"
+                                            selectedValue={this.state.SelectedApproval} onChange={setFieldValue} value={this.state.SelectedApproval.value}
+                                            handleChange={(e) => this.handleChangeDrops(e, "Approval")}
+                                            onBlur={setFieldTouched} error={errors.approval} touched={touched.approval} />
+                                    </div>
                                     <div className="fullWidthWrapper">
                                         <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['save'][currentLanguage]}</button>
                                     </div>
                                 </div>
-
                             </div>
                         </Form>
                     )}
@@ -1661,13 +1619,8 @@ class projectWorkFlowAddEdit extends Component {
                 }
 
                 <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document one__tab one_step readOnly_inputs" : "documents-stepper noTabs__document one__tab one_step"}>
-
-
                     <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.workFlow[currentLanguage]} moduleTitle={Resources['generalCoordination'][currentLanguage]} />
-
-
                     <div className="doc-container">
-
                         <div className="skyLight__form">
                             <SkyLightStateless onOverlayClicked={() => this.setState({ showPopUp: false })}
                                 title={Resources['editTitle'][currentLanguage]}
@@ -1675,7 +1628,6 @@ class projectWorkFlowAddEdit extends Component {
                                 {RenderEditContacts()}
                             </SkyLightStateless>
                         </div>
-
                         <div className="step-content">
                             {this.state.CurrStep === 0 ? <Fragment>{FirstStepWorkFlow()}</Fragment> :
                                 this.state.CurrStep === 1 ? <Fragment> {SecondStepContacts()}</Fragment> :
@@ -1683,8 +1635,6 @@ class projectWorkFlowAddEdit extends Component {
                                         this.state.CurrStep === 3 ? <Fragment> {FouthStepDocumentType()}</Fragment> :
                                             <Fragment> {FivethStepMultiApproval()}</Fragment>}
                         </div>
-
-
                         <Fragment>
                             <Steps
                                 steps_defination={steps_defination}

@@ -6,16 +6,14 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
+
 const validationSchema = Yup.object().shape({
     contactName: Yup.string().required(Resources['contactNameRequired'][currentLanguage]).nullable(true)
 })
@@ -37,61 +35,45 @@ class ReportUserExpenses extends Component {
             this.props.history.push({
                 pathname: "/"
             });
-
         }
 
         this.columns = [{
-            key: "projectName",
-            name: Resources["projectName"][currentLanguage],
-            width: 220,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            frozen: true,
-            sortDescendingFirst: true
+            "field": "projectName",
+            "title": Resources.projectName[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "fixed": true,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "contactName",
-            name: Resources["ContactName"][currentLanguage],
-            width: 220,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
+            "field": "contactName",
+            "title": Resources.ContactName[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "description",
-            name: Resources["description"][currentLanguage],
-            width: 160,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true
+            "field": "description",
+            "title": Resources.description[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "docDate",
-            name: Resources["docDate"][currentLanguage],
-            width: 160,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
-            formatter: dateFormate
-
+            "field": "docDate",
+            "title": Resources.docDate[currentLanguage],
+            "type": "date",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
         }, {
-            key: "expenseValue",
-            name: Resources["expenseValue"][currentLanguage],
-            width: 160,
-            draggable: true,
-            sortable: true,
-            resizable: true,
-            filterable: true,
-            sortDescendingFirst: true,
-
-        }
-        ];
-
+            "field": "expenseValue",
+            "title": Resources.expenseValue[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
+        }];
     }
 
     componentDidMount() {
@@ -122,11 +104,9 @@ class ReportUserExpenses extends Component {
                 this.setState({
                     rows: [], isLoading: false, showChart: false
                 });
-
         }).catch(() => {
             this.setState({ isLoading: false })
         })
-
     }
 
     setDate = (name, value) => {
@@ -135,9 +115,9 @@ class ReportUserExpenses extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['userExpensesRpt'][currentLanguage]} />
@@ -159,7 +139,6 @@ class ReportUserExpenses extends Component {
                         }}>
                         {({ errors, touched, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="InspectionRequestForm" className="proForm reports__proForm" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="ContactName" name="contactName" index="contactName"
                                         data={this.state.dropDownList} selectedValue={this.state.selectedContact}

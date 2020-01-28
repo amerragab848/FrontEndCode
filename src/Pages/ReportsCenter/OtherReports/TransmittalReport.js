@@ -8,8 +8,8 @@ import Export from "../../../Componants/OptionsPanels/Export";
 import GridSetup from "../../Communication/GridSetup"
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import CryptoJS from 'crypto-js';
+import GridCustom from 'react-customized-grid';
 import moment from "moment";
-//const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const dateFormate = ({ value }) => {
@@ -39,134 +39,104 @@ class TransmittalReport extends Component {
         }
         this.columns = [
             {
-                key: "arrange",
-                name: Resources["levelNo"][currentLanguage],
-                width: 50,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "arrange",
+                "title": Resources.levelNo[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "fixed": true,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "statusName",
-                name: Resources["statusName"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "statusName",
+                "title": Resources.statusName[currentLanguage],
+                "type": "text",
+                "width": 10,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "projectName",
+                "title": Resources.projectName[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "subject",
-                name: Resources["subject"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true, formatter: this.subjectLink
+                "field": "subject",
+                "title": Resources.subject[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "fromCompanyName",
-                name: Resources["fromCompany"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "fromCompanyName",
+                "title": Resources.fromCompany[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "sendDate",
-                name: Resources["docDate"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
+                "field": "sendDate",
+                "title": Resources.docDate[currentLanguage],
+                "type": "date",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "lastApproveDate",
-                name: Resources["lastApproveDate"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
+                "field": "lastApproveDate",
+                "title": Resources.lastApproveDate[currentLanguage],
+                "type": "date",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "duration2",
-                name: Resources["duration"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "duration2",
+                "title": Resources.duration[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "oppenedBy",
-                name: Resources["openedBy"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "oppenedBy",
+                "title": Resources.openedBy[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "closedBy",
-                name: Resources["closedBy"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "closedBy",
+                "title": Resources.closedBy[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "actionByContactName",
-                name: Resources["actionByContact"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "actionByContactName",
+                "title": Resources.actionByContact[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "workFlowName",
-                name: Resources["workFlowName"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "workFlowName",
+                "title": Resources.workFlowName[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "lastApprovalByContactName",
-                name: Resources["lastApproval"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                "field": "lastApprovalByContactName",
+                "title": Resources.lastApproval[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }, {
-                key: "attachDocDate",
-                name: Resources["attachDocDate"][currentLanguage],
-                width: 120,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                formatter: dateFormate
+                "field": "attachDocDate",
+                "title": Resources.attachDocDate[currentLanguage],
+                "type": "date",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
             }
         ];
     }
@@ -212,8 +182,9 @@ class TransmittalReport extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'transmittalReport'} />

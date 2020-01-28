@@ -6,7 +6,7 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import GridCustom from 'react-customized-grid'; 
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from "formik";
@@ -41,35 +41,29 @@ class projectTotaltimeSheet extends Component {
             });
 
         }
-        this.columns = [
-            {
-                key: "projectName",
-                name: Resources["projectName"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "projectCode",
-                name: Resources["projectCode"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }, {
-                key: "hours",
-                name: Resources["hours"][currentLanguage],
-                width: 200,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
-            }
+        this.columns = [{
+            "field": "projectName",
+            "title": Resources.projectName[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "fixed": true,
+            "groupable": true,
+            "sortable": true
+        }, {
+            "field": "projectCode",
+            "title": Resources.projectCode[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
+        }, {
+            "field": "hours",
+            "title": Resources.hours[currentLanguage],
+            "type": "text",
+            "width": 15,
+            "groupable": true,
+            "sortable": true
+        }
         ];
     }
 
@@ -136,9 +130,9 @@ class projectTotaltimeSheet extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                selectedCopmleteRow={true}
-                pageSize={this.state.pageSize} columns={this.columns} />) : <LoadingSection />
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['projectTotaltimeSheetRpt'][currentLanguage]} />

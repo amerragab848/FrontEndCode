@@ -6,6 +6,7 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
+import GridCustom from 'react-customized-grid';
 import GridSetup from "../../Communication/GridSetup"
 import moment from "moment";
 //const _ = require('lodash')
@@ -24,24 +25,23 @@ class WFUsageReport extends Component {
             rows: [],
             columns: [
                 {
-                    key: "subject",
-                    name: Resources["subject"][currentLanguage],
-                    width: 150,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "level",
-                    name: Resources["levelNo"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "subject",
+                    "title": Resources.subject[currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "fixed": true,
+                    "groupable": true,
+                    "sortable": true
                 },
+                {
+                    "field": "level",
+                    "title": Resources.levelNo[currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "fixed": true,
+                    "groupable": true,
+                    "sortable": true
+                }
             ]
 
         }
@@ -55,7 +55,7 @@ class WFUsageReport extends Component {
 
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Api.get('GetAllWorkFlowList').then(result => {
             let list = []
             result.forEach((element) => {
@@ -76,41 +76,32 @@ class WFUsageReport extends Component {
 
             let columns = [
                 {
-                    key: "subject",
-                    name: Resources["subject"][currentLanguage],
-                    width: 150,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "level",
-                    name: Resources["levelNo"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
-                }, {
-                    key: "level",
-                    name: Resources["levelNo"][currentLanguage],
-                    width: 120,
-                    draggable: true,
-                    sortable: true,
-                    resizable: true,
-                    filterable: true,
-                    sortDescendingFirst: true
+                    "field": "subject",
+                    "title": Resources.subject[currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "fixed": true,
+                    "groupable": true,
+                    "sortable": true
+                },
+                {
+                    "field": "level",
+                    "title": Resources.levelNo[currentLanguage],
+                    "type": "text",
+                    "width": 15,
+                    "groupable": true,
+                    "sortable": true
                 }]
 
             res.forEach((element) => {
                 columns.push(
                     {
-                        key: element.projectName,
-                        name: element.projectName,
-                        width: 120, draggable: true, sortable: true,
-                        resizable: true, filterable: true, sortDescendingFirst: true
+                        "field": element.projectName,
+                        "title": element.projectName,
+                        "type": "text",
+                        "width": 15,
+                        "groupable": true,
+                        "sortable": true
                     })
             })
 
@@ -122,10 +113,10 @@ class WFUsageReport extends Component {
         if (this.state.selectedWF.value != '0') {
             this.setState({ isLoading: true })
             Api.post('GetFollowUpsUsageChilds?code=' + this.state.selectedWF.value).then((res) => {
-                let data=res!=null?res:[]
+                let data = res != null ? res : []
                 this.setState({ rows: data, isLoading: false })
             }).catch(() => {
-                this.setState({ isLoading: false ,rows:[]})
+                this.setState({ isLoading: false, rows: [] })
             })
         }
     }
@@ -133,8 +124,9 @@ class WFUsageReport extends Component {
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
-            <GridSetup rows={this.state.rows} showCheckbox={false}
-                pageSize={this.state.pageSize} columns={this.state.columns} />)
+            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.state.columns}
+                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+            />)
             : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
