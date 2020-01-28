@@ -111,8 +111,7 @@ class ExpensesUserAddEdit extends Component {
             approvalData: approvalData,
             workFlowData: [],
             docTypeId: 6
-        }
-
+        } 
     }
 
     componentDidMount() {
@@ -602,7 +601,9 @@ class ExpensesUserAddEdit extends Component {
                             <div className="doc-pre-cycle">
                                 <div>
                                     {this.state.id > 0 && this.state.isEdit === false ?
-                                        (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.id}
+                                        (<UploadAttachment 
+                                            docTypeId={this.state.docTypeId} 
+                                            docId={this.state.id}
                                             projectId={this.state.selectedProject.value} />) : null}
                                     {this.state.id > 0 && this.state.isEdit === false ? this.viewAttachments() : null}
                                 </div>
@@ -783,7 +784,9 @@ class ExpensesUserAddEdit extends Component {
                             <div className="doc-pre-cycle">
                                 <div>
                                     {this.state.id > 0 && this.state.isEdit === true ?
-                                        (<UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.id}
+                                        (<UploadAttachment 
+                                            docTypeId={this.state.docTypeId} 
+                                            docId={this.state.id}
                                             projectId={this.state.selectedProject.value} />) : null}
                                     {this.state.id > 0 && this.state.isEdit === true ? this.viewAttachments() : null}
                                 </div>

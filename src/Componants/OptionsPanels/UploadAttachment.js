@@ -238,8 +238,9 @@ class UploadAttachment extends Component {
         return (
             <Fragment>
                 <div>
-                    {this.props.changeStatus === false ? (Config.IsAllow(this.props.AddAttachments) ? this.renderAddAttachments() : null)
-                        : (Config.IsAllow(this.props.EditAttachments) ? this.renderEditAttachments() : null)}
+                    {this.props.changeStatus === false ?
+                        (Config.IsAllow(this.props.AddAttachments) ? this.renderAddAttachments() : this.props.docTypeId === 6 ? this.renderAddAttachments() : null)
+                        : (Config.IsAllow(this.props.EditAttachments) ? this.renderEditAttachments() : this.props.docTypeId === 6 ? this.renderEditAttachments() : null)}
                     <div className="drives__upload">
                         <form>
                             <input type="file" name="file" id="file" className="inputfile" />
