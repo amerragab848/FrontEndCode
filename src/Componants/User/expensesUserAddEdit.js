@@ -6,7 +6,7 @@ import Resources from '../../resources.json';
 import Tree from '../OptionsPanels/Tree'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import ReactTable from "react-table"; 
+import ReactTable from "react-table";
 import Dropdown from "../OptionsPanels/DropdownMelcous";
 import DatePicker from "../OptionsPanels/DatePicker";
 import ConfirmationModal from "../publicComponants/ConfirmationModal";
@@ -21,7 +21,7 @@ import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
 import { bindActionCreators } from 'redux';
 import SendToExpensesWorkFlow from './sendToExpensesWorkFlow';
 import ViewExpensesWF from './viewExpensesWF';
-import ExpensesWFApproval from './expensesWFApproval'; 
+import ExpensesWFApproval from './expensesWFApproval';
 import CryptoJS from "crypto-js";
 
 var steps_defination = [];
@@ -38,7 +38,7 @@ const find = require('lodash/find');
 let selectedRows = [];
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
+    comment: Yup.string().required(Resources['comment'][currentLanguage]),
     description: Yup.string().required(Resources['descriptionRequired'][currentLanguage]),
     projectId: Yup.string().required(Resources['projectSelection'][currentLanguage]),
     expenseTypeId: Yup.string().required(Resources['expensesTypeRequired'][currentLanguage]),
@@ -328,7 +328,7 @@ class ExpensesUserAddEdit extends Component {
                 let parentData = obj
                 parentData.id = result.id
                 parentData.parentId = result.parentId
-                this.setState({ Loading: false, parent: obj.subject, parentData, id: obj.id });
+                this.setState({ Loading: false, parent: obj.description, parentData, id: obj.id });
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
             }).catch(ex => {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
@@ -348,13 +348,16 @@ class ExpensesUserAddEdit extends Component {
         values.parentId = this.state.isEdit ? this.state.id : this.state.parentData.parentId;
         values.docDate = this.state.parentData.docDate;
         values.id = this.state.parentData.id;
-        values.subject = this.state.parentData.subject;
+        values.description = this.state.parentData.description;
+        values.comment = this.state.parentData.comment;
         return obj;
     }
     // set expenses item values in tab 2 to save 
     saveItem(values, resetForm) {
         this.setState({ Loading: true });
+
         let obj = this.setItemValues(values);
+
         dataservice.addObject('AddExpensesUser', obj).then(
 
             result => {
@@ -365,9 +368,10 @@ class ExpensesUserAddEdit extends Component {
                 values.expenseValue = 0;
                 values.unitRate = 0;
                 this.setState({ Loading: false, itemData: data, selectedExpensesTypeItem: { label: Resources.expensesTypeRequired[currentLanguage], value: "0" } });
-                //resetForm();
 
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle);
+
+                resetForm();
             }).catch(ex => {
                 toast.error(Resources['operationCanceled'][currentLanguage].successTitle);
             });
@@ -456,7 +460,7 @@ class ExpensesUserAddEdit extends Component {
                                 projectId: '',
                                 expenseTypeId: '',
                                 description: this.state.isEdit ? this.state.itemEdit.description : '',
-                                subject: this.state.isEdit ? this.state.itemEdit.subject : '',
+                                comment: this.state.isEdit ? this.state.itemEdit.comment : '',
                                 boqId: '',
                                 boqItemId: '',
                                 expenseValue: this.state.isEdit ? this.state.itemEdit.expenseValue : 0,
@@ -471,19 +475,17 @@ class ExpensesUserAddEdit extends Component {
                                 onSubmit={(values) => { this.save(values) }}>
                                 {({ errors, values, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                                     <Form id="QsForm" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-                                        {this.state.isEdit ? null :
-                                            <div className="proForm first-proform">
-                                                <div className="linebylineInput valid-input">
-                                                    <label className="control-label">{Resources.subject[currentLanguage]}</label>
-                                                    <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                                        <input name='subject' className="form-control fsadfsadsa" id="subject"
-                                                            placeholder={Resources.subject[currentLanguage]} value={values.subject} autoComplete='off'
-                                                            onChange={handleChange} onBlur={handleBlur} />
-                                                        {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
-                                                    </div>
+                                        <div className={"proForm datepickerContainer" + (this.state.isEdit ? ' readOnly_inputs' : '')}>
+                                            <div className="linebylineInput valid-input">
+                                                <label className="control-label">{Resources.description[currentLanguage]}</label>
+                                                <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
+                                                    <input name='description' className="form-control fsadfsadsa" id="description"
+                                                        placeholder={Resources.description[currentLanguage]} value={values.description} autoComplete='off'
+                                                        onChange={handleChange} onBlur={handleBlur} />
+                                                    {touched.description ? (<em className="pError">{errors.description}</em>) : null}
                                                 </div>
                                             </div>
-                                        }
+                                        </div>
                                         <div className={"proForm datepickerContainer" + (this.state.isEdit ? ' readOnly_inputs' : '')}>
                                             <div className="linebylineInput valid-input alternativeDate">
                                                 <DatePicker title='docDate' startDate={values.docDate}
@@ -502,24 +504,26 @@ class ExpensesUserAddEdit extends Component {
                                                     handleChange={event => this.dropsHandleChange(event, "peetyCashId", "selectedPettyCash")}
                                                     index="peetyCashId" name="peetyCashId" id="peetyCashId" />
                                             </div>
+                                            {this.state.isEdit === false ?
+                                                <Fragment>
+                                                    <div className="linebylineInput valid-input">
+                                                        <Dropdown title="expensesType" data={this.state.expensesTypeData} selectedValue={this.state.selectedExpensesType}
+                                                            handleChange={event => this.dropsHandleChange(event, "expenseTypeId", "selectedExpensesType")}
+                                                            onChange={setFieldValue} onBlur={setFieldTouched} error={errors.expenseTypeId}
+                                                            touched={touched.expenseTypeId} index="expenseTypeId" name="expenseTypeId" id="expenseTypeId" />
+                                                    </div>
 
-                                            <div className="linebylineInput valid-input">
-                                                <Dropdown title="expensesType" data={this.state.expensesTypeData} selectedValue={this.state.selectedExpensesType}
-                                                    handleChange={event => this.dropsHandleChange(event, "expenseTypeId", "selectedExpensesType")}
-                                                    onChange={setFieldValue} onBlur={setFieldTouched} error={errors.expenseTypeId}
-                                                    touched={touched.expenseTypeId} index="expenseTypeId" name="expenseTypeId" id="expenseTypeId" />
-                                            </div>
-
-                                            <div className="linebylineInput valid-input fullInputWidth">
-                                                <label className="control-label">{Resources.description[currentLanguage]}</label>
-                                                <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
-                                                    <input name='description' className="form-control fsadfsadsa" id="description"
-                                                        placeholder={Resources.description[currentLanguage]} value={values.description} autoComplete='off'
-                                                        onChange={handleChange} onBlur={handleBlur} />
-                                                    {touched.description ? (<em className="pError">{errors.description}</em>) : null}
-                                                </div>
-                                            </div>
-
+                                                    <div className="linebylineInput valid-input fullInputWidth">
+                                                        <label className="control-label">{Resources.comment[currentLanguage]}</label>
+                                                        <div className={"inputDev ui input" + (errors.comment && touched.comment ? (" has-error") : !errors.comment && touched.comment ? (" has-success") : " ")} >
+                                                            <input name='comment' className="form-control fsadfsadsa" id="comment"
+                                                                placeholder={Resources.comment[currentLanguage]} value={values.comment} autoComplete='off'
+                                                                onChange={handleChange} onBlur={handleBlur} />
+                                                            {touched.comment ? (<em className="pError">{errors.comment}</em>) : null}
+                                                        </div>
+                                                    </div>
+                                                </Fragment>
+                                                : null}
                                             <div className="linebylineInput valid-input">
                                                 <Dropdown title="boq" data={this.state.boqData} selectedValue={this.state.selectedBoq}
                                                     handleChange={event => this.dropsHandleChange(event, "boqId", "selectedBoq")}
@@ -546,40 +550,41 @@ class ExpensesUserAddEdit extends Component {
                                                     handleChange={event => this.dropsHandleChange(event, "boqItemId", "selectedBoqItem")}
                                                     index="boqItemId" name="boqItemId" id="boqItemId" />
                                             </div>
-
-                                            <div className="linebylineInput valid-input fullInputWidth">
-                                                <label className="control-label">{Resources['unitPrice'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.unitRate ? 'has-error' : !errors.unitRate && touched.unitRate ? (" has-success") : " ")}>
-                                                    <input className="form-control" name='unitRate'
-                                                        placeholder={Resources['unitPrice'][currentLanguage]}
-                                                        value={values.unitRate} onChange={handleChange} onBlur={handleBlur} />
-                                                    {errors.unitRate ? (<em className="pError">{errors.unitRate}</em>) : null}
-                                                </div>
-                                            </div>
-
-                                            <div className="linebylineInput valid-input fullInputWidth">
-                                                <label className="control-label">{Resources['quantity'][currentLanguage]} </label>
-                                                <div className={"inputDev ui input " + (errors.expenseValue ? 'has-error' : !errors.expenseValue && touched.expenseValue ? (" has-success") : " ")}>
-                                                    <input className="form-control" name='expenseValue'
-                                                        placeholder={Resources['quantity'][currentLanguage]} value={values.expenseValue}
-                                                        onChange={handleChange} onBlur={handleBlur} />
-                                                    {errors.expenseValue ? (<em className="pError">{errors.expenseValue}</em>) : null}
-                                                </div>
-                                            </div>
-
-                                            {this.state.isEdit ?
-                                                <div className="linebylineInput valid-input fullInputWidth">
-                                                    <label className="control-label">{Resources['total'][currentLanguage]} </label>
-                                                    <div className="inputDev ui input ">
-                                                        <input className="form-control" name='expenseValue'
-                                                            placeholder={Resources['total'][currentLanguage]} value={this.state.itemEdit.total}
-                                                        />
+                                            {this.state.isEdit === false ?
+                                                <Fragment>
+                                                    <div className="linebylineInput valid-input fullInputWidth">
+                                                        <label className="control-label">{Resources['unitPrice'][currentLanguage]} </label>
+                                                        <div className={"inputDev ui input " + (errors.unitRate ? 'has-error' : !errors.unitRate && touched.unitRate ? (" has-success") : " ")}>
+                                                            <input className="form-control" name='unitRate'
+                                                                placeholder={Resources['unitPrice'][currentLanguage]}
+                                                                value={values.unitRate} onChange={handleChange} onBlur={handleBlur} />
+                                                            {errors.unitRate ? (<em className="pError">{errors.unitRate}</em>) : null}
+                                                        </div>
                                                     </div>
-                                                </div>
+
+                                                    <div className="linebylineInput valid-input fullInputWidth">
+                                                        <label className="control-label">{Resources['quantity'][currentLanguage]} </label>
+                                                        <div className={"inputDev ui input " + (errors.expenseValue ? 'has-error' : !errors.expenseValue && touched.expenseValue ? (" has-success") : " ")}>
+                                                            <input className="form-control" name='expenseValue'
+                                                                placeholder={Resources['quantity'][currentLanguage]} value={values.expenseValue}
+                                                                onChange={handleChange} onBlur={handleBlur} />
+                                                            {errors.expenseValue ? (<em className="pError">{errors.expenseValue}</em>) : null}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="linebylineInput valid-input fullInputWidth">
+                                                        <label className="control-label">{Resources['total'][currentLanguage]} </label>
+                                                        <div className="inputDev ui input ">
+                                                            <input className="form-control" name='expenseValue'
+                                                                placeholder={Resources['total'][currentLanguage]} value={this.state.itemEdit.total}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </Fragment>
                                                 : null
                                             }
                                         </div>
-                                        <div> 
+                                        <div>
                                         </div>
                                         <div className="slider-Btns">
                                             {this.state.isLoading ?
@@ -699,9 +704,7 @@ class ExpensesUserAddEdit extends Component {
                         onSubmit={(values, { resetForm }) => { this.saveItem(values, resetForm) }}>
                         {({ errors, values, touched, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="QsForm2" className="customProform" noValidate="novalidate" onSubmit={handleSubmit}>
-
-                                <div className={"proForm datepickerContainer" + (this.state.viewWorkFlow ? ' readOnly_inputs' : '')}>
-
+                                <div className={"proForm datepickerContainer"}>
                                     <div className="linebylineInput valid-input">
                                         <Dropdown title="expensesType" data={this.state.expensesTypeData} selectedValue={this.state.selectedExpensesTypeItem}
                                             handleChange={e => this.setState({ selectedExpensesTypeItem: e })}
@@ -710,7 +713,6 @@ class ExpensesUserAddEdit extends Component {
                                     </div>
 
                                     <div className="linebylineInput valid-input fullInputWidth">
-
                                         <label className="control-label">{Resources.description[currentLanguage]}</label>
                                         <div className={"inputDev ui input" + (errors.description && touched.description ? (" has-error") : !errors.description && touched.description ? (" has-success") : " ")} >
                                             <input name='description' className="form-control fsadfsadsa" id="description"
@@ -740,7 +742,7 @@ class ExpensesUserAddEdit extends Component {
                                         </div>
                                     </div>
 
-                                </div> 
+                                </div>
                                 <div className="slider-Btns">
                                     {this.state.isLoading ?
                                         <button className="primaryBtn-1 btn disabled">

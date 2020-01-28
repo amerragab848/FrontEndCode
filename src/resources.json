@@ -8315,5 +8315,10 @@
     "approvalText": {
         "en": "Approval Text",
         "ar": "نص الموافقة"
+    },
+    "oldRevisedQuantity": {
+        "en": "Old Revised Quantity",
+        "ar": "الكمية المرتجعة السابقة"
     }
+    
 }
