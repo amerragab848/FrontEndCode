@@ -4,6 +4,7 @@ import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import GridSetup from "../../Pages/Communication/GridSetupWithFilter";
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import Resources from "../../resources.json";
 import CryptoJS from "crypto-js";
 import { connect } from "react-redux";
@@ -44,121 +45,110 @@ let subjectLink = ({ value, row }) => {
 class FollowUpsSummaryDetails extends Component {
   constructor(props) {
     super(props);
-
     var columnsGrid = [
       {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "arrange",
+        title: Resources["arrange"][currentLanguage],
+        width: 5,
+        groupable: true,
+        fixed: true,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "fromCompany",
-        name: Resources["fromCompany"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "projectName",
+        title: Resources["projectName"][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "arrange",
-        name: Resources["arrange"][currentLanguage],
-        width: 100,
-        draggable: true,
+        field: "fromCompany",
+        title: Resources["fromCompany"][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "subject",
-        name: Resources["subject"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "subject",
+        title: Resources["subject"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        formatter: subjectLink
+        type: "text"
       },
       {
-        key: "actionByContactName",
-        name: Resources["actionByContact"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "actionByContactName",
+        title: Resources["actionByContact"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "approvalStatusName",
-        name: Resources["approvalStatus"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "approvalStatusName",
+        title: Resources["approvalStatus"][currentLanguage],
+        width: 5,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "docTypeName",
-        name: Resources["docType"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "docTypeName",
+        title: Resources["docType"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "delayDuration",
-        name: Resources["delay"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "delayDuration",
+        title: Resources["delay"][currentLanguage],
+        width: 5,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "duration2",
-        name: Resources["durationDays"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "duration2",
+        title: Resources["durationDays"][currentLanguage],
+        width: 5,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
+        type: "text"
       },
       {
-        key: "sendDate",
-        name: Resources["sendDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "sendDate",
+        title: Resources["sendDate"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
+        type: "date"
       },
       {
-        key: "lastApprovalDate",
-        name: Resources["lastApprovalDate"][currentLanguage],
-        width: 150,
-        draggable: true,
+        field: "lastApprovalDate",
+        title: Resources["lastApprovalDate"][currentLanguage],
+        width: 10,
+        groupable: true,
+        fixed: false,
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        formatter: dateFormate
+        type: "date"
       }
+
+    ]
+    var groups = [
+
     ];
 
     const filtersColumns = [
@@ -236,6 +226,7 @@ class FollowUpsSummaryDetails extends Component {
       isLoading: true,
       rows: [],
       filtersColumns: filtersColumns,
+      groups: groups,
       isCustom: true
     };
   }
@@ -271,11 +262,37 @@ class FollowUpsSummaryDetails extends Component {
   }
 
   render() {
+
     const dataGrid = this.state.isLoading === false ? (
-      <GridSetup rows={this.state.rows}
-        onRowClick={this.onRowClick}
-        columns={this.state.columns}
-        showCheckbox={false} />) : <LoadingSection />;
+      <GridCustom
+        cells={this.state.columns}
+        data={this.state.rows}
+        groups={this.state.groups}
+        pageSize={this.state.rows ? this.state.rows.length : 0}
+        actions={[]}
+        rowActions={[]}
+        rowClick={obj => {
+          if (this.state.RouteEdit !== '') {
+            let objRout = {
+              docId: obj.docId,
+              projectId: obj.projectId,
+              projectName: obj.projectName,
+              arrange: 0,
+              docApprovalId: 0,
+              isApproveMode: false,
+              perviousRoute: window.location.pathname + window.location.search
+            }
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+            this.props.history.push({
+              pathname: "/" + obj.docLink,
+              search: "?id=" + encodedPaylod
+            });
+          }
+        }}
+      />
+    ) : <LoadingSection />;
+
 
     const btnExport = this.state.isLoading === false ?
       <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={this.state.pageTitle} />
@@ -293,7 +310,30 @@ class FollowUpsSummaryDetails extends Component {
             {btnExport}
           </div>
         </div>
-        <div>{dataGrid}</div>
+        <div>
+          <div className="doc-pre-cycle letterFullWidth">
+            <div className="precycle-grid">
+              <div className="grid-container">
+                <div className="submittalFilter readOnly__disabled">
+                  <div className="subFilter">
+                    <h3 className="zero">
+                    </h3>
+                  </div>
+                  <div className="rowsPaginations readOnly__disabled">
+                    <button className="rowunActive" >
+                      <i className="angle left icon" />
+                    </button>
+                    <button className="rowunActive">
+                      <i className="angle right icon" />
+                    </button>
+                  </div>
+                </div>
+                {dataGrid}
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
