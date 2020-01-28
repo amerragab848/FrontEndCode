@@ -32,7 +32,6 @@ import SkyLight from "react-skylight";
 import * as communicationActions from "../../store/actions/communication";
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
-import GridSetup from "../Communication/GridSetup";
 import Steps from "../../Componants/publicComponants/Steps";
 import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
@@ -76,7 +75,6 @@ let isApproveMode = 0;
 let docApprovalId = 0;
 let arrange = 0;
 let perviousRoute = '';
-let columnsGrid = [];
 let voColumns = [];
 let selectedRow = [];
 let indexx = 0;
@@ -110,6 +108,7 @@ class ContractInfoAddEdit extends Component {
     }
 
     this.state = {
+      showPopUpRevised: false,
       LoadingPage: false,
       docTypeId: 9,
       pageNumber: 0,
@@ -144,6 +143,7 @@ class ContractInfoAddEdit extends Component {
       variationOrders: [],
       variationOrdersData: [],
       viewHistoryData: [],
+      viewRevisedHistoryData: [],
       selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
       selectedContract: { label: Resources.selectContract[currentLanguage], value: "0" },
       selectedContractWithContact: { label: Resources.selectContract[currentLanguage], value: "0" },
@@ -168,6 +168,7 @@ class ContractInfoAddEdit extends Component {
       objItems: {},
       showSubPurchaseOrders: false
     };
+
     this.groups = [];
 
     this.actions = [
@@ -185,6 +186,11 @@ class ContractInfoAddEdit extends Component {
         title: 'veiw History',
         handleClick: row => {
           this.viewHistoryDocument(row.id)
+        }
+      }, {
+        title: 'Veiw Revised Quantity History',
+        handleClick: row => {
+          this.viewRevisedQtyHistoryDocument(row.id)
         }
       }
     ];
@@ -298,142 +304,39 @@ class ContractInfoAddEdit extends Component {
         fixed: false,
         sortable: true,
         type: "text"
-      },
-    ];
-
-    columnsGrid = [
-      {
-        key: "id",
-        name: Resources["actions"][currentLanguage],
-        width: 100,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        formatter: this.statusButton
-      },
-      {
-        key: "details",
-        name: Resources["description"][currentLanguage],
-        width: 100,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "itemCode",
-        name: Resources["itemCode"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "resourceCode",
-        name: Resources["resourceCode"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "boqType",
-        name: Resources["boqType"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "boqTypeChild",
-        name: Resources["boqTypeChild"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "boqSubType",
-        name: Resources["boqSubType"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "originalQuantity",
-        name: Resources["originalQuantity"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "excutionQuantity",
-        name: Resources["excutionQuantity"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "quantity",
-        name: Resources["remainingQuantity"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "unit",
-        name: Resources["unit"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "originalUnitPrice",
-        name: Resources["unitPrice"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
-      },
-      {
-        key: "total",
-        name: Resources["total"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true
       }
     ];
+
+    if (Config.IsAllow(3739)) {
+      this.cells.push(
+        {
+          title: Resources["revQuantity"][currentLanguage],
+          field: "revisedQuantity",
+          width: 10,
+          groupable: true,
+          fixed: false,
+          sortable: true,
+          handleChange: (e, cell) => {
+            cell.revisedQuantity = e.target.value;
+          },
+          handleBlur: (e, cell) => {
+            let obj = {};
+            obj.contractId = this.state.docId;
+            obj.revisedQuantity = cell.revisedQuantity;
+            obj.id = cell.id;
+            Api.post("EditRevisedQuantity", obj).then(() => {
+              toast.success(Resources["operationSuccess"][currentLanguage]);
+              this.setState({ isLoading: false });
+            }).catch(() => {
+              toast.error(Resources["operationCanceled"][currentLanguage]);
+              this.setState({ isLoading: false });
+            });
+          },
+          type: this.state.isViewMode === false ? "input" : "text"
+        },
+      );
+    }
+
     voColumns = [
       {
         accessor: 'id',
@@ -501,10 +404,9 @@ class ContractInfoAddEdit extends Component {
 
     if (!Config.IsAllow(139) && !Config.IsAllow(140) && !Config.IsAllow(142)) {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
-      this.props.history.push(
-        this.state.perviousRoute
-      );
+      this.props.history.push(this.state.perviousRoute);
     }
+
     steps_defination = [
       {
         name: "contract",
@@ -603,7 +505,7 @@ class ContractInfoAddEdit extends Component {
     );
   }
 
-  componentWillMount() {
+  componentDidMount() {
 
     if (this.state.docId > 0) {
 
@@ -682,46 +584,19 @@ class ContractInfoAddEdit extends Component {
       this.setState({ document: props.document });
 
       if (indexx === 0) {
-
-        if (Config.IsAllow(3739)) {
-          this.cells.push(
-            {
-              title: Resources["revQuantity"][currentLanguage],
-              field: "revisedQuantity",
-              width: 10,
-              groupable: true,
-              fixed: false,
-              sortable: true,
-              handleChange: (e, cell) => {
-                cell.revisedQuantity = e.target.value;
-              },
-              handleBlur: (e, cell) => {
-                let obj = {};
-                obj.contractId = this.state.docId;
-                obj.revisedQuantity = cell.revisedQuantity;
-                obj.id = cell.id;
-                Api.post("EditRevisedQuantity", obj).then(() => {
-                  toast.success(Resources["operationSuccess"][currentLanguage]);
-                  this.setState({ isLoading: false });
-                }).catch(() => {
-                  toast.error(Resources["operationCanceled"][currentLanguage]);
-                  this.setState({ isLoading: false });
-                });
-              },
-              type: this.state.isViewMode === false ? "input" : "text"
-            },
-          );
-        }
         indexx++;
       }
       this.fillDropDowns(true);
       this.checkDocumentIsView();
     }
+
     let _items = props.items ? props.items : []
+
     if (JSON.stringify(this.state.rows.length) != JSON.stringify(_items)) {
       this.setState({ isLoading: true })
       this.setState({ rows: _items }, () => this.setState({ isLoading: false }));
     }
+
     if (this.state.showModal != props.showModal) {
       this.setState({ showModal: props.showModal });
     }
@@ -1013,6 +888,20 @@ class ContractInfoAddEdit extends Component {
     }
   }
 
+  viewRevisedQtyHistoryDocument(values) {
+    if (this.state.isViewMode === false) {
+
+      DataService.GetDataGrid("GetHistoryRevisedQuantity?itemId=" + values).then(result => {
+
+        this.setState({
+          viewRevisedHistoryData: result
+        });
+
+        this.simpleDialogHistoryRevisedData.show()
+      });
+    }
+  }
+
   handleChangeItems(e, field) {
 
     let original_document = { ...this.state.objItems };
@@ -1258,6 +1147,36 @@ class ContractInfoAddEdit extends Component {
         sortabel: true
       }
     ];
+
+    const columnsRevised = [
+      {
+        Header: Resources["oldRevisedQuantity"][currentLanguage],
+        accessor: "oldRevisedQuantity",
+        sortabel: true,
+        width: 250
+      },
+      {
+        Header: Resources["revisedQuantity"][currentLanguage],
+        accessor: "revisedQuantity",
+        sortabel: true,
+        width: 250
+      }, {
+        Header: Resources["addedDate"][currentLanguage],
+        accessor: "addedDate",
+        sortabel: true,
+        width: 250,
+        Cell: row => (
+          <span>
+            <span>{moment(row.value).format("YYYY-MM-DD")}</span>
+          </span>
+        )
+      }, {
+        Header: Resources["addedBy"][currentLanguage],
+        accessor: "addedName",
+        sortabel: true,
+        width: 250
+      }
+    ]
 
     const columns = [
       {
@@ -1867,6 +1786,16 @@ class ContractInfoAddEdit extends Component {
             <Fragment>
               <ReactTable data={this.state.viewHistoryData}
                 columns={columnsDetails}
+                defaultPageSize={5}
+                noDataText={Resources["noData"][currentLanguage]}
+                className="-striped -highlight" />
+            </Fragment>
+          </SkyLight>
+
+          <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialogHistoryRevisedData = ref} title={Resources["viewHistory"][currentLanguage]}>
+            <Fragment>
+              <ReactTable data={this.state.viewRevisedHistoryData}
+                columns={columnsRevised}
                 defaultPageSize={5}
                 noDataText={Resources["noData"][currentLanguage]}
                 className="-striped -highlight" />
