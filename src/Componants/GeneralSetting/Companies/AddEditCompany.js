@@ -215,6 +215,7 @@ class AddEditCompany extends Component {
                 this.props.history.push({ pathname: '/TemplatesSettings' })
                 toast.success("operation complete sucessful");
             })
+            this.uploadCompanyFooter();
         }
     }
 
