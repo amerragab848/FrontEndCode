@@ -79,7 +79,11 @@ class DocApprovalDetails extends Component {
         fixed: false,
         width: 16,
         sortable: true,
-        type: "text"
+        type: "text",
+        href: 'link',
+        onClick: () => { },
+        classes: 'bold',
+        showTip: true
       },
       {
         field: "creationDate",
@@ -281,7 +285,7 @@ class DocApprovalDetails extends Component {
         name: "delay",
         type: "date",
         isCustom: true
-      } 
+      }
     ];
 
     this.state = {
@@ -317,8 +321,33 @@ class DocApprovalDetails extends Component {
       localStorage.setItem("lastRoute", "/DocApprovalDetails?action=1");
 
       Api.get("GetRejectedRequestsDocApprove").then(result => {
+        const newRows = [...result];
+
+        newRows.forEach(row => {
+          let subject = "";
+          if (row) {
+            let obj = {
+              docId: row.docId,
+              projectId: row.projectId,
+              projectName: row.projectName,
+              arrange: row.arrange,
+              docApprovalId: row.accountDocWorkFlowId,
+              isApproveMode: true,
+              perviousRoute: window.location.pathname + window.location.search
+            };
+
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+            let doc_view = "/" + row.docLink.replace("/", "") + "?id=" + encodedPaylod;
+
+            subject = doc_view;
+          }
+          row.link = subject;
+        });
         this.setState({
-          rows: result != null ? result : [],
+          rows: newRows != null ? newRows : [],
           isLoading: false
         });
       });
@@ -330,8 +359,32 @@ class DocApprovalDetails extends Component {
       localStorage.setItem("lastRoute", "/DocApprovalDetails?action=2");
 
       Api.get("GetApprovalRequestsDocApprove").then(result => {
+        const newRows = [...result];
+        newRows.forEach(row => {
+          let subject = "";
+          if (row) {
+            let obj = {
+              docId: row.docId,
+              projectId: row.projectId,
+              projectName: row.projectName,
+              arrange: row.arrange,
+              docApprovalId: row.accountDocWorkFlowId,
+              isApproveMode: true,
+              perviousRoute: window.location.pathname + window.location.search
+            };
+
+            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+            let doc_view = "/" + row.docLink.replace("/", "") + "?id=" + encodedPaylod;
+
+            subject = doc_view;
+          }
+          row.link = subject;
+        });
         this.setState({
-          rows: result != null ? result : [],
+          rows: newRows != null ? newRows : [],
           isLoading: false
         });
       });
@@ -391,8 +444,8 @@ class DocApprovalDetails extends Component {
           data={this.state.rows}
           actions={[]}
           rowActions={[]}
-          rowClick={cell => { 
-            if (cell) { 
+          rowClick={cell => {
+            if (cell) {
               if (cell.readStatus != true) {
                 Api.post("UpdateStatusWorkFlow?id=" + cell.id);
               }
