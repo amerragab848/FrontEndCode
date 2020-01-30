@@ -1928,26 +1928,38 @@ class requestPaymentsAddEdit extends Component {
 
         if (event.label === "Export") {
             this.setState({ isView: false, exportFile: "" });
-
-            const ExportColumns = itemsColumns.filter(
-                i => i.key !== "BtnActions"
-            );
-
+            let ExportColumnsList = [];
+            //const ExportColumns =
+            itemsColumns.filter(i => {
+                if (i.key !== "BtnActions") {
+                    ExportColumnsList.push({ title: i.name, field: i.key });
+                }
+            });
             exportFile = (
-                <Export isExportRequestPayment={true} type={1}
+                <Export
+                    isExportRequestPayment={true} type={1}
                     key={"Export-1"}
                     rows={this.state.isLoading === false ? this.state.paymentsItems : []}
-                    columns={ExportColumns}
+                    columns={ExportColumnsList}
                     fileName={"Request Payments Items"} />
             );
         } else {
             this.setState({ isView: false, exportFile: "" });
 
+
+            let VOItemsColumnsList=[];
+            VOItemsColumns.filter(i => {
+                if (i.key !== "BtnActions") {
+                    VOItemsColumnsList.push({ title: i.name, field: i.key });
+                }
+            });
+
             exportFile = (
-                <Export isExportRequestPayment={true}
+                <Export
+                    isExportRequestPayment={true}
                     key={"Export-2"}
                     rows={this.state.isLoading === false ? this.state.paymentsItems : []}
-                    columns={VOItemsColumns}
+                    columns={VOItemsColumnsList}
                     fileName={"Request Payments Items"}
                 />
             );
