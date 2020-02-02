@@ -113,29 +113,29 @@ const isCompany = Config.getPayload().uty == "company" ? true : false;
 var steps_defination = [];
 
 const columnOfInterimPayment = [{
-    name: Resources["workDescription"][currentLanguage],
-    key: 'description'
+    title: Resources["workDescription"][currentLanguage],
+    field: 'description'
 }, {
-    name: Resources["previousConsultatnt"][currentLanguage],
-    key: 'prevoiuse'
+    title: Resources["previousConsultatnt"][currentLanguage],
+    field: 'prevoiuse'
 }, {
-    name: Resources["currentConsultatnt"][currentLanguage],
-    key: 'currentValue'
+    title: Resources["currentConsultatnt"][currentLanguage],
+    field: 'currentValue'
 }, {
-    name: Resources["totalConsultatnt"][currentLanguage],
-    key: 'total'
+    title: Resources["totalConsultatnt"][currentLanguage],
+    field: 'total'
 }, {
-    name: Resources["previousContractor"][currentLanguage],
-    key: 'contractorPrevoiuse'
+    title: Resources["previousContractor"][currentLanguage],
+    field: 'contractorPrevoiuse'
 }, {
-    name: Resources["currentContractor"][currentLanguage],
-    key: 'contractorCurrentValue'
+    title: Resources["currentContractor"][currentLanguage],
+    field: 'contractorCurrentValue'
 }, {
-    name: Resources["totalContractor"][currentLanguage],
-    key: 'contractorTotal'
+    title: Resources["totalContractor"][currentLanguage],
+    field: 'contractorTotal'
 }, {
-    name: Resources["comments"][currentLanguage],
-    key: 'comment'
+    title: Resources["comments"][currentLanguage],
+    field: 'comment'
 }]
 
 class requestPaymentsAddEdit extends Component {
@@ -1272,8 +1272,8 @@ class requestPaymentsAddEdit extends Component {
                     let approvedInvoicesParent = [];
                     res = res || [];
                     let columnsApprovedInvoices = [{
-                        name: Resources["JobBuilding"][currentLanguage],
-                        key: 'building'
+                        title: Resources["JobBuilding"][currentLanguage],
+                        field: 'building'
                     }]
                     let trFoot = {};
                     result.map(parent => {
@@ -1306,9 +1306,9 @@ class requestPaymentsAddEdit extends Component {
                         approvedInvoicesChilds.push(obj);
 
                         columnsApprovedInvoices.push({
-                            name: parent.details,
-                            key: parent.details
-                        })
+                            title: parent.details,
+                            field: parent.details
+                        });
 
                         if (parent.total === null) {
                             parent.total = 0;
@@ -1318,9 +1318,10 @@ class requestPaymentsAddEdit extends Component {
                     });
 
                     columnsApprovedInvoices.push({
-                        name: Resources["total"][currentLanguage],
-                        key: rowTotal
-                    })
+                        title: Resources["total"][currentLanguage],
+                        field: rowTotal
+                    });
+
                     trFoot["rowTotal"] = rowTotal;
                     res.push({ ...trFoot });
                     this.setState({
@@ -1927,26 +1928,38 @@ class requestPaymentsAddEdit extends Component {
 
         if (event.label === "Export") {
             this.setState({ isView: false, exportFile: "" });
-
-            const ExportColumns = itemsColumns.filter(
-                i => i.key !== "BtnActions"
-            );
-
+            let ExportColumnsList = [];
+            //const ExportColumns =
+            itemsColumns.filter(i => {
+                if (i.key !== "BtnActions") {
+                    ExportColumnsList.push({ title: i.name, field: i.key });
+                }
+            });
             exportFile = (
-                <Export isExportRequestPayment={true} type={1}
+                <Export
+                    isExportRequestPayment={true} type={1}
                     key={"Export-1"}
                     rows={this.state.isLoading === false ? this.state.paymentsItems : []}
-                    columns={ExportColumns}
+                    columns={ExportColumnsList}
                     fileName={"Request Payments Items"} />
             );
         } else {
             this.setState({ isView: false, exportFile: "" });
 
+
+            let VOItemsColumnsList=[];
+            VOItemsColumns.filter(i => {
+                if (i.key !== "BtnActions") {
+                    VOItemsColumnsList.push({ title: i.name, field: i.key });
+                }
+            });
+
             exportFile = (
-                <Export isExportRequestPayment={true}
+                <Export
+                    isExportRequestPayment={true}
                     key={"Export-2"}
                     rows={this.state.isLoading === false ? this.state.paymentsItems : []}
-                    columns={VOItemsColumns}
+                    columns={VOItemsColumnsList}
                     fileName={"Request Payments Items"}
                 />
             );
@@ -2257,7 +2270,8 @@ class requestPaymentsAddEdit extends Component {
         //ExportInterimPayment 
         const btnExportInterimPayment = this.state.isLoading === false ?
             (
-                <Export key={"Export-4"} rows={this.state.isLoading === false ? this.state.interimInvoicedTable : []} columns={columnOfInterimPayment}
+                <Export key={"Export-4"} rows={this.state.isLoading === false ? this.state.interimInvoicedTable : []}
+                    columns={columnOfInterimPayment}
                     fileName={Resources["interimPaymentCertificate"][currentLanguage]} />
             ) : null;
 
@@ -2858,19 +2872,19 @@ class requestPaymentsAddEdit extends Component {
                                                                     </button>
                                                                 )}
 
-                                                                {this.props.changeStatus === true ? 
+                                                                {this.props.changeStatus === true ?
                                                                     (this.state.userType != "user" ? (
-                                                                    <div className="default__dropdown" style={{ minWidth: "225px" }}>
-                                                                        <Dropdown data={this.state.fillDropDown}
-                                                                            selectedValue={this.state.selectedDropDown}
-                                                                            handleChange={event => { this.handleDropAction(event); }}
-                                                                            onChange={setFieldValue}
-                                                                            name="actions"
-                                                                            index="actions"
-                                                                        />
-                                                                    </div>
-                                                                ) : null
-                                                                ) : null}
+                                                                        <div className="default__dropdown" style={{ minWidth: "225px" }}>
+                                                                            <Dropdown data={this.state.fillDropDown}
+                                                                                selectedValue={this.state.selectedDropDown}
+                                                                                handleChange={event => { this.handleDropAction(event); }}
+                                                                                onChange={setFieldValue}
+                                                                                name="actions"
+                                                                                index="actions"
+                                                                            />
+                                                                        </div>
+                                                                    ) : null
+                                                                    ) : null}
                                                             </div>
                                                         </Form>
                                                     )}
