@@ -5246,11 +5246,7 @@
     "viewMessage": {
         "en": "View Message",
         "ar": "عرض الرسالة"
-    },
-    "executedQuantity": {
-        "en": "Executed Quantity",
-        "ar": "الكمية المنجزة "
-    },
+    }, 
     "variance": {
         "en": "Variance",
         "ar": "الفرق "

@@ -1,54 +1,75 @@
 {
     "19": {
-        "fields": [
+        "fields": [  {
+            "showInMainFields": true,
+            "isConact": true,
+            "name":"attention",
+            "fields":[{ 
+                "value": "toCompanyName",
+                "type": "S"
+                },{ 
+                "value": "toContactName",
+                "type": "S"
+                }]
+        },{
+            "showInMainFields": true,
+            "isConact": true,
+            "name":"fromContact",
+            "fields":[{ 
+                "value": "fromCompanyName",
+                "type": "S"
+                },{ 
+                "value": "fromContactName",
+                "type": "S"
+                }]
+        },
+        {
+            "isConact": false,
+            "showInMainFields": true,
+            "name": "docDate",
+            "value": "docDate",
+            "type": "D"
+        },
             {
+                "isConact": false,
+                "showInMainFields": true,
                 "name": "subject",
                 "value": "subject",
                 "type": "S"
             },
             {
-                "name": "numberAbb",
-                "value": "arrange",
-                "type": "S"
-            },
-            {
+                "isConact": false,
+                "showInMainFields": true,
                 "name": "status",
                 "value": "statusName",
                 "type": "S"
             },
             {
-                "name": "docDate",
-                "value": "docDate",
-                "type": "D"
-            },
-            {
+                "isConact": false,
+                "showInMainFields": false,
                 "name": "refDoc",
                 "value": "refDoc",
                 "type": "S"
-            },
+            }, 
             {
-                "name": "fromCompany",
-                "value": "fromCompanyName",
-                "type": "S"
-            },
-            {
-                "name": "fromContact",
-                "value": "fromContactName",
-                "type": "S"
-            },
-            {
-                "name": "toCompany",
-                "value": "toCompanyName",
-                "type": "S"
-            },
-            {
-                "name": "attention",
-                "value": "toContactName",
-                "type": "S"
-            },
-            {
+                "isConact": false,
+                "showInMainFields": true,
                 "name": "projectName",
-                "value": "projectName ",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "isConact": false,
+                "showInMainFields": true,
+                "name": "numberAbb",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "isConact": false,
+                "showInMainFields": false,
+                "name": "message",
+                "value": "message ",
                 "type": "S"
             }
         ],
