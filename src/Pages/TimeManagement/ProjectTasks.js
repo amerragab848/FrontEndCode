@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'; 
-import { withRouter } from "react-router-dom"; 
-import * as communicationActions from '../../store/actions/communication'; 
-import Api from "../../api"; 
+import { bindActionCreators } from 'redux';
+import { withRouter } from "react-router-dom";
+import * as communicationActions from '../../store/actions/communication';
+import Api from "../../api";
 import CryptoJS from 'crypto-js';
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
@@ -16,12 +16,11 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import MinimizeV from '../../Styles/images/table1.png';
-import MinimizeH from '../../Styles/images/table2.png';
 import MinimizeVBlue from '../../Styles/images/table1.png';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-const { NumericFilter, AutoCompleteFilter, MultiSelectFilter, SingleSelectFilter } = Filters;
+const { SingleSelectFilter } = Filters;
 
 const dateFormate = ({ value }) => {
   return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -39,7 +38,7 @@ let subjectLink = ({ value, row }) => {
       arrange: 0,
       docApprovalId: 0,
       isApproveMode: false,
-      perviousRoute:window.location.pathname+window.location.search
+      perviousRoute: window.location.pathname + window.location.search
     };
 
     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
@@ -490,10 +489,10 @@ class ProjectTasks extends Component {
       selectedRows: [],
       minimizeClick: false,
     };
-    
+
   }
 
-  componentWillUnmount() {   
+  componentWillUnmount() {
     this.props.actions.clearCashDocument();
     this.setState({
       docId: 0
@@ -637,7 +636,7 @@ class ProjectTasks extends Component {
         });
       });
   };
- 
+
   addRecord() {
     if (Config.IsAllow(357)) {
 
@@ -884,7 +883,7 @@ class ProjectTasks extends Component {
             {btnExport}
             <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>NEW</button>
           </div>
-           <div className="rowsPaginations readOnly__disabled">
+          <div className="rowsPaginations readOnly__disabled">
             <div className="rowsPagiRange">
               <span>{(this.state.pageSize * this.state.pageNumber) + 1}</span> - <span>{(this.state.pageSize * this.state.pageNumber) + this.state.pageSize}</span> of
               <span> {this.state.totalRows}</span>
@@ -895,7 +894,7 @@ class ProjectTasks extends Component {
             <button className={this.state.totalRows !== (this.state.pageSize * this.state.pageNumber) + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
               <i className="angle right icon" />
             </button>
-          </div> 
+          </div>
         </div>
         <div className="filterHidden" style={{ maxHeight: this.state.viewfilter ? "" : "0px", overflow: this.state.viewfilter ? "" : "hidden" }}>
           <div className="gridfillter-container">
@@ -908,7 +907,7 @@ class ProjectTasks extends Component {
               <div className="H-tableSize" onClick={this.handleMinimize}>
                 {this.state.minimizeClick ? <img src={MinimizeVBlue} alt="" /> : <img src={MinimizeV} alt="" />}
               </div>
-                 {/* <div className="V-tableSize">
+              {/* <div className="V-tableSize">
                 <img src={MinimizeH} alt="" />
               </div> */}
             </div>
@@ -937,22 +936,22 @@ class ProjectTasks extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-      document: state.communication.document,
-      isLoading: state.communication.isLoading,
-      changeStatus: state.communication.changeStatus,
-      file: state.communication.file,
-      files: state.communication.files,
-      hasWorkflow: state.communication.hasWorkflow
+    document: state.communication.document,
+    isLoading: state.communication.isLoading,
+    changeStatus: state.communication.changeStatus,
+    file: state.communication.file,
+    files: state.communication.files,
+    hasWorkflow: state.communication.hasWorkflow
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-      actions: bindActionCreators(communicationActions, dispatch)
+    actions: bindActionCreators(communicationActions, dispatch)
   };
 }
-  
-export default  connect(
+
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(ProjectTasks));
