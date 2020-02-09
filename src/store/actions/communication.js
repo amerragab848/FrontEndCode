@@ -32,6 +32,23 @@ export function documentForEdit(urlAction, docTypeId, docName) {
         });
     }
 }
+
+export function getItems(urlAction) {
+    return (dispatch, getState) => {
+        return Api.get(urlAction).then(resp => {
+            dispatch({
+                type: types.GET_ITEMS,
+                document: resp 
+            });
+
+        }).catch((ex) => {
+            toast.error(Resources["failError"][currentLanguage]);
+            dispatch({
+                type: types.GET_ITEMS 
+            });
+        });
+    }
+}
  
 export function clearCashDocument() {
     return (dispatch, getState) => {

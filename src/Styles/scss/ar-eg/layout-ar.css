@@ -22385,3 +22385,11 @@ thead.grid-header tr.action-bar .actions {
     margin-bottom: 20px;
     font-weight: bold;
 }
+
+.attachmentTable.attachmentTableAuto.specialTable.specialTable__certifiy thead tr:first-of-type th {
+    top:72px;
+}
+
+.attachmentTable.attachmentTableAuto.specialTable.specialTable__certifiy thead tr:last-of-type th {
+    top: 119px;
+}

@@ -224,6 +224,40 @@ class ExportDetails extends Component {
     }
   }
 
+  paymentItems() {
+    let fieldsItems = DED[this.props.docTypeId].columnsItems
+
+    let fieldsName = DED[this.props.docTypeId].friendlyNames
+    if (fieldsName.length > 0) {
+      return (
+        <table id="items" style={{ border: 'double' }}>
+
+          <thead valign="top">
+            <tr key={'dd- '} style={{ border: '4px' }}>
+              {fieldsName.map((column, index) => {
+                console.log(Resources[column][currentLanguage]);
+                return (
+                  <th key={'dddd- ' + index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}>{Resources[column][currentLanguage]}</th>
+                )
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.items.map((row, index) => {
+              return (
+                <tr key={'rwow- ' + index}>
+                  {fieldsItems.map((field, index) => {
+                    return (<td key={'field- ' + index}>{row[field]}</td>)
+                  })}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      )
+    }
+  }
+
   drawAttachments() {
     return (
       <table className="attachmentTable" id="attachmentTable">
@@ -592,30 +626,34 @@ class ExportDetails extends Component {
             : null
           }
           <div className="subiGrid printGrid">
-          <div className="printHead" style={{paddingTop: this.state.headerPath != null ? '0' : '25px'}}>
-                <h3 className="zero"> {this.props.documentName} </h3>
-              </div>
-            <div className="docStatus">
-              <div className="highClosed">
-                <span className="subiStatus">{Resources.status[currentLanguage]} </span>
-                <span className="subiPriority redSpan"> {this.props.document.status == true ? 'Opended' : 'Closed'}</span>
-              </div>
-              <div className="requireDate">
-                <span>{Resources.docDate[currentLanguage] + ' '}</span>
-                <span>{formatData}</span>
-              </div>
+            <div className="printHead" style={{ paddingTop: this.state.headerPath != null ? '0' : '25px',marginBottom: this.props.docTypeId == 120 ? '20px' : 0 }}>
+              <h3 className="zero"> {this.props.documentName} </h3>
             </div>
+            {this.props.docTypeId == 120 ? null :
+              <div className="docStatus">
+                <div className="highClosed">
+                  <span className="subiStatus">{Resources.status[currentLanguage]} </span>
+                  <span className="subiPriority redSpan"> {this.props.document.status == true ? 'Opended' : 'Closed'}</span>
+                </div>
+                <div className="requireDate">
+                  <span>{Resources.docDate[currentLanguage] + ' '}</span>
+                  <span>{formatData}</span>
+                </div>
+              </div>}
             <div className="subiTable">
               {this.drawFields_pdf()}
             </div>
           </div>
+
           {this.props.items.length > 0 ?
-            < div className="table__withItem">
-              {this.drawItems_pdf()}
+
+            < div className="table__withItem">{this.props.docTypeId == 120 ? this.exportPaymentCertification() :
+              this.drawItems_pdf()}
             </div>
             : null
           }
           {this.drawAttachments_pdf()}
+
           {this.drawattachDocuments_pdf()}
           {this.props.workFlowCycles.length > 0 ?
             <Fragment>
@@ -657,6 +695,7 @@ class ExportDetails extends Component {
             </div>
             : null
           }
+
         </div>
       </div >
 
@@ -664,6 +703,52 @@ class ExportDetails extends Component {
   }
 
   drawFields_Letter() {
+    let fields = DED[this.props.docTypeId]
+    let data = this.props.document
+    let projectName = this.props.document.projectName
+
+    let rows = fields.fields.map((field, index) => {
+
+      if (field.showInMainFields === false) return;
+
+      let formatData = "";
+      if (field.isConact === false) {
+        formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
+      } else {
+        formatData = "";
+        field.fields.map(f => {
+          formatData = (formatData !== "" ? formatData + "-" : "") + data[f.value]
+        })
+      }
+      let notExist = find(filedsIgnor, function (x) { return x == field.name })
+      return (!notExist ?
+        <tr key={index}>
+          <td>
+            <h4 className="ui image header ">
+              <div className="content">
+                {Resources[field.name][currentLanguage]}
+              </div>
+            </h4>
+          </td>
+          <td>
+            <p>
+              {formatData}
+            </p>
+          </td>
+        </tr>
+        : null
+      )
+    });
+    return (
+      <table >
+        <tbody>
+          {rows}
+        </tbody>
+      </table>
+    )
+  }
+
+  drawFields_Payment() {
     let fields = DED[this.props.docTypeId]
     let data = this.props.document
     let projectName = this.props.document.projectName
@@ -802,6 +887,7 @@ class ExportDetails extends Component {
       </div>
     )
   }
+
   PrintDocument() {
 
     this.setState({
@@ -854,6 +940,33 @@ class ExportDetails extends Component {
     }, 1000);
   }
 
+  PrintPaymentCertification() {
+
+    this.setState({
+      isExcel: false
+    });
+
+    var contents = document.getElementById("PCertified").innerHTML;
+    var frame1 = document.getElementById('iframePrint');
+    var link = document.createElement('style');
+
+    var css = printDocuments.cssEnLetter;
+    //var css = ``
+    link.appendChild(document.createTextNode(css));
+    link.setAttribute("rel", "stylesheet");
+
+    var frameDoc = frame1.contentWindow ? frame1.contentWindow : frame1.contentDocument.document ? frame1.contentDocument.document : frame1.contentDocument;
+    frameDoc.document.open();
+    frameDoc.document.write(contents);
+    frameDoc.document.head.appendChild(link)
+    frameDoc.document.close();
+
+    setTimeout(function () {
+      window.frames["iframePrint"].focus();
+      window.frames["iframePrint"].print();
+    }, 1000);
+  }
+
   handleChangeDropDownContract(event, field, selectedValue) {
     if (event == null) return;
     this.setState({
@@ -863,9 +976,149 @@ class ExportDetails extends Component {
 
   }
 
+  exportPaymentCertification() {
+    if (this.state.isExcel === true) return;
+
+    let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : [];
+    let cycleWF = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0] : null;
+
+    let fieldsName = DED[this.props.docTypeId].friendlyNames
+
+    return (
+      <Fragment>
+        <table className="attachmentTable attachmentTable__items attachmentTableAuto specialTable specialTable__certifiy" key="interimPaymentCertificate">
+          <thead>
+            <tr>
+              <th colSpan="3">
+                <div className="headCell">
+                  {Resources["description"][currentLanguage]}
+                </div>
+              </th>
+              <th colSpan="3">
+                <div className="headCell">
+                  {Resources["contractAmount"][currentLanguage]}
+                </div>
+              </th>
+              <th colSpan="3">
+                <div className="headCell">
+                  {Resources["submitted"][currentLanguage]}
+                </div>
+              </th>
+              <th colSpan="3">
+                <div className="headCell">
+                  {Resources["approved"][currentLanguage]}
+                </div>
+              </th>
+              <th colSpan="3">
+                <div className="headCell">
+                  {Resources["totalDeduction"][currentLanguage]}
+                </div>
+              </th>
+              <th colSpan="3">
+                <div className="headCell">
+                  {Resources["remarks"][currentLanguage]}
+                </div>
+              </th>
+            </tr>
+            <tr>
+              <th colSpan="3"></th>
+              <th colSpan="3"></th>
+              <th colSpan="1">
+                <div className="headCell">
+                  {Resources["previous"][currentLanguage]}
+                </div>
+              </th>
+              <th colSpan="1">
+                <div className="headCell">
+                  {Resources["current"][currentLanguage]}
+                </div>
+              </th>
+              <th colSpan="1">
+                <div className="headCell">
+                  {Resources["total"][currentLanguage]}
+                </div>
+              </th>
+              <th colSpan="1">
+                <div className="headCell">
+                  {Resources["previous"][currentLanguage]}
+                </div>
+              </th>
+              <th colSpan="1">
+                <div className="headCell">
+                  {Resources["current"][currentLanguage]}
+                </div>
+              </th>
+              <th colSpan="1">
+                <div className="headCell">
+                  {Resources["total"][currentLanguage]}
+                </div>
+              </th>
+              <th colSpan="3"></th>
+              <th colSpan="3"></th>
+            </tr>
+          </thead>
+          <tbody>{this.props.items.map(i => (
+            <tr key={i.id}>
+              <td colSpan="3" style={{maxWidth: 'unset', width: 'auto'}}>
+                <div className="contentCell tableCell-2">
+                  <p>{i.description}</p>
+                </div>
+              </td>
+              <td colSpan="3">
+                <div className="contentCell tableCell-2">
+                  <p>{i.contractAmount}</p>
+                </div>
+              </td>
+              <td colSpan="1">
+                <div className="contentCell">
+                  <p>{i.contractorPrevoiuse}</p>
+                </div>
+              </td>
+              <td colSpan="1">
+                <div className="contentCell">
+                  <p>{i.contractorCurrentValue}</p>
+                </div>
+              </td>
+              <td colSpan="1">
+                <div className="contentCell">
+                  <p>{i.contractorTotal}</p>
+                </div>
+              </td>
+              <td colSpan="1">
+                <div className="contentCell">
+                  <p>{i.prevoiuse}</p>
+                </div>
+              </td>
+              <td colSpan="1">
+                <div className="contentCell">
+                  <p>{i.currentValue}</p>
+                </div>
+              </td>
+              <td colSpan="1">
+                <div className="contentCell">
+                  <p>{i.total}</p>
+                </div>
+              </td>
+              <td colSpan="3">
+                <div className="contentCell">
+                  {i.totalDeduction}
+                </div>
+              </td>
+              <td colSpan="3">
+                <div className="contentCell">
+                  {i.remarks}
+                </div>
+              </td>
+            </tr>
+          ))}</tbody>
+        </table>
+      </Fragment>
+    )
+  }
+
   render() {
     return (
-      <div id={'docExport'}   >
+      <div id={'docExport'}>
         {this.state.isLoading === true ? null :
           <div className="dropWrapper readOnly__disabled ">
             <div className="proForm customProform">
@@ -916,7 +1169,9 @@ class ExportDetails extends Component {
               <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
 
               {this.props.docTypeId == 19 ?
-                <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintLetter()}>{Resources["print"][currentLanguage] + '-' + Resources.lettertitle[currentLanguage]}</button>
+                this.props.docTypeId != 120 ?
+                  <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintLetter()}>{Resources["print"][currentLanguage] + '-' + Resources.lettertitle[currentLanguage]}</button>
+                  : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.printPaymentCertification()}>{Resources["print"][currentLanguage] + '-' + Resources.paymentCertificationLog[currentLanguage]}</button>
 
                 :
                 <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintDocument()}>{Resources["print"][currentLanguage]}</button>
@@ -926,20 +1181,20 @@ class ExportDetails extends Component {
           </div>
         }
 
-        {this.state.isLoading === true ?          <LoadingSection /> : null}
+        {this.state.isLoading === true ? <LoadingSection /> : null}
 
         <div style={{ display: 'none' }}>
           {this.props.docTypeId != 19 ? this.drawFields() : null}
-          {this.drawItems()}
+          {this.props.docTypeId != 120 ? this.drawItems() : null}
           {this.drawAttachments()}
           {this.drawWorkFlow()}
           {this.drawattachDocuments()}
         </div>
 
         <div style={{ display: 'none' }}>
+
           {this.exportPDFFile()}
           {this.props.docTypeId == 19 ? this.exportLetterFile() : null}
-
         </div>
 
         <div style={{ display: 'none' }}>
@@ -961,7 +1216,7 @@ function mapStateToProps(state, ownProps) {
     fields: state.communication.fields,
     fieldsItems: state.communication.fieldsItems,
     docsAttachData: state.communication.docsAttachData,
-    documentTitle: state.communication.documentTitle 
+    documentTitle: state.communication.documentTitle
   }
 }
 

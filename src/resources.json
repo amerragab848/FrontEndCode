@@ -5246,7 +5246,7 @@
     "viewMessage": {
         "en": "View Message",
         "ar": "عرض الرسالة"
-    }, 
+    },
     "variance": {
         "en": "Variance",
         "ar": "الفرق "
@@ -8286,7 +8286,7 @@
     "totalContractor": {
         "en": "Total Contractor",
         "ar": "الأجمالى"
-    },  
+    },
     "docTitle": {
         "en": "Late Time Sheet",
         "ar": "صحيفة التوقيت المتاخر"
@@ -8299,10 +8299,9 @@
         "en": "working Hours Must be Less 11",
         "ar": "يجب عليك الحفظ فى صفحة التوقيت"
     },
-     "contractPaymentPercent": { 
+    "contractPaymentPercent": {
         "en": "Contractor's Payment Percent",
         "ar": "Contractor's Payment Percent"
-
     },
     "amountRequired": {
         "en": "Please insert Amount",
@@ -8315,5 +8314,57 @@
     "oldRevisedQuantity": {
         "en": "Old Revised Quantity",
         "ar": "الكمية المرتجعة السابقة"
-    }  
+    },
+    "paymentCertificationLog": {
+        "en": "Payment Certification",
+        "ar": "Payment Certification"
+    },
+    "requestSubject": {
+        "en": "Request Subject",
+        "ar": "Request Subject"
+    },
+    "percentageOfWorkDone": {
+        "en": "Percent Age Of WorkDone",
+        "ar": "Percent Age Of WorkDone"
+    },
+    "contractAmount": {
+        "en": "Contract Amount",
+        "ar": "Contract Amount"
+    },
+    "invoiceSubmissionDate": {
+        "en": "Invoice Submission Date",
+        "ar": "Invoice Submission Date"
+    },
+    "consultantApproalDate": {
+        "en": "Consultant Approal Date",
+        "ar": "Consultant Approal Date"
+    },
+    "submitted": {
+        "en": "Submitted",
+        "ar": "Submitted"
+    },
+    "contractorPrevoiuse": {
+        "en": "ContractorPrevoiuse",
+        "ar": "ContractorPrevoiuse"
+    },
+    "contractorCurrentValue": {
+        "en": "ContractorCurrentValue",
+        "ar": "ContractorCurrentValue"
+    },
+    "contractorTotal": {
+        "en": "ContractorTotal",
+        "ar": "ContractorTotal"
+    },
+    "prevoiuse": {
+        "en": "Prevoiuse",
+        "ar": "Prevoiuse"
+    },
+    "currentValue": {
+        "en": "CurrentValue",
+        "ar": "CurrentValue"
+    },
+    "totalDeduction": {
+        "en": "Deductions",
+        "ar": "اجمالى خصومات"
+    }
 }

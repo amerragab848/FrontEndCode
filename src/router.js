@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import ProjectSetupRoutes from './Pages/ProjectSetup/ProjectSetupRoutes';
 
 import AsyncComponent from './Componants/AsyncComponent';
- 
+
 const DashBoard = AsyncComponent(() => import('./Pages/DashBoard'));
 
 const DashboardProject = AsyncComponent(() => import('./DashboardProject'));
@@ -234,6 +234,8 @@ const ContractInfoAddEdit = AsyncComponent(() =>
 const PaymentRequisitionList = AsyncComponent(() =>
     import('./Pages/Contracts/Schedule'),
 );
+
+const PaymentCertification = AsyncComponent(() => import('./Pages/Contracts/PaymentCertificationAddEdit'));
 
 //Dashboard Details
 
@@ -1249,6 +1251,7 @@ let originalRoutes = [
         component={CollectedInvoices}
     />,
     <Route key="r-188" path="/LateTimeSheet" component={LateTimeSheet} />,
+    <Route key="r-188" path="/PaymentCertificationAddEdit" component={PaymentCertification} />
 ];
 
 originalRoutes = [...originalRoutes, ...setupRoutes];

@@ -1548,8 +1548,7 @@ var routes = [
         settings: { CostControl: true, order: 4 }
     },
     {
-        route:
-            "projectIssuesAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+        route: "projectIssuesAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "contracts/projectIssuesAddEdit",
         title: "Issue Addition",
         nav: false,
@@ -1561,15 +1560,18 @@ var routes = [
         title: "projectIssuesLog",
         nav: true,
         hash: "#projectIssues",
-        settings: {
-            Contracts: true,
-            caption: "procoor-icon-Issues",
-            permission: 24
-        }
+        settings: { Contracts: true, caption: "procoor-icon-Issues", permission: 24 }
     },
     {
-        route:
-            "purchaseOrderAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+        route: "paymentCertification",
+        moduleId: "commonLogs",
+        title: "paymentCertificationLog",
+        nav: true,
+        hash: "#paymentCertification",
+        settings: { Contracts: true, caption: "procoor-icon-Issues", permission: 24 }
+    },
+    {
+        route: "purchaseOrderAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
         moduleId: "contracts/purchaseOrderAddEdit",
         title: "Purchase Order Addition",
         nav: false,

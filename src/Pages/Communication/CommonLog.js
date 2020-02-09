@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from "react";
-import GridSetup from "./GridSetup";
 import GridCustom from "../../Componants/Templates/Grid/CustomCommonLogGrid";
 import Filter from "../../Componants/FilterComponent/filterComponent";
 import Api from "../../api";
-import moment from "moment";
 import Export from "../../Componants/OptionsPanels/Export";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -76,6 +74,7 @@ class CommonLog extends Component {
 
     this.renderComponent(this.state.documentName, this.props.projectId, !this.state.minimizeClick);
   };
+
   componentWillUnmount() {
 
     this.props.actions.clearCashDocument();
@@ -85,6 +84,7 @@ class CommonLog extends Component {
       isCustom: true
     });
   };
+
   static getDerivedStateFromProps(nextProps, state) {
     if (nextProps.match !== state.match) {
       return {
@@ -106,6 +106,7 @@ class CommonLog extends Component {
     return null;
 
   };
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState.match !== this.props.match) {
       this.renderComponent(this.props.match.params.document, this.props.projectId, true);
@@ -119,14 +120,17 @@ class CommonLog extends Component {
       }
     }
   };
+
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = this.state.isCustom !== nextProps.isCustom;
     return shouldUpdate;
   };
+
   hideFilter(value) {
     this.setState({ viewfilter: !this.state.viewfilter });
     return this.state.viewfilter;
   };
+
   addRecord() {
 
     if (Config.IsAllow(this.state.documentObj.documentAddPermission)) {
@@ -157,6 +161,7 @@ class CommonLog extends Component {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
   };
+
   editHandler(row) {
 
     if (Config.IsAllow(this.state.documentObj.documentEditPermission)) {
@@ -187,6 +192,7 @@ class CommonLog extends Component {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
   };
+
   GetPrevoiusData() {
 
     let pageNumber = this.state.pageNumber - 1;
@@ -243,6 +249,7 @@ class CommonLog extends Component {
       });
     }
   };
+
   GetNextData() {
 
     let pageNumber = this.state.pageNumber + 1;
@@ -302,6 +309,7 @@ class CommonLog extends Component {
       });
     }
   };
+
   filterMethodMain = (event, query, apiFilter) => {
 
     var stringifiedQuery = JSON.stringify(query);
@@ -362,12 +370,15 @@ class CommonLog extends Component {
       this.GetRecordOfLog(this.state.isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, this.state.projectId);
     }
   };
+
   onCloseModal = () => {
     this.setState({ showDeleteModal: false });
   };
+
   clickHandlerCancelMain = () => {
     this.setState({ showDeleteModal: false });
   };
+
   clickHandlerContinueMain = () => {
     this.setState({
       isLoading: true
@@ -397,6 +408,7 @@ class CommonLog extends Component {
       });
     });
   };
+
   clickHandlerDeleteRowsMain = selectedRows => {
     if (Config.IsAllow(this.state.documentObj.documentDeletePermission)) {
       this.setState({
@@ -407,6 +419,7 @@ class CommonLog extends Component {
       toast.warning(Resources["missingPermissions"][currentLanguage]);
     }
   };
+
   renderComponent(documentName, projectId, isCustom) {
 
     var projectId = projectId;
@@ -415,7 +428,7 @@ class CommonLog extends Component {
     var cNames = [];
     var filtersColumns = [];
     if (documentObj.documentColumns) {
-      if (Config.IsAllow(this.state.documentObj.documentDeletePermission)) {
+      if (Config.IsAllow(this.state.documentObj.documentDeletePermission) && documentName !== "paymentCertification") {
         cNames.push({ title: '', type: 'check-box', fixed: true, field: 'id' });
       }
       documentObj.documentColumns.map((item, index) => {
@@ -479,6 +492,7 @@ class CommonLog extends Component {
 
     this.GetRecordOfLog(isCustom === true ? documentObj.documentApi.getCustom : documentObj.documentApi.get, projectId);
   };
+
   GetRecordOfLog(api, projectId) {
     if (projectId !== 0) {
       let url = api + (documentObj.docTyp == 33 ? "projectId=" + projectId : "?projectId=" + projectId) + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize;
@@ -487,6 +501,7 @@ class CommonLog extends Component {
       this.setState({ isLoading: false });
     }
   };
+
   GetLogData(url) {
     Api.get(url).then(result => {
       result.data.forEach(row => {
@@ -521,6 +536,7 @@ class CommonLog extends Component {
       this.setState({ isLoading: false });
     });
   };
+
   handleMinimize = () => {
 
     const currentClass = this.state.minimizeClick;
@@ -539,12 +555,15 @@ class CommonLog extends Component {
       !this.state.isCustom
     );
   };
+
   openModalColumn = () => {
     this.setState({ columnsModal: true })
   };
+
   closeModalColumn = () => {
     this.setState({ columnsModal: false })
   };
+
   ResetShowHide = () => {
     this.setState({ Loading: true })
     let ColumnsHideShow = this.state.ColumnsHideShow
@@ -561,6 +580,7 @@ class CommonLog extends Component {
       })
     }, 300)
   };
+
   handleCheck = (key) => {
     this.setState({ [key]: !this.state[key], Loading: true })
     let data = this.state.ColumnsHideShow
@@ -575,6 +595,7 @@ class CommonLog extends Component {
       this.setState({ columns: data.filter(i => i.hidden === false), Loading: false })
     }, 300);
   };
+
   render() {
     let RenderPopupShowColumns = this.state.ColumnsHideShow.map((item, index) => {
       return (
@@ -599,7 +620,7 @@ class CommonLog extends Component {
           rowActions={this.rowActions}
           cells={this.state.columns}
           openModalColumn={this.state.columnsModal}
-          showCheckAll ={true}
+          showCheckAll={true}
           rowClick={cell => {
             if (cell.id != 0) {
 
@@ -694,7 +715,7 @@ class CommonLog extends Component {
             </div>
             <div className="filterBTNS">
               {btnExport}
-              <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button>
+              {this.state.documentName !== "paymentCertification" ? <button className="primaryBtn-1 btn mediumBtn" onClick={() => this.addRecord()}>{Resources["new"][currentLanguage]}</button> : null}
             </div>
             <div className="rowsPaginations readOnly__disabled">
               <div className="rowsPagiRange">
