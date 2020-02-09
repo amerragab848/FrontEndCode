@@ -2894,10 +2894,10 @@ class requestPaymentsAddEdit extends Component {
                                                 <div>
                                                     {this.state.docId > 0 ?
                                                         (<UploadAttachment changeStatus={this.props.changeStatus}
-                                                            AddAttachments={839}
-                                                            EditAttachments={3223}
-                                                            ShowDropBox={3607}
-                                                            ShowGoogleDrive={3608}
+                                                            AddAttachments={3017}
+                                                            EditAttachments={3258}
+                                                            ShowDropBox={3575}
+                                                            ShowGoogleDrive={3576}
                                                             docTypeId={this.state.docTypeId}
                                                             docId={this.state.docId}
                                                             projectId={this.state.projectId}
