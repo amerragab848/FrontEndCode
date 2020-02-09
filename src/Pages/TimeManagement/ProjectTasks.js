@@ -470,7 +470,7 @@ class ProjectTasks extends Component {
 
     this.state = {
       projectName: localStorage.getItem('lastSelectedprojectName'),
-      pageTitle: Resources["projectTaskGroups"][currentLanguage],
+      pageTitle: Resources["projectTask"][currentLanguage],
       viewfilter: false,
       columns: columnsGrid,
       isLoading: true,
