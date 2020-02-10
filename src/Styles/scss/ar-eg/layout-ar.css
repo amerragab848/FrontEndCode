@@ -5734,6 +5734,7 @@ h1, h2, h3, h4, h5 {
 
 .main-header .header-content .nav-right li a {
     display: flex;
+    height: 100%;
     align-items: center;
 }
 
@@ -21089,8 +21090,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     height: 100%;
 }
 
-.header__search {
-
+.header__search { 
     display: flex;
     align-items: flex-end;
     padding: 0 5px;
@@ -21099,7 +21099,8 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     height: 100%
 }
 
-.header__search:hover, .header__search.active {
+/* .header__search:hover, */
+ .header__search.active {
     border-bottom: 2px solid #858d9e;
 }
 
@@ -21109,7 +21110,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     height: 100%
 }
 
-.header__search:hover .ui.input,
+/* .header__search:hover .ui.input, */
 .header__search.active .ui.input {
     width: 220px;
     transition: all 0.4s ease-in-out;

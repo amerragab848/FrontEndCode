@@ -550,26 +550,25 @@ class boqStructure extends Component {
                                         {errors.titleAr && touched.titleAr ? (<em className="pError">{errors.titleAr}</em>) : null}
                                     </div>
 
-                                    <div className="fillter-item-c fullInputWidth">
-                                        <label className="control-label">{Resources['code'][currentLanguage]}</label>
-                                        <div className={'ui input inputDev ' + (errors.code && touched.code ? 'has-error' : null) + ' '}>
-                                            <input autoComplete="off" value={this.state.SelectedNode.code} className="form-control" name="code"
-                                                onBlur={(e) => { handleBlur(e) }} onChange={(e) => { this.handleChange(e, 'code') }}
-                                                placeholder={Resources['code'][currentLanguage]} />
-                                            {errors.code && touched.code ? (<em className="pError">{errors.code}</em>) : null}
+                                    <div className="letterFullWidth" style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <div className="linebylineInput">
+                                            <label className="control-label">{Resources['code'][currentLanguage]}</label>
+                                            <div className={'ui input inputDev ' + (errors.code && touched.code ? 'has-error' : null) + ' '}>
+                                                <input autoComplete="off" value={this.state.SelectedNode.code} className="form-control" name="code"
+                                                    onBlur={(e) => { handleBlur(e) }} onChange={(e) => { this.handleChange(e, 'code') }}
+                                                    placeholder={Resources['code'][currentLanguage]} />
+                                                {errors.code && touched.code ? (<em className="pError">{errors.code}</em>) : null}
+                                            </div>
                                         </div>
-
                                         {this.state.IsEditMode ?
                                             this.state.SelectedNode.perentId === null ? null :
-                                                <div className="ui checkbox checkBoxGray300 checked">
+                                                <div className="ui checkbox checkBoxGray300 checked" style={{ marginLeft: currentLanguage === 'ar' ? '0' : '15px', marginRight: currentLanguage === 'ar' ? '15px' : '0', marginTop: '10px' }}>
                                                     <input type="checkbox" defaultChecked={this.state.SelectedNode.showPaymentRequsition ? 'checked' : null}
                                                         onChange={() => this.handleChangePaymentRequisition()} />
                                                     <label>{Resources['showPaymentRequisition'][currentLanguage]}</label>
                                                 </div>
                                             : null}
                                     </div>
-
-
 
                                     <div className="fullWidthWrapper">
                                         {this.state.isLoading === false ? (
