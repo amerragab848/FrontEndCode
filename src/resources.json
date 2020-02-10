@@ -5943,6 +5943,10 @@
         "en": "Project Tasks",
         "ar": "مهام المشاريع"
     },
+    "ProjectDocumentStatus": {
+        "en": "Project Document Status",
+        "ar": "حاله المستندات"
+    },
     "projectTaskAddEdit": {
         "en": "Project Task Add Edit",
         "ar": "إضافةالمهام"
@@ -5962,6 +5966,10 @@
     "check": {
         "en": "Check",
         "ar": "اضف"
+    },
+    "invoiceCutOff": {
+        "en": "Invoice Cut-off date",
+        "ar": "Invoice Cut-off date"
     },
     "quantityComplete": {
         "en": "Qty Complete",

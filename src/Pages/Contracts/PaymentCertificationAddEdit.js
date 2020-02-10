@@ -1,6 +1,5 @@
 import CryptoJS from "crypto-js";
 import { Form, Formik } from "formik";
-import moment from "moment";
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -11,7 +10,7 @@ import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import { default as DataService, default as dataservice } from "../../Dataservice";
+import { default as dataservice } from "../../Dataservice";
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
@@ -138,7 +137,7 @@ class PaymentCertificationAddEdit extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, state) {
-        if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
+        if (nextProps.items.length !== state.rows.length && nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
 
             return {
                 document: nextProps.document,
@@ -390,10 +389,9 @@ class PaymentCertificationAddEdit extends Component {
                                                                                 "percentageOfWorkDone"
                                                                                 ][currentLanguage]
                                                                             }
-                                                                            autoComplete="off"
-                                                                            onBlur={handleBlur}
-                                                                            defaultValue={
-                                                                                values.percentageOfWorkDone
+                                                                            autoComplete="off" 
+                                                                            value={
+                                                                               this.state.document.percentageOfWorkDone
                                                                             }
                                                                             readOnly
                                                                         />
@@ -416,7 +414,7 @@ class PaymentCertificationAddEdit extends Component {
                                                                             }
                                                                             autoComplete="off"
                                                                             onBlur={handleBlur}
-                                                                            defaultValue={
+                                                                            value={
                                                                                 values.contractAmount
                                                                             }
                                                                             readOnly
@@ -425,7 +423,7 @@ class PaymentCertificationAddEdit extends Component {
                                                                 </div>
 
                                                                 <div className="linebylineInput valid-input alternativeDate">
-                                                                    <DatePicker title="creationDate"
+                                                                    <DatePicker title="invoiceCutOff"
                                                                         startDate={this.state.document.creationDate}
                                                                         handleChange={e => this.handleChangeDate(e, "creationDate")} />
                                                                 </div>
@@ -458,7 +456,7 @@ class PaymentCertificationAddEdit extends Component {
                                                                         showModal={true}
                                                                         showOptionPanel={this.showOptionPanel}
                                                                         permission={this.state.permission}
-                                                                        documentName="paymentCertificationLog"
+                                                                        documentName="PAYMENT CERTTIFICATE "
                                                                     />
                                                                 </div>
                                                             </div>

@@ -169,6 +169,13 @@ var routes = [
         settings: { ProjectReports: true, permission: 3678, order: 3 }
     },
     {
+        route: "ProjectDocumentStatus",
+        moduleId: "ProjectReports/ProjectDocumentStatus",
+        title: "ProjectDocumentStatus",
+        nav: true,
+        settings: { ProjectReports: true, permission: 3678, order: 4 }
+    },
+    {
         route: "ProjectBalanceReport",
         moduleId: "ProjectReports/ProjectBalanceReport",
         title: "projectBalanceReport",

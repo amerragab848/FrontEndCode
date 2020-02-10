@@ -2776,8 +2776,13 @@
     "120": {
         "fields": [
             {
-                "name": "contractSubject",
-                "value": "contractSubject",
+                "name": "clientName",
+                "value": "clientName",
+                "type": "S"
+            },
+            {
+                "name": "contractAmount",
+                "value": "contractAmount",
                 "type": "S"
             },
             {
@@ -2791,22 +2796,12 @@
                 "type": "S"
             },
             {
-                "name": "clientName",
-                "value": "clientName",
-                "type": "S"
-            },
-            {
                 "name": "percentageOfWorkDone",
                 "value": "percentageOfWorkDone",
                 "type": "S"
             },
             {
-                "name": "contractAmount",
-                "value": "contractAmount",
-                "type": "S"
-            },
-            {
-                "name": "creationDate",
+                "name": "invoiceCutOff",
                 "value": "creationDate",
                 "type": "D"
             },
@@ -2819,7 +2814,7 @@
                 "name": "consultantApproalDate",
                 "value": "consultantApproalDate",
                 "type": "D"
-            }
+            } 
         ],
         "columnsItems": [
             "description",
