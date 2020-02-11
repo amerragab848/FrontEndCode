@@ -2801,8 +2801,13 @@
                 "type": "S"
             },
             {
-                "name": "invoiceCutOff",
+                "name": "phdApproval",
                 "value": "creationDate",
+                "type": "D"
+            },
+            {
+                "name": "invoiceCutOff",
+                "value": "invoiceCut",
                 "type": "D"
             },
             {

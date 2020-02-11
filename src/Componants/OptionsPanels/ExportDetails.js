@@ -31,7 +31,8 @@ class ExportDetails extends Component {
       headerList: [],
       footerList: [],
       headerPath: null,
-      footerPath: null
+      footerPath: null,
+      rowsDocument: [3, 4, 5, 9, 13],
     };
 
     this.ExportDocument = this.ExportDocument.bind(this);
@@ -978,8 +979,8 @@ class ExportDetails extends Component {
               </ul>
             </div>
 
-            {this.drawWorkFlowCycles()} 
-            {this.drawAttachments_Letter()} 
+            {this.drawWorkFlowCycles()}
+            {this.drawAttachments_Letter()}
             {this.state.footerPath != null ?
               <div className="footer_print">
                 <img src={this.state.footerPath} alt="Logo" />
@@ -1163,52 +1164,52 @@ class ExportDetails extends Component {
             <tr key={i.id}>
               <td colSpan="3" style={{ maxWidth: 'unset', width: 'auto' }}>
                 <div className="contentCell tableCell-2">
-                  <p>{i.description}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.description}</p>
                 </div>
               </td>
               <td colSpan="3">
                 <div className="contentCell tableCell-2">
-                  <p>{i.contractAmount}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.contractorPrevoiuse}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.contractorCurrentValue}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.contractorTotal}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.prevoiuse}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.currentValue}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.total}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total}</p>
                 </div>
               </td>
               <td colSpan="3">
                 <div className="contentCell">
-                  {i.totalDeduction}
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.totalDeduction}</p>
                 </div>
               </td>
               <td colSpan="3">
                 <div className="contentCell">
-                  {i.remarks}
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.remarks}</p>
                 </div>
               </td>
             </tr>

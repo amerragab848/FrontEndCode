@@ -8374,5 +8374,9 @@
     "totalDeduction": {
         "en": "Deductions",
         "ar": "اجمالى خصومات"
+    },
+    "phdApproval": {
+        "en": "PHD Approval Date",
+        "ar": "PHD Approval Date"
     }
 }
