@@ -219,11 +219,11 @@ class DocumentTpesReport extends Component {
                 rowActions={[]}
                 rowClick={() => { }}
                 cells={this.columns} />) : <LoadingSection />
-
+ 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.RowsParent : []} columns={Exportcolumns} fileName={'inventoryDetails'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'inventoryDetails'} />
             : null
-
+ 
         return (
             <div className="reports__content">
                 <header>
