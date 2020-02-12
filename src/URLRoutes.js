@@ -2913,13 +2913,13 @@ var routes = [
         nav: true,
         settings: { inventory: true, permission: 3729, order: 7 }
     },
-    // {
-    //   route: "documentTpesReport",
-    //   moduleId: "reports/documentTypesReport",
-    //   title: "WorkFlowWithDocumentTypeDetails",
-    //   nav: true,
-    //   settings: { OtherReports: true, permission: 3743, order: 6 }
-    // },
+    {
+      route: "documentTpesReport",
+      moduleId: "OtherReports/DocumentTpesReport",
+      title: "WorkFlowWithDocumentTypeDetails",
+      nav: true,
+      settings: { OtherReports: true, permission: 3743, order: 6 }
+    },
     {
         route: "TransmittalReport",
         moduleId: "OtherReports/TransmittalReport",

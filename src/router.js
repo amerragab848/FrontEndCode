@@ -78,6 +78,9 @@ const WFDistributionAccountReport = AsyncComponent(() =>
 const PaymentReqStatusReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/OtherReports/PaymentReqStatusReport'),
 );
+const DocumentTpesReport = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/OtherReports/DocumentTpesReport'),
+);
 const TechnicalOfficeReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/TechnicalOffice/TechnicalOfficeReport'),
 );
@@ -985,6 +988,11 @@ let originalRoutes = [
         key="r-112"
         path="/PaymentReqStatusReport"
         component={PaymentReqStatusReport}
+    />,
+    <Route
+        key="r-112"
+        path="/DocumentTpesReport"
+        component={DocumentTpesReport}
     />,
     <Route
         key="r-113"
