@@ -221,7 +221,7 @@ class DocumentTpesReport extends Component {
                 cells={this.columns} />) : <LoadingSection />
  
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'inventoryDetails'} />
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources.WorkFlowWithDocumentTypeDetails[currentLanguage]} />
             : null
  
         return (
