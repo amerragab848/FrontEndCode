@@ -4155,6 +4155,47 @@
         },
         {
           "title": {
+            "en": "Payment Certification",
+            "ar": "شهادة الدفع"
+          },
+          "id": 106,
+          "permissions": [
+            {
+              "code": 10068,
+              "title": {
+                "en": "Edit",
+                "ar": "تعديل عقد"
+              },
+              "value": false
+            },
+            {
+              "code": 10069,
+              "title": {
+                "en": "View",
+                "ar": "عرض عقد"
+              },
+              "value": false
+            },
+            {
+              "code": 10070,
+              "title": {
+                "en": "View All",
+                "ar": "عرض جميع العقود"
+              },
+              "value": false
+            },
+            {
+              "code": 10071,
+              "title": {
+                "en": "Send To WorkFlow",
+                "ar": "ارسال الى الدورة المستندية"
+              },
+              "value": false
+            }
+          ]
+        },
+        {
+          "title": {
             "en": "PCO",
             "ar": "عروض اوامر التغيير"
           },
@@ -7358,7 +7399,7 @@
               "value": false
             },
             {
-              "code": 940, 
+              "code": 940,
               "title": {
                 "en": "Add Attachments",
                 "ar": "اضافة مرفقات"
@@ -7723,7 +7764,7 @@
           ]
         },
         {
-          "title": { 
+          "title": {
             "en": "RFIs",
             "ar": "طلبات معلومات"
           },

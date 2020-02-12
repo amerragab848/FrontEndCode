@@ -2,53 +2,82 @@
     "19": {
         "fields": [
             {
-                "name": "subject",
-                "value": "subject",
-                "type": "S"
+                "showInMainFields": true,
+                "isConact": true,
+                "name": "attention",
+                "fields": [
+                    {
+                        "value": "toCompanyName",
+                        "type": "S"
+                    },
+                    {
+                        "value": "toContactName",
+                        "type": "S"
+                    }
+                ]
             },
             {
-                "name": "numberAbb",
-                "value": "arrange",
-                "type": "S"
+                "showInMainFields": true,
+                "isConact": true,
+                "name": "fromContact",
+                "fields": [
+                    {
+                        "value": "fromCompanyName",
+                        "type": "S"
+                    },
+                    {
+                        "value": "fromContactName",
+                        "type": "S"
+                    }
+                ]
             },
             {
-                "name": "status",
-                "value": "statusName",
-                "type": "S"
-            },
-            {
+                "isConact": false,
+                "showInMainFields": true,
                 "name": "docDate",
                 "value": "docDate",
                 "type": "D"
             },
             {
+                "isConact": false,
+                "showInMainFields": true,
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "isConact": false,
+                "showInMainFields": true,
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "isConact": false,
+                "showInMainFields": false,
                 "name": "refDoc",
                 "value": "refDoc",
                 "type": "S"
             },
             {
-                "name": "fromCompany",
-                "value": "fromCompanyName",
-                "type": "S"
-            },
-            {
-                "name": "fromContact",
-                "value": "fromContactName",
-                "type": "S"
-            },
-            {
-                "name": "toCompany",
-                "value": "toCompanyName",
-                "type": "S"
-            },
-            {
-                "name": "attention",
-                "value": "toContactName",
-                "type": "S"
-            },
-            {
+                "isConact": false,
+                "showInMainFields": true,
                 "name": "projectName",
-                "value": "projectName ",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "isConact": false,
+                "showInMainFields": true,
+                "name": "numberAbb",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "isConact": false,
+                "showInMainFields": false,
+                "name": "message",
+                "value": "message ",
                 "type": "S"
             }
         ],
@@ -1826,7 +1855,7 @@
                 "name": "docDate",
                 "value": "docDate",
                 "type": "D"
-            }, 
+            },
             {
                 "name": "reasonForIssue",
                 "value": "reasonForIssueName",
@@ -1876,7 +1905,7 @@
                 "name": "submittalType",
                 "value": "submittalType",
                 "type": "S"
-            }, 
+            },
             {
                 "name": "CycleDetails",
                 "value": " ",
@@ -2603,7 +2632,7 @@
                 "name": "contractExecutedToDate",
                 "value": "contractExecutedToDate",
                 "type": "S"
-            }, 
+            },
             {
                 "name": "advancedPayment",
                 "value": "advancePaymentAmount",
@@ -2622,7 +2651,7 @@
             "total",
             "contractorPrevoiuse",
             "contractorCurrentValue",
-            "contractorTotal" 
+            "contractorTotal"
         ],
         "friendlyNames": [
             "workDescription",
@@ -2631,7 +2660,7 @@
             "total",
             "previousContractor",
             "currentContractor",
-            "totalContractor" 
+            "totalContractor"
         ]
     },
     "77": {
@@ -2742,6 +2771,79 @@
             "unitPrice",
             "total",
             "resourceCode"
+        ]
+    },
+    "120": {
+        "fields": [
+            {
+                "name": "contractSubject",
+                "value": "contractSubject",
+                "type": "S"
+            },
+            {
+                "name": "projectName",
+                "value": "projectName",
+                "type": "S"
+            },
+            {
+                "name": "requestSubject",
+                "value": "requestSubject",
+                "type": "S"
+            },
+            {
+                "name": "clientName",
+                "value": "clientName",
+                "type": "S"
+            },
+            {
+                "name": "percentageOfWorkDone",
+                "value": "percentageOfWorkDone",
+                "type": "S"
+            },
+            {
+                "name": "contractAmount",
+                "value": "contractAmount",
+                "type": "S"
+            },
+            {
+                "name": "creationDate",
+                "value": "creationDate",
+                "type": "D"
+            },
+            {
+                "name": "invoiceSubmissionDate",
+                "value": "invoiceSubmissionDate",
+                "type": "D"
+            },
+            {
+                "name": "consultantApproalDate",
+                "value": "consultantApproalDate",
+                "type": "D"
+            }
+        ],
+        "columnsItems": [
+            "description",
+            "contractAmount",
+            "contractorPrevoiuse",
+            "contractorCurrentValue",
+            "contractorTotal",
+            "prevoiuse",
+            "currentValue",
+            "total",
+            "totalDeduction",
+            "remarks"
+        ],
+        "friendlyNames": [
+            "description",
+            "contractAmount",
+            "contractorPrevoiuse",
+            "contractorCurrentValue",
+            "contractorTotal",
+            "prevoiuse",
+            "currentValue",
+            "total",
+            "totalDeduction",
+            "remarks"
         ]
     }
 }

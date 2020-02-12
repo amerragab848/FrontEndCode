@@ -337,69 +337,55 @@ class ContractInfoAddEdit extends Component {
       );
     }
 
-    voColumns = [
-      {
-        accessor: 'id',
-        show: false,
-
-      }, {
-        Header: Resources.arrange[currentLanguage],
-        accessor: 'arrange',
-        width: 25
-      }, {
-        Header: Resources.description[currentLanguage],
-        accessor: 'description',
-        width: 120
-      }, {
-        Header: Resources.changeOrder[currentLanguage],
-        accessor: 'subject',
-        width: 120
-      }, {
-        Header: Resources.resourceCode[currentLanguage],
-        accessor: 'resourceCode',
-        width: 100
-      }, {
-        Header: Resources.unit[currentLanguage],
-        accessor: 'unit',
-        width: 80
-      }, {
-        Header: Resources.days[currentLanguage],
-        accessor: 'days',
-        width: 70
-      }, {
-        Header: Resources.itemType[currentLanguage],
-        accessor: 'itemType',
-        width: 70
-      }, {
-        Header: Resources.unitPrice[currentLanguage],
-        accessor: 'unitPrice',
-        width: 70
-      }, {
-        Header: Resources.quantity[currentLanguage],
-        accessor: 'quantity',
-        width: 70
-      }, {
-        Header: Resources.total[currentLanguage],
-        accessor: 'total',
-        width: 70
-      }, {
-        Header: Resources.itemCode[currentLanguage],
-        accessor: 'itemCode',
-        show: false
-      }, {
-        accessor: 'boqTypeId',
-        show: false
-      }, {
-        accessor: 'boqSubTypeId',
-        show: false
-      }, {
-        accessor: 'boqChildTypeId',
-        show: false
-      }, {
-        accessor: 'changeOrderId',
-        show: false
-      },
-
+    voColumns = [{
+      Header: Resources.arrange[currentLanguage],
+      accessor: 'arrange',
+      width: 100
+    }, {
+      Header: Resources.description[currentLanguage],
+      accessor: 'description',
+      width: 220
+    }, {
+      Header: Resources.changeOrder[currentLanguage],
+      accessor: 'subject',
+      width: 220
+    }, {
+      Header: Resources.resourceCode[currentLanguage],
+      accessor: 'resourceCode',
+      width: 130
+    }, {
+      Header: Resources.unit[currentLanguage],
+      accessor: 'unit',
+      width: 130
+    }, {
+      Header: Resources.days[currentLanguage],
+      accessor: 'days',
+      width: 130
+    }, {
+      Header: Resources.itemType[currentLanguage],
+      accessor: 'itemType',
+      width: 130
+    }, {
+      Header: Resources.unitPrice[currentLanguage],
+      accessor: 'unitPrice',
+      width: 130
+    }, {
+      Header: Resources.quantity[currentLanguage],
+      accessor: 'quantity',
+      width: 130
+    }, {
+      Header: Resources.revisedQuantity[currentLanguage],
+      accessor: 'revisedQuantity',
+      width: 130
+    }, {
+      Header: Resources.total[currentLanguage],
+      accessor: 'total',
+      width: 130
+    }, {
+      Header: Resources.itemCode[currentLanguage],
+      accessor: 'itemCode',
+      width: 130
+    }
     ];
 
     if (!Config.IsAllow(139) && !Config.IsAllow(140) && !Config.IsAllow(142)) {
@@ -754,6 +740,8 @@ class ContractInfoAddEdit extends Component {
     let item = this.state.selectedVO;
     item.quantity = values.quantity;
     item.unitPrice = values.unitPrice;
+    item.revisedQuantity = values.revisedQuantity;
+
     this.setState({ isLoading: true })
     Api.post('EditChangeOrderItem', item).then(result => {
       let voItems = this.state.voItems;
@@ -761,6 +749,7 @@ class ContractInfoAddEdit extends Component {
       if (match) {
         match.quantity = values.quantity;
         match.unitPrice = values.unitPrice;
+        match.revisedQuantity = values.revisedQuantity;
       }
       this.setState({ voItems, isLoading: false, showItemEdit: false });
       toast.success(Resources["operationSuccess"][currentLanguage]);
@@ -1050,7 +1039,8 @@ class ContractInfoAddEdit extends Component {
       <div className="document-fields">
         <Formik initialValues={{
           quantity: this.state.selectedVO.quantity,
-          unitPrice: this.state.selectedVO.unitPrice
+          unitPrice: this.state.selectedVO.unitPrice,
+          revisedQuantity: this.state.selectedVO.revisedQuantity
         }}
           validationSchema={voItemSchema}
           enableReinitialize={true}
@@ -1080,6 +1070,17 @@ class ContractInfoAddEdit extends Component {
                       autoComplete="off" onBlur={handleBlur} defaultValue={values.unitPrice}
                       onChange={e => { handleChange(e); }} />
                     {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+                  </div>
+                </div>
+                <div className="fillter-item-c">
+                  <label className="control-label">
+                    {Resources["revisedQuantity"][currentLanguage]}
+                  </label>
+                  <div className={"inputDev ui input " + (errors.revisedQuantity ? "has-error" : !errors.revisedQuantity && touched.revisedQuantity ? " has-success" : " ")}>
+                    <input name="revisedQuantity" className="form-control" id="revisedQuantity" placeholder={Resources["revisedQuantity"][currentLanguage]}
+                      autoComplete="off" onBlur={handleBlur} defaultValue={values.revisedQuantity}
+                      onChange={e => { handleChange(e); }} />
+                    {errors.revisedQuantity ? (<em className="pError">{errors.revisedQuantity}</em>) : null}
                   </div>
                 </div>
                 <div className={" fullWidthWrapper"}>
@@ -1184,8 +1185,8 @@ class ContractInfoAddEdit extends Component {
         accessor: "arrange",
         sortabel: true,
         width: 80
-      }
-      , {
+      },
+      {
         Header: Resources["delete"][currentLanguage],
         accessor: "id",
         Cell: ({ row }) => {

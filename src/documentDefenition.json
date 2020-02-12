@@ -18852,7 +18852,7 @@
         "field": "docDate",
         "friendlyName": "docDate",
         "minWidth": 120,
-        "width": "15%",
+        "width": "12%",
         "dataType": "date",
         "isDate": true,
         "isTime": false,
@@ -18864,72 +18864,72 @@
         "field": "docCloseDate",
         "friendlyName": "docClosedate",
         "minWidth": 120,
-        "width": "20%",
+        "width": "12%",
         "dataType": "date",
         "isDate": true,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": true,
+        "isCustom": false,
         "exportDataType": "d"
       },
       {
         "field": "openedBy",
         "friendlyName": "openedBy",
         "minWidth": 150,
-        "width": "20%",
+        "width": "12%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": true,
+        "isCustom": false,
         "exportDataType": "s"
       },
       {
         "field": "closedBy",
         "friendlyName": "closedBy",
         "minWidth": 150,
-        "width": "15%",
+        "width": "12%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": true,
+        "isCustom": false,
         "exportDataType": "s"
       },
       {
         "field": "lastEditBy",
         "friendlyName": "lastEdit",
         "minWidth": 150,
-        "width": "20%",
+        "width": "12%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": true,
+        "isCustom": false,
         "exportDataType": "s"
       },
       {
         "field": "lastEditDate",
         "friendlyName": "lastEditDate",
         "minWidth": 100,
-        "width": "15%",
+        "width": "12%",
         "dataType": "date",
         "isDate": true,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": true,
+        "isCustom": false,
         "exportDataType": "d"
       },
       {
         "field": "alertDays",
         "friendlyName": "alertDays",
         "minWidth": 150,
-        "width": "20%",
+        "width": "12%",
         "dataType": "string",
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
-        "isCustom": true,
+        "isCustom": false,
         "exportDataType": "s"
       }
     ],
@@ -18993,7 +18993,7 @@
         "name": "alertDays",
         "field": "alertDays",
         "type": "string",
-        "isCustom": true
+        "isCustom": false
       }
     ]
   },
@@ -19947,6 +19947,185 @@
         "field": "lastEditDate",
         "type": "date",
         "isCustom": false
+      }
+    ]
+  },
+  "paymentCertification": {
+    "documentTitle": "paymentCertificationLog",
+    "docTyp": 60,
+    "documentAddEditLink": "PaymentCertificationAddEdit",
+    "documentEditPermission": 10068,
+    "documentViewPermission": 10069,
+    "documentPermission": 10070,
+    "documentApi": {
+      "get": "GetPaymentCertification",
+      "getCustom": "GetPaymentCertification"
+    },
+    "documentColumns": [
+      {
+        "field": "contractSubject",
+        "friendlyName": "contractSubject",
+        "minWidth": 65,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "n"
+      },
+      {
+        "field": "requestSubject",
+        "friendlyName": "requestSubject",
+        "minWidth": 155,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "projectName",
+        "friendlyName": "projectName",
+        "minWidth": 200,
+        "width": "20%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "isCustom": true,
+        "cellTemplate": "<div id=\"divSubject\" style=\"white-space:nowrap;overflow:hidden;text-overflow:ellipsis\"><a data-bind=\"attr: { href: '#claimsAddEdit/' + $parent.entity.id + '/' + $parent.entity.projectId + '/' + undefined  + '/' + undefined + '/' + undefined + '/' + $parent.entity.projectName }\"><span data-bind=\"text: $parent.entity.subject\"></span></a></div>",
+        "exportDataType": "s"
+      },
+      {
+        "field": "clientName",
+        "friendlyName": "clientName",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "percentageOfWorkDone",
+        "friendlyName": "percentageOfWorkDone",
+        "minWidth": 85,
+        "width": "18%",
+        "dataType": "string",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "contractAmount",
+        "friendlyName": "contractAmount",
+        "minWidth": 150,
+        "width": "18%",
+        "dataType": "string",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "s"
+      },
+      {
+        "field": "creationDate",
+        "friendlyName": "creationDate",
+        "minWidth": 150,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
+        "field": "invoiceSubmissionDate",
+        "friendlyName": "invoiceSubmissionDate",
+        "minWidth": 150,
+        "width": "20%",
+        "dataType": "date",
+        "isDate": false,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      },
+      {
+        "field": "consultantApproalDate",
+        "friendlyName": "consultantApproalDate",
+        "minWidth": 100,
+        "width": "15%",
+        "dataType": "date",
+        "isDate": true,
+        "isTime": false,
+        "cellTemplate": "",
+        "isCustom": true,
+        "exportDataType": "d"
+      }
+    ],
+    "filterApi": "FilterPaymentCertification",
+    "filters": [
+      {
+        "name": "contractSubject",
+        "field": "contractSubject",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "requestSubject",
+        "field": "requestSubject",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "projectName",
+        "field": "projectName",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "clientName",
+        "field": "clientName",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "percentageOfWorkDone",
+        "field": "percentageOfWorkDone",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "contractAmount",
+        "field": "contractAmount",
+        "type": "string",
+        "isCustom": true
+      },
+      {
+        "name": "creationDate",
+        "field": "creationDate",
+        "type": "date",
+        "isCustom": true
+      },
+      {
+        "name": "invoiceSubmissionDate",
+        "field": "invoiceSubmissionDate",
+        "type": "date",
+        "isCustom": true
+      },
+      {
+        "name": "consultantApproalDate",
+        "field": "consultantApproalDate",
+        "type": "date",
+        "isCustom": true
       }
     ]
   }

@@ -608,9 +608,6 @@ class ProjectTaskAddEdit extends Component {
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
           <HeaderDocument projectName={projectName} isViewMode={this.state.isViewMode} perviousRoute={this.state.perviousRoute} docTitle={Resources.projectTask[currentLanguage]}
             moduleTitle={Resources['timeCoordination'][currentLanguage]} />
-
-
-
           <div className="doc-container">
             {this.props.changeStatus == true ? (
               <header className="main__header">
@@ -800,14 +797,14 @@ class ProjectTaskAddEdit extends Component {
                               </label>
                               <div className="ui checkbox radio radioBoxBlue">
                                 <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === false ? null : "checked"}
-                                  value="true" onChange={e => this.handleChange(e, "status")} />
+                                  value="true" onChange={e => this.handleChange(e, "suspeneded")} />
                                 <label>
                                   {Resources.suspeneded[currentLanguage]}
                                 </label>
                               </div>
                               <div className="ui checkbox radio radioBoxBlue">
                                 <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === false ? "checked" : null}
-                                  value="false" onChange={e => this.handleChange(e, "status")} />
+                                  value="false" onChange={e => this.handleChange(e, "suspeneded")} />
                                 <label>
                                   {Resources.resumed[currentLanguage]}
                                 </label>

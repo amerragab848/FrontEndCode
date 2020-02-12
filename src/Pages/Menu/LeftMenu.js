@@ -5,15 +5,10 @@ import Logo from "../../Styles/images/logo.svg";
 import Router from "../../URLRoutes";
 import Resources from "../../resources.json";
 import General from '../ProjectSetup/ProjectSetupRoutes';
-import Config from "../../Services/Config";
-
+import Config from "../../Services/Config"; 
 import { connect } from 'react-redux';
-import {
-  bindActionCreators
-} from 'redux';
-
+import { bindActionCreators } from 'redux';
 import * as dashboardComponantActions from '../../store/actions/communication';
-
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let currentProjectId = localStorage.getItem("lastSelectedProject") == null ? 0 : localStorage.getItem("lastSelectedProject");

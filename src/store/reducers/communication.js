@@ -16,7 +16,7 @@ export default function (state = initialState.app.communication, action) {
             return {
                 ...state, items: _items
             }
- 
+
         case types.Document_for_Edit:
             return {
                 ...state,
@@ -370,23 +370,24 @@ export default function (state = initialState.app.communication, action) {
             return { ...state, isReject: action.data }
 
         case types.FILL_PROJECTS_DROPDOWN:
-                    return{...state,projectDropdown:action.projectDropdown}
+            return { ...state, projectDropdown: action.projectDropdown }
 
         case types.FILL_TASKS_DROPDOWN:
-                    return{...state,taskDropdown:action.taskDropdown}
+            return { ...state, taskDropdown: action.taskDropdown }
 
         case types.FILL_LOCATIONS_DROPDOWN:
-                    return{...state,locationDropdown:action.locationDropdown}
-                    
+            return { ...state, locationDropdown: action.locationDropdown }
+
         case types.FILL_COUNTRIES_DROPDOWN:
-                    return{...state,countryDropdown:action.countryDropdown}
-       
+            return { ...state, countryDropdown: action.countryDropdown }
+
 
 
         case types.SET_LOADING:
             return { ...state, isLoading: true, isLoadingFilesUpload: true }
-       
 
+        case types.GET_ITEMS:
+            return { ...state, items: action.document }
         default:
             return {
                 ...state
