@@ -30,7 +30,7 @@ import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
 import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
 
- 
+
 let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
 const actionPanel = {
     control: (styles, { isFocused }) => ({
@@ -157,40 +157,59 @@ class materialRequestAddEdit extends Component {
             index++;
         }
         let editQuantity = ({ value, row }) => {
-            if (row) {
+            if (Config.IsAllow(117)) {
+                if (row) {
+                    return (
+                        <a className="editorCell">
+                            <span
+                                style={{
+                                    padding: "0 6px",
+                                    margin: "5px 0",
+                                    border: "1px dashed",
+                                    cursor: "pointer"
+                                }}>
+                                {row.quantity != null ? row.quantity : 0}
+                            </span>
+                        </a>
+                    );
+                }
+                return 0;
+            }
+            else {
                 return (
-                    <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
-                            {row.quantity != null ? row.quantity : 0}
-                        </span>
-                    </a>
+                    <span>
+                        {row.quantity != null ? row.quantity : 0}
+                    </span>
                 );
             }
-            return 0;
         };
+
         let editStock = ({ value, row }) => {
-            if (row) {
+            if (Config.IsAllow(117)) {
+
+                if (row) {
+                    return (
+                        <a className="editorCell">
+                            <span
+                                style={{
+                                    padding: "0 6px",
+                                    margin: "5px 0",
+                                    border: "1px dashed",
+                                    cursor: "pointer"
+                                }}>
+                                {row.stock != null ? row.stock : 0}
+                            </span>
+                        </a>
+                    );
+                }
+                return 0;
+            } else {
                 return (
-                    <a className="editorCell">
-                        <span
-                            style={{
-                                padding: "0 6px",
-                                margin: "5px 0",
-                                border: "1px dashed",
-                                cursor: "pointer"
-                            }}>
-                            {row.stock != null ? row.stock : 0}
-                        </span>
-                    </a>
+                    <span>
+                        {row.stock != null ? row.stock : 0}
+                    </span>
                 );
             }
-            return 0;
         };
 
         this.itemsColumns = [
@@ -300,19 +319,10 @@ class materialRequestAddEdit extends Component {
                 { label: Resources.actions[currentLanguage], value: 0 },
                 { label: Resources.newBoq[currentLanguage], value: 1 },
                 { label: Resources.addContract[currentLanguage], value: 2 },
-                {
-                    label: Resources.addPurchaseOrder[currentLanguage],
-                    value: 3
-                },
-                {
-                    label: Resources.addMaterialRelease[currentLanguage],
-                    value: 4
-                }
+                { label: Resources.addPurchaseOrder[currentLanguage], value: 3 },
+                { label: Resources.addMaterialRelease[currentLanguage], value: 4 }
             ],
-            materialType: {
-                label: Resources.actions[currentLanguage],
-                value: 0
-            },
+            materialType: { label: Resources.actions[currentLanguage], value: 0 },
             _items: [],
             M_arrange: 0,
             isEdit: false,
@@ -327,9 +337,7 @@ class materialRequestAddEdit extends Component {
             projectId: projectId,
             docApprovalId: docApprovalId,
             arrange: arrange,
-            document: this.props.document
-                ? Object.assign({}, this.props.document)
-                : {},
+            document: this.props.document ? Object.assign({}, this.props.document) : {},
             companies: [],
             contacts: [],
             discplines: [],
@@ -399,49 +407,50 @@ class materialRequestAddEdit extends Component {
             contractLoading: false,
             showPoModal: false
         };
-        if (
-            !Config.IsAllow(116) &&
-            !Config.IsAllow(117) &&
-            !Config.IsAllow(118)
-        ) {
+
+        if (!Config.IsAllow(116) && !Config.IsAllow(117) && !Config.IsAllow(118)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(this.state.perviousRoute);
         }
     }
 
     renderEditable = cellInfo => {
-        if (cellInfo.original.childerns.length == 0) {
-            return (
-                <div
-                    style={{
-                        color: "#4382f9 ",
-                        padding: "0px 6px",
-                        margin: "5px 0px",
-                        border: "1px dashed",
-                        cursor: "pointer"
-                    }}
-                    contentEditable
-                    suppressContentEditableWarning
-                    onBlur={e => {
-                        const items = [...this.state.items];
-                        items[cellInfo.index][cellInfo.column.id] =
-                            e.target.innerHTML;
-                        const updatedItem = items[cellInfo.index];
-                        const updatedItems = this.state.updatedItems;
-                        let index = updatedItems.findIndex(
-                            item => item.id == updatedItem.id
-                        );
-                        if (index != -1) updatedItems[index] = updatedItem;
-                        else updatedItems.push(updatedItem);
-                        this.setState({ items, updatedItem, updatedItems });
-                    }}
-                    dangerouslySetInnerHTML={{
-                        __html: this.state.items[cellInfo.index][
-                            cellInfo.column.id
-                        ]
-                    }}
-                />
-            );
+        if (Config.IsAllow(117)) {
+            if (cellInfo.original.childerns.length == 0) {
+                return (
+                    <div style={{ color: "#4382f9 ", padding: "0px 6px", margin: "5px 0px", border: "1px dashed", cursor: "pointer" }}
+                        contentEditable suppressContentEditableWarning
+                        onBlur={e => {
+                            const items = [...this.state.items];
+                            items[cellInfo.index][cellInfo.column.id] =
+                                e.target.innerHTML;
+                            const updatedItem = items[cellInfo.index];
+                            const updatedItems = this.state.updatedItems;
+                            let index = updatedItems.findIndex(
+                                item => item.id == updatedItem.id
+                            );
+                            if (index != -1) updatedItems[index] = updatedItem;
+                            else updatedItems.push(updatedItem);
+                            this.setState({ items, updatedItem, updatedItems });
+                        }}
+                        dangerouslySetInnerHTML={{
+                            __html: this.state.items[cellInfo.index][
+                                cellInfo.column.id
+                            ]
+                        }}
+                    />
+                );
+            } else {
+                return (
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: this.state.items[cellInfo.index][
+                                cellInfo.column.id
+                            ]
+                        }}
+                    />
+                );
+            }
         } else {
             return (
                 <div
@@ -496,16 +505,8 @@ class materialRequestAddEdit extends Component {
 
     editChildren = cellInfo => {
         return (
-            <div
-                style={{
-                    color: "#4382f9 ",
-                    padding: "0px 6px",
-                    margin: "5px 0px",
-                    border: "1px dashed",
-                    cursor: "pointer"
-                }}
-                contentEditable
-                suppressContentEditableWarning
+            <div style={{ color: "#4382f9 ", padding: "0px 6px", margin: "5px 0px", border: "1px dashed", cursor: "pointer" }}
+                contentEditable suppressContentEditableWarning
                 onBlur={e => {
                     const items = [...this.state.childerns];
                     items[cellInfo.index][cellInfo.column.id] =
@@ -1024,36 +1025,27 @@ class materialRequestAddEdit extends Component {
     }
 
     saveAndExit(event) {
-        this.props.history.push({
-            pathname: "/siteRequest/" + this.state.projectId
-        });
+        this.changeCurrentStep(1);
     }
 
     showBtnsSaving() {
         let btn = null;
-        if (this.state.docId === 0) {
-            btn = (
-                <button className="primaryBtn-1 btn meduimBtn" type="submit">
-                    {Resources.save[currentLanguage]}
-                </button>
-            );
-        } else if (this.state.docId > 0 && this.props.changeStatus === false) {
-            btn = (
-                <button className="primaryBtn-1 btn mediumBtn" type="submit">
-                    {Resources.saveAndExit[currentLanguage]}
-                </button>
-            );
-        } else
-            btn = (
-                <button
-                    className={
-                        this.state.isViewMode === true
-                            ? "primaryBtn-1 btn middle__btn disNone"
-                            : "primaryBtn-1 btn middle__btn"
-                    }>
-                    {Resources.next[currentLanguage]}
-                </button>
-            );
+        if (Config.IsAllow(117) || Config.IsAllow(116)) {
+            if (this.state.docId === 0) {
+                btn = (
+                    <button className="primaryBtn-1 btn meduimBtn" type="submit">
+                        {Resources.save[currentLanguage]}
+                    </button>
+                );
+            } else if (this.state.docId > 0 && this.props.changeStatus === false) {
+                btn = (
+                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>
+                        {Resources.next[currentLanguage]}
+                    </button>
+                );
+            }
+        }
+
         return btn;
     }
 
@@ -1219,10 +1211,14 @@ class materialRequestAddEdit extends Component {
     };
 
     clickHandlerDeleteRowsMain = selectedRows => {
-        this.setState({
-            showDeleteModal: true,
-            selectedRows: selectedRows
-        });
+        if (Config.IsAllow(118)) {
+            this.setState({
+                showDeleteModal: true,
+                selectedRows: selectedRows
+            });
+        } else {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+        }
     };
 
     _onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
@@ -1410,25 +1406,23 @@ class materialRequestAddEdit extends Component {
 
     handleChangeDropDown(event) {
         this.setState({ isLoading: true });
-        dataservice
-            .GetDataList(
-                "GetContactsByCompanyId?companyId=" + event.value,
-                "contactName",
-                "id"
-            )
-            .then(res => {
-                if (res)
-                    this.setState({
-                        isLoading: false,
-                        contacts: res,
-                        M_fromCompany: event
-                    });
-            });
+        dataservice.GetDataList("GetContactsByCompanyId?companyId=" + event.value, "contactName", "id").then(res => {
+            if (res)
+                this.setState({
+                    isLoading: false,
+                    contacts: res,
+                    M_fromCompany: event
+                });
+        });
     }
 
     showChildern(childerns) {
-        this.setState({ showChildren: true, childerns });
-        this.simpleDialog4.show();
+        if (Config.IsAllow(117)) {
+            this.setState({ showChildren: true, childerns });
+            this.simpleDialog4.show();
+        } else {
+            toast.warn(Resources["missingPermissions"][currentLanguage]);
+        }
     }
 
     _executeAfterModalOpen() {
@@ -1601,9 +1595,7 @@ class materialRequestAddEdit extends Component {
                     clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
                     key="items"
                 />
-            ) : (
-                    <LoadingSection />
-                );
+            ) : (<LoadingSection />);
         const MRGrid = (
             <ReactTable
                 data={this.state.MRItems}
@@ -1630,11 +1622,7 @@ class materialRequestAddEdit extends Component {
                         Cell: (value, row) => {
                             return (
                                 <span>
-                                    {" "}
-                                    {value.original.quantity != null
-                                        ? value.original.quantity -
-                                        value.original.stock
-                                        : 0}
+                                    {value.original.quantity != null ? value.original.quantity - value.original.stock : 0}
                                 </span>
                             );
                         }
@@ -2043,24 +2031,11 @@ class materialRequestAddEdit extends Component {
                                                 <div className="bounce3" />
                                             </div>
                                         </button>
-                                    ) : (
-                                            this.showBtnsSaving()
-                                        )}
+                                    ) : (this.showBtnsSaving())}
                                 </div>
-                                {this.props.changeStatus === true ? (
+                                {Config.IsAllow(117) ? this.props.changeStatus === true ? (
                                     <div className="approveDocument">
                                         <div className="approveDocumentBTNS">
-
-                                            {this.state.isLoading ?
-                                                <button className="primaryBtn-1 btn disabled">
-                                                    <div className="spinner">
-                                                        <div className="bounce1" />
-                                                        <div className="bounce2" />
-                                                        <div className="bounce3" />
-                                                    </div>
-                                                </button> :
-                                                <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} type="submit">{Resources.save[currentLanguage]}</button>
-                                            }
                                             <DocumentActions
                                                 isApproveMode={this.state.isApproveMode}
                                                 docTypeId={this.state.docTypeId}
@@ -2075,7 +2050,7 @@ class materialRequestAddEdit extends Component {
                                             />
                                         </div>
                                     </div>
-                                ) : null}
+                                ) : null : null}
                             </Form>
                         )}
                 </Formik>
@@ -2182,36 +2157,24 @@ class materialRequestAddEdit extends Component {
                             )}
                     </div>
                 </div>
-                <XSLfile
-                    key="boqImport"
-                    docId={this.state.docId}
-                    docType="siteRequest"
-                    link={
-                        Config.getPublicConfiguartion().downloads +
-                        "/Downloads/Excel/SiteRequest.xlsx"
-                    }
+                {Config.IsAllow(117) ? <XSLfile key="boqImport" docId={this.state.docId} docType="siteRequest"
+                    link={Config.getPublicConfiguartion().downloads + "/Downloads/Excel/SiteRequest.xlsx"}
                     header="addManyItems"
                     disabled={this.state.isViewMode}
                     afterUpload={() => this.GetBoqItemsStracture()}
-                />
+                /> : null}
                 <div class="submittalFilter">
                     <div class="subFilter">
                         <h3 class="zero">
-                            {" "}
                             {Resources["AddedItems"][currentLanguage]}
                         </h3>
                         <span>{this.state._items.length}</span>
                     </div>
                     <div class="filterBTNS">
-                        <div
-                            className="default__dropdown--custom"
-                            style={{ marginBottom: "0" }}>
+                        <div className="default__dropdown--custom" style={{ marginBottom: "0" }}>
                             {this.state.isViewMode == true ? null : (
                                 <div className="default__dropdown">
-                                    <Dropdown
-                                        title=""
-                                        data={this.state.materialTypes}
-                                        selectedValue={this.state.materialType}
+                                    <Dropdown title="" data={this.state.materialTypes} selectedValue={this.state.materialType}
                                         handleChange={event => {
                                             this.setState({
                                                 materialType: event
@@ -2222,25 +2185,13 @@ class materialRequestAddEdit extends Component {
                                     />
                                 </div>
                             )}
-                        </div>{" "}
+                        </div>
                     </div>
-                     <div className="rowsPaginations readOnly__disabled">
-                        <button
-                            className={
-                                this.state.pageNumber == 0 ? "rowunActive" : ""
-                            }
-                            onClick={() => this.GetPrevoiusData()}>
+                    <div className="rowsPaginations readOnly__disabled">
+                        <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                             <i className="angle left icon" />
                         </button>
-                        <button
-                            className={
-                                this.state.totalRows !==
-                                    this.state.pageSize * this.state.pageNumber +
-                                    this.state.pageSize
-                                    ? "rowunActive"
-                                    : ""
-                            }
-                            onClick={() => this.GetNextData()}>
+                        <button className={this.state.totalRows !== this.state.pageSize * this.state.pageNumber + this.state.pageSize ? "rowunActive" : ""} onClick={() => this.GetNextData()}>
                             <i className="angle right icon" />
                         </button>
                     </div>
@@ -3095,47 +3046,21 @@ class materialRequestAddEdit extends Component {
                                                     {materialRelease}
                                                 </SkyLight>
                                             </div>
-                                            <div
-                                                className="largePopup largeModal "
-                                                style={{
-                                                    display: this.state
-                                                        .showChildren
-                                                        ? "block"
-                                                        : "none"
-                                                }}>
-                                                <SkyLight
-                                                    afterClose={
-                                                        this
-                                                            ._executeAfterModalClose
-                                                    }
-                                                    afterOpen={
-                                                        this
-                                                            ._executeAfterModalOpen
-                                                    }
+                                            <div className="largePopup largeModal " style={{ display: this.state.showChildren ? "block" : "none" }}>
+                                                <SkyLight afterClose={this._executeAfterModalClose}
+                                                    afterOpen={this._executeAfterModalOpen}
                                                     hideOnOverlayClicked
-                                                    beforeOpen={
-                                                        this
-                                                            ._executeBeforeModalOpen
-                                                    }
-                                                    ref={ref =>
-                                                        (this.simpleDialog4 = ref)
-                                                    }
-                                                    title={
-                                                        Resources
-                                                            .materialRelease[
-                                                        currentLanguage
-                                                        ]
-                                                    }>
+                                                    beforeOpen={this._executeBeforeModalOpen}
+                                                    ref={ref => (this.simpleDialog4 = ref)}
+                                                    title={Resources.materialRelease[currentLanguage]}>
                                                     {childerns}
                                                 </SkyLight>
                                             </div>
-
                                         </React.Fragment>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <Fragment>
                             <Steps
                                 steps_defination={steps_defination}
@@ -3147,7 +3072,6 @@ class materialRequestAddEdit extends Component {
                                 stepNo={this.state.CurrStep} changeStatus={docId === 0 ? false : true}
                             />
                         </Fragment>
-
                     </div>
                 </div>
 
@@ -3186,7 +3110,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(materialRequestAddEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(materialRequestAddEdit));
