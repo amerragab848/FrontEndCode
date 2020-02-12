@@ -22393,3 +22393,7 @@ thead.grid-header tr.action-bar .actions {
 .attachmentTable.attachmentTableAuto.specialTable.specialTable__certifiy thead tr:last-of-type th {
     top: 119px;
 }
+
+.printWrapper .attachmentTable tbody tr td {
+    height: auto ;
+}
