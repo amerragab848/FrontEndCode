@@ -32,6 +32,7 @@ import GridCustom from 'react-customized-grid';
 import 'react-customized-grid/main.css';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 let docId = 0;
@@ -432,7 +433,8 @@ class projectWorkFlowAddEdit extends Component {
             case 'Approval':
                 this.setState({ SelectedApproval: item })
                 break;
-
+            case 'SelectedCompanyForEditContacts':
+                this.setState({ SelectedCompanyForEditContacts: item })
             case 'Company':
                 this.setState({ SelectedCompany: item })
                 if (item !== null) {
@@ -726,7 +728,8 @@ class projectWorkFlowAddEdit extends Component {
                     Description: values.DescriptionForEdit,
                     workFlowId: this.state.docId,
                     multiApproval: false,
-                    approvalId: values.approvalText.value
+                    //approvalId: values.approvalText.value
+                    approvalId: this.state.SelectedApproval.value
                 }
             ).then(
                 res => {
@@ -849,7 +852,9 @@ class projectWorkFlowAddEdit extends Component {
         });
 
     }
-
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
+    }
     AddDocumentType = (values) => {
         this.setState({ IsLoadingCheckCode: true })
         let WorkFlowDocument = {
@@ -1550,7 +1555,7 @@ class projectWorkFlowAddEdit extends Component {
                         SelectedCompanyForEditContacts: this.state.SelectedCompanyForEditContacts,
                         SelectedContactForEditContacts: this.state.SelectedContactForEditContacts,
                         DescriptionForEdit: this.state.ContactDataForEdit.description,
-                        approval: this.state.Approval
+                        Approval: this.state.Approval
                     }}
 
                     enableReinitialize={true}
@@ -1596,10 +1601,10 @@ class projectWorkFlowAddEdit extends Component {
                                         </div>
                                     </div>
                                     <div className="linebylineInput valid-input">
-                                        <Dropdown title="approvalText" data={this.state.ApprovalData} name="approvalText"
+                                        <Dropdown title="approvalText" data={this.state.ApprovalData} name="Approval"
                                             selectedValue={this.state.SelectedApproval} onChange={setFieldValue} value={this.state.SelectedApproval.value}
                                             handleChange={(e) => this.handleChangeDrops(e, "Approval")}
-                                            onBlur={setFieldTouched} error={errors.approval} touched={touched.approval} />
+                                            onBlur={setFieldTouched} error={errors.Approval} touched={touched.Approval} />
                                     </div>
                                     <div className="fullWidthWrapper">
                                         <button className="primaryBtn-1 btn meduimBtn" type='submit' >{Resources['save'][currentLanguage]}</button>
@@ -1681,7 +1686,7 @@ class projectWorkFlowAddEdit extends Component {
 
 
                     <div className="doc-pre-cycle letterFullWidth">
-                        {
+                        {/* {
                             this.props.changeStatus === true ?
                                 <div className="approveDocument">
                                     <div className="approveDocumentBTNS">
@@ -1701,9 +1706,50 @@ class projectWorkFlowAddEdit extends Component {
                                             <OptionContainer permission={this.state.permission} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />
                                         </div>
                                     </div>
+
                                 </div>
                                 : null
-                        }
+                        } */}
+
+                        {this.props.changeStatus === true ? (
+                            <div className="approveDocument">
+                                <div className="approveDocumentBTNS">
+                                    {this.state.isLoading ? (
+                                        <button className="primaryBtn-1 btn disabled">
+                                            <div className="spinner">
+                                                <div className="bounce1" />
+                                                <div className="bounce2" />
+                                                <div className="bounce3" />
+                                            </div>
+                                        </button>
+                                    ) : (
+                                            <button
+                                                className={this.state.isViewMode === true
+                                                    ? "primaryBtn-1 btn middle__btn disNone"
+                                                    : "primaryBtn-1 btn middle__btn"
+                                                }>
+                                                {
+                                                    Resources.save[currentLanguage]
+                                                }
+                                            </button>
+                                        )}
+                                    <DocumentActions
+                                        isApproveMode={this.state.isApproveMode}
+                                        docTypeId={this.state.docTypeId}
+                                        docId={this.state.docId}
+                                        projectId={this.state.projectId}
+                                        previousRoute={this.state.previousRoute}
+                                        docApprovalId={this.state.docApprovalId}
+                                        currentArrange={this.state.arrange}
+                                        //showModal={this.props.showModal}
+                                        showModal={true}
+                                        showOptionPanel={this.showOptionPanel}
+                                        permission={this.state.permission}
+                                        documentName="workFlow"
+                                    />
+                                </div>
+                            </div>
+                        ) : null}
                         <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                             <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>
                                 {this.state.currentComponent}
