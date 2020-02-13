@@ -31,7 +31,7 @@ var steps_defination = [];
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
 const validationSchema = Yup.object().shape({
-  subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
+  subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).nullable(),
   contractId: Yup.string().required(Resources["selectContract"][currentLanguage]).nullable(true),
   total: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
   timeExtension: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage])
@@ -261,7 +261,7 @@ class variationOrderAddEdit extends Component {
 
   checkDocumentIsView() {
     if (this.props.changeStatus === true) {
-      if (!Config.IsAllow(158)) {
+      if (!Config.IsAllow(158) ) {
         this.setState({ isViewMode: true });
       }
 
@@ -489,7 +489,7 @@ class variationOrderAddEdit extends Component {
         this.setState({
           docId: result.id
         });
-
+        this.fillVoItems();
         toast.success(Resources["operationSuccess"][currentLanguage]);
       }
     }).catch(res => {
@@ -790,13 +790,13 @@ class variationOrderAddEdit extends Component {
                                       {Resources.raisedPrices[currentLanguage]}
                                     </label>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ? null : "checked"}
+                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ? "checked" :null }
                                         value="true" onChange={e => this.handleChange(e, "isRaisedPrices")}
                                       />
                                       <label> {Resources.yes[currentLanguage]} </label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ? "checked" : null}
+                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ?  null: "checked"}
                                         value="false" onChange={e => this.handleChange(e, "isRaisedPrices")}
                                       />
                                       <label> {Resources.no[currentLanguage]}</label>
@@ -806,13 +806,13 @@ class variationOrderAddEdit extends Component {
                                   <div className="linebylineInput valid-input">
                                     <label className="control-label"> {Resources.executed[currentLanguage]} </label>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "yes" ? null : "checked"}
+                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "yes" ? "checked" :null }
                                         value="yes" onChange={e => this.handleChange(e, "executed")}
                                       />
                                       <label> {Resources.yes[currentLanguage]} </label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "no" ? "checked" : null}
+                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "no" ? null : "checked"}
                                         value="no" onChange={e => this.handleChange(e, "executed")}
                                       />
                                       <label> {Resources.no[currentLanguage]} </label>
