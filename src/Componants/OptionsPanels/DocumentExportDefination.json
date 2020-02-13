@@ -2776,8 +2776,13 @@
     "120": {
         "fields": [
             {
-                "name": "contractSubject",
-                "value": "contractSubject",
+                "name": "clientName",
+                "value": "clientName",
+                "type": "S"
+            },
+            {
+                "name": "contractAmount",
+                "value": "contractAmount",
                 "type": "S"
             },
             {
@@ -2791,23 +2796,18 @@
                 "type": "S"
             },
             {
-                "name": "clientName",
-                "value": "clientName",
-                "type": "S"
-            },
-            {
                 "name": "percentageOfWorkDone",
                 "value": "percentageOfWorkDone",
                 "type": "S"
             },
             {
-                "name": "contractAmount",
-                "value": "contractAmount",
-                "type": "S"
+                "name": "phdApproval",
+                "value": "creationDate",
+                "type": "D"
             },
             {
-                "name": "creationDate",
-                "value": "creationDate",
+                "name": "invoiceCutOff",
+                "value": "invoiceCut",
                 "type": "D"
             },
             {
@@ -2819,7 +2819,7 @@
                 "name": "consultantApproalDate",
                 "value": "consultantApproalDate",
                 "type": "D"
-            }
+            } 
         ],
         "columnsItems": [
             "description",

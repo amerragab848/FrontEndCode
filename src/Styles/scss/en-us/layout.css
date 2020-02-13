@@ -17242,7 +17242,7 @@ button.companies_icon {
 }
 
 .readOnly_inputs .doc-container .step-content .document-fields .proForm .linebylineInput, .readOnly_inputs .linebylineInput,
- .readOnly_inputs .linebylineInput__checkbox, .readOnly_inputs .fillter-item-c {
+ .readOnly_inputs .linebylineInput__checkbox, .readOnly_inputs .fillter-item-c , .readOnly_inputs > .ui.input{
     -webkit-pointer-events: none;
     -moz-pointer-events: none;
     -ms-pointer-events: none;

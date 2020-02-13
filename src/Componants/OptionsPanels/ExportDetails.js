@@ -31,7 +31,8 @@ class ExportDetails extends Component {
       headerList: [],
       footerList: [],
       headerPath: null,
-      footerPath: null
+      footerPath: null,
+      rowsDocument: [3, 4, 5, 9, 13],
     };
 
     this.ExportDocument = this.ExportDocument.bind(this);
@@ -362,14 +363,53 @@ class ExportDetails extends Component {
       let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
 
       let notExist = find(filedsIgnor, function (x) { return x == field.name })
-      return (
+      return (!notExist ?
+        <tr key={index}>
+          <td>
+            <div className="table__wrapper">
+              <h4 className="ui image header ">
 
-        !notExist ?
+                <div className="content">
+                  {Resources[field.name][currentLanguage]}
+                </div>
+              </h4>
+            </div>
+          </td>
+          <td className="white mt5 tc f3" >
+            <div className="table__wrapper">
+              {formatData}
+            </div>
+          </td>
+        </tr>
+        : null
+      )
+    });
+
+    return (
+      <table id="Fields"  >
+        <tbody>
+          {rows}
+        </tbody>
+      </table>
+    )
+  }
+
+  drawFields_Payment_pdf() {
+
+    let fields = DED[this.props.docTypeId]
+    let data = this.props.document
+    let rows = fields.fields.map((field, index) => {
+      let nextIndex = (index + 1);
+      if ((index % 2) === 0) {
+
+        let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
+
+        let notExist = find(filedsIgnor, function (x) { return x == field.name })
+        return (!notExist ?
           <tr key={index}>
             <td>
               <div className="table__wrapper">
                 <h4 className="ui image header ">
-
                   <div className="content">
                     {Resources[field.name][currentLanguage]}
                   </div>
@@ -381,12 +421,32 @@ class ExportDetails extends Component {
                 {formatData}
               </div>
             </td>
+
+            {nextIndex < fields.fields.length ?
+
+              <Fragment>
+                <td>
+                  <div className="table__wrapper">
+                    <h4 className="ui image header ">
+                      <div className="content">{Resources[fields.fields[nextIndex].name][currentLanguage]} :</div>
+                    </h4>
+                  </div>
+                </td>
+                <td className="white mt5 tc f3" >
+                  <div className="table__wrapper">{fields.fields[nextIndex]["type"] == "D" ? moment(data[fields.fields[nextIndex]["value"]]).format("DD/MM/YYYY") : data[fields.fields[nextIndex]["value"]]}
+                  </div>
+                </td>
+              </Fragment>
+              : null
+            }
           </tr>
           : null
-      )
+        )
+      }
     });
+
     return (
-      <table id="Fields"  >
+      <table id="Fields_PDF_Payment"  >
         <tbody>
           {rows}
         </tbody>
@@ -626,7 +686,7 @@ class ExportDetails extends Component {
             : null
           }
           <div className="subiGrid printGrid">
-            <div className="printHead" style={{ paddingTop: this.state.headerPath != null ? '0' : '25px',marginBottom: this.props.docTypeId == 120 ? '20px' : 0 }}>
+            <div className="printHead" style={{ paddingTop: this.state.headerPath != null ? '0' : '25px', marginBottom: this.props.docTypeId == 120 ? '20px' : 0 }}>
               <h3 className="zero"> {this.props.documentName} </h3>
             </div>
             {this.props.docTypeId == 120 ? null :
@@ -647,8 +707,7 @@ class ExportDetails extends Component {
 
           {this.props.items.length > 0 ?
 
-            < div className="table__withItem">{this.props.docTypeId == 120 ? this.exportPaymentCertification() :
-              this.drawItems_pdf()}
+            < div className="table__withItem">{this.drawItems_pdf()}
             </div>
             : null
           }
@@ -699,6 +758,91 @@ class ExportDetails extends Component {
         </div>
       </div >
 
+    )
+  }
+
+  PrintPDFPaymentCertified() {
+    if (this.state.isExcel === true) return;
+
+    return (
+      <div id="PCertified" className="invoice">
+        <div id="printPdf" className="printWrapper">
+          {this.state.headerPath != null ?
+            <div className="company__name  company__name--image">
+              <img src={this.state.headerPath} alt="Procoor" title="Procoor" style={{ maxWidth: '100%' }} />
+            </div>
+            : null
+          }
+          <div className="subiGrid printGrid">
+            <div className="printHead" style={{ paddingTop: this.state.headerPath != null ? '0' : '25px', marginBottom: '20px' }}>
+              <h3 className="zero"> {this.props.documentName} </h3>
+            </div>
+
+            <div className="subiTable">
+              {this.drawFields_Payment_pdf()}
+            </div>
+          </div>
+
+          {this.props.items.length > 0 ?
+            < div className="table__withItem">{this.drawItemOfPaymentCertification()}
+            </div>
+            : null
+          }
+
+          {this.drawAttachments_pdf()}
+          {this.drawattachDocuments_pdf()}
+          {this.drawWorkFlowCycles()}
+
+          {this.state.footerPath != null ?
+            <div className="footer_print">
+              <img src={this.state.footerPath} alt="Logo" />
+            </div>
+            : null
+          }
+        </div>
+      </div>
+
+    )
+  }
+
+  drawWorkFlowCycles() {
+
+    let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : [];
+    let cycleWF = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0] : null;
+    return (
+      this.props.workFlowCycles.length > 0 ?
+        <Fragment>
+          <p id="pdfLength"><span>{cycleWF.subject}</span><span>{" at Level: " + cycleWF.currentLevel}</span><span> {" Sent:" + moment(cycleWF.creationDate).format('DD-MM-YYYY')}</span></p>
+          <div className=" printSecondPage">
+            {levels.map((cycle, index) => {
+              return (
+                <div key={'row- ' + index} className="workflowPrint">
+                  <div className="flowLevel">
+                    <div className="flowNumber">
+                      <span className="stepLevel">{index + 1}</span>
+                    </div>
+                    <div className="flowMember">
+                      <div className="FlowText">
+                        <h3>{cycle.contactName}</h3>
+                        <p>{cycle.companyName}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={cycle.statusVal == null ? "flowStatus pendingStatue" : cycle.statusVal === true ? "flowStatus approvedStatue" : "flowStatus rejectedStatue"}>
+                    <span className=" statueName">{cycle.status}</span>
+                    {cycle.statusVal == null ? null : <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>}
+                    {cycle.statusVal == null ? null :
+                      <span className="statueSignature">
+                        <img src={cycle.signature != null ? Config.getPublicConfiguartion().downloads + "/" + cycle.signature : Signature} alt="..." />
+                      </span>
+                    }
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </Fragment>
+        : null
     )
   }
 
@@ -835,46 +979,8 @@ class ExportDetails extends Component {
               </ul>
             </div>
 
-            <div>
-
-              {this.props.workFlowCycles.length > 0 ?
-                <Fragment>
-                  <p id="pdfLength"><span>{cycleWF.subject}</span><span>{" at Level: " + cycleWF.currentLevel}</span><span> {" Sent:" + moment(cycleWF.creationDate).format('DD-MM-YYYY')}</span></p>
-                  <div>
-                    {levels.map((cycle, index) => {
-                      return (
-                        <div key={'row- ' + index} className="workflowPrint">
-                          <div className="flowLevel">
-                            <div className="flowNumber">
-                              <span className="stepLevel">{index + 1}</span>
-                            </div>
-                            <div className="flowMember">
-                              <div className="FlowText">
-                                <h3>{cycle.contactName}</h3>
-                                <p>{cycle.companyName}</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className={cycle.statusVal == null ? "flowStatus pendingStatue" : cycle.statusVal === true ? "flowStatus approvedStatue" : "flowStatus rejectedStatue"}>
-                            <span className=" statueName">{cycle.status}</span>
-                            {cycle.statusVal == null ? null : <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>}
-                            {cycle.statusVal == null ? null :
-                              <span className="statueSignature">
-                                <img src={cycle.signature != null ? Config.getPublicConfiguartion().downloads + "/" + cycle.signature : Signature} alt="..." />
-                              </span>
-                            }
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </Fragment>
-                : null
-              }
-            </div>
-
+            {this.drawWorkFlowCycles()}
             {this.drawAttachments_Letter()}
-
             {this.state.footerPath != null ?
               <div className="footer_print">
                 <img src={this.state.footerPath} alt="Logo" />
@@ -950,7 +1056,7 @@ class ExportDetails extends Component {
     var frame1 = document.getElementById('iframePrint');
     var link = document.createElement('style');
 
-    var css = printDocuments.cssEnLetter;
+    var css = printDocuments.cssEn;
     //var css = ``
     link.appendChild(document.createTextNode(css));
     link.setAttribute("rel", "stylesheet");
@@ -976,13 +1082,10 @@ class ExportDetails extends Component {
 
   }
 
-  exportPaymentCertification() {
+  drawItemOfPaymentCertification() {
     if (this.state.isExcel === true) return;
 
-    let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : [];
-    let cycleWF = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0] : null;
-
-    let fieldsName = DED[this.props.docTypeId].friendlyNames
+    // let fieldsName = DED[this.props.docTypeId].friendlyNames
 
     return (
       <Fragment>
@@ -1059,54 +1162,54 @@ class ExportDetails extends Component {
           </thead>
           <tbody>{this.props.items.map(i => (
             <tr key={i.id}>
-              <td colSpan="3" style={{maxWidth: 'unset', width: 'auto'}}>
+              <td colSpan="3" style={{ maxWidth: 'unset', width: 'auto' }}>
                 <div className="contentCell tableCell-2">
-                  <p>{i.description}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.description}</p>
                 </div>
               </td>
               <td colSpan="3">
                 <div className="contentCell tableCell-2">
-                  <p>{i.contractAmount}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.contractorPrevoiuse}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.contractorCurrentValue}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.contractorTotal}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.prevoiuse}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.currentValue}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue}</p>
                 </div>
               </td>
               <td colSpan="1">
                 <div className="contentCell">
-                  <p>{i.total}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total}</p>
                 </div>
               </td>
               <td colSpan="3">
                 <div className="contentCell">
-                  {i.totalDeduction}
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.totalDeduction}</p>
                 </div>
               </td>
               <td colSpan="3">
                 <div className="contentCell">
-                  {i.remarks}
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.remarks}</p>
                 </div>
               </td>
             </tr>
@@ -1167,14 +1270,9 @@ class ExportDetails extends Component {
             </div>
             <div className="fullWidthWrapper">
               <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
-
-              {this.props.docTypeId == 19 ?
-                this.props.docTypeId != 120 ?
-                  <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintLetter()}>{Resources["print"][currentLanguage] + '-' + Resources.lettertitle[currentLanguage]}</button>
-                  : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.printPaymentCertification()}>{Resources["print"][currentLanguage] + '-' + Resources.paymentCertificationLog[currentLanguage]}</button>
-
-                :
-                <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintDocument()}>{Resources["print"][currentLanguage]}</button>
+              {this.props.docTypeId != 120 ? null : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintPaymentCertification()}>{Resources["print"][currentLanguage] + '-' + Resources.paymentCertificationLog[currentLanguage]}</button>}
+              {this.props.docTypeId == 19 ? <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintLetter()}>{Resources["print"][currentLanguage] + '-' + Resources.lettertitle[currentLanguage]}</button> : null}
+              {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintDocument()}>{Resources["print"][currentLanguage]}</button>
               }
             </div>
             <div id="exportLink"></div>
@@ -1182,7 +1280,7 @@ class ExportDetails extends Component {
         }
 
         {this.state.isLoading === true ? <LoadingSection /> : null}
-
+        {/* excel export */}
         <div style={{ display: 'none' }}>
           {this.props.docTypeId != 19 ? this.drawFields() : null}
           {this.props.docTypeId != 120 ? this.drawItems() : null}
@@ -1193,7 +1291,8 @@ class ExportDetails extends Component {
 
         <div style={{ display: 'none' }}>
 
-          {this.exportPDFFile()}
+          {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : this.exportPDFFile()}
+          {this.props.docTypeId == 120 ? this.PrintPDFPaymentCertified() : null}
           {this.props.docTypeId == 19 ? this.exportLetterFile() : null}
         </div>
 

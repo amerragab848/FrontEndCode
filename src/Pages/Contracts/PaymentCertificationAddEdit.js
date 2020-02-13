@@ -1,6 +1,5 @@
 import CryptoJS from "crypto-js";
 import { Form, Formik } from "formik";
-import moment from "moment";
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -11,13 +10,12 @@ import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 import HeaderDocument from "../../Componants/OptionsPanels/HeaderDocument";
 import ViewWorkFlow from "../../Componants/OptionsPanels/ViewWorkFlow";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
-import { default as DataService, default as dataservice } from "../../Dataservice";
+import { default as dataservice } from "../../Dataservice";
 import Resources from "../../resources.json";
 import Config from "../../Services/Config.js";
 import * as communicationActions from "../../store/actions/communication";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
 
 let docId = 0;
 let projectId = 0;
@@ -29,17 +27,18 @@ let arrange = 0;
 
 class PaymentCertificationAddEdit extends Component {
     constructor(props) {
+
         super(props);
+
         const query = new URLSearchParams(this.props.location.search);
+
         let index = 0;
+
         for (let param of query.entries()) {
             if (index === 0) {
                 try {
-                    let obj = JSON.parse(
-                        CryptoJS.enc.Base64.parse(param[1]).toString(
-                            CryptoJS.enc.Utf8
-                        )
-                    );
+                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
+
                     docId = obj.docId;
                     projectId = obj.projectId;
                     projectName = obj.projectName;
@@ -53,7 +52,6 @@ class PaymentCertificationAddEdit extends Component {
             }
             index++;
         }
-
 
         this.state = {
             LoadingPage: false,
@@ -86,6 +84,7 @@ class PaymentCertificationAddEdit extends Component {
                 hasWorkflow: false
             },
             isLoading: true,
+            rowsDocument: [3, 4, 5, 9, 13],
             permission: [{ name: "sendByEmail", code: 54 },
             { name: "sendToWorkFlow", code: 10071 }
             ]
@@ -112,18 +111,14 @@ class PaymentCertificationAddEdit extends Component {
                 this.setState({ isViewMode: true });
             }
         }
-
     }
 
     componentWillUnmount() {
         this.props.actions.clearCashDocument();
     }
 
-
     componentDidMount() {
-        var links = document.querySelectorAll(
-            ".noTabs__document .doc-container .linebylineInput"
-        );
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
             if ((i + 1) % 2 == 0) {
                 links[i].classList.add("even");
@@ -131,14 +126,17 @@ class PaymentCertificationAddEdit extends Component {
                 links[i].classList.add("odd");
             }
         }
+
         this.checkDocumentIsView();
+
         this.props.actions.documentForEdit("GetPaymentCertificationById?id=" + this.state.docId, "Payment Certification");
+
         this.props.actions.getItems("GetPaymentCertificationDetails?id=" + this.state.docId, "Payment Certification");
 
     }
 
     static getDerivedStateFromProps(nextProps, state) {
-        if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
+        if (nextProps.items.length !== state.rows.length && nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
 
             return {
                 document: nextProps.document,
@@ -182,47 +180,47 @@ class PaymentCertificationAddEdit extends Component {
                 <tr key={i.id}>
                     <td colSpan="3">
                         <div className="contentCell tableCell-2">
-                            <p>{i.description}</p>
+                            <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.description}</p>
                         </div>
                     </td>
                     <td colSpan="3">
                         <div className="contentCell tableCell-2">
-                            <p>{i.contractAmount}</p>
+                            <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount}</p>
                         </div>
                     </td>
                     <td colSpan="1">
                         <div className="contentCell">
-                            <p>{i.contractorPrevoiuse}</p>
+                            <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse}</p>
                         </div>
                     </td>
                     <td colSpan="1">
                         <div className="contentCell">
-                            <p>{i.contractorCurrentValue}</p>
+                            <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue}</p>
                         </div>
                     </td>
                     <td colSpan="1">
                         <div className="contentCell">
-                            <p>{i.contractorTotal}</p>
+                            <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal}</p>
                         </div>
                     </td>
                     <td colSpan="1">
                         <div className="contentCell">
-                            <p>{i.prevoiuse}</p>
+                            <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse}</p>
                         </div>
                     </td>
                     <td colSpan="1">
                         <div className="contentCell">
-                            <p>{i.currentValue}</p>
+                            <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue}</p>
                         </div>
                     </td>
                     <td colSpan="1">
                         <div className="contentCell">
-                            <p>{i.total}</p>
+                            <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total}</p>
                         </div>
                     </td>
                     <td colSpan="3">
                         <div className="contentCell">
-                            {i.totalDeduction}
+                            <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.totalDeduction}</p>
                         </div>
                     </td>
                     <td colSpan="3">
@@ -253,21 +251,6 @@ class PaymentCertificationAddEdit extends Component {
                                         <div className="subiTabsContent">
                                             <div className="document-fields">
                                                 <Formik
-                                                    initialValues={{
-                                                        id: this.state.document.id,
-                                                        contractId: this.state.document.contractId,
-                                                        contractSubject: this.state.document.contractSubject,
-                                                        requestId: this.state.document.requestId,
-                                                        requestSubject: this.state.document.requestSubject,
-                                                        projectId: this.state.document.projectId,
-                                                        projectName: this.state.document.projectName,
-                                                        clientName: this.state.document.clientName,
-                                                        percentageOfWorkDone: this.state.document.percentageOfWorkDone,
-                                                        contractAmount: this.state.document.contractAmount,
-                                                        creationDate: this.state.document.creationDate,
-                                                        invoiceSubmissionDate: this.state.document.invoiceSubmissionDate,
-                                                        consultantApproalDate: this.state.document.consultantApproalDate
-                                                    }}
                                                     enableReinitialize={true}
                                                     onSubmit={values => {
                                                         this.updateDocument();
@@ -279,153 +262,93 @@ class PaymentCertificationAddEdit extends Component {
                                                             noValidate="novalidate"
                                                             onSubmit={handleSubmit}>
                                                             <div className="proForm datepickerContainer">
-                                                                <div className="linebylineInput valid-input">
+                                                                <div className="linebylineInput  fullInputWidth">
                                                                     <label className="control-label">
                                                                         {Resources["contractSubject"][currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className="inputDev ui input ">
-                                                                        <input
-                                                                            name="contractSubject"
-                                                                            className="form-control"
-                                                                            id="contractSubject"
-                                                                            placeholder={
-                                                                                Resources[
-                                                                                "contractSubject"
-                                                                                ][currentLanguage]
-                                                                            }
+                                                                    <div className="inputDev ui input ">
+                                                                        <input name="contractSubject" className="form-control" id="contractSubject"
+                                                                            placeholder={Resources["contractSubject"][currentLanguage]}
                                                                             autoComplete="off"
-                                                                            onBlur={handleBlur}
-                                                                            defaultValue={
-                                                                                values.contractSubject
-                                                                            }
+                                                                            value={this.state.document.contractSubject}
                                                                             readOnly
                                                                         />
                                                                     </div>
                                                                 </div>
-                                                                <div className="linebylineInput valid-input">
+                                                                <div className="linebylineInput  fullInputWidth">
                                                                     <label className="control-label">
                                                                         {Resources["projectName"][currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className="inputDev ui input ">
-                                                                        <input
-                                                                            name="projectName"
-                                                                            className="form-control"
-                                                                            id="projectName"
-                                                                            placeholder={
-                                                                                Resources[
-                                                                                "projectName"
-                                                                                ][currentLanguage]
-                                                                            }
+                                                                    <div className="inputDev ui input ">
+                                                                        <input name="projectName" className="form-control" id="projectName"
+                                                                            placeholder={Resources["projectName"][currentLanguage]}
                                                                             autoComplete="off"
-                                                                            onBlur={handleBlur}
-                                                                            defaultValue={
-                                                                                values.projectName
-                                                                            }
+                                                                            value={this.state.document.projectName}
                                                                             readOnly
                                                                         />
                                                                     </div>
                                                                 </div>
-                                                                <div className="linebylineInput valid-input">
+                                                                <div className="linebylineInput  fullInputWidth">
                                                                     <label className="control-label">
                                                                         {Resources["requestSubject"][currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className="inputDev ui input ">
-                                                                        <input
-                                                                            name="requestSubject"
-                                                                            className="form-control"
-                                                                            id="requestSubject"
-                                                                            placeholder={
-                                                                                Resources[
-                                                                                "requestSubject"
-                                                                                ][currentLanguage]
-                                                                            }
+                                                                    <div className="inputDev ui input ">
+                                                                        <input name="requestSubject" className="form-control" id="requestSubject"
+                                                                            placeholder={Resources["requestSubject"][currentLanguage]}
                                                                             autoComplete="off"
-                                                                            onBlur={handleBlur}
-                                                                            defaultValue={
-                                                                                values.requestSubject
-                                                                            }
+                                                                            value={this.state.document.requestSubject}
                                                                             readOnly
                                                                         />
                                                                     </div>
                                                                 </div>
-                                                                <div className="linebylineInput valid-input">
+                                                                <div className="linebylineInput  fullInputWidth">
                                                                     <label className="control-label">
                                                                         {Resources["clientName"][currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className="inputDev ui input ">
-                                                                        <input
-                                                                            name="clientName"
-                                                                            className="form-control"
-                                                                            id="clientName"
-                                                                            placeholder={
-                                                                                Resources[
-                                                                                "clientName"
-                                                                                ][currentLanguage]
-                                                                            }
+                                                                    <div className="inputDev ui input ">
+                                                                        <input name="clientName" className="form-control" id="clientName"
+                                                                            placeholder={Resources["clientName"][currentLanguage]}
                                                                             autoComplete="off"
-                                                                            onBlur={handleBlur}
-                                                                            defaultValue={
-                                                                                values.clientName
-                                                                            }
+                                                                            value={this.state.document.clientName}
                                                                             readOnly
                                                                         />
                                                                     </div>
                                                                 </div>
-                                                                <div className="linebylineInput valid-input">
+                                                                <div className="linebylineInput  fullInputWidth">
                                                                     <label className="control-label">
                                                                         {Resources["percentageOfWorkDone"][currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className="inputDev ui input ">
-                                                                        <input
-                                                                            name="percentageOfWorkDone"
-                                                                            className="form-control"
-                                                                            id="percentageOfWorkDone"
-                                                                            placeholder={
-                                                                                Resources[
-                                                                                "percentageOfWorkDone"
-                                                                                ][currentLanguage]
-                                                                            }
+                                                                    <div className="inputDev ui input ">
+                                                                        <input name="percentageOfWorkDone" className="form-control" id="percentageOfWorkDone"
+                                                                            placeholder={Resources["percentageOfWorkDone"][currentLanguage]}
                                                                             autoComplete="off"
-                                                                            onBlur={handleBlur}
-                                                                            defaultValue={
-                                                                                values.percentageOfWorkDone
-                                                                            }
+                                                                            value={this.state.document.percentageOfWorkDone}
                                                                             readOnly
                                                                         />
                                                                     </div>
                                                                 </div>
-                                                                <div className="linebylineInput valid-input">
+                                                                <div className="linebylineInput fullInputWidth">
                                                                     <label className="control-label">
                                                                         {Resources["contractAmount"][currentLanguage]}
                                                                     </label>
-                                                                    <div
-                                                                        className="inputDev ui input ">
-                                                                        <input
-                                                                            name="contractAmount"
-                                                                            className="form-control"
-                                                                            id="contractAmount"
-                                                                            placeholder={
-                                                                                Resources[
-                                                                                "contractAmount"
-                                                                                ][currentLanguage]
-                                                                            }
+                                                                    <div className="inputDev ui input ">
+                                                                        <input name="contractAmount" className="form-control" id="contractAmount"
+                                                                            placeholder={Resources["contractAmount"][currentLanguage]}
                                                                             autoComplete="off"
                                                                             onBlur={handleBlur}
-                                                                            defaultValue={
-                                                                                values.contractAmount
-                                                                            }
+                                                                            value={this.state.document.contractAmount}
                                                                             readOnly
                                                                         />
                                                                     </div>
                                                                 </div>
 
+                                                                <div className="linebylineInput readOnly_inputs valid-input alternativeDate">
+                                                                    <DatePicker title="invoiceCutOff"
+                                                                        startDate={this.state.document.invoiceCut}
+                                                                    />
+                                                                </div>
                                                                 <div className="linebylineInput valid-input alternativeDate">
-                                                                    <DatePicker title="creationDate"
+                                                                    <DatePicker title="phdApproval"
                                                                         startDate={this.state.document.creationDate}
                                                                         handleChange={e => this.handleChangeDate(e, "creationDate")} />
                                                                 </div>
@@ -458,7 +381,7 @@ class PaymentCertificationAddEdit extends Component {
                                                                         showModal={true}
                                                                         showOptionPanel={this.showOptionPanel}
                                                                         permission={this.state.permission}
-                                                                        documentName="paymentCertificationLog"
+                                                                        documentName="PAYMENT CERTTIFICATE "
                                                                     />
                                                                 </div>
                                                             </div>
