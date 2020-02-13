@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
@@ -6,21 +6,14 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
-import moment from "moment";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
-
 const ValidtionSchema = Yup.object().shape({
-    selectedProject: Yup.string()
-        .required(Resources['projectSelection'][currentLanguage])
-        .nullable(true),
+    selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
 });
 
 const columns = [
@@ -43,13 +36,11 @@ class ProjectDocumentStatus extends Component {
 
         if (!Config.IsAllow(3678)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push({
-                pathname: "/"
-            })
+            this.props.history.push("/");
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'projectId').then(result => {
             result.unshift({ 'label': 'All Projects', 'value': '0' });
             this.setState({
@@ -124,19 +115,19 @@ class ProjectDocumentStatus extends Component {
                             <thead>
                                 <tr>
                                     <th>
-                                        <div className="headCell"> Document  </div>
+                                        <div className="headCell">{Resources['document'][currentLanguage]}</div>
                                     </th>
                                     <th>
-                                        <div className="headCell"> Open  </div>
+                                        <div className="headCell">{Resources['open'][currentLanguage]}</div>
                                     </th>
                                     <th>
-                                        <div className="headCell"> Closed  </div>
+                                        <div className="headCell">{Resources['close'][currentLanguage]}</div>
                                     </th>
                                     <th>
-                                        <div className="headCell"> Approved  </div>
+                                        <div className="headCell">{Resources['approved'][currentLanguage]}</div>
                                     </th>
                                     <th>
-                                        <div className="headCell"> Rejeceted  </div>
+                                        <div className="headCell">{Resources['rejeceted'][currentLanguage]}</div>
                                     </th>
                                 </tr>
                             </thead>

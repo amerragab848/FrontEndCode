@@ -8378,5 +8378,9 @@
     "phdApproval": {
         "en": "PHD Approval Date",
         "ar": "PHD Approval Date"
+    },
+    "rejeceted": {
+        "en": "Rejeceted",
+        "ar": "مرفوض"
     }
 }
