@@ -9,21 +9,15 @@ import Export from "../../../Componants/OptionsPanels/Export";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-
+import GridCustom from 'react-customized-grid';
+import "react-customized-grid/main.css";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
 });
-
-const columns = [
-    { field: 'title', title: Resources['document'][currentLanguage] },
-    { field: 'open', title: Resources['open'][currentLanguage] },
-    { field: 'closed', title: Resources['close'][currentLanguage] },
-    { field: 'approved', title: Resources['approved'][currentLanguage] },
-    { field: 'rejected', title: Resources['rejeceted'][currentLanguage] }];
-
-class ProjectDocumentStatus extends Component {
+  
+class ContractsStatus extends Component {
 
     constructor(props) {
         super(props)
@@ -34,10 +28,65 @@ class ProjectDocumentStatus extends Component {
             rows: []
         }
 
-        if (!Config.IsAllow(4027)) {
+        if (!Config.IsAllow(4028)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/");
         }
+
+        this.columns = [
+            {
+                "field": "subject",
+                "title": Resources.subject[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "fixed": true,
+                "sortable": true
+            }, {
+                "field": "originalContractSum",
+                "title": Resources.originalContractSum[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "variationSum",
+                "title": Resources.variationSum[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "amendmentSum",
+                "title": Resources.amendmentsSum[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "revisedContractSumToDate",
+                "title": Resources.revisedContractSumToDate[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "contractExcutedToDate",
+                "title": Resources.contractExcutedToDate[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "balance",
+                "title": Resources.balance[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }
+        ];
+
     }
 
     componentDidMount() {
@@ -53,7 +102,7 @@ class ProjectDocumentStatus extends Component {
 
     getGridRows = () => {
         this.setState({ isLoading: true })
-        Dataservice.GetDataGrid('ProjectDocumentStatus?projectId=' + this.state.selectedProject.value).then(res => {
+        Dataservice.GetDataGrid('GetContractsStatus?projectId=' + this.state.selectedProject.value).then(res => {
             this.setState({
                 rows: res,
                 isLoading: false
@@ -69,8 +118,8 @@ class ProjectDocumentStatus extends Component {
             (
                 <Export
                     rows={this.state.isLoading === false ? this.state.rows : []}
-                    columns={columns}
-                    fileName={Resources.ProjectDocumentStatus[currentLanguage]}
+                    columns={this.columns}
+                    fileName={Resources.contractStatus[currentLanguage]}
                 />
             ) : null;
 
@@ -81,7 +130,7 @@ class ProjectDocumentStatus extends Component {
                 </div>
                 <div className="reports__content">
                     <header>
-                        <h2 className="zero">{Resources.ProjectDocumentStatus[currentLanguage]}</h2>
+                        <h2 className="zero">{Resources.contractStatus[currentLanguage]}</h2>
                         {this.state.isLoading ? <LoadingSection /> : null}
                     </header>
                     <Formik
@@ -111,53 +160,14 @@ class ProjectDocumentStatus extends Component {
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">
                     {this.state.rows ?
-                        <table className="attachmentTable">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <div className="headCell">{Resources['document'][currentLanguage]}</div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell">{Resources['open'][currentLanguage]}</div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell">{Resources['close'][currentLanguage]}</div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell">{Resources['approved'][currentLanguage]}</div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell">{Resources['rejeceted'][currentLanguage]}</div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>{this.state.rows.map(i => {
-                                return (
-                                    <tr>
-                                        <td style={{ width: 'auto' }}>
-                                            <div className="contentCell" style={{ width: 'auto', justifyContent: 'center' }}> {i.title}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell" style={{ width: '15%', justifyContent: 'center' }}> {i.open}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell" style={{ width: '15%', justifyContent: 'center' }}> {i.closed}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell" style={{ width: '15%', justifyContent: 'center' }}> {i.approved}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell" style={{ width: '15%', justifyContent: 'center' }}> {i.rejected}</div>
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                            </tbody>
-                        </table> : null}
+                        (this.state.isLoading ? <LoadingSection /> :
+                            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+                            />)
+                        : null}
                 </div>
             </React.Fragment>
         )
     }
-
 }
-export default withRouter(ProjectDocumentStatus)
+export default withRouter(ContractsStatus)

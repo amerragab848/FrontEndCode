@@ -8392,10 +8392,6 @@ h1, h2, h3, h4, h5 {
     border-top: 1px solid #e9ecf0;
 }
 
-.printWrapper .attachmentTable tbody tr td {
-    height: auto !important;
-}
-
 @media screen and (max-width: 1300px) {
     .attachmentTable tbody tr td {
         height: 34px;
@@ -22068,4 +22064,13 @@ thead.grid-header tr.action-bar .actions {
 .attachmentTable.attachmentTableAuto.specialTable.specialTable__certifiy thead tr:last-of-type th {
     top: 119px;
 }
+
+.printWrapper .attachmentTable tbody tr td {
+    height: auto ;
+}
+
+tbody.grid-body tr td.text {
+    white-space: nowrap
+}
+
 /* Added New After devided*/

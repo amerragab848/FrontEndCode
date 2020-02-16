@@ -5971,6 +5971,10 @@
         "en": "Invoice Cut-off date",
         "ar": "Invoice Cut-off date"
     },
+    "contractsStatus": {
+        "en": "Contracts Status",
+        "ar": "حالات العقود"
+    },
     "quantityComplete": {
         "en": "Qty Complete",
         "ar": "الكمية المنفذة"
@@ -8332,8 +8336,8 @@
         "ar": "Request Subject"
     },
     "percentageOfWorkDone": {
-        "en": "Percent Age Of WorkDone",
-        "ar": "Percent Age Of WorkDone"
+        "en": "Percentage Of WorkDone",
+        "ar": "Percentage Of WorkDone"
     },
     "contractAmount": {
         "en": "Contract Amount",
@@ -8382,5 +8386,25 @@
     "rejeceted": {
         "en": "Rejeceted",
         "ar": "مرفوض"
+    },
+    "contractStatus": {
+        "en": "Contracts Status",
+        "ar": "حالة العقود"
+    },
+    "variationSum": {
+        "en": "Variation Sum",
+        "ar": "Variation Sum"
+    },
+    "amendmentsSum": {
+        "en": "Amendments Sum",
+        "ar": "Amendments Sum"
+    },
+    "contractExcutedToDate": {
+        "en": "Contract Excuted ToDate",
+        "ar": "Contract Excuted ToDate"
+    },
+    "projectCostCodingTree": {
+        "en": "Project Cost Coding Tree",
+        "ar": "سجل شجرة كود التكلفة للمشروعات "
     }
 }

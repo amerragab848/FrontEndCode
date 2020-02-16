@@ -8,21 +8,18 @@ import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
-import moment from "moment";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Api from '../../../api';
+import moment from 'moment';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
+
 const ValidtionSchema = Yup.object().shape({
-    selectedProject: Yup.string()
-        .required(Resources['projectSelection'][currentLanguage])
-        .nullable(true),
+    selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
 });
+
 class CollectedPaymentRequisition extends Component {
     constructor(props) {
         super(props)
