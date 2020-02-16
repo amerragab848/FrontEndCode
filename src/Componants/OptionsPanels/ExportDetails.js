@@ -83,8 +83,8 @@ class ExportDetails extends Component {
           + '<h2> Procoor Document </h2>'
           + '</head > '
           + '<body>'
-          + ' <table>{Fields}</table>   <table> <h6>Document Cycles </h6></table> '
-          + ' <table>{items}</table>   <table> <h6> Attachments </h6></table> '
+          + ' <table>{Fields}</table><table> <h6>Document Cycles </h6></table> '
+          + ' <table>{items}</table><table> <h6> Attachments </h6></table> '
           + ' <table>{attachmentTable}</table>   <table><h6>   </table> '
           + ' <table>{workflowCycles}</table>   <table> Doc. Attachments </table> '
           + ' <table>{docAttachments}</table>     '
@@ -182,6 +182,7 @@ class ExportDetails extends Component {
         )
       }
     });
+
     return (
       <table id="Fields" className="subiTable" >
         <tbody>
@@ -407,7 +408,7 @@ class ExportDetails extends Component {
         let notExist = find(filedsIgnor, function (x) { return x == field.name })
         return (!notExist ?
           <tr key={index}>
-            <td style={{ fontSize: '10px',  maxHeight: '31px',paddingBottom: '0', paddingTop:0}}>
+            <td style={{ fontSize: '10px', maxHeight: '31px', paddingBottom: '0', paddingTop: 0 }}>
               <div className="table__wrapper">
                 <h4 className="ui image header ">
                   <div className="content">
@@ -416,8 +417,8 @@ class ExportDetails extends Component {
                 </h4>
               </div>
             </td>
-            <td style={{ fontSize: '10px',  maxHeight: '31px',paddingBottom: '0', paddingTop:0}} className="white mt5 tc f3" >
-              <div className="table__wrapper" style={{whiteSpace: "nowrap"}}>
+            <td style={{ fontSize: '10px', maxHeight: '31px', paddingBottom: '0', paddingTop: 0 }} className="white mt5 tc f3" >
+              <div className="table__wrapper" style={{ whiteSpace: "nowrap" }}>
                 {formatData}
               </div>
             </td>
@@ -425,15 +426,15 @@ class ExportDetails extends Component {
             {nextIndex < fields.fields.length ?
 
               <Fragment>
-                <td style={{ fontSize: '10px',  maxHeight: '31px',paddingBottom: '0', paddingTop:0}}>
+                <td style={{ fontSize: '10px', maxHeight: '31px', paddingBottom: '0', paddingTop: 0 }}>
                   <div className="table__wrapper">
                     <h4 className="ui image header ">
                       <div className="content">{Resources[fields.fields[nextIndex].name][currentLanguage]} :</div>
                     </h4>
                   </div>
                 </td>
-                <td style={{ fontSize: '10px',  maxHeight: '31px',paddingBottom: '0', paddingTop:0}} className="white mt5 tc f3" >
-                  <div className="table__wrapper" style={{whiteSpace: "nowrap"}}>{fields.fields[nextIndex]["type"] == "D" ? moment(data[fields.fields[nextIndex]["value"]]).format("DD/MM/YYYY") : data[fields.fields[nextIndex]["value"]]}
+                <td style={{ fontSize: '10px', maxHeight: '31px', paddingBottom: '0', paddingTop: 0 }} className="white mt5 tc f3" >
+                  <div className="table__wrapper" style={{ whiteSpace: "nowrap" }}>{fields.fields[nextIndex]["type"] == "D" ? moment(data[fields.fields[nextIndex]["value"]]).format("DD/MM/YYYY") : data[fields.fields[nextIndex]["value"]]}
                   </div>
                 </td>
               </Fragment>
@@ -446,7 +447,7 @@ class ExportDetails extends Component {
     });
 
     return (
-      <table id="Fields_PDF_Payment"  >
+      <table id="Fields_PDF_Payment">
         <tbody>
           {rows}
         </tbody>
@@ -559,7 +560,7 @@ class ExportDetails extends Component {
     return (
       this.props.files.length > 0 ?
         <Fragment>
-          <div class="print__jobs">
+          <div className="print__jobs">
             <h3>Attachments:</h3>
             <div>
               {this.props.files.map((file, index) => {
@@ -773,7 +774,7 @@ class ExportDetails extends Component {
             </div>
             : null
           }
-          <div className="subiGrid printGrid" style={{paddingLeft: '30px', paddingRight: '30px'}}>
+          <div className="subiGrid printGrid" style={{ paddingLeft: '30px', paddingRight: '30px' }}>
             <div className="printHead" style={{ paddingTop: this.state.headerPath != null ? '0' : '25px', marginBottom: '20px' }}>
               <h3 className="zero"> {this.props.documentName} </h3>
             </div>
@@ -971,7 +972,6 @@ class ExportDetails extends Component {
             </div>
 
             <div className="divPoints">
-
               <ul>
                 <li {...propsLetters} ></li>
               </ul>
@@ -1090,140 +1090,140 @@ class ExportDetails extends Component {
         <table className="attachmentTable attachmentTable__items attachmentTableAuto specialTable specialTable__certifiy" key="interimPaymentCertificate">
           <thead>
             <tr>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="headCell">
                   {Resources["description"][currentLanguage]}
                 </div>
               </th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="headCell">
                   {Resources["contractAmount"][currentLanguage]}
                 </div>
               </th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="headCell">
                   {Resources["submitted"][currentLanguage]}
                 </div>
               </th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="headCell">
                   {Resources["approved"][currentLanguage]}
                 </div>
               </th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="headCell">
                   {Resources["totalDeduction"][currentLanguage]}
                 </div>
               </th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="headCell">
                   {Resources["remarks"][currentLanguage]}
                 </div>
               </th>
-            </tr>
-            <tr>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3"></th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3"></th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
+            </tr> 
+             <tr>
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="headCell">
                   {Resources["previous"][currentLanguage]}
                 </div>
               </th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="headCell">
                   {Resources["current"][currentLanguage]}
                 </div>
               </th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="headCell">
                   {Resources["total"][currentLanguage]}
                 </div>
               </th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="headCell">
                   {Resources["previous"][currentLanguage]}
                 </div>
               </th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="headCell">
                   {Resources["current"][currentLanguage]}
                 </div>
               </th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
-                <div className="headCell">
-                  {Resources["total"][currentLanguage]}
-                </div>
-              </th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3"></th>
-              <th style={{position: 'unset',height: '25px',  borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3"></th>
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">  </th>
+                <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                  <div className="headCell">
+                    {Resources["total"][currentLanguage]}
+                  </div>
+                </th>
+                <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
+                <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
             </tr>
           </thead>
-          <tbody>{this.props.items.map(i => (
-            <tr key={i.id} style={{height: '25px'}}>
-              <td style={{height: '25px', borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3" style={{ maxWidth: 'unset', width: 'auto' }}>
-                <div className="contentCell  "style={{minHeight : 'unset', height: '25px', maxHeight: '25px' }}tableCell-2>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.description}</p>
-                </div>
-              </td>
-              <td style={{height: '25px', borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3">
-                <div className="contentCell  "style={{minHeight : 'unset', height: '25px', maxHeight: '25px' }}tableCell-2>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount}</p>
-                </div>
-              </td>
-              <td style={{height: '25px', borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
-                <div className="contentCell" style={{minHeight : 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse}</p>
-                </div>
-              </td>
-              <td style={{height: '25px', borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
-                <div className="contentCell" style={{minHeight : 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue}</p>
-                </div>
-              </td>
-              <td style={{height: '25px', borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
-                <div className="contentCell" style={{minHeight : 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal}</p>
-                </div>
-              </td>
-              <td style={{height: '25px', borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
-                <div className="contentCell" style={{minHeight : 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse}</p>
-                </div>
-              </td>
-              <td style={{height: '25px', borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
-                <div className="contentCell" style={{minHeight : 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue}</p>
-                </div>
-              </td>
-              <td style={{height: '25px', borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="1">
-                <div className="contentCell" style={{minHeight : 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total}</p>
-                </div>
-              </td>
-              <td style={{height: '25px', borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3">
-                <div className="contentCell" style={{minHeight : 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.totalDeduction}</p>
-                </div>
-              </td>
-              <td style={{height: '25px', borderBottom : '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 '}} colSpan="3">
-                <div className="contentCell" style={{minHeight : 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.remarks}</p>
-                </div>
-              </td>
-            </tr>
-          ))}</tbody>
+            <tbody>{this.props.items.map(i => (
+              <tr key={i.id} style={{ height: '25px' }}>
+                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3" style={{ maxWidth: 'unset', width: 'auto' }}>
+                  <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} tableCell-2>
+                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.description}</p>
+                  </div>
+                </td>
+                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+                  <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} tableCell-2>
+                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount}</p>
+                  </div>
+                </td>
+                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse}</p>
+                  </div>
+                </td>
+                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue}</p>
+                  </div>
+                </td>
+                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal}</p>
+                  </div>
+                </td>
+                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse}</p>
+                  </div>
+                </td>
+                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue}</p>
+                  </div>
+                </td>
+                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total}</p>
+                  </div>
+                </td>
+                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.totalDeduction}</p>
+                  </div>
+                </td>
+                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.remarks}</p>
+                  </div>
+                </td>
+              </tr>
+            ))}</tbody>
         </table>
       </Fragment>
-    )
-  }
-
+        )
+      }
+    
   render() {
     return (
       <div id={'docExport'}>
-        {this.state.isLoading === true ? null :
-          <div className="dropWrapper readOnly__disabled ">
-            <div className="proForm customProform">
-              <div className="linebylineInput valid-input">
+          {this.state.isLoading === true ? null :
+            <div className="dropWrapper readOnly__disabled ">
+              <div className="proForm customProform">
                 <Dropdown title="header"
                   data={this.state.headerList}
                   selectedValue={this.state.selectHeader}
@@ -1232,8 +1232,6 @@ class ExportDetails extends Component {
                   isClear={false}
                   name="headerPath"
                 />
-              </div>
-              <div className="linebylineInput valid-input">
                 <Dropdown title="footer"
                   data={this.state.footerList}
                   selectedValue={this.state.selectFooter}
@@ -1242,86 +1240,86 @@ class ExportDetails extends Component {
                   isClear={false}
                   name="footerPath"
                 />
+                <div className="fillter-status fillter-item-c">
+                  <label className="control-label">{Resources.export[currentLanguage]}</label>
+                  <div className="ui checkbox radio radioBoxBlue">
+                    <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? null : 'checked'} value={true} onChange={e => this.handleChange(true, 'isExcel')} />
+                    <label>{Resources.excel[currentLanguage]}</label>
+                  </div>
+                  <div className="ui checkbox radio radioBoxBlue">
+                    <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? 'checked' : null} value={false} onChange={e => this.handleChange(false, 'isExcel')} />
+                    <label>{Resources.pdf[currentLanguage]}</label>
+                  </div>
+                </div>
+                <div className="fillter-status fillter-item-c">
+                  <label className="control-label">{Resources.design[currentLanguage]}</label>
+                  <div className="ui checkbox radio radioBoxBlue">
+                    <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? null : 'checked'} value="true" onChange={e => this.handleChange(true, 'isLandscape')} />
+                    <label>{Resources.landscape[currentLanguage]}</label>
+                  </div>
+                  <div className="ui checkbox radio radioBoxBlue">
+                    <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? 'checked' : null} value="true" onChange={e => this.handleChange(false, 'isLandscape')} />
+                    <label>{Resources.portrait[currentLanguage]}</label>
+                  </div>
+                </div>
               </div>
-              <div className="fillter-status fillter-item-c">
-                <label className="control-label">{Resources.export[currentLanguage]}</label>
-                <div className="ui checkbox radio radioBoxBlue">
-                  <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? null : 'checked'} value={true} onChange={e => this.handleChange(true, 'isExcel')} />
-                  <label>{Resources.excel[currentLanguage]}</label>
-                </div>
-                <div className="ui checkbox radio radioBoxBlue">
-                  <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? 'checked' : null} value={false} onChange={e => this.handleChange(false, 'isExcel')} />
-                  <label>{Resources.pdf[currentLanguage]}</label>
-                </div>
+              <div className="fullWidthWrapper">
+                <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
+                {this.props.docTypeId != 120 ? null : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintPaymentCertification()}>{Resources["print"][currentLanguage] + '-' + Resources.paymentCertificationLog[currentLanguage]}</button>}
+                {this.props.docTypeId == 19 ? <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintLetter()}>{Resources["print"][currentLanguage] + '-' + Resources.lettertitle[currentLanguage]}</button> : null}
+                {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintDocument()}>{Resources["print"][currentLanguage]}</button>
+                }
               </div>
-              <div className="fillter-status fillter-item-c">
-                <label className="control-label">{Resources.design[currentLanguage]}</label>
-                <div className="ui checkbox radio radioBoxBlue">
-                  <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? null : 'checked'} value="true" onChange={e => this.handleChange(true, 'isLandscape')} />
-                  <label>{Resources.landscape[currentLanguage]}</label>
-                </div>
-                <div className="ui checkbox radio radioBoxBlue">
-                  <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? 'checked' : null} value="true" onChange={e => this.handleChange(false, 'isLandscape')} />
-                  <label>{Resources.portrait[currentLanguage]}</label>
-                </div>
-              </div>
+              <div id="exportLink"></div>
             </div>
-            <div className="fullWidthWrapper">
-              <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
-              {this.props.docTypeId != 120 ? null : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintPaymentCertification()}>{Resources["print"][currentLanguage] + '-' + Resources.paymentCertificationLog[currentLanguage]}</button>}
-              {this.props.docTypeId == 19 ? <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintLetter()}>{Resources["print"][currentLanguage] + '-' + Resources.lettertitle[currentLanguage]}</button> : null}
-              {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintDocument()}>{Resources["print"][currentLanguage]}</button>
-              }
-            </div>
-            <div id="exportLink"></div>
+          }
+
+          {this.state.isLoading === true ? <LoadingSection /> : null}
+          {/* excel export */}
+          <div style={{ display: 'none' }}>
+            {this.props.docTypeId != 19 ? this.drawFields() : null}
+            {this.props.docTypeId != 120 ? this.drawItems() : null}
+
+            {this.drawAttachments()}
+            {this.drawWorkFlow()}
+            {this.drawattachDocuments()}
           </div>
-        }
 
-        {this.state.isLoading === true ? <LoadingSection /> : null}
-        {/* excel export */}
-        <div style={{ display: 'none' }}>
-          {this.props.docTypeId != 19 ? this.drawFields() : null}
-          {this.props.docTypeId != 120 ? this.drawItems() : null}
-          {this.drawAttachments()}
-          {this.drawWorkFlow()}
-          {this.drawattachDocuments()}
-        </div>
+          <div style={{ display: 'none' }}>
 
-        <div style={{ display: 'none' }}>
+            {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : this.exportPDFFile()}
+            {this.props.docTypeId == 120 ? this.PrintPDFPaymentCertified() : null}
+            {this.props.docTypeId == 19 ? this.exportLetterFile() : null}
+          </div>
 
-          {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : this.exportPDFFile()}
-          {this.props.docTypeId == 120 ? this.PrintPDFPaymentCertified() : null}
-          {this.props.docTypeId == 19 ? this.exportLetterFile() : null}
-        </div>
-
-        <div style={{ display: 'none' }}>
-          <iframe id="iframePrint" name="iframePrint">
-          </iframe>
-        </div>
-      </div >
-    )
-  }
-}
-
-
+          <div style={{ display: 'none' }}>
+            <iframe id="iframePrint" name="iframePrint">
+            </iframe>
+          </div>
+        </div >
+        )
+      }
+    }
+    
+    
 function mapStateToProps(state, ownProps) {
   return {
-    document: state.communication.document,
-    files: state.communication.files,
-    workFlowCycles: state.communication.workFlowCycles,
-    items: state.communication.items,
-    fields: state.communication.fields,
-    fieldsItems: state.communication.fieldsItems,
-    docsAttachData: state.communication.docsAttachData,
-    documentTitle: state.communication.documentTitle
-  }
-}
-
+          document: state.communication.document,
+        files: state.communication.files,
+        workFlowCycles: state.communication.workFlowCycles,
+        items: state.communication.items,
+        fields: state.communication.fields,
+        fieldsItems: state.communication.fieldsItems,
+        docsAttachData: state.communication.docsAttachData,
+        documentTitle: state.communication.documentTitle
+      }
+    }
+    
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(communicationActions, dispatch)
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ExportDetails);
-
+          actions: bindActionCreators(communicationActions, dispatch)
+      };
+    }
+    
+    export default connect(mapStateToProps, mapDispatchToProps)(ExportDetails);
+    

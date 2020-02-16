@@ -16,7 +16,7 @@ let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
 });
-  
+
 class ContractsStatus extends Component {
 
     constructor(props) {

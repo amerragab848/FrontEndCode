@@ -5843,6 +5843,10 @@
         "en": "Copy To",
         "ar": "نسخ الي"
     },
+    "copyMultiple": {
+        "en": "Copy Multiple Times",
+        "ar": "نسخ متعدد"
+    },
     "sendByEmail": {
         "en": "Send By Email",
         "ar": "ارسال بالبريد الالكتروني"
