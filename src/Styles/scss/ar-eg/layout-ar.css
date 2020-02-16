@@ -17465,12 +17465,6 @@ button.companies_icon {
 }
 
 /* 2022 to 2076 */
-.one__tab.one_step .doc-container .step-content {
-    width: calc(100% - 232px);
-    padding: 0;
-    padding-right: 78px;
-    padding-left: 40px;
-}
 
 .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform,
 .one__tab.one_step .doc-container .step-content .document-fields .proForm.datepickerContainer {
@@ -22393,4 +22387,17 @@ thead.grid-header tr.action-bar .actions {
 
 .attachmentTable.attachmentTableAuto.specialTable.specialTable__certifiy thead tr:last-of-type th {
     top: 119px;
+}
+
+.printWrapper .attachmentTable tbody tr td {
+    height: auto ;
+}
+
+.rtl.react-grid tbody.grid-body tr td:first-child, tbody.grid-body tr td.text{
+    white-space: nowrap;
+    padding-left: 12px !important;
+}
+
+input {
+    font-family: cairo-r !important;
 }

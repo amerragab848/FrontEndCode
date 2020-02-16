@@ -95,13 +95,13 @@ var routes = [
         nav: true,
         settings: { Reports: true, permission: 686, order: 6 }
     },
-    {
-        route: "summaryOfApprovedInvoices",
-        moduleId: "reports/summaryOfApprovedInvoices",
-        title: "summaryOfApprovedInvoices",
-        nav: true,
-        settings: { Reports: true, permission: 686, order: 6 }
-    },
+    // {
+    //     route: "summaryOfApprovedInvoices",
+    //     moduleId: "reports/summaryOfApprovedInvoices",
+    //     title: "summaryOfApprovedInvoices",
+    //     nav: true,
+    //     settings: { Reports: true, permission: 686, order: 6 }
+    // },
     {
         route: "inventoryDetails",
         moduleId: "ProjectReports/InventoryDetails",
@@ -172,6 +172,13 @@ var routes = [
         route: "ProjectDocumentStatus",
         moduleId: "ProjectReports/ProjectDocumentStatus",
         title: "ProjectDocumentStatus",
+        nav: true,
+        settings: { ProjectReports: true, permission: 3678, order: 4 }
+    },
+    {
+        route: "ContractsStatus",
+        moduleId: "ContractsPOReports/ContractsStatus",
+        title: "contractsStatus",
         nav: true,
         settings: { ProjectReports: true, permission: 3678, order: 4 }
     },
@@ -2913,13 +2920,13 @@ var routes = [
         nav: true,
         settings: { inventory: true, permission: 3729, order: 7 }
     },
-    // {
-    //   route: "documentTpesReport",
-    //   moduleId: "reports/documentTypesReport",
-    //   title: "WorkFlowWithDocumentTypeDetails",
-    //   nav: true,
-    //   settings: { OtherReports: true, permission: 3743, order: 6 }
-    // },
+    {
+      route: "documentTpesReport",
+      moduleId: "OtherReports/DocumentTpesReport",
+      title: "WorkFlowWithDocumentTypeDetails",
+      nav: true,
+      settings: { OtherReports: true, permission: 3743, order: 6 }
+    },
     {
         route: "TransmittalReport",
         moduleId: "OtherReports/TransmittalReport",

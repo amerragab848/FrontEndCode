@@ -78,6 +78,9 @@ const WFDistributionAccountReport = AsyncComponent(() =>
 const PaymentReqStatusReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/OtherReports/PaymentReqStatusReport'),
 );
+const DocumentTpesReport = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/OtherReports/DocumentTpesReport'),
+);
 const TechnicalOfficeReport = AsyncComponent(() =>
     import('./Pages/ReportsCenter/TechnicalOffice/TechnicalOfficeReport'),
 );
@@ -124,6 +127,9 @@ const CashFlowReport = AsyncComponent(() =>
 );
 const ProjectDocumentStatus = AsyncComponent(() =>
     import('./Pages/ReportsCenter/ProjectReports/ProjectDocumentStatus'),
+);
+const ContractsStatus = AsyncComponent(() =>
+    import('./Pages/ReportsCenter/ContractsPOReports/ContractsStatus'),
 );
 const ProjectBackLog = AsyncComponent(() =>
     import('./Pages/ReportsCenter/ProjectReports/projectBackLog'),
@@ -987,6 +993,11 @@ let originalRoutes = [
         component={PaymentReqStatusReport}
     />,
     <Route
+        key="r-112"
+        path="/DocumentTpesReport"
+        component={DocumentTpesReport}
+    />,
+    <Route
         key="r-113"
         path="/TechnicalOfficeReport"
         component={TechnicalOfficeReport}
@@ -1020,6 +1031,7 @@ let originalRoutes = [
     <Route key="r-120" path="/ProjectsList" component={ProjectsList} />,
     <Route key="r-121" path="/CashFlowReport" component={CashFlowReport} />,
     <Route key="r-190" path="/ProjectDocumentStatus" component={ProjectDocumentStatus} />,
+    <Route key="r-190" path="/ContractsStatus" component={ContractsStatus} />,
     <Route
         key="r-122"
         path="/ProjectBalanceReport"
