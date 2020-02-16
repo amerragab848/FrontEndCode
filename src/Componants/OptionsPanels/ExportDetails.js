@@ -1164,42 +1164,42 @@ class ExportDetails extends Component {
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} >
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.totalDeduction}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.totalDeduction.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
