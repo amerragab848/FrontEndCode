@@ -19,8 +19,11 @@ import moment from "moment";
 import SkyLight from 'react-skylight';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
+import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import Steps from "../../Componants/publicComponants/Steps";
-import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
+import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+//import SkyLight from "react-skylight";
 
 var steps_defination = [];
 
@@ -97,6 +100,10 @@ let columns = [
         Header: Resources['boqTypeChild'][currentLanguage],
         accessor: 'boqTypeChild',
         width: 120,
+    },{
+        Header: Resources['unit'][currentLanguage],
+        accessor: 'unit',
+        width: 120,
     }
 ]
 
@@ -143,6 +150,7 @@ class pcoAddEdit extends Component {
             isApproveMode: isApproveMode,
             perviousRoute: perviousRoute,
             isView: false,
+            showPopUp: false,
             companies: [],
             approvalstatusList: [],
             units: [],
@@ -156,6 +164,10 @@ class pcoAddEdit extends Component {
             selectedBoqType: { label: Resources.boqType[currentLanguage], value: "0" },
             selectedBoqTypeChild: { label: Resources.boqType[currentLanguage], value: "0" },
             selectedBoqSubType: { label: Resources.boqType[currentLanguage], value: "0" },
+            selectedUnitToEdit: { label: Resources.unit[currentLanguage], value: "0" },
+            selectedBoqTypeToEdit: { label: Resources.boqType[currentLanguage], value: "0" },
+            selectedBoqTypeChildToEdit: { label: Resources.boqType[currentLanguage], value: "0" },
+            selectedBoqSubTypeToEdit: { label: Resources.boqType[currentLanguage], value: "0" },
             selectedEquipmenttypeId: { label: Resources.equipmentTypeSelection[currentLanguage], value: "0" },
             docId: docId,
             docTypeId: 65,
@@ -168,6 +180,22 @@ class pcoAddEdit extends Component {
                 quantity: 1,
                 unitPrice: 0,
                 unit: '',
+                boqTypeId: '',
+                boqSubTypeId: '',
+                boqTypeChildId: '',
+                days: 1,
+                itemCode: '',
+                resourceCode: '',
+                equipmenttypeId: '',
+                dueBack: moment()
+            },
+            voItemToEdit: {
+                id: 0,
+                description: '',
+                quantity: 1,
+                unitPrice: 0,
+                unit: '',
+                unitName: '',
                 boqTypeId: '',
                 boqSubTypeId: '',
                 boqTypeChildId: '',
@@ -598,42 +626,128 @@ class pcoAddEdit extends Component {
             toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
+    EditVariationOrderItem(event) {
+        let saveDocument = { ...this.state.voItemToEdit };
 
-    handleChangeItem(e, field) {
+        saveDocument.proposalId = this.state.docId;
+        saveDocument.unit = this.state.selectedUnitToEdit.value;
+        saveDocument.unitName = this.state.selectedUnitToEdit.label;
+        saveDocument.boqTypeId = this.state.selectedBoqTypeToEdit.value;
+        saveDocument.boqChildTypeId = this.state.selectedBoqTypeChildToEdit.value;
+        saveDocument.boqSubTypeId = this.state.selectedBoqSubTypeToEdit.value;
+        saveDocument.boqType = this.state.selectedBoqTypeToEdit.label;
+        saveDocument.boqChildType = this.state.selectedBoqTypeChildToEdit.label;
+        saveDocument.boqSubType = this.state.selectedBoqSubTypeToEdit.label;
 
-        let original_document = { ...this.state.voItem };
 
-        let updated_document = {};
+        let currentTab = this.state.currIndex;
+        saveDocument.action = currentTab;
 
-        updated_document[field] = e.target.value;
+        if (this.state.currIndex === 3) {
+            saveDocument.dueBack = moment(saveDocument.dueBack, 'YYYY-MM-DD').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        }
+        dataservice.addObject('EditContractsPcoItems', saveDocument).then(result => {
+            if (result) {
+                let oldItems = [...this.state.voItems];
+                //oldItems.push(result);
+                oldItems.map(function (item, i) {
+                    if (item.id == saveDocument.id) {
+                        item.arrange = saveDocument.arrange;
+                        item.description = saveDocument.description;
+                        item.quantity = saveDocument.quantity;
+                        item.unitPrice = saveDocument.unitPrice;
+                        item.resourceCode = saveDocument.resourceCode;
+                        item.itemCode = saveDocument.itemCode;
+                        item.boqTypeId = saveDocument.boqTypeId;
+                        item.boqType = saveDocument.boqType;
+                        item.boqTypeChildId = saveDocument.boqTypeChildId;
+                        item.boqTypeChild = saveDocument.boqChildType;
+                        item.boqSubTypeId = saveDocument.boqSubTypeId;
+                        item.boqSubType = saveDocument.boqSubType;
+                        item.unit = saveDocument.unitName;
 
-        updated_document = Object.assign(original_document, updated_document);
-
-        this.setState({
-            voItem: updated_document
+                    }
+                })
+                this.setState({
+                    voItems: [...oldItems]
+                });
+                toast.success(Resources["operationSuccess"][currentLanguage]);
+            }
+        }).catch(res => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
         });
     }
+    handleChangeItem(e, field, isEdit) {
+        if (isEdit == true) {
+            let original_document = { ...this.state.voItemToEdit };
 
-    handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState) {
-        if (event == null) return;
-        let original_document = { ...this.state.documentCycle };
-        let updated_document = {};
-        updated_document[field] = event.value;
-        updated_document = Object.assign(original_document, updated_document);
+            let updated_document = {};
 
-        this.setState({
-            documentCycle: updated_document,
-            [selectedValue]: event
-        });
+            updated_document[field] = e.target.value;
 
-        if (isSubscribe) {
-            let action = url + "?" + param + "=" + event.value
-            dataservice.GetDataList(action, 'title', 'id').then(result => {
-                this.setState({
-                    [nextTragetState]: result
-                });
+            updated_document = Object.assign(original_document, updated_document);
+
+            this.setState({
+                voItemToEdit: updated_document
+            });
+        } else {
+            let original_document = { ...this.state.voItem };
+
+            let updated_document = {};
+
+            updated_document[field] = e.target.value;
+
+            updated_document = Object.assign(original_document, updated_document);
+
+            this.setState({
+                voItem: updated_document
             });
         }
+
+    }
+
+    handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState, isEdit) {
+        if (event == null) return;
+        if (isEdit == true) {
+            let original_document = { ...this.state.voItemToEdit };
+            let updated_document = {};
+            updated_document[field] = event.value;
+            updated_document = Object.assign(original_document, updated_document);
+
+            this.setState({
+                voItemToEdit: updated_document,
+                [selectedValue]: event
+            });
+
+            if (isSubscribe) {
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'title', 'id').then(result => {
+                    this.setState({
+                        [nextTragetState]: result
+                    });
+                });
+            }
+        } else {
+            let original_document = { ...this.state.documentCycle };
+            let updated_document = {};
+            updated_document[field] = event.value;
+            updated_document = Object.assign(original_document, updated_document);
+
+            this.setState({
+                documentCycle: updated_document,
+                [selectedValue]: event
+            });
+
+            if (isSubscribe) {
+                let action = url + "?" + param + "=" + event.value
+                dataservice.GetDataList(action, 'title', 'id').then(result => {
+                    this.setState({
+                        [nextTragetState]: result
+                    });
+                });
+            }
+        }
+
     }
 
     addVariationDraw() {
@@ -656,7 +770,7 @@ class pcoAddEdit extends Component {
                                         <li className={"data__tabs--list " + (this.state.currIndex === 2 ? " active" : " ")} onClick={() => this.setState({ currIndex: 2 })} >{Resources.labor[currentLanguage]}</li>
                                         <li className={"data__tabs--list " + (this.state.currIndex === 3 ? " active" : " ")} onClick={() => this.setState({ currIndex: 3 })} >{Resources.equipment[currentLanguage]}</li>
                                     </ul>
-                                </div> 
+                                </div>
                                 <div className="letterFullWidth proForm  first-proform proform__twoInput">
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources['description'][currentLanguage]} </label>
@@ -861,6 +975,20 @@ class pcoAddEdit extends Component {
                 isLoading: false
             });
         });
+    }
+    viewModelToEdit(id, row) {
+       
+        var unitObj={};
+       
+        this.setState({
+            showPopUp: true,
+            voItemToEdit: row,
+            selectedBoqTypeToEdit: { value: row.boqTypeId, label: row.boqType },
+            selectedBoqTypeChildToEdit: { value: row.boqChildTypeId, label: row.boqTypeChild },
+            selectedBoqSubTypeToEdit: { value: row.boqSubTypeId, label: row.boqSubType },
+            selectedUnitToEdit:{ value: row.unit, label: row.unit }
+        })
+        this.simpleDialog1.show();
     }
 
     render() {
@@ -1147,6 +1275,7 @@ class pcoAddEdit extends Component {
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </Fragment>
                                 :
@@ -1171,7 +1300,10 @@ class pcoAddEdit extends Component {
                                                 </div>
                                             </div>
                                             <ReactTable ref={(r) => { this.selectTable = r; }} data={this.state.voItems}
-                                                columns={columns} defaultPageSize={10} minRows={2} noDataText={Resources['noData'][currentLanguage]} />
+                                                columns={columns} defaultPageSize={10} minRows={2} noDataText={Resources['noData'][currentLanguage]}
+                                                getTrProps={(state, rowInfo, column, instance) => {
+                                                    return { onClick: e => { this.viewModelToEdit(rowInfo.original.id, rowInfo.original); } };
+                                                }} />
                                         </div>
                                         <div className="doc-pre-cycle">
                                             <div className="slider-Btns">
@@ -1215,7 +1347,119 @@ class pcoAddEdit extends Component {
                         }
                     </div>
                 </div>
+                <div className="largePopup largeModal " style={{ display: this.state.showPopUp ? "block" : "none" }}>
+                    <SkyLight hideOnOverlayClicked ref={ref => (this.simpleDialog1 = ref)}
+                        title={Resources.editTitle[currentLanguage] + " - " + Resources.edit[currentLanguage]}>
+                        <Fragment>
+                            <Formik
+                                initialValues={{ ...this.state.voItemToEdit }}
+                                validationSchema={documentItemValidationSchema}
+                                enableReinitialize={true}
+                                onSubmit={(values) => {
+                                    this.EditVariationOrderItem()
+                                }}
+                            >
+                                {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
+                                    <Form id="voItemForm" className="proForm" noValidate="novalidate">
+
+                                        <div className=" dropWrapper">
+
+                                            <div className="fillter-status fillter-item-c">
+                                                <label className="control-label">{Resources.quantity[currentLanguage]}</label>
+                                                <div className={"ui input inputDev" + (errors.quantity ? 'has-error' : !errors.quantity && touched.quantity ? (" has-success") : " ")}>
+                                                    <input type="text" className="form-control" id="quantity"
+                                                        value={this.state.voItemToEdit.quantity}
+                                                        name="quantity"
+                                                        onBlur={handleBlur}
+                                                        placeholder={Resources.quantity[currentLanguage]}
+                                                        onChange={(e) => this.handleChangeItem(e, 'quantity', true)} />
+                                                    {errors.quantity ? (<em className="pError">{errors.quantity}</em>) : null}
+
+                                                </div>
+                                            </div>
+
+                                            <div className="fillter-status fillter-item-c">
+                                                <label className="control-label">{Resources.unitPrice[currentLanguage]}</label>
+                                                <div className={"ui input inputDev" + (errors.unitPrice ? 'has-error' : !errors.unitPrice && touched.unitPrice ? (" has-success") : " ")}>
+                                                    <input type="text" className="form-control" id="unitPrice"
+                                                        value={this.state.voItemToEdit.unitPrice}
+                                                        name="unitPrice"
+                                                        onBlur={handleBlur}
+                                                        placeholder={Resources.unitPrice[currentLanguage]}
+                                                        onChange={(e) => this.handleChangeItem(e, 'unitPrice', true)} />
+                                                    {errors.unitPrice ? (<em className="pError">{errors.unitPrice}</em>) : null}
+
+                                                </div>
+                                            </div>
+
+                                            <div className="fillter-status fillter-item-c">
+                                                <label className="control-label">{Resources['itemCode'][currentLanguage]} </label>
+                                                <div className={"inputDev ui input " + (errors.itemCode ? 'has-error' : !errors.itemCode && touched.itemCode ? (" has-success") : " ")}>
+                                                    <input name='itemCode'
+                                                        className="form-control"
+                                                        id="itemCode" placeholder={Resources['itemCode'][currentLanguage]} autoComplete='off'
+                                                        onBlur={handleBlur} value={this.state.voItemToEdit.itemCode}
+                                                        onChange={(e) => this.handleChangeItem(e, "itemCode", true)} />
+                                                    {errors.itemCode ? (<em className="pError">{errors.itemCode}</em>) : null}
+                                                </div>
+                                            </div>
+
+                                            <div className="fillter-status fillter-item-c">
+                                                <label className="control-label">{Resources['resourceCode'][currentLanguage]} </label>
+                                                <div className={"inputDev ui input " + (errors.resourceCode ? 'has-error' : !errors.resourceCode && touched.resourceCode ? (" has-success") : " ")}>
+                                                    <input name='resourceCode'
+                                                        className="form-control"
+                                                        id="resourceCode" placeholder={Resources['resourceCode'][currentLanguage]} autoComplete='off'
+                                                        onBlur={handleBlur} value={this.state.voItemToEdit.resourceCode}
+                                                        onChange={(e) => this.handleChangeItem(e, "resourceCode", true)} />
+                                                    {errors.resourceCode ? (<em className="pError">{errors.resourceCode}</em>) : null}
+                                                </div>
+                                            </div>
+
+                                            <Dropdown
+                                                title="unit"
+                                                data={this.state.units}
+                                                selectedValue={this.state.selectedUnitToEdit}
+                                                handleChange={(e) => this.handleChangeItemDropDown(e, "unit", 'selectedUnitToEdit', false, '', '', '', true)}
+                                                index="unit" />
+
+                                            <Dropdown
+                                                title="boqType"
+                                                data={this.state.boqTypes}
+                                                selectedValue={this.state.selectedBoqTypeToEdit}
+                                                handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeId', 'selectedBoqTypeToEdit', true, 'GetAllBoqChild', 'parentId', 'BoqTypeChilds', true)}
+                                                name="boqType"
+                                                index="boqType" />
+
+                                            <Dropdown
+                                                title="boqTypeChild"
+                                                data={this.state.BoqTypeChilds}
+                                                selectedValue={this.state.selectedBoqTypeChildToEdit}
+                                                handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeChildId', 'selectedBoqTypeChildToEdit', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes', true)}
+
+                                                name="boqTypeChild"
+                                                index="boqTypeChild" />
+
+                                            <Dropdown
+                                                title="boqSubType"
+                                                data={this.state.BoqSubTypes}
+                                                selectedValue={this.state.selectedBoqSubTypeToEdit}
+                                                handleChange={event => this.handleChangeItemDropDown(event, 'boqSubTypeId', 'selectedBoqSubTypeToEdit', false, '', '', '', true)}
+                                                name="boqSubType"
+                                                index="boqSubType" />
+
+                                            <div className={"fullWidthWrapper "}>
+                                                <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources["save"][currentLanguage]}</button>
+                                            </div>
+                                        </div>
+                                    </Form>
+                                )}
+                            </Formik>
+                        </Fragment>
+                    </SkyLight>
+                </div>
             </div>
+
         );
     }
 }
