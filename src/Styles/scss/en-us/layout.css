@@ -22069,4 +22069,8 @@ thead.grid-header tr.action-bar .actions {
     height: auto ;
 }
 
+tbody.grid-body tr td.text {
+    white-space: nowrap
+}
+
 /* Added New After devided*/

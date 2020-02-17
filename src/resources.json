@@ -8386,5 +8386,29 @@
     "phdApproval": {
         "en": "PHD Approval Date",
         "ar": "PHD Approval Date"
+    },
+    "rejeceted": {
+        "en": "Rejeceted",
+        "ar": "مرفوض"
+    },
+    "contractStatus": {
+        "en": "Contracts Status",
+        "ar": "حالة العقود"
+    },
+    "variationSum": {
+        "en": "Variation Sum",
+        "ar": "Variation Sum"
+    },
+    "amendmentsSum": {
+        "en": "Amendments Sum",
+        "ar": "Amendments Sum"
+    },
+    "contractExcutedToDate": {
+        "en": "Contract Excuted ToDate",
+        "ar": "Contract Excuted ToDate"
+    },
+    "projectCostCodingTree": {
+        "en": "Project Cost Coding Tree",
+        "ar": "سجل شجرة كود التكلفة للمشروعات "
     }
 }

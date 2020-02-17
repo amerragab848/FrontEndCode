@@ -5,27 +5,17 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Export from "../../../Componants/OptionsPanels/Export";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-
+import GridCustom from 'react-customized-grid';
+import "react-customized-grid/main.css";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
- 
-const ValidtionSchema = Yup.object().shape({
-    selectedProject: Yup.string()
-        .required(Resources['projectSelection'][currentLanguage])
-        .nullable(true),
-});
 
-const columns = [
-    { field: 'title', title: 'Document' },
-    { field: 'open', title: 'Open' },
-    { field: 'closed', title: 'Close' },
-    { field: 'approved', title: 'Approve' },
-    { field: 'rejected', title: 'Reject' },
-    { field: 'approved', title: 'Approve' },
-    { field: 'rejected', title: 'Reject' }];
+const ValidtionSchema = Yup.object().shape({
+    selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
+});
 
 class ContractsStatus extends Component {
 
@@ -38,15 +28,68 @@ class ContractsStatus extends Component {
             rows: []
         }
 
-        if (!Config.IsAllow(3678)) {
+        if (!Config.IsAllow(4028)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
-            this.props.history.push({
-                pathname: "/"
-            })
+            this.props.history.push("/");
         }
+
+        this.columns = [
+            {
+                "field": "subject",
+                "title": Resources.subject[currentLanguage],
+                "type": "text",
+                "width": 20,
+                "groupable": true,
+                "fixed": true,
+                "sortable": true
+            }, {
+                "field": "originalContractSum",
+                "title": Resources.originalContractSum[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "variationSum",
+                "title": Resources.variationSum[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "amendmentSum",
+                "title": Resources.amendmentsSum[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "revisedContractSumToDate",
+                "title": Resources.revisedContractSumToDate[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "contractExcutedToDate",
+                "title": Resources.contractExcutedToDate[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "balance",
+                "title": Resources.balance[currentLanguage],
+                "type": "text",
+                "width": 18,
+                "groupable": true,
+                "sortable": true
+            }
+        ];
+
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'projectId').then(result => {
             result.unshift({ 'label': 'All Projects', 'value': '0' });
             this.setState({
@@ -75,8 +118,8 @@ class ContractsStatus extends Component {
             (
                 <Export
                     rows={this.state.isLoading === false ? this.state.rows : []}
-                    columns={columns}
-                    fileName="Contracts Status"
+                    columns={this.columns}
+                    fileName={Resources.contractStatus[currentLanguage]}
                 />
             ) : null;
 
@@ -87,7 +130,7 @@ class ContractsStatus extends Component {
                 </div>
                 <div className="reports__content">
                     <header>
-                        <h2 className="zero">{Resources.ProjectDocumentStatus[currentLanguage]}</h2>
+                        <h2 className="zero">{Resources.contractStatus[currentLanguage]}</h2>
                         {this.state.isLoading ? <LoadingSection /> : null}
                     </header>
                     <Formik
@@ -117,65 +160,14 @@ class ContractsStatus extends Component {
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">
                     {this.state.rows ?
-                        <table className="attachmentTable">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <div className="headCell"> Subject  </div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell"> Original Contract Sum  </div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell"> Variation Sum  </div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell"> Amendments Sum  </div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell"> Revised Contract Sum ToDate </div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell"> Contract Excuted ToDate </div>
-                                    </th>
-                                    <th>
-                                        <div className="headCell"> Balance </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>{this.state.rows.map(i => {
-                                return (
-                                    <tr>
-                                        <td style={{ width: 'auto' }}>
-                                            <div className="contentCell" style={{ width: 'auto', justifyContent: 'center' }}> {i.subject}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell" style={{ width: '10%', justifyContent: 'center' }}> {i.originalContractSum}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell" style={{ width: '10%', justifyContent: 'center' }}> {i.variationSum}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell" style={{ width: '10%', justifyContent: 'center' }}> {i.amendmentSum}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell" style={{ width: '10%', justifyContent: 'center' }}> {i.revisedContractSumToDate}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell" style={{ width: '15%', justifyContent: 'center' }}> {i.contractExcutedToDate}</div>
-                                        </td>
-                                        <td>
-                                            <div className="contentCell" style={{ width: '10%', justifyContent: 'center' }}> {i.balance}</div>
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                            </tbody>
-                        </table> : null}
+                        (this.state.isLoading ? <LoadingSection /> :
+                            <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
+                                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+                            />)
+                        : null}
                 </div>
             </React.Fragment>
         )
     }
-
 }
 export default withRouter(ContractsStatus)

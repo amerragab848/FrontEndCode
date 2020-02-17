@@ -264,7 +264,7 @@ class pcoAddEdit extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (this.state.docId > 0) {
             this.props.actions.documentForEdit("GetContractsPcoForEdit?id=" + this.state.docId, this.state.docTypeId, 'pco');
 
@@ -294,7 +294,6 @@ class pcoAddEdit extends Component {
                 cvrId: '',
                 approvalStatusId: '',
                 dateApproved: moment()
-
             };
 
             this.setState({ document: pco }, function () {
@@ -341,7 +340,7 @@ class pcoAddEdit extends Component {
                 let approvalStatusId = this.state.document.approvalStatusId;
                 let approvalStatus = {};
                 if (approvalStatusId) {
-                    approvalStatus =find(result, function (i) { return i.value == approvalStatusId; });
+                    approvalStatus = find(result, function (i) { return i.value == approvalStatusId; });
 
                     this.setState({
                         selectedApprovalStatusId: approvalStatus
@@ -575,6 +574,11 @@ class pcoAddEdit extends Component {
         let saveDocument = { ...this.state.voItem };
 
         saveDocument.proposalId = this.state.docId;
+        saveDocument.unit = this.state.selectedUnit.value;
+        saveDocument.boqTypeId = this.state.selectedBoqType.value;
+        saveDocument.boqChildTypeId = this.state.selectedBoqTypeChild.value;
+        saveDocument.boqSubTypeId = this.state.selectedBoqSubType.value;
+
         let currentTab = this.state.currIndex;
         saveDocument.action = currentTab;
 
@@ -644,19 +648,15 @@ class pcoAddEdit extends Component {
                         this.saveVariationOrderItem()
                     }}                >
                     {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
-                        <Form id="voItemForm" className="proForm datepickerContainer customProform" noValidate="novalidate" >
-
+                        <Form id="voItemForm" className="proForm datepickerContainer customProform" noValidate="novalidate">
                             <div className='document-fields'>
-
                                 <div className="company__total proForm tabinsideItem">
-
                                     <ul id="stepper__tabs" className="data__tabs ">
                                         <li className={"data__tabs--list " + (this.state.currIndex === 1 ? " active" : " ")} index={this.state.currIndex} onClick={() => this.setState({ currIndex: 1 })} >{Resources.material[currentLanguage]}</li>
                                         <li className={"data__tabs--list " + (this.state.currIndex === 2 ? " active" : " ")} onClick={() => this.setState({ currIndex: 2 })} >{Resources.labor[currentLanguage]}</li>
                                         <li className={"data__tabs--list " + (this.state.currIndex === 3 ? " active" : " ")} onClick={() => this.setState({ currIndex: 3 })} >{Resources.equipment[currentLanguage]}</li>
                                     </ul>
-                                </div>
-
+                                </div> 
                                 <div className="letterFullWidth proForm  first-proform proform__twoInput">
                                     <div className="linebylineInput valid-input">
                                         <label className="control-label">{Resources['description'][currentLanguage]} </label>
@@ -743,7 +743,6 @@ class pcoAddEdit extends Component {
                                         <Dropdown
                                             title="boqTypeChild"
                                             data={this.state.BoqTypeChilds}
-
                                             selectedValue={this.state.selectedBoqTypeChild}
                                             handleChange={event => this.handleChangeItemDropDown(event, 'boqTypeChildId', 'selectedBoqTypeChild', true, 'GetAllBoqChild', 'parentId', 'BoqSubTypes')}
 
@@ -780,11 +779,8 @@ class pcoAddEdit extends Component {
                                                     handleChange={e => this.handleChangeDateItem(e, 'dueBack')} />
                                             </div>
                                         </Fragment>
-
-
                                         : null
                                     }
-
                                     {this.state.currIndex != 1 ?
                                         <div className="linebylineInput valid-input">
                                             <label className="control-label">{Resources['days'][currentLanguage]} </label>
@@ -800,11 +796,9 @@ class pcoAddEdit extends Component {
                                         </div>
                                         : null
                                     }
-
                                     <div className={"slider-Btns fullWidthWrapper textLeft "}>
                                         <button className={"primaryBtn-1 btn " + (this.state.isViewMode === true ? ' disNone' : '')} type="submit" disabled={this.state.isApproveMode} >{Resources["save"][currentLanguage]}</button>
                                     </div>
-
                                 </div>
                             </div>
                         </Form>
@@ -813,8 +807,6 @@ class pcoAddEdit extends Component {
             </Fragment>
         )
     }
-
-
 
     GetPrevoiusData() {
 
@@ -1169,7 +1161,7 @@ class pcoAddEdit extends Component {
                                                     <h3 class="zero"> {Resources['AddedItems'][currentLanguage]}</h3>
                                                     <span>{this.state.voItems.length}</span>
                                                 </div>
-                                                 <div className="rowsPaginations readOnly__disabled">
+                                                <div className="rowsPaginations readOnly__disabled">
                                                     <button className={this.state.pageNumber == 0 ? "rowunActive" : ""} onClick={() => this.GetPrevoiusData()}>
                                                         <i className="angle left icon" />
                                                     </button>

@@ -19788,7 +19788,7 @@
         "exportDataType": "d"
       },
       {
-        "field": "openedBy",
+        "field": "oppenedBy",
         "friendlyName": "openedBy",
         "minWidth": 150,
         "width": "8%",

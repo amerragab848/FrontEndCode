@@ -195,9 +195,9 @@ const SiteInstructionsAddEdit = AsyncComponent(() =>
 const ProjectPicturesAddEdit = AsyncComponent(() =>
     import('./Pages/TechnicalOffice/projectPicturesAddEdit'),
 );
-const WeeklyReportsAddEdit = AsyncComponent(() =>
-    import('./Pages/TechnicalOffice/weeklyReportsAddEdit'),
-);
+// const WeeklyReportsAddEdit = AsyncComponent(() =>
+//     import('./Pages/TechnicalOffice/weeklyReportsAddEdit'),
+// );
 const DailyReportsAddEdit = AsyncComponent(() =>
     import('./Pages/TechnicalOffice/dailyReportsAddEdit'),
 );
@@ -545,9 +545,9 @@ const PettyCashAddEdit = AsyncComponent(() =>
 const AddEditModificationDrawing = AsyncComponent(() =>
     import('./Pages/Design/addEditModificationDrawing'),
 );
-const DrawingSetsAddEdit = AsyncComponent(() =>
-    import('./Pages/Design/drawingSetsAddEdit'),
-);
+// const DrawingSetsAddEdit = AsyncComponent(() =>
+//     import('./Pages/Design/drawingSetsAddEdit'),
+// );
 const DrawingListAddEdit = AsyncComponent(() =>
     import('./Pages/Design/drawingListAddEdit'),
 );
@@ -922,11 +922,11 @@ let originalRoutes = [
     />,
     <Route key="r-89" path="/EpsPermission" component={EpsPermission} />,
     <Route key="r-90" path="/pcoAddEdit" component={PcoAddEdit} />,
-    <Route
-        key="r-91"
-        path="/drawingSetsAddEdit"
-        component={DrawingSetsAddEdit}
-    />,
+    // <Route
+    //     key="r-91"
+    //     path="/drawingSetsAddEdit"
+    //     component={DrawingSetsAddEdit}
+    // />,
     <Route key="r-92" path="/riskAddEdit" component={RiskAddEdit} />,
     <Route
         key="r-93"
@@ -1227,11 +1227,11 @@ let originalRoutes = [
     />,
     <Route key="r-176" path="/specSectionChild" component={SpecSectionChild} />,
     <Route key="r-177" path="/RiskRealisation" component={RiskRealisation} />,
-    <Route
-        key="r-177"
-        path="/WeeklyReportsAddEdit"
-        component={WeeklyReportsAddEdit}
-    />,
+    // <Route
+    //     key="r-177"
+    //     path="/WeeklyReportsAddEdit"
+    //     component={WeeklyReportsAddEdit}
+    // />,
     <Route
         key="r-179"
         path="/dailyReportsAddEdit"

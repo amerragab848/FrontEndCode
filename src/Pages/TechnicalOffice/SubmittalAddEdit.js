@@ -434,8 +434,7 @@ class SubmittalAddEdit extends Component {
           });
         }
       }
-    });
-
+    }); 
   }
 
   fillCycleDropDown(isEdit) {
@@ -462,6 +461,7 @@ class SubmittalAddEdit extends Component {
         approvales: [...result]
       });
     });
+
     dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
       if (isEdit) {
@@ -1008,7 +1008,7 @@ class SubmittalAddEdit extends Component {
     saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocumentCycle.submittalId = this.state.docId;
-    this.changeCurrentStep(2);
+  
     dataservice.addObject("AddLogSubmittalCycles", saveDocumentCycle).then(data => {
 
       let submittalItem = {};
@@ -1023,15 +1023,15 @@ class SubmittalAddEdit extends Component {
         isLoading: false,
         itemsDocumentSubmital: submittalItem
       });
+      
+      this.changeCurrentStep(2);
 
       toast.success(Resources["operationSuccess"][currentLanguage]);
 
-    }).catch(ex => {
-
+    }).catch(ex => { 
       this.setState({
         isLoading: false
-      });
-
+      }); 
       toast.error(Resources["failError"][currentLanguage]);
     });
   }

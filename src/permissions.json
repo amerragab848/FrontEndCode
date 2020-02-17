@@ -12329,6 +12329,47 @@
               "value": false
             }
           ]
+        },
+        {
+          "title": {
+            "en": "Project Cost Coding Tree",
+            "ar": "سجل شجرة كود التكلفة للمشروعات "
+          },
+          "id": 1003,
+          "permissions": [
+            {
+              "code": 3393,
+              "title": {
+                "en": "Add",
+                "ar": "اضافة"
+              },
+              "value": false
+            },
+            {
+              "code": 3796,
+              "title": {
+                "en": "Edit",
+                "ar": "تعديل"
+              },
+              "value": false
+            },
+            {
+              "code": 3797,
+              "title": {
+                "en": "Delete",
+                "ar": "حذف"
+              },
+              "value": false
+            },
+            {
+              "code": 3798,
+              "title": {
+                "en": "View All",
+                "ar": "عرض السجل"
+              },
+              "value": false
+            }
+          ]
         }
       ]
     },
@@ -13031,7 +13072,7 @@
               "value": false
             },
             {
-              "code": 3389,
+              "code": 3386,
               "title": {
                 "en": "View Attachments",
                 "ar": "عرض مرفقات"
@@ -13039,7 +13080,7 @@
               "value": false
             },
             {
-              "code": 3390,
+              "code": 3387,
               "title": {
                 "en": "Delete Attachments",
                 "ar": "حذف مرفقات"
@@ -13047,7 +13088,7 @@
               "value": false
             },
             {
-              "code": 3391,
+              "code": 3388,
               "title": {
                 "en": "Send To Distribution List",
                 "ar": "ارسال الى قائمةالتوزيع"
@@ -13055,7 +13096,7 @@
               "value": false
             },
             {
-              "code": 3392,
+              "code": 3389,
               "title": {
                 "en": "Create Transmittal",
                 "ar": "انشاء ارسالية"
@@ -13063,7 +13104,7 @@
               "value": false
             },
             {
-              "code": 3393,
+              "code": 3390,
               "title": {
                 "en": "New Cycle",
                 "ar": "دورة جديدة"
@@ -13071,7 +13112,7 @@
               "value": false
             },
             {
-              "code": 3645,
+              "code": 3391,
               "title": {
                 "en": "Show Drop Box",
                 "ar": "اظهار الدروب بوكس"
@@ -13079,7 +13120,7 @@
               "value": false
             },
             {
-              "code": 3646,
+              "code": 3392,
               "title": {
                 "en": "Show Google Drive",
                 "ar": "اظهار جوجل دريف"
@@ -14373,6 +14414,22 @@
               "title": {
                 "en": "Boq Stracture Cost",
                 "ar": "تكلفة قائمة الكميات"
+              },
+              "value": false
+            },
+            {
+              "code": 4027,
+              "title": {
+                "en": "Project Document Status",
+                "ar": "حاله المستندات"
+              },
+              "value": false
+            },
+            {
+              "code": 4028,
+              "title": {
+                "en": "Contracts Status",
+                "ar": "حالة العقود"
               },
               "value": false
             }

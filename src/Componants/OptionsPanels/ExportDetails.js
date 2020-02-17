@@ -95,7 +95,7 @@ class ExportDetails extends Component {
       var Fields = '', items = '', attachmentTable = '', workflowCycles = '', docAttachments = '';
       if (!'Fields'.nodeType) Fields = document.getElementById('Fields').innerHTML
 
-      if (this.props.items.length) items = document.getElementById('items').innerHTML
+      if (this.props.items.length) items = this.props.docTypeId == 120 ? document.getElementById('interimPaymentCertificate').innerHTML : document.getElementById('items').innerHTML
 
       if (!'attachmentTable'.nodeType) attachmentTable = document.getElementById('attachmentTable').innerHTML
       if (this.props.workFlowCycles.length) workflowCycles = document.getElementById('workflowCycles').innerHTML
@@ -182,7 +182,7 @@ class ExportDetails extends Component {
         )
       }
     });
-    
+
     return (
       <table id="Fields" className="subiTable" >
         <tbody>
@@ -447,7 +447,7 @@ class ExportDetails extends Component {
     });
 
     return (
-      <table id="Fields_PDF_Payment"  >
+      <table id="Fields_PDF_Payment">
         <tbody>
           {rows}
         </tbody>
@@ -763,7 +763,7 @@ class ExportDetails extends Component {
   }
 
   PrintPDFPaymentCertified() {
-    if (this.state.isExcel === true) return;
+    //if (this.state.isExcel === true) return;
 
     return (
       <div id="PCertified" className="invoice">
@@ -1080,14 +1080,10 @@ class ExportDetails extends Component {
 
   }
 
-  drawItemOfPaymentCertification() {
-    if (this.state.isExcel === true) return;
-
-    // let fieldsName = DED[this.props.docTypeId].friendlyNames
-
+  drawItemOfPaymentCertification() { 
     return (
       <Fragment>
-        <table className="attachmentTable attachmentTable__items attachmentTableAuto specialTable specialTable__certifiy" key="interimPaymentCertificate">
+        <table className="attachmentTable attachmentTable__items attachmentTableAuto specialTable specialTable__certifiy" key="interimPaymentCertificate" id="interimPaymentCertificate">
           <thead>
             <tr>
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
@@ -1149,6 +1145,7 @@ class ExportDetails extends Component {
                   {Resources["current"][currentLanguage]}
                 </div>
               </th>
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">  </th>
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="headCell">
                   {Resources["total"][currentLanguage]}
@@ -1161,48 +1158,48 @@ class ExportDetails extends Component {
           <tbody>{this.props.items.map(i => (
             <tr key={i.id} style={{ height: '25px' }}>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3" style={{ maxWidth: 'unset', width: 'auto' }}>
-                <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} tableCell-2>
+                <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} >
                   <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.description}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
-                <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} tableCell-2>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount}</p>
+                <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} >
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.totalDeduction}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.totalDeduction.toLocaleString()}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
@@ -1276,9 +1273,10 @@ class ExportDetails extends Component {
         {this.state.isLoading === true ? <LoadingSection /> : null}
         {/* excel export */}
         <div style={{ display: 'none' }}>
-          {this.props.docTypeId != 19 ? this.drawFields() : null}
+          {/* {this.props.docTypeId != 19 ? this.drawFields() : null} */}
+          {this.drawFields()}
           {this.props.docTypeId != 120 ? this.drawItems() : null}
-           
+
           {this.drawAttachments()}
           {this.drawWorkFlow()}
           {this.drawattachDocuments()}
@@ -1287,7 +1285,7 @@ class ExportDetails extends Component {
         <div style={{ display: 'none' }}>
 
           {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : this.exportPDFFile()}
-          {this.props.docTypeId == 120 ? this.PrintPDFPaymentCertified() : null}
+          {this.props.docTypeId == 120  ? this.PrintPDFPaymentCertified() : null}
           {this.props.docTypeId == 19 ? this.exportLetterFile() : null}
         </div>
 
