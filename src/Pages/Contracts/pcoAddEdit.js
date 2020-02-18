@@ -86,6 +86,10 @@ let columns = [
         accessor: 'itemCode',
         width: 80,
     }, {
+        Header: Resources['itemType'][currentLanguage],
+        accessor: 'itemTypeName',
+        width: 80,
+    }, {
         Header: Resources['boqType'][currentLanguage],
         accessor: 'boqType',
         width: 120,
@@ -177,10 +181,16 @@ class pcoAddEdit extends Component {
                 equipmenttypeId: '',
                 dueBack: moment()
             },
-            permission: [{ name: 'sendByEmail', code: 154 }, { name: 'sendByInbox', code: 153 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 976 },
-            { name: 'createTransmittal', code: 3062 }, { name: 'sendToWorkFlow', code: 724 },
-            { name: 'viewAttachments', code: 3298 }, { name: 'deleteAttachments', code: 3020 }],
+            permission: [
+                { name: 'sendByEmail', code: 154 }, 
+                { name: 'sendByInbox', code: 153 }, 
+                { name: 'sendTask', code: 1 }, 
+                { name: 'distributionList', code: 976 }, 
+                { name: 'createTransmittal', code: 3062 },
+                { name: 'createVO', code: 4021 }, 
+                { name: 'sendToWorkFlow', code: 724 },
+                { name: 'viewAttachments', code: 3298 },
+                 { name: 'deleteAttachments', code: 3020 }],
             selectContract: { label: Resources.selectContract[currentLanguage], value: "0" },
             selectPco: { label: Resources.pco[currentLanguage], value: "0" },
             pcos: [],
