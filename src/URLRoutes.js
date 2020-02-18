@@ -1762,26 +1762,26 @@ var routes = [
         nav: false,
         settings: { Site: false }
     },
-    {
-        route: "drawingSets",
-        moduleId: "commonLogs",
-        title: "drawingSets",
-        nav: true,
-        hash: "#drawingSets",
-        settings: {
-            Design: true,
-            caption: "procoor-icon-drawing-set",
-            permission: 215
-        }
-    },
-    {
-        route:
-            "drawingSetsAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
-        moduleId: "design/drawingSetsAddEdit",
-        title: "Drawing Set Addition",
-        nav: false,
-        settings: { Design: false }
-    },
+    // {
+    //     route: "drawingSets",
+    //     moduleId: "commonLogs",
+    //     title: "drawingSets",
+    //     nav: true,
+    //     hash: "#drawingSets",
+    //     settings: {
+    //         Design: true,
+    //         caption: "procoor-icon-drawing-set",
+    //         permission: 215
+    //     }
+    // },
+    // {
+    //     route:
+    //         "drawingSetsAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+    //     moduleId: "design/drawingSetsAddEdit",
+    //     title: "Drawing Set Addition",
+    //     nav: false,
+    //     settings: { Design: false }
+    // },
     {
         route: "drawingList",
         moduleId: "commonLogs",
@@ -2119,14 +2119,14 @@ var routes = [
     //     order: 11
     //   }
     // },
-    {
-        route:
-            "weeklyReportsAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
-        moduleId: "site/weeklyReportsAddEdit",
-        title: "Weekly Report Addition",
-        nav: false,
-        settings: { Site: false }
-    },
+    // {
+    //     route:
+    //         "weeklyReportsAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+    //     moduleId: "site/weeklyReportsAddEdit",
+    //     title: "Weekly Report Addition",
+    //     nav: false,
+    //     settings: { Site: false }
+    // },
     {
         route: "clientSelection",
         moduleId: "commonLogs",

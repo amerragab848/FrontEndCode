@@ -32,7 +32,7 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 
 const validationSchema = Yup.object().shape({
   subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]).nullable(),
-  contractId: Yup.string().required(Resources["selectContract"][currentLanguage]).nullable(true),
+  contractId: Yup.string().required(Resources["selectContract"][currentLanguage]),
   total: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage]),
   timeExtension: Yup.string().matches(/(^[0-9]+$)/, Resources["onlyNumbers"][currentLanguage])
 });
@@ -232,12 +232,14 @@ class variationOrderAddEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
     if (nextProps.document.id) {
+      
       let serverChangeOrder = { ...nextProps.document };
       serverChangeOrder.docDate = serverChangeOrder.docDate != null ? moment(serverChangeOrder.docDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
       serverChangeOrder.dateApproved = serverChangeOrder.dateApproved != null ? moment(serverChangeOrder.dateApproved).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
       serverChangeOrder.timeExtensionRequired = serverChangeOrder.timeExtensionRequired ? parseFloat(serverChangeOrder.timeExtensionRequired) : 0;
-
+      serverChangeOrder.isRaisedPrices=serverChangeOrder.isRaisedPrices==false?"false":"true";
       this.setState({
         document: { ...serverChangeOrder },
         hasWorkflow: nextProps.hasWorkflow,
@@ -261,7 +263,7 @@ class variationOrderAddEdit extends Component {
 
   checkDocumentIsView() {
     if (this.props.changeStatus === true) {
-      if (!Config.IsAllow(158) ) {
+      if (!Config.IsAllow(158)) {
         this.setState({ isViewMode: true });
       }
 
@@ -310,7 +312,7 @@ class variationOrderAddEdit extends Component {
         docDate: moment(),
         status: "true",
         isRaisedPrices: "false",
-        executed: "yes",
+        executed: "no",
         pcoId: "",
         refDoc: "",
         total: 0,
@@ -349,7 +351,7 @@ class variationOrderAddEdit extends Component {
 
   fillDropDowns(isEdit) {
     if (isEdit === false) {
-      dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "id").then(result => {
+      dataservice.GetDataList("GetPoContractForList?projectId=" + this.state.projectId, "subject", "docId").then(result => {
         this.setState({
           contractsPos: [...result]
         });
@@ -426,7 +428,7 @@ class variationOrderAddEdit extends Component {
 
   handleChangeDropDown(event, field, selectedValue, isPCO) {
 
-    if (event == null) return;
+    if (event == null) { return };
 
     let original_document = { ...this.state.document };
 
@@ -434,11 +436,13 @@ class variationOrderAddEdit extends Component {
 
     updated_document[field] = event.value;
 
+
     updated_document = Object.assign(original_document, updated_document);
 
     this.setState({
       document: updated_document,
-      [selectedValue]: event
+      [selectedValue]: event,
+
     });
 
     if (isPCO === true) {
@@ -468,7 +472,9 @@ class variationOrderAddEdit extends Component {
     saveDocument.dateApproved = moment(saveDocument.dateApproved, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
 
     dataservice.addObject("EditContractsChangeOrder", saveDocument).then(result => {
-      this.setState({ isLoading: true, voItems: this.props.items, });
+      result.isRaisedPrices= result.isRaisedPrices==false?"false":"true";
+      result.executed=result.executed=="No"?"no":"yes";
+      this.setState({ isLoading: false, voItems: this.props.items,document:result });
       toast.success(Resources["operationSuccess"][currentLanguage]);
     }).catch(res => {
       this.setState({ isLoading: true }); toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -476,6 +482,7 @@ class variationOrderAddEdit extends Component {
   }
 
   saveVariationOrder(event) {
+
     let saveDocument = { ...this.state.document };
 
     saveDocument.docDate = moment(saveDocument.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
@@ -554,6 +561,7 @@ class variationOrderAddEdit extends Component {
   }
 
   handleChangeItem(e, field) {
+
     let original_document = { ...this.state.voItem };
 
     let updated_document = {};
@@ -702,10 +710,10 @@ class variationOrderAddEdit extends Component {
                           enableReinitialize={this.props.changeStatus}
                           onSubmit={values => {
                             if (this.props.changeStatus === false && this.state.docId === 0) {
-                              this.saveVariationOrder();
+                              this.saveVariationOrder(values);
                             } else {
                               if (this.props.changeStatus)
-                                this.editVariationOrder();
+                                this.editVariationOrder(values);
                               this.changeCurrentStep(1);
                             }
                           }}>
@@ -716,15 +724,26 @@ class variationOrderAddEdit extends Component {
                                   <label className="control-label">
                                     {Resources.subject[currentLanguage]}
                                   </label>
-                                  <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
-                                    <input name="subject" className="form-control fsadfsadsa" id="subject" placeholder={Resources.subject[currentLanguage]}
+                                  {/* <div className={"inputDev ui input" + (errors.subject && touched.subject ? " has-error" : !errors.subject && touched.subject ? " has-success" : " ")}>
+                                    <input name="subject" className="form-control fsadfsadsa" id="subject"
+                                      placeholder={Resources.subject[currentLanguage]}
                                       autoComplete="off" value={this.state.document.subject}
                                       onBlur={e => {
                                         handleBlur(e);
                                         handleChange(e);
                                       }}
-                                      onChange={e => this.handleChange(e, "subject")} />
+                                      onChange={e => this.handleChange(e, "subject")}
+                                    />
                                     {touched.subject ? (<em className="pError"> {errors.subject} </em>) : null}
+                                  </div> */}
+                                  <div className={"inputDev ui input" + (errors.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                    <input name="subject" id="subject" className="form-control fsadfsadsa"
+                                      placeholder={Resources.subject[currentLanguage]}
+                                      autoComplete="off"
+                                      value={this.state.document.subject}
+                                      onBlur={e => { handleBlur(e); handleChange(e); }}
+                                      onChange={e => this.handleChange(e, "subject")} />
+                                    {errors.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                   </div>
                                 </div>
 
@@ -790,13 +809,13 @@ class variationOrderAddEdit extends Component {
                                       {Resources.raisedPrices[currentLanguage]}
                                     </label>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ? "checked" :null }
+                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === "true"  ? "checked" : null}
                                         value="true" onChange={e => this.handleChange(e, "isRaisedPrices")}
                                       />
                                       <label> {Resources.yes[currentLanguage]} </label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === false ?  null: "checked"}
+                                      <input type="radio" name="vo-isRaisedPrices" defaultChecked={this.state.document.isRaisedPrices === "false" ? "checked" : null}
                                         value="false" onChange={e => this.handleChange(e, "isRaisedPrices")}
                                       />
                                       <label> {Resources.no[currentLanguage]}</label>
@@ -806,13 +825,13 @@ class variationOrderAddEdit extends Component {
                                   <div className="linebylineInput valid-input">
                                     <label className="control-label"> {Resources.executed[currentLanguage]} </label>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "yes" ? "checked" :null }
+                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "yes" ? "checked" : null}
                                         value="yes" onChange={e => this.handleChange(e, "executed")}
                                       />
                                       <label> {Resources.yes[currentLanguage]} </label>
                                     </div>
                                     <div className="ui checkbox radio radioBoxBlue">
-                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "no" ? null : "checked"}
+                                      <input type="radio" name="vo-executed" defaultChecked={this.state.document.executed === "no"  ? "checked" : null}
                                         value="no" onChange={e => this.handleChange(e, "executed")}
                                       />
                                       <label> {Resources.no[currentLanguage]} </label>
@@ -862,7 +881,7 @@ class variationOrderAddEdit extends Component {
                                           title="contractPo" data={this.state.contractsPos} selectedValue={this.state.selectContract}
                                           handleChange={event => this.handleChangeDropDown(event, "contractId", "selectContract", false)}
                                           index="contractId" onChange={setFieldValue} onBlur={setFieldTouched} error={errors.contractId} touched={touched.contractId}
-                                          isClear={false} name="contractId" />
+                                          isClear={false} id="contractId" name="contractId" />
                                       </div>
                                     </Fragment>
                                   )}
@@ -884,9 +903,10 @@ class variationOrderAddEdit extends Component {
                                     {touched.timeExtension ? (<em className="pError">{errors.timeExtension}</em>) : null}
                                   </div>
                                 </div>
-                              </div>
-                              <div className="slider-Btns">
-                                {this.showBtnsSaving()}
+
+                                <div className="slider-Btns">
+                                  {this.showBtnsSaving()}
+                                </div>
                               </div>
                             </Form>
                           )}
@@ -939,7 +959,7 @@ class variationOrderAddEdit extends Component {
                       {this.state.isLoading ? <LoadingSection /> :
                         <GridCustom
                           cells={this.cells} data={this.state.voItems} groups={[]} pageSize={50} actions={this.state.document.executed === "no" ? this.actions : []}
-                          rowActions={this.rowActions} rowClick={cell => { this.state.document.executed === "no" ? this.onRowClick(cell) : console.log('error') }}
+                          rowActions={this.rowActions} rowClick={cell => { (this.state.document.executed === "No" || this.state.document.executed === "no") ? this.onRowClick(cell) : console.log('error') }}
                         />
                       }
                       <div>
