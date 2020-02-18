@@ -194,10 +194,7 @@ const SiteInstructionsAddEdit = AsyncComponent(() =>
 );
 const ProjectPicturesAddEdit = AsyncComponent(() =>
     import('./Pages/TechnicalOffice/projectPicturesAddEdit'),
-);
-// const WeeklyReportsAddEdit = AsyncComponent(() =>
-//     import('./Pages/TechnicalOffice/weeklyReportsAddEdit'),
-// );
+); 
 const DailyReportsAddEdit = AsyncComponent(() =>
     import('./Pages/TechnicalOffice/dailyReportsAddEdit'),
 );
@@ -408,10 +405,7 @@ const PurchaseOrderAddEdit = AsyncComponent(() =>
 );
 const SiteRequestAddEdit = AsyncComponent(() =>
     import('./Pages/Procurement/materialRequestAddEdit'),
-);
-const EquipmentDeliveryAddEdit = AsyncComponent(() =>
-    import('./Pages/Procurement/equipmentDeliveryAddEdit'),
-);
+); 
 const MaterialDeliveryAddEdit = AsyncComponent(() =>
     import('./Pages/Procurement/materialDeliveryAddEdit'),
 );
@@ -544,10 +538,7 @@ const PettyCashAddEdit = AsyncComponent(() =>
 
 const AddEditModificationDrawing = AsyncComponent(() =>
     import('./Pages/Design/addEditModificationDrawing'),
-);
-// const DrawingSetsAddEdit = AsyncComponent(() =>
-//     import('./Pages/Design/drawingSetsAddEdit'),
-// );
+); 
 const DrawingListAddEdit = AsyncComponent(() =>
     import('./Pages/Design/drawingListAddEdit'),
 );
@@ -922,11 +913,7 @@ let originalRoutes = [
     />,
     <Route key="r-89" path="/EpsPermission" component={EpsPermission} />,
     <Route key="r-90" path="/pcoAddEdit" component={PcoAddEdit} />,
-    // <Route
-    //     key="r-91"
-    //     path="/drawingSetsAddEdit"
-    //     component={DrawingSetsAddEdit}
-    // />,
+    
     <Route key="r-92" path="/riskAddEdit" component={RiskAddEdit} />,
     <Route
         key="r-93"
@@ -1181,11 +1168,7 @@ let originalRoutes = [
         component={MaterialDeliveryAddEdit}
     />,
     <Route key="r-162" path="/BarChartComp" component={Chart} />,
-    <Route
-        key="r-163"
-        path="/equipmentDeliveryAddEdit"
-        component={EquipmentDeliveryAddEdit}
-    />,
+    
     <Route
         key="r-164"
         path="/TransferInventory"
@@ -1227,11 +1210,7 @@ let originalRoutes = [
     />,
     <Route key="r-176" path="/specSectionChild" component={SpecSectionChild} />,
     <Route key="r-177" path="/RiskRealisation" component={RiskRealisation} />,
-    // <Route
-    //     key="r-177"
-    //     path="/WeeklyReportsAddEdit"
-    //     component={WeeklyReportsAddEdit}
-    // />,
+     
     <Route
         key="r-179"
         path="/dailyReportsAddEdit"
