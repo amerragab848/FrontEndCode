@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
     fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
     toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
-    sharedSettings: Yup.string().url('Please Enter Url.'),
+    //sharedSettings: Yup.string().url('Please Enter Url.'),
 });
 
 let docId = 0;
