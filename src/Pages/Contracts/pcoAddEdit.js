@@ -89,6 +89,10 @@ let columns = [
         accessor: 'itemCode',
         width: 80,
     }, {
+        Header: Resources['itemType'][currentLanguage],
+        accessor: 'itemTypeName',
+        width: 80,
+    }, {
         Header: Resources['boqType'][currentLanguage],
         accessor: 'boqType',
         width: 120,
@@ -100,7 +104,7 @@ let columns = [
         Header: Resources['boqTypeChild'][currentLanguage],
         accessor: 'boqTypeChild',
         width: 120,
-    },{
+    }, {
         Header: Resources['unit'][currentLanguage],
         accessor: 'unit',
         width: 120,
@@ -188,7 +192,7 @@ class pcoAddEdit extends Component {
                 resourceCode: '',
                 equipmenttypeId: '',
                 dueBack: moment()
-            },
+            }, 
             voItemToEdit: {
                 id: 0,
                 description: '',
@@ -205,10 +209,16 @@ class pcoAddEdit extends Component {
                 equipmenttypeId: '',
                 dueBack: moment()
             },
-            permission: [{ name: 'sendByEmail', code: 154 }, { name: 'sendByInbox', code: 153 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 976 },
-            { name: 'createTransmittal', code: 3062 }, { name: 'sendToWorkFlow', code: 724 },
-            { name: 'viewAttachments', code: 3298 }, { name: 'deleteAttachments', code: 3020 }],
+            permission: [
+                { name: 'sendByEmail', code: 154 },
+                { name: 'sendByInbox', code: 153 },
+                { name: 'sendTask', code: 1 },
+                { name: 'distributionList', code: 976 },
+                { name: 'createTransmittal', code: 3062 },
+                { name: 'createVO', code: 4021 },
+                { name: 'sendToWorkFlow', code: 724 },
+                { name: 'viewAttachments', code: 3298 },
+                { name: 'deleteAttachments', code: 3020 }],
             selectContract: { label: Resources.selectContract[currentLanguage], value: "0" },
             selectPco: { label: Resources.pco[currentLanguage], value: "0" },
             pcos: [],
@@ -670,9 +680,9 @@ class pcoAddEdit extends Component {
                 })
                 this.setState({
                     voItems: [...oldItems],
-                    showPopUp:false
+                    showPopUp: false
                 });
-                 this.simpleDialog1.hide();
+                this.simpleDialog1.hide();
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }
         }).catch(res => {
@@ -979,16 +989,16 @@ class pcoAddEdit extends Component {
         });
     }
     viewModelToEdit(id, row) {
-       
-        var unitObj={};
-       
+
+        var unitObj = {};
+
         this.setState({
             showPopUp: true,
             voItemToEdit: row,
             selectedBoqTypeToEdit: { value: row.boqTypeId, label: row.boqType },
             selectedBoqTypeChildToEdit: { value: row.boqChildTypeId, label: row.boqTypeChild },
             selectedBoqSubTypeToEdit: { value: row.boqSubTypeId, label: row.boqSubType },
-            selectedUnitToEdit:{ value: row.unit, label: row.unit }
+            selectedUnitToEdit: { value: row.unit, label: row.unit }
         })
         this.simpleDialog1.show();
     }

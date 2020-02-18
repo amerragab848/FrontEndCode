@@ -22,8 +22,7 @@ import moment from "moment";
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import { toast } from "react-toastify";
 import Steps from "../../Componants/publicComponants/Steps";
-import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription";
-import GridSetupWithFilter from "../Communication/GridSetupWithFilter";
+import AddItemDescription from "../../Componants/OptionsPanels/addItemDescription"; 
 import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
 import SkyLight from "react-skylight";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -484,14 +483,12 @@ class VariationRequestAdd extends Component {
 
         dataservice.addObject('EditContractsVariationRequest', saveDocument).then(result => {
             this.setState({
-                isLoading: true,
+                isLoading: false,
                 CurrentStep: 1
             });
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            // if (this.state.isApproveMode === false) {
-            //     this.props.history.push(this.state.perviousRoute);
-            // }
+           
         });
     }
 
