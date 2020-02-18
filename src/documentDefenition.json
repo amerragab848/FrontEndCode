@@ -8025,18 +8025,7 @@
         "isCustom": false,
         "exportDataType": "d"
       },
-      {
-        "field": "transactionName",
-        "friendlyName": "transactionType",
-        "minWidth": 85,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "cellTemplate": "",
-        "isCustom": true,
-        "exportDataType": "s"
-      },
+     
       {
         "field": "collected",
         "friendlyName": "collected",

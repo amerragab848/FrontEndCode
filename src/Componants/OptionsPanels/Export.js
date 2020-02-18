@@ -100,7 +100,7 @@ class Export extends Component {
                 return (
                     <tr key={index}>
                         {fieldsItems.map((rowfield, index) => {
-                            return (<td key={index + "td"}>{row[rowfield.field]}</td>)
+                            return (<td key={index + "td"}>{row[rowfield.key]}</td>)
                         })}
                     </tr>
                 )
@@ -114,7 +114,7 @@ class Export extends Component {
                     <thead valign="top">
                         <tr style={{ border: '4px' }}>
                             {fieldsName.map((column, index) => {
-                                return (<th key={index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {column.title}</th>)
+                                return (<th key={index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}> {column.key}</th>)
                             })}
                         </tr>
                     </thead>

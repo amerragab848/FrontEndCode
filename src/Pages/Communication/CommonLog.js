@@ -325,7 +325,7 @@ class CommonLog extends Component {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
         let oldRows = [];
 
-        const newRows = [...oldRows, ...result.data];
+        const newRows = [...oldRows, ...result];
 
         newRows.forEach(row => {
           let subject = "";
