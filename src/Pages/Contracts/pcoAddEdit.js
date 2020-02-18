@@ -669,8 +669,10 @@ class pcoAddEdit extends Component {
                     }
                 })
                 this.setState({
-                    voItems: [...oldItems]
+                    voItems: [...oldItems],
+                    showPopUp:false
                 });
+                 this.simpleDialog1.hide();
                 toast.success(Resources["operationSuccess"][currentLanguage]);
             }
         }).catch(res => {
