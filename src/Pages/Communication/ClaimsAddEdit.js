@@ -116,12 +116,13 @@ class ClaimsAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
-        
+
         if (this.state.docId > 0) {
             let url = "GetClaimsById?id=" + this.state.docId
             this.props.actions.documentForEdit(url, this.state.docTypeId, 'claims');
 
         } else {
+            
             let claimsDocument = {
                 subject: '',
                 id: 0,
@@ -139,19 +140,15 @@ class ClaimsAddEdit extends Component {
                 message: '',
                 contractId: ''
             };
+            
             this.setState({
-                document: claimsDocument 
-              });
-            this.fillDropDowns(false);
-            // , () => {
-            //     this.setState({ document: claimsDocument });
-            // }
+                document: claimsDocument
+            });
 
+            this.fillDropDowns(false); 
             this.props.actions.documentForAdding();
         }
-
         this.checkDocumentIsView();
-
     };
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -329,7 +326,7 @@ class ClaimsAddEdit extends Component {
 
         let original_document = { ...this.state.document };
 
-        console.log(original_document,'handleChange.....');
+        console.log(original_document, 'handleChange.....');
 
         let updated_document = {};
 
