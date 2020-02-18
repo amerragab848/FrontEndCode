@@ -198,6 +198,15 @@ class ContractInfoAddEdit extends Component {
     this.cells = [
       { title: '', type: 'check-box', fixed: true, field: 'id' },
       {
+        field: "arrange",
+        title: Resources["arrange"][currentLanguage],
+        width: 15,
+        groupable: true,
+        fixed: true,
+        sortable: true,
+        type: "text"
+      },
+      {
         field: "details",
         title: Resources["description"][currentLanguage],
         width: 15,
