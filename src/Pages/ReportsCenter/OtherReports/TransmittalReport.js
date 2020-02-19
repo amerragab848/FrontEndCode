@@ -4,8 +4,7 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridSetup from "../../Communication/GridSetup"
+import Export from "../../../Componants/OptionsPanels/Export"; 
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import CryptoJS from 'crypto-js';
 import GridCustom from 'react-customized-grid';

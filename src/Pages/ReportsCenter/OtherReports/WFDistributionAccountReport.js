@@ -17,8 +17,6 @@ class WFDistributionAccountReport extends Component {
 
     constructor(props) {
 
-        console.log("window.location.href", window.location.href);
-
         super(props)
         this.state = {
             isLoading: false,
@@ -45,7 +43,8 @@ class WFDistributionAccountReport extends Component {
                 "fixed": true,
                 "groupable": true,
                 "sortable": true,
-                "href": window.location.href
+                "href": 'link',
+                'classes': 'bold'
             },
             {
                 "field": "description",
@@ -95,41 +94,48 @@ class WFDistributionAccountReport extends Component {
     getGridRows = () => {
         if (this.state.selectedContact.value != '0') {
             this.setState({ isLoading: true })
-            Api.get('GetContactsWorkFlowDist?contactId=' + this.state.selectedContact.value).then((res) => {
-                this.setState({ rows: res, isLoading: false })
+            Api.get('GetContactsWorkFlowDist?contactId=' + this.state.selectedContact.value).then((result) => {
+
+                result.forEach(row => {
+
+                    let link = "";
+
+                    let docId = row.url.split("/");
+
+                    let obj = {
+                        docId: docId[1],
+                        projectId: row.projectId,
+                        projectName: row.projectName,
+                        arrange: 0,
+                        docApprovalId: 0,
+                        isApproveMode: false,
+                        perviousRoute: window.location.pathname + window.location.search
+                    };
+
+                    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+                    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+                    if (row.type === "Distribution List") {
+                        link = '/projectDistributionListAddEdit?id=' + encodedPaylod;
+                    } else {
+                        link = '/projectWorkFlowAddEdit?id=' + encodedPaylod;
+                    }
+
+                    row.link = link;
+                });
+
+                this.setState({ rows: result, isLoading: false })
             }).catch(() => {
                 this.setState({ isLoading: false })
             })
         }
     }
 
-    showPopUp = () => {
-        this.setState({ showModal: true })
+    showPopUp = (value) => {
+
+        this.setState({ showModal: true, selectedRows: value })
         this.simpleDialog.show()
-    }
-
-    subjectLink = ({ value, row }) => {
-        let subject = "";
-        if (row) {
-            let obj = {
-                docId: row.url.split('/')[1],
-                projectId: row.projectId,
-                projectName: row.projectName,
-                arrange: 0,
-                docApprovalId: 0,
-                isApproveMode: false
-            };
-            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-            let doc_view = "/projectWorkFlowAddEdit?id=" + encodedPaylod
-            subject = row.subject;
-            return <a href={doc_view}> {subject} </a>;
-        }
-        return null;
-    }
-
-    selectedRows(rows) {
-        this.setState({ selectedRows: rows })
     }
 
     addLevel() {
@@ -140,15 +146,26 @@ class WFDistributionAccountReport extends Component {
             }).catch(() => {
                 toast.error(Resources.operationCanceled[currentLanguage])
             })
+        } else {
+            toast.warn("Please Choose Contact Name ...");
         }
     }
 
     checkedRow = (id, checked) => {
-        //  id is current row
-        //  checked is array of already checked rows
-        if (id !== 139585) {
+
+        let hasWorkFlow = this.state.rows.find(x => x.id === id);
+
+        if (hasWorkFlow.type === "Work Flow") {
+            let indexed = checked.findIndex(x => x === id);
+            if (indexed > -1) {
+                checked.splice(indexed, 1);
+            } else {
+                checked.push(id);
+            }
+
             return true;
         } else {
+            toast.warn("Can't Send Distrbution Only Work Flow ...");
             return false;
         }
     }
@@ -156,19 +173,23 @@ class WFDistributionAccountReport extends Component {
     render() {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
-                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+                pageSize={this.state.rows.length}
+                actions={[{
+                    title: 'Send To The Same Level',
+                    handleClick: (value) => {
+                        this.showPopUp(value);
+                    },
+                    classes: "autoGridBtn"
+                }]} rowActions={[]} rowClick={() => { }}
                 shouldCheck={(id, checked) => {
                     this.checkedRow(id, checked);
                 }}
             />
-            // <GridSetup rows={this.state.rows} showCheckbox={true}
-            //     selectedCopmleteRow={true} selectedRows={rows => this.selectedRows(rows)}
-            //     pageSize={this.state.pageSize} columns={this.columns} addLevel={e => this.showPopUp()} />
         ) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'wokFlowDistrbutionAccountsReport'} />
-            : null
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns}
+                fileName={'wokFlowDistrbutionAccountsReport'} /> : null
 
         const addToSameLevel = <div className="doc-container">
             <div className="step-content">

@@ -24,7 +24,9 @@ class ContractsStatus extends Component {
         this.state = {
             isLoading: false,
             ProjectsData: [],
+            contractorData: [],
             selectedProject: { label: Resources.projectSelection[currentLanguage], value: "0" },
+            selectedContractor: { label: Resources.contractorName[currentLanguage], value: "0" },
             rows: []
         }
 
@@ -98,11 +100,20 @@ class ContractsStatus extends Component {
         }).catch(() => {
             toast.error('somthing wrong')
         })
+
+        Dataservice.GetDataList('SelectAllCompany', 'companyName', 'id').then(result => {
+            result.unshift({ 'label': 'All Contractor', 'value': '0' });
+            this.setState({
+                contractorData: result
+            })
+        }).catch(() => {
+            toast.error('somthing wrong')
+        })
     }
 
     getGridRows = () => {
         this.setState({ isLoading: true })
-        Dataservice.GetDataGrid('GetContractsStatus?projectId=' + this.state.selectedProject.value).then(res => {
+        Dataservice.GetDataGrid('GetContractsStatus?projectId=' + this.state.selectedProject.value + "contractorId=" + this.state.selectedContractor.value).then(res => {
             this.setState({
                 rows: res,
                 isLoading: false
@@ -152,6 +163,15 @@ class ContractsStatus extends Component {
                                         error={errors.selectedProject}
                                         touched={touched.selectedProject}
                                         value={values.selectedProject} />
+                                </div>
+                                <div className="linebylineInput valid-input">
+                                    <Dropdown title='contractor' data={this.state.contractorData} name='selectedContractor'
+                                        selectedValue={this.state.selectedContractor} onChange={setFieldValue}
+                                        handleChange={e => this.setState({ selectedContractor: e })}
+                                        onBlur={setFieldTouched}
+                                        error={errors.selectedContractor}
+                                        touched={touched.selectedContractor}
+                                        value={values.selectedContractor} />
                                 </div>
                                 <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
                             </Form>

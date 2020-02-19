@@ -1,23 +1,17 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
-import DropDown from './DropdownMelcous'
-
+import DropDown from './DropdownMelcous';
 import SendTask from "./SendTask";
 import CreateTransmittal from "./CreateTransmittal";
 import CreateVO from "./CreateVO";
 import ExportDetails from "./ExportDetails";
-import SendToInbox from './SendToInbox'
-import SendByEmails from './SendByEmails'
-import CopyTo from './CopyTo'
-
+import SendToInbox from './SendToInbox';
+import SendByEmails from './SendByEmails';
+import CopyTo from './CopyTo';
 import Resources from '../../resources.json';
 import Config from '../../Services/Config';
-
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
-
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -26,7 +20,9 @@ const find = require("lodash/find")
 const filter = require("lodash/filter")
 
 let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
+
 const actionPanel = {
+
     control: (styles, { isFocused }) => ({
         ...styles,
         height: '36px',
@@ -62,12 +58,17 @@ const actionPanel = {
     placeholder: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700' }),
     singleValue: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700', textAlign: 'center' }),
     indicatorSeparator: styles => ({ ...styles, backgroundColor: '#dadee6' }),
-    menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db', top: '-155px', minWidth: '180px' }),
+    menu: styles => ({
+        ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
+        border: 'solid 1px #ccd2db', top: '-155px', minWidth: '180px',
+        right: currentLanguage == 'ar' ? 'auto' : '0', left: currentLanguage == 'ar' ? '0' : 'auto'
+    }),
     menuList: styles => ({ ...styles, color: 'red', height: '145px' }),
 };
 
 class OptionContainer extends React.Component {
     constructor(props) {
+
         super(props);
 
         this.state = {
@@ -113,7 +114,11 @@ class OptionContainer extends React.Component {
 
     IsAllow = (permission) => {
         let obj = find(this.props.permission, function (o) { return o.name == permission; });
-        return Config.IsAllow(obj.code);
+        if (obj != undefined) {
+            return Config.IsAllow(obj.code);
+        } else {
+            return false
+        }
     }
 
     componentDidMount = () => {
@@ -157,7 +162,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(OptionContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(OptionContainer);
