@@ -1555,8 +1555,8 @@ var routes = [
         }
     },
     {
-        route: "costCodingTreeAddEdit",
-        moduleId: "contracts/costCodingTreeAddEdit",
+        route: "projectCostCodingTree",
+        moduleId: "Project/ProjectCostCodingTree",
         title: "costCodingTree",
         nav: true,
         settings: { CostControl: true, order: 4 }

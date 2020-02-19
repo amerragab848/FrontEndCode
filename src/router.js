@@ -233,8 +233,8 @@ const ProjectIssuesAddEdit = AsyncComponent(() =>
 const QuestionsAddEdit = AsyncComponent(() =>
     import('./Pages/Contracts/qsAddEdit'),
 );
-const CostCodingTreeAddEdit = AsyncComponent(() =>
-    import('./Pages/Contracts/costCodingTreeAddEdit'),
+const ProjectCostCodingTree = AsyncComponent(() =>
+    import('./Componants/GeneralSetting/Project/ProjectCostCodingTree'),
 );
 const Itemize = AsyncComponent(() => import('./Pages/Contracts/Itemize'));
 const ContractInfoAddEdit = AsyncComponent(() =>
@@ -944,8 +944,8 @@ let originalRoutes = [
     <Route key="r-98" path="/baseAddEdit" component={BaseAddEdit} />,
     <Route
         key="r-99"
-        path="/costCodingTreeAddEdit/:projectId"
-        component={CostCodingTreeAddEdit}
+        path="/projectCostCodingTree/:projectId"
+        component={ProjectCostCodingTree}
     />,
     <Route key="r-100" path="/Itemize" component={Itemize} />,
     <Route
