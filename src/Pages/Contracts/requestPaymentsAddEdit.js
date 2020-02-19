@@ -122,7 +122,7 @@ const columnOfInterimPayment = [{
     title: Resources["currentConsultatnt"][currentLanguage],
     field: 'currentValue'
 }, {
-    key: Resources["totalConsultatnt"][currentLanguage],
+    title: Resources["totalConsultatnt"][currentLanguage],
     field: 'total'
 }, {
     title: Resources["previousContractor"][currentLanguage],
