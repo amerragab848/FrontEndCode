@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
     fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
     toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
-    sharedSettings: Yup.string().url('Please Enter Url.'),
+    //sharedSettings: Yup.string().url('Please Enter Url.'),
 });
 
 let docId = 0;
@@ -181,6 +181,15 @@ class LettersAddEdit extends Component {
     }
 
     componentDidMount() {
+        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
+
+        for (var i = 0; i < links.length; i++) {
+            if ((i + 1) % 2 == 0) {
+                links[i].classList.add("even");
+            } else {
+                links[i].classList.add("odd");
+            }
+        }
         if (this.state.docId > 0) {
             let url = "GetLettersById?id=" + this.state.docId;
             this.props.actions.documentForEdit(url, this.state.docTypeId, "lettertitle");
@@ -196,7 +205,7 @@ class LettersAddEdit extends Component {
                 toContactId: replyToContId || "",
                 replayId: prevLetterId != null ? prevLetterId : "",
                 docDate: moment().format("YYYY-MM-DD"),
-                status: true,
+                status: "true",
                 disciplineId: "",
                 refDoc: "",
                 sharedSettings: '',
@@ -206,24 +215,17 @@ class LettersAddEdit extends Component {
 
             };
 
-            this.fillDropDowns(false, () => {
-                this.setState({ document: letter });
+            this.setState({
+                document: letter
             });
+
+            this.fillDropDowns(false);
 
             this.props.actions.documentForAdding();
         }
 
         this.checkDocumentIsView();
 
-        var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
-
-        for (var i = 0; i < links.length; i++) {
-            if ((i + 1) % 2 == 0) {
-                links[i].classList.add("even");
-            } else {
-                links[i].classList.add("odd");
-            }
-        }
     }
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -678,7 +680,7 @@ class LettersAddEdit extends Component {
                                                                     value={this.state.document.subject}
                                                                     onBlur={e => { handleBlur(e); handleChange(e); }}
                                                                     onChange={e => this.handleChange(e, "subject")} />
-                                                                {errors.subject ? (<em className="pError">{errors.subject}</em>) : null}
+                                                                {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                                             </div>
                                                         </div>
 

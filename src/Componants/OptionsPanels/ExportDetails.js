@@ -95,7 +95,7 @@ class ExportDetails extends Component {
       var Fields = '', items = '', attachmentTable = '', workflowCycles = '', docAttachments = '';
       if (!'Fields'.nodeType) Fields = document.getElementById('Fields').innerHTML
 
-      if (this.props.items.length) items = document.getElementById('items').innerHTML
+      if (this.props.items.length) items = this.props.docTypeId == 120 ? document.getElementById('interimPaymentCertificate').innerHTML : document.getElementById('items').innerHTML
 
       if (!'attachmentTable'.nodeType) attachmentTable = document.getElementById('attachmentTable').innerHTML
       if (this.props.workFlowCycles.length) workflowCycles = document.getElementById('workflowCycles').innerHTML
@@ -763,7 +763,7 @@ class ExportDetails extends Component {
   }
 
   PrintPDFPaymentCertified() {
-    if (this.state.isExcel === true) return;
+    //if (this.state.isExcel === true) return;
 
     return (
       <div id="PCertified" className="invoice">
@@ -1080,14 +1080,10 @@ class ExportDetails extends Component {
 
   }
 
-  drawItemOfPaymentCertification() {
-    if (this.state.isExcel === true) return;
-
-    // let fieldsName = DED[this.props.docTypeId].friendlyNames
-
+  drawItemOfPaymentCertification() { 
     return (
       <Fragment>
-        <table className="attachmentTable attachmentTable__items attachmentTableAuto specialTable specialTable__certifiy" key="interimPaymentCertificate">
+        <table className="attachmentTable attachmentTable__items attachmentTableAuto specialTable specialTable__certifiy" key="interimPaymentCertificate" id="interimPaymentCertificate">
           <thead>
             <tr>
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
@@ -1120,8 +1116,8 @@ class ExportDetails extends Component {
                   {Resources["remarks"][currentLanguage]}
                 </div>
               </th>
-            </tr> 
-             <tr>
+            </tr>
+            <tr>
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
@@ -1150,176 +1146,177 @@ class ExportDetails extends Component {
                 </div>
               </th>
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">  </th>
-                <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
-                  <div className="headCell">
-                    {Resources["total"][currentLanguage]}
-                  </div>
-                </th>
-                <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
-                <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                <div className="headCell">
+                  {Resources["total"][currentLanguage]}
+                </div>
+              </th>
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
             </tr>
           </thead>
-            <tbody>{this.props.items.map(i => (
-              <tr key={i.id} style={{ height: '25px' }}>
-                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3" style={{ maxWidth: 'unset', width: 'auto' }}>
-                  <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} tableCell-2>
-                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.description}</p>
-                  </div>
-                </td>
-                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
-                  <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} tableCell-2>
-                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount}</p>
-                  </div>
-                </td>
-                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
-                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse}</p>
-                  </div>
-                </td>
-                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
-                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue}</p>
-                  </div>
-                </td>
-                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
-                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal}</p>
-                  </div>
-                </td>
-                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
-                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse}</p>
-                  </div>
-                </td>
-                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
-                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue}</p>
-                  </div>
-                </td>
-                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
-                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total}</p>
-                  </div>
-                </td>
-                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
-                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.totalDeduction}</p>
-                  </div>
-                </td>
-                <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
-                  <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                    <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.remarks}</p>
-                  </div>
-                </td>
-              </tr>
-            ))}</tbody>
+          <tbody>{this.props.items.map(i => (
+            <tr key={i.id} style={{ height: '25px' }}>
+              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3" style={{ maxWidth: 'unset', width: 'auto' }}>
+                <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} >
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.description}</p>
+                </div>
+              </td>
+              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+                <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} >
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount.toLocaleString()}</p>
+                </div>
+              </td>
+              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse.toLocaleString()}</p>
+                </div>
+              </td>
+              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue.toLocaleString()}</p>
+                </div>
+              </td>
+              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal.toLocaleString()}</p>
+                </div>
+              </td>
+              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse.toLocaleString()}</p>
+                </div>
+              </td>
+              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue.toLocaleString()}</p>
+                </div>
+              </td>
+              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
+                <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total.toLocaleString()}</p>
+                </div>
+              </td>
+              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+                <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.totalDeduction.toLocaleString()}</p>
+                </div>
+              </td>
+              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+                <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.remarks}</p>
+                </div>
+              </td>
+            </tr>
+          ))}</tbody>
         </table>
       </Fragment>
-        )
-      }
-    
+    )
+  }
+
   render() {
     return (
       <div id={'docExport'}>
-          {this.state.isLoading === true ? null :
-            <div className="dropWrapper readOnly__disabled ">
-              <div className="proForm customProform">
-                <Dropdown title="header"
-                  data={this.state.headerList}
-                  selectedValue={this.state.selectHeader}
-                  handleChange={event => this.handleChangeDropDownContract(event, "headerPath", "selectHeader")}
-                  index="headerPath"
-                  isClear={false}
-                  name="headerPath"
-                />
-                <Dropdown title="footer"
-                  data={this.state.footerList}
-                  selectedValue={this.state.selectFooter}
-                  handleChange={event => this.handleChangeDropDownContract(event, "footerPath", "selectFooter")}
-                  index="footerPath"
-                  isClear={false}
-                  name="footerPath"
-                />
-                <div className="fillter-status fillter-item-c">
-                  <label className="control-label">{Resources.export[currentLanguage]}</label>
-                  <div className="ui checkbox radio radioBoxBlue">
-                    <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? null : 'checked'} value={true} onChange={e => this.handleChange(true, 'isExcel')} />
-                    <label>{Resources.excel[currentLanguage]}</label>
-                  </div>
-                  <div className="ui checkbox radio radioBoxBlue">
-                    <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? 'checked' : null} value={false} onChange={e => this.handleChange(false, 'isExcel')} />
-                    <label>{Resources.pdf[currentLanguage]}</label>
-                  </div>
+        {this.state.isLoading === true ? null :
+          <div className="dropWrapper readOnly__disabled ">
+            <div className="proForm customProform">
+              <Dropdown title="header"
+                data={this.state.headerList}
+                selectedValue={this.state.selectHeader}
+                handleChange={event => this.handleChangeDropDownContract(event, "headerPath", "selectHeader")}
+                index="headerPath"
+                isClear={false}
+                name="headerPath"
+              />
+              <Dropdown title="footer"
+                data={this.state.footerList}
+                selectedValue={this.state.selectFooter}
+                handleChange={event => this.handleChangeDropDownContract(event, "footerPath", "selectFooter")}
+                index="footerPath"
+                isClear={false}
+                name="footerPath"
+              />
+              <div className="fillter-status fillter-item-c">
+                <label className="control-label">{Resources.export[currentLanguage]}</label>
+                <div className="ui checkbox radio radioBoxBlue">
+                  <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? null : 'checked'} value={true} onChange={e => this.handleChange(true, 'isExcel')} />
+                  <label>{Resources.excel[currentLanguage]}</label>
                 </div>
-                <div className="fillter-status fillter-item-c">
-                  <label className="control-label">{Resources.design[currentLanguage]}</label>
-                  <div className="ui checkbox radio radioBoxBlue">
-                    <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? null : 'checked'} value="true" onChange={e => this.handleChange(true, 'isLandscape')} />
-                    <label>{Resources.landscape[currentLanguage]}</label>
-                  </div>
-                  <div className="ui checkbox radio radioBoxBlue">
-                    <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? 'checked' : null} value="true" onChange={e => this.handleChange(false, 'isLandscape')} />
-                    <label>{Resources.portrait[currentLanguage]}</label>
-                  </div>
+                <div className="ui checkbox radio radioBoxBlue">
+                  <input type="radio" name="vo-excel" defaultChecked={this.state.isExcel === false ? 'checked' : null} value={false} onChange={e => this.handleChange(false, 'isExcel')} />
+                  <label>{Resources.pdf[currentLanguage]}</label>
                 </div>
               </div>
-              <div className="fullWidthWrapper">
-                <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
-                {this.props.docTypeId != 120 ? null : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintPaymentCertification()}>{Resources["print"][currentLanguage] + '-' + Resources.paymentCertificationLog[currentLanguage]}</button>}
-                {this.props.docTypeId == 19 ? <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintLetter()}>{Resources["print"][currentLanguage] + '-' + Resources.lettertitle[currentLanguage]}</button> : null}
-                {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintDocument()}>{Resources["print"][currentLanguage]}</button>
-                }
+              <div className="fillter-status fillter-item-c">
+                <label className="control-label">{Resources.design[currentLanguage]}</label>
+                <div className="ui checkbox radio radioBoxBlue">
+                  <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? null : 'checked'} value="true" onChange={e => this.handleChange(true, 'isLandscape')} />
+                  <label>{Resources.landscape[currentLanguage]}</label>
+                </div>
+                <div className="ui checkbox radio radioBoxBlue">
+                  <input type="radio" name="vo-executed" defaultChecked={this.state.isLandscape === false ? 'checked' : null} value="true" onChange={e => this.handleChange(false, 'isLandscape')} />
+                  <label>{Resources.portrait[currentLanguage]}</label>
+                </div>
               </div>
-              <div id="exportLink"></div>
             </div>
-          }
-
-          {this.state.isLoading === true ? <LoadingSection /> : null}
-          {/* excel export */}
-          <div style={{ display: 'none' }}>
-            {this.props.docTypeId != 19 ? this.drawFields() : null}
-            {this.props.docTypeId != 120 ? this.drawItems() : null}
-
-            {this.drawAttachments()}
-            {this.drawWorkFlow()}
-            {this.drawattachDocuments()}
+            <div className="fullWidthWrapper">
+              <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
+              {this.props.docTypeId != 120 ? null : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintPaymentCertification()}>{Resources["print"][currentLanguage] + '-' + Resources.paymentCertificationLog[currentLanguage]}</button>}
+              {this.props.docTypeId == 19 ? <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintLetter()}>{Resources["print"][currentLanguage] + '-' + Resources.lettertitle[currentLanguage]}</button> : null}
+              {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintDocument()}>{Resources["print"][currentLanguage]}</button>
+              }
+            </div>
+            <div id="exportLink"></div>
           </div>
+        }
 
-          <div style={{ display: 'none' }}>
+        {this.state.isLoading === true ? <LoadingSection /> : null}
+        {/* excel export */}
+        <div style={{ display: 'none' }}>
+          {/* {this.props.docTypeId != 19 ? this.drawFields() : null} */}
+          {this.drawFields()}
+          {this.props.docTypeId != 120 ? this.drawItems() : null}
 
-            {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : this.exportPDFFile()}
-            {this.props.docTypeId == 120 ? this.PrintPDFPaymentCertified() : null}
-            {this.props.docTypeId == 19 ? this.exportLetterFile() : null}
-          </div>
+          {this.drawAttachments()}
+          {this.drawWorkFlow()}
+          {this.drawattachDocuments()}
+        </div>
 
-          <div style={{ display: 'none' }}>
-            <iframe id="iframePrint" name="iframePrint">
-            </iframe>
-          </div>
-        </div >
-        )
-      }
-    }
-    
-    
+        <div style={{ display: 'none' }}>
+
+          {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : this.exportPDFFile()}
+          {this.props.docTypeId == 120  ? this.PrintPDFPaymentCertified() : null}
+          {this.props.docTypeId == 19 ? this.exportLetterFile() : null}
+        </div>
+
+        <div style={{ display: 'none' }}>
+          <iframe id="iframePrint" name="iframePrint">
+          </iframe>
+        </div>
+      </div >
+    )
+  }
+}
+
+
 function mapStateToProps(state, ownProps) {
   return {
-          document: state.communication.document,
-        files: state.communication.files,
-        workFlowCycles: state.communication.workFlowCycles,
-        items: state.communication.items,
-        fields: state.communication.fields,
-        fieldsItems: state.communication.fieldsItems,
-        docsAttachData: state.communication.docsAttachData,
-        documentTitle: state.communication.documentTitle
-      }
-    }
-    
+    document: state.communication.document,
+    files: state.communication.files,
+    workFlowCycles: state.communication.workFlowCycles,
+    items: state.communication.items,
+    fields: state.communication.fields,
+    fieldsItems: state.communication.fieldsItems,
+    docsAttachData: state.communication.docsAttachData,
+    documentTitle: state.communication.documentTitle
+  }
+}
+
 function mapDispatchToProps(dispatch) {
   return {
-          actions: bindActionCreators(communicationActions, dispatch)
-      };
-    }
-    
-    export default connect(mapStateToProps, mapDispatchToProps)(ExportDetails);
-    
+    actions: bindActionCreators(communicationActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExportDetails);
+

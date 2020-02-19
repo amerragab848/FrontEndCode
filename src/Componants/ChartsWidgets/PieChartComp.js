@@ -29,11 +29,7 @@ class PieChartComp extends Component {
             customRows: []
         }
 
-    }
-
-
-
-
+    } 
     componentDidMount() {
         if (this.props.reports == undefined) {
             this.setState({ isLoading: true });
@@ -65,7 +61,7 @@ class PieChartComp extends Component {
             let index = 0;//res.length - 1;
 
             let data = {
-                percentage: ((dataChart[index].quantity / total) * 100).toFixed(1),
+                percentage: ((dataChart[index].quantity / total) * 100).toFixed(0),
                 name: dataChart[index].name,
                 quantity: dataChart[index].quantity,
                 id: dataChart[index].id
@@ -116,7 +112,7 @@ class PieChartComp extends Component {
                                         <p id="legenbd__teext" style={{ width: width / 2 }}>
                                             <span className="chartName">{this.state.data.name}</span>
                                             <span className="percentage">{this.state.data.percentage + '%'}</span>
-                                            <span className="totalAmount">{this.state.data.quantity ? this.state.data.quantity.toFixed(1) : 0}</span>
+                                            <span className="totalAmount">{this.state.data.quantity ? this.state.data.quantity.toFixed(0) : 0}</span>
                                         </p>
                                         : null}
                                 </div>

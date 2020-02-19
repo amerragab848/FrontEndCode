@@ -1762,26 +1762,26 @@ var routes = [
         nav: false,
         settings: { Site: false }
     },
-    {
-        route: "drawingSets",
-        moduleId: "commonLogs",
-        title: "drawingSets",
-        nav: true,
-        hash: "#drawingSets",
-        settings: {
-            Design: true,
-            caption: "procoor-icon-drawing-set",
-            permission: 215
-        }
-    },
-    {
-        route:
-            "drawingSetsAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
-        moduleId: "design/drawingSetsAddEdit",
-        title: "Drawing Set Addition",
-        nav: false,
-        settings: { Design: false }
-    },
+    // {
+    //     route: "drawingSets",
+    //     moduleId: "commonLogs",
+    //     title: "drawingSets",
+    //     nav: true,
+    //     hash: "#drawingSets",
+    //     settings: {
+    //         Design: true,
+    //         caption: "procoor-icon-drawing-set",
+    //         permission: 215
+    //     }
+    // },
+    // {
+    //     route:
+    //         "drawingSetsAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+    //     moduleId: "design/drawingSetsAddEdit",
+    //     title: "Drawing Set Addition",
+    //     nav: false,
+    //     settings: { Design: false }
+    // },
     {
         route: "drawingList",
         moduleId: "commonLogs",
@@ -2084,20 +2084,7 @@ var routes = [
         title: "Client Modification Addition",
         nav: false,
         settings: { Contracts: false }
-    },
-    // {
-    //   route: "qualityControl",
-    //   moduleId: "commonLogs",
-    //   title: "qualityControl",
-    //   nav: true,
-    //   hash: "#qualityControl",
-    //   settings: {
-    //     QualityControl: true,
-    //     permission: 287,
-    //     caption: "procoor-icon-quality-control",
-    //     order: 8
-    //   }
-    // },
+    }, 
     {
         route:
             "qualityControlAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
@@ -2105,28 +2092,7 @@ var routes = [
         title: "Quality Control",
         nav: false,
         settings: { Site: false }
-    },
-    // {
-    //   route: "weeklyReports",
-    //   moduleId: "commonLogs",
-    //   title: "weeklyReport",
-    //   nav: true,
-    //   hash: "#weeklyReports",
-    //   settings: {
-    //     Site: true,
-    //     permission: 788,
-    //     caption: "procoor-icon-weekly-report",
-    //     order: 11
-    //   }
-    // },
-    {
-        route:
-            "weeklyReportsAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
-        moduleId: "site/weeklyReportsAddEdit",
-        title: "Weekly Report Addition",
-        nav: false,
-        settings: { Site: false }
-    },
+    }, 
     {
         route: "clientSelection",
         moduleId: "commonLogs",
@@ -2665,28 +2631,7 @@ var routes = [
         moduleId: "user/userSignature",
         title: "userSignature",
         nav: true
-    },
-    {
-        route: "equipmentDelivery",
-        moduleId: "commonLogs",
-        title: "equipmentDelivery",
-        nav: true,
-        hash: "#equipmentDelivery",
-        settings: {
-            Procurement: true,
-            permission: 260,
-            caption: "procoor-icon-material-delivery",
-            order: 11
-        }
-    },
-    {
-        route:
-            "equipmentDeliveryAddEdit/:id(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
-        moduleId: "site/equipmentDeliveryAddEdit",
-        title: "Equipment Delivery Addition",
-        nav: true,
-        settings: { Reports: false }
-    },
+    }, 
     {
         route: "taskDetails/:id",
         moduleId: "projects/taskDetails",
