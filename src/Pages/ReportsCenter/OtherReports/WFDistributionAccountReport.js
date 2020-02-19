@@ -25,7 +25,8 @@ class WFDistributionAccountReport extends Component {
             dropDownList: [],
             selectedContact: { label: Resources.selectContact[currentLanguage], value: "0" },
             selectedContact_level: { label: Resources.selectContact[currentLanguage], value: "0" },
-            rows: []
+            rows: [],
+            selectedRows: []
         }
 
         if (!Config.IsAllow(3720)) {
@@ -45,7 +46,8 @@ class WFDistributionAccountReport extends Component {
                 "fixed": true,
                 "groupable": true,
                 "sortable": true,
-                "href": window.location.href
+                //"href": window.location.href,
+                
             },
             {
                 "field": "description",
@@ -103,8 +105,11 @@ class WFDistributionAccountReport extends Component {
         }
     }
 
-    showPopUp = () => {
-        this.setState({ showModal: true })
+    showPopUp = (values) => {
+        this.setState({
+             showModal: true,
+             selectedRows:values
+             })
         this.simpleDialog.show()
     }
 
@@ -128,13 +133,24 @@ class WFDistributionAccountReport extends Component {
         return null;
     }
 
-    selectedRows(rows) {
-        this.setState({ selectedRows: rows })
-    }
+    // selectedRows(rows) {
+    //     this.setState({ selectedRows: rows })
+    // }
 
+    // addLevel() {
+    //     if (this.state.selectedContact_level.value != '0') {
+    //         Api.post('AddWFItemsToSameLevel?contactId=' + this.state.selectedContact.value + '&tocontactId=' + this.state.selectedContact_level.value, this.state.selectedRows).then(() => {
+    //             toast.success(Resources.operationSuccess[currentLanguage])
+    //             this.setState({ showModal: false })
+    //         }).catch(() => {
+    //             toast.error(Resources.operationCanceled[currentLanguage])
+    //         })
+    //     }
+    // }
     addLevel() {
         if (this.state.selectedContact_level.value != '0') {
-            Api.post('AddWFItemsToSameLevel?contactId=' + this.state.selectedContact.value + '&toContactId=' + this.state.selectedContact_level.value, this.state.selectedRows).then(() => {
+
+            Api.post('AddWFItemsToSameLevel?contactId=' + this.state.selectedContact.value + '&tocontactId=' + this.state.selectedContact_level.value, this.state.selectedRows).then(() => {
                 toast.success(Resources.operationSuccess[currentLanguage])
                 this.setState({ showModal: false })
             }).catch(() => {
@@ -152,13 +168,40 @@ class WFDistributionAccountReport extends Component {
             return false;
         }
     }
+    routeUrl=(url)=>{
+        this.props.history.push(url);
+    }
 
     render() {
+
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
-                pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
+                pageSize={this.state.rows.length} actions={[
+
+                    {
+                        title: 'Add to',
+                        handleClick: values =>
+                            // {
+                            //     this.setState({
+                            //         showDeleteModal: true,
+                            //         selectedRows: values
+                            //     });
+                            // },
+                            this.showPopUp(values),
+                        classes: '',
+                    }
+                ]}
+                 rowActions={[]} 
+                 rowClick={() => { }}
                 shouldCheck={(id, checked) => {
                     this.checkedRow(id, checked);
+                }}
+                rowClick={cell=>{
+                    if(cell.id != 0){
+                        let rowData = this.columns.filter(x => x.id == cell.id - 1).key;
+                        this.routeUrl(cell.url);
+                        
+                    }
                 }}
             />
             // <GridSetup rows={this.state.rows} showCheckbox={true}
@@ -203,6 +246,7 @@ class WFDistributionAccountReport extends Component {
                             handleChange={event => this.setState({ selectedContact: event })} />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
+                    {/* <button className="primaryBtn-1 btn smallBtn" onClick={() => this.showPopUp()}>{Resources['search'][currentLanguage]}</button> */}
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}
