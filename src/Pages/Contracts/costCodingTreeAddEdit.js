@@ -328,7 +328,7 @@ class CostCodingTreeAddEdit extends Component {
       })
       this.setState({ state, isLoading: true })
     }
-    dataservice.addObject("DeleteCostCodeTree?id=" + this.state.docId).then(result => {
+    dataservice.addObject("DeleteNewCostCodeTree?id=" + this.state.docId).then(result => {
       let state = this.state
       state[this.state.docId] = -1
       if (result != null)
