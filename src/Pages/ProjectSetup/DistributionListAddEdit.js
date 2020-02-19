@@ -148,7 +148,6 @@ class TaskGroupsAddEdit extends Component {
             CurrStep: 0,
             SelectedCompany: '',
             SelectedContact: '',
-            selectedRows: [],
             showDeleteModal: false,
             rows: [],
             selectedRows: [],
@@ -160,15 +159,18 @@ class TaskGroupsAddEdit extends Component {
             MaxArrangeContact: 1,
             DeleteFromLog: false,
             Dis_ListData: {},
-            permission: [{ name: 'sendByEmail', code: 631 }, { name: 'sendByInbox', code: 630 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 950 },
-            { name: 'createTransmittal', code: 3036 }, { name: 'sendToWorkFlow', code: 703 }]
+            permission: [{ name: 'sendByEmail', code: 631 },
+            { name: 'sendByInbox', code: 630 },
+            { name: 'sendTask', code: 1 },
+            { name: 'distributionList', code: 950 },
+            { name: 'createTransmittal', code: 3036 },
+            { name: 'sendToWorkFlow', code: 703 }]
         }
 
         if (!Config.IsAllow(625) && !Config.IsAllow(626) && !Config.IsAllow(628)) {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
-                pathname: '/DistributionList/' + projectId + '',
+                pathname: '/DistributionList/' + projectId,
             });
         }
     }
@@ -417,7 +419,7 @@ class TaskGroupsAddEdit extends Component {
     }
 
     saveAndExit = () => {
-        this.props.history.push({ pathname: '/DistributionList/' + projectId + '', });
+        this.props.history.push({ pathname: '/DistributionList/' + projectId });
     }
 
     handleShowAction = (item) => {
@@ -454,13 +456,8 @@ class TaskGroupsAddEdit extends Component {
         let actions = [
             { title: "distributionList", value: <Distribution docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["distributionList"][currentLanguage] },
             { title: "sendToWorkFlow", value: <SendToWorkflow docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />, label: Resources["sendToWorkFlow"][currentLanguage] },
-            {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }, {
-                title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false}
-                    projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage]
-            }];
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={true} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] },
+            { title: "documentApproval", value: <DocumentApproval docTypeId={this.state.docTypeId} docId={this.state.docId} previousRoute={this.state.perviousRoute} approvalStatus={false} projectId={this.state.projectId} docApprovalId={this.state.docApprovalId} currentArrange={this.state.arrange} />, label: Resources["documentApproval"][currentLanguage] }];
 
         let RenderContactsTable = this.state.rows.map((item, index) => {
             return (
@@ -738,9 +735,7 @@ class TaskGroupsAddEdit extends Component {
                                     </div>
                                 </div>
                             }
-
                         </div>
-
                         <Fragment>
                             <Steps
                                 steps_defination={steps_defination}
@@ -752,7 +747,6 @@ class TaskGroupsAddEdit extends Component {
                                 stepNo={this.state.CurrStep} changeStatus={docId === 0 ? false : true}
                             />
                         </Fragment>
-
                     </div>
                     {this.state.showDeleteModal == true ? (
                         <ConfirmationModal
@@ -767,9 +761,8 @@ class TaskGroupsAddEdit extends Component {
                         this.props.changeStatus === true && this.state.IsEditMode ?
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
-                                    {/* <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"} onClick={e => this.editPhone(e)}>{Resources.save[currentLanguage]}</button> */}
                                     {this.state.isApproveMode === true ?
-                                        <div >
+                                        <div>
                                             <button className="primaryBtn-1 btn " type="button" onClick={(e) => this.handleShowAction(actions[2])} >{Resources.approvalModalApprove[currentLanguage]}</button>
                                             <button className="primaryBtn-2 btn middle__btn" type="button" onClick={(e) => this.handleShowAction(actions[3])} >{Resources.approvalModalReject[currentLanguage]}</button>
                                         </div>

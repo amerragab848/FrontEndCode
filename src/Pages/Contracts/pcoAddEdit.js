@@ -18,11 +18,9 @@ import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
-import { toast } from "react-toastify";
-import EditItemDescription from "../../Componants/OptionsPanels/editItemDescription";
+import { toast } from "react-toastify"; 
 import Steps from "../../Componants/publicComponants/Steps";
-import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
-import LoadingSection from "../../Componants/publicComponants/LoadingSection";
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions'; 
 //import SkyLight from "react-skylight";
 
 var steps_defination = [];
