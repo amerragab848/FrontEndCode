@@ -8410,5 +8410,9 @@
     "projectCostCodingTree": {
         "en": "Project Cost Coding Tree",
         "ar": "سجل شجرة كود التكلفة للمشروعات "
+    },
+    "selectCostCosingTree": {
+        "en": "--- Select Cost Coding Tree ---",
+        "ar": "-- برجاء إختيار شجرة الحسابات"
     }
 }
