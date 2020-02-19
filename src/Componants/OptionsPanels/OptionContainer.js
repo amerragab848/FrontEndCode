@@ -116,6 +116,8 @@ class OptionContainer extends React.Component {
         let obj = find(this.props.permission, function (o) { return o.name == permission; });
         if (obj != undefined) {
             return Config.IsAllow(obj.code);
+        } else {
+            return false
         }
     }
 
