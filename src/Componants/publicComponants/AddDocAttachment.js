@@ -42,10 +42,7 @@ class AddDocAttachment extends Component {
     };
   }
 
-  componentDidMount() {
-    //  this.setState({
-    //   documentData:this.props.documentData
-    //  })
+  componentDidMount() { 
     if (this.state.docId > 0) {
       dataservice.GetDataList("GetModuleList", "modulType", "id").then(result => {
         this.setState({
@@ -147,9 +144,7 @@ class AddDocAttachment extends Component {
     })
     this.filterDataByDate(mergeDate);
   }
-
-  
-
+ 
   filterDataByDate(mergeDate) {
     let date1 = mergeDate.split('|')[0];
     let date2 = mergeDate.split('|')[1];
@@ -175,10 +170,9 @@ class AddDocAttachment extends Component {
        
       };
     }
+    return null
   }
-
-
-
+ 
   changeDate() {
     this.setState({
       focused: true

@@ -84,10 +84,10 @@ class ClaimsAddEdit extends Component {
             fromContacts: [],
             discplines: [],
             contracts: [],
-            permission: [{ name: 'sendByEmail', code: 54 }, { name: 'sendByInbox', code: 53 },
-            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 956 },
-            { name: 'createTransmittal', code: 3042 }, { name: 'sendToWorkFlow', code: 707 },
-            { name: 'viewAttachments', code: 3317 }, { name: 'deleteAttachments', code: 840 }],
+            permission: [{ name: 'sendByEmail', code: 5006 }, { name: 'sendByInbox', code: 5005 },
+            { name: 'sendTask', code: 1 }, { name: 'distributionList', code: 5014 },
+            { name: 'createTransmittal', code: 5015 }, { name: 'sendToWorkFlow', code: 5009 },
+            { name: 'viewAttachments', code: 5013 }, { name: 'deleteAttachments', code: 5012 }],
             selectedFromCompany: { label: Resources.fromCompanyRequired[currentLanguage], value: "0" },
             selectedToCompany: { label: Resources.toCompanyRequired[currentLanguage], value: "0" },
             selectedFromContact: { label: Resources.fromContactRequired[currentLanguage], value: "0" },
@@ -97,7 +97,7 @@ class ClaimsAddEdit extends Component {
             message: ''
         }
 
-        if (!Config.IsAllow(48) && !Config.IsAllow(49) && !Config.IsAllow(51)) {
+        if (!Config.IsAllow(5001) && !Config.IsAllow(5002) && !Config.IsAllow(5004)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push(
                 this.state.perviousRoute
@@ -106,38 +106,6 @@ class ClaimsAddEdit extends Component {
     }
 
     componentDidMount() {
-
-        if (this.state.docId > 0) {
-            let url = "GetClaimsById?id=" + this.state.docId
-            this.props.actions.documentForEdit(url, this.state.docTypeId, 'claims');
-
-        } else {
-            let claimsDocument = {
-                subject: '',
-                id: 0,
-                projectId: this.state.projectId,
-                arrange: '',
-                fromCompanyId: '',
-                fromContactId: '',
-                toCompanyId: '',
-                toContactId: '',
-                docDate: moment(),
-                status: true,
-                disciplineId: '',
-                refDoc: '',
-                sharedSettings: '',
-                message: '',
-                contractId: ''
-            };
-
-            this.fillDropDowns(false, () => {
-                this.setState({ document: claimsDocument });
-            });
-
-            this.props.actions.documentForAdding();
-        }
-
-        this.checkDocumentIsView();
 
         var links = document.querySelectorAll(".noTabs__document .doc-container .linebylineInput");
         for (var i = 0; i < links.length; i++) {
@@ -148,6 +116,39 @@ class ClaimsAddEdit extends Component {
                 links[i].classList.add('odd');
             }
         }
+
+        if (this.state.docId > 0) {
+            let url = "GetClaimsById?id=" + this.state.docId
+            this.props.actions.documentForEdit(url, this.state.docTypeId, 'claims');
+
+        } else {
+            
+            let claimsDocument = {
+                subject: '',
+                id: 0,
+                projectId: this.state.projectId,
+                arrange: '',
+                fromCompanyId: '',
+                fromContactId: '',
+                toCompanyId: '',
+                toContactId: '',
+                docDate: moment(),
+                status: "true",
+                disciplineId: '',
+                refDoc: '',
+                sharedSettings: '',
+                message: '',
+                contractId: ''
+            };
+            
+            this.setState({
+                document: claimsDocument
+            });
+
+            this.fillDropDowns(false); 
+            this.props.actions.documentForAdding();
+        }
+        this.checkDocumentIsView();
     };
 
     static getDerivedStateFromProps(nextProps, state) {
@@ -170,6 +171,12 @@ class ClaimsAddEdit extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+            //         // und 976 --1
+            //         //976 976 fire modal
+            //         //976 976 close modal
+            //         //alert('recieve....'); 
+            //         //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
+
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
@@ -178,9 +185,18 @@ class ClaimsAddEdit extends Component {
             this.checkDocumentIsView();
         }
 
-        if (prevProps.showModal != this.props.showModal) {
-            this.setState({ showModal: this.props.showModal });
-        }
+        // if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
+        //     this.fillDropDowns(this.props.document.id > 0 ? true : false);
+        //     this.checkDocumentIsView();
+        // }
+
+        // if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
+        //     this.checkDocumentIsView();
+        // }
+
+        // if (prevProps.showModal != this.props.showModal) {
+        //     this.setState({ showModal: this.props.showModal });
+        // }
     }
 
     checkDocumentIsView() {
@@ -310,6 +326,8 @@ class ClaimsAddEdit extends Component {
 
         let original_document = { ...this.state.document };
 
+        console.log(original_document, 'handleChange.....');
+
         let updated_document = {};
 
         updated_document[field] = e.target.value;
@@ -391,10 +409,10 @@ class ClaimsAddEdit extends Component {
 
             toast.success(Resources["operationSuccess"][currentLanguage]);
             if (this.state.isApproveMode === false) {
-                this.props.history.push(
-                    this.state.perviousRoute
-                );
+                this.props.history.push(this.state.perviousRoute);
             }
+        }).catch(error => {
+            toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
         });
     }
 
@@ -404,13 +422,16 @@ class ClaimsAddEdit extends Component {
         saveDocument.docDate = moment(saveDocument.docDate).format('MM/DD/YYYY');
 
         saveDocument.projectId = this.state.projectId;
+        console.log(saveDocument);
+        // dataservice.addObject('AddClaims', saveDocument).then(result => {
+        //     this.setState({
+        //         docId: result
+        //     });
+        //     toast.success(Resources["operationSuccess"][currentLanguage]);
+        // }).catch(error => {
 
-        dataservice.addObject('AddClaims', saveDocument).then(result => {
-            this.setState({
-                docId: result
-            });
-            toast.success(Resources["operationSuccess"][currentLanguage]);
-        });
+        //     toast.error("Sorry. something went wrong .A team of highly trained developers has been dispatched to deal with this situation!");
+        // });
     }
 
     saveAndExit(event) {
@@ -433,8 +454,8 @@ class ClaimsAddEdit extends Component {
     viewAttachments() {
         return (
             this.state.docId > 0 ? (
-                Config.IsAllow(3317) === true ?
-                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={840} />
+                Config.IsAllow(5013) === true ?
+                    <ViewAttachment isApproveMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} deleteAttachments={5012} />
                     : null)
                 : null
         )
@@ -466,7 +487,10 @@ class ClaimsAddEdit extends Component {
                             <div id="step1" className="step-content-body">
                                 <div className="subiTabsContent">
                                     <div className="document-fields">
-                                        <Formik initialValues={{ ...this.state.document }} validationSchema={validationSchema} enableReinitialize={true}
+                                        <Formik
+                                            initialValues={this.state.document}
+                                            validationSchema={validationSchema}
+                                            enableReinitialize={true}
                                             onSubmit={(values) => {
                                                 if (this.props.showModal) { return; }
 
@@ -483,8 +507,11 @@ class ClaimsAddEdit extends Component {
                                                     <div className="proForm first-proform">
                                                         <div className="linebylineInput valid-input">
                                                             <label className="control-label">{Resources.subject[currentLanguage]}</label>
-                                                            <div className={"inputDev ui input" + (errors.subject && touched.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
-                                                                <input name='subject' className="form-control fsadfsadsa" id="subject"
+                                                            <div className={"inputDev ui input" + (errors.subject ? (" has-error") : !errors.subject && touched.subject ? (" has-success") : " ")} >
+                                                                <input
+                                                                    name='subject'
+                                                                    className="form-control fsadfsadsa"
+                                                                    id="subject"
                                                                     placeholder={Resources.subject[currentLanguage]}
                                                                     autoComplete='off'
                                                                     value={this.state.document.subject || ''}
@@ -496,15 +523,25 @@ class ClaimsAddEdit extends Component {
                                                                 {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                                             </div>
                                                         </div>
+
                                                         <div className="linebylineInput valid-input">
-                                                            <label className="control-label">{Resources.status[currentLanguage]}</label>
+                                                            <label className="control-label">
+                                                                {Resources.status[currentLanguage]}
+                                                            </label>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? null : 'checked'} value="true" onChange={e => this.handleChange(e, 'status')} />
-                                                                <label>{Resources.oppened[currentLanguage]}</label>
+                                                                <input type="radio" name="status" defaultChecked={this.state.document.status === false ? null : "checked"}
+                                                                    value="true" onChange={e => this.handleChange(e, "status")} />
+                                                                <label>
+                                                                    {Resources.oppened[currentLanguage]}
+                                                                </label>
                                                             </div>
                                                             <div className="ui checkbox radio radioBoxBlue">
-                                                                <input type="radio" name="letter-status" defaultChecked={this.state.document.status === false ? 'checked' : null} value="false" onChange={e => this.handleChange(e, 'status')} />
-                                                                <label>{Resources.closed[currentLanguage]}</label>
+                                                                <input type="radio" name="status" defaultChecked={this.state.document.status === false ? "checked" : null}
+                                                                    value="false"
+                                                                    onChange={e => this.handleChange(e, "status")} />
+                                                                <label>
+                                                                    {Resources.closed[currentLanguage]}
+                                                                </label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -589,8 +626,9 @@ class ClaimsAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.fromContactId}
                                                                         touched={touched.fromContactId}
+                                                                        touched={true}
                                                                         isClear={false}
-                                                                        index="letter-fromContactId"
+                                                                        index="claims-fromContactId"
                                                                         name="fromContactId"
                                                                         id="fromContactId"
                                                                         classDrop=" contactName1" styles={ContactDropdown}
@@ -612,7 +650,7 @@ class ClaimsAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toCompanyId}
                                                                         touched={touched.toCompanyId}
-                                                                        index="letter-toCompany"
+                                                                        index="claims-toCompany"
                                                                         name="toCompanyId"
                                                                         id="toCompanyId"
                                                                         styles={CompanyDropdown} classDrop="companyName1 "
@@ -628,7 +666,9 @@ class ClaimsAddEdit extends Component {
                                                                         onBlur={setFieldTouched}
                                                                         error={errors.toContactId}
                                                                         touched={touched.toContactId}
-                                                                        index="letter-toContactId"
+                                                                        touched={true}
+                                                                        isClear={false}
+                                                                        index="claims-toContactId"
                                                                         name="toContactId"
                                                                         id="toContactId"
                                                                         classDrop=" contactName1" styles={ContactDropdown}
@@ -642,7 +682,7 @@ class ClaimsAddEdit extends Component {
                                                                 data={this.state.discplines}
                                                                 selectedValue={this.state.selectedDiscpline}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'disciplineId', false, '', '', '', 'selectedDiscpline')}
-                                                                index="letter-discipline" />
+                                                                index="claims-discipline" />
                                                         </div>
                                                         <div className="linebylineInput valid-input">
                                                             <Dropdown
@@ -650,7 +690,7 @@ class ClaimsAddEdit extends Component {
                                                                 data={this.state.contracts}
                                                                 selectedValue={this.state.selectedContract}
                                                                 handleChange={event => this.handleChangeDropDown(event, 'contractId', false, '', '', '', 'selectedContract')}
-                                                                index="letter-contractId"
+                                                                index="claims-contractId"
                                                             />
                                                         </div>
                                                         <div className="letterFullWidth">
@@ -693,7 +733,17 @@ class ClaimsAddEdit extends Component {
                                     </div>
                                     <div className="doc-pre-cycle letterFullWidth">
                                         <div>
-                                            {this.state.docId > 0 ? <UploadAttachment docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
+                                            {this.state.docId > 0 && this.state.isViewMode === false ?
+                                                (
+                                                    <UploadAttachment
+                                                        changeStatus={this.props.changeStatus}
+                                                        AddAttachments={5010}
+                                                        EditAttachments={5011}
+                                                        ShowDropBox={5016}
+                                                        ShowGoogleDrive={5017}
+                                                        docTypeId={this.state.docTypeId}
+                                                        docId={this.state.docId}
+                                                        projectId={this.state.projectId} />) : null}
                                             {this.viewAttachments()}
                                             {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                         </div>

@@ -8,7 +8,7 @@ import ExpensesWorkFlowLog from './Project/ExpensesWorkFlow/ExpensesWorkFlowLog'
 import GeneralConfiguration from './Project/GeneralConfiguration';
 import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList';
 import SpecSectionChild from '../GeneralSetting/MenuDefaultData/specSectionChild';
-import ProjectCostCodingTree from '../GeneralSetting/Project/ProjectCostCodingTree';
+import CostCodingTreeAddEdit from '../../Pages/Contracts/costCodingTreeAddEdit';
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import config from "../../Services/Config";
 import Resources from "../../resources.json";
@@ -136,9 +136,9 @@ class TemplatesSettings extends Component {
                                 <GeneralConfiguration />
                             </TabPanel>
                             : null}
-                        {(config.IsAllow(3798)) ?
+                        {(config.IsAllow(138)) ?
                             <TabPanel>
-                                <ProjectCostCodingTree />
+                                <CostCodingTreeAddEdit />
                             </TabPanel>
                             : null}
                         {(config.IsAllow(1179)) ?

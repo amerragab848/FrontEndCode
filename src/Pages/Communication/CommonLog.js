@@ -48,7 +48,7 @@ class CommonLog extends Component {
       selectedRows: [],
       minimizeClick: false,
       documentObj: {},
-      match: props.match
+      match: props.match, export: false
     };
     this.actions = [
       {
@@ -126,9 +126,9 @@ class CommonLog extends Component {
     return shouldUpdate;
   };
 
-  hideFilter(value) {
-    this.setState({ viewfilter: !this.state.viewfilter });
-    return this.state.viewfilter;
+  hideFilter(e,value) {
+    e.preventDefault()
+    this.setState({ viewfilter: !this.state.viewfilter }); 
   };
 
   addRecord() {
@@ -325,7 +325,7 @@ class CommonLog extends Component {
       Api.get(apiFilter + "?projectId=" + this.state.projectId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize + "&query=" + stringifiedQuery).then(result => {
         let oldRows = [];
 
-        const newRows = [...oldRows, ...result.data];
+        const newRows = [...oldRows, ...result];
 
         newRows.forEach(row => {
           let subject = "";
@@ -664,7 +664,7 @@ class CommonLog extends Component {
           }}
         />) : (<LoadingSection />);
 
-    const btnExport = this.state.isLoading === false ?
+    const btnExport = this.state.export === false ?
       (
         <Export
           rows={this.state.isLoading === false ? this.state.rows : []}
@@ -690,7 +690,7 @@ class CommonLog extends Component {
             <div className="subFilter">
               <h3 className="zero">{this.state.pageTitle}</h3>
               <span>{this.state.rows.length}</span>
-              <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={() => this.hideFilter(this.state.viewfilter)}>
+              <div className="ui labeled icon top right pointing dropdown fillter-button" tabIndex="0" onClick={(e) => this.hideFilter(e,this.state.viewfilter)}>
                 <span>
                   <svg width="16px" height="18px" viewBox="0 0 16 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                     <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">

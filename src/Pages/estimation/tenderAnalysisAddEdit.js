@@ -28,8 +28,7 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 const validationSchema = Yup.object().shape({
     subject: Yup.string().required(Resources["subjectRequired"][currentLanguage]),
     fromContactId: Yup.string().required(Resources["fromContactRequired"][currentLanguage]).nullable(true),
-    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true),
-    //sharedSettings: Yup.string().url('Please Enter Url.'),
+    toContactId: Yup.string().required(Resources["toContactRequired"][currentLanguage]).nullable(true) 
 });
 
 let docId = 0;
@@ -50,7 +49,8 @@ let replyFromContId = 0;
 let replyToCompId = 0;
 let replyToContId = 0;
 
-class LettersAddEdit extends Component {
+class tenderAnalysisAddEdit extends Component {
+
     constructor(props) {
         super(props);
 
@@ -990,4 +990,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LettersAddEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(tenderAnalysisAddEdit));
