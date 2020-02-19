@@ -5,7 +5,7 @@ import SkyLight from 'react-skylight';
 import Config from '../../Services/Config';
 import find from 'lodash/find'
 
-////array hold information fro panels (path,title and value  )
+////array hold information fro panels (path,title and value  )\
 const importedPaths = [
     {
         title: "distributionList", path: "./DistributionList", value: 0
@@ -27,6 +27,8 @@ const importedPaths = [
         title: "sendTask", path: "./SendTask", value: 8
     }, {
         title: "createTransmittal", path: "./CreateTransmittal", value: 9
+    }, {
+        title: "createVO", path: "./CreateVO", value: 10
     }
 ]
 
@@ -68,7 +70,8 @@ const actionPanel = {
     placeholder: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700' }),
     singleValue: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700', textAlign: 'center' }),
     indicatorSeparator: styles => ({ ...styles, backgroundColor: '#dadee6' }),
-    menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db', top: '-155px', minWidth: '180px' }),
+    menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db', top: '-155px',
+     minWidth: '180px' , right: currentLanguage == 'ar' ? 'auto' : '0', left: currentLanguage == 'ar' ? '0' : 'auto'}),
     menuList: styles => ({ ...styles, color: 'red', height: '145px' }),
 };
 
@@ -117,7 +120,7 @@ class DocumentActions extends Component {
 
     componentDidMount = () => {
         ///fillter importedPath array to fill dropdowns (actions) with coorect panels bassed on permmsion given from props  (without reject,approved,workFlow anddistribution panels)
-        let dropActions = importedPaths.slice(4, 10);
+        let dropActions = importedPaths.slice(4, 11);
         let allowActions = [];
         dropActions.map(i => {
             if (this.IsAllow(i.title)) {
@@ -132,10 +135,12 @@ class DocumentActions extends Component {
     IsAllow = (name) => {
         let obj = find(this.props.permission, function (o) { return o.name == name; });
         if (obj) {
-            if (obj.code === 0)
+            if (obj.code === 0) {
                 return false;
-            else
+            }
+            else {
                 return Config.IsAllow(obj.code);
+            }
         }
         else {
             if (name === 'export' || name === 'copyTo')
@@ -171,8 +176,11 @@ class DocumentActions extends Component {
                 <span className="border"></span>
                 <div className="document__action--menu">
                     <Fragment>
-                        {this.IsAllow(importedPaths[6]['title']) || this.IsAllow(importedPaths[7]['title'])
-                            || this.IsAllow(importedPaths[9]['title']) || this.IsAllow(importedPaths[8]['title']) ?
+                        {this.IsAllow(importedPaths[6]['title'])
+                         || this.IsAllow(importedPaths[7]['title'])
+                         || this.IsAllow(importedPaths[9]['title'])
+                         || this.IsAllow(importedPaths[10]['title']) 
+                         || this.IsAllow(importedPaths[8]['title']) ?
                             <DropDown data={this.state.selectedPanels} name="ddlActions" handleChange={item => this.handleShowAction(importedPaths[item.value])}
                                 index='ddlActions' selectedValue={this.state.defualtValue} styles={actionPanel} />
                             : null}

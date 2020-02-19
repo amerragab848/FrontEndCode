@@ -71,7 +71,10 @@ class addItemDescription extends Component {
                 return {
                     id: nextProps.docId,
                     itemDescription: nextProps.item,
-                    selectedUnit: { label: nextProps.item.unit, value: nextProps.item.unit }
+                    selectedUnit: { label: nextProps.item.unit, value: nextProps.item.unit },
+                    selectedBoqType:{ label: nextProps.item.boqType, value: nextProps.item.boqTypeId },
+                    selectedBoqSubType:{ label: nextProps.item.boqSubType, value: nextProps.item.boqSubTypeId },
+                    selectedBoqSubTypeChild:{ label: nextProps.item.boqTypeChild, value: nextProps.item.boqChildTypeId }
                 }
             }
             return null
@@ -215,8 +218,27 @@ class addItemDescription extends Component {
 
     handleChangeItemDropDown(event, field, selectedValue, isSubscribe, url, param, nextTragetState, fieldLabel) {
         if (event == null) return;
+        // selectedBoqType: { label: Resources.boqType[currentLanguage], value: "0" },
+        // selectedBoqSubType: { label: Resources.boqTypeChild[currentLanguage], value: "0" },
+        // selectedBoqSubTypeChild: { label: Resources.boqSubType[currentLanguage], value: "0" },
+        // selectedBoqType:{ label: nextProps.item.boqType, value: nextProps.item.boqTypeId },
+        // selectedBoqSubType:{ label: nextProps.item.boqSubType, value: nextProps.item.boqSubTypeId },
+        // selectedBoqSubTypeChild:{ label: nextProps.item.boqTypeChild, value: nextProps.item.boqChildTypeId }
+      
         let original_document = { ...this.state.itemDescription };
         let updated_document = {};
+        if(field=="boqTypeId"){
+            var obj={ label: Resources.boqTypeChild[currentLanguage], value: "0" };
+            updated_document["boqChildTypeId"] = "0";
+            updated_document["boqTypeChild"] = Resources.boqTypeChild[currentLanguage];
+            this.setState({selectedBoqSubTypeChild:obj})
+        }
+        if(field=="boqChildTypeId"){
+            var obj={ label: Resources.boqSubType[currentLanguage], value: "0" };
+            updated_document["boqSubTypeId"] = "0";
+            updated_document["boqSubType"] = Resources.boqSubType[currentLanguage];
+            this.setState({selectedBoqSubType:obj})
+        }
         updated_document[field] = event.value;
         updated_document[fieldLabel] = event.label;
         updated_document = Object.assign(original_document, updated_document);
@@ -394,8 +416,8 @@ class addItemDescription extends Component {
                                                 <div className="linebylineInput valid-input">
                                                     <Dropdown title="boqTypeChild"
                                                         data={this.state.BoqTypeChilds}
-                                                        selectedValue={this.state.selectedBoqTypeChild}
-                                                        handleChange={event => this.handleChangeItemDropDown(event, "boqChildTypeId", "selectedBoqTypeChild", true, "GetAllBoqChild", "parentId", "BoqSubTypes", "boqChildType")}
+                                                        selectedValue={this.state.selectedBoqSubTypeChild}
+                                                        handleChange={event => this.handleChangeItemDropDown(event, "boqChildTypeId", "selectedBoqSubTypeChild", true, "GetAllBoqChild", "parentId", "BoqSubTypes", "boqChildType")}
                                                         name="boqTypeChild" index="boqTypeChild" />
                                                 </div>
                                                 <div className="letterFullWidth">

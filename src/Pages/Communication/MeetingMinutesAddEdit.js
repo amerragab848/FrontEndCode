@@ -1547,7 +1547,8 @@ class MeetingMinutesAddEdit extends Component {
                         initialValues={{
                             description: "",
                             requiredDate: this.state.requiredDate,
-                            topicContact: ""
+                            topicContact: "",
+                            topicArrange: 1
                         }}
                         validationSchema={topicsValidationSchema}
                         onSubmit={values => {
@@ -1685,6 +1686,9 @@ class MeetingMinutesAddEdit extends Component {
                                                     currentLanguage
                                                     ]
                                                 }
+                                                value="1"
+                                                   
+                                                
                                                 autoComplete="off"
                                                 onChange={handleChange}
                                             />

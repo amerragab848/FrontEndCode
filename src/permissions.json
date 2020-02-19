@@ -9632,6 +9632,158 @@
               "value": false
             }
           ]
+        },{
+          "title": {
+            "en": "Claims",
+            "ar": "المطالبات"
+          },
+          "id": 116,
+          "permissions": [
+            {
+              "code": 5001,
+              "title": {
+                "en": "Add",
+                "ar": "اضافة"
+              },
+              "value": false
+            },
+            {
+              "code": 5002,
+              "title": {
+                "en": "Edit",
+                "ar": "تعديل"
+              },
+              "value": false
+            },
+            {
+              "code": 5018,
+              "title": {
+                "en": "Delete",
+                "ar": "حذف"
+              },
+              "value": false
+            },
+            {
+              "code": 5003,
+              "title": {
+                "en": "View",
+                "ar": "عرض"
+              },
+              "value": false
+            },
+            {
+              "code": 5004,
+              "title": {
+                "en": "View All",
+                "ar": "عرض السجل"
+              },
+              "value": false
+            },
+            {
+              "code": 5005,
+              "title": {
+                "en": "Send By Inbox",
+                "ar": "ارسال الى البريد الداخلى"
+              },
+              "value": false
+            },
+            {
+              "code": 5006,
+              "title": {
+                "en": "Send By Mail",
+                "ar": "ارسال الى البريد الالكترونى"
+              },
+              "value": false
+            },
+            {
+              "code": 5007,
+              "title": {
+                "en": "Send To Correspondence Sent",
+                "ar": "ارسال الى صادر المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 5008,
+              "title": {
+                "en": "Send To Correspondence Received",
+                "ar": "ارسال الى وارد المراسلات"
+              },
+              "value": false
+            },
+            {
+              "code": 5009,
+              "title": {
+                "en": "Send To WorkFlow",
+                "ar": "ارسال الى الدورة المستندية"
+              },
+              "value": false
+            },
+            {
+              "code": 5010,
+              "title": {
+                "en": "Add Attachments",
+                "ar": "اضافة مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 5011,
+              "title": {
+                "en": "Edit Attachments",
+                "ar": "تعديل مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 5012,
+              "title": {
+                "en": "Delete Attachments",
+                "ar": "حذف مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 5013,
+              "title": {
+                "en": "View Attachments",
+                "ar": "عرض مرفقات"
+              },
+              "value": false
+            },
+            {
+              "code": 5014,
+              "title": {
+                "en": "Send To Distribution List",
+                "ar": "ارسال الى قائمةالتوزيع"
+              },
+              "value": false
+            },
+            {
+              "code": 5015,
+              "title": {
+                "en": "Create Transmittal",
+                "ar": "انشاء ارسالية"
+              },
+              "value": false
+            },
+            {
+              "code": 5016,
+              "title": {
+                "en": "Show Drop Box",
+                "ar": "اظهار الدروب بوكس"
+              },
+              "value": false
+            },
+            {
+              "code": 5017,
+              "title": {
+                "en": "Show Google Drive",
+                "ar": "اظهار جوجل دريف"
+              },
+              "value": false
+            }
+          ]
         }
       ]
     },
@@ -12329,6 +12481,47 @@
               "value": false
             }
           ]
+        },
+        {
+          "title": {
+            "en": "Project Cost Coding Tree",
+            "ar": "سجل شجرة كود التكلفة للمشروعات "
+          },
+          "id": 1003,
+          "permissions": [
+            {
+              "code": 3393,
+              "title": {
+                "en": "Add",
+                "ar": "اضافة"
+              },
+              "value": false
+            },
+            {
+              "code": 3796,
+              "title": {
+                "en": "Edit",
+                "ar": "تعديل"
+              },
+              "value": false
+            },
+            {
+              "code": 3797,
+              "title": {
+                "en": "Delete",
+                "ar": "حذف"
+              },
+              "value": false
+            },
+            {
+              "code": 3798,
+              "title": {
+                "en": "View All",
+                "ar": "عرض السجل"
+              },
+              "value": false
+            }
+          ]
         }
       ]
     },
@@ -13031,7 +13224,7 @@
               "value": false
             },
             {
-              "code": 3389,
+              "code": 3386,
               "title": {
                 "en": "View Attachments",
                 "ar": "عرض مرفقات"
@@ -13039,7 +13232,7 @@
               "value": false
             },
             {
-              "code": 3390,
+              "code": 3387,
               "title": {
                 "en": "Delete Attachments",
                 "ar": "حذف مرفقات"
@@ -13047,7 +13240,7 @@
               "value": false
             },
             {
-              "code": 3391,
+              "code": 3388,
               "title": {
                 "en": "Send To Distribution List",
                 "ar": "ارسال الى قائمةالتوزيع"
@@ -13055,7 +13248,7 @@
               "value": false
             },
             {
-              "code": 3392,
+              "code": 3389,
               "title": {
                 "en": "Create Transmittal",
                 "ar": "انشاء ارسالية"
@@ -13063,7 +13256,7 @@
               "value": false
             },
             {
-              "code": 3393,
+              "code": 3390,
               "title": {
                 "en": "New Cycle",
                 "ar": "دورة جديدة"
@@ -13071,7 +13264,7 @@
               "value": false
             },
             {
-              "code": 3645,
+              "code": 3391,
               "title": {
                 "en": "Show Drop Box",
                 "ar": "اظهار الدروب بوكس"
@@ -13079,7 +13272,7 @@
               "value": false
             },
             {
-              "code": 3646,
+              "code": 3392,
               "title": {
                 "en": "Show Google Drive",
                 "ar": "اظهار جوجل دريف"
@@ -14373,6 +14566,22 @@
               "title": {
                 "en": "Boq Stracture Cost",
                 "ar": "تكلفة قائمة الكميات"
+              },
+              "value": false
+            },
+            {
+              "code": 4027,
+              "title": {
+                "en": "Project Document Status",
+                "ar": "حاله المستندات"
+              },
+              "value": false
+            },
+            {
+              "code": 4028,
+              "title": {
+                "en": "Contracts Status",
+                "ar": "حالة العقود"
               },
               "value": false
             }

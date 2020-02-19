@@ -18871,6 +18871,7 @@ button.companies_icon {
     background-repeat: no-repeat;
     transform: translateY(-30px);
     background-size: contain;
+    display: none;
 }
 
 .eps__actions a.fourth_epsIcon {
@@ -18903,17 +18904,17 @@ button.companies_icon {
     background-image: url(../../images/epsActions/copyToHover.png);
 }
 
-.eps__actions a:hover img {
+/* .eps__actions a:hover img {
     transform: translateY(30px);
 }
 
 .eps__actions a:hover::after {
     transform: translateY(0);
-}
-
+} */
+/* 
 .eps__actions a.fourth_epsIcon:hover img {
     transform: translateY(0);
-}
+} */
 
 @media screen and (max-width: 1200px) {
     .Project__num p {

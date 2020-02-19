@@ -19,8 +19,8 @@
         "field": "arrange",
         "friendlyName": "numberAbb",
         "minWidth": 65,
-        "width": "3%",
-        "dataType": "number",
+        "width": "10%",
+        "dataType": "string",
         "isDate": false,
         "isTime": false,
         "cellTemplate": "",
@@ -8025,18 +8025,7 @@
         "isCustom": false,
         "exportDataType": "d"
       },
-      {
-        "field": "transactionName",
-        "friendlyName": "transactionType",
-        "minWidth": 85,
-        "width": "15%",
-        "dataType": "string",
-        "isDate": false,
-        "isTime": false,
-        "cellTemplate": "",
-        "isCustom": true,
-        "exportDataType": "s"
-      },
+     
       {
         "field": "collected",
         "friendlyName": "collected",
@@ -19148,11 +19137,11 @@
     "docTyp": 116,
     "documentAddEditLink": "ClaimsAddEdit",
     "documentAddEditPopUp": "",
-    "documentAddPermission": 48,
-    "documentEditPermission": 49,
-    "documentDeletePermission": 50,
-    "documentViewPermission": 51,
-    "documentPermission": 52,
+    "documentAddPermission": 5001,
+    "documentEditPermission": 5002,
+    "documentDeletePermission": 5018,
+    "documentViewPermission": 5003,
+    "documentPermission": 5004,
     "documentApi": {
       "get": "GetClaimsByProjectId",
       "getCustom": "GetClaimsByProjectIdCustom",
@@ -19788,7 +19777,7 @@
         "exportDataType": "d"
       },
       {
-        "field": "openedBy",
+        "field": "oppenedBy",
         "friendlyName": "openedBy",
         "minWidth": 150,
         "width": "8%",

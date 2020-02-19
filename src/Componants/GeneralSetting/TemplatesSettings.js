@@ -1,19 +1,20 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
-import Accounts from './Accounts/Accounts'
+import Accounts from './Accounts/Accounts';
 import Companies from './Companies/Index';
 import PermissionsGroups from './Administrations/GroupsPermission/permissionsGroups';
 import CurrencyExchangeRates from './Administrations/currencyExchangeRates';
-import ExpensesWorkFlowLog from './Project/ExpensesWorkFlow/ExpensesWorkFlowLog'
-import GeneralConfiguration from './Project/GeneralConfiguration'
-import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList'
-import SpecSectionChild from '../GeneralSetting/MenuDefaultData/specSectionChild'
+import ExpensesWorkFlowLog from './Project/ExpensesWorkFlow/ExpensesWorkFlowLog';
+import GeneralConfiguration from './Project/GeneralConfiguration';
+import GeneralList from '../GeneralSetting/MenuDefaultData/GeneralList';
+import SpecSectionChild from '../GeneralSetting/MenuDefaultData/specSectionChild';
+import CostCodingTreeAddEdit from '../../Pages/Contracts/costCodingTreeAddEdit';
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import config from "../../Services/Config";
 import Resources from "../../resources.json";
-import { connect } from 'react-redux'
-import * as actions from '../../store/actions/Adminstration'
-import EpsPermission from "../../Pages/Eps/EpsPermission"
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/Adminstration';
+import EpsPermission from "../../Pages/Eps/EpsPermission";
 import { bindActionCreators } from 'redux';
 
 
@@ -22,7 +23,7 @@ let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage
 class TemplatesSettings extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             showNotify: false
         };
     }
@@ -38,13 +39,9 @@ class TemplatesSettings extends Component {
         }, 1000);
     }
 
-    componentDidMount = () => {
-
-    }
     render() {
         return (
             <div className='mainContainer main__fulldash'>
-
                 <Tabs className="settings-container" selectedIndex={this.props.Adminstration.tabIndex} onSelect={tabIndex => this.props.actions.routeToTabIndex(tabIndex)}>
                     <div className="settings-tabs-items">
                         <h3 className="zero">Settings</h3>
@@ -64,7 +61,6 @@ class TemplatesSettings extends Component {
                                 <Tab>
                                     <span className="subUlTitle">{Resources['Companies'][currentLanguage]}</span>
                                 </Tab> : null}
-
                             {(config.IsAllow(3744)) ?
                                 <Tab>
                                     <span className="subUlTitle">{Resources['currencyExchangeRates'][currentLanguage]}</span>
@@ -85,8 +81,10 @@ class TemplatesSettings extends Component {
                                 <Tab>
                                     <span className="subUlTitle">{Resources['GeneralConfig'][currentLanguage]}</span>
                                 </Tab> : null}
-
-
+                            {(config.IsAllow(3798)) ?
+                                <Tab>
+                                    <span className="subUlTitle">{Resources['projectCostCodingTree'][currentLanguage]}</span>
+                                </Tab> : null}
                             <li className="title">
                                 <h4 className="zero">{Resources['menuDefaultData'][currentLanguage]}</h4>
                             </li>
@@ -98,12 +96,10 @@ class TemplatesSettings extends Component {
                                 <Tab>
                                     <span className="subUlTitle">{Resources['subSpecsSection'][currentLanguage]}</span>
                                 </Tab> : null}
-
                         </TabList>
                     </div>
 
                     <div className="setting-tabs-contant">
-
                         {(config.IsAllow(794)) ?
                             <TabPanel>
                                 <Accounts />
@@ -140,8 +136,11 @@ class TemplatesSettings extends Component {
                                 <GeneralConfiguration />
                             </TabPanel>
                             : null}
-
-
+                        {(config.IsAllow(138)) ?
+                            <TabPanel>
+                                <CostCodingTreeAddEdit />
+                            </TabPanel>
+                            : null}
                         {(config.IsAllow(1179)) ?
                             <TabPanel>
                                 <GeneralList />

@@ -108,6 +108,7 @@ class SubmittalAddEdit extends Component {
     }
 
     this.state = {
+      submittalCycleId: 0,
       currentStep: 0,
       cycleId: "",
       showDeleteModal: false,
@@ -435,7 +436,6 @@ class SubmittalAddEdit extends Component {
         }
       }
     });
-
   }
 
   fillCycleDropDown(isEdit) {
@@ -462,6 +462,7 @@ class SubmittalAddEdit extends Component {
         approvales: [...result]
       });
     });
+
     dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
       if (isEdit) {
@@ -1008,7 +1009,8 @@ class SubmittalAddEdit extends Component {
     saveDocumentCycle.docDate = moment(saveDocumentCycle.docDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocumentCycle.approvedDate = moment(saveDocumentCycle.approvedDate, 'YYYY-MM-DD').format("YYYY-MM-DD[T]HH:mm:ss.SSS");
     saveDocumentCycle.submittalId = this.state.docId;
-    this.changeCurrentStep(2);
+    saveDocumentCycle.id = this.state.submittalCycleId;
+
     dataservice.addObject("AddLogSubmittalCycles", saveDocumentCycle).then(data => {
 
       let submittalItem = {};
@@ -1024,14 +1026,14 @@ class SubmittalAddEdit extends Component {
         itemsDocumentSubmital: submittalItem
       });
 
+      this.changeCurrentStep(2);
+
       toast.success(Resources["operationSuccess"][currentLanguage]);
 
     }).catch(ex => {
-
       this.setState({
         isLoading: false
       });
-
       toast.error(Resources["failError"][currentLanguage]);
     });
   }
@@ -1055,8 +1057,10 @@ class SubmittalAddEdit extends Component {
 
         this.setState({
           docId: result.id,
+          submittalCycleId: result.submittalCycleId,
           isLoading: false
         });
+
       }).catch(ex => {
         this.setState({
           isLoading: false

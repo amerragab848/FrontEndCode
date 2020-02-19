@@ -4,6 +4,7 @@ import DropDown from './DropdownMelcous'
 
 import SendTask from "./SendTask";
 import CreateTransmittal from "./CreateTransmittal";
+import CreateVO from "./CreateVO";
 import ExportDetails from "./ExportDetails";
 import SendToInbox from './SendToInbox'
 import SendByEmails from './SendByEmails'
@@ -82,6 +83,7 @@ class OptionContainer extends React.Component {
                 { title: "sendByInbox", value: <SendToInbox docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["sendByInbox"][currentLanguage] },
                 { title: "sendTask", value: <SendTask docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["sendTask"][currentLanguage] },
                 { title: "createTransmittal", value: <CreateTransmittal docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["createTransmittal"][currentLanguage] },
+                { title: "createVO", value: <CreateVO docTypeId={this.props.docTypeId} docId={this.props.docId} projectId={this.props.projectId} />, label: Resources["createVO"][currentLanguage] },
             ]
         }
     }

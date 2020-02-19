@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
-import ConfirmationModal from "../../publicComponants/ConfirmationModal"; 
-import GridCustom from "../../../Componants/Templates/Grid/CustomGrid"; 
+import ConfirmationModal from "../../publicComponants/ConfirmationModal";
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import Export from "../../OptionsPanels/Export";
 import { SkyLightStateless } from 'react-skylight';
 import Select from '../../OptionsPanels/DropdownMelcous';
@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import dataservice from "../../../Dataservice";
 import Resources from "../../../resources.json";
 import Api from '../../../api';
+
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
@@ -90,7 +91,7 @@ class GeneralList extends Component {
 
     constructor(props) {
 
-        super(props) 
+        super(props)
 
         this.columnsGrid = [
             { title: '', type: 'check-box', fixed: true, field: 'id' },
@@ -102,7 +103,6 @@ class GeneralList extends Component {
                 width: 16,
                 sortable: true,
                 type: "text"
-
             }
         ];
 
@@ -119,7 +119,7 @@ class GeneralList extends Component {
                 },
                 classes: '',
             }
-        ]; 
+        ];
 
         this.rowActions = [];
 
@@ -170,8 +170,9 @@ class GeneralList extends Component {
                 rows: oldRows,
                 isLoading: false
             });
-        });;
+        });
     };
+
     GetPrevoiusData() {
         let pageNumber = this.state.pageNumber - 1;
         this.setState({
@@ -194,13 +195,15 @@ class GeneralList extends Component {
                 rows: oldRows,
                 isLoading: false
             });
-        });;
+        });
     };
-    componentWillMount = () => {
+
+    componentDidMount = () => {
         if (config.IsAllow(1181)) {
             this.setState({ showCheckbox: true, isLoading: false })
         }
     };
+
     clickHandlerDeleteRowsMain = (selectedRows) => {
         let id = ''
         selectedRows.map(i => { id = i })
@@ -224,32 +227,38 @@ class GeneralList extends Component {
             }, 100);
         }
     };
+
     ConfirmDelete = () => {
         this.setState({
             isLoading: true
         })
-        Api.post('AccountsDefaultListMultipleDelete', this.state.selectedRows).then(res => {
+        Api.post('AccountsDefaultListMultipleDelete', this.state.selectedRow).then(res => {
             let originalRows = this.state.rows
 
             this.state.selectedRows.map(i => {
                 originalRows = originalRows.filter(r => r.id !== i);
             })
+
             this.setState({
                 rows: originalRows,
                 showDeleteModal: false,
                 isLoading: false,
-            })
+            });
+
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
         })
     };
+
     onCloseModal = () => {
         this.setState({ showDeleteModal: false });
     };
+
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     };
+
     GeneralListHandelChange = (e) => {
 
         this.setState({
@@ -267,6 +276,7 @@ class GeneralList extends Component {
         )
         this.setState({ isLoading: true })
     };
+
     onRowClick = (obj) => {
         if (config.IsAllow(1180)) {
             if (obj.editable) {
@@ -289,10 +299,11 @@ class GeneralList extends Component {
             toast.warn(Resources["missingPermissions"][currentLanguage]);
         }
     };
+
     showPopup = (e) => {
         this.setState({ ShowPopup: true, IsEdit: false });
-
     };
+
     save(values, resetForm) {
         this.setState({ isLoading: true });
         if (this.state.IsEdit) {
@@ -317,6 +328,7 @@ class GeneralList extends Component {
         }
         resetForm();
     };
+
     render() {
 
         const dataGrid =
@@ -330,7 +342,7 @@ class GeneralList extends Component {
                     actions={this.actions}
                     cells={this.columnsGrid}
                     rowActions={this.rowActions}
-                    showPicker = {false}
+                    showPicker={false}
                     rowClick={(row, cell) => {
                         let id = cell.id;
                         if (config.IsAllow(1180)) {
@@ -364,7 +376,6 @@ class GeneralList extends Component {
 
         let RenderPopupAddEdit = () => {
             return (
-
                 <Formik
                     initialValues={{
                         listType: this.state.listType,

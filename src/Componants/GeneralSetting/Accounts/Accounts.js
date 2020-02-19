@@ -5,11 +5,7 @@ import LoadingSection from "../../../Componants/publicComponants/LoadingSection"
 import Export from "../../OptionsPanels/Export";
 import Filter from "../../FilterComponent/filterComponent";
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
-//import GridSetup from "../../../Pages/Communication/GridSetup"; 
-
 import GridCustom from "../../../Componants/Templates/Grid/CustomCommonLogGrid";
-
-import moment from "moment";
 import CryptoJS from 'crypto-js';
 import config from "../../../Services/Config";
 import Resources from "../../../resources.json";
@@ -18,9 +14,7 @@ import { toast } from "react-toastify";
 import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker";
 import companyId from '../../../IP_Configrations.json'
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-const find = require('lodash/find')
-// const dateFormate = ({ value }) => {    return value ? moment(value).format("DD/MM/YYYY") : "No Date";};
-// const publicConfiguarion = config.getPayload();
+const find = require('lodash/find');
 
 class Accounts extends Component {
 
@@ -117,7 +111,7 @@ class Accounts extends Component {
                 type: "text"
 
             }
-        ]; 
+        ];
         const filtersColumns = [
             {
                 field: "userName",
