@@ -486,7 +486,7 @@ class GridSetupWithFilter extends Component {
           delete newFilters[filter.column.key];
         }
       } else if (event.target.value != "") {
-        newFilters[filter.column.key] = event.target.value;
+        newFilters[filter.column.key]= event.target.value.toLowerCase();
       } else {
         delete newFilters[filter.column.key];
       }
