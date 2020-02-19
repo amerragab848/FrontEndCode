@@ -1319,10 +1319,10 @@ class requestPaymentsAddEdit extends Component {
 
                     columnsApprovedInvoices.push({
                         title: Resources["total"][currentLanguage],
-                        field: rowTotal
+                        field: "rowTotal"
                     });
 
-                    trFoot["rowTotal"] = rowTotal;
+                    trFoot["rowTotal"] = rowTotal.toFixed(2);
                     res.push({ ...trFoot });
                     this.setState({
                         approvedInvoicesChilds: res,
@@ -2227,16 +2227,16 @@ class requestPaymentsAddEdit extends Component {
                     accessor: "title",
                     sortabel: true,
                     width: 200,
-                    name: Resources["description"][currentLanguage],
-                    key: 'title'
+                    title: Resources["description"][currentLanguage],
+                    field: 'title'
                 },
                 {
                     Header: Resources["deductions"][currentLanguage],
                     accessor: "deductionValue",
                     width: 200,
                     sortabel: true,
-                    name: Resources["deductions"][currentLanguage],
-                    key: 'deductionValue'
+                    title: Resources["deductions"][currentLanguage],
+                    field: 'deductionValue'
                 }
             );
         } else {
@@ -2246,16 +2246,16 @@ class requestPaymentsAddEdit extends Component {
                     accessor: "title",
                     sortabel: true,
                     width: 200,
-                    name: Resources["description"][currentLanguage],
-                    key: 'title'
+                    title: Resources["description"][currentLanguage],
+                    field: 'title'
                 },
                 {
                     Header: Resources["deductions"][currentLanguage],
                     accessor: "deductionValue",
                     width: 200,
                     sortabel: true,
-                    name: Resources["deductions"][currentLanguage],
-                    key: 'deductionValue'
+                    title: Resources["deductions"][currentLanguage],
+                    field: 'deductionValue'
                 }
             );
         }
