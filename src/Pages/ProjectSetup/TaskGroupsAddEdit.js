@@ -26,6 +26,7 @@ import OptionContainer from "../../Componants/OptionsPanels/OptionContainer";
 import Recycle from '../../Styles/images/attacheRecycle.png'
 import HeaderDocument from '../../Componants/OptionsPanels/HeaderDocument';
 import Steps from "../../Componants/publicComponants/Steps";
+import DocumentActions from '../../Componants/OptionsPanels/DocumentActions';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 //const _ = require('lodash')
 let MaxArrange = 1
@@ -221,7 +222,9 @@ class TaskGroupsAddEdit extends Component {
             })
         }
     }
-
+    showOptionPanel = () => {
+        this.props.actions.showOptionPanel(true);
+    }
     handleChangeDrops = (SelectedItem, DropName) => {
 
         switch (DropName) {
@@ -817,7 +820,7 @@ class TaskGroupsAddEdit extends Component {
                     ) : null}
 
 
-                    {
+                    {/* {
                         this.props.changeStatus === true && this.state.IsEditMode ?
                             <div className="approveDocument">
                                 <div className="approveDocumentBTNS">
@@ -837,7 +840,46 @@ class TaskGroupsAddEdit extends Component {
                                 </div>
                             </div>
                             : null
-                    }
+                    } */}
+                     {this.props.changeStatus === true ? (
+                                                        <div className="approveDocument">
+                                                            <div className="approveDocumentBTNS">
+                                                                {this.state.isLoading ? (
+                                                                    <button className="primaryBtn-1 btn disabled">
+                                                                        <div className="spinner">
+                                                                            <div className="bounce1" />
+                                                                            <div className="bounce2" />
+                                                                            <div className="bounce3" />
+                                                                        </div>
+                                                                    </button>
+                                                                ) : (
+                                                                        <button
+                                                                            className={this.state.isViewMode === true
+                                                                                ? "primaryBtn-1 btn middle__btn disNone"
+                                                                                : "primaryBtn-1 btn middle__btn"
+                                                                            }>
+                                                                            {
+                                                                                Resources.save[currentLanguage]
+                                                                            }
+                                                                        </button>
+                                                                    )}
+                                                                <DocumentActions
+                                                                    isApproveMode={this.state.isApproveMode}
+                                                                    docTypeId={this.state.docTypeId}
+                                                                    docId={this.state.docId}
+                                                                    projectId={this.state.projectId}
+                                                                    previousRoute={this.state.previousRoute}
+                                                                    docApprovalId={this.state.docApprovalId}
+                                                                    currentArrange={this.state.arrange}
+                                                                     //showModal={this.props.showModal}
+                                                                    showModal={true}
+                                                                    showOptionPanel={this.showOptionPanel}
+                                                                    permission={this.state.permission}
+                                                                    documentName="TaskGroup"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    ) : null}
 
                     <div className="largePopup largeModal " style={{ display: this.state.showModal ? 'block' : 'none' }}>
                         <SkyLight hideOnOverlayClicked ref={ref => this.simpleDialog = ref} title={Resources[this.state.currentTitle][currentLanguage]}>

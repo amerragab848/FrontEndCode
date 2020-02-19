@@ -543,7 +543,7 @@ class LettersAddEdit extends Component {
                 }
             });
     }
-    
+
     async replyNewLetter() {
 
         if (Config.IsAllow(48)) {
@@ -859,7 +859,7 @@ class LettersAddEdit extends Component {
                                                             {this.props.changeStatus === true ?
                                                                 <i onClick={() => this.replyNewLetter()}
                                                                     style={{ position: 'absolute', right: '0', cursor: 'pointer', top: '27px', fontSize: '15px', color: '#5E6475' }}
-                                                                    class="fa fa-reply" aria-hidden="true">
+                                                                    className="fa fa-reply" aria-hidden="true">
                                                                 </i>
                                                                 : null
                                                             }

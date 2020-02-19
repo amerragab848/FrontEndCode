@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import dataservice from "../../Dataservice";
 import Resources from "../../resources.json";
@@ -16,7 +16,6 @@ import { SkyLightStateless } from 'react-skylight';
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
 import Dropdown from "../../Componants/OptionsPanels/DropdownMelcous";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-//import _ from "lodash";
 import { toast } from "react-toastify";
 var ar = new RegExp("^[\u0621-\u064A\u0660-\u0669 ]+$");
 var en = new RegExp("\[\\u0600\-\\u06ff\]\|\[\\u0750\-\\u077f\]\|\[\\ufb50\-\\ufc3f\]\|\[\\ufe70\-\\ufefc\]");
@@ -35,6 +34,7 @@ const validationSchemaForCopyTo = Yup.object().shape({
         .required(Resources['projectRequired'][currentLanguage])
         .nullable(true),
 });
+
 
 class boqStructure extends Component {
     constructor(props) {
@@ -57,6 +57,8 @@ class boqStructure extends Component {
             SelectedNode: {},
             ProjectsData: [],
             ViewCopyTo: false,
+            number: 1,
+            ViewCopyMultiple: false,
             newProjectId: { label: Resources.projectRequired[currentLanguage], value: "0" },
             ShowPayment: false,
             IsFirstParent: false
@@ -151,7 +153,7 @@ class boqStructure extends Component {
     search(id, trees, updateTrees, parentId) {
 
         trees.map(item => {
-            if (item.collapse === undefined){item.collapse = true}
+            if (item.collapse === undefined) { item.collapse = true }
             if (id == item.id) {
                 item.collapse = !item.collapse;
             } else {
@@ -187,6 +189,28 @@ class boqStructure extends Component {
                 })
                 toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
             }
+        ).catch(ex => {
+            toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
+        })
+
+    }
+
+
+    ViewPopUpCopyMultiple = (NodeId) => {
+        this.setState({
+            ViewCopyMultiple: true,
+            SelectedNodeId: NodeId
+        })
+    }
+
+    CopyMultipleNode = (values) => {
+
+        dataservice.GetDataGrid('CopyBoqStractureMultipleTimes?number=' + this.state.number + "&boqStractureId=" + this.state.SelectedNodeId).then(res => {
+            this.setState({
+                ViewCopyMultiple: false
+            })
+            toast.success(Resources['smartSentAccountingMessage'][currentLanguage].successTitle)
+        }
         ).catch(ex => {
             toast.error(Resources['operationCanceled'][currentLanguage].successTitle)
         })
@@ -398,6 +422,27 @@ class boqStructure extends Component {
 
     render() {
 
+        let CopyMultiplePopup = () => {
+            return (
+                <Fragment>
+                    <div className="dropWrapper" >
+                        <div className="ui input inputDev">
+                            <input type="number" className="form-control"
+                                id="number"
+                                value={this.state.number}
+                                name="number"
+                                placeholder={Resources.numberAbb[currentLanguage]}
+                                onChange={e => this.setState({ number: e.target.value })}
+                            />
+                        </div> 
+                        <div className="fullWidthWrapper">
+                            <button className="primaryBtn-1 btn middle__btn" type="submit" onClick={e => this.CopyMultipleNode(e)} >{Resources["save"][currentLanguage]}</button>
+                        </div> 
+                    </div>
+                </Fragment>
+            )
+        }
+
         let CopyToPopup = () => {
             return (
                 <Fragment>
@@ -437,10 +482,7 @@ class boqStructure extends Component {
                 <div className="documents-stepper noTabs__document">
                     <div className="tree__header">
                         <h2 className="zero">{Resources.boqStructure[currentLanguage]}</h2>
-                        <button className="primaryBtn-1 btn " onClick={() => this.setState({ viewPopUp: true, IsEditMode: false, IsFirstParent: true })}>
-                          
-                            {Resources["goAdd"][currentLanguage]}
-                        </button>
+                        <button className="primaryBtn-1 btn " onClick={() => this.setState({ viewPopUp: true, IsEditMode: false, IsFirstParent: true })}>{Resources["goAdd"][currentLanguage]}</button>
                     </div>
 
 
@@ -450,7 +492,7 @@ class boqStructure extends Component {
                             <Fragment>
                                 {this.state.trees.map((item, i) => {
                                     return (
-                                        <Fragment key={item.id}> 
+                                        <Fragment key={item.id}>
                                             <div className={"epsTitle" + (item.collapse === false ? ' active' : ' ')} key={item.id} onClick={() => this.viewChild(item)}>
                                                 <div className="listTitle">
                                                     <span className="dropArrow">
@@ -479,9 +521,15 @@ class boqStructure extends Component {
                                                             : null}
 
                                                         {Config.IsAllow(3671) ?
-                                                            <a className="copyTo" data-toggle="tooltip" title={Resources.copyTo[currentLanguage]} onClick={() => this.ViewPopUpCopyTo(item.id)}>
-                                                                <img src={CopyTo} alt="CopyTO" />
-                                                            </a>
+
+                                                            <Fragment>
+                                                                <a className="copyTo" data-toggle="tooltip" title={Resources.copyTo[currentLanguage]} onClick={() => this.ViewPopUpCopyTo(item.id)}>
+                                                                    <img src={CopyTo} alt="CopyTO" />
+                                                                </a>
+                                                                <a className="copyTo" data-toggle="tooltip" title={Resources.copyMultiple[currentLanguage]} onClick={() => this.ViewPopUpCopyMultiple(item.id)}>
+                                                                    <img src={CopyTo} alt="copyMultiple" />
+                                                                </a>
+                                                            </Fragment>
                                                             : null}
 
                                                     </div>
@@ -511,6 +559,16 @@ class boqStructure extends Component {
                         {CopyToPopup()}
                     </SkyLightStateless>
                 </div>
+
+                {/* CopyTo */}
+                <div className="skyLight__form">
+                    <SkyLightStateless onOverlayClicked={() => this.setState({ ViewCopyMultiple: false })}
+                        title={Resources['copyMultiple'][currentLanguage]}
+                        onCloseClicked={() => this.setState({ ViewCopyMultiple: false })} isVisible={this.state.ViewCopyMultiple}>
+                        {CopyMultiplePopup()}
+                    </SkyLightStateless>
+                </div>
+
 
                 {/* AddEditNode */}
                 <div className="skyLight__form">
