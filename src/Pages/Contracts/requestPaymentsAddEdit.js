@@ -113,28 +113,28 @@ const isCompany = Config.getPayload().uty == "company" ? true : false;
 var steps_defination = [];
 
 const columnOfInterimPayment = [{
-    key: Resources["workDescription"][currentLanguage],
+    title: Resources["workDescription"][currentLanguage],
     field: 'description'
 }, {
-    key: Resources["previousConsultatnt"][currentLanguage],
+    title: Resources["previousConsultatnt"][currentLanguage],
     field: 'prevoiuse'
 }, {
-    key: Resources["currentConsultatnt"][currentLanguage],
+    title: Resources["currentConsultatnt"][currentLanguage],
     field: 'currentValue'
 }, {
     key: Resources["totalConsultatnt"][currentLanguage],
     field: 'total'
 }, {
-    key: Resources["previousContractor"][currentLanguage],
+    title: Resources["previousContractor"][currentLanguage],
     field: 'contractorPrevoiuse'
 }, {
-    key: Resources["currentContractor"][currentLanguage],
+    title: Resources["currentContractor"][currentLanguage],
     field: 'contractorCurrentValue'
 }, {
-    key: Resources["totalContractor"][currentLanguage],
+    title: Resources["totalContractor"][currentLanguage],
     field: 'contractorTotal'
 }, {
-    key: Resources["comments"][currentLanguage],
+    title: Resources["comments"][currentLanguage],
     field: 'comment'
 }]
 
@@ -1272,7 +1272,7 @@ class requestPaymentsAddEdit extends Component {
                     let approvedInvoicesParent = [];
                     res = res || [];
                     let columnsApprovedInvoices = [{
-                        key: Resources["JobBuilding"][currentLanguage],
+                        title: Resources["JobBuilding"][currentLanguage],
                         field: 'building'
                     }]
                     let trFoot = {};
@@ -1306,7 +1306,7 @@ class requestPaymentsAddEdit extends Component {
                         approvedInvoicesChilds.push(obj);
 
                         columnsApprovedInvoices.push({
-                            key: parent.details,
+                            title: parent.details,
                             field: parent.details
                         });
 
@@ -1318,7 +1318,7 @@ class requestPaymentsAddEdit extends Component {
                     });
 
                     columnsApprovedInvoices.push({
-                        key: Resources["total"][currentLanguage],
+                        title: Resources["total"][currentLanguage],
                         field: "rowTotal"
                     });
 
@@ -2227,7 +2227,7 @@ class requestPaymentsAddEdit extends Component {
                     accessor: "title",
                     sortabel: true,
                     width: 200,
-                    key: Resources["description"][currentLanguage],
+                    title: Resources["description"][currentLanguage],
                     field: 'title'
                 },
                 {
@@ -2235,7 +2235,7 @@ class requestPaymentsAddEdit extends Component {
                     accessor: "deductionValue",
                     width: 200,
                     sortabel: true,
-                    key: Resources["deductions"][currentLanguage],
+                    title: Resources["deductions"][currentLanguage],
                     field: 'deductionValue'
                 }
             );
@@ -2246,7 +2246,7 @@ class requestPaymentsAddEdit extends Component {
                     accessor: "title",
                     sortabel: true,
                     width: 200,
-                    key: Resources["description"][currentLanguage],
+                    title: Resources["description"][currentLanguage],
                     field: 'title'
                 },
                 {
@@ -2254,7 +2254,7 @@ class requestPaymentsAddEdit extends Component {
                     accessor: "deductionValue",
                     width: 200,
                     sortabel: true,
-                    key: Resources["deductions"][currentLanguage],
+                    title: Resources["deductions"][currentLanguage],
                     field: 'deductionValue'
                 }
             );
