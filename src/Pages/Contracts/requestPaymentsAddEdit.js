@@ -113,28 +113,28 @@ const isCompany = Config.getPayload().uty == "company" ? true : false;
 var steps_defination = [];
 
 const columnOfInterimPayment = [{
-    title: Resources["workDescription"][currentLanguage],
+    key: Resources["workDescription"][currentLanguage],
     field: 'description'
 }, {
-    title: Resources["previousConsultatnt"][currentLanguage],
+    key: Resources["previousConsultatnt"][currentLanguage],
     field: 'prevoiuse'
 }, {
-    title: Resources["currentConsultatnt"][currentLanguage],
+    key: Resources["currentConsultatnt"][currentLanguage],
     field: 'currentValue'
 }, {
-    title: Resources["totalConsultatnt"][currentLanguage],
+    key: Resources["totalConsultatnt"][currentLanguage],
     field: 'total'
 }, {
-    title: Resources["previousContractor"][currentLanguage],
+    key: Resources["previousContractor"][currentLanguage],
     field: 'contractorPrevoiuse'
 }, {
-    title: Resources["currentContractor"][currentLanguage],
+    key: Resources["currentContractor"][currentLanguage],
     field: 'contractorCurrentValue'
 }, {
-    title: Resources["totalContractor"][currentLanguage],
+    key: Resources["totalContractor"][currentLanguage],
     field: 'contractorTotal'
 }, {
-    title: Resources["comments"][currentLanguage],
+    key: Resources["comments"][currentLanguage],
     field: 'comment'
 }]
 
@@ -1272,7 +1272,7 @@ class requestPaymentsAddEdit extends Component {
                     let approvedInvoicesParent = [];
                     res = res || [];
                     let columnsApprovedInvoices = [{
-                        title: Resources["JobBuilding"][currentLanguage],
+                        key: Resources["JobBuilding"][currentLanguage],
                         field: 'building'
                     }]
                     let trFoot = {};
@@ -1306,7 +1306,7 @@ class requestPaymentsAddEdit extends Component {
                         approvedInvoicesChilds.push(obj);
 
                         columnsApprovedInvoices.push({
-                            title: parent.details,
+                            key: parent.details,
                             field: parent.details
                         });
 
@@ -1318,11 +1318,11 @@ class requestPaymentsAddEdit extends Component {
                     });
 
                     columnsApprovedInvoices.push({
-                        title: Resources["total"][currentLanguage],
-                        field: rowTotal
+                        key: Resources["total"][currentLanguage],
+                        field: "rowTotal"
                     });
 
-                    trFoot["rowTotal"] = rowTotal;
+                    trFoot["rowTotal"] = rowTotal.toFixed(2);
                     res.push({ ...trFoot });
                     this.setState({
                         approvedInvoicesChilds: res,
@@ -2227,16 +2227,16 @@ class requestPaymentsAddEdit extends Component {
                     accessor: "title",
                     sortabel: true,
                     width: 200,
-                    name: Resources["description"][currentLanguage],
-                    key: 'title'
+                    key: Resources["description"][currentLanguage],
+                    field: 'title'
                 },
                 {
                     Header: Resources["deductions"][currentLanguage],
                     accessor: "deductionValue",
                     width: 200,
                     sortabel: true,
-                    name: Resources["deductions"][currentLanguage],
-                    key: 'deductionValue'
+                    key: Resources["deductions"][currentLanguage],
+                    field: 'deductionValue'
                 }
             );
         } else {
@@ -2246,16 +2246,16 @@ class requestPaymentsAddEdit extends Component {
                     accessor: "title",
                     sortabel: true,
                     width: 200,
-                    name: Resources["description"][currentLanguage],
-                    key: 'title'
+                    key: Resources["description"][currentLanguage],
+                    field: 'title'
                 },
                 {
                     Header: Resources["deductions"][currentLanguage],
                     accessor: "deductionValue",
                     width: 200,
                     sortabel: true,
-                    name: Resources["deductions"][currentLanguage],
-                    key: 'deductionValue'
+                    key: Resources["deductions"][currentLanguage],
+                    field: 'deductionValue'
                 }
             );
         }
