@@ -1522,6 +1522,18 @@ class SubmittalAddEdit extends Component {
         accessor: "flowContactName",
         width: 200,
         sortabel: true
+      },
+      {
+        Header: Resources["approvalStatus"][currentLanguage],
+        accessor: "approvalStatusName",
+        width: 200,
+        sortabel: true
+      },
+      {
+        Header: Resources["approvedDate"][currentLanguage],
+        accessor: "approvedDate",
+        width: 200,
+        sortabel: true
       }
     ];
 
