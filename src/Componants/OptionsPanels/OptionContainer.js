@@ -58,13 +58,17 @@ const actionPanel = {
     placeholder: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700' }),
     singleValue: styles => ({ ...styles, color: '#5e6475', fontSize: '14px', width: '100%', fontFamily: publicFonts, fontWeight: '700', textAlign: 'center' }),
     indicatorSeparator: styles => ({ ...styles, backgroundColor: '#dadee6' }),
-    menu: styles => ({ ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)', border: 'solid 1px #ccd2db', top: '-155px', minWidth: '180px' }),
+    menu: styles => ({
+        ...styles, zIndex: 155, boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
+        border: 'solid 1px #ccd2db', top: '-155px', minWidth: '180px',
+        right: currentLanguage == 'ar' ? 'auto' : '0', left: currentLanguage == 'ar' ? '0' : 'auto'
+    }),
     menuList: styles => ({ ...styles, color: 'red', height: '145px' }),
 };
 
 class OptionContainer extends React.Component {
     constructor(props) {
-        
+
         super(props);
 
         this.state = {
@@ -112,6 +116,8 @@ class OptionContainer extends React.Component {
         let obj = find(this.props.permission, function (o) { return o.name == permission; });
         if (obj != undefined) {
             return Config.IsAllow(obj.code);
+        } else {
+            return false
         }
     }
 

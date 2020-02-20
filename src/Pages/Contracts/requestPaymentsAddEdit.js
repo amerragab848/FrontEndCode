@@ -869,7 +869,9 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true,
                 documentDeduction: documentDeduction
             });
+            
         } else {
+
             let paymentRequistion = {
                 subject: "..",
                 id: 0,
@@ -902,6 +904,7 @@ class requestPaymentsAddEdit extends Component {
             );
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
+            this.buildColumns(false);
         }
     }
 
@@ -935,6 +938,8 @@ class requestPaymentsAddEdit extends Component {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
             this.fillSummariesTab();
+            
+            this.buildColumns(true);
         }
 
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
@@ -1080,7 +1085,7 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true
             });
 
-            this.buildColumns(this.props.changeStatus);
+           // this.buildColumns(this.props.changeStatus);
 
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" +
                 this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
@@ -1210,7 +1215,7 @@ class requestPaymentsAddEdit extends Component {
             let paymentsItems = [...this.state.paymentsItems];
 
             if (paymentsItems.length === 0) {
-                this.buildColumns(this.props.changeStatus);
+                //this.buildColumns(this.props.changeStatus);
                 this.setState({ isLoading: true });
                 dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({

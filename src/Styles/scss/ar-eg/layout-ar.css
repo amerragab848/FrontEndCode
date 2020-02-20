@@ -5734,6 +5734,7 @@ h1, h2, h3, h4, h5 {
 
 .main-header .header-content .nav-right li a {
     display: flex;
+    height: 100%;
     align-items: center;
 }
 
@@ -17464,12 +17465,6 @@ button.companies_icon {
 }
 
 /* 2022 to 2076 */
-.one__tab.one_step .doc-container .step-content {
-    width: calc(100% - 232px);
-    padding: 0;
-    padding-right: 78px;
-    padding-left: 40px;
-}
 
 .one__tab.one_step .doc-container .step-content .document-fields .proForm.first-proform,
 .one__tab.one_step .doc-container .step-content .document-fields .proForm.datepickerContainer {
@@ -21090,8 +21085,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     height: 100%;
 }
 
-.header__search {
-
+.header__search { 
     display: flex;
     align-items: flex-end;
     padding: 0 5px;
@@ -21100,7 +21094,8 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     height: 100%
 }
 
-.header__search:hover, .header__search.active {
+/* .header__search:hover, */
+ .header__search.active {
     border-bottom: 2px solid #858d9e;
 }
 
@@ -21110,7 +21105,7 @@ button.react-calendar__tile.react-calendar__month-view__days__day {
     height: 100%
 }
 
-.header__search:hover .ui.input,
+/* .header__search:hover .ui.input, */
 .header__search.active .ui.input {
     width: 220px;
     transition: all 0.4s ease-in-out;
@@ -22397,4 +22392,13 @@ thead.grid-header tr.action-bar .actions {
 
 .printWrapper .attachmentTable tbody tr td {
     height: auto ;
+}
+
+.rtl.react-grid tbody.grid-body tr td:first-child, tbody.grid-body tr td.text{
+    white-space: nowrap;
+    padding-left: 12px !important;
+}
+
+input {
+    font-family: cairo-r !important;
 }
