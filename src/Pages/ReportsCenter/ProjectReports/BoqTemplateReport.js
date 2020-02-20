@@ -4,9 +4,8 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Export from "../../../Componants/OptionsPanels/Export";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
 import moment from "moment";
 import Dataservice from '../../../Dataservice';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
@@ -189,7 +188,7 @@ class BoqTemplateReport extends Component {
 
 
     render() {
-        const dataGrid = this.state.isLoading === false ? ( 
+        const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
                 key="BoqTemplateReport"
@@ -212,11 +211,11 @@ class BoqTemplateReport extends Component {
                     <h2 className="zero">{Resources.boqTemplateReport[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-                <div className="proForm reports__proForm">
+                {/* <div className="proForm reports__proForm">
                     <div className=" fullWidthWrapper textRight">
                         {btnExport}
                     </div>
-                </div>
+                </div> */}
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}
                 </div>

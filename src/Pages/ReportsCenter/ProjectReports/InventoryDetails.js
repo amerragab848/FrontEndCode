@@ -1,28 +1,24 @@
-
-
 import CryptoJS from "crypto-js";
-
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Api from '../../../api';
 import { __esModule } from 'material-ui/svg-icons/image/flash-on';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
 const ValidtionSchema = Yup.object().shape({
-    selectedProject: Yup.string()
-        .required(Resources['projectSelection'][currentLanguage])
-        .nullable(true),
+    selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
 });
 
 class InventoryDetails extends Component {
@@ -48,6 +44,7 @@ class InventoryDetails extends Component {
             })
         }
         this.GetCellActions = this.GetCellActions.bind(this);
+
         this.columns = [
             {
                 field: "projectName",
@@ -112,6 +109,20 @@ class InventoryDetails extends Component {
             }
         ];
 
+        this.fields = [{
+            title: Resources["projectName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources['description'][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources['resourceCode'][currentLanguage],
+            value: "",
+            type: "text"
+        }]
+
         this.rowActions = [
             {
                 title: 'Itemization',
@@ -128,21 +139,20 @@ class InventoryDetails extends Component {
                 }
             }
         ];
-
     }
-  
+
     GetCellActions(column, row) {
         if (column.key === 'BtnActions') {
             return [{
-                icon: "fa fa-pencil"
-                , callback: (e) => {
+                icon: "fa fa-pencil",
+                callback: (e) => {
                     alert(row.id)
                 }
             }];
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'projectId').then(
             result => {
                 this.setState({
@@ -181,7 +191,7 @@ class InventoryDetails extends Component {
             this.setState({ isLoading: false })
         })
     }
- 
+
     render() {
 
         const DataGridChilds = this.state.isLoading === false ? (
@@ -206,16 +216,19 @@ class InventoryDetails extends Component {
                 groups={[]}
                 actions={[]}
                 rowActions={this.rowActions}
-                rowClick={() => { }} 
+                rowClick={() => { }}
                 cells={this.columns} />) : <LoadingSection />
 
-        let Exportcolumns = this.columns.filter(s => s.key !== 'BtnActions')
+        let Exportcolumns = this.columns.filter(s => s.key !== 'BtnActions');
+
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.RowsParent : []} columns={Exportcolumns} fileName={'inventoryDetails'} />
+            <ExportDetails
+                fieldsItems={this.columns}
+                rows={this.state.RowsParent} fields={this.fields} fileName={Resources.inventoryDetails[currentLanguage]} />
             : null
 
         const btnExportChild = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.RowsChilds : []} columns={Exportcolumns} fileName={'inventoryDetails'} />
+            <Export rows={this.state.isLoading === false ? this.state.RowsChilds : []} columns={Exportcolumns} fileName={Resources.inventoryDetails[currentLanguage]} />
             : null
 
         return (
@@ -239,7 +252,7 @@ class InventoryDetails extends Component {
                             <div className="linebylineInput valid-input">
                                 <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
                                     selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectedProject: e })}
+                                    handleChange={e => { this.setState({ selectedProject: e }); this.fields[0].value = e.label }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedProject}
                                     touched={touched.selectedProject}
@@ -249,7 +262,7 @@ class InventoryDetails extends Component {
                                 <label className="control-label">{Resources['description'][currentLanguage]}</label>
                                 <div className="inputDev ui input">
                                     <input autoComplete="off" className="form-control" value={this.state.Description}
-                                        onChange={(e) => this.setState({ Description: e.target.value })}
+                                        onChange={(e) => { this.setState({ Description: e.target.value }); this.fields[1].value = e.target.value }}
                                         name="revisions" placeholder={Resources['description'][currentLanguage]} />
                                 </div>
                             </div>
@@ -258,15 +271,11 @@ class InventoryDetails extends Component {
                                 <label className="control-label">{Resources['resourceCode'][currentLanguage]}</label>
                                 <div className="inputDev ui input">
                                     <input autoComplete="off" className="form-control" value={this.state.ResourceCode}
-                                        onChange={(e) => this.setState({ ResourceCode: e.target.value })}
+                                        onChange={(e) => { this.setState({ ResourceCode: e.target.value }); this.fields[2].value = e.target.value }}
                                         placeholder={Resources['resourceCode'][currentLanguage]} />
                                 </div>
                             </div>
-
-
                             <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
-
-
                         </Form>
                     )}
                 </Formik>

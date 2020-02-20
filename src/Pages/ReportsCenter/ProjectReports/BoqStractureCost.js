@@ -5,18 +5,17 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
+import ExportDetails from "../ExportReportCenterDetails";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Api from '../../../api.js';
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
+
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
 const ValidtionSchema = Yup.object().shape({
-    selectedBoq: Yup.string()
-        .required(Resources['boqType'][currentLanguage])
-        .nullable(true),
+    selectedBoq: Yup.string().required(Resources['boqType'][currentLanguage]).nullable(true)
 });
 
 class BoqStractureCost extends Component {
@@ -75,9 +74,15 @@ class BoqStractureCost extends Component {
                 sortable: true,
             },
         ];
+
+        this.fields = [{
+            title: Resources["boqType"][currentLanguage],
+            value: "",
+            type: "text"
+        }]
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Dataservice.GetDataList('GetBoqStracture', 'title', 'id').then(
             result => {
                 this.setState({
@@ -88,19 +93,18 @@ class BoqStractureCost extends Component {
             })
     }
 
-
     getGridRows = () => {
         this.setState({ isLoading: true })
         let selectedBoqLsit = []
         this.state.selectedBoq.map(s => {
             selectedBoqLsit.push(s.value)
         })
-        Api.post('GetTotalBOQParentFromChild', selectedBoqLsit).then(            res => {
-                this.setState({
-                    rows: res || [],
-                    isLoading: false
-                }) 
-            }
+        Api.post('GetTotalBOQParentFromChild', selectedBoqLsit).then(res => {
+            this.setState({
+                rows: res || [],
+                isLoading: false
+            })
+        }
         ).catch(() => {
             this.setState({ isLoading: false })
         })
@@ -108,9 +112,9 @@ class BoqStractureCost extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-              <GridCustom
+            <GridCustom
                 ref='custom-data-grid'
-                key="BoqStractureCost"
+                key="BoqStractureCost1"
                 data={this.state.rows}
                 pageSize={this.state.pageSize}
                 groups={[]}
@@ -121,7 +125,9 @@ class BoqStractureCost extends Component {
             />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'boqStractureCost'} />
+            <ExportDetails
+                fieldsItems={this.columns}
+                rows={this.state.rows} fields={this.fields} fileName={Resources.boqStractureCost[currentLanguage]} />
             : null
 
         return (
@@ -144,14 +150,20 @@ class BoqStractureCost extends Component {
                             <div className="linebylineInput multiChoice">
                                 <Dropdown title='boqType' data={this.state.BoqTypeData} name='selectedBoq'
                                     isMulti={true} value={this.state.selectedBoq} onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectedBoq: e })}
+                                    handleChange={e => {
+                                        this.setState({ selectedBoq: e });
+                                        let documentText = '';
+                                        e.map(lable => {
+                                            return documentText = lable.label + " - " + documentText
+                                        });
+                                        this.fields[0].value = documentText
+                                    }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedBoq}
                                     touched={touched.selectedBoq}
                                     value={values.selectedBoq} />
                             </div>
                             <div className="linebylineInput ">
-
                                 <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
                             </div>
                         </Form>
