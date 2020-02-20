@@ -214,21 +214,26 @@ class bogAddEdit extends Component {
 
                 },
                 handleBlur: (e, cell) => {
-                    this.setState({ isLoading: true });
+                    if (Config.IsAllow(617)) {
 
-                    Api.post("EditBoqItemUnitPrice?id=" + cell.id + "&unitPrice=" + cell.unitPrice).then(() => {
-                        toast.success(
-                            Resources["operationSuccess"][currentLanguage]
-                        );
-                        this.setState({ isLoading: false });
-                    }).catch(() => {
-                        toast.error(
-                            Resources["operationCanceled"][currentLanguage]
-                        );
-                        this.setState({ isLoading: false });
-                    });
+                        this.setState({ isLoading: true });
+
+                        Api.post("EditBoqItemUnitPrice?id=" + cell.id + "&unitPrice=" + cell.unitPrice).then(() => {
+                            toast.success(
+                                Resources["operationSuccess"][currentLanguage]
+                            );
+                            this.setState({ isLoading: false });
+                        }).catch(() => {
+                            toast.error(
+                                Resources["operationCanceled"][currentLanguage]
+                            );
+                            this.setState({ isLoading: false });
+                        });
+                    } else {
+                        toast.warning(Resources["missingPermissions"][currentLanguage]);
+                    }
                 },
-                type: "input"
+                type: Config.IsAllow(617) ? "input" : "text"
             },
             {
                 field: "total",
@@ -253,20 +258,26 @@ class bogAddEdit extends Component {
         this.actions = [
             {
                 title: 'Assign',
-                handleClick: values => {
-                    console.log(values);
-                    this.setState({ showBoqModal: true });
-                    this.boqTypeModal.show();
+                handleClick: (values) => {
+                    if (Config.IsAllow(617)) {
+                        this.setState({ showBoqModal: true });
+                        this.boqTypeModal.show();
+                    } else {
+                        toast.warning(Resources["missingPermissions"][currentLanguage]);
+                    }
                 },
                 classes: '',
             }, {
                 title: 'Delete',
-                handleClick: values => {
-                    console.log(values);
-                    this.setState({
-                        showDeleteModal: true,
-                        selectedRow: values
-                    });
+                handleClick: (values) => {
+                    if (Config.IsAllow(618)) {
+                        this.setState({
+                            showDeleteModal: true,
+                            selectedRow: values
+                        });
+                    } else {
+                        toast.warning(Resources["missingPermissions"][currentLanguage]);
+                    }
                 },
                 classes: '',
             }
