@@ -121,7 +121,7 @@ class InventoryDetails extends Component {
             title: Resources['resourceCode'][currentLanguage],
             value: "",
             type: "text"
-        }]
+        }];
 
         this.rowActions = [
             {

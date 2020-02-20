@@ -95,7 +95,7 @@ class ExportReportCenterDetails extends Component {
 
         if (rows.length > 0) {
             return (
-                <table id="items" style={{ border: 'double' }}> 
+                <table id="items" style={{ border: 'double' }}>
                     <thead valign="top">
                         <tr key={'dd- '} style={{ border: '4px' }}>
                             {fieldsItems.map((column, index) => {
@@ -110,7 +110,7 @@ class ExportReportCenterDetails extends Component {
                             return (
                                 <tr key={'rwow- ' + index}>
                                     {fieldsItems.map((field, index) => {
-                                        return (<td key={'field- ' + index}>{row[field.field]}</td>)
+                                        return (<td key={'field- ' + index}>{field.type === "date" ? moment(row[field.field]).format('DD/MM/YYYY') : row[field.field]}</td>)
                                     })}
                                 </tr>
                             )
