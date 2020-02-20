@@ -12,9 +12,12 @@ import * as communicationActions from '../../store/actions/communication';
 
 const validationSchema_createTransmittal = Yup.object().shape({
     subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]),
-    toCompany: Yup.string().required(Resources['toCompanyRequired'][currentLanguage]),
-    ToContact: Yup.string().required(Resources['selectContact'][currentLanguage]),
-    priority: Yup.string().required(Resources['priorityRequired'][currentLanguage])
+    toCompanyId: Yup.string().required(Resources['toCompanyRequired'][currentLanguage]),
+    fromCompanyId: Yup.string().required(Resources['fromCompanyRequired'][currentLanguage]),
+    toContactId: Yup.string().required(Resources['selectContact'][currentLanguage]),
+    fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
+    priorityId: Yup.string().required(Resources['priorityRequired'][currentLanguage]),
+    sendingMethodId: Yup.string().required(Resources['sendingMethodRequired'][currentLanguage])
 })
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -28,17 +31,23 @@ class CreateTransmittal extends Component {
                 docId: this.props.docId,
                 docType: this.props.docTypeId,
                 arrange: "",
-                priorityId: null,
-                toCompanyId: null,
+                priorityId: '',
+                toCompanyId: '',
+                fromCompanyId: '',
                 subject: this.props.document.subject,
-                toContactId: null,
+                toContactId: '',
+                fromContactId: '',
+                sendingMethodId: '',
                 status: true,
-                submittFor: null
+                submittFor: ''
             },
             PriorityData: [],
             ToCompany: [],
             SubmittedForData: [],
+            sendingmethods: [],
             AttentionData: [],
+            fromContact: [],
+            fromCompany: [],
             selectedOption: 'true',
             submitLoading: false
         }
@@ -71,9 +80,10 @@ class CreateTransmittal extends Component {
     componentDidMount = () => {
         let url = "GetProjectProjectsCompaniesForList?projectId=" + this.state.transmittal.projectId;
         this.GetData(url, 'companyName', 'companyId', 'ToCompany');
+        this.GetData(url, 'companyName', 'companyId', 'fromCompany');
         this.GetData("GetAccountsDefaultList?listType=priority&pageNumber=0&pageSize=10000", 'title', 'id', 'PriorityData');
         this.GetData("GetAccountsDefaultList?listType=transmittalsubmittedfor&pageNumber=0&pageSize=10000", 'title', 'id', 'SubmittedForData')
-
+        this.GetData("GetAccountsDefaultList?listType=sendingmethods&pageNumber=0&pageSize=10000", 'title', 'id', 'sendingmethods')
     }
 
     To_company_handleChange = (selectedOption) => {
@@ -82,6 +92,14 @@ class CreateTransmittal extends Component {
             transmittal: { ...this.state.transmittal, toCompanyId: selectedOption.value },
         });
         this.GetData(url, "contactName", "id", "AttentionData");
+    }
+
+    from_company_handleChange = (selectedOption) => {
+        let url = "GetContactsByCompanyId?companyId=" + selectedOption.value;
+        this.setState({
+            transmittal: { ...this.state.transmittal, fromCompanyId: selectedOption.value },
+        });
+        this.GetData(url, "contactName", "id", "fromContact");
     }
 
     Priority_handelChange = (item) => {
@@ -108,7 +126,19 @@ class CreateTransmittal extends Component {
         })
     }
 
-    render() {   
+    fromContact_handleChange = (item) => {
+        this.setState({
+            transmittal: { ...this.state.transmittal, fromContactId: item.value }
+        })
+    }
+
+    sendingMethodId_handleChange = (item) => {
+        this.setState({
+            transmittal: { ...this.state.transmittal, sendingMethodId: item.value }
+        })
+    }
+
+    render() {
         return (
             <div className="dropWrapper">
                 <Formik key="create-trans-panel-form"
@@ -155,9 +185,9 @@ class CreateTransmittal extends Component {
                                 handleChange={this.To_company_handleChange}
                                 onChange={setFieldValue}
                                 onBlur={setFieldTouched}
-                                error={errors.toCompany}
-                                touched={touched.toCompany}
-                                name='toCompany'
+                                error={errors.toCompanyId}
+                                touched={touched.toCompanyId}
+                                name='toCompanyId'
                             />
                             <Dropdown
                                 title="ToContact"
@@ -165,9 +195,29 @@ class CreateTransmittal extends Component {
                                 handleChange={this.Attention_handleChange}
                                 onChange={setFieldValue}
                                 onBlur={setFieldTouched}
-                                error={errors.ToContact}
-                                touched={touched.ToContact}
-                                name='ToContact'
+                                error={errors.toContactId}
+                                touched={touched.toContactId}
+                                name='toContactId'
+                            />
+                            <Dropdown
+                                title="fromCompany"
+                                data={this.state.fromCompany}
+                                handleChange={this.from_company_handleChange}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.fromCompanyId}
+                                touched={touched.fromCompanyId}
+                                name='fromCompanyId'
+                            />
+                            <Dropdown
+                                title="fromContact"
+                                data={this.state.fromContact}
+                                handleChange={this.fromContact_handleChange}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.fromContactId}
+                                touched={touched.fromContactId}
+                                name='fromContactId'
                             />
                             <Dropdown
                                 title="priority"
@@ -175,15 +225,25 @@ class CreateTransmittal extends Component {
                                 handleChange={this.Priority_handelChange}
                                 onChange={setFieldValue}
                                 onBlur={setFieldTouched}
-                                error={errors.priority}
-                                touched={touched.priority}
-                                name='priority'
+                                error={errors.priorityId}
+                                touched={touched.priorityId}
+                                name='priorityId'
                             />
                             <Dropdown
                                 title="submittedFor"
                                 data={this.state.SubmittedForData}
                                 handleChange={this.SubmittedFor_handelChange}
                                 name='submittedFor'
+                            />
+                            <Dropdown
+                                title="sendingMethod"
+                                data={this.state.sendingmethods}
+                                handleChange={this.sendingMethodId_handleChange}
+                                onChange={setFieldValue}
+                                onBlur={setFieldTouched}
+                                error={errors.sendingMethodId}
+                                touched={touched.sendingMethodId}
+                                name='sendingMethodId'
                             />
                             <div className="fullWidthWrapper">
                                 {!this.state.submitLoading ?

@@ -1396,6 +1396,27 @@ var routes = [
         settings: { Contracts: false }
     },
     {
+        route: "tenderAnalysis",
+        moduleId: "commonLogs",
+        title: "tenderAnalysis",
+        nav: true,
+        hash: "#tenderAnalysis",
+        settings: {
+            Contracts: true,
+            caption: "procoor-icon-tenderAnalysis",
+            permission: 573,
+            order: 10
+        }
+    },
+    {
+        route:
+            "tenderAnalysisAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
+        moduleId: "contracts/tenderAnalysisAddEdit",
+        title: "Add Tender Analysis",
+        nav: false,
+        settings: { Contracts: false }
+    },
+    {
         route: "requestPayments",
         moduleId: "commonLogs",
         title: "paymentRequistionLog",

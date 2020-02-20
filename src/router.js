@@ -48,6 +48,9 @@ const ProjectCompanies = AsyncComponent(() =>
 const LettersAddEdit = AsyncComponent(() =>
     import('./Pages/Communication/LettersAddEdit'),
 );
+const TenderAnalysisAddEdit = AsyncComponent(() =>
+    import('./Pages/estimation/tenderAnalysisAddEdit'),
+);
 const EmailAddEdit = AsyncComponent(() =>
     import('./Pages/Communication/emailAddEdit'),
 );
@@ -625,6 +628,7 @@ let setupRoutes = ProjectSetupRoutes.map((item, index) => {
 let originalRoutes = [
     <Route key="r-1" exact path="/" component={DashBoard} />,
     <Route key="r-2" path="/LettersAddEdit" component={LettersAddEdit} />,
+    <Route key="r-2" path="/TenderAnalysisAddEdit" component={TenderAnalysisAddEdit} />,
     <Route key="r-kk" path="/logs/:document/:project" component={Logs} />,
     <Route key="r-3" path="/ActionByAlerts" component={ActionByAlerts} />,
     <Route

@@ -869,7 +869,9 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true,
                 documentDeduction: documentDeduction
             });
+            
         } else {
+
             let paymentRequistion = {
                 subject: "..",
                 id: 0,
@@ -902,6 +904,7 @@ class requestPaymentsAddEdit extends Component {
             );
             this.fillDropDowns(false);
             this.props.actions.documentForAdding();
+            this.buildColumns(false);
         }
     }
 
@@ -935,6 +938,8 @@ class requestPaymentsAddEdit extends Component {
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
             this.fillSummariesTab();
+            
+            this.buildColumns(true);
         }
 
         if (this.props.hasWorkflow !== prevProps.hasWorkflow || this.props.changeStatus !== prevProps.changeStatus) {
@@ -1080,7 +1085,7 @@ class requestPaymentsAddEdit extends Component {
                 isLoading: true
             });
 
-            this.buildColumns(this.props.changeStatus);
+           // this.buildColumns(this.props.changeStatus);
 
             dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + event.value + "&isAdd=true&requestId=" + this.state.docId + "&pageNumber=" +
                 this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
@@ -1210,7 +1215,7 @@ class requestPaymentsAddEdit extends Component {
             let paymentsItems = [...this.state.paymentsItems];
 
             if (paymentsItems.length === 0) {
-                this.buildColumns(this.props.changeStatus);
+                //this.buildColumns(this.props.changeStatus);
                 this.setState({ isLoading: true });
                 dataservice.GetDataGrid("GetRequestItemsOrderByContractId?contractId=" + contractId + "&isAdd=false&requestId=" + this.state.docId + "&pageNumber=" + this.state.pageNumber + "&pageSize=" + this.state.pageSize).then(result => {
                     this.setState({
@@ -1466,6 +1471,12 @@ class requestPaymentsAddEdit extends Component {
                 });
                 this.costCodingTree.show();
             });
+        } else if (column.key === "BtnActions") {
+            this.setState({
+                selectedBoqTypeEdit: { label: value.boqType, value: value.boqTypeId },
+                selectedBoqTypeChildEdit: { label: value.secondLevel, value: value.boqBoqTypeChildId },
+                selectedBoqSubTypeEdit: { label: value.boqSubType, value: value.boqSubTypeId }
+            });
         }
     };
 
@@ -1650,9 +1661,26 @@ class requestPaymentsAddEdit extends Component {
 
         this.setState({ showBoqModal: true, isLoading: true });
 
-        dataservice.addObject("EditBoqStarcureRequestItem", boqStractureObj).then(() => {
+        dataservice.addObject("EditBoqStarcureRequestItem", boqStractureObj).then(result => {  
 
-            this.setState({ showBoqModal: false, isLoading: false });
+            let originalData = this.state.paymentsItems;
+
+            let getIndex = originalData.findIndex(x => x.id === boqStractureObj.id);
+        
+            let obj = originalData.find(x => x.id === boqStractureObj.id);
+            
+            obj.boqTypeChildId  = this.state.selectedBoqTypeChildEdit.value; 
+            obj.boqSubType = this.state.selectedBoqSubTypeEdit.value;
+            obj.boqType = this.state.selectedBoqTypeEdit.value; 
+            obj.secondLevel  = this.state.selectedBoqTypeChildEdit.label; 
+            obj.boqSubType = this.state.selectedBoqSubTypeEdit.label;
+            obj.boqType = this.state.selectedBoqTypeEdit.label;
+
+            originalData.splice(getIndex, 1);
+          
+            originalData.push(obj);
+
+            this.setState({paymentsItems: originalData , showBoqModal: false, isLoading: false });
             toast.success(Resources["operationSuccess"][currentLanguage]);
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
@@ -1947,7 +1975,7 @@ class requestPaymentsAddEdit extends Component {
             this.setState({ isView: false, exportFile: "" });
 
 
-            let VOItemsColumnsList=[];
+            let VOItemsColumnsList = [];
             VOItemsColumns.filter(i => {
                 if (i.key !== "BtnActions") {
                     VOItemsColumnsList.push({ title: i.name, field: i.key });
@@ -1979,6 +2007,7 @@ class requestPaymentsAddEdit extends Component {
         obj.id = this.state.docId;
 
         obj.actualPayment = this.state.actualPayments;
+        obj.contractId = this.state.document.contractId;
 
         dataservice.addObject("EditActualPayment", obj).then(result => {
 
@@ -2354,22 +2383,21 @@ class requestPaymentsAddEdit extends Component {
             <Fragment>
                 <div className="dropWrapper">
                     {this.state.isLoading ? <LoadingSection /> : null}
-                    <Formik enableReinitialize={true} initialValues={{ boqType: "", boqChild: "", boqSubType: "" }}
+                    <Formik enableReinitialize={true} initialValues={{ ...this.state.document }}
                         validationSchema={BoqTypeSchema}
                         onSubmit={values => { this.assignBoqType(); }}>
                         {({ errors, touched, setFieldTouched, setFieldValue, handleBlur, handleChange }) => (
                             <Form id="signupForm1" className="proForm datepickerContainer customProform" noValidate="novalidate">
-                                <div className="fullWidthWrapper textLeft">
-                                    <Dropdown title="boqType" data={this.state.boqTypes} selectedValue={this.state.selectedBoqTypeEdit}
-                                        handleChange={event => this.handleChangeItemDropDownItems(event, "boqTypeId", "selectedBoqTypeEdit", true, "GetAllBoqChild", "parentId", "BoqTypeChilds")}
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.boqType}
-                                        touched={touched.boqType}
-                                        name="boqType"
-                                        index="boqType"
-                                    />
-                                </div>
+                                <Dropdown title="boqType" data={this.state.boqTypes}
+                                    selectedValue={this.state.selectedBoqTypeEdit}
+                                    handleChange={event => this.handleChangeItemDropDownItems(event, "boqTypeId", "selectedBoqTypeEdit", true, "GetAllBoqChild", "parentId", "BoqTypeChilds")}
+                                    onChange={setFieldValue}
+                                    onBlur={setFieldTouched}
+                                    error={errors.boqType}
+                                    touched={touched.boqType}
+                                    name="boqType"
+                                    index="boqType"
+                                />
                                 <Dropdown title="boqTypeChild" data={this.state.BoqTypeChilds}
                                     selectedValue={this.state.selectedBoqTypeChildEdit}
                                     handleChange={event => this.handleChangeItemDropDownItems(event, "boqTypeChildId", "selectedBoqTypeChildEdit", true, "GetAllBoqChild", "parentId", "BoqSubTypes")}
@@ -3017,7 +3045,7 @@ class requestPaymentsAddEdit extends Component {
                                                             No.Update Rows.
                                                             {this.state.editRows.length}
                                                         </span>
-                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>
+                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={e => this.editRowsClick(e)}>
                                                             {
                                                                 Resources["edit"][currentLanguage]
                                                             }
@@ -3418,23 +3446,25 @@ class requestPaymentsAddEdit extends Component {
                                                         />
                                                         {touched.sitePaymentPercent ? (<em className="pError"> {errors.sitePaymentPercent} </em>) : null}
                                                     </div>
-                                                </div></Fragment> : null
+                                                </div>
+                                                <div className="fillter-item-c fullInputWidth">
+                                                    <label className="control-label">
+                                                        {Resources.comments[currentLanguage]}
+                                                    </label>
+                                                    <div className={"inputDev ui input"}>
+                                                        <input name="comments" className="form-control fsadfsadsa" id="comments"
+                                                            placeholder={Resources.comments[currentLanguage]}
+                                                            autoComplete="off"
+                                                            onBlur={e => { handleBlur(e); handleChange(e); }}
+                                                            defaultValue={this.state.currentObject.lastComment}
+                                                            onChange={e => { this.handleChangeForEdit(e, "lastComment"); }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </Fragment> : null
                                         }
 
-                                        <div className="fillter-item-c fullInputWidth">
-                                            <label className="control-label">
-                                                {Resources.comments[currentLanguage]}
-                                            </label>
-                                            <div className={"inputDev ui input"}>
-                                                <input name="comments" className="form-control fsadfsadsa" id="comments"
-                                                    placeholder={Resources.comments[currentLanguage]}
-                                                    autoComplete="off"
-                                                    onBlur={e => { handleBlur(e); handleChange(e); }}
-                                                    defaultValue={this.state.currentObject.lastComment}
-                                                    onChange={e => { this.handleChangeForEdit(e, "lastComment"); }}
-                                                />
-                                            </div>
-                                        </div>
+
 
                                         <div className="fullWidthWrapper">
                                             {this.state.isLoading === true ? (

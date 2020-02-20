@@ -17,8 +17,6 @@ class WFDistributionAccountReport extends Component {
 
     constructor(props) {
 
-        console.log("window.location.href", window.location.href);
-
         super(props)
         this.state = {
             isLoading: false,
@@ -180,7 +178,8 @@ class WFDistributionAccountReport extends Component {
 
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
-                pageSize={this.state.rows.length} actions={[{
+                pageSize={this.state.rows.length}
+                actions={[{
                     title: 'Send To The Same Level',
                     handleClick: (value) => {
                         this.showPopUp(value);
