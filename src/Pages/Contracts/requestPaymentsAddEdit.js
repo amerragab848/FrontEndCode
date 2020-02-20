@@ -3040,7 +3040,7 @@ class requestPaymentsAddEdit extends Component {
                                                             No.Update Rows.
                                                             {this.state.editRows.length}
                                                         </span>
-                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={this.editRowsClick}>
+                                                        <button className="primaryBtn-1 btn meduimBtn" onClick={e => this.editRowsClick(e)}>
                                                             {
                                                                 Resources["edit"][currentLanguage]
                                                             }

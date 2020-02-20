@@ -2233,10 +2233,11 @@ class bogAddEdit extends Component {
                                                 .value
                                             : "",
                                     discipline:
-                                        this.state.selectedDiscipline.value != "0"
+                                    this.state.selectedDiscipline != undefined ?
+                                        (this.state.selectedDiscipline.value != "0"
                                             ? this.state.selectedDiscipline
                                                 .value
-                                            : "",
+                                            : ""):"",
                                     status: this.props.changeStatus
                                         ? this.props.document.status
                                         : true,
