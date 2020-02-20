@@ -189,7 +189,7 @@ class DistributionInboxListSummaryDetails extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let id = null;
     let action = null;
 
@@ -276,31 +276,32 @@ class DistributionInboxListSummaryDetails extends Component {
       });
   };
 
-  // onRowClick = (obj) => {
-  //   if (obj) {
+  onRowClick = (obj) => {
+    if (obj) {
 
-  //     if (obj.status !== true) {
-  //       Api.get("UpdateStatusInbox?id=" + obj.id);
-  //     }
-  //     let spliteLink = obj.docView.split('/');
+      if (obj.status !== true) {
+        Api.get("UpdateStatusInbox?id=" + obj.id);
+      }
+      let spliteLink = obj.docView.split('/');
 
-  //     let objRout = {
-  //       docId: spliteLink[1],
-  //       projectId: obj.projectId,
-  //       projectName: obj.projectName,
-  //       arrange: obj.arrange,
-  //       docApprovalId: 0,
-  //       isApproveMode: false,
-  //       perviousRoute: window.location.pathname + window.location.search
-  //     }
-  //     let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
-  //     let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
-  //     this.props.history.push({
-  //       pathname: "/" + spliteLink[0],
-  //       search: "?id=" + encodedPaylod
-  //     });
-  //   }
-  // }
+      let objRout = {
+        docId: spliteLink[1],
+        projectId: obj.projectId,
+        projectName: obj.projectName,
+        arrange: obj.arrange,
+        docApprovalId: 0,
+        isApproveMode: false,
+        perviousRoute: window.location.pathname + window.location.search
+      }
+      let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(objRout));
+      let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+      this.props.history.push({
+        pathname: "/" + spliteLink[0],
+        search: "?id=" + encodedPaylod
+      });
+    }
+  }
+
   cellClick = (rowId, colID) => {
 
     let selectedRow = this.state.rows[rowId];
@@ -342,7 +343,7 @@ class DistributionInboxListSummaryDetails extends Component {
         <GridSetup
           rows={this.state.rows}
           columns={this.state.columns}
-          //onRowClick={this.onRowClick}
+          onRowClick={this.onRowClick}
           cellClick={this.cellClick}
           showCheckbox={false} />
       ) : <LoadingSection />;
@@ -436,7 +437,7 @@ class DistributionInboxListSummaryDetails extends Component {
           <div className="filterBTNS">
             {btnExport}
           </div>
-           <div className="rowsPaginations readOnly__disabled">
+          <div className="rowsPaginations readOnly__disabled">
             <div className="linebylineInput valid-input">
               <label className="control-label">
                 {Resources.totalDocs[currentLanguage]}

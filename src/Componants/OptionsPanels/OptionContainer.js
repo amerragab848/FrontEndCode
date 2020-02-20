@@ -1,23 +1,17 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
-import DropDown from './DropdownMelcous'
-
+import DropDown from './DropdownMelcous';
 import SendTask from "./SendTask";
 import CreateTransmittal from "./CreateTransmittal";
 import CreateVO from "./CreateVO";
 import ExportDetails from "./ExportDetails";
-import SendToInbox from './SendToInbox'
-import SendByEmails from './SendByEmails'
-import CopyTo from './CopyTo'
-
+import SendToInbox from './SendToInbox';
+import SendByEmails from './SendByEmails';
+import CopyTo from './CopyTo';
 import Resources from '../../resources.json';
 import Config from '../../Services/Config';
-
 import { connect } from 'react-redux';
-import {
-    bindActionCreators
-} from 'redux';
-
+import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -26,7 +20,9 @@ const find = require("lodash/find")
 const filter = require("lodash/filter")
 
 let publicFonts = currentLanguage === "ar" ? 'cairo-b' : 'Muli, sans-serif'
+
 const actionPanel = {
+
     control: (styles, { isFocused }) => ({
         ...styles,
         height: '36px',
@@ -68,6 +64,7 @@ const actionPanel = {
 
 class OptionContainer extends React.Component {
     constructor(props) {
+        
         super(props);
 
         this.state = {
@@ -113,7 +110,9 @@ class OptionContainer extends React.Component {
 
     IsAllow = (permission) => {
         let obj = find(this.props.permission, function (o) { return o.name == permission; });
-        return Config.IsAllow(obj.code);
+        if (obj != undefined) {
+            return Config.IsAllow(obj.code);
+        }
     }
 
     componentDidMount = () => {
@@ -157,7 +156,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(OptionContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(OptionContainer);

@@ -46,8 +46,8 @@ class WFDistributionAccountReport extends Component {
                 "fixed": true,
                 "groupable": true,
                 "sortable": true,
-                //"href": window.location.href,
-                
+                "href": 'link',
+                'classes': 'bold'
             },
             {
                 "field": "description",
@@ -97,56 +97,51 @@ class WFDistributionAccountReport extends Component {
     getGridRows = () => {
         if (this.state.selectedContact.value != '0') {
             this.setState({ isLoading: true })
-            Api.get('GetContactsWorkFlowDist?contactId=' + this.state.selectedContact.value).then((res) => {
-                this.setState({ rows: res, isLoading: false })
+            Api.get('GetContactsWorkFlowDist?contactId=' + this.state.selectedContact.value).then((result) => {
+
+                result.forEach(row => {
+
+                    let link = "";
+
+                    let docId = row.url.split("/");
+
+                    let obj = {
+                        docId: docId[1],
+                        projectId: row.projectId,
+                        projectName: row.projectName,
+                        arrange: 0,
+                        docApprovalId: 0,
+                        isApproveMode: false,
+                        perviousRoute: window.location.pathname + window.location.search
+                    };
+
+                    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj));
+
+                    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms);
+
+                    if (row.type === "Distribution List") {
+                        link = '/projectDistributionListAddEdit?id=' + encodedPaylod;
+                    } else {
+                        link = '/projectWorkFlowAddEdit?id=' + encodedPaylod;
+                    }
+
+                    row.link = link;
+                });
+
+                this.setState({ rows: result, isLoading: false })
             }).catch(() => {
                 this.setState({ isLoading: false })
             })
         }
     }
 
-    showPopUp = (values) => {
-        this.setState({
-             showModal: true,
-             selectedRows:values
-             })
+    showPopUp = (value) => {
+
+        this.setState({ showModal: true, selectedRows: value })
         this.simpleDialog.show()
     }
 
-    subjectLink = ({ value, row }) => {
-        let subject = "";
-        if (row) {
-            let obj = {
-                docId: row.url.split('/')[1],
-                projectId: row.projectId,
-                projectName: row.projectName,
-                arrange: 0,
-                docApprovalId: 0,
-                isApproveMode: false
-            };
-            let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-            let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-            let doc_view = "/projectWorkFlowAddEdit?id=" + encodedPaylod
-            subject = row.subject;
-            return <a href={doc_view}> {subject} </a>;
-        }
-        return null;
-    }
-
-    // selectedRows(rows) {
-    //     this.setState({ selectedRows: rows })
-    // }
-
-    // addLevel() {
-    //     if (this.state.selectedContact_level.value != '0') {
-    //         Api.post('AddWFItemsToSameLevel?contactId=' + this.state.selectedContact.value + '&tocontactId=' + this.state.selectedContact_level.value, this.state.selectedRows).then(() => {
-    //             toast.success(Resources.operationSuccess[currentLanguage])
-    //             this.setState({ showModal: false })
-    //         }).catch(() => {
-    //             toast.error(Resources.operationCanceled[currentLanguage])
-    //         })
-    //     }
-    // }
+   
     addLevel() {
         if (this.state.selectedContact_level.value != '0') {
 
@@ -156,62 +151,52 @@ class WFDistributionAccountReport extends Component {
             }).catch(() => {
                 toast.error(Resources.operationCanceled[currentLanguage])
             })
+        } else {
+            toast.warn("Please Choose Contact Name ...");
         }
     }
 
     checkedRow = (id, checked) => {
-        //  id is current row
-        //  checked is array of already checked rows
-        if (id !== 139585) {
+
+        let hasWorkFlow = this.state.rows.find(x => x.id === id);
+
+        if (hasWorkFlow.type === "Work Flow") {
+            let indexed = checked.findIndex(x => x === id);
+            if (indexed > -1) {
+                checked.splice(indexed, 1);
+            } else {
+                checked.push(id);
+            }
+
             return true;
         } else {
+            toast.warn("Can't Send Distrbution Only Work Flow ...");
             return false;
         }
     }
-    routeUrl=(url)=>{
-        this.props.history.push(url);
-    }
+   
 
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
-                pageSize={this.state.rows.length} actions={[
-
-                    {
-                        title: 'Add to',
-                        handleClick: values =>
-                            // {
-                            //     this.setState({
-                            //         showDeleteModal: true,
-                            //         selectedRows: values
-                            //     });
-                            // },
-                            this.showPopUp(values),
-                        classes: '',
-                    }
-                ]}
-                 rowActions={[]} 
-                 rowClick={() => { }}
+                pageSize={this.state.rows.length} actions={[{
+                    title: 'Send To The Same Level',
+                    handleClick: (value) => {
+                        this.showPopUp(value);
+                    },
+                    classes: "autoGridBtn"
+                }]} rowActions={[]} rowClick={() => { }}
                 shouldCheck={(id, checked) => {
                     this.checkedRow(id, checked);
                 }}
-                rowClick={cell=>{
-                    if(cell.id != 0){
-                        let rowData = this.columns.filter(x => x.id == cell.id - 1).key;
-                        this.routeUrl(cell.url);
-                        
-                    }
-                }}
+              
             />
-            // <GridSetup rows={this.state.rows} showCheckbox={true}
-            //     selectedCopmleteRow={true} selectedRows={rows => this.selectedRows(rows)}
-            //     pageSize={this.state.pageSize} columns={this.columns} addLevel={e => this.showPopUp()} />
         ) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'wokFlowDistrbutionAccountsReport'} />
-            : null
+            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns}
+                fileName={'wokFlowDistrbutionAccountsReport'} /> : null
 
         const addToSameLevel = <div className="doc-container">
             <div className="step-content">
@@ -246,7 +231,7 @@ class WFDistributionAccountReport extends Component {
                             handleChange={event => this.setState({ selectedContact: event })} />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
-                    {/* <button className="primaryBtn-1 btn smallBtn" onClick={() => this.showPopUp()}>{Resources['search'][currentLanguage]}</button> */}
+                  
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}

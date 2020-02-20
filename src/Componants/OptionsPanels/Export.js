@@ -17,6 +17,7 @@ class Export extends Component {
     }
 
     tableToExcel(title) {
+
         if (this.state.isExport || this.state.isExportRequestPayment) {
 
             var uri = 'data:application/vnd.ms-excel;base64,'
@@ -64,19 +65,6 @@ class Export extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps, prevState) {
-        if (prevState.isExport != nextProps.isExport) {
-            this.setState({ isExport: true });
-            this.tableToExcel(this.props.fileName);
-        }
-        if (this.state.isExportRequestPayment != nextProps.isExportRequestPayment) {
-            this.setState({ isExportRequestPayment: true });
-            setTimeout(() => {
-                this.tableToExcel(this.state.fileName);
-            }, 300)
-        }
-    }
-
     componentDidUpdate(prevProps, prevState) {
         if (prevState.isExport !== this.state.isExport) {
             this.tableToExcel(this.props.fileName);
@@ -89,6 +77,7 @@ class Export extends Component {
     ifIE() {
         var isIE11 = navigator.userAgent.indexOf(".NET CLR") > -1;
         var isIE11orLess = isIE11 || navigator.appVersion.indexOf("MSIE") != -1;
+        this.setState({ isExport: false })
         return isIE11orLess;
     }
 
