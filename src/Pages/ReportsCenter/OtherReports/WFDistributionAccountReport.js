@@ -23,7 +23,8 @@ class WFDistributionAccountReport extends Component {
             dropDownList: [],
             selectedContact: { label: Resources.selectContact[currentLanguage], value: "0" },
             selectedContact_level: { label: Resources.selectContact[currentLanguage], value: "0" },
-            rows: []
+            rows: [],
+            selectedRows: []
         }
 
         if (!Config.IsAllow(3720)) {
@@ -138,9 +139,11 @@ class WFDistributionAccountReport extends Component {
         this.simpleDialog.show()
     }
 
+   
     addLevel() {
         if (this.state.selectedContact_level.value != '0') {
-            Api.post('AddWFItemsToSameLevel?contactId=' + this.state.selectedContact.value + '&toContactId=' + this.state.selectedContact_level.value, this.state.selectedRows).then(() => {
+
+            Api.post('AddWFItemsToSameLevel?contactId=' + this.state.selectedContact.value + '&tocontactId=' + this.state.selectedContact_level.value, this.state.selectedRows).then(() => {
                 toast.success(Resources.operationSuccess[currentLanguage])
                 this.setState({ showModal: false })
             }).catch(() => {
@@ -169,8 +172,10 @@ class WFDistributionAccountReport extends Component {
             return false;
         }
     }
+   
 
     render() {
+
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
                 pageSize={this.state.rows.length}
@@ -184,6 +189,7 @@ class WFDistributionAccountReport extends Component {
                 shouldCheck={(id, checked) => {
                     this.checkedRow(id, checked);
                 }}
+              
             />
         ) : <LoadingSection />
 
@@ -224,6 +230,7 @@ class WFDistributionAccountReport extends Component {
                             handleChange={event => this.setState({ selectedContact: event })} />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
+                  
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}

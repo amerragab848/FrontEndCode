@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
-import { toast } from "react-toastify";
-import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
+import { toast } from "react-toastify"; 
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous' 
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import ExportDetails from "../ExportReportCenterDetails";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
@@ -38,6 +37,12 @@ class ProjectDocumentStatus extends Component {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push("/");
         }
+
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
     componentDidMount() {
@@ -67,22 +72,19 @@ class ProjectDocumentStatus extends Component {
 
         const btnExport = this.state.isLoading === false ?
             (
-                <Export
-                    rows={this.state.isLoading === false ? this.state.rows : []}
-                    columns={columns}
-                    fileName={Resources.ProjectDocumentStatus[currentLanguage]}
-                />
+                <ExportDetails fieldsItems={columns}
+                    rows={this.state.rows} fields={this.fields} fileName={Resources.ProjectDocumentStatus[currentLanguage]} />
             ) : null;
 
         return (
             <React.Fragment>
                 <div className="filterBTNS">
-                    {btnExport}
+
                 </div>
                 <div className="reports__content">
                     <header>
                         <h2 className="zero">{Resources.ProjectDocumentStatus[currentLanguage]}</h2>
-                        {this.state.isLoading ? <LoadingSection /> : null}
+                        {btnExport}
                     </header>
                     <Formik
                         initialValues={{
@@ -98,7 +100,7 @@ class ProjectDocumentStatus extends Component {
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
                                         selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                        handleChange={e => this.setState({ selectedProject: e })}
+                                        handleChange={e => { this.setState({ selectedProject: e }); this.fields[0].value = e.label }}
                                         onBlur={setFieldTouched}
                                         error={errors.selectedProject}
                                         touched={touched.selectedProject}

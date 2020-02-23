@@ -2,18 +2,15 @@ import React, { Component, Fragment } from 'react'
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
+import ExportDetails from "../ExportReportCenterDetails";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
-import Config from '../../../Services/Config';
-import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Config from '../../../Services/Config'; 
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
 import moment from "moment";
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import Api from '../../../api';
 import BarChartComp from '../TechnicalOffice/BarChartComp'
-import HeaderDocument from '../../../Componants/OptionsPanels/HeaderDocument'
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
@@ -83,6 +80,12 @@ class projectsAchievements extends Component {
                 sortable: true,
             },
         ];
+
+        this.fields = [{
+            title: Resources["year"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
     getData = () => {
         this.setState({ isLoading: true })
@@ -104,13 +107,11 @@ class projectsAchievements extends Component {
                     seriesData.push({ name: item.quarter, value: item.total, stack: index })
                 })
                 let xAxis = { categories: _catag }
-                //series.push({ name: Resources['total'][currentLanguage], data: _data })
                 this.setState({ series: seriesData, xAxis, noClicks: noClicks + 1, showChart: true });
             }
         ).catch(() => {
             this.setState({ isLoading: false })
         })
-
     }
 
     handleChange = (name, value) => {
@@ -140,12 +141,10 @@ class projectsAchievements extends Component {
             />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectsAchievments'} />
-            : null
+            <ExportDetails fieldsItems={this.columns}
+                rows={this.state.rows} fields={this.fields} fileName={Resources.projectsAchievments[currentLanguage]} /> : null
 
         return (
-
-
             <div className="reports__content">
                 <header>
                     <h2 className="zero">{Resources.projectsAchievments[currentLanguage]}</h2>
@@ -168,7 +167,7 @@ class projectsAchievements extends Component {
                                     title="year"
                                     data={this.state.yearList}
                                     selectedValue={this.state.selectedYear}
-                                    handleChange={event => this.setState({ selectedYear: event })}
+                                    handleChange={event => { this.setState({ selectedYear: event }); this.fields[0].value = event.label }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedYear}
                                     touched={touched.selectedYear}

@@ -26,7 +26,7 @@ let perviousRoute = 0;
 let arrange = 0;
 
 class PaymentCertificationAddEdit extends Component {
-   
+
     constructor(props) {
 
         super(props);
