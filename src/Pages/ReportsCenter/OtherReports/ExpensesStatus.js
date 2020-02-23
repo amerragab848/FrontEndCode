@@ -6,7 +6,8 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
-import Export from "../../../Componants/OptionsPanels/Export";
+//import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from 'react-customized-grid';
 import Dataservice from '../../../Dataservice';
 import moment from 'moment';
@@ -109,6 +110,23 @@ class ExpensesStatus extends Component {
                 "sortable": true
             }
         ];
+        this.fields = [{
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        },{
+            title: Resources["CompanyName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["accounts"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
     componentWillMount() {
@@ -169,7 +187,10 @@ class ExpensesStatus extends Component {
         ) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'expensesStatus'} />
+            //<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'expensesStatus'} />
+            <ExportDetails fieldsItems={this.columns}
+             rows={this.state.rows}
+             fields={this.fields} fileName={'expensesStatus'} />
             : null
 
         return (
@@ -187,25 +208,25 @@ class ExpensesStatus extends Component {
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='startDate'
                             startDate={this.state.startDate}
-                            handleChange={e => this.handleChange('startDate', e)} />
+                            handleChange={e => {this.handleChange('startDate', e); this.fields[0].value = e }} />
                     </div>
 
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='finishDate'
                             startDate={this.state.finishDate}
-                            handleChange={e => this.handleChange('finishDate', e)} />
+                            handleChange={e => {this.handleChange('finishDate', e);this.fields[1].value = e}} />
                     </div>
 
                     <div className="linebylineInput valid-input">
                         <Dropdown title='CompanyName' data={this.state.CompaniesData} name='selectedCompany'
-                            selectedValue={this.state.selectedCompany} handleChange={e => this.HandleChangeProject(e)} />
+                            selectedValue={this.state.selectedCompany} handleChange={e => {this.HandleChangeProject(e);this.fields[2].value = e.label}} />
 
                     </div>
 
                     <div className="linebylineInput valid-input " >
                         <Dropdown title='accounts' data={this.state.AccountsData} name='selectedAccount'
                             selectedValue={this.state.selectedAccount}
-                            handleChange={e => this.setState({ selectedAccount: e })} />
+                            handleChange={e => {this.setState({ selectedAccount: e });this.fields[3].value = e.label}} />
 
                     </div>
 

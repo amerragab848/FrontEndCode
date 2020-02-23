@@ -137,7 +137,8 @@ class ContractsStatus extends Component {
         const btnExport = this.state.isLoading === false ?
             (
             <ExportDetails fieldsItems={this.columns}
-                rows={this.state.rows} fields={this.fields} fileName={Resources.contractStatus[currentLanguage]} />
+                rows={this.state.rows}
+                 fields={this.fields} fileName={Resources.contractStatus[currentLanguage]} />
             ) : null;
 
         return (
