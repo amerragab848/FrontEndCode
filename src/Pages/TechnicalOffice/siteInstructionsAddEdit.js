@@ -598,7 +598,7 @@ class siteInstructionsAddEdit extends Component {
                                                                         onChange={(e) => this.handleChange(e, 'receivedFor')} />
                                                                 </div>
                                                             </div>
-                                                            <div className="linebylineInput valid-input">
+                                                            {/* <div className="linebylineInput valid-input">
                                                                 <Dropdown
                                                                     title="inspectionRequest"
                                                                     isMulti={false}
@@ -606,7 +606,7 @@ class siteInstructionsAddEdit extends Component {
                                                                     selectedValue={this.state.selecetedinspectionRequest}
                                                                     handleChange={event => this.handleChangeDropDown(event, 'inspectionRequestId', false, '', '', '', 'selecetedinspectionRequest')}
                                                                     index="areaId" />
-                                                            </div>
+                                                            </div> */}
                                                             <div className="letterFullWidth">
                                                                 <label className="control-label">{Resources.message[currentLanguage]}</label>
                                                                 <div className="inputDev ui input">
