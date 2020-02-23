@@ -322,25 +322,6 @@ class tenderAnalysisAddEdit extends Component {
             this.setState({ companies: [...result] });
         });
 
-        // dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
-        //     if (isEdit) {
-        //         let disciplineId = this.props.document.disciplineId;
-        //         let discpline = {};
-        //         if (disciplineId) {
-        //             discpline = result.filter(function (i) {
-        //                 return i.value == disciplineId;
-        //             });
-
-        //             this.setState({
-        //                 selectedDiscpline: discpline
-        //             });
-        //         }
-        //     }
-        //     this.setState({
-        //         discplines: [...result]
-        //     });
-        // });
-
         dataservice.GetDataListCached("GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
                 let decisionId = this.props.document.decisionId;
@@ -671,9 +652,8 @@ class tenderAnalysisAddEdit extends Component {
                                                                 </div>
                                                             </button>
                                                             :
-                                                            <div className="slider-Btns">
-                                                                {this.showBtnsSaving()}
-                                                            </div>}
+                                                            this.showBtnsSaving()
+                                                        }
                                                     </div>
 
 
