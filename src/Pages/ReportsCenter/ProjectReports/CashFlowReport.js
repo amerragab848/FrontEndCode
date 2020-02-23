@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import moment from "moment";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
@@ -40,9 +40,15 @@ class CashFlowReport extends Component {
                 pathname: "/"
             })
         }
+
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'projectId').then(
             result => {
                 this.setState({
@@ -52,12 +58,24 @@ class CashFlowReport extends Component {
                 toast.error('somthing wrong')
             })
     }
+
     getGridRows = () => {
         this.setState({ isLoading: true })
         Dataservice.GetDataGrid('GetCashFlow?projectId=' + this.state.selectedProject.value + '').then(
-            res => {
+            result => {
+
+                this.columns = [];
+
+                result.map(item => {
+                    return this.columns.push({
+                        title: item.header,
+                        type: "text",
+                        field : item
+                    })
+                })
+
                 this.setState({
-                    rows: res,
+                    rows: result,
                     isLoading: false
                 })
             }
@@ -67,92 +85,95 @@ class CashFlowReport extends Component {
     }
 
     render() {
-       
+        const btnExport = this.state.isLoading === false ?
+            <ExportDetails fieldsItems={this.columns}
+                rows={this.state.rows} fields={this.fields} fileName={Resources.cashFlow[currentLanguage]} /> : null
+
         return (
             <React.Fragment>
-            <div className="reports__content">
-                <header>
-                    <h2 className="zero">{Resources.cashFlow[currentLanguage]}</h2>
-                    {this.state.isLoading?<LoadingSection/>:null}
-                </header>
-                <Formik
-                    initialValues={{
-                        selectedProject: '',
-                    }}
-                    enableReinitialize={true}
-                    validationSchema={ValidtionSchema}
-                    onSubmit={(values, actions) => {
-                        this.getGridRows()
-                    }}>
-                    {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
-                        <Form className="proForm reports__proForm" onSubmit={handleSubmit}>
-                            <div className="linebylineInput valid-input">
-                                <Dropdown  title='Projects' data={this.state.ProjectsData} name='selectedProject'
-                                    selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectedProject: e })}
-                                    onBlur={setFieldTouched}
-                                    error={errors.selectedProject}
-                                    touched={touched.selectedProject}
-                                    value={values.selectedProject} />
-                            </div>
+                <div className="reports__content">
+                    <header>
+                        <h2 className="zero">{Resources.cashFlow[currentLanguage]}</h2>
+                        {btnExport}
+                    </header>
+                    <Formik
+                        initialValues={{
+                            selectedProject: '',
+                        }}
+                        enableReinitialize={true}
+                        validationSchema={ValidtionSchema}
+                        onSubmit={(values, actions) => {
+                            this.getGridRows()
+                        }}>
+                        {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
+                            <Form className="proForm reports__proForm" onSubmit={handleSubmit}>
+                                <div className="linebylineInput valid-input">
+                                    <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
+                                        selectedValue={this.state.selectedProject} onChange={setFieldValue}
+                                        handleChange={e => { this.setState({ selectedProject: e }); this.fields[0].value = e.label }}
+                                        onBlur={setFieldTouched}
+                                        error={errors.selectedProject}
+                                        touched={touched.selectedProject}
+                                        value={values.selectedProject} />
+                                </div>
                                 <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
-                        </Form>
-                    )}
-                </Formik>
-            </div>
-            <div className="doc-pre-cycle letterFullWidth">
-                {this.state.rows ?
-                    <table className="attachmentTable">
-                        <thead>
-                            <tr>
-                                {this.state.rows.map(i => {
-                                    return (
-                                        <th>
-                                            <div className="headCell">
-                                                {i.header}
-                                            </div>
-                                        </th>
-                                    )
-                                })}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                {this.state.rows.map(i => {
-                                    return (
-                                        <td>
-                                            <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
-                                                {i.totalIn}
-                                            </div>
-                                        </td>
-                                    )
-                                })}
-                            </tr>
-                            <tr>
-                                {this.state.rows.map(i => {
-                                    return (
-                                        <td>
-                                            <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
-                                                {i.totalOut}
-                                            </div>
-                                        </td>
-                                    )
-                                })}
-                            </tr>
-                            <tr>
-                                {this.state.rows.map(i => {
-                                    return (
-                                        <td>
-                                            <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
-                                                {i.variance}
-                                            </div>
-                                        </td>
-                                    )
-                                })}
-                            </tr>
-                        </tbody>
-                    </table> : null}
-            </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+                <div className="doc-pre-cycle letterFullWidth">
+                    {this.state.rows ?
+                        <table className="attachmentTable">
+                            <thead>
+                                <tr>
+                                    {this.state.rows.map(i => {
+                                        return (
+                                            <th>
+                                                <div className="headCell">
+                                                    {i.header}
+                                                </div>
+                                            </th>
+                                        )
+                                    })}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {this.state.rows.map(i => {
+                                        return (
+                                            <td>
+                                                <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
+                                                    {i.totalIn}
+                                                </div>
+                                            </td>
+                                        )
+                                    })}
+                                </tr>
+                                <tr>
+                                    {this.state.rows.map(i => {
+                                        return (
+                                            <td>
+                                                <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
+                                                    {i.totalOut}
+                                                </div>
+                                            </td>
+                                        )
+                                    })}
+                                </tr>
+                                <tr>
+                                    {this.state.rows.map(i => {
+                                        return (
+                                            <td>
+                                                <div className="contentCell" style={{ width: '100%', justifyContent: 'center' }}>
+                                                    {i.variance}
+                                                </div>
+                                            </td>
+                                        )
+                                    })}
+                                </tr>
+                            </tbody>
+                        </table> : null}
+                </div>
             </React.Fragment>
         )
     }
