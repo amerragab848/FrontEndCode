@@ -34,10 +34,11 @@ var steps_defination = [];
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
-    subject: Yup.string().required(Resources['subjectRequired'][currentLanguage]).max(450, Resources['maxLength'][currentLanguage]),
-    riskType: Yup.string().required(Resources['riskType'][currentLanguage]).nullable(true),
-    ownerCompanyId: Yup.string().required(Resources['companyRiskOwnerRequired'][currentLanguage]).nullable(true),
-    correlationPercentage: Yup.number(Resources['onlyNumbers'][currentLanguage]).min(0),
+    refDoc: Yup.string().required(Resources['refDoc'][currentLanguage]),
+    riskType: Yup.string().required(Resources['riskType'][currentLanguage]).nullable(),
+    ownerCompanyId: Yup.string().required(Resources['companyRiskOwnerRequired'][currentLanguage]).nullable(),
+    ownerContactId: Yup.string().required(Resources['ownerContactRequired'][currentLanguage]).nullable()
+    //correlationPercentage: Yup.number(Resources['onlyNumbers'][currentLanguage]).min(0),
 });
 
 const documentCycleValidationSchema = Yup.object().shape({
@@ -68,7 +69,7 @@ let perviousRoute = '';
 let arrange = 0;
 
 const find = require('lodash/find');
-const orderBy =require('lodash/orderBy');
+const orderBy = require('lodash/orderBy');
 
 class riskAddEdit extends Component {
 
@@ -101,6 +102,7 @@ class riskAddEdit extends Component {
         }
 
         this.state = {
+            testStat: [],
             totalResidualRisk: 0,
             totalMedigationCost: 0,
             totalProposedMit: 0,
@@ -233,6 +235,76 @@ class riskAddEdit extends Component {
         dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=currency", 'title', 'id', 'defaultLists', "approvalstatus", "listType").then(result => {
             this.setState({ currency: result })
         });
+
+        if (this.state.docId > 0) {
+
+            this.setState({ isEdit: true });
+            this.props.actions.documentForEdit("GetCommunicationRiskForEdit?id=" + this.state.docId);
+
+            dataservice.GetDataGrid("GetRiskCycles?riskId=" + this.state.docId).then(result => {
+                let IRCyclesPre = [];
+                let IRCyclesPost = [];
+                let totalProposedMit = 0;
+                if (result) {
+                    result.map(i => {
+                        if (i.isActive == true) {
+                            IRCyclesPre.push(i)
+                        } else {
+                            IRCyclesPost.push(i)
+                            totalProposedMit = totalProposedMit + (i.mitigationCost == null ? 0 : i.mitigationCost);
+                        }
+                    })
+                }
+
+                let totalPostRiskEmv = this.state.totalPostRiskEmv;
+                let totalResidualRisk = (totalPostRiskEmv == null ? 0 : totalPostRiskEmv) + totalProposedMit;
+
+                this.setState({
+                    totalProposedMit: totalProposedMit,
+                    totalResidualRisk: totalResidualRisk,
+
+                    IRCyclesPre: IRCyclesPre,
+                    IRCyclesPost: IRCyclesPost
+                });
+
+                let data = { items: result ? result : [] };
+                this.props.actions.ExportingData(data);
+            });
+            this.fillDropDownsCycle(true);
+
+        } else {
+
+            const riskDocument = {
+                id: 0,
+                projectId: projectId,
+                arrange: "1",
+                refDoc: "",
+                fromCompanyId: null,
+                fromContactId: null,
+                ownerCompanyId: null,
+                ownerContactId: null,
+                riskType: null,
+                subject: "",
+                requiredDate: moment().format(),
+                docDate: moment().format(),
+                status: true,
+                area: "",
+                location: "",
+                priorityId: "",
+                description: "",
+                descriptionMitigation: "",
+                sharedSettings: ""
+            };
+            this.setState({
+
+                document: riskDocument
+            });
+            this.fillDropDowns(false);
+            this.fillDropDownsCycle(false);
+
+            this.props.actions.documentForAdding();
+            this.GetNextArrange();
+        }
     };
 
     componentWillUnmount() {
@@ -290,86 +362,20 @@ class riskAddEdit extends Component {
         }
     }
 
-    componentWillMount() {
-        if (this.state.docId > 0) {
-
-            this.setState({ isEdit: true });
-            this.props.actions.documentForEdit("GetCommunicationRiskForEdit?id=" + this.state.docId);
-
-            dataservice.GetDataGrid("GetRiskCycles?riskId=" + this.state.docId).then(result => {
-                let IRCyclesPre = [];
-                let IRCyclesPost = [];
-                let totalProposedMit = 0;
-                if (result) {
-                    result.map(i => {
-                        if (i.isActive == true) {
-                            IRCyclesPre.push(i)
-                        } else {
-                            IRCyclesPost.push(i)
-                            totalProposedMit = totalProposedMit + (i.mitigationCost == null ? 0 : i.mitigationCost);
-                        }
-                    })
-                }
-
-                let totalPostRiskEmv = this.state.totalPostRiskEmv;
-                let totalResidualRisk = (totalPostRiskEmv == null ? 0 : totalPostRiskEmv) + totalProposedMit;
-
-                this.setState({
-                    totalProposedMit: totalProposedMit,
-                    totalResidualRisk: totalResidualRisk,
-
-                    IRCyclesPre: IRCyclesPre,
-                    IRCyclesPost: IRCyclesPost
-                });
-
-                let data = { items: result ? result : [] };
-                this.props.actions.ExportingData(data);
-            });
-            this.fillDropDownsCycle(true);
-
-        } else {
-            const riskDocument = {
-                id: 0,
-                projectId: projectId,
-                arrange: "1",
-                refDoc: "",
-                fromCompanyId: null,
-                fromContactId: null,
-                ownerCompanyId: null,
-                ownerContactId: null,
-                riskType: null,
-                subject: "",
-                requiredDate: moment(),
-                docDate: moment(),
-                status: true,
-                area: "",
-                location: "",
-                priorityId: "",
-                description: "",
-                descriptionMitigation: "",
-                sharedSettings: ""
-            };
-
-            this.setState({
-                document: riskDocument
-            });
-
-            this.fillDropDowns(false);
-            this.fillDropDownsCycle(false);
-            this.props.actions.documentForAdding();
-            this.GetNextArrange();
-        }
-
-    }
+   
 
     GetNextArrange() {
         let url = "GetNextArrangeMainDoc?projectId=" + this.state.projectId + "&docType=" + this.state.docTypeId + "&companyId=0&contactId=0";
-        let original_document = { ...this.state.document };
+
+        let updated_document = {};
 
         dataservice.GetNextArrangeMainDocument(url).then(res => {
-            original_document.arrange = res;
+            updated_document["arrange"] = res;
+            let original_document = { ...this.state.document };
+            updated_document = Object.assign(original_document, updated_document);
+
             this.setState({
-                document: original_document
+                document: updated_document
             });
         })
     }
@@ -393,14 +399,14 @@ class riskAddEdit extends Component {
         dataservice.GetDataListCached("GetProjectProjectsCompaniesForList?projectId=" + projectId, "companyName", "companyId", 'companies', this.state.projectId, "projectId").then(result => {
 
             if (isEdit) {
-                console.log("selected "+JSON.stringify(this.state.selectedToContact));
+                console.log("selected " + JSON.stringify(this.state.selectedToContact));
                 let ownerCompanyId = this.props.document.ownerCompanyId;
 
                 if (ownerCompanyId) {
-                    let selectedCompany=find(result,function(i){return i.value==ownerCompanyId;})
+                    let selectedCompany = find(result, function (i) { return i.value == ownerCompanyId; })
                     this.setState({
                         //selectedToCompany: { label: this.props.document.ownerCompanyName, value: ownerCompanyId }
-                        selectedToCompany: { label:selectedCompany.label , value: ownerCompanyId }
+                        selectedToCompany: { label: selectedCompany.label, value: ownerCompanyId }
                     });
 
                     this.fillSubDropDownInEdit('GetContactsByCompanyId', 'companyId', ownerCompanyId, 'ownerContactId', 'selectedToContact', 'ToContacts');
@@ -1889,7 +1895,7 @@ class riskAddEdit extends Component {
                                         <div className="document-fields">
                                             <Formik initialValues={{ ...this.state.document }}
                                                 validationSchema={validationSchema}
-                                                enableReinitialize={this.props.changeStatus}
+                                                enableReinitialize={true}
                                                 onSubmit={(values) => {
                                                     if (values.isFirstButton) {
                                                         if (this.props.showModal) { return; }
@@ -1900,7 +1906,6 @@ class riskAddEdit extends Component {
                                                             if (this.props.changeStatus == true)
                                                                 this.editRisk();
                                                             this.changeCurrentStep(1);
-
                                                         }
                                                     }
                                                 }}>
@@ -1919,15 +1924,17 @@ class riskAddEdit extends Component {
                                                                         onChange={(e) => this.handleChange(e, 'arrange')} />
                                                                 </div>
                                                             </div>
+
                                                             <div className="linebylineInput valid-input">
                                                                 <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
-                                                                <div className={"ui input inputDev " + (errors.refDoc && touched.refDoc ? (" has-error") : " ")}>
+                                                                <div className={"inputDev ui input" + (errors.refDoc ? (" has-error") : !errors.refDoc && touched.refDoc ? (" has-success") : " ")} >
                                                                     <input type="text" className="form-control" id="refDoc"
-                                                                        value={this.state.document.refDoc || ''}
+                                                                        value={this.state.document.refDoc}
                                                                         name="refDoc"
                                                                         placeholder={Resources.refDoc[currentLanguage]}
                                                                         onBlur={(e) => { handleChange(e); handleBlur(e) }}
                                                                         onChange={(e) => this.handleChange(e, 'refDoc')} />
+                                                                    {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
                                                                 </div>
                                                             </div>
                                                             <div className="linebylineInput linebylineInput__checkbox">
@@ -1943,6 +1950,7 @@ class riskAddEdit extends Component {
                                                             </div>
 
                                                             <div className="linebylineInput valid-input">
+
                                                                 <Dropdown title="riskType"
                                                                     isMulti={false}
                                                                     data={this.state.riskTypes}
@@ -1950,10 +1958,11 @@ class riskAddEdit extends Component {
                                                                     handleChange={(e) => this.handleChangeDropDown(e, "riskType", 'selectedRiskType')}
                                                                     onChange={setFieldValue}
                                                                     onBlur={setFieldTouched}
-                                                                    isClear={false}
-                                                                    index="riskType"
+                                                                    error={errors.riskType}
+                                                                    touched={touched.riskType}
                                                                     name="riskType"
                                                                     id="riskType" />
+
                                                             </div>
                                                             {this.state.docId > 0 ?
                                                                 <Fragment>
@@ -1966,8 +1975,6 @@ class riskAddEdit extends Component {
                                                                                 placeholder={Resources.raisedBy[currentLanguage]} />
                                                                         </div>
                                                                     </div>
-
-
                                                                 </Fragment>
                                                                 :
                                                                 null
@@ -1998,14 +2005,12 @@ class riskAddEdit extends Component {
                                                                                 error={errors.ownerContactId}
                                                                                 touched={touched.ownerContactId}
                                                                                 name="ownerContactId"
-                                                                                id="ownerContactId" classDrop=" contactName1" styles={ContactDropdown} />
+                                                                                id="ownerContactId"
+                                                                                classDrop=" contactName1" styles={ContactDropdown} />
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
                                                             </div>
-
-
                                                             <div className="linebylineInput valid-input alternativeDate">
                                                                 <DatePicker title='docDate'
                                                                     startDate={this.state.document.docDate}
@@ -2019,7 +2024,6 @@ class riskAddEdit extends Component {
                                                                 :
                                                                 null
                                                             }
-
                                                         </div>
 
                                                         <div className="slider-Btns">
@@ -2031,7 +2035,6 @@ class riskAddEdit extends Component {
                                                                         <div className="bounce3" />
                                                                     </div>
                                                                 </button> :
-
                                                                 this.state.docId === 0 ?
                                                                     <button onClick={(e) => setFieldValue('isFirstButton', true)}
                                                                         className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>
@@ -2048,7 +2051,7 @@ class riskAddEdit extends Component {
                                                 {this.state.docId > 0 && this.state.isViewMode === false ? (<UploadAttachment changeStatus={this.props.changeStatus} AddAttachments={10012} EditAttachments={10013} ShowDropBox={10016} ShowGoogleDrive={10017} docTypeId={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} />) : null}
                                                 {this.viewAttachments()}
                                                 <div className="document-fields tableBTnabs">
-                                                    {this.state.docId > 0 ? <AddDocAttachment  projectId={projectId} isViewMode={ this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
+                                                    {this.state.docId > 0 ? <AddDocAttachment projectId={projectId} isViewMode={this.state.isViewMode} docTypeId={this.state.docTypeId} docId={this.state.docId} /> : null}
                                                 </div>
                                                 {this.props.changeStatus === true ? <ViewWorkFlow docType={this.state.docTypeId} docId={this.state.docId} projectId={this.state.projectId} /> : null}
                                             </div>
@@ -2174,7 +2177,7 @@ class riskAddEdit extends Component {
                                                                             </div>
                                                                         </div>
                                                                         <div className="linebylineInput fullInputWidth" style={{ minWidth: '360px', position: 'relative' }}>
-                                                                            <label style={{margin: '0'}} className="control-label">{'Cost Effectiveness'}</label>
+                                                                            <label style={{ margin: '0' }} className="control-label">{'Cost Effectiveness'}</label>
 
                                                                             <div className="ui left pointing label labelWithArrowBorder basic">
                                                                                 <span>{(this.state.totalProposedMit + this.state.totalPostRiskEmv) > this.state.totalPretRiskEmv ? 'Not Cost Effective' : 'Cost Effective'}</span>

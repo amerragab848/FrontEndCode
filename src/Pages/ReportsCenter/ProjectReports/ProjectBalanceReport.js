@@ -1,14 +1,12 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
-import moment from "moment";
+import ExportDetails from "../ExportReportCenterDetails";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -96,6 +94,11 @@ class ProjectBalanceReport extends Component {
             },
         ];
 
+        this.fields = [{
+            title: Resources["statusName"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
     getGridRows = () => {
         this.setState({ isLoading: true })
@@ -159,9 +162,10 @@ class ProjectBalanceReport extends Component {
                 cells={this.columns}
                 rowClick={() => { }}
             />) : <LoadingSection />
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectBalanceReport'} />
-            : null
+        const btnExport =
+            <ExportDetails fieldsItems={this.columns}
+                rows={this.state.rows} fields={this.fields} fileName={Resources.projectBalanceReport[currentLanguage]} />
+
 
         return (
             <div className="reports__content">
@@ -169,7 +173,6 @@ class ProjectBalanceReport extends Component {
                     <h2 className="zero">{Resources.projectBalanceReport[currentLanguage]}</h2>
                     {btnExport}
                 </header>
-
                 <Formik
                     initialValues={{
                         selectedStatus: '',
@@ -182,13 +185,12 @@ class ProjectBalanceReport extends Component {
                     }}>
                     {({ errors, touched, handleBlur, handleChange, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form className="proForm reports__proForm" onSubmit={handleSubmit}>
-
                             <div className="linebylineInput valid-input">
                                 <Dropdown
                                     title='statusName' data={StatusDropData}
                                     name='selectedStatus' value={values.selectedStatus}
                                     selectedValue={this.state.selectedStatus} onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectedStatus: e })}
+                                    handleChange={e => { this.setState({ selectedStatus: e }); this.fields[0].value = e.label }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedStatus}
                                     touched={touched.selectedStatus} />

@@ -4,12 +4,12 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import GridCustom from 'react-customized-grid';
+import ExportDetails from "../ExportReportCenterDetails";
 import "react-customized-grid/main.css";
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
@@ -89,6 +89,15 @@ class ContractsStatus extends Component {
             }
         ];
 
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["contractor"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
     componentDidMount() {
@@ -127,22 +136,16 @@ class ContractsStatus extends Component {
 
         const btnExport = this.state.isLoading === false ?
             (
-                <Export
-                    rows={this.state.isLoading === false ? this.state.rows : []}
-                    columns={this.columns}
-                    fileName={Resources.contractStatus[currentLanguage]}
-                />
+            <ExportDetails fieldsItems={this.columns}
+                rows={this.state.rows} fields={this.fields} fileName={Resources.contractStatus[currentLanguage]} />
             ) : null;
 
         return (
             <React.Fragment>
-                <div className="filterBTNS">
-                    {btnExport}
-                </div>
                 <div className="reports__content">
                     <header>
                         <h2 className="zero">{Resources.contractStatus[currentLanguage]}</h2>
-                        {this.state.isLoading ? <LoadingSection /> : null}
+                        {btnExport}
                     </header>
                     <Formik
                         initialValues={{
@@ -158,7 +161,7 @@ class ContractsStatus extends Component {
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
                                         selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                        handleChange={e => this.setState({ selectedProject: e })}
+                                        handleChange={e => { this.setState({ selectedProject: e }); this.fields[0].value = e.label }}
                                         onBlur={setFieldTouched}
                                         error={errors.selectedProject}
                                         touched={touched.selectedProject}
@@ -167,7 +170,7 @@ class ContractsStatus extends Component {
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title='contractor' data={this.state.contractorData} name='selectedContractor'
                                         selectedValue={this.state.selectedContractor} onChange={setFieldValue}
-                                        handleChange={e => this.setState({ selectedContractor: e })}
+                                        handleChange={e => { this.setState({ selectedContractor: e }); this.fields[1].value = e.label }}
                                         onBlur={setFieldTouched}
                                         error={errors.selectedContractor}
                                         touched={touched.selectedContractor}

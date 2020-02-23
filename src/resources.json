@@ -2881,6 +2881,10 @@
         "en": "-- Please Select Called By Contact --",
         "ar": "-- برجاء اختيار الشخص الداعي للاجتماع --"
     },
+    "ownerContactRequired": {
+        "en": "-- Please Select Owner Contact Required --",
+        "ar": "-- برجاء اختيار الشخص  المالك --"
+    },
     "facilitatorCompany": {
         "en": "Facilitator Company",
         "ar": "الشركة المنسقة للاجتماع"
