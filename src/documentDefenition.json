@@ -4021,7 +4021,7 @@
     "documentViewPermission": 110,
     "documentPermission": 111,
     "documentApi": {
-      "get": "GetCommunicationMeetingMinutes?locationId=0&",
+      "get": "GetCommunicationMeetingMinutes?locationId=1&",
       "getCustom": "GetCommunicationMeetingMinutesExternalCustom?locationId=1&",
       "delete": "CommunicationMeetingMinutesMultipleDelete"
     },

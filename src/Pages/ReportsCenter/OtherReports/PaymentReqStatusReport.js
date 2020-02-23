@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
+//import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from 'react-customized-grid'; 
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -64,7 +65,17 @@ class PaymentReqStatusReport extends Component {
                 }
             ]
         }
-
+        
+        this.fields = [{
+            title: Resources["months"][currentLanguage],
+            value: "",
+            type: "text"
+        },
+        {
+            title: Resources.code[currentLanguage],
+            value: "",
+            type: "text"
+        }];
         if (!Config.IsAllow(3758)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
@@ -152,7 +163,10 @@ class PaymentReqStatusReport extends Component {
             />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'paymentReqStatusReport'} />
+            //<Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'paymentReqStatusReport'} />
+            <ExportDetails fieldsItems={this.state.columns}
+           rows={this.state.rows}
+           fields={this.fields} fileName={'paymentReqStatusReport'} /> 
             : null
 
         return (
@@ -165,19 +179,19 @@ class PaymentReqStatusReport extends Component {
                 <div className='proForm reports__proForm'>
                     <div className="linebylineInput valid-input">
 
-                        <Dropdown title="workFlow" data={this.state.months}
+                        <Dropdown title="months" data={this.state.months}
                             selectedValue={this.state.payment} onBlur={this.handleBlur}
                             name="workFlows" index="workFlows"
-                            handleChange={event => { this.setState({ payment: event }); }} />
+                            handleChange={event => { this.setState({ payment: event });this.fields[0].value = event.label  }} />
                     </div>
 
                     <div className="linebylineInput valid-input">
-                        <label class="control-label">{Resources.subject[currentLanguage]}</label>
+                        <label class="control-label">{Resources.code[currentLanguage]}</label>
                         <div className="inputDev ui input">
                             <input type="text" id="code"
                                 className="form-control"
                                 defaultValue={this.state.code} name="code"
-                                onChange={event => this.setState({ code: event.target.value })}
+                                onChange={event => {this.setState({ code: event.target.value });this.fields[1].value = event.target.value }}
                                 onBlur={() => this.handleBlur()}
                                 placeholder={Resources.code[currentLanguage]} />
                         </div>

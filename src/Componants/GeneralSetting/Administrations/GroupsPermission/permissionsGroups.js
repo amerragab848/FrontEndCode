@@ -5,7 +5,8 @@ import LoadingSection from "../../../../Componants/publicComponants/LoadingSecti
 import Export from "../../../OptionsPanels/Export";
 import { Formik, Form } from 'formik';
 import ConfirmationModal from "../../../publicComponants/ConfirmationModal";
-import GridSetup from "../../../../Pages/Communication/GridSetupWithFilter";
+ import GridCustom from "../../../../Componants/Templates/Grid/CustomGrid";
+
 import config from "../../../../Services/Config";
 import Resources from "../../../../resources.json";
 import { withRouter } from "react-router-dom";
@@ -13,7 +14,8 @@ import { toast } from "react-toastify";
 import { __esModule } from "react-modern-datepicker/build/components/ModernDatepicker";
 import * as Yup from 'yup';
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-const _ = require('lodash')
+const find = require('lodash/find');
+
 const validationSchema = Yup.object().shape({
     GroupName: Yup.string().required(Resources['GroupName'][currentLanguage])
 })
@@ -21,22 +23,58 @@ class permissionsGroups extends Component {
     constructor(props) {
         super(props);
         const columnsGrid = [
+
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
             {
-                key: 'BtnActions',
-                width: 150
-            },
-            {
-                key: "groupName",
-                name: Resources["GroupName"][currentLanguage],
-                width: 400,
-                draggable: true,
+                field: "groupName",
+                title: Resources["GroupName"][currentLanguage],
+                width: 35,
+                groupable: true,
+                fixed: true,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true
+                type: "text"
             },
+
+        ];
+        this.actions = [
+            {
+                title: 'Delete',
+                handleClick: (values) => {
+                    this.setState({
+                        showDeleteModal: true,
+                        selectedRow: values
+                    });
+                },
+                classes: '',
+            }
         ];
 
+        this.rowActions = [
+            {
+                title: Resources['copyTo'][currentLanguage],
+                handleClick: value => {
+                    this.copyTo(value)
+
+                }
+            },
+            {
+                title: Resources['groupsPermissions'][currentLanguage],
+                handleClick: value => {
+                    this.props.history.push({
+                        pathname: '/PermissionsGroupsPermissions/' + value.id,
+                    })
+
+                }
+            },
+            {
+                title: Resources['contacts'][currentLanguage],
+                handleClick: value => {
+                    this.props.history.push({
+                        pathname: '/AccountsGroup/' + value.id,
+                    })
+                }
+            }
+        ];
         this.state = {
             columns: columnsGrid,
             isLoading: true,
@@ -62,24 +100,24 @@ class permissionsGroups extends Component {
                 actions: [
                     {
                         text: Resources['copyTo'][currentLanguage],
-                        callback: (e) => {
-                            this.copyTo()
+                        callback: value => {
+                            this.copyTo(value)
                         }
                     },
                     {
                         text: Resources['groupsPermissions'][currentLanguage],
-                        callback: () => {
+                        callback: value => {
                             this.props.history.push({
-                                pathname: '/PermissionsGroupsPermissions/' + row.id,
+                                pathname: '/PermissionsGroupsPermissions/' + value.id,
                             })
 
                         }
                     },
                     {
                         text: Resources['contacts'][currentLanguage],
-                        callback: () => {
+                        callback: value => {
                             this.props.history.push({
-                                pathname: '/AccountsGroup/' + row.id,
+                                pathname: '/AccountsGroup/' + value.id,
                             })
                         }
                     }
@@ -88,15 +126,17 @@ class permissionsGroups extends Component {
         }
     }
 
-    copyTo = () => {
+    copyTo = (value) => {
         this.setState({ isLoading: true })
         let Group = {
-            id: this.state.selectedRow.id,
-            groupName: this.state.selectedRow.groupName
+            id: value.id,
+            groupName: value.groupName
         }
-        Api.post('AddAccountsPermissionsGroupsCopy', Group).then(() => {
+        Api.post('AddAccountsPermissionsGroupsCopy', Group).then((res) => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
-            this.setState({ isLoading: false })
+            let rows = [...this.state.rows]
+            rows.unshift(res)
+            this.setState({rows, isLoading: false })
         }).catch(() => {
             toast.error(Resources["operationCanceled"][currentLanguage]);
             this.setState({ isLoading: false })
@@ -122,22 +162,26 @@ class permissionsGroups extends Component {
     }
 
     ConfirmdeleteGroupName = () => {
-        if (this.state.rowId[0] != null) {
-            this.setState({ isLoading: true, showDeleteModal: false })
-            Api.post('AccountsPermissionsGroupsDelete?id=' + this.state.rowId[0]).then(() => {
-                toast.success(Resources["operationSuccess"][currentLanguage]);
-                let rows = []
-                this.state.rows.forEach(element => {
-                    if (element.id != this.state.rowId[0]) {
-                        rows.push(element)
-                    }
-                })
-                this.setState({ rows, isLoading: false })
-            }).catch(() => {
-                toast.error(Resources["operationCanceled"][currentLanguage]);
-                this.setState({ isLoading: false })
+        let id = '';
+        this.setState({ isLoading: true, showDeleteModal: false })
+        let rowsData = this.state.rows;
+        this.state.selectedRow.map(i => {
+            id = i
+        })
+        let group = find(rowsData, { 'id': id })
+        Api.post('AccountsPermissionsGroupsDelete?id=' + group.id).then(() => {
+            toast.success(Resources["operationSuccess"][currentLanguage]);
+            let rows = []
+            this.state.rows.forEach(element => {
+                if (element.id != group.id) {
+                    rows.push(element)
+                }
             })
-        }
+            this.setState({ rows, isLoading: false })
+        }).catch(() => {
+            toast.error(Resources["operationCanceled"][currentLanguage]);
+            this.setState({ isLoading: false })
+        })
     }
 
     componentWillMount = () => {
@@ -215,17 +259,32 @@ class permissionsGroups extends Component {
 
         const dataGrid =
             this.state.isLoading === false ? (
-                <GridSetup rows={this.state.rows}
-                    columns={this.state.columns}
-                    cellClick={this.cellClick}
-                    clickHandlerDeleteRows={this.deleteGroupName}
-                    getCellActions={this.GetCellActions}
-                    single={true}
-                    filterColumnsLength={1}
-                    onRowClick={(value, index, column) => this.onRowClick(value, index, column)}
-                />
-            ) : <LoadingSection />
 
+                <GridCustom
+                    ref='custom-data-grid'
+                    key='permissionGroup'
+                    data={this.state.rows}
+                    pageSize={this.state.pageSize}
+                    groups={[]}
+                    actions={this.actions}
+                    rowActions={this.rowActions}
+                    cells={this.state.columns}
+                    openModalColumn={this.state.columnsModal}
+                    showCheckAll={true}
+                    rowClick={cell => {
+                        this.setState({
+                            selectedRow: cell,
+                            selectedgroupName: cell.groupName,
+                            showPopUp: true,
+                            isLoading: false,
+                            currentTitle: 'update'
+                        });
+                        this.simpleDialog.show()
+                    }
+                    }
+                />
+
+            ) : (<LoadingSection />);
         let Exportcolumns = this.state.columns.filter(s => s.key !== 'BtnActions')
 
         const btnExport = this.state.isLoading === false ?

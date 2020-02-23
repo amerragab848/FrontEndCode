@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
+//import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
 import CryptoJS from 'crypto-js';
@@ -80,6 +81,12 @@ class WFDistributionAccountReport extends Component {
                 "sortable": true
             }
         ];
+
+        this.fields = [{
+            title: Resources["ContactName"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
     componentDidMount() {
@@ -139,7 +146,7 @@ class WFDistributionAccountReport extends Component {
         this.simpleDialog.show()
     }
 
-   
+
     addLevel() {
         if (this.state.selectedContact_level.value != '0') {
 
@@ -172,7 +179,7 @@ class WFDistributionAccountReport extends Component {
             return false;
         }
     }
-   
+
 
     render() {
 
@@ -189,13 +196,14 @@ class WFDistributionAccountReport extends Component {
                 shouldCheck={(id, checked) => {
                     this.checkedRow(id, checked);
                 }}
-              
+
             />
         ) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns}
-                fileName={'wokFlowDistrbutionAccountsReport'} /> : null
+        const btnExport = 
+            <ExportDetails fieldsItems={this.columns}
+                rows={this.state.rows}
+                fields={this.fields} fileName={'wokFlowDistrbutionAccountsReport'} />
 
         const addToSameLevel = <div className="doc-container">
             <div className="step-content">
@@ -205,7 +213,7 @@ class WFDistributionAccountReport extends Component {
                             title="ContactName"
                             data={this.state.dropDownList}
                             selectedValue={this.state.selectedContact_level}
-                            handleChange={event => this.setState({ selectedContact_level: event })}
+                            handleChange={event =>  this.setState({ selectedContact_level: event })}
                             name="ContactName"
                             index="ContactName"
                         />
@@ -227,10 +235,10 @@ class WFDistributionAccountReport extends Component {
                     <div className="linebylineInput valid-input">
                         <Dropdown title="ContactName" name="ContactName" index="ContactName"
                             data={this.state.dropDownList} selectedValue={this.state.selectedContact}
-                            handleChange={event => this.setState({ selectedContact: event })} />
+                            handleChange={event =>{ this.setState({ selectedContact: event });this.fields[0].value = event.label }} />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
-                  
+
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}

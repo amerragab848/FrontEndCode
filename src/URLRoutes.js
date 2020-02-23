@@ -2922,13 +2922,13 @@ var routes = [
         settings: { technicalOffice: true, permission: 3762, order: 3 }
     },
 
-    {
-        route: "weeklyReport",
-        moduleId: "TechnicalOffice/weeklyReport",
-        title: "weeklyReport",
-        nav: true,
-        settings: { technicalOffice: true, permission: 3763, order: 4 }
-    },
+    // {
+    //     route: "weeklyReport",
+    //     moduleId: "TechnicalOffice/weeklyReport",
+    //     title: "weeklyReport",
+    //     nav: true,
+    //     settings: { technicalOffice: true, permission: 3763, order: 4 }
+    // },
     {
         route: "contractorsPerformance",
         moduleId: "TechnicalOffice/ContractorsPerformance",

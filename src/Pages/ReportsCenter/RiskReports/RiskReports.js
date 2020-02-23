@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Config from "../../../Services/Config";
 import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
-import Export from "../../../Componants/OptionsPanels/Export";
+//import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import GridSetup from "../../Communication/GridSetup";
 import GridCustom from 'react-customized-grid';
 import dataService from "../../../../src/Dataservice";
@@ -70,6 +71,19 @@ class RiskReports extends Component {
                 "type": "text"
             }
         ];
+        this.fields = [{
+            title:  Resources["type"][currentLanguage],
+            value: "",
+            type: "text"
+        },{
+            title:this.state.title,
+            value: "",
+            type: "text"
+        },{
+            title: Resources["company"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
     componentDidMount() {
@@ -367,7 +381,12 @@ class RiskReports extends Component {
             />
         ) : (<LoadingSection />);
 
-        const btnExport = this.state.isLoading === false ? (<Export rows={this.state.isLoading === false ? this.state.fillDataGrid : []} columns={this.columns} fileName={"Risk Report"} />) : null;
+        const btnExport = this.state.isLoading === false ? (
+        //<Export rows={this.state.isLoading === false ? this.state.fillDataGrid : []} columns={this.columns} fileName={"Risk Report"} />
+        <ExportDetails fieldsItems={this.columns}
+        rows={this.state.fillDataGrid}
+        fields={this.fields} fileName={'Risk Report'} />
+): null;
 
         return (
             <div className="reports__content">
@@ -382,7 +401,7 @@ class RiskReports extends Component {
                         <Dropdown
                             title="type"
                             data={this.state.riskType}
-                            handleChange={this.handleChange}
+                            handleChange={e=>{this.handleChange(e);this.fields[0].value = e.label} }
                             index="type"
                             name="type"
                             value={this.state.selectedType}
@@ -393,7 +412,7 @@ class RiskReports extends Component {
                         <Dropdown
                             title={this.state.title}
                             data={this.state.listesTypeData}
-                            handleChange={this.handleChangeDefault.bind(this)}
+                            handleChange={e=>{this.handleChangeDefault.bind(this);this.fields[1].value = e.label}}
                             index={this.state.selectedValue.label}
                             name={this.state.selectedValue.label}
                             value={this.state.selectedValue}
@@ -403,7 +422,7 @@ class RiskReports extends Component {
                         <Dropdown
                             title="company"
                             data={this.state.companies}
-                            handleChange={this.handleChangeCompany.bind(this)}
+                            handleChange={e=>{this.handleChangeCompany.bind(this);this.fields[2].value = e.label}}
                             index="company"
                             name="company"
                             value={this.state.selectedCompany}

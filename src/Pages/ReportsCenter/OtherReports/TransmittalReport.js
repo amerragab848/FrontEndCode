@@ -4,7 +4,8 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export"; 
+//import Export from "../../../Componants/OptionsPanels/Export"; 
+import ExportDetails from "../ExportReportCenterDetails";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import CryptoJS from 'crypto-js';
 import GridCustom from 'react-customized-grid';
@@ -138,6 +139,15 @@ class TransmittalReport extends Component {
                 "sortable": true
             }
         ];
+        this.fields = [{
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
     subjectLink = ({ value, row }) => {
@@ -186,8 +196,11 @@ class TransmittalReport extends Component {
             />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'transmittalReport'} />
-            : null
+           // <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'transmittalReport'} />
+           <ExportDetails fieldsItems={this.columns}
+           rows={this.state.rows}
+           fields={this.fields} fileName={'transmittalReport'} />  
+           : null
 
         return (
             <div className="reports__content">
@@ -218,12 +231,12 @@ class TransmittalReport extends Component {
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='startDate'
                             startDate={this.state.startDate}
-                            handleChange={e => this.handleChange('startDate', e)} />
+                            handleChange={e => {this.handleChange('startDate', e); this.fields[0].value = e }} />
                     </div>
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='finishDate'
                             startDate={this.state.finishDate}
-                            handleChange={e => this.handleChange('finishDate', e)} />
+                            handleChange={e => {this.handleChange('finishDate', e); this.fields[1].value = e }} />
                     </div>
 
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
