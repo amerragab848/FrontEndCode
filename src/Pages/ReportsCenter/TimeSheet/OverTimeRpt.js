@@ -5,17 +5,17 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Export from "../../../Componants/OptionsPanels/Export";
 import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
+import ExportDetails from "../ExportReportCenterDetails";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
+
 const validationSchema = Yup.object().shape({
     companyName: Yup.string().required(Resources['companyRequired'][currentLanguage]).nullable(true)
 })
@@ -41,8 +41,8 @@ class overtTimeRpt extends Component {
             this.props.history.push({
                 pathname: "/"
             });
-
         }
+
         this.columns = [{
             "field": "contactName",
             "title": Resources.ContactName[currentLanguage],
@@ -116,6 +116,28 @@ class overtTimeRpt extends Component {
             "sortable": true
         }
         ];
+
+        this.fields = [{
+            title: Resources["CompanyName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["ContactName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
     componentDidMount() {
@@ -198,9 +220,8 @@ class overtTimeRpt extends Component {
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['overtime'][currentLanguage]} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.overtime[currentLanguage]} />
 
 
         return (
@@ -226,7 +247,8 @@ class overtTimeRpt extends Component {
                                     <Dropdown title="CompanyName" name="companyName" index="companyName"
                                         data={this.state.companiesList} selectedValue={this.state.selectedCompany}
                                         handleChange={event => {
-                                            this.setState({ selectedCompany: event })
+                                            this.setState({ selectedCompany: event });
+                                            this.fields[0].value = event.label;
                                             this.getDataList('GetContactsByCompanyId?companyId=' + event.value, 'contactName', 'id', 'contactsList');
                                         }}
                                         onChange={setFieldValue}
@@ -239,25 +261,34 @@ class overtTimeRpt extends Component {
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="ContactName" name="ContactName" index="ContactName"
                                         data={this.state.contactsList} selectedValue={this.state.selectedContact}
-                                        handleChange={event => this.setState({ selectedContact: event })} />
+                                        handleChange={event => {
+                                            this.setState({ selectedContact: event });
+                                            this.fields[1].value = event.label;
+                                        }} />
                                 </div>
 
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="Projects" name="projectName" index="projects"
                                         data={this.state.projectsList} selectedValue={this.state.selectedProject}
-                                        handleChange={event => this.setState({ selectedProject: event })}
+                                        handleChange={event => {
+                                            this.setState({ selectedProject: event });
+                                            this.fields[2].value = event.label;
+                                        }}
                                     />
                                 </div>
 
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='startDate'
                                         startDate={this.state.startDate}
-                                        handleChange={e => this.setDate('startDate', e)} />
+                                        handleChange={e => {
+                                            this.setDate('startDate', e);
+                                            this.fields[3].value = e;
+                                        }} />
                                 </div>
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='finishDate'
                                         startDate={this.state.finishDate}
-                                        setDate={e => this.setDate('finishDate', e)} />
+                                        setDate={e => { this.setDate('finishDate', e); this.fields[4].value = e; }} />
                                 </div>
                                 <button className="primaryBtn-1 btn smallBtn"  >{Resources['search'][currentLanguage]}</button>
                             </Form>

@@ -12,6 +12,7 @@ import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Api from '../../../api';
+import ExportDetails from "../ExportReportCenterDetails";
 import moment from 'moment';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
@@ -32,12 +33,14 @@ class CollectedPaymentRequisition extends Component {
             startDate: moment(),
             pageSize: 200,
         }
+
         if (!Config.IsAllow(3681)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
             })
         }
+
         this.columns = [
             {
                 field: "collected",
@@ -56,14 +59,25 @@ class CollectedPaymentRequisition extends Component {
                 fixed: false,
                 type: "date",
                 sortable: true,
-            },
+            }
         ];
+
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
     componentDidMount() {
-    }
-
-    componentWillMount() {
         Dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'projectId').then(
             result => {
                 this.setState({
@@ -110,9 +124,8 @@ class CollectedPaymentRequisition extends Component {
                 cells={this.columns}
                 rowClick={() => { }}
             />) : <LoadingSection />
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'collectedPaymentRequisition'} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.collectedPaymentRequisition[currentLanguage]} />
 
         return (
             <div className="reports__content">
@@ -129,13 +142,12 @@ class CollectedPaymentRequisition extends Component {
                     onSubmit={(values, actions) => {
                         this.getGridRows()
                     }}>
-
                     {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
                             <div className="linebylineInput valid-input">
                                 <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
                                     selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectedProject: e })}
+                                    handleChange={e => { this.setState({ selectedProject: e }); this.fields[0].value = e.label }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedProject}
                                     touched={touched.selectedProject}
@@ -144,12 +156,12 @@ class CollectedPaymentRequisition extends Component {
                             <div className="linebylineInput valid-input alternativeDate">
                                 <DatePicker title='startDate'
                                     startDate={this.state.startDate}
-                                    handleChange={e => this.handleChange('startDate', e)} />
+                                    handleChange={e => { this.handleChange('startDate', e); this.fields[1].value = e }} />
                             </div>
                             <div className="linebylineInput valid-input alternativeDate">
                                 <DatePicker title='finishDate'
                                     startDate={this.state.finishDate}
-                                    handleChange={e => this.handleChange('finishDate', e)} />
+                                    handleChange={e => { this.handleChange('finishDate', e); this.fields[2].value = e }} />
                             </div>
                             <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
                         </Form>

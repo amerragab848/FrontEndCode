@@ -4,15 +4,13 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
+import ExportDetails from "../ExportReportCenterDetails";
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import moment from "moment";
-
-//const _ = require('lodash')
+ 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class TaskTimeSheet extends Component {
@@ -35,7 +33,6 @@ class TaskTimeSheet extends Component {
             this.props.history.push({
                 pathname: "/"
             });
-
         }
 
         this.columns = [{
@@ -64,9 +61,23 @@ class TaskTimeSheet extends Component {
             sortable: true,
         }
         ];
+
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (Config.IsAllow(3737)) {
             this.columns.push(
                 {
@@ -131,9 +142,8 @@ class TaskTimeSheet extends Component {
                 rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['taskStatus'][currentLanguage]} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.taskTimeSheet[currentLanguage]} />
 
         return (
             <div className="reports__content">
@@ -146,18 +156,18 @@ class TaskTimeSheet extends Component {
                     <div className="linebylineInput valid-input">
                         <Dropdown title="Projects" name="Projects" index="Projects"
                             data={this.state.dropDownList} selectedValue={this.state.selectedProject}
-                            handleChange={event => this.setState({ selectedProject: event })} />
+                            handleChange={event => { this.setState({ selectedProject: event }); this.fields[0].value = event.label }} />
                     </div>
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='startDate'
                             startDate={this.state.startDate}
-                            handleChange={e => this.handleChange('startDate', e)} />
+                            handleChange={e => { this.handleChange('startDate', e); this.fields[1].value = e }} />
                     </div>
 
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='finishDate'
                             startDate={this.state.finishDate}
-                            handleChange={e => this.handleChange('finishDate', e)} />
+                            handleChange={e => { this.handleChange('finishDate', e); this.fields[2].value = e }} />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
                 </div>

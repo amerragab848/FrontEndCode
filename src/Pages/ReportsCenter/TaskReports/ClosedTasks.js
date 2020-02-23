@@ -1,19 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import Api from '../../../api';
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
+import ExportDetails from "../ExportReportCenterDetails";
 import dataservice from "../../../Dataservice";
-import moment from "moment";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
 
 class TasksList extends Component {
 
@@ -36,8 +32,8 @@ class TasksList extends Component {
             this.props.history.push({
                 pathname: "/"
             });
-
         }
+
         this.columns = [{
             field: "arrange",
             title: Resources["documentNumber"][currentLanguage],
@@ -97,6 +93,19 @@ class TasksList extends Component {
         }
         ];
 
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["CompanyName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["ContactName"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
     componentDidMount() {
@@ -159,6 +168,7 @@ class TasksList extends Component {
             toast.error('somthing wrong')
         })
     }
+
     render() {
 
         const dataGrid = this.state.isLoading === false ? (
@@ -175,9 +185,8 @@ class TasksList extends Component {
                 rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['closedTasks'][currentLanguage]} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.closedTasks[currentLanguage]} />
 
         return (
             <div className="reports__content">
@@ -189,7 +198,13 @@ class TasksList extends Component {
                     <div className="linebylineInput valid-input">
                         <Dropdown title="Projects" name="projects" index="projects"
                             data={this.state.projectsList} selectedValue={this.state.selectedProjects}
-                            handleChange={event => this.setState({ selectedProjects: event })}
+                            handleChange={event => {
+                                this.setState({ selectedProjects: event }); let documentText = '';
+                                event.map(lable => {
+                                    return documentText = lable.label + " - " + documentText
+                                });
+                                this.fields[0].value = documentText
+                            }}
                             isMulti={true} />
                     </div>
 
@@ -201,7 +216,8 @@ class TasksList extends Component {
                                     selectedCompany: event,
                                     selectedContact: { label: Resources.selectContact[currentLanguage], value: 0 },
                                     rows: []
-                                })
+                                });
+                                this.fields[1].value = event.label
                                 this.getDataList('GetContactsByCompanyId?companyId=' + event.value, 'contactName', 'id', 'contactsList');
                             }}
                             isClear={false}
@@ -211,7 +227,7 @@ class TasksList extends Component {
                     <div className="linebylineInput valid-input">
                         <Dropdown title="ContactName" name="ContactName" index="ContactName"
                             data={this.state.contactsList} selectedValue={this.state.selectedContact}
-                            handleChange={event => this.setState({ selectedContact: event })}
+                            handleChange={event => { this.setState({ selectedContact: event }); this.fields[2].value = event.label }}
                             isClear={false}
                             isMulti={false} />
                     </div>

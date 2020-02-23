@@ -6,12 +6,11 @@ import Config from '../../../Services/Config';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
-import Export from "../../../Componants/OptionsPanels/Export";
 import moment from "moment";
-import dataService from '../../../Dataservice' 
+import dataService from '../../../Dataservice';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
- 
-//const _ = require('lodash')
+import ExportDetails from "../ExportReportCenterDetails";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : "No Date";
@@ -29,6 +28,7 @@ class executiveSummary extends Component {
             countContract: 0,
             pageSize: 200,
         }
+
         this.columns = [
             {
                 field: "arrange",
@@ -209,13 +209,35 @@ class executiveSummary extends Component {
             });
         }
 
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }, {
+            title: Resources["originalContractSum"][currentLanguage],
+            value: this.state.ContractSum,
+            type: "text"
+        }, {
+            title: Resources["countContract"][currentLanguage],
+            value: this.state.countContract,
+            type: "text"
+        }];
     }
-    componentWillMount() {
+    componentDidMount() {
         this.setState({ isLoading: true })
         dataService.GetDataList('SelectAllCompany', 'companyName', 'id').then(res => {
             this.setState({ projectList: res, isLoading: false })
         })
     }
+
     getGridtData = () => {
         if (this.state.project.value != '-1') {
             this.setState({ currentComponent: null })
@@ -226,6 +248,8 @@ class executiveSummary extends Component {
             }
             Api.post('GetSumAndCountOfContract', reportobj).then(res => {
                 if (res[0]) {
+                    this.fields[3].value = res[0].originalContactSum;
+                    this.fields[4].value = res[0].countContract;
                     this.setState({ ContractSum: res[0].originalContactSum, countContract: res[0].countContract })
                 }
             }).catch(() => {
@@ -239,8 +263,8 @@ class executiveSummary extends Component {
                 toast.error(Resources.operationCanceled[currentLanguage])
             })
         }
-
     }
+
     handleChange = (name, value) => {
         this.setState({ [name]: value })
     }
@@ -258,9 +282,8 @@ class executiveSummary extends Component {
                 rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'executiveSummary'} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.executiveSummary[currentLanguage]} />
         return (
             <div className="reports__content">
                 <header>
@@ -273,7 +296,7 @@ class executiveSummary extends Component {
                             title="Projects"
                             data={this.state.projectList}
                             selectedValue={this.state.project}
-                            handleChange={event => { this.setState({ project: event }); }}
+                            handleChange={event => { this.setState({ project: event }); this.fields[0].value = event.label }}
                             name="projects"
                             index="projects"
                         />
@@ -281,12 +304,12 @@ class executiveSummary extends Component {
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='startDate'
                             startDate={this.state.startDate}
-                            handleChange={e => this.handleChange('startDate', e)} />
+                            handleChange={e => { this.handleChange('startDate', e); this.fields[1].value = e }} />
                     </div>
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='finishDate'
                             startDate={this.state.finishDate}
-                            handleChange={e => this.handleChange('finishDate', e)} />
+                            handleChange={e => { this.handleChange('finishDate', e); this.fields[2].value = e }} />
                     </div>
 
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridtData()}>{Resources['search'][currentLanguage]}</button>

@@ -6,7 +6,7 @@ import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Export from "../../../Componants/OptionsPanels/Export";
 import GridCustom from 'react-customized-grid';
-import GridSetup from "../../Communication/GridSetup"
+import ExportDetails from "../ExportReportCenterDetails";
 import dataservice from "../../../Dataservice";
 import PieChartComp from '../../../Componants/ChartsWidgets/PieChartComp';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
@@ -71,6 +71,24 @@ class ProjectTypesTimeSheet extends Component {
             "groupable": true,
             "sortable": true
         }];
+
+        this.fields = [{
+            title: Resources["CompanyName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["projectType"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
     componentDidMount() {
@@ -127,10 +145,8 @@ class ProjectTypesTimeSheet extends Component {
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []}
-                columns={this.columns} fileName={Resources['projectTypesTimeSheet'][currentLanguage]} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.projectTypesTimeSheet[currentLanguage]} />
 
         let Chart = this.state.showChart ?
             <PieChartComp
@@ -162,7 +178,7 @@ class ProjectTypesTimeSheet extends Component {
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="CompanyName" name="companyName" index="companyName"
                                         data={this.state.companies} selectedValue={this.state.selectedCompany}
-                                        handleChange={event => this.setState({ selectedCompany: event })}
+                                        handleChange={event => { this.setState({ selectedCompany: event }); this.fields[0].value = event.label }}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
                                         error={errors.companyName}
@@ -173,7 +189,7 @@ class ProjectTypesTimeSheet extends Component {
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="projectType" name="projectTypeId" index="projectTypeId"
                                         data={this.state.projectType} selectedValue={this.state.selectedProjectType}
-                                        handleChange={event => this.setState({ selectedProjectType: event })}
+                                        handleChange={event => { this.setState({ selectedProjectType: event }); this.fields[1].value = event.label }}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
                                         error={errors.projectTypeId}
@@ -184,12 +200,12 @@ class ProjectTypesTimeSheet extends Component {
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='startDate'
                                         startDate={this.state.startDate}
-                                        handleChange={e => this.setDate('startDate', e)} />
+                                        handleChange={e => { this.setDate('startDate', e); this.fields[2].value = e }} />
                                 </div>
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='finishDate'
                                         startDate={this.state.finishDate}
-                                        setDate={e => this.setDate('finishDate', e)} />
+                                        setDate={e => { this.setDate('finishDate', e); this.fields[3].value = e }} />
                                 </div>
                                 <button className="primaryBtn-1 btn smallBtn"  >{Resources['search'][currentLanguage]}</button>
                             </Form>

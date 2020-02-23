@@ -1,23 +1,19 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
-import moment from "moment";
+import ExportDetails from "../ExportReportCenterDetails";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Api from '../../../api.js';
-import HeaderDocument from '../../../Componants/OptionsPanels/HeaderDocument'
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
+
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string()
         .required(Resources['projectSelection'][currentLanguage])
@@ -109,9 +105,18 @@ class paymentRequisition extends Component {
             }
         ];
 
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["siteRequest"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Dataservice.GetDataList('ProjectProjectsForList', 'projectName', 'id').then(
             result => {
                 this.setState({
@@ -154,6 +159,7 @@ class paymentRequisition extends Component {
                 toast.error('somthing wrong')
             })
     }
+
     HandleChangeContractor(e) {
         let contractors = []
         e.forEach(contractor => {
@@ -175,9 +181,8 @@ class paymentRequisition extends Component {
                 cells={this.columns}
                 rowClick={() => { }}
             />) : <LoadingSection />
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'paymentRequisition'} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.paymentRequisition[currentLanguage]} />
 
         return (
             <div className="reports__content reports__multiDrop">
@@ -197,13 +202,19 @@ class paymentRequisition extends Component {
                     }}>
                     {({ errors, touched, values, handleSubmit, setFieldTouched, setFieldValue }) => (
                         <Form onSubmit={handleSubmit} className='proForm reports__proForm'>
-
                             <div className="linebylineInput multiChoice">
                                 <Dropdown title='Projects' data={this.state.ProjectsData}
                                     name='selectedProject'
                                     selectedValue={this.state.selectedProject}
                                     onChange={setFieldValue}
-                                    handleChange={e => this.HandleChangeProject(e)}
+                                    handleChange={e => {
+                                        this.HandleChangeProject(e);
+                                        let documentText = '';
+                                        e.map(lable => {
+                                            return documentText = lable.label + " - " + documentText
+                                        });
+                                        this.fields[0].value = documentText
+                                    }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedProject}
                                     touched={touched.selectedProject}
@@ -213,7 +224,13 @@ class paymentRequisition extends Component {
                             <div className="linebylineInput multiChoice" >
                                 <Dropdown title='siteRequest' data={this.state.contractorsData} name='selectContractor'
                                     selectedValue={this.state.selectContractor} onChange={setFieldValue}
-                                    handleChange={e => this.HandleChangeContractor(e)}
+                                    handleChange={e => {
+                                        this.HandleChangeContractor(e); let documentText = '';
+                                        e.map(lable => {
+                                            return documentText = lable.label + " - " + documentText
+                                        });
+                                        this.fields[1].value = documentText
+                                    }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectContractor}
                                     touched={touched.selectContractor}

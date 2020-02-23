@@ -1,19 +1,17 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import moment from "moment";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
+import ExportDetails from "../ExportReportCenterDetails";
 import PieChartComp from '../PieChartComp'
 import Api from '../../../api';
 
-let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
-
+let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const StatusDropData = [
     { label: Resources.selectAll[currentLanguage], value: '' },
@@ -75,6 +73,11 @@ class ActiveProjectsReport extends Component {
             }
         ];
 
+        this.fields = [{
+            title: Resources["status"][currentLanguage],
+            value: this.state.selectedStatus.label,
+            type: "text"
+        }];
     }
 
 
@@ -139,9 +142,8 @@ class ActiveProjectsReport extends Component {
             />) : <LoadingSection />
 
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'activeProjectsReport'} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.activeProjectsReport[currentLanguage]} />
 
         return (
             <div className="reports__content">
@@ -154,7 +156,7 @@ class ActiveProjectsReport extends Component {
                         <Dropdown title='status'
                             data={StatusDropData}
                             selectedValue={this.state.selectedStatus}
-                            handleChange={e => this.setState({ selectedStatus: e })} />
+                            handleChange={e => { this.setState({ selectedStatus: e }); this.fields[0].value = e.label }} />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" type='submit' onClick={e => this.getGridRows()}>{Resources['search'][currentLanguage]} </button>
                 </div>

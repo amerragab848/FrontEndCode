@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Api from '../../../api';
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
@@ -6,21 +6,18 @@ import LoadingSection from '../../../Componants/publicComponants/LoadingSection'
 import Config from '../../../Services/Config';
 import { Formik, Form } from 'formik';
 import BarChartComp from '../TechnicalOffice/BarChartComp'
-import Export from "../../../Componants/OptionsPanels/Export"; 
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
+import ExportDetails from "../ExportReportCenterDetails";
 import * as Yup from 'yup';
 import dataservice from "../../../Dataservice";
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-//const _ = require('lodash')
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const projectSchema = Yup.object().shape({
-    selectedProject: Yup.string()
-        .required(Resources['projectRequired'][currentLanguage])
-        .nullable(true),
+    selectedProject: Yup.string().required(Resources['projectRequired'][currentLanguage]).nullable(true)
 });
+
 class budgetVarianceReport extends Component {
     constructor(props) {
         super(props)
@@ -69,8 +66,7 @@ class budgetVarianceReport extends Component {
                 fixed: false,
                 type: "text",
                 sortable: true,
-            },
-
+            }
         ];
 
         if (!Config.IsAllow(3683)) {
@@ -80,9 +76,14 @@ class budgetVarianceReport extends Component {
             });
         }
 
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
-    componentWillMount() {
+    componentDidMount() {
         dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'id').then(result => {
             this.setState({
                 projectList: result
@@ -164,10 +165,10 @@ class budgetVarianceReport extends Component {
                 cells={this.columns}
                 rowClick={() => { }}
             />) : <LoadingSection />
-            
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'budgetVarianceReport'} />
-            : null
+
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.budgetVarianceReport[currentLanguage]} />
+
         return (
             <div className="reports__content">
                 <header>
@@ -191,7 +192,7 @@ class budgetVarianceReport extends Component {
                                         name='selectedProject'
                                         selectedValue={this.state.selectedProject}
                                         onChange={setFieldValue}
-                                        handleChange={e => this.setState({ selectedProject: e })}
+                                        handleChange={e => { this.setState({ selectedProject: e }); this.fields[0].value = e.label }}
                                         onBlur={setFieldTouched}
                                         error={errors.selectedProject}
                                         touched={touched.selectedProject}

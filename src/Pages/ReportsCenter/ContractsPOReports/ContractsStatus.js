@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import GridCustom from 'react-customized-grid';
 import ExportDetails from "../ExportReportCenterDetails";
 import "react-customized-grid/main.css";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
 const ValidtionSchema = Yup.object().shape({
