@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Api from '../../../api';
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
@@ -8,22 +8,21 @@ import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Export from "../../../Componants/OptionsPanels/Export";
 import moment from "moment";
-import dataService from '../../../Dataservice' 
+import dataService from '../../../Dataservice';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
-import BarChartComp from '../TechnicalOffice/BarChartComp'
+import BarChartComp from '../TechnicalOffice/BarChartComp';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import ExportDetails from "../ExportReportCenterDetails";
+
 const sumBy = require('lodash/sumBy')
-//const groupBy = require('lodash/groupBy')
 const _ = require("lodash");
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
 });
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
+
 class expensesDetailsOnProjectsReport extends Component {
 
     constructor(props) {
@@ -85,8 +84,31 @@ class expensesDetailsOnProjectsReport extends Component {
                 pathname: "/"
             });
         }
+
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["CompanyName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["users"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
+
     }
-    componentWillMount() {
+    componentDidMount() {
         this.setState({ isLoading: true })
         dataService.GetDataList('ProjectProjectsForList', 'projectName', 'id').then(res => {
             this.setState({ projectsList: res, isLoading: false })
@@ -95,8 +117,6 @@ class expensesDetailsOnProjectsReport extends Component {
         dataService.GetDataList('SelectAllCompany', 'companyName', 'id').then(res => {
             this.setState({ companiesList: res, isLoading: false })
         })
-
-
     }
 
     getGridtData = () => {
@@ -114,11 +134,12 @@ class expensesDetailsOnProjectsReport extends Component {
             this.setState({ showChart: true });
 
             let seriesData = _(res)
-            .groupBy(x => x.projectName)
-            .map((objs, key) => (
-            {  'name': key,
-               'value': sumBy(objs, 'expenseValue')
-            })).value(); 
+                .groupBy(x => x.projectName)
+                .map((objs, key) => (
+                    {
+                        'name': key,
+                        'value': sumBy(objs, 'expenseValue')
+                    })).value();
 
             this.setState({ rows, isLoading: false, showChart: true, series: seriesData })
         }).catch(() => {
@@ -128,9 +149,11 @@ class expensesDetailsOnProjectsReport extends Component {
 
 
     }
+
     handleChange = (name, value) => {
         this.setState({ [name]: value })
     }
+
     companyChange = (e) => {
         this.setState({ isLoading: true, selectedCompany: e })
         dataService.GetDataList('GetContactsByCompanyIdForOnlyUsers?companyId=' + e.value, 'contactName', 'id').then(res => {
@@ -138,6 +161,7 @@ class expensesDetailsOnProjectsReport extends Component {
             this.setState({ usersData, isLoading: false, selectedUser: { label: Resources.users[currentLanguage], value: "-1" } })
         })
     }
+
     HandleChangeProject = (e) => {
         let projectIds = []
         e.forEach(project => {
@@ -145,13 +169,15 @@ class expensesDetailsOnProjectsReport extends Component {
         })
         this.setState({ projectIds })
     }
+
     render() {
+
         let Chart = this.state.showChart ?
             (<BarChartComp series={this.state.series} multiSeries="no"
                 title={Resources['expensesDetailsOnProjectsReport'][currentLanguage]}
                 yTitle={Resources['total'][currentLanguage]} />) : null
-        const dataGrid = this.state.isLoading === false ? (
 
+        const dataGrid = this.state.isLoading === false ? (
             <GridCustom
                 ref='custom-data-grid'
                 key="expensesDetailsOnProjectsReport"
@@ -164,9 +190,9 @@ class expensesDetailsOnProjectsReport extends Component {
                 rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'expensesDetailsOnProjectsReport'} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.state.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.expensesDetailsOnProjectsReport[currentLanguage]} />
+
         return (
 
             <div className="reports__content">
@@ -192,7 +218,14 @@ class expensesDetailsOnProjectsReport extends Component {
                                             name='selectedProject'
                                             onChange={setFieldValue}
                                             isMulti={true}
-                                            handleChange={e => this.HandleChangeProject(e)}
+                                            handleChange={e => {
+                                                this.HandleChangeProject(e);
+                                                let documentText = '';
+                                                e.map(lable => {
+                                                    return documentText = lable.label + " - " + documentText
+                                                });
+                                                this.fields[0].value = documentText
+                                            }}
                                             onBlur={setFieldTouched}
                                             error={errors.selectedProject}
                                             touched={touched.selectedProject}
@@ -204,25 +237,25 @@ class expensesDetailsOnProjectsReport extends Component {
                                         <Dropdown title='CompanyName' data={this.state.companiesList}
                                             name='selectedCompany'
                                             selectedValue={this.state.selectedCompany}
-                                            handleChange={e => this.companyChange(e)}
+                                            handleChange={e => { this.companyChange(e); this.fields[1].value = e.label }}
                                         />
                                     </div>
                                     <div className="linebylineInput valid-input " >
                                         <Dropdown title='users' data={this.state.usersData}
                                             name='selectUser'
                                             selectedValue={this.state.selectedUser}
-                                            handleChange={e => this.setState({ selectedUser: e })}
+                                            handleChange={e => { this.setState({ selectedUser: e }); this.fields[2].value = e.label }}
                                         />
                                     </div>
                                     <div className="linebylineInput valid-input alternativeDate">
                                         <DatePicker title='startDate'
                                             startDate={this.state.startDate}
-                                            handleChange={e => this.handleChange('startDate', e)} />
+                                            handleChange={e => { this.handleChange('startDate', e); this.fields[3].value = e }} />
                                     </div>
                                     <div className="linebylineInput valid-input alternativeDate">
                                         <DatePicker title='finishDate'
                                             startDate={this.state.finishDate}
-                                            handleChange={e => this.handleChange('finishDate', e)} />
+                                            handleChange={e => { this.handleChange('finishDate', e); this.fields[4].value = e }} />
                                     </div>
                                 </div>
                             </div>

@@ -4,14 +4,15 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
+import ExportDetails from "../ExportReportCenterDetails";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -81,6 +82,20 @@ class EpsTimeSheet extends Component {
             "groupable": true,
             "sortable": true
         }];
+
+        this.fields = [{
+            title: Resources["ContactName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
     componentDidMount() {
@@ -124,8 +139,7 @@ class EpsTimeSheet extends Component {
 
         }).catch(() => {
             this.setState({ isLoading: false })
-        })
-
+        });
     }
 
     setDate = (name, value) => {
@@ -138,9 +152,8 @@ class EpsTimeSheet extends Component {
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['epsTimeSheetReport'][currentLanguage]} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.epsTimeSheetReport[currentLanguage]} />
 
         return (
             <div className="reports__content">
@@ -162,7 +175,7 @@ class EpsTimeSheet extends Component {
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="ContactName" name="contactName" index="contactName"
                                         data={this.state.dropDownList} selectedValue={this.state.selectedEps}
-                                        handleChange={event => this.setState({ selectedEps: event })}
+                                        handleChange={event => { this.setState({ selectedEps: event }); this.fields[0].value = event.label }}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
                                         error={errors.contactName}
@@ -173,12 +186,12 @@ class EpsTimeSheet extends Component {
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='startDate'
                                         startDate={this.state.startDate}
-                                        handleChange={e => this.setDate('startDate', e)} />
+                                        handleChange={e => { this.setDate('startDate', e); this.fields[1].value = e }} />
                                 </div>
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='finishDate'
                                         startDate={this.state.finishDate}
-                                        setDate={e => this.setDate('finishDate', e)} />
+                                        setDate={e => { this.setDate('finishDate', e); this.fields[2].value = e }} />
                                 </div>
                                 <button className="primaryBtn-1 btn smallBtn"  >{Resources['search'][currentLanguage]}</button>
                             </Form>

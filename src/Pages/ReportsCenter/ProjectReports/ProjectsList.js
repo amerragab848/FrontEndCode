@@ -4,14 +4,14 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
 import ExportDetails from "../ExportReportCenterDetails";
 import moment from "moment";
-import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
+import DatePicker from '../../../Componants/OptionsPanels/DatePicker';
 import Dataservice from '../../../Dataservice';
 import Api from '../../../api';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
 const StatusDropData = [
@@ -194,7 +194,7 @@ class ProjectsList extends Component {
             />) : <LoadingSection />
 
         const btnExport = <ExportDetails fieldsItems={this.columns}
-        rows={this.state.rows} fields={this.fields} fileName={Resources.projectsList[currentLanguage]} />
+            rows={this.state.rows} fields={this.fields} fileName={Resources.projectsList[currentLanguage]} />
 
         return (
 

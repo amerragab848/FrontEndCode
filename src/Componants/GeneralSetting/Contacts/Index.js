@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Export from "../../OptionsPanels/Export";
-import GridSetupWithFilter from "../../../Pages/Communication/GridSetupWithFilter";
+//import GridSetupWithFilter from "../../../Pages/Communication/GridSetupWithFilter";
+import GridCustom from "../../Templates/Grid/CustomGrid";
+
 import Resources from "../../../resources.json";
 import Config from '../../../Services/Config'
 import ConfirmationModal from "../../publicComponants/ConfirmationModal";
@@ -37,109 +39,105 @@ class Index extends Component {
         }
 
         this.columnsGrid = [
+            { title: '', type: 'check-box', fixed: true, field: 'id' },
             {
-                key: 'customBtn1',
-                width: 50
+                field: "address",
+                title: Resources["title"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
+                sortable: true,
+                type: "text"
+
             },
             {
-                key: "address",
-                name: Resources["title"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "contactName",
+                title: Resources["ContactName"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
+                type: "text"
             },
             {
-                key: "contactName",
-                name: Resources["ContactName"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "position",
+                title: Resources["position"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
+                type: "text"
             },
             {
-                key: "position",
-                name: Resources["position"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "mobile",
+                title: Resources["Mobile"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
+                type: "text"
             },
             {
-                key: "mobile",
-                name: Resources["Mobile"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "email",
+                title: Resources["email"][currentLanguage],
+                width: 15,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: false,
-                sortDescendingFirst: true,
-                type: "string"
+                type: "text"
             },
             {
-                key: "email",
-                name: Resources["email"][currentLanguage],
-                width: 150,
-                draggable: true,
+                field: "enteredBy",
+                title: Resources["enteredBy"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
+                type: "text"
             },
             {
-                key: "enteredBy",
-                name: Resources["enteredBy"][currentLanguage],
-                width: 100,
-                draggable: true,
+                field: "lastModified",
+                title: Resources["lastModified"][currentLanguage],
+                width: 20,
+                groupable: true,
+                fixed: false,
                 sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
-            },
+                type: "text"
+            }
+        ];
+        this.actions = [
             {
-                key: "lastModified",
-                name: Resources["lastModified"][currentLanguage],
-                width: 100,
-                draggable: true,
-                sortable: true,
-                resizable: true,
-                filterable: true,
-                sortDescendingFirst: true,
-                type: "string"
+                title: 'Delete',
+                handleClick: (values) => {
+                    this.setState({
+                        showDeleteModal: true,
+                        selectedRows: values
+                    });
+                },
+                classes: '',
             }
         ];
 
-        this.Actions = [
+
+        this.rowActions = [
             {
-                icon: "fa fa-pencil",
-                actions: [
-                    {
-                        text: "Change Company",
-                        callback: () => {
-                            this.setState({
-                                showTransferpopUp: true,
-                                transferCompany: this.props.Adminstration.companyList[0].value
-                            });
-                        }
-                    },
-                    {
-                        text: "Key Contact",
-                        callback: () => {
-                            this.changeKeyContact(this.state.selectedContact)
-                        }
-                    }
-                ]
+                title: "Change Company",
+                handleClick: () => {
+                    this.setState({
+                        showTransferpopUp: true,
+                        transferCompany: this.props.Adminstration.companyList[0].value
+                    });
+                }
+            },
+            {
+                title: "Key Contact",
+                handleClick: (values) => {
+                    this.setState({
+                        showChangeKeyContactModal: true,
+                        selectedContact: values.id
+                    });
+                },
+                classes: '',
             }
         ];
 
@@ -191,13 +189,16 @@ class Index extends Component {
             currentComponent: '',
             currentTitle: 'addContact',
             showDeleteModal: false,
+            showChangeKeyContactModal: false,
             showComponent: false,
             modelNameBtn: '',
-            modelMessage: '',
+            modelMessage: Resources['smartDeleteMessage'][currentLanguage].content,
+            modelMessageChangeKeyContact: Resources['smartConfirmMessage'][currentLanguage].content, 
             modelType: '',
             selectedContact: '',
             transferCompany: '',
-            showTransferpopUp: false
+            showTransferpopUp: false,
+            selectedRows: []
         }
     }
 
@@ -222,16 +223,6 @@ class Index extends Component {
         this.props.actions.GetCompaniesList('GetProjectCompanies?accountOwnerId=2');
     }
 
-    changeKeyContact = (id) => {
-        this.setState({
-            selectedContact: id,
-            showDeleteModal: true,
-            modelNameBtn: 'yes',
-            modelMessage: Resources['smartDeleteMessage'][currentLanguage].title,
-            modelType: 'keyContact'
-        });
-    }
-
     changeCompany = () => {
         this.setState({ showTransferpopUp: false })
         let url = 'TransferCompanyContact?contactId=' + this.state.selectedContact + '&newCompanyId=' + this.state.transferCompany
@@ -251,15 +242,21 @@ class Index extends Component {
     }
 
     clickHandlerDeleteRowsMain = selectedRows => {
-        this.setState({
-            showDeleteModal: true,
-            selectedRows: selectedRows,
-            modelNameBtn: 'delete',
-            modelMessage: Resources['smartDeleteMessage'][currentLanguage].content,
-            modelType: 'delete'
-        });
+        if (Config.IsAllow(12)) {
+            let url = 'CompanyContactDelete?id=' + this.state.selectedRows[0]
+            this.props.actions.deleteContact(url, this.state.selectedRows[0]);
+            this.setState({ showDeleteModal: false });
+        }
+        else {
+            toast.warning("you don't have permission");
+        }
     };
-
+    changeKeyContact() {
+        let url = 'MakeKeyContact?companyId=' + this.state.companyID + '&id=' + this.state.selectedContact
+        this.setState({ showChangeKeyContactModal: false });
+        this.props.actions.deleteContact(url);
+        this.setState({ showChangeKeyContactModal: false });
+    }
     onCloseModal() {
         this.setState({ showDeleteModal: false });
     }
@@ -267,6 +264,14 @@ class Index extends Component {
     clickHandlerCancelMain = () => {
         this.setState({ showDeleteModal: false });
     };
+    onCloseChangeContactModal() {
+        this.setState({ showChangeKeyContactModal: false });
+    }
+
+    clickHandlerCancelChangeContactMain = () => {
+        this.setState({ showChangeKeyContactModal: false });
+    };
+
 
     Confirm = () => {
         this.setState({ showDeleteModal: true })
@@ -338,17 +343,21 @@ class Index extends Component {
             </Formik>
 
         const dataGrid = this.props.Adminstration.getingData === false ? (
-            <GridSetupWithFilter
-                rows={this.props.Adminstration.companyContact}
-                columns={this.columnsGrid}
-                showCheckbox={true}
-                clickHandlerDeleteRows={this.clickHandlerDeleteRowsMain}
-                onRowClick={this.onRowClick}
-                single={true}
-                getCellActions={this.getCellActions}
-                key="items"
-            />) : <LoadingSection />;
 
+            <GridCustom
+                ref='custom-data-grid'
+                key='contactGrid'
+                data={this.props.Adminstration.companyContact}
+                pageSize={this.state.pageSize}
+                groups={[]}
+                actions={this.actions}
+                rowActions={this.rowActions}
+                cells={this.columnsGrid}
+                showCheckAll={true}
+                rowClick={() => { }}
+            />
+
+        ) : (<LoadingSection />);
         const btnExport = this.state.isLoading === false ? <Export rows={this.state.rows} columns={this.ExportColumns} fileName={this.state.pageTitle} /> : null;
 
         return (
@@ -377,8 +386,19 @@ class Index extends Component {
                             buttonName={this.state.modelNameBtn}
                             showDeleteModal={this.state.showDeleteModal}
                             clickHandlerCancel={this.clickHandlerCancelMain}
-                            clickHandlerContinue={this.Confirm}
-                        />
+                            buttonName='delete' clickHandlerContinue={this.clickHandlerDeleteRowsMain} />
+                    ) : null
+                    }
+                </div>
+                <div>
+                    {this.state.showChangeKeyContactModal == true ? (
+                        <ConfirmationModal
+                            title={this.state.modelMessageChangeKeyContact}
+                            closed={this.onCloseChangeContactModal}
+                            buttonName={this.state.modelNameBtn}
+                            showDeleteModal={this.state.showChangeKeyContactModal}
+                            clickHandlerCancel={this.clickHandlerCancelChangeContactMain}
+                            buttonName='KeyContact' clickHandlerContinue={() => this.changeKeyContact()} />
                     ) : null
                     }
                 </div>

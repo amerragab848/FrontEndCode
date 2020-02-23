@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Config from "../../../Services/Config";
 import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
-import Export from "../../../Componants/OptionsPanels/Export";
+//import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import GridSetup from "../../Communication/GridSetup";
 import moment from "moment";
 import DatePicker from "../../../Componants/OptionsPanels/DatePicker";
@@ -136,6 +137,19 @@ class RiskStatus extends Component {
                 "sortable": true
             }
         ];
+        this.fields = [{
+            title:  Resources["status"][currentLanguage],
+            value: "",
+            type: "text"
+        },{
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
     handleChange = (name, value) => {
@@ -191,11 +205,14 @@ class RiskStatus extends Component {
 
         const btnExport =
             this.state.isLoading === false ? (
-                <Export
-                    rows={this.state.isLoading === false ? this.state.rows : []}
-                    columns={this.columns}
-                    fileName={"activeProjectsReport"}
-                />
+                // <Export
+                //     rows={this.state.isLoading === false ? this.state.rows : []}
+                //     columns={this.columns}
+                //     fileName={"activeProjectsReport"}
+                // />
+                <ExportDetails fieldsItems={this.columns}
+                rows={this.state.rows}
+                fields={this.fields} fileName={'activeProjectsReport'} />
             ) : null;
 
         return (
@@ -212,8 +229,8 @@ class RiskStatus extends Component {
                             title="status"
                             data={StatusDropData}
                             selectedValue={this.state.selectedStatus}
-                            handleChange={e =>
-                                this.setState({ selectedStatus: e })
+                            handleChange={e =>{
+                                this.setState({ selectedStatus: e });this.fields[0].value = e.label }
                             }
                         />
                     </div>
@@ -221,8 +238,8 @@ class RiskStatus extends Component {
                         <DatePicker
                             title="startDate"
                             startDate={this.state.startDate}
-                            handleChange={e =>
-                                this.handleChange("startDate", e)
+                            handleChange={e =>{
+                                this.handleChange("startDate", e); this.fields[1].value = e }
                             }
                         />
                     </div>
@@ -230,8 +247,8 @@ class RiskStatus extends Component {
                         <DatePicker
                             title="finishDate"
                             startDate={this.state.finishDate}
-                            handleChange={e =>
-                                this.handleChange("finishDate", e)
+                            handleChange={e =>{
+                                this.handleChange("finishDate", e); this.fields[2].value = e }
                             }
                         />
                     </div>

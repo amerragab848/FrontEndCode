@@ -8,7 +8,7 @@ import DatePicker from '../../Componants/OptionsPanels/DatePicker'
 import Export from "../../Componants/OptionsPanels/Export";
 import BarChartComp from '../ReportsCenter/TechnicalOffice/BarChartComp'
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
-
+import ExportDetails from "../../Pages/ReportsCenter/ExportReportCenterDetails";
 import { SkyLightStateless } from 'react-skylight';
 import moment from 'moment';
 import Api from '../../api.js';
@@ -146,6 +146,7 @@ class BudgetCashFlowReport extends Component {
 
             }
         ];
+       
     }
 
     componentDidMount() {
@@ -285,6 +286,7 @@ class BudgetCashFlowReport extends Component {
         const btnExport = this.state.isLoading === false ?
             <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'budgetCashFlowReport'} />
             : null
+            
 
         return (
 

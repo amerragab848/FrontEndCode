@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import GridCustom from 'react-customized-grid';
 import ExportDetails from "../ExportReportCenterDetails";
 import "react-customized-grid/main.css";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
 const ValidtionSchema = Yup.object().shape({
@@ -137,7 +138,8 @@ class ContractsStatus extends Component {
         const btnExport = this.state.isLoading === false ?
             (
             <ExportDetails fieldsItems={this.columns}
-                rows={this.state.rows} fields={this.fields} fileName={Resources.contractStatus[currentLanguage]} />
+                rows={this.state.rows}
+                 fields={this.fields} fileName={Resources.contractStatus[currentLanguage]} />
             ) : null;
 
         return (

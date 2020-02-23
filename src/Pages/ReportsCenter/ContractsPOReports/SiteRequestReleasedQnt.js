@@ -5,13 +5,14 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Export from "../../../Componants/OptionsPanels/Export";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
+import ExportDetails from "../ExportReportCenterDetails";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import BarChartComp from '../TechnicalOffice/BarChartComp'
+import BarChartComp from '../TechnicalOffice/BarChartComp';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string()
@@ -74,9 +75,19 @@ class SiteRequestReleasedQnt extends Component {
                 sortable: true,
             }
         ];
+
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["siteRequest"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'projectId').then(
             result => {
                 this.setState({
@@ -86,7 +97,6 @@ class SiteRequestReleasedQnt extends Component {
                 toast.error('somthing wrong')
             })
     }
-
 
     getGridRows = () => {
         this.setState({ isLoading: true })
@@ -162,16 +172,15 @@ class SiteRequestReleasedQnt extends Component {
                 rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectInvoices'} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.siteRequestReleasedQntReport[currentLanguage]} />
 
         return (
 
 
             <div className="reports__content">
                 <header>
-                    <h2 className="zero">{Resources.collectedPaymentRequisition[currentLanguage]}</h2>
+                    <h2 className="zero">{Resources.siteRequestReleasedQntReport[currentLanguage]}</h2>
                     {btnExport}
                 </header>
                 <Formik
@@ -189,7 +198,7 @@ class SiteRequestReleasedQnt extends Component {
                             <div className="linebylineInput valid-input">
                                 <Dropdown title='Projects' data={this.state.ProjectsData} name='selectedProject'
                                     selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                    handleChange={e => this.HandleChangeProject(e)}
+                                    handleChange={e => { this.HandleChangeProject(e); this.fields[0].value = e.label }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedProject}
                                     touched={touched.selectedProject}
@@ -198,7 +207,7 @@ class SiteRequestReleasedQnt extends Component {
                             <div className="linebylineInput valid-input " >
                                 <Dropdown title='siteRequest' data={this.state.MaterialRequest} name='selectedMaterialRequest'
                                     selectedValue={this.state.selectedMaterialRequest} onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectedMaterialRequest: e })}
+                                    handleChange={e => { this.setState({ selectedMaterialRequest: e }); this.fields[1].value = e.label }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedMaterialRequest}
                                     touched={touched.selectedMaterialRequest}

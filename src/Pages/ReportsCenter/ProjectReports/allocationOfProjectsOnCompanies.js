@@ -4,31 +4,26 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export"; 
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import dataservice from "../../../Dataservice";
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-//const _ = require('lodash')
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
+import ExportDetails from "../ExportReportCenterDetails";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const companySchema = Yup.object().shape({
-    selectedCompany: Yup.string()
-        .required(Resources['ComapnyNameRequired'][currentLanguage])
-        .nullable(true),
+    selectedCompany: Yup.string().required(Resources['ComapnyNameRequired'][currentLanguage]).nullable(true)
 });
 const projectSchema = Yup.object().shape({
-    selectedProject: Yup.string()
-        .required(Resources['projectRequired'][currentLanguage])
-        .nullable(true),
+    selectedProject: Yup.string().required(Resources['projectRequired'][currentLanguage]).nullable(true)
 });
 class allocationOfProjectsOnCompanies extends Component {
 
     constructor(props) {
         super(props)
+
         this.projectColumns = [
             {
                 field: 'projectName',
@@ -39,6 +34,7 @@ class allocationOfProjectsOnCompanies extends Component {
                 type: "text",
                 sortable: true,
             }];
+
         this.companyColumns = [
             {
                 field: 'companyName',
@@ -61,7 +57,7 @@ class allocationOfProjectsOnCompanies extends Component {
             selectedProject: { label: Resources.projectRequired[currentLanguage], value: "0" },
             rows: [],
             status: true,
-            pageSize: 200,
+            pageSize: 200
         }
 
         if (!Config.IsAllow(3682)) {
@@ -71,10 +67,19 @@ class allocationOfProjectsOnCompanies extends Component {
             });
         }
 
+
+        this.fields = [[{
+            title: Resources["Companies"][currentLanguage],
+            value: "",
+            type: "text"
+        }], [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }]];
     }
 
-
-    componentWillMount() {
+    componentDidMount() {
         let AOI = Config.getPayload().aoi
         dataservice.GetDataList('GetCompanies?accountOwnerId=' + AOI, 'companyName', 'id').then(result => {
             this.setState({
@@ -91,6 +96,7 @@ class allocationOfProjectsOnCompanies extends Component {
             toast.error('somthing wrong')
         })
     }
+
     getGridRows = () => {
         this.setState({ isLoading: true })
         if (this.state.current == 0) {
@@ -106,9 +112,8 @@ class allocationOfProjectsOnCompanies extends Component {
                 this.setState({ isLoading: false })
             })
         }
-
-
     }
+
     handleChange = (e) => {
         if (this.state.current == 0)
             this.setState({ selectedCompany: e })
@@ -135,7 +140,10 @@ class allocationOfProjectsOnCompanies extends Component {
                                     name='selectedCompany'
                                     selectedValue={this.state.selectedCompany}
                                     onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectedCompany: e })}
+                                    handleChange={e => {
+                                        this.setState({ selectedCompany: e });
+                                        this.fields[0][0].value = e.label
+                                    }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedCompany}
                                     touched={touched.selectedCompany}
@@ -161,7 +169,10 @@ class allocationOfProjectsOnCompanies extends Component {
                                     name='selectedProject'
                                     selectedValue={this.state.selectedProject}
                                     onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectedProject: e })}
+                                    handleChange={e => {
+                                        this.setState({ selectedProject: e });
+                                        this.fields[1][0].value = e.label
+                                    }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedProject}
                                     touched={touched.selectedProject}
@@ -184,9 +195,10 @@ class allocationOfProjectsOnCompanies extends Component {
                 cells={this.state.currentColumns}
                 rowClick={() => { }}
             />) : <LoadingSection />
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.currentColumns} fileName={'projectsAllocationOnCompanies'} />
-            : null
+
+        const btnExport =
+            <ExportDetails fieldsItems={this.state.currentColumns}
+                rows={this.state.rows} fields={this.state.current === 0 ? this.fields[0] : this.fields[1]} fileName={Resources.projectsAllocationOnCompanies[currentLanguage]} />
 
         return (
             <div className="reports__content">
@@ -214,12 +226,8 @@ class allocationOfProjectsOnCompanies extends Component {
                         {dataGrid}
                     </div> : null}
             </div>
-
-
         )
     }
-
 }
-
 
 export default allocationOfProjectsOnCompanies

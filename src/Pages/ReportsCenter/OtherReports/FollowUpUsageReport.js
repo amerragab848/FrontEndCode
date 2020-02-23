@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
+//import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from 'react-customized-grid';
 import GridSetup from "../../Communication/GridSetup"
 import moment from "moment";
@@ -45,7 +46,12 @@ class WFUsageReport extends Component {
             ]
 
         }
-
+        this.fields = [{
+            title:  Resources["workFlow"][currentLanguage],
+            value: "",
+            type: "text"
+        }
+      ];
         if (!Config.IsAllow(3750)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
@@ -130,8 +136,11 @@ class WFUsageReport extends Component {
             : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'followUpsUsageReport'} />
-            : null
+           // <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'followUpsUsageReport'} />
+           <ExportDetails fieldsItems={this.state.columns}
+           rows={this.state.rows}
+           fields={this.fields} fileName={'followUpsUsageReport'} />  
+           : null
 
         return (
 
@@ -144,7 +153,7 @@ class WFUsageReport extends Component {
                     <div className="linebylineInput valid-input">
                         <Dropdown title="workFlow" data={this.state.dropDownList}
                             selectedValue={this.state.selectedWF} name="workFlows"
-                            handleChange={event => this.DropdownChange(event)} index="workFlows" />
+                            handleChange={event => {this.DropdownChange(event); this.fields[0].value = event.label }} index="workFlows" />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
                 </div>
