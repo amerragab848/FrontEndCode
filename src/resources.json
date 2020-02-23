@@ -1909,6 +1909,24 @@
             "no": "لا"
         }
     },
+    "smartConfirmMessage": {
+        "en": {
+            "title": "Caution !!!",
+            "content": "Are you sure you want to Change Key Contact ?",
+            "buttons": "[No][Yes]",
+            "successTitle": "Operation completed successfuly", 
+            "yes": "Yes",
+            "no": "No"
+        },
+        "ar": {
+            "title": "!احذر عملية خطيرة",
+            "content": "هل انت متاكدة انك تريد نقل مسئول الشركة؟",
+            "buttons": "[لا][نعم]",
+            "successTitle": "تمت العملية بنجاح", 
+            "yes": "نعم",
+            "no": "لا"
+        }
+    },
     "smartAddMessage": {
         "en": {
             "successTitle": "Operation completed successfuly",

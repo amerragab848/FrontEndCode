@@ -1,4 +1,52 @@
 {
+    "13": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            }, 
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            },
+            {
+                "name": "alertStatus",
+                "value": "alertStatusName",
+                "type": "S"
+            } 
+        ],
+        "columnsItems": [
+            "arrange",
+            "status",
+            "task_id",
+            "task_code",
+            "description",
+            "actualFinishDate",
+            "bic_company_id",
+            "actualDuration",
+            "percentageWorkComplete",
+            "earnedValue"
+        ],
+        "friendlyNames": [
+            "numberAbb",
+            "statusName",
+            "taskId",
+            "taskCode",
+            "activityDescription",
+            "actualFinishDate",
+            "actionByCompany",
+            "actualDuration",
+            "percentageWorkComplete",
+            "earnedValue"
+        ]
+    },
     "19": {
         "fields": [
             {
@@ -931,7 +979,6 @@
                 "value": "statusName",
                 "type": "S"
             },
-           
             {
                 "name": "docDate",
                 "value": "docDate",
@@ -947,13 +994,11 @@
                 "value": "refDoc",
                 "type": "S"
             },
-            
             {
                 "name": "fromCompany",
                 "value": "fromCompanyName",
                 "type": "S"
             },
-           
             {
                 "name": "fromContact",
                 "value": "fromContactName",
@@ -969,13 +1014,11 @@
                 "value": "toContactName",
                 "type": "S"
             },
-          
             {
                 "name": "projectName",
                 "value": "projectName",
                 "type": "S"
             }
-           
         ],
         "columnsItems": [],
         "friendlyNames": []
@@ -2880,7 +2923,7 @@
                 "name": "consultantApproalDate",
                 "value": "consultantApproalDate",
                 "type": "D"
-            } 
+            }
         ],
         "columnsItems": [
             "description",
