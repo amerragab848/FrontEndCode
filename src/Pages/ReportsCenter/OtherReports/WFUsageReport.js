@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
+//import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from 'react-customized-grid'; 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -71,8 +72,13 @@ class WFUsageReport extends Component {
                     "sortable": true
                 }
             ]
+       
         }
-
+        this.fields = [{
+            title: Resources["workFlow"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
         if (!Config.IsAllow(3749)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
@@ -155,8 +161,11 @@ class WFUsageReport extends Component {
             />) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'workFlowActivity'} />
-            : null
+           // <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'workFlowActivity'} />
+           <ExportDetails fieldsItems={this.state.columns}
+           rows={this.state.rows}
+           fields={this.fields} fileName={'workFlowUsageReport'} /> 
+           : null
 
         return (
             <div className="reports__content">
@@ -169,7 +178,7 @@ class WFUsageReport extends Component {
 
                         <Dropdown title="workFlow" name="workFlows" index="workFlows"
                             data={this.state.dropDownList} selectedValue={this.state.selectedWF}
-                            handleChange={event => this.DropdownChange(event)} />
+                            handleChange={event => {this.DropdownChange(event); this.fields[0].value = event.label }} />
 
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>

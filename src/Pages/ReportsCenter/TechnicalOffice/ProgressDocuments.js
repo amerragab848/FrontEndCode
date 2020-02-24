@@ -7,7 +7,8 @@ import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import moment from "moment";
 import dataService from '../../../Dataservice'
-import Export from "../../../Componants/OptionsPanels/Export";
+//import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 //const _ = require('lodash')
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -30,35 +31,47 @@ class ProgressDocuments extends Component {
         }
         this.exportColumns = [
             {
-                key: "duration",
-                name: Resources["duration"][currentLanguage]
+                field: "duration",
+                title: Resources["duration"][currentLanguage]
             }, {
-                key: "lr",
-                name: 'lr',
+                field: "lr",
+                title: 'lr',
             }, {
-                key: "rfi",
-                name: 'rfi'
+                field: "rfi",
+                title: 'rfi'
             }, {
-                key: "as",
-                name: 'as'
+                field: "as",
+                title: 'as'
             }, {
-                key: "sch",
-                name: 'sch'
+                field: "sch",
+                title: 'sch'
             }, {
-                key: "sd",
-                name: 'sd',
+                field: "sd",
+                title: 'sd',
             }, {
-                key: "m",
-                name: 'm',
+                field: "m",
+                title: 'm',
             }, {
-                key: "qs",
-                name: 'qs'
+                field: "qs",
+                title: 'qs'
             }, {
-                key: "gt",
-                name: 'gt'
+                field: "gt",
+                title: 'gt'
             }
         ];
-
+        this.fields = [{
+            title:  Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        },{
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
     componentWillMount() {
@@ -87,7 +100,10 @@ class ProgressDocuments extends Component {
     }
     render() {
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.reportData : []} columns={this.exportColumns} fileName={'onProgressDocuments'} />
+            //<Export rows={this.state.isLoading === false ? this.state.reportData : []} columns={this.exportColumns} fileName={'onProgressDocuments'} />
+            <ExportDetails fieldsItems={this.exportColumns}
+            rows={this.state.reportData}
+            fields={this.fields} fileName={'onProgressDocuments'} /> 
             : null;
         let tabel = this.state.reportData.length > 0 ? this.state.reportData.map((item, Index) => {
             return (
@@ -163,7 +179,7 @@ class ProgressDocuments extends Component {
                                 title="Projects"
                                 data={this.state.projectList}
                                 selectedValue={this.state.project}
-                                handleChange={event => { this.setState({ project: event }); }}
+                                handleChange={event => { this.setState({ project: event });this.fields[0].value = event.label }}
                                 name="projects"
                                 index="projects"
                             />
@@ -171,12 +187,12 @@ class ProgressDocuments extends Component {
                          <div className="linebylineInput valid-input alternativeDate">
                             <DatePicker title='startDate'
                                 startDate={this.state.startDate}
-                                handleChange={e => this.handleChange('startDate', e)} />
+                                handleChange={e => {this.handleChange('startDate', e); this.fields[1].value = e }} />
                         </div>
                          <div className="linebylineInput valid-input alternativeDate">
                             <DatePicker title='finishDate'
                                 startDate={this.state.finishDate}
-                                handleChange={e => this.handleChange('finishDate', e)} />
+                                handleChange={e => {this.handleChange('finishDate', e); this.fields[2].value = e }} />
                         </div>
                          <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getChartData()}>{Resources['search'][currentLanguage]}</button>
                          <div className="doc-pre-cycle letterFullWidth has__table">

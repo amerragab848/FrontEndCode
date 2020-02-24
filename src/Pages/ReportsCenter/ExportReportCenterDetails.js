@@ -126,7 +126,7 @@ class ExportReportCenterDetails extends Component {
             <div id={'docExport'}>
                 <div className="dropWrapper readOnly__disabled ">
                     <div className="fullWidthWrapper">
-                        <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument()}>{"Export"}</button>
+                        <button className="primaryBtn-2 btn mediumBtn" type="button" onClick={e => this.ExportDocument()}>{"Export"}</button>
                     </div>
                     <div id="exportLink"></div>
                 </div>

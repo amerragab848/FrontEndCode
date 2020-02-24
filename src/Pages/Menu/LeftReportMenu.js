@@ -189,11 +189,11 @@ class LeftReportMenu extends Component {
                                         {Resources.otherReports[currentLanguage]}
                                     </span>
                                 </li>
-                                <li data-tab="subiTab-6" className={this.state[6] === true ? "active" : " "} onClick={() => this.activeLi(6)}>
+                                {/* <li data-tab="subiTab-6" className={this.state[6] === true ? "active" : " "} onClick={() => this.activeLi(6)}>
                                     <span className="subUlTitle">
                                         {Resources.inventoryRpt[currentLanguage]}
                                     </span>
-                                </li>
+                                </li> */}
                                 <li data-tab="subiTab-7" className={this.state[7] === true ? "active" : " "} onClick={() => this.activeLi(7)}>
                                     <span className="subUlTitle">
                                         {Resources.technicalOffice[currentLanguage]}

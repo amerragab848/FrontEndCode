@@ -4,9 +4,9 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export";
-import GridCustom from 'react-customized-grid'; 
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
+import ExportDetails from "../ExportReportCenterDetails";
+import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from "formik";
@@ -41,6 +41,29 @@ class projectTotaltimeSheet extends Component {
             });
 
         }
+
+        this.fields = [{
+            title: Resources["CompanyName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["ContactName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }, {
+            title: Resources["employeeCode"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
+
         this.columns = [{
             "field": "projectName",
             "title": Resources.projectName[currentLanguage],
@@ -134,9 +157,8 @@ class projectTotaltimeSheet extends Component {
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['projectTotaltimeSheetRpt'][currentLanguage]} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.projectTotaltimeSheetRpt[currentLanguage]} />
 
         return (
             <div className="reports__content">
@@ -162,6 +184,7 @@ class projectTotaltimeSheet extends Component {
                                         data={this.state.companiesList} selectedValue={this.state.selectedCompany}
                                         handleChange={event => {
                                             this.setState({ selectedCompany: event })
+                                            this.fields[0].value = event.label
                                             this.getDataList('GetContactsByCompanyId?companyId=' + event.value, 'contactName', 'id', 'contactsList');
                                         }}
                                     />
@@ -169,7 +192,10 @@ class projectTotaltimeSheet extends Component {
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="ContactName" name="ContactName" index="ContactName"
                                         data={this.state.contactsList} selectedValue={this.state.selectedContact}
-                                        handleChange={event => this.setState({ selectedContact: event })}
+                                        handleChange={event => {
+                                            this.setState({ selectedContact: event });
+                                            this.fields[1].value = event.label
+                                        }}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
                                         error={errors.contactName}
@@ -179,12 +205,12 @@ class projectTotaltimeSheet extends Component {
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='startDate'
                                         startDate={this.state.startDate}
-                                        handleChange={e => this.setData('startDate', e)} />
+                                        handleChange={e => { this.setData('startDate', e); this.fields[2].value = e }} />
                                 </div>
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='finishDate'
                                         startDate={this.state.finishDate}
-                                        setDate={e => this.setData('finishDate', e)} />
+                                        setDate={e => { this.setData('finishDate', e); this.fields[3].value = e }} />
                                 </div>
 
                                 <div className="linebylineInput valid-input">
@@ -196,10 +222,9 @@ class projectTotaltimeSheet extends Component {
                                             placeholder={Resources.employeeCode[currentLanguage]}
                                             autoComplete="off"
                                             value={this.state.employeeCode}
-                                            onChange={e => this.setData("employeeCode", e.target.value)} />
+                                            onChange={e => { this.setData("employeeCode", e.target.value); this.fields[4].value = e.target.value }} />
                                     </div>
                                 </div>
-
                                 <button className="primaryBtn-1 btn smallBtn"  >{Resources['search'][currentLanguage]}</button>
                             </Form>
                         )}
@@ -268,7 +293,7 @@ class projectTotaltimeSheet extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr  >
+                            <tr>
                                 <td>
                                     <div className="contentCell tableCell-3">
                                         <p className="zero status">
@@ -328,7 +353,6 @@ class projectTotaltimeSheet extends Component {
                             </tr>
                         </tbody>
                     </table> : null}
-
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}
                 </div>

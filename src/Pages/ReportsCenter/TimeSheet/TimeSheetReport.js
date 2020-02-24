@@ -4,11 +4,11 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
+import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
-import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
+import DatePicker from '../../../Componants/OptionsPanels/DatePicker';
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
@@ -127,6 +127,32 @@ class timeSheet extends Component {
                 "sortable": true
             }
         ];
+
+        this.fields = [{
+            title: Resources["CompanyName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["users"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["status"][currentLanguage],
+            value: this.state.selectedStatus.label,
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
     componentDidMount() {
@@ -213,9 +239,8 @@ class timeSheet extends Component {
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['timeSheetReport'][currentLanguage]} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.timeSheetReport[currentLanguage]} />
 
 
         return (
@@ -241,7 +266,8 @@ class timeSheet extends Component {
                                     <Dropdown title="CompanyName" name="companyName" index="companyName"
                                         data={this.state.companiesList} selectedValue={this.state.selectedCompany}
                                         handleChange={event => {
-                                            this.setState({ selectedCompany: event })
+                                            this.setState({ selectedCompany: event });
+                                            this.fields[0].value = event.label;
                                             this.getDataList('GetContactsByCompanyId?companyId=' + event.value, 'contactName', 'id', 'contactsList');
                                         }}
                                         onChange={setFieldValue}
@@ -254,32 +280,31 @@ class timeSheet extends Component {
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="users" name="ContactName" index="ContactName"
                                         data={this.state.contactsList} selectedValue={this.state.selectedContact}
-                                        handleChange={event => this.setState({ selectedContact: event })} />
+                                        handleChange={event => { this.setState({ selectedContact: event }); this.fields[1].value = event.label; }} />
                                 </div>
 
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="Projects" name="projectName" index="projects"
                                         data={this.state.projectsList} selectedValue={this.state.selectedProject}
-                                        handleChange={event => this.setState({ selectedProject: event })}
+                                        handleChange={event => { this.setState({ selectedProject: event }); this.fields[2].value = event.label; }}
                                     />
                                 </div>
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="status" name="status" index="status"
                                         data={this.state.statusList} selectedValue={this.state.selectedStatus}
-                                        handleChange={event => this.setState({ selectedExpenses: event })}
-
+                                        handleChange={event => { this.setState({ selectedExpenses: event }); this.fields[3].value = event.label; }}
                                     />
                                 </div>
 
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='startDate'
                                         startDate={this.state.startDate}
-                                        handleChange={e => this.setDate('startDate', e)} />
+                                        handleChange={e => { this.setDate('startDate', e); this.fields[4].value = e }} />
                                 </div>
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='finishDate'
                                         startDate={this.state.finishDate}
-                                        setDate={e => this.setDate('finishDate', e)} />
+                                        setDate={e => { this.setDate('finishDate', e); this.fields[5].value = e }} />
                                 </div>
                                 <button className="primaryBtn-1 btn smallBtn"  >{Resources['search'][currentLanguage]}</button>
                             </Form>

@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Config from "../../../Services/Config";
 import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
-import Export from "../../../Componants/OptionsPanels/Export";
+//import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from 'react-customized-grid';
 import moment from "moment";
 import DatePicker from "../../../Componants/OptionsPanels/DatePicker";
@@ -130,6 +131,19 @@ class RiskCategory extends Component {
                 type: "date"
             }
         ];
+        this.fields = [{
+            title:  Resources["categorisation"][currentLanguage],
+            value: "",
+            type: "text"
+        },{
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
     componentDidMount() {
@@ -191,11 +205,14 @@ class RiskCategory extends Component {
 
         const btnExport =
             this.state.isLoading === false ? (
-                <Export
-                    rows={this.state.isLoading === false ? this.state.rows : []}
-                    columns={this.columns}
-                    fileName={"activeProjectsReport"}
-                />
+                // <Export
+                //     rows={this.state.isLoading === false ? this.state.rows : []}
+                //     columns={this.columns}
+                //     fileName={"activeProjectsReport"}
+                // />
+                <ExportDetails fieldsItems={this.columns}
+                rows={this.state.rows}
+                fields={this.fields} fileName={'Risk Caategory"'} />
             ) : null;
 
         return (
@@ -212,8 +229,8 @@ class RiskCategory extends Component {
                             title="categorisation"
                             data={this.state.Categorisation}
                             selectedValue={this.state.selectedCategory}
-                            handleChange={e =>
-                                this.setState({ selectedCategory: e })
+                            handleChange={e =>{
+                                this.setState({ selectedCategory: e });this.fields[0].value = e.label}
                             }
                         />
                     </div>
@@ -221,8 +238,8 @@ class RiskCategory extends Component {
                         <DatePicker
                             title="startDate"
                             startDate={this.state.startDate}
-                            handleChange={e =>
-                                this.handleChange("startDate", e)
+                            handleChange={e =>{
+                                this.handleChange("startDate", e); this.fields[1].value = e }
                             }
                         />
                     </div>
@@ -230,8 +247,8 @@ class RiskCategory extends Component {
                         <DatePicker
                             title="finishDate"
                             startDate={this.state.finishDate}
-                            handleChange={e =>
-                                this.handleChange("finishDate", e)
+                            handleChange={e =>{
+                                this.handleChange("finishDate", e); this.fields[2].value = e }
                             }
                         />
                     </div>

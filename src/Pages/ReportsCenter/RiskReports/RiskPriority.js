@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import LoadingSection from "../../../Componants/publicComponants/LoadingSection";
 import Config from "../../../Services/Config";
 import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
-import Export from "../../../Componants/OptionsPanels/Export"; 
+//import Export from "../../../Componants/OptionsPanels/Export"; 
+import ExportDetails from "../ExportReportCenterDetails";
 import moment from "moment";
 import DatePicker from "../../../Componants/OptionsPanels/DatePicker";
 import dataService from "../../../../src/Dataservice";
@@ -126,6 +127,19 @@ class RiskPriority extends Component {
                 "sortable": true
             }
         ];
+        this.fields = [{
+            title:  Resources["priority"][currentLanguage],
+            value: "",
+            type: "text"
+        },{
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
     componentDidMount() {
@@ -190,11 +204,14 @@ class RiskPriority extends Component {
 
         const btnExport =
             this.state.isLoading === false ? (
-                <Export
-                    rows={this.state.isLoading === false ? this.state.rows : []}
-                    columns={this.columns}
-                    fileName={"Risk Periority"}
-                />
+                // <Export
+                //     rows={this.state.isLoading === false ? this.state.rows : []}
+                //     columns={this.columns}
+                //     fileName={"Risk Periority"}
+                // />
+                <ExportDetails fieldsItems={this.columns}
+                rows={this.state.rows}
+                fields={this.fields} fileName={'Risk Periority'} />
             ) : null;
 
         return (
@@ -211,8 +228,8 @@ class RiskPriority extends Component {
                             title="priority"
                             data={this.state.priority}
                             selectedValue={this.state.selectedStatus}
-                            handleChange={e =>
-                                this.setState({ selectedStatus: e })
+                            handleChange={e =>{
+                                this.setState({ selectedStatus: e });this.fields[0].value = e.label }
                             }
                         />
                     </div>
@@ -220,8 +237,8 @@ class RiskPriority extends Component {
                         <DatePicker
                             title="startDate"
                             startDate={this.state.startDate}
-                            handleChange={e =>
-                                this.handleChange("startDate", e)
+                            handleChange={e =>{
+                                this.handleChange("startDate", e); this.fields[1].value = e }
                             }
                         />
                     </div>
@@ -229,8 +246,8 @@ class RiskPriority extends Component {
                         <DatePicker
                             title="finishDate"
                             startDate={this.state.finishDate}
-                            handleChange={e =>
-                                this.handleChange("finishDate", e)
+                            handleChange={e =>{
+                                this.handleChange("finishDate", e); this.fields[1].value = e }
                             }
                         />
                     </div>

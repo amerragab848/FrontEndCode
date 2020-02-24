@@ -17,7 +17,6 @@ import Dropdown from "../../../Componants/OptionsPanels/DropdownMelcous";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
 
-
 const validationSchemaCostCodingTree = Yup.object().shape({
     costCodingTreeId: Yup.string().required(Resources["selectCostCosingTree"][currentLanguage]).nullable(true)
 });
@@ -281,9 +280,11 @@ class ProjectCostCodingTree extends Component {
         dataservice.addObject("AddContractsCostCodingTreeProject", obj).then(result => {
             toast.success(Resources["operationSuccess"][currentLanguage]);
             this.setState({
-                isLoading: false
+                isLoading: false,
+                trees: result
             });
- 
+
+            this.simpleDialog.hide();
         });
     }
 

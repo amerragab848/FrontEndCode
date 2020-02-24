@@ -5,15 +5,16 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Export from "../../../Componants/OptionsPanels/Export";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
+import ExportDetails from "../ExportReportCenterDetails";
 import dataservice from "../../../Dataservice";
 import SkyLight from 'react-skylight';
 import moment from "moment";
 import PieChart from '../PieChartComp'
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
+
 const dateFormate = ({ value }) => {
     return value ? moment(value).format("DD/MM/YYYY") : Resources.noDate[currentLanguage];
 };
@@ -158,9 +159,31 @@ class TasksStatus extends Component {
                 sortable: true,
             }
         ];
+
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["totalEstimatedTime"][currentLanguage],
+            value: 0,
+            type: "text"
+        }, {
+            title: Resources["totalUserInputs"][currentLanguage],
+            value: 0,
+            type: "text"
+        }, {
+            title: Resources["earnedProgress"][currentLanguage],
+            value: 0,
+            type: "text"
+        }, {
+            title: Resources["totalRemaining"][currentLanguage],
+            value: 0,
+            type: "text"
+        }];
     }
 
-    componentWillMount() {
+    componentDidMount() {
         dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'id').then(result => {
             this.setState({
                 dropDownList: result
@@ -200,6 +223,11 @@ class TasksStatus extends Component {
                 })
                 let series = [{ data }]
 
+                this.fields[1].value = estimat;
+                this.fields[2].value = user;
+                this.fields[3].value = earnedProgress;
+                this.fields[4].value = remaining;
+
                 this.setState({
                     rows: res, isLoading: false, series,
                     totalEstimatedTime: estimat,
@@ -217,10 +245,11 @@ class TasksStatus extends Component {
         this.setState({ showModal: true, selectedRow: value });
         this.simpleDialog.show()
     }
+
     render() {
         const View =
             <Fragment>
-                <div id="departmentsForm" className="dropWrapper readOnly_inputs"  >
+                <div id="departmentsForm" className="dropWrapper readOnly_inputs">
                     <div className="fillter-item-c">
                         <label className="control-label">{Resources['fromCompany'][currentLanguage]}</label>
                         <div className="inputDev ui input">
@@ -314,6 +343,7 @@ class TasksStatus extends Component {
                 </div>
 
             </Fragment>
+
         const dataGrid = this.state.isLoading === false ? (
 
             <GridCustom
@@ -330,9 +360,8 @@ class TasksStatus extends Component {
                     this.simpleDialog.show()
                 }}
             />) : <LoadingSection />
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['taskStatus'][currentLanguage]} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.taskStatus[currentLanguage]} />
 
         return (
             <div className="reports__content">
@@ -341,11 +370,10 @@ class TasksStatus extends Component {
                     {btnExport}
                 </header>
                 <div className='proForm reports__proForm'>
-
                     <div className="linebylineInput valid-input">
                         <Dropdown title="Projects" name="Projects" index="Projects"
                             data={this.state.dropDownList} selectedValue={this.state.selectedProject}
-                            handleChange={event => this.setState({ selectedProject: event })} />
+                            handleChange={event => { this.setState({ selectedProject: event }); this.fields[0].value = event.label }} />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
                 </div>

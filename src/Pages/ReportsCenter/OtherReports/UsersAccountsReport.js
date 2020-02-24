@@ -4,7 +4,8 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Export from "../../../Componants/OptionsPanels/Export";
+//import Export from "../../../Componants/OptionsPanels/Export";
+import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from 'react-customized-grid';
 import PieChartComp from '../PieChartComp'
 const sum = require('lodash/sum')
@@ -65,6 +66,19 @@ class UsersAccountsReport extends Component {
                 "sortable": true
             }
         ]; 
+        this.fields = [{
+            title:Resources.totalAccounts[currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources.activeAccounts[currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources.inActiveAccounts[currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
     componentDidMount() {
@@ -98,7 +112,9 @@ class UsersAccountsReport extends Component {
                     { y: InActiveAccounts, name: Resources['inActiveAccounts'][currentLanguage] }],
                     type: "pie"
                 }]
-
+                this.fields[0].value = TotalAccounts;
+                this.fields[1].value = ActiveAccounts;
+                this.fields[2].value = InActiveAccounts;
                 this.setState({
                     rows: res, TotalAccounts,
                     ActiveAccounts, InActiveAccounts,
@@ -123,8 +139,11 @@ class UsersAccountsReport extends Component {
         ) : <LoadingSection />
 
         const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'usersAccountsReport'} />
-            : null
+           // <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'usersAccountsReport'} />
+           <ExportDetails fieldsItems={this.columns}
+           rows={this.state.rows}
+           fields={this.fields} fileName={'usersAccountsReport'} />
+           : null
 
         return (
 

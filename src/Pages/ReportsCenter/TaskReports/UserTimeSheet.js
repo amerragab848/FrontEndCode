@@ -4,16 +4,16 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous';
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
+import ExportDetails from "../ExportReportCenterDetails";
 import dataservice from "../../../Dataservice";
 import PieChartComp from '../../../Componants/ChartsWidgets/PieChartComp';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 const validationSchema = Yup.object().shape({
@@ -77,6 +77,20 @@ class UserTimeSheet extends Component {
                 sortable: true,
             }
         ];
+
+        this.fields = [{
+            title: Resources["taskName"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
     componentDidMount() {
@@ -98,8 +112,7 @@ class UserTimeSheet extends Component {
             });
         }).catch(() => {
             toast.error('somthing wrong')
-        })
-
+        });
     }
 
     getGridRows = () => {
@@ -123,14 +136,12 @@ class UserTimeSheet extends Component {
 
         }).catch(() => {
             this.setState({ isLoading: false })
-        })
-
+        });
     }
 
     setDate = (name, value) => {
         this.setState({ [name]: value })
     }
-
 
     render() {
 
@@ -146,7 +157,6 @@ class UserTimeSheet extends Component {
             /> : null
 
         const dataGrid = this.state.isLoading === false ? (
-
             <GridCustom
                 ref='custom-data-grid'
                 key="UserTimeSheet"
@@ -158,9 +168,9 @@ class UserTimeSheet extends Component {
                 cells={this.columns}
                 rowClick={() => { }}
             />) : <LoadingSection />
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['userTimeSheet'][currentLanguage]} />
-            : null
+
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.userTimeSheet[currentLanguage]} />
 
         return (
             <div className="reports__content">
@@ -178,11 +188,10 @@ class UserTimeSheet extends Component {
                         }}>
                         {({ errors, touched, handleSubmit, setFieldValue, setFieldTouched }) => (
                             <Form id="InspectionRequestForm" className="proForm reports__proForm" noValidate="novalidate" onSubmit={handleSubmit}>
-
                                 <div className="linebylineInput valid-input">
                                     <Dropdown title="taskName" name="taskName" index="taskName"
                                         data={this.state.dropDownList} selectedValue={this.state.selectedTask}
-                                        handleChange={event => this.setState({ selectedTask: event })}
+                                        handleChange={event => { this.setState({ selectedTask: event }); this.fields[0].value = event.label }}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
                                         error={errors.taskName}
@@ -193,12 +202,12 @@ class UserTimeSheet extends Component {
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='startDate'
                                         startDate={this.state.startDate}
-                                        handleChange={e => this.setDate('startDate', e)} />
+                                        handleChange={e => { this.setDate('startDate', e); this.fields[1].value = e }} />
                                 </div>
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='finishDate'
                                         startDate={this.state.finishDate}
-                                        handleChange={e => this.setDate('finishDate', e)} />
+                                        handleChange={e => { this.setDate('finishDate', e); this.fields[2].value = e }} />
                                 </div>
                                 <button className="primaryBtn-1 btn smallBtn"  >{Resources['search'][currentLanguage]}</button>
                             </Form>
