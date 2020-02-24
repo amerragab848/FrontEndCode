@@ -19,7 +19,7 @@ import CryptoJS from 'crypto-js';
 import moment from "moment";
 import SkyLight from 'react-skylight';
 import DatePicker from '../../Componants/OptionsPanels/DatePicker'
-import XSLfiel from '../../Componants/OptionsPanels/XSLfiel'
+import XSLfile from '../../Componants/OptionsPanels/XSLfiel'
 import { toast } from "react-toastify";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import ConfirmationModal from "../../Componants/publicComponants/ConfirmationModal";
@@ -298,7 +298,7 @@ class projectScheduleAddEdit extends Component {
         updated_documentItem = Object.assign(original_documentItem, updated_documentItem);
         this.setState({
             documentItem: updated_documentItem
-        }) 
+        })
     }
 
     handleChangeDropItemsEdit = (e, field) => {
@@ -366,6 +366,10 @@ class projectScheduleAddEdit extends Component {
                     this.setState({
                         rows: data,
                     })
+                    let itemsData = { items: data };
+
+                    this.props.actions.ExportingData(itemsData);
+
                 })
         } else {
             //Is Add Mode
@@ -377,7 +381,7 @@ class projectScheduleAddEdit extends Component {
                         projectId: this.state.projectId,
                         arrange: res,
                         docDate: moment(),
-                        status: 'false',
+                        status: 'true',
                     };
 
                     this.setState({ document: Doc });
@@ -653,7 +657,14 @@ class projectScheduleAddEdit extends Component {
             }
         )
     }
-
+    getItemsData(boqId) {
+        this.setState({ isLoading: true });
+        dataservice.GetDataGrid("GetProjectScheduleItemsByScheduleId?scheduleId=" + this.state.docId).then(result => {
+            this.setState({
+                scheduleItemData: result
+            });
+        }).catch(ex => toast.error(Resources["failError"][currentLanguage])); 
+    }
     EditItems = (values) => {
         this.setState({
             isLoading: true,
@@ -1139,7 +1150,16 @@ class projectScheduleAddEdit extends Component {
                             )}
                         </Formik>
                     </div>
-                    <XSLfiel header="addManyActivities" />
+                    <Fragment>
+                        <XSLfile key="addManyActivities"
+                            docId={this.state.docId}
+                            docType={this.state.docTypeId}
+                            link={Config.getPublicConfiguartion().downloads +
+                                 "/Downloads/Excel/ProjectSchedule.xlsx"}
+                            header="addManyItems"
+                            disabled={this.props.changeStatus ? this.props.document.docId > 0 ? true : false : false}
+                            afterUpload={() => this.getItemsData()} />
+                    </Fragment>
                     <div className="doc-pre-cycle">
                         <header>
                             <h2 className="zero">{Resources.addedActivities[currentLanguage]}</h2>
