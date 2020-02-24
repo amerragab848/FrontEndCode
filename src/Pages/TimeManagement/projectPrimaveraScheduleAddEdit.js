@@ -297,6 +297,7 @@ class projectPrimaveraScheduleAddEdit extends Component {
 
                         dataservice.GetDataGrid('GetProjectEstimateItemsByProjectEstimateId?projectEstimateId=' + res.id + '').then(
                             Data => {
+                                
                                 this.setState({
                                     rows: Data,
                                 })
@@ -320,6 +321,10 @@ class projectPrimaveraScheduleAddEdit extends Component {
                     rows: res,
                     isLoading: false,
                 })
+                let data = { items: res };
+
+                this.props.actions.ExportingData(data); 
+
             }
 
         )

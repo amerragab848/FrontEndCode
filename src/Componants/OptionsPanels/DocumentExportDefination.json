@@ -1,4 +1,46 @@
 {
+    "10": {
+        "fields": [
+            {
+                "name": "subject",
+                "value": "subject",
+                "type": "S"
+            },
+            {
+                "name": "numberAbb",
+                "value": "arrange",
+                "type": "S"
+            },
+            {
+                "name": "docDate",
+                "value": "docDate",
+                "type": "D"
+            },
+            {
+                "name": "status",
+                "value": "statusName",
+                "type": "S"
+            }
+        ],
+        "columnsItems": [
+            "arrange",
+            "description",
+            "bicContactName",
+            "bicCompanyName",
+            "startDate",
+            "finishDate",
+            "taskId"
+        ],
+        "friendlyNames": [
+            "number",
+            "description",
+            "ToContact",
+            "toCompany",
+            "startDate",
+            "finishDate",
+            "activityId"
+        ]
+    },
     "13": {
         "fields": [
             {
@@ -10,7 +52,7 @@
                 "name": "docDate",
                 "value": "docDate",
                 "type": "D"
-            }, 
+            },
             {
                 "name": "status",
                 "value": "statusName",
@@ -20,31 +62,27 @@
                 "name": "alertStatus",
                 "value": "alertStatusName",
                 "type": "S"
-            } 
+            }
         ],
         "columnsItems": [
             "arrange",
-            "status",
             "task_id",
             "task_code",
             "description",
-            "actualFinishDate",
-            "bic_company_id",
-            "actualDuration",
-            "percentageWorkComplete",
-            "earnedValue"
+            "early_start_date",
+            "early_end_date",
+            "start_date",
+            "finish_date"
         ],
         "friendlyNames": [
             "numberAbb",
-            "statusName",
             "taskId",
             "taskCode",
             "activityDescription",
-            "actualFinishDate",
-            "actionByCompany",
-            "actualDuration",
-            "percentageWorkComplete",
-            "earnedValue"
+            "earlyStartDate",
+            "earlyEndDate",
+            "lateStartDate",
+            "lateEndDate"
         ]
     },
     "19": {
