@@ -1094,7 +1094,7 @@ class ExportDetails extends Component {
         <table className="attachmentTable attachmentTable__items attachmentTableAuto specialTable specialTable__certifiy" key="interimPaymentCertificate" id="interimPaymentCertificate">
           <thead>
             <tr style={{ backgroundColor: '#fafbfc', borderTop: '1px solid #e9ecf0', borderBottom: '1px solid #e9ecf0 ' }}>
-              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderTop: '1px solid #e9ecf0', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderTop: '1px solid #e9ecf0', borderRight: '1px solid #e9ecf0 ', minWidth: '215px'  }} colSpan="3">
                 <div className="headCell">
                   {Resources["description"][currentLanguage]}
                 </div>
@@ -1152,22 +1152,21 @@ class ExportDetails extends Component {
                 <div className="headCell">
                   {Resources["current"][currentLanguage]}
                 </div>
-              </th>
-              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">  </th>
+              </th> 
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="headCell">
                   {Resources["total"][currentLanguage]}
                 </div>
-              </th>
+              </th> 
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
             </tr>
           </thead>
           <tbody>{this.props.items.map((i, index) => (
             <tr key={i.id} style={{ height: '25px', background: this.state.rowsbackground.indexOf(i.refCode) > -1 ? '#edf0f2' : '' }}>
-              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3" style={{ maxWidth: 'unset', width: 'auto' }}>
+              <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ', minWidth: '215px', maxWidth: 'unset',width: '215px'}} colSpan="3" style={{ }}>
                 <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} >
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.description}{this.state.rowspercentage.indexOf(i.refCode) > -1 ? ' %' : ''}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' , maxWidth: 'unset', width: '215px', overflow: 'visible'}}>{i.description}{this.state.rowspercentage.indexOf(i.refCode) > -1 ? ' %' : ''}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
