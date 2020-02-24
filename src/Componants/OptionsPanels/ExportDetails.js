@@ -5,6 +5,10 @@ import DED from './DocumentExportDefination.json'
 import { connect } from 'react-redux';
 import LoadingSection from '../publicComponants/LoadingSection'
 import Signature from '../../Styles/images/mySignature.png';
+import declined from '../../Styles/images/declined.png';
+import approval from '../../Styles/images/approval.png';
+import pending from '../../Styles/images/pending.png';
+
 import Config from "../../Services/Config";
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
@@ -33,6 +37,8 @@ class ExportDetails extends Component {
       headerPath: null,
       footerPath: null,
       rowsDocument: [3, 4, 5, 9, 13],
+      rowsbackground: [3, 4, 13],
+      rowspercentage: [6, 7]
     };
 
     this.ExportDocument = this.ExportDocument.bind(this);
@@ -403,7 +409,7 @@ class ExportDetails extends Component {
       let nextIndex = (index + 1);
       if ((index % 2) === 0) {
 
-        let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
+        let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : field.name === 'percentageOfWorkDone' ? data[field.value].toFixed(2) : data[field.value]
 
         let notExist = find(filedsIgnor, function (x) { return x == field.name })
         return (!notExist ?
@@ -734,6 +740,7 @@ class ExportDetails extends Component {
                         </div>
                       </div>
                       <div className={cycle.statusVal == null ? "flowStatus pendingStatue" : cycle.statusVal === true ? "flowStatus approvedStatue" : "flowStatus rejectedStatue"}>
+                        <img style={{ margin: '0 3px', width: '24px', height: '24px' }} src={cycle.statusVal == null ? pending : cycle.statusVal === true ? approval : declined} />
                         <span className=" statueName">{cycle.status}</span>
                         {cycle.statusVal == null ? null : <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>}
                         {cycle.statusVal == null ? null :
@@ -828,6 +835,7 @@ class ExportDetails extends Component {
                     </div>
                   </div>
                   <div className={cycle.statusVal == null ? "flowStatus pendingStatue" : cycle.statusVal === true ? "flowStatus approvedStatue" : "flowStatus rejectedStatue"}>
+                    <img style={{ margin: '0 3px', width: '24px', height: '24px' }} src={cycle.statusVal == null ? pending : cycle.statusVal === true ? approval : declined} />
                     <span className=" statueName">{cycle.status}</span>
                     {cycle.statusVal == null ? null : <span className="statueDate">{moment(cycle.creationDate).format('DD-MM-YYYY')}</span>}
                     {cycle.statusVal == null ? null :
@@ -1080,44 +1088,44 @@ class ExportDetails extends Component {
 
   }
 
-  drawItemOfPaymentCertification() { 
+  drawItemOfPaymentCertification() {
     return (
       <Fragment>
         <table className="attachmentTable attachmentTable__items attachmentTableAuto specialTable specialTable__certifiy" key="interimPaymentCertificate" id="interimPaymentCertificate">
           <thead>
-            <tr>
-              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+            <tr style={{ backgroundColor: '#fafbfc', borderTop: '1px solid #e9ecf0', borderBottom: '1px solid #e9ecf0 ' }}>
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderTop: '1px solid #e9ecf0', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="headCell">
                   {Resources["description"][currentLanguage]}
                 </div>
               </th>
-              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderTop: '1px solid #e9ecf0', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="headCell">
                   {Resources["contractAmount"][currentLanguage]}
                 </div>
               </th>
-              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
-                <div className="headCell">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderTop: '1px solid #e9ecf0', borderRight: '1px solid #e9ecf0 ', textAlign: 'center' }} colSpan="3">
+                <div className="headCell" >
                   {Resources["submitted"][currentLanguage]}
                 </div>
               </th>
-              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderTop: '1px solid #e9ecf0', borderRight: '1px solid #e9ecf0 ', textAlign: 'center' }} colSpan="3">
                 <div className="headCell">
                   {Resources["approved"][currentLanguage]}
                 </div>
               </th>
-              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderTop: '1px solid #e9ecf0', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="headCell">
                   {Resources["totalDeduction"][currentLanguage]}
                 </div>
               </th>
-              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
+              <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderTop: '1px solid #e9ecf0', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="headCell">
                   {Resources["remarks"][currentLanguage]}
                 </div>
               </th>
             </tr>
-            <tr>
+            <tr style={{ backgroundColor: '#fafbfc' }}>
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
@@ -1155,8 +1163,8 @@ class ExportDetails extends Component {
               <th style={{ position: 'unset', height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3"></th>
             </tr>
           </thead>
-          <tbody>{this.props.items.map(i => (
-            <tr key={i.id} style={{ height: '25px' }}>
+          <tbody>{this.props.items.map((i, index) => (
+            <tr key={i.id} style={{ height: '25px', background: this.state.rowsbackground.indexOf(i.refCode) > -1 ? '#edf0f2' : '' }}>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3" style={{ maxWidth: 'unset', width: 'auto' }}>
                 <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} >
                   <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.description}</p>
@@ -1164,42 +1172,42 @@ class ExportDetails extends Component {
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="contentCell  " style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }} >
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount.toLocaleString()}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractAmount.toLocaleString()}{this.state.rowspercentage.indexOf(i.refCode) > -1 ? ' %' : ''}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse.toLocaleString()}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorPrevoiuse.toLocaleString()}{this.state.rowspercentage.indexOf(i.refCode) > -1 ? ' %' : ''}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue.toLocaleString()}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorCurrentValue.toLocaleString()}{this.state.rowspercentage.indexOf(i.refCode) > -1 ? ' %' : ''}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal.toLocaleString()}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.contractorTotal.toLocaleString()}{this.state.rowspercentage.indexOf(i.refCode) > -1 ? ' %' : ''}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse.toLocaleString()}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.prevoiuse.toLocaleString()}{this.state.rowspercentage.indexOf(i.refCode) > -1 ? ' %' : ''}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue.toLocaleString()}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.currentValue.toLocaleString()}{this.state.rowspercentage.indexOf(i.refCode) > -1 ? ' %' : ''}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="1">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total.toLocaleString()}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}>{i.total.toLocaleString()}{this.state.rowspercentage.indexOf(i.refCode) > -1 ? ' %' : ''}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
                 <div className="contentCell" style={{ minHeight: 'unset', height: '25px', maxHeight: '25px' }}>
-                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '' }}> {i.totalDeduction.toLocaleString()}</p>
+                  <p style={{ fontWeight: this.state.rowsDocument.indexOf(i.refCode) > -1 ? 'bold' : '', color: i.totalDeduction != 0 ? 'red' : '' }}> {i.totalDeduction.toLocaleString()}{this.state.rowspercentage.indexOf(i.refCode) > -1 ? ' %' : ''}</p>
                 </div>
               </td>
               <td style={{ height: '25px', borderBottom: '1px solid #e9ecf0 ', borderRight: '1px solid #e9ecf0 ' }} colSpan="3">
@@ -1285,7 +1293,7 @@ class ExportDetails extends Component {
         <div style={{ display: 'none' }}>
 
           {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : this.exportPDFFile()}
-          {this.props.docTypeId == 120  ? this.PrintPDFPaymentCertified() : null}
+          {this.props.docTypeId == 120 ? this.PrintPDFPaymentCertified() : null}
           {this.props.docTypeId == 19 ? this.exportLetterFile() : null}
         </div>
 
