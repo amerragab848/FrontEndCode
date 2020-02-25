@@ -713,7 +713,7 @@ class ExportDetails extends Component {
           {this.drawattachDocuments_pdf()}
           {this.props.workFlowCycles.length > 0 ?
             <Fragment>
-              <p id="pdfLength" style={{ paddingLeft: '0' }}><span>{cycleWF.subject}</span><span>{" at Level: " + cycleWF.currentLevel}</span><span> {" Sent:" + moment(cycleWF.creationDate).format('DD-MM-YYYY')}</span></p>
+              {/* <p id="pdfLength" style={{ paddingLeft: '0' }}><span>{cycleWF.subject}</span><span>{" at Level: " + cycleWF.currentLevel}</span><span> {" Sent:" + moment(cycleWF.creationDate).format('DD-MM-YYYY')}</span></p> */}
               <div className=" printSecondPage">
                 {this.drawWorkFlowCycles()}
               </div>
