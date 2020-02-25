@@ -22300,4 +22300,11 @@ tbody.grid-body tr td.text {
     margin-right: 10px;
 }
 
+.btn.disabled {
+    pointer-events: unset !important
+}
+
+.doc-container .step-content .readOnly__disabled .btn.disabled {
+    pointer-events: none !important
+}
 /* Added New After devided*/

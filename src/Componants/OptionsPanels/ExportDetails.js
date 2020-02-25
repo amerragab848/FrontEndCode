@@ -367,39 +367,47 @@ class ExportDetails extends Component {
     let fields = DED[this.props.docTypeId]
     let data = this.props.document
     let rows = fields.fields.map((field, index) => {
+      let nextIndex = (index + 1);
       let formatData = field.type == "D" ? moment(data[field.value]).format('DD/MM/YYYY') : data[field.value]
-
-      let notExist = find(filedsIgnor, function (x) { return x == field.name })
-      return (!notExist ?
-        <tr key={index}>
-          <td>
-            <div className="table__wrapper">
-              <h4 className="ui image header ">
-
-                <div className="content">
-                  {Resources[field.name][currentLanguage]}
-                </div>
-              </h4>
-            </div>
-          </td>
-          <td className="white mt5 tc f3" >
-            <div className="table__wrapper">
-              {formatData}
-            </div>
-          </td>
-        </tr>
-        : null
-      )
+      if ((index % 2) === 0) {
+        let notExist = find(filedsIgnor, function (x) { return x == field.name })
+        return (!notExist ?
+          <tr key={index}>
+            <td>
+              <div class="td__wrapper">
+                <h4 class="ui image header">
+                  <div class="content"> {Resources[field.name][currentLanguage]} :</div>
+                </h4>
+                <span>{formatData}</span>
+              </div>
+            </td>
+            {nextIndex < fields.fields.length ?
+              <>
+                <td style={{ fontSize: '10px', maxHeight: '31px', paddingBottom: '0', paddingTop: 0 }}>
+                  <div class="td__wrapper">
+                    <h4 class="ui image header">
+                      <div class="content"> {Resources[fields.fields[nextIndex].name][currentLanguage]} :</div>
+                    </h4>
+                    <span> {fields.fields[nextIndex]["type"] == "D" ? moment(data[fields.fields[nextIndex]["value"]]).format("DD/MM/YYYY") : data[fields.fields[nextIndex]["value"]]}</span>
+                  </div>
+                </td>
+              </>
+              : null}
+          </tr>
+          : null
+        )
+      }
     });
 
     return (
-      <table id="Fields"  >
+      <table id="Fields">
         <tbody>
           {rows}
         </tbody>
       </table>
     )
   }
+
 
   drawFields_Payment_pdf() {
 
@@ -690,14 +698,14 @@ class ExportDetails extends Component {
               <div className="docStatus">
                 <div className="highClosed">
                   <span className="subiStatus">{Resources.status[currentLanguage]} </span>
-                  <span className="subiPriority redSpan"> {this.props.document.status == true ? 'Opended' : 'Closed'}</span>
+                  <span className="subiPriority redSpan"> {this.props.document.status == true ? 'Opened' : 'Closed'}</span>
                 </div>
                 <div className="requireDate">
                   <span>{Resources.docDate[currentLanguage] + ' '}</span>
                   <span>{formatData}</span>
                 </div>
               </div>}
-            <div className="subiTable">
+            <div className="subiTable subCutomeTable">
               {this.drawFields_pdf()}
             </div>
           </div>
@@ -716,6 +724,10 @@ class ExportDetails extends Component {
               {/* <p id="pdfLength" style={{ paddingLeft: '0' }}><span>{cycleWF.subject}</span><span>{" at Level: " + cycleWF.currentLevel}</span><span> {" Sent:" + moment(cycleWF.creationDate).format('DD-MM-YYYY')}</span></p> */}
               <div className=" printSecondPage">
                 {this.drawWorkFlowCycles()}
+              </div>
+              <div class="newPrint__workflow--comment">
+                <h3>WorkFlow Notes</h3>
+                {this.drawWorkFlowComment()}
               </div>
             </Fragment>
             : null
@@ -783,7 +795,7 @@ class ExportDetails extends Component {
       this.props.workFlowCycles.length > 0 ?
         <Fragment>
           <p id="pdfLength"><span>{cycleWF.subject}</span><span>{" at Level: " + cycleWF.currentLevel}</span><span> {" Sent:" + moment(cycleWF.creationDate).format('DD-MM-YYYY')}</span></p>
-          <div className="newPrint__workflow" style={{ margin: '15px 0' }}>
+          <div className="newPrint__workflow" style={{ margin: '15px 0', width: '100%' }}>
             {levels.map((cycle, index) => {
               return (
                 <div key={'row- ' + index} className="newPrint__workflow--container">
@@ -811,6 +823,27 @@ class ExportDetails extends Component {
             })}
           </div>
         </Fragment>
+        : null
+    )
+  }
+
+  drawWorkFlowComment() {
+
+    let levels = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0].levels : [];
+    let cycleWF = this.props.workFlowCycles.length > 0 ? this.props.workFlowCycles[0] : null;
+    return (
+      this.props.workFlowCycles.length > 0 ?
+        <>
+          {levels.map((cycle, index) => {
+            return (
+              cycle.comment === null || cycle.comment === "" ? null :
+                <div class="workflow__comment">
+                  <span>{cycle.arrange}</span>
+                  <p><q>{cycle.contactName}</q> {cycle.comment}</p>
+                </div>
+            )
+          })}
+        </>
         : null
     )
   }
@@ -948,6 +981,10 @@ class ExportDetails extends Component {
             </div>
 
             {this.drawWorkFlowCycles()}
+            <div class="newPrint__workflow--comment">
+              <h3>WorkFlow Notes</h3>
+              {this.drawWorkFlowComment()}
+            </div>
             {this.drawAttachments_Letter()}
             {this.state.footerPath != null ?
               <div className="footer_print">
@@ -989,9 +1026,7 @@ class ExportDetails extends Component {
 
   PrintLetter() {
 
-    this.setState({
-      isExcel: false
-    });
+    this.setState({ isExcel: false });
 
     var contents = document.getElementById("Letter").innerHTML;
     var frame1 = document.getElementById('iframePrint');
@@ -1016,9 +1051,7 @@ class ExportDetails extends Component {
 
   PrintPaymentCertification() {
 
-    this.setState({
-      isExcel: false
-    });
+    this.setState({ isExcel: false });
 
     var contents = document.getElementById("PCertified").innerHTML;
     var frame1 = document.getElementById('iframePrint');
@@ -1229,7 +1262,7 @@ class ExportDetails extends Component {
               </div>
             </div>
             <div className="fullWidthWrapper">
-              <button className="primaryBtn-1 btn mediumBtn" type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
+              <button className={"primaryBtn-1 btn mediumBtn " + (this.state.isExcel === true ? "" : ' disabled')} type="button" onClick={e => this.ExportDocument('salaryTable', 'testTable', 'procoor ')}>{Resources["export"][currentLanguage]}</button>
               {this.props.docTypeId != 120 ? null : <button className={"defaultBtn btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintPaymentCertification()}>{Resources["print"][currentLanguage] + '-' + Resources.paymentCertificationLog[currentLanguage]}</button>}
               {this.props.docTypeId == 19 ? <button className={"defaultBtn btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintLetter()}>{Resources["print"][currentLanguage] + '-' + Resources.lettertitle[currentLanguage]}</button> : null}
               {this.props.docTypeId == 19 || this.props.docTypeId == 120 ? null : <button className={"defaultBtn btn mediumBtn " + (this.state.isExcel == true ? " disabled" : "")} type="button" onClick={e => this.PrintDocument()}>{Resources["print"][currentLanguage]}</button>
