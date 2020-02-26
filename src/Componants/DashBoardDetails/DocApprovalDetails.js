@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Api from "../../api";
-import moment from "moment";
 import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
@@ -9,53 +8,9 @@ import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as communicationActions from '../../store/actions/communication';
-
 import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 
 let currentLanguage = localStorage.getItem("lang") == null ? "en" : localStorage.getItem("lang");
-
-const dateFormate = ({ value }) => {
-  return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-};
-
-const statusButton = ({ value, row }) => {
-  let doc_view = "";
-  if (row) {
-    if (row.readStatus === true) {
-      doc_view = <div style={{ textAlign: 'center', margin: '4px auto', padding: '4px 10px', borderRadius: '26px', backgroundColor: '#5FD45F', width: '100%', color: '#fff', fontSize: '12px' }}>{Resources["read"][currentLanguage]}</div>
-    } else {
-      doc_view = <div style={{ textAlign: 'center', padding: '4px 10px', margin: '4px auto', borderRadius: '26px', backgroundColor: '#E74C3C', width: '100%', color: '#FFF', fontSize: '12px' }}>{Resources["unRead"][currentLanguage]}</div>
-    }
-    return doc_view;
-  }
-  return null;
-};
-
-
-let subjectLink = ({ value, row }) => {
-  let doc_view = "";
-  let subject = "";
-  if (row) {
-
-    let obj = {
-      docId: row.docId,
-      projectId: row.projectId,
-      projectName: row.projectName,
-      arrange: row.arrange,
-      docApprovalId: row.accountDocWorkFlowId,
-      isApproveMode: true,
-      perviousRoute: window.location.pathname + window.location.search
-    };
-
-    let parms = CryptoJS.enc.Utf8.parse(JSON.stringify(obj))
-    let encodedPaylod = CryptoJS.enc.Base64.stringify(parms)
-    doc_view = "/" + (row.docLink !== null ? row.docLink.replace('/', '') : row.docLink) + "?id=" + encodedPaylod
-    subject = row.subject;
-
-    return <a href={doc_view}> {subject} </a>;
-  }
-  return null;
-};
 
 class DocApprovalDetails extends Component {
   constructor(props) {
@@ -315,7 +270,6 @@ class DocApprovalDetails extends Component {
 
     for (let param of query.entries()) {
       action = param[1];
-
     }
 
     if (action === "1") {
