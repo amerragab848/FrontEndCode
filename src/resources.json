@@ -8440,5 +8440,10 @@
     "inventoryItems":{
         "en":"Items Of Inventory",
         "ar":"عناصر المخزن"
+    },
+    "allProjects":{
+        "en":"All Projects",
+        "ar":"كل المشاريع"
     }
+    
 }

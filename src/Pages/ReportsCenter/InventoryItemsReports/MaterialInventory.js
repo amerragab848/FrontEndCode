@@ -4,8 +4,10 @@ import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from 'react-customized-grid';
+import Dataservice from '../../../Dataservice';
 import Api from '../../../api.js';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
@@ -16,12 +18,14 @@ class ExpensesStatus extends Component {
         super(props)
         this.state = {
             isLoading: false,
+            projectsData: [],
+            projectIds: [],
+            selectedProject: { label: Resources.projectName[currentLanguage], value: "0" },
             rows: [],
-            description: null,
-            resourceCode: null
+            allProjects: false
         }
 
-        if (!Config.IsAllow(3723)) {
+        if (!Config.IsAllow(3665)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
@@ -32,34 +36,13 @@ class ExpensesStatus extends Component {
                 "field": "projectName",
                 "title": Resources.projectName[currentLanguage],
                 "type": "text",
-                "width": 20,
+                "width": 15,
                 "fixed": true,
                 "groupable": true,
                 "sortable": true
             }, {
                 "field": "description",
                 "title": Resources.description[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "resourceCode",
-                "title": Resources.resourceCode[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "unitPrice",
-                "title": Resources.unitPrice[currentLanguage],
-                "type": "text",
-                "width": 15,
-                "groupable": true,
-                "sortable": true
-            }, {
-                "field": "quantity",
-                "title": Resources.quantity[currentLanguage],
                 "type": "text",
                 "width": 15,
                 "groupable": true,
@@ -72,8 +55,22 @@ class ExpensesStatus extends Component {
                 "groupable": true,
                 "sortable": true
             }, {
-                "field": "total",
-                "title": Resources.total[currentLanguage],
+                "field": "quantity",
+                "title": Resources.quantity[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "itemCode",
+                "title": Resources.itemCode[currentLanguage],
+                "type": "text",
+                "width": 15,
+                "groupable": true,
+                "sortable": true
+            }, {
+                "field": "resourceCode",
+                "title": Resources.resourceCode[currentLanguage],
                 "type": "text",
                 "width": 15,
                 "groupable": true,
@@ -81,20 +78,39 @@ class ExpensesStatus extends Component {
             }
         ];
         this.fields = [{
-            title: Resources["description"][currentLanguage],
-            value: "",
-            type: "text"
-        }, {
-            title: Resources["resourceCode"][currentLanguage],
+            title: Resources["projectName"][currentLanguage],
             value: "",
             type: "text"
         }];
     }
 
-    getGridRows = () => {
-        this.setState({ isLoading: true })
+    componentDidMount() {
+        Dataservice.GetDataList('GetMaterialInventoryProjects?pageNumber=1&pageSize=1000', 'projectName', 'projectId').then(
+            result => {
+                this.setState({
+                    projectsData: result
+                })
+            }).catch(() => {
+                toast.error('somthing wrong')
+            })
+    }
 
-        Api.get("GetByDescriptionAndResourceCode?description=" + this.state.description + "&resourceCode=" + this.state.resourceCode).then(
+    getGridRows = () => {
+        let dtoDoc=null;
+        if(this.state.allProjects===true){
+            console.log(this.state)
+           dtoDoc=this.state.projectsData.map(i=>i.value);
+           this.fields[0].value = "All Projects";
+        }else{
+            dtoDoc=this.state.projectIds;
+        }
+        this.setState({ isLoading: true })
+        let obj = {
+            dtoDocument: dtoDoc,
+            pageNumber: 0,
+            pageSize: 10000
+        }
+        Api.post('GetMaterialInventorySummary', obj).then(
             res => {
                 this.setState({
                     rows: res,
@@ -105,11 +121,21 @@ class ExpensesStatus extends Component {
             this.setState({ isLoading: false })
         })
     }
+    handleChangeDrop = (name, selected, e) => {
+       
+        let arrIds = e.map(i => i.value);
+        let  arrVals = e.map(i => i.label + " , ");
+        this.fields[0].value = arrVals;
+        
+        this.setState({
+            [name]: arrIds,
+            [selected]: e,
 
-    handleChange = (value, name) => {
-        this.setState({ [name]: value })
+        })
     }
-
+    checkChange = (e) => {
+        this.setState({ allProjects: e.target.checked });
+    }
     render() {
         const dataGrid = this.state.isLoading === false ? (
             <GridCustom ref='custom-data-grid' groups={[]} data={this.state.rows || []} cells={this.columns}
@@ -121,40 +147,38 @@ class ExpensesStatus extends Component {
 
             <ExportDetails fieldsItems={this.columns}
                 rows={this.state.rows}
-                fields={this.fields} fileName={Resources.inventoryItems[currentLanguage]} />
+                fields={this.fields} fileName={Resources.materialInventoryReport[currentLanguage]} />
             : null
 
         return (
 
-            <div className="reports__content">
+
+            <div className="reports__content reports__multiDrop">
                 <header>
-                    <h2 className="zero">{Resources.inventoryItems[currentLanguage]}</h2>
+                    <h2 className="zero">{Resources.materialInventoryReport[currentLanguage]}</h2>
                     {btnExport}
                 </header>
 
 
                 <div className='proForm reports__proForm'>
+                    <div className="linebylineInput multiChoice">
+                        <Dropdown title='projectName' data={this.state.projectsData} name='projectName'
+                            isMulti={true} selectedValue={this.state.selectedCompany} handleChange={e => { this.handleChangeDrop('projectIds', 'selectedProject', e); }} />
 
-                    <div className="linebylineInput valid-input">
-                        <label className="control-label">{Resources.description[currentLanguage]}</label>
-                        <div className="inputDev ui input">
-                            <input name='description' className="form-control fsadfsadsa" id="description"
-                                placeholder={Resources.description[currentLanguage]} value={this.state.description}
-                                onChange={(e) => { this.handleChange(e.target.value, 'description'); this.fields[0].value = e.target.value }} />
+                    </div>
+                    <div className="linebylineInput">
+                        <div className="ui checkbox checkBoxGray300 checked" >
+                            <input type="checkbox"
+                                id="allProjects"
+                                name="allProjects"
+                                value={this.state.allProjects}
+                                checked={this.state.allProjects}
+                                onChange={(e) => { this.checkChange(e); }}
+                            />
+                            <label>{Resources.allProjects[currentLanguage]}</label>
                         </div>
                     </div>
-                    <div className="linebylineInput valid-input">
-                        <label className="control-label">{Resources.resourceCode[currentLanguage]}</label>
-                        <div className="inputDev ui input">
-                            <input name='resourceCode' className="form-control fsadfsadsa" id="resourceCode"
-                                placeholder={Resources.resourceCode[currentLanguage]} value={this.state.resourceCode}
-                                onChange={(e) => { this.handleChange(e.target.value, 'resourceCode'); this.fields[1].value = e.target.value }} />
-                        </div>
-                    </div>
-
-
                     <button className="primaryBtn-1 btn smallBtn" onClick={this.getGridRows}>{Resources['search'][currentLanguage]}</button>
-
                 </div>
                 <div className="doc-pre-cycle letterFullWidth">
                     {dataGrid}

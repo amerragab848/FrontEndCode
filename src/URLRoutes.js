@@ -2836,7 +2836,15 @@ var routes = [
             order: 6
         }
     },
-    {
+   
+    // {
+    //     route: "materialsSuspended",
+    //     moduleId: "reportCenter/materialsSuspended",
+    //     title: "materialsSuspended",
+    //     nav: true,
+    //     settings: { inventory: true, permission: 3724, order: 2 }
+    // },
+    { //start inventory Items Routes
         route: "inventoryRpt",
         moduleId: "InventoryItemsReports/InventoryItems",
         title: "inventoryRpt",
@@ -2845,14 +2853,14 @@ var routes = [
     },
     {
         route: "materialsSuspended",
-        moduleId: "reportCenter/materialsSuspended",
+        moduleId: "InventoryItemsReports/SluggishMaterials",
         title: "materialsSuspended",
         nav: true,
         settings: { inventory: true, permission: 3724, order: 2 }
     },
     {
         route: "materialInventoryReport",
-        moduleId: "reportCenter/itemsBalancePerProject",
+        moduleId: "InventoryItemsReports/MaterialInventory",
         title: "materialInventoryReport",
         nav: true,
         settings: { inventory: true, permission: 3665, order: 3 }
@@ -3043,13 +3051,9 @@ var routes = [
             caption: "procoor-icon-BIC",
             order: 11
         }
-    },{ //start inventory Items Routes
-        route: "ExpnesesUserRequests",
-        moduleId: "OtherReports/ExpnesesUserRequests",
-        title: "expnesesUserRequests",
-        nav: true,
-        settings: { OtherReports: true, permission: 3719, order: 1 }
-    },
+    }
+   
+   
 ];
 
 export default routes;
