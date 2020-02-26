@@ -234,8 +234,8 @@ class ProjectTaskAddEdit extends Component {
         estimatedTime: "1",
         originalEstimatedTime: "",
         parentEstimateTime: null,
-        suspeneded: "true",
-        isTransfer: "false",
+        suspeneded: "false",
+        isTransfer: "true",
         taskId: null,
         id: 0
       };
@@ -794,15 +794,15 @@ class ProjectTaskAddEdit extends Component {
                                 {Resources.taskActivity[currentLanguage]}
                               </label>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === false ? null : "checked"}
-                                  value="true" onChange={e => this.handleChange(e, "suspeneded")} />
+                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === true || this.state.document.suspeneded === "true" ? "checked" :null }
+                                  value="false" onChange={e => this.handleChange(e, "suspeneded")} />
                                 <label>
                                   {Resources.suspeneded[currentLanguage]}
                                 </label>
                               </div>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === false ? "checked" : null}
-                                  value="false" onChange={e => this.handleChange(e, "suspeneded")} />
+                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.isTransfer === true || this.state.document.isTransfer === "true" ? "checked" : null}
+                                  value="true" onChange={e => this.handleChange(e, "isTransfer")} />
                                 <label>
                                   {Resources.resumed[currentLanguage]}
                                 </label>
