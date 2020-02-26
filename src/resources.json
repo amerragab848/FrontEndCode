@@ -8436,5 +8436,9 @@
     "selectCostCosingTree": {
         "en": "--- Select Cost Coding Tree ---",
         "ar": "-- برجاء إختيار شجرة الحسابات"
+    },
+    "inventoryItems":{
+        "en":"Items Of Inventory",
+        "ar":"عناصر المخزن"
     }
 }

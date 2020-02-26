@@ -2838,7 +2838,7 @@ var routes = [
     },
     {
         route: "inventoryRpt",
-        moduleId: "reports/inventoryRpt",
+        moduleId: "InventoryItemsReports/InventoryItems",
         title: "inventoryRpt",
         nav: true,
         settings: { inventory: true, permission: 3723, order: 1 }
@@ -3043,7 +3043,13 @@ var routes = [
             caption: "procoor-icon-BIC",
             order: 11
         }
-    }
+    },{ //start inventory Items Routes
+        route: "ExpnesesUserRequests",
+        moduleId: "OtherReports/ExpnesesUserRequests",
+        title: "expnesesUserRequests",
+        nav: true,
+        settings: { OtherReports: true, permission: 3719, order: 1 }
+    },
 ];
 
 export default routes;
