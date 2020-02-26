@@ -70,11 +70,11 @@ class ProjectTasks extends Component {
         sortDescendingFirst: true,
         filterRenderer: SingleSelectFilter
       },
-      {
-        //key: "status",
-        key: "BtnActions",
-        width: 150
-      },
+      // {
+      //   //key: "status",
+      //   key: "BtnActions",
+      //   width: 150
+      // },
       {
         key: "actualProgress",
         name: Resources["actualProgress"][currentLanguage],
@@ -489,7 +489,6 @@ class ProjectTasks extends Component {
       selectedRows: [],
       minimizeClick: false,
     };
-
   }
 
   componentWillUnmount() {

@@ -234,8 +234,8 @@ class ProjectTaskAddEdit extends Component {
         estimatedTime: "1",
         originalEstimatedTime: "",
         parentEstimateTime: null,
-        suspeneded: "true",
-        isTransfer: "false",
+        suspeneded: "false",
+        isTransfer: "true",
         taskId: null,
         id: 0
       };
@@ -601,8 +601,6 @@ class ProjectTaskAddEdit extends Component {
   }
 
   render() {
-
-
     return (
       <div className="mainContainer">
         <div className={this.state.isViewMode === true ? "documents-stepper noTabs__document readOnly_inputs" : "documents-stepper noTabs__document"}>
@@ -796,15 +794,15 @@ class ProjectTaskAddEdit extends Component {
                                 {Resources.taskActivity[currentLanguage]}
                               </label>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === false ? null : "checked"}
-                                  value="true" onChange={e => this.handleChange(e, "suspeneded")} />
+                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === true || this.state.document.suspeneded === "true" ? "checked" :null }
+                                  value="false" onChange={e => this.handleChange(e, "suspeneded")} />
                                 <label>
                                   {Resources.suspeneded[currentLanguage]}
                                 </label>
                               </div>
                               <div className="ui checkbox radio radioBoxBlue">
-                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.suspeneded === false ? "checked" : null}
-                                  value="false" onChange={e => this.handleChange(e, "suspeneded")} />
+                                <input type="radio" name="taskActivity" defaultChecked={this.state.document.isTransfer === true || this.state.document.isTransfer === "true" ? "checked" : null}
+                                  value="true" onChange={e => this.handleChange(e, "isTransfer")} />
                                 <label>
                                   {Resources.resumed[currentLanguage]}
                                 </label>
@@ -812,7 +810,15 @@ class ProjectTaskAddEdit extends Component {
                             </div>
                           </div>
                           <div className="slider-Btns">
-                            {this.showBtnsSaving()}
+                            {this.state.isLoading ?
+                              <button className="primaryBtn-1 btn disabled">
+                                <div className="spinner">
+                                  <div className="bounce1" />
+                                  <div className="bounce2" />
+                                  <div className="bounce3" />
+                                </div>
+                              </button>
+                              : this.showBtnsSaving()}
                             {this.props.changeStatus === true ? (
                               <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}
                                 type="button" onClick={this.viewCycle.bind(this)}>
@@ -823,6 +829,17 @@ class ProjectTaskAddEdit extends Component {
                           {this.props.changeStatus === true ? (
                             <div className="approveDocument">
                               <div className="approveDocumentBTNS">
+                                {this.state.isLoading ? (
+                                  <button className="primaryBtn-1 btn disabled">
+                                    <div className="spinner">
+                                      <div className="bounce1" />
+                                      <div className="bounce2" />
+                                      <div className="bounce3" />
+                                    </div>
+                                  </button>
+                                ) : (
+                                    <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>{Resources.save[currentLanguage]}</button>
+                                  )}
                                 <DocumentActions
                                   isApproveMode={this.state.isApproveMode}
                                   docTypeId={this.state.docTypeId}
@@ -834,6 +851,7 @@ class ProjectTaskAddEdit extends Component {
                                   showModal={this.props.showModal}
                                   showOptionPanel={this.showOptionPanel}
                                   permission={this.state.permission}
+                                  documentName="projectTask"
                                 />
                               </div>
                             </div>

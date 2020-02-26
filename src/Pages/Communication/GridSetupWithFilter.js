@@ -77,8 +77,7 @@ class GridSetupWithFilter extends Component {
   }
 
   static getDerivedStateFromProps(props, current_state) {
-    if (current_state.rows !== props.rows && props.isFilter) {
-      console.log(props.rows.length, 'getDerivedStateFromProps in grid');
+    if (current_state.rows !== props.rows && props.isFilter) { 
       props.changeValueOfProps();
       return {
         rows: props.rows,
@@ -387,9 +386,7 @@ class GridSetupWithFilter extends Component {
           });
           if (matched > 0) rowsList.push(row);
         });
-
-        console.log(rowsList.length, 'rowsList after RowsFilter');
-        //console.log(this.state.filteredRows.length, 'in filteredRows');
+ 
         this.setState({
           rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
           Loading: false
@@ -402,8 +399,7 @@ class GridSetupWithFilter extends Component {
           Object.keys(filters).forEach(key => {
             let isValue = row[`${key}`];
             let compareValue = `${filters[key]}`;
-
-            console.log(isValue);
+ 
 
             if (isValue != "" && isValue != null) {
               if (`${filters[key]}`.includes("|")) {
@@ -498,8 +494,7 @@ class GridSetupWithFilter extends Component {
         delete newFilters[filter.column.key];
       }
 
-      let rows = [...this.state.filteredRows];
-      console.log(rows.length, 'filteredRows before filteredRows');
+      let rows = [...this.state.filteredRows]; 
       this.getRowsFilter(rows, newFilters);
 
       this.setState({
@@ -507,9 +502,7 @@ class GridSetupWithFilter extends Component {
         setFilters: newFilters,
         Loading: false
       });
-    } else {
-      console.log('this.state.filteredRows.length == 0')
-    }
+    }  
   }
 
   ClearFilters = () => {
