@@ -1,23 +1,20 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Export from "../../../Componants/OptionsPanels/Export";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
 import moment from "moment";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Dataservice from '../../../Dataservice';
 import Api from '../../../api';
+import ExportDetails from "../ExportReportCenterDetails";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
 
 class NewprojectList extends Component {
 
@@ -79,6 +76,19 @@ class NewprojectList extends Component {
             },
         ];
 
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
 
@@ -86,7 +96,7 @@ class NewprojectList extends Component {
         this.setState({ [name]: value })
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Dataservice.GetDataList('SelectListType', 'title', 'id').then(
             result => {
                 this.setState({
@@ -133,13 +143,10 @@ class NewprojectList extends Component {
                 rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'newprojectList'} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.newprojectList[currentLanguage]} />
 
         return (
-
-
             <div className="reports__content">
                 <header>
                     <h2 className="zero">{Resources.newprojectList[currentLanguage]}</h2>
@@ -150,18 +157,18 @@ class NewprojectList extends Component {
                         <Dropdown title='Projects'
                             data={this.state.ProjectsData}
                             selectedValue={this.state.selectedProject}
-                            handleChange={e => this.setState({ selectedProject: e })} />
+                            handleChange={e => { this.setState({ selectedProject: e }); this.fields[0].value = e.label }} />
                     </div>
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='startDate'
                             startDate={this.state.startDate}
-                            handleChange={e => this.handleChange('startDate', e)} />
+                            handleChange={e => { this.handleChange('startDate', e); this.fields[1].value = e }} />
                     </div>
 
                     <div className="linebylineInput valid-input alternativeDate">
                         <DatePicker title='finishDate'
                             startDate={this.state.finishDate}
-                            handleChange={e => this.handleChange('finishDate', e)} />
+                            handleChange={e => { this.handleChange('finishDate', e); this.fields[2].value = e }} />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={this.getGridRows}>{Resources['search'][currentLanguage]}</button>
                 </div>

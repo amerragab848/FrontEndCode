@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import Api from '../../../api';
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
+import ExportDetails from "../ExportReportCenterDetails";
 import dataservice from "../../../Dataservice";
-import PieChartComp from '../../../Componants/ChartsWidgets/PieChartComp'
+import PieChartComp from '../../../Componants/ChartsWidgets/PieChartComp';
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
 class TaskEstimatedHours extends Component {
@@ -31,13 +31,14 @@ class TaskEstimatedHours extends Component {
             this.props.history.push({
                 pathname: "/"
             });
-
         }
+
         this.statusData = [
             { label: Resources['all'][currentLanguage], value: null },
             { label: Resources['oppened'][currentLanguage], value: true },
             { label: Resources['closed'][currentLanguage], value: false }
         ]
+
         this.columns = [{
             field: "bicContactName",
             title: Resources["ContactName"][currentLanguage],
@@ -62,8 +63,17 @@ class TaskEstimatedHours extends Component {
             fixed: false,
             type: "text",
             sortable: true,
-        }
-        ];
+        }];
+
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["status"][currentLanguage],
+            value: this.state.selectedStatus.label,
+            type: "text"
+        }];
     }
 
     componentDidMount() {
@@ -78,6 +88,7 @@ class TaskEstimatedHours extends Component {
                 sortable: true,
             })
         }
+
         dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'id').then(result => {
             this.setState({
                 dropDownList: result
@@ -131,9 +142,8 @@ class TaskEstimatedHours extends Component {
                 cells={this.columns}
                 rowClick={() => { }}
             />) : <LoadingSection />
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['taskEstimatedHours'][currentLanguage]} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.taskEstimatedHours[currentLanguage]} />
 
         let Chart = this.state.showChart ?
             <PieChartComp
@@ -157,13 +167,20 @@ class TaskEstimatedHours extends Component {
                     <div className="linebylineInput valid-input">
                         <Dropdown title="Projects" name="Projects" index="Projects"
                             data={this.state.dropDownList} selectedValue={this.state.selectedProjects}
-                            handleChange={event => this.setState({ selectedProjects: event })}
+                            handleChange={event => {
+                                this.setState({ selectedProjects: event });
+                                let documentText = '';
+                                event.map(lable => {
+                                    return documentText = lable.label + " - " + documentText
+                                });
+                                this.fields[0].value = documentText
+                            }}
                             isMulti={true} />
                     </div>
                     <div className="linebylineInput valid-input">
                         <Dropdown title="status" name="status" index="status"
                             data={this.statusData} selectedValue={this.state.selectedStatus}
-                            handleChange={event => this.setState({ selectedStatus: event })} />
+                            handleChange={event => { this.setState({ selectedStatus: event }); this.fields[1].value = event.label }} />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
                 </div>

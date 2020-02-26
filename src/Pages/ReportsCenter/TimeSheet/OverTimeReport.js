@@ -4,12 +4,13 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Export from "../../../Componants/OptionsPanels/Export";
-import GridCustom from 'react-customized-grid'; 
+import GridCustom from 'react-customized-grid';
 import dataservice from "../../../Dataservice";
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
+import ExportDetails from "../ExportReportCenterDetails";
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 
@@ -63,6 +64,20 @@ class OverTimeReport extends Component {
             "groupable": true,
             "sortable": true
         }];
+
+        this.fields = [{
+            title: Resources["defaultHours"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
 
 
@@ -76,7 +91,7 @@ class OverTimeReport extends Component {
         }
 
         dataservice.addObject('GetUsersOverTime', obj).then((res) => {
-            if (res.length > 0) { 
+            if (res.length > 0) {
                 this.setState({
                     rows: res, isLoading: false
                 });
@@ -104,10 +119,8 @@ class OverTimeReport extends Component {
                 pageSize={this.state.rows.length} actions={[]} rowActions={[]} rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []}
-                columns={this.columns} fileName={Resources['overTimeSheet'][currentLanguage]} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.overTimeSheet[currentLanguage]} />
 
         return (
             <div className="reports__content">
@@ -131,19 +144,19 @@ class OverTimeReport extends Component {
                                     <div className={"ui input inputDev fillter-item-c " + (errors.defaultHour && touched.defaultHour ? "has-error" : !errors.defaultHour && touched.defaultHour ? "has-success" : "")} >
                                         <input type="text" className="form-control" value={this.state.defaultHour || ''} name="defaultHour" placeholder={Resources.defaultHours[currentLanguage]}
                                             onBlur={e => { handleChange(e); handleBlur(e); }}
-                                            onChange={e => this.handleChange(e)} />
+                                            onChange={e => { this.handleChange(e); this.fields[0].value = e.target.value }} />
                                         {errors.defaultHour && touched.defaultHour ? (<em className="pError">{errors.defaultHour}</em>) : null}
                                     </div>
                                 </div>
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='startDate'
                                         startDate={this.state.startDate}
-                                        handleChange={e => this.setDate('startDate', e)} />
+                                        handleChange={e => { this.setDate('startDate', e); this.fields[1].value = e }} />
                                 </div>
                                 <div className="linebylineInput valid-input alternativeDate">
                                     <DatePicker title='finishDate'
                                         startDate={this.state.finishDate}
-                                        setDate={e => this.setDate('finishDate', e)} />
+                                        setDate={e => { this.setDate('finishDate', e); this.fields[1].value = e }} />
                                 </div>
                                 <button className="primaryBtn-1 btn smallBtn"  >{Resources['search'][currentLanguage]}</button>
                             </Form>

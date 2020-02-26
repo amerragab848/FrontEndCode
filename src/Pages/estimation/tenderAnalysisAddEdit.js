@@ -191,7 +191,7 @@ class tenderAnalysisAddEdit extends Component {
             this.getNextArrangeInAdd()
 
         }
-        //        this.checkDocumentIsView(); 
+        this.checkDocumentIsView();
     }
 
     getNextArrangeInAdd = () => {
@@ -202,7 +202,6 @@ class tenderAnalysisAddEdit extends Component {
 
     static getDerivedStateFromProps(nextProps, state) {
         if (nextProps.document.id !== state.document.id && nextProps.changeStatus === true) {
-
             return {
                 document: nextProps.document,
                 hasWorkflow: nextProps.hasWorkflow,
@@ -215,12 +214,6 @@ class tenderAnalysisAddEdit extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.document.id !== this.props.document.id && this.props.changeStatus === true) {
-            //         // und 976 --1
-            //         //976 976 fire modal
-            //         //976 976 close modal
-            //         //alert('recieve....'); 
-            //         //alert('recieve....' + this.state.showModal + '.....' + nextProps.showModal);
-
             this.fillDropDowns(this.props.document.id > 0 ? true : false);
             this.checkDocumentIsView();
         }
@@ -290,7 +283,6 @@ class tenderAnalysisAddEdit extends Component {
 
                 let companyId = this.props.document.fromCompanyId;
                 let fromCompanyName = find(result, function (item) { return item.value == companyId });
-                console.log('fromCompanyName', fromCompanyName)
                 if (companyId) {
                     this.setState({ selectedFromCompany: { label: fromCompanyName.label, value: companyId } });
                     this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", companyId, "fromContactId", "selectedFromContact", "fromContacts");
@@ -298,7 +290,6 @@ class tenderAnalysisAddEdit extends Component {
 
                 let toCompanyId = this.props.document.toCompanyId;
                 let toCompanyName = find(result, function (item) { return item.value == toCompanyId });
-                console.log('toCompanyName', toCompanyName)
                 if (toCompanyId) {
                     this.setState({ selectedToCompany: { label: toCompanyName.label, value: toCompanyId } });
                     this.fillSubDropDownInEdit("GetContactsByCompanyId", "companyId", toCompanyId, "toContactId", "selectedToContact", "ToContacts");
@@ -321,25 +312,6 @@ class tenderAnalysisAddEdit extends Component {
 
             this.setState({ companies: [...result] });
         });
-
-        // dataservice.GetDataListCached("GetaccountsDefaultListForList?listType=discipline", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
-        //     if (isEdit) {
-        //         let disciplineId = this.props.document.disciplineId;
-        //         let discpline = {};
-        //         if (disciplineId) {
-        //             discpline = result.filter(function (i) {
-        //                 return i.value == disciplineId;
-        //             });
-
-        //             this.setState({
-        //                 selectedDiscpline: discpline
-        //             });
-        //         }
-        //     }
-        //     this.setState({
-        //         discplines: [...result]
-        //     });
-        // });
 
         dataservice.GetDataListCached("GetAccountsDefaultList?listType=discipline&pageNumber=0&pageSize=10000", "title", "id", 'defaultLists', "discipline", "listType").then(result => {
             if (isEdit) {
@@ -671,9 +643,8 @@ class tenderAnalysisAddEdit extends Component {
                                                                 </div>
                                                             </button>
                                                             :
-                                                            <div className="slider-Btns">
-                                                                {this.showBtnsSaving()}
-                                                            </div>}
+                                                            this.showBtnsSaving()
+                                                        }
                                                     </div>
 
 

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import Config from '../../../Services/Config';
-import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous' 
+import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -78,9 +78,6 @@ class ProjectDocumentStatus extends Component {
 
         return (
             <React.Fragment>
-                <div className="filterBTNS">
-
-                </div>
                 <div className="reports__content">
                     <header>
                         <h2 className="zero">{Resources.ProjectDocumentStatus[currentLanguage]}</h2>

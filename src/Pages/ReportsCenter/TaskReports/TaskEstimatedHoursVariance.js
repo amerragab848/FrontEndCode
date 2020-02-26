@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Export from "../../../Componants/OptionsPanels/Export";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
+import ExportDetails from "../ExportReportCenterDetails";
 import dataservice from "../../../Dataservice";
 import BarChartComp from '../../../Componants/ChartsWidgets/BarChartCompJS'
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -38,6 +38,7 @@ class TaskEstimatedHoursVariance extends Component {
             { label: Resources['oppened'][currentLanguage], value: true },
             { label: Resources['closed'][currentLanguage], value: false }
         ]
+
         this.columns = [{
             field: "projectName",
             title: Resources["projectName"][currentLanguage],
@@ -72,6 +73,16 @@ class TaskEstimatedHoursVariance extends Component {
             sortable: true,
         }
         ];
+
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["status"][currentLanguage],
+            value: this.state.selectedStatus.label,
+            type: "text"
+        }];
     }
 
     componentDidMount() {
@@ -118,7 +129,6 @@ class TaskEstimatedHoursVariance extends Component {
 
     render() {
         const dataGrid = this.state.isLoading === false ? (
-
             <GridCustom
                 ref='custom-data-grid'
                 key="TaskEstimatedHoursVariance"
@@ -130,10 +140,9 @@ class TaskEstimatedHoursVariance extends Component {
                 cells={this.columns}
                 rowClick={() => { }}
             />) : <LoadingSection />
-            
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={Resources['taskEstimatedHoursVariance'][currentLanguage]} />
-            : null
+
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.taskEstimatedHoursVariance[currentLanguage]} />
 
         let Chart = this.state.showChart ?
             <BarChartComp
@@ -160,17 +169,23 @@ class TaskEstimatedHoursVariance extends Component {
                     {btnExport}
                 </header>
                 <div className='proForm reports__proForm'>
-
                     <div className="linebylineInput valid-input">
                         <Dropdown title="Projects" name="Projects" index="Projects"
                             data={this.state.dropDownList} selectedValue={this.state.selectedProjects}
-                            handleChange={event => this.setState({ selectedProjects: event })}
+                            handleChange={event => {
+                                this.setState({ selectedProjects: event });
+                                let documentText = '';
+                                event.map(lable => {
+                                    return documentText = lable.label + " - " + documentText
+                                });
+                                this.fields[0].value = documentText
+                            }}
                             isMulti={true} />
                     </div>
                     <div className="linebylineInput valid-input">
                         <Dropdown title="status" name="status" index="status"
                             data={this.statusData} selectedValue={this.state.selectedStatus}
-                            handleChange={event => this.setState({ selectedStatus: event })} />
+                            handleChange={event => { this.setState({ selectedStatus: event }); this.fields[1].value = event.label }} />
                     </div>
                     <button className="primaryBtn-1 btn smallBtn" onClick={() => this.getGridRows()}>{Resources['search'][currentLanguage]}</button>
                 </div>

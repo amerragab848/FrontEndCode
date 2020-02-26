@@ -5,17 +5,14 @@ import { toast } from "react-toastify";
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
-import Export from "../../../Componants/OptionsPanels/Export"; 
+import Export from "../../../Componants/OptionsPanels/Export";
 import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
-import moment from "moment";
+import ExportDetails from "../ExportReportCenterDetails";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
+
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string()
         .required(Resources['projectSelection'][currentLanguage])
@@ -39,6 +36,7 @@ class ProjectInvoices extends Component {
                 pathname: "/"
             })
         }
+
         this.columns = [
             {
                 field: "arrange",
@@ -101,9 +99,15 @@ class ProjectInvoices extends Component {
                 sortable: true,
             },
         ];
+
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }];
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Dataservice.GetDataList('ProjectProjectsGetAll', 'projectName', 'projectId').then(
             result => {
                 this.setState({
@@ -144,9 +148,8 @@ class ProjectInvoices extends Component {
                 rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.columns} fileName={'projectInvoices'} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.projectInvoices[currentLanguage]} />
 
         return (
             <div className="reports__content">
@@ -169,7 +172,7 @@ class ProjectInvoices extends Component {
                             <div className="linebylineInput valid-input">
                                 <Dropdown className="fullWidthWrapper textLeft" title='Projects' data={this.state.ProjectsData} name='selectedProject'
                                     selectedValue={this.state.selectedProject} onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectedProject: e })}
+                                    handleChange={e => { this.setState({ selectedProject: e }); this.fields[0].value = e.label }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedProject}
                                     touched={touched.selectedProject}

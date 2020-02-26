@@ -6,14 +6,13 @@ import Config from '../../../Services/Config';
 import DatePicker from '../../../Componants/OptionsPanels/DatePicker'
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
-import Export from "../../../Componants/OptionsPanels/Export";
 import moment from "moment";
 import dataService from '../../../Dataservice'
- import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
-
+import GridCustom from "../../../Componants/Templates/Grid/CustomGrid";
+import ExportDetails from "../ExportReportCenterDetails";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-//const _ = require('lodash')
+
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
 const ValidtionSchema = Yup.object().shape({
     selectedProject: Yup.string()
@@ -78,7 +77,6 @@ class compareApprovedQuantity extends Component {
                     sortable: true,
                 }
             ]
-
         }
 
         if (!Config.IsAllow(3769)) {
@@ -88,14 +86,32 @@ class compareApprovedQuantity extends Component {
             });
         }
 
+        this.fields = [{
+            title: Resources["Projects"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["contractor"][currentLanguage],
+            value: "",
+            type: "text"
+        }, {
+            title: Resources["startDate"][currentLanguage],
+            value: this.state.startDate,
+            type: "D"
+        }, {
+            title: Resources["finishDate"][currentLanguage],
+            value: this.state.finishDate,
+            type: "D"
+        }];
     }
-    componentWillMount() {
+
+    componentDidMount() {
         this.setState({ isLoading: true })
         dataService.GetDataList('ProjectProjectsForList', 'projectName', 'id').then(res => {
             this.setState({ projectList: res, isLoading: false })
         })
-
     }
+
     getGridtData = () => {
         this.setState({ currentComponent: null })
         let reportobj = {
@@ -125,22 +141,22 @@ class compareApprovedQuantity extends Component {
         }).catch(() => {
             this.setState({ isLoading: false })
             toast.error(Resources.operationCanceled[currentLanguage])
-        })
-
-
+        });
     }
+
     handleChange = (name, value) => {
         this.setState({ [name]: value })
     }
+
     projectChange = (e) => {
         this.setState({ isLoading: true })
         dataService.GetDataList('GetContractByProjectId?projectId=' + e.value, 'subject', 'id').then(res => {
             this.setState({ contractsData: res, isLoading: false, selectedProject: e })
         })
     }
+
     render() {
         const dataGrid = this.state.isLoading === false ? (
-
             <GridCustom
                 ref='custom-data-grid'
                 key="compareApprovedQuantity"
@@ -153,9 +169,9 @@ class compareApprovedQuantity extends Component {
                 rowClick={() => { }}
             />) : <LoadingSection />
 
-        const btnExport = this.state.isLoading === false ?
-            <Export rows={this.state.isLoading === false ? this.state.rows : []} columns={this.state.columns} fileName={'compareApprovedQuantity'} />
-            : null
+        const btnExport = <ExportDetails fieldsItems={this.state.columns}
+            rows={this.state.rows} fields={this.fields} fileName={Resources.compareApprovedQuantity[currentLanguage]} />
+
         return (
 
             <div className="reports__content">
@@ -180,7 +196,7 @@ class compareApprovedQuantity extends Component {
                                     name='selectedProject'
                                     selectedValue={this.state.selectedProject}
                                     onChange={setFieldValue}
-                                    handleChange={e => this.projectChange(e)}
+                                    handleChange={e => { this.projectChange(e); this.fields[0].value = e.label }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectedProject}
                                     touched={touched.selectedProject}
@@ -191,7 +207,7 @@ class compareApprovedQuantity extends Component {
                                     name='selectContract'
                                     selectedValue={this.state.selectContract}
                                     onChange={setFieldValue}
-                                    handleChange={e => this.setState({ selectContract: e })}
+                                    handleChange={e => { this.setState({ selectContract: e }); this.fields[1].value = e.label }}
                                     onBlur={setFieldTouched}
                                     error={errors.selectContract}
                                     touched={touched.selectContract}
@@ -200,12 +216,12 @@ class compareApprovedQuantity extends Component {
                             <div className="linebylineInput valid-input alternativeDate">
                                 <DatePicker title='startDate'
                                     startDate={this.state.startDate}
-                                    handleChange={e => this.handleChange('startDate', e)} />
+                                    handleChange={e => { this.handleChange('startDate', e); this.fields[2].value = e }} />
                             </div>
                             <div className="linebylineInput valid-input alternativeDate">
                                 <DatePicker title='finishDate'
                                     startDate={this.state.finishDate}
-                                    handleChange={e => this.handleChange('finishDate', e)} />
+                                    handleChange={e => { this.handleChange('finishDate', e); this.fields[3].value = e }} />
                             </div>
                             <button className="primaryBtn-1 btn smallBtn" type='submit'>{Resources['search'][currentLanguage]}</button>
                         </Form>
@@ -217,7 +233,6 @@ class compareApprovedQuantity extends Component {
             </div>
         )
     }
-
 }
 
 

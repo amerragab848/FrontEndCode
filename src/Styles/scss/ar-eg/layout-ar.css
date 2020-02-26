@@ -22402,3 +22402,7 @@ thead.grid-header tr.action-bar .actions {
 input {
     font-family: cairo-r !important;
 }
+
+.doc-container .step-content .readOnly__disabled .btn.disabled {
+    pointer-events: none !important
+}

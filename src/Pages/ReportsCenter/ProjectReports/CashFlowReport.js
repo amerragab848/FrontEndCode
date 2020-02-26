@@ -1,26 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import Resources from '../../../resources.json';
 import { toast } from "react-toastify";
-import LoadingSection from '../../../Componants/publicComponants/LoadingSection';
 import Config from '../../../Services/Config';
 import Dropdown from '../../../Componants/OptionsPanels/DropdownMelcous'
 import ExportDetails from "../ExportReportCenterDetails";
-import moment from "moment";
 import Dataservice from '../../../Dataservice';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
-const dateFormate = ({ value }) => {
-    return value ? moment(value).format("DD/MM/YYYY") : "No Date";
-}
-
 const ValidtionSchema = Yup.object().shape({
-    selectedProject: Yup.string()
-        .required(Resources['projectSelection'][currentLanguage])
-        .nullable(true),
+    selectedProject: Yup.string().required(Resources['projectSelection'][currentLanguage]).nullable(true)
 });
 
 class CashFlowReport extends Component {
@@ -70,8 +62,8 @@ class CashFlowReport extends Component {
                     return this.columns.push({
                         title: item.header,
                         type: "text",
-                        field : item
-                    })
+                        field: item.header
+                    });
                 })
 
                 this.setState({
