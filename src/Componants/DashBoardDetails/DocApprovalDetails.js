@@ -36,7 +36,12 @@ class DocApprovalDetails extends Component {
         sortable: true,
         type: "text",
         href: 'link',
-        onClick: () => { },
+       
+        onClick: (e, cell) => {
+          if (cell.readStatus != true) {
+            Api.post("UpdateStatusWorkFlow?id=" + cell.id);
+          }
+        },
         classes: 'bold',
         showTip: true
       },
