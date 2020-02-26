@@ -205,11 +205,9 @@ class ExportDetails extends Component {
     if (fieldsName.length > 0) {
       return (
         <table id="items" style={{ border: 'double' }}>
-
           <thead valign="top">
             <tr key={'dd- '} style={{ border: '4px' }}>
               {fieldsName.map((column, index) => {
-                console.log(Resources[column][currentLanguage]);
                 return (
                   <th key={'dddd- ' + index} style={{ backgroundColor: '#d6dde7', borderBottom: 'dashed' }}>{Resources[column][currentLanguage]}</th>
                 )
