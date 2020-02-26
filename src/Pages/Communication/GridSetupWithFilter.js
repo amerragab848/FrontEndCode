@@ -77,7 +77,7 @@ class GridSetupWithFilter extends Component {
   }
 
   static getDerivedStateFromProps(props, current_state) {
-    if (current_state.rows !== props.rows && props.isFilter) {
+    if (current_state.rows !== props.rows && props.isFilter) { 
       props.changeValueOfProps();
       return {
         rows: props.rows,
@@ -386,7 +386,7 @@ class GridSetupWithFilter extends Component {
           });
           if (matched > 0) rowsList.push(row);
         });
-
+ 
         this.setState({
           rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
           Loading: false
@@ -398,6 +398,8 @@ class GridSetupWithFilter extends Component {
           matched = 0;
           Object.keys(filters).forEach(key => {
             let isValue = row[`${key}`];
+            let compareValue = `${filters[key]}`;
+ 
 
             if (isValue != "" && isValue != null) {
               if (`${filters[key]}`.includes("|")) {
@@ -425,19 +427,20 @@ class GridSetupWithFilter extends Component {
                 }
               } else if (typeof filters[key] === "number") {
                 matched = 0;
-              } else if (row[`${key}`].includes(`${filters[key]}`)) {
+              } else if ((isValue.toString().toUpperCase()).includes(compareValue)) {
                 matched++;
-              } else if (row[`${key}`] === `${filters[key]}`) {
+              } else if (isValue.toString().toUpperCase() === compareValue) {
                 matched++;
               }
               else {
                 matched = 0;
               }
-            }
+            } 
           });
+
           if (matched > 0) rowsList.push(row);
         });
-
+ 
         this.setState({
           rows: Object.keys(filters).length > 0 ? rowsList : this.state.filteredRows,
           Loading: false
@@ -486,13 +489,12 @@ class GridSetupWithFilter extends Component {
           delete newFilters[filter.column.key];
         }
       } else if (event.target.value != "") {
-        newFilters[filter.column.key]= event.target.value.toLowerCase();
+        newFilters[filter.column.key] = event.target.value.toUpperCase();
       } else {
         delete newFilters[filter.column.key];
       }
 
-      let rows = [...this.state.filteredRows];
-
+      let rows = [...this.state.filteredRows]; 
       this.getRowsFilter(rows, newFilters);
 
       this.setState({
@@ -500,9 +502,7 @@ class GridSetupWithFilter extends Component {
         setFilters: newFilters,
         Loading: false
       });
-    } else {
-      console.log('this.state.filteredRows.length == 0')
-    }
+    }  
   }
 
   ClearFilters = () => {
@@ -695,7 +695,7 @@ class GridSetupWithFilter extends Component {
       <Fragment>
         <div className="filter__warrper" style={{ paddingRight: "16px", paddingLeft: "24px" }}>
           <div className="filter__more" style={{ padding: 0 }}>
-            <span>{this.props.filterColumnsLength != undefined ? this.props.filterColumnsLength : 5}{Resources.filtersApplied[currentLanguage]}</span>
+            <span>{this.props.filterColumnsLength != undefined ? this.props.filterColumnsLength : 5}{' ' + Resources.filtersApplied[currentLanguage]}{' Filtered Rows ' + this.state.filteredRows.length}</span>
             {this.props.columns.length > 5 ? (
               <button className="filter__more--btn" onClick={this.showFilterMore}>
                 {Resources.seeAll[currentLanguage]}

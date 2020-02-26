@@ -926,15 +926,7 @@ class LettersAddEdit extends Component {
                                                                         </div>
                                                                     </button>
                                                                 ) : (
-                                                                        <button
-                                                                            className={this.state.isViewMode === true
-                                                                                ? "primaryBtn-1 btn middle__btn disNone"
-                                                                                : "primaryBtn-1 btn middle__btn"
-                                                                            }>
-                                                                            {
-                                                                                Resources.save[currentLanguage]
-                                                                            }
-                                                                        </button>
+                                                                        <button className={this.state.isViewMode === true ? "primaryBtn-1 btn middle__btn disNone" : "primaryBtn-1 btn middle__btn"}>{Resources.save[currentLanguage]}</button>
                                                                     )}
                                                                 <DocumentActions
                                                                     isApproveMode={this.state.isApproveMode}
