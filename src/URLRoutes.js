@@ -2867,7 +2867,7 @@ var routes = [
     },
     {
         route: "materialInventoryByInterval",
-        moduleId: "reportCenter/materialInventoryByInterval",
+        moduleId: "InventoryItemsReports/MaterialInventoryByInterval",
         title: "materialInventoryByInterval",
         nav: true,
         settings: { inventory: true, permission: 3726, order: 4 }
