@@ -2874,14 +2874,14 @@ var routes = [
     },
     {
         route: "transfarePerProject",
-        moduleId: "reportCenter/transfarePerProject",
+        moduleId: "InventoryItemsReports/TransfarePerProject",
         title: "transfarePerProject",
         nav: true,
         settings: { inventory: true, permission: 3727, order: 5 }
     },
     {
-        route: "totalsOfStockReport",
-        moduleId: "reportCenter/totalsOfStockReport",
+        route: "TotalsOfStockReport",
+        moduleId: "InventoryItemsReports/TotalsOfStockReport",
         title: "totalsOfStockReport",
         nav: true,
         settings: { inventory: true, permission: 3728, order: 6 }
