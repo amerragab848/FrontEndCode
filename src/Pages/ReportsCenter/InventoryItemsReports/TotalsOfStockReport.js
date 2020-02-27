@@ -23,7 +23,7 @@ class ExpensesStatus extends Component {
             tableRows: [],
         }
 
-        if (!Config.IsAllow(3723)) {
+        if (!Config.IsAllow(3728)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"

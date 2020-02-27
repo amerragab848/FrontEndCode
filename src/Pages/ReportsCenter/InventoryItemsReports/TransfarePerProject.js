@@ -29,7 +29,7 @@ class projectBackLog extends Component {
             showChart: false,
             pageSize: 200,
         }
-        if (!Config.IsAllow(3679)) {
+        if (!Config.IsAllow(3727)) {
             toast.success(Resources["missingPermissions"][currentLanguage]);
             this.props.history.push({
                 pathname: "/"
