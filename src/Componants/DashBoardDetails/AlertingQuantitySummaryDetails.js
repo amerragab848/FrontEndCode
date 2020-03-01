@@ -4,7 +4,8 @@ import LoadingSection from "../../Componants/publicComponants/LoadingSection";
 import Export from "../OptionsPanels/Export";
 import Filter from "../FilterComponent/filterComponent";
 import CryptoJS from 'crypto-js';
-import GridSetup from "../../Pages/Communication/GridSetup";
+
+import GridCustom from "../../Componants/Templates/Grid/CustomGrid";
 import { Filters } from "react-data-grid-addons";
 import Resources from "../../resources.json";
 import { withRouter } from "react-router-dom";
@@ -50,74 +51,63 @@ class AlertingQuantitySummaryDetails extends Component {
   constructor(props) {
     super(props);
 
+   
     var columnsGrid = [
       {
-        key: "docSubject",
-        name: Resources["docSubject"][currentLanguage],
-        width: 250,
-        draggable: true,
+        field: 'docSubject',
+        title: Resources['docSubject'][currentLanguage],
+        width: 20,
+        groupable: true,
+        fixed: true,
+        type: "text",
         sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "description",
-        name: Resources["description"][currentLanguage],
-        width: 250,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter,
-        formatter: subjectLink
-      },
-      {
-        key: "projectName",
-        name: Resources["projectName"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "originalQnty",
-        name: Resources["originalQuantity"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "requestedQnty",
-        name: Resources["requestedQuantity"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      },
-      {
-        key: "remainingQnty",
-        name: Resources["remainingQuantity"][currentLanguage],
-        width: 150,
-        draggable: true,
-        sortable: true,
-        resizable: true,
-        filterable: true,
-        sortDescendingFirst: true,
-        filterRenderer: SingleSelectFilter
-      }
+    },
+    {
+      field: 'description',
+      title: Resources['description'][currentLanguage],
+      width: 20,
+      groupable: true,
+      fixed: false,
+      type: "text",
+      sortable: true,
+  },
+  {
+    field: 'projectName',
+    title: Resources['projectName'][currentLanguage],
+    width: 20,
+    groupable: true,
+    fixed: false,
+    type: "text",
+    sortable: true,
+},
+{
+  field: 'originalQnty',
+  title: Resources['originalQuantity'][currentLanguage],
+  width: 20,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true,
+},
+{
+  field: 'requestedQnty',
+  title: Resources['requestedQuantity'][currentLanguage],
+  width: 20,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true,
+},
+{
+  field: 'remainingQnty',
+  title: Resources['remainingQuantity'][currentLanguage],
+  width: 20,
+  groupable: true,
+  fixed: false,
+  type: "text",
+  sortable: true,
+}
+     
     ];
 
     const filtersColumns = [
@@ -249,7 +239,18 @@ class AlertingQuantitySummaryDetails extends Component {
   render() {
     const dataGrid =
       this.state.isLoading === false ? (
-        <GridSetup rows={this.state.rows} columns={this.state.columns} onRowClick={this.onRowClick} showCheckbox={false} />
+     
+       <GridCustom
+                    ref='custom-data-grid'
+                    key="AlertingQuantitySummaryDetails"
+                    data={this.state.rows}
+                    pageSize={this.state.rows.length}
+                    groups={[]}
+                    actions={[]}
+                    rowActions={[]}
+                    cells={this.state.columns}
+                    rowClick={()=>{}}
+                />
       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
