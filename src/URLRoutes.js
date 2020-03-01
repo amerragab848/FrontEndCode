@@ -1357,15 +1357,7 @@ var routes = [
             permission: 170,
             order: 9
         }
-    },
-    {
-        route:
-            "procurementAddEdit/:param1(/:projectId)(/:isApproval)(/:acWorkFlowId)(/:arrage)(/:projectName)(/:isInbox)(/:isDistribution)",
-        moduleId: "contracts/procurementAddEdit",
-        title: "Procurement",
-        nav: false,
-        settings: { Contracts: false }
-    },
+    }, 
     {
         route: "pco",
         moduleId: "commonLogs",
