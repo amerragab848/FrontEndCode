@@ -17,7 +17,8 @@ const validationSchema_createTransmittal = Yup.object().shape({
     toContactId: Yup.string().required(Resources['selectContact'][currentLanguage]),
     fromContactId: Yup.string().required(Resources['fromContactRequired'][currentLanguage]),
     priorityId: Yup.string().required(Resources['priorityRequired'][currentLanguage]),
-    sendingMethodId: Yup.string().required(Resources['sendingMethodRequired'][currentLanguage])
+    sendingMethodId: Yup.string().required(Resources['sendingMethodRequired'][currentLanguage]),
+    refDoc: Yup.string().max(450, Resources['maxLength'][currentLanguage]),
 })
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang');
@@ -39,7 +40,8 @@ class CreateTransmittal extends Component {
                 fromContactId: '',
                 sendingMethodId: '',
                 status: true,
-                submittFor: ''
+                submittFor: '',
+                refDoc: null
             },
             PriorityData: [],
             ToCompany: [],
@@ -108,8 +110,8 @@ class CreateTransmittal extends Component {
         })
     }
 
-    inputChangeHandler = (e) => {
-        this.setState({ transmittal: { ...this.state.transmittal, subject: e.target.value } });
+    inputChangeHandler = (e, name) => {
+        this.setState({ transmittal: { ...this.state.transmittal, [name]: e.target.value } });
     }
 
 
@@ -163,7 +165,7 @@ class CreateTransmittal extends Component {
                                                 handleBlur(e)
                                                 handleChange(e)
                                             }}
-                                            onChange={(e) => this.inputChangeHandler(e)} />
+                                            onChange={(e) => this.inputChangeHandler(e, 'subject')} />
                                         {touched.subject ? (<em className="pError">{errors.subject}</em>) : null}
                                     </div>
                                 </div>
@@ -235,6 +237,7 @@ class CreateTransmittal extends Component {
                                 handleChange={this.SubmittedFor_handelChange}
                                 name='submittedFor'
                             />
+
                             <Dropdown
                                 title="sendingMethod"
                                 data={this.state.sendingmethods}
@@ -245,6 +248,26 @@ class CreateTransmittal extends Component {
                                 touched={touched.sendingMethodId}
                                 name='sendingMethodId'
                             />
+                            <div className="fillter-status fillter-item-c">
+                                <label className="control-label">{Resources.refDoc[currentLanguage]}</label>
+                                <div className={"inputDev ui input" + (errors.refDoc && touched.refDoc ? (" has-error") : !errors.refDoc && touched.refDoc ? (" has-success") : " ")} >
+
+
+                                    <input name='refDoc'
+                                        className="form-control fsadfsadsa"
+                                        id="refDoc"
+                                        placeholder={Resources.refDoc[currentLanguage]}
+                                        autoComplete='off'
+                                        defaultValue={this.state.transmittal.refDoc}
+                                        onBlur={(e) => {
+                                            handleBlur(e)
+                                            handleChange(e)
+                                        }}
+                                        onChange={(e) => this.inputChangeHandler(e, 'refDoc')} />
+                                    {touched.refDoc ? (<em className="pError">{errors.refDoc}</em>) : null}
+                                </div>
+                            </div>
+
                             <div className="fullWidthWrapper">
                                 {!this.state.submitLoading ?
                                     <button className="primaryBtn-1 btn meduimBtn" type="submit" >{Resources.save[currentLanguage]}</button>
