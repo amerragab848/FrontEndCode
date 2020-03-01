@@ -7,7 +7,6 @@ import Config from '../../../Services/Config';
 import ExportDetails from "../ExportReportCenterDetails";
 import GridCustom from 'react-customized-grid';
 import Api from '../../../api.js';
-import EditImg from '../../../Styles/images/DesignmanagementHover.png';
 
 let currentLanguage = localStorage.getItem('lang') == null ? 'en' : localStorage.getItem('lang')
 
