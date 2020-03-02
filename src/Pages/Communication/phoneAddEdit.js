@@ -8,8 +8,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { withRouter } from "react-router-dom";
 import LoadingSection from '../../Componants/publicComponants/LoadingSection';
-import DataService from '../../Dataservice'
-import CryptoJS from 'crypto-js';
+import DataService from '../../Dataservice' 
 import { toast } from "react-toastify";
 import UploadAttachment from '../../Componants/OptionsPanels/UploadAttachment'
 import ViewAttachment from '../../Componants/OptionsPanels/ViewAttachmments'
@@ -43,31 +42,20 @@ let perviousRoute = 0;
 class phoneAddEdit extends Component {
     constructor(props) {
 
-        super(props)
-
-        const query = new URLSearchParams(this.props.location.search);
-
-        let index = 0;
-
-        for (let param of query.entries()) {
-            if (index == 0) {
-                try {
-                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                    docId = obj.docId;
-                    projectId = obj.projectId;
-                    projectName = obj.projectName;
-                    isApproveMode = obj.isApproveMode;
-                    docApprovalId = obj.docApprovalId;
-                    arrange = obj.arrange;
-                    perviousRoute = obj.perviousRoute;
-                }
-                catch{
-                    this.props.history.goBack();
-                }
-            }
-            index++;
-        }
-
+        super(props) 
+        const query = new URLSearchParams(this.props.location.search); 
+        let obj = Config.extractDataFromParamas(query);
+        if (Object.entries(obj).length === 0) {
+            this.props.history.goBack();
+        } else {
+            docId = obj.docId;
+            projectId = obj.projectId;
+            projectName = obj.projectName;
+            isApproveMode = obj.isApproveMode;
+            docApprovalId = obj.docApprovalId;
+            arrange = obj.arrange;
+            perviousRoute = obj.perviousRoute;
+        } 
         this.state = {
             isViewMode: false,
             isApproveMode: isApproveMode,

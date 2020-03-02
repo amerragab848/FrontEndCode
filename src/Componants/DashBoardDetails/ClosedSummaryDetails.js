@@ -180,10 +180,10 @@ class ClosedSummaryDetails extends Component {
         width: 20,
         groupable: true,
         fixed: false,
-        type: "text",
+        type: "date",
         sortable: true,
       }
-     
+
     ];
 
 
@@ -327,18 +327,22 @@ class ClosedSummaryDetails extends Component {
 
     const dataGrid =
       this.state.isLoading === false ? (
-       
+<>
         <GridCustom
-        ref='custom-data-grid'
-        key="ClosedSummaryDetails"
-        data={this.state.rows}
-        pageSize={this.state.rows.length}
-        groups={[]}
-        actions={[]}
-        rowActions={[]}
-        cells={this.state.columns}
-        rowClick={()=>{}}
-    />
+          ref='custom-data-grid'
+          key="ClosedSummaryDetails"
+          data={this.state.rows}
+          pageSize={this.state.rows.length}
+          groups={[]}
+          actions={[]}
+          rowActions={[]}
+          cells={this.state.columns}
+          rowClick={() => { }}
+        />
+
+        {/* <GridSetup rows={this.state.rows} columns={this.state.columns} showCheckbox={false} cellClick={this.cellClick} /> */}
+         
+</>
       ) : <LoadingSection />;
 
     const btnExport = this.state.isLoading === false ?
@@ -353,7 +357,7 @@ class ClosedSummaryDetails extends Component {
       /> : <LoadingSection />;
 
     return (
-      <div className="mainContainer">
+      <div className="mainContainer main__withouttabs">
         <div className="submittalFilter readOnly__disabled">
           <div className="subFilter">
             <h3 className="zero">{this.state.pageTitle}</h3>

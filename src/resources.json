@@ -2469,6 +2469,10 @@
         "en": "New Cycle",
         "ar": "مرحله جديده "
     },
+    "cycle": {
+        "en": "Cycle",
+        "ar": "مرحله "
+    },
     "cycleSubject": {
         "en": "Cycle Subject",
         "ar": "اسم المرحله"

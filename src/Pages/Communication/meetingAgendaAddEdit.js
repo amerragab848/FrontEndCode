@@ -84,27 +84,18 @@ steps_defination = [
 class meetingAgendaAddEdit extends Component {
     constructor(props) {
         super(props);
-
-        const query = new URLSearchParams(this.props.location.search);
-
-        let index = 0;
-
-        for (let param of query.entries()) {
-            if (index === 0) {
-                try {
-                    let obj = JSON.parse(CryptoJS.enc.Base64.parse(param[1]).toString(CryptoJS.enc.Utf8));
-                    docId = obj.docId;
-                    projectId = obj.projectId;
-                    projectName = obj.projectName;
-                    isApproveMode = obj.isApproveMode;
-                    docApprovalId = obj.docApprovalId;
-                    arrange = obj.arrange;
-                    perviousRoute = obj.perviousRoute;
-                } catch {
-                    this.props.history.goBack();
-                }
-            }
-            index++;
+        const query = new URLSearchParams(this.props.location.search); 
+        let obj = Config.extractDataFromParamas(query);
+        if (Object.entries(obj).length === 0) {
+            this.props.history.goBack();
+        } else {
+            docId = obj.docId;
+            projectId = obj.projectId;
+            projectName = obj.projectName;
+            isApproveMode = obj.isApproveMode;
+            docApprovalId = obj.docApprovalId;
+            arrange = obj.arrange;
+            perviousRoute = obj.perviousRoute;
         }
 
         this.topicColumns = [
